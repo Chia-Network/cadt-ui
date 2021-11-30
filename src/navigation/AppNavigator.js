@@ -1,13 +1,13 @@
-import React, {Suspense} from 'react';
-import {useSelector} from 'react-redux';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
-import {IndeterminateProgressOverlay} from '../components/';
+import React, { Suspense } from 'react';
+import { useSelector } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { IndeterminateProgressOverlay } from '../components/';
 import * as Pages from '../pages';
 
-import {AppContainer, AppHeader} from '../components';
+import { AppContainer, AppHeader } from '../components';
 
 const AppNavigator = () => {
-  const {showProgressOverlay} = useSelector(store => store.app);
+  const { showProgressOverlay } = useSelector(store => store.app);
   return (
     <AppContainer>
       <AppHeader />
@@ -23,4 +23,4 @@ const AppNavigator = () => {
   );
 };
 
-export {AppNavigator};
+export { AppNavigator };
