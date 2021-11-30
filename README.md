@@ -13,7 +13,6 @@ nvm install 16.0.0
 nvm use 16.0.0
 npm install foreman -g
 npm install -g husky
-npm install -g yarn
 npm run start
 ```
 
