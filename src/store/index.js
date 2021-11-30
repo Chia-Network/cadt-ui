@@ -1,11 +1,11 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 
-import {appReducer, tokenReducer} from './reducers';
+import { appReducer, climateWarehouseReducer } from './reducers';
 
 const rootReducer = combineReducers({
   app: appReducer,
-  tokens: tokenReducer,
+  climateWarehouse: climateWarehouseReducer,
 });
 
 export default createStore(rootReducer, applyMiddleware(ReduxThunk));
