@@ -7,13 +7,14 @@ A React App that displays a list of retired Carbon Tokens
 ### Installation
 
 ```
-git clone git@github.com:Chia-Network/carbon-asset-token.git
-cd carbon-asset-token
+git clone git@github.com:Chia-Network/climate-warehouse-ui.git
+cd climate-warehouse-ui
 nvm install 16.0.0
 nvm use 16.0.0
+npm install foreman -g
 npm install -g husky
 npm install -g yarn
-yarn
+npm run start
 ```
 
 ### Prerequisites
@@ -24,10 +25,6 @@ You'll need:
 - [nvm](https://github.com/nvm-sh/nvm)
 
   This app uses `nvm` to align node versions across development, CI and production. If you're working on Windows you should consider [nvm-windows](https://github.com/coreybutler/nvm-windows)
-
-- [yarn](https://yarnpkg.com/lang/en/)
-
-  This app uses `yarn` as an alternative to `npm`. The precise version you have doesn't matter (so long as it is `>1.0`).
 
 ## Contributing
 
