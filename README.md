@@ -1,6 +1,6 @@
 # Carbon Asset Token Retirement Explorer
 
-A React App that displays a list of retired Carbon Tokens
+Auxillery App for the Climate Warehouse
 
 ## Quickstart
 
