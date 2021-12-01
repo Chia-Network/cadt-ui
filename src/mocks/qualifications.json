@@ -7,7 +7,7 @@
       "crediting_period_end_date": "11/11/2022",
       "validity_start_date": "10/10/2022",
       "validity_end_date": "11/11/2022",
-      "unit-quantity": 10,
+      "unit_quantity": 10,
       "qualification_link": "http://somewhere.com"
     },
     {
@@ -18,7 +18,7 @@
       "crediting_period_end_date": "5/20/2022",
       "validity_start_date": "3/10/2022",
       "validity_end_date": "5/11/2022",
-      "unit-quantity": 5,
+      "unit_quantity": 5,
       "qualification_link": "http://somewhere.com"
     },
     {
@@ -29,7 +29,7 @@
       "crediting_period_end_date": "3/11/2022",
       "validity_start_date": "2/10/2022",
       "validity_end_date": "3/11/2022",
-      "unit-quantity": 3,
+      "unit_quantity": 3,
       "qualification_link": "http://somewhere.com"
     },
     {
@@ -40,7 +40,7 @@
       "crediting_period_end_date": "7/3/2022",
       "validity_start_date": "5/10/2022",
       "validity_end_date": "7/11/2022",
-      "unit-quantity": 15,
+      "unit_quantity": 15,
       "qualification_link": "http://somewhere.com"
     },
     {
@@ -51,7 +51,7 @@
       "crediting_period_end_date": "1/26/2022",
       "validity_start_date": "1/10/2022",
       "validity_end_date": "2/11/2022",
-      "unit-quantity": 10,
+      "unit_quantity": 10,
       "qualification_link": "http://somewhere.com"
     }
   ]
