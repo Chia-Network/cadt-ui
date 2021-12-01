@@ -9,7 +9,7 @@ const initialState = {
 
 const climateWarehouseReducer = (state = initialState, action) => {
   switch (action.type) {
-    case climateWarehouseActions.GET_RATINGS_DATA:
+    case climateWarehouseActions.GET_RATINGS:
       return u({ ratings: action.payload }, state);
 
     case climateWarehouseActions.GET_COBENEFITS:
