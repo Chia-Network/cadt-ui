@@ -37,7 +37,7 @@ const getClimateWarehouseTable = (
           url = `${url}?useMock=true`;
         }
 
-        const response = fetch(url);
+        const response = await fetch(url);
 
         if (response.ok) {
           const results = await response.json();
@@ -66,7 +66,7 @@ const mockedRatingsResponse = {
 };
 
 export const getRatings = options => {
-  return async dispatch => {
+  return dispatch => {
     dispatch(
       getClimateWarehouseTable(
         `${constants.API_HOST}/ratings`,
@@ -85,7 +85,7 @@ const mockedCoBenefitResponse = {
 };
 
 export const getCoBenefits = options => {
-  return async dispatch => {
+  return dispatch => {
     dispatch(
       getClimateWarehouseTable(
         `${constants.API_HOST}/co-benefits`,
@@ -108,7 +108,7 @@ export const mockQualificationsResponse = {
 };
 
 export const getQualifications = options => {
-  return async dispatch => {
+  return dispatch => {
     dispatch(
       getClimateWarehouseTable(
         `${constants.API_HOST}/qualifications`,
