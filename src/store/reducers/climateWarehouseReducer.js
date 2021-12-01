@@ -16,7 +16,7 @@ const climateWarehouseReducer = (state = initialState, action) => {
     case climateWarehouseActions.GET_COBENEFITS:
       return u({ coBenefits: action.payload }, state);
 
-    case climateWarehouseActions.QUALIFICATIONS:
+    case climateWarehouseActions.GET_QUALIFICATIONS:
       return u({ qualifications: action.payload }, state);
 
     default:
