@@ -22,7 +22,7 @@ export const mockedRatingsResponse = {
   ),
 };
 
-export const getRatingsData = ({
+export const getRatings = ({
   useMockedResponse = false,
   useApiMock = false,
 }) => {
