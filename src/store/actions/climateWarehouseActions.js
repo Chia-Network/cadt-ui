@@ -2,7 +2,11 @@ import _ from 'lodash';
 import { keyMirror } from '../store-functions';
 import constants from '../../constants';
 
-import { coBenefitResponseStub, projectRatingResponseStub } from '../../mocks';
+import {
+  coBenefitResponseStub,
+  projectRatingResponseStub,
+  qualificationsResponseStub,
+} from '../../mocks';
 
 import {
   activateProgressIndicator,
@@ -10,37 +14,32 @@ import {
   setGlobalErrorMessage,
 } from './app';
 
-export const actions = keyMirror('GET_RATINGS', 'GET_COBENEFITS');
+export const actions = keyMirror(
+  'GET_RATINGS',
+  'GET_COBENEFITS',
+  'GET_QUALIFICATIONS',
+);
 
-export const mockedRatingsResponse = {
-  type: actions.GET_RATINGS,
-  // Different envs import this differently
-  payload: _.get(
-    projectRatingResponseStub,
-    'default',
-    projectRatingResponseStub,
-  ),
-};
-
-export const getRatings = ({
-  useMockedResponse = false,
-  useApiMock = false,
-}) => {
+const getClimateWarehouseTable = (
+  url,
+  action,
+  mockAction,
+  { useMockedResponse = false, useApiMock = false },
+) => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
 
     try {
       if (useMockedResponse) {
-        dispatch(mockedRatingsResponse);
+        dispatch(mockAction);
       } else {
-        let url = `${constants.API_HOST}/ratings`;
         if (useApiMock) url = `${url}?useMock=true`;
         const response = fetch(url);
 
         if (response.ok) {
           const results = await response.json();
           dispatch({
-            type: actions.GET_RATINGS,
+            type: action,
             payload: results,
           });
         }
@@ -53,42 +52,67 @@ export const getRatings = ({
   };
 };
 
+const mockedRatingsResponse = {
+  type: actions.GET_RATINGS,
+  // Different envs import this differently
+  payload: _.get(
+    projectRatingResponseStub,
+    'default',
+    projectRatingResponseStub,
+  ),
+};
+
+export const getRatings = options => {
+  return async dispatch => {
+    dispatch(
+      getClimateWarehouseTable(
+        `${constants.API_HOST}/ratings`,
+        actions.GET_RATINGS,
+        mockedRatingsResponse,
+        options,
+      ),
+    );
+  };
+};
+
 const mockedCoBenefitResponse = {
   type: actions.GET_COBENEFITS,
   // Different envs import this differently
   payload: _.get(coBenefitResponseStub, 'default', coBenefitResponseStub),
 };
 
-export const getCoBenefits = ({
-  useMockedResponse = false,
-  useApiMock = false,
-}) => {
+export const getCoBenefits = options => {
   return async dispatch => {
-    try {
-      dispatch(activateProgressIndicator);
+    dispatch(
+      getClimateWarehouseTable(
+        `${constants.API_HOST}/co-benefits`,
+        actions.GET_COBENEFITS,
+        mockedCoBenefitResponse,
+        options,
+      ),
+    );
+  };
+};
 
-      if (useMockedResponse) {
-        dispatch(mockedCoBenefitResponse);
-      } else {
-        let url = `${constants.API_HOST}/co-benefits`;
-        if (useApiMock) {
-          url = `${url}?useMock=true`;
-        }
+export const mockQualificationsResponse = {
+  type: actions.GET_QUALIFICATIONS,
+  // Different envs import this differently
+  payload: _.get(
+    qualificationsResponseStub,
+    'default',
+    qualificationsResponseStub,
+  ),
+};
 
-        const response = fetch(url);
-
-        if (response.ok) {
-          const results = await response.json();
-          dispatch({
-            type: actions.GET_COBENEFITS,
-            payload: results,
-          });
-        }
-      }
-    } catch {
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
-    } finally {
-      dispatch(deactivateProgressIndicator);
-    }
+export const getQualifications = options => {
+  return async dispatch => {
+    dispatch(
+      getClimateWarehouseTable(
+        `${constants.API_HOST}/qualifications`,
+        actions.GET_QUALIFICATIONS,
+        mockQualificationsResponse,
+        options,
+      ),
+    );
   };
 };
