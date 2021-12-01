@@ -10,10 +10,10 @@ import {
   setGlobalErrorMessage,
 } from './app';
 
-export const actions = keyMirror('GET_RATINGS_DATA', 'GET_COBENEFITS');
+export const actions = keyMirror('GET_RATINGS', 'GET_COBENEFITS');
 
 export const mockedRatingsResponse = {
-  type: actions.GET_RATINGS_DATA,
+  type: actions.GET_RATINGS,
   // Different envs import this differently
   payload: _.get(
     projectRatingResponseStub,
@@ -40,7 +40,7 @@ export const getRatingsData = ({
         if (response.ok) {
           const results = await response.json();
           dispatch({
-            type: actions.GET_DATA,
+            type: actions.GET_RATINGS,
             payload: results,
           });
         }
