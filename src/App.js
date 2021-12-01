@@ -13,7 +13,8 @@ import {IndeterminateProgressOverlay} from './components';
 
 const App = () => {
   const dispatch = useDispatch();
-  const appStore = useSelector(state => state.app);
+  const appStore = useSelector(state => state);
+  console.log(appStore)
   const [translationTokens, setTranslationTokens] = useState();
 
   useEffect(

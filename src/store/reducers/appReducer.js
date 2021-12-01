@@ -1,12 +1,12 @@
 import u from 'updeep';
 
-import {actions as appActions} from '../actions/app';
+import { actions as appActions } from '../actions/app';
 import constants from '../../constants';
 
 const initialState = {
   placeholderValue: 'THIS STRING WAS LOADED FROM THE STORE!',
   showProgressOverlay: false,
-  theme: constants.THEME.DARK,
+  theme: constants.THEME.LIGHT,
   errorMessage: null,
   locale: null,
 };
@@ -14,26 +14,26 @@ const initialState = {
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case appActions.ACTIVATE_PROGRESS_INDICATOR:
-      return u({showProgressOverlay: true}, state);
+      return u({ showProgressOverlay: true }, state);
 
     case appActions.DEACTIVATE_PROGRESS_INDICATOR:
-      return u({showProgressOverlay: false}, state);
+      return u({ showProgressOverlay: false }, state);
 
     case appActions.SET_GLOBAL_ERROR_MESSAGE:
-      return u({errorMessage: action.payload}, state);
+      return u({ errorMessage: action.payload }, state);
 
     case appActions.CLEAR_GLOBAL_ERROR_MESSAGE:
-      return u({errorMessage: null}, state);
+      return u({ errorMessage: null }, state);
 
     case appActions.SET_LOCALE:
-      return u({locale: action.payload}, state);
+      return u({ locale: action.payload }, state);
 
     case appActions.SET_THEME:
       if (
         action.payload === constants.THEME.LIGHT ||
         action.payload === constants.THEME.DARK
       ) {
-        return u({theme: action.payload}, state);
+        return u({ theme: action.payload }, state);
       }
       return state;
 
@@ -44,10 +44,10 @@ const appReducer = (state = initialState, action) => {
           ? constants.THEME.LIGHT
           : constants.THEME.DARK;
       localStorage.setItem('theme', theme);
-      return u({theme}, state);
+      return u({ theme }, state);
     default:
       return state;
   }
 };
 
-export {appReducer};
+export { appReducer };
