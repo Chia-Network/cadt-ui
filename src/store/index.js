@@ -6,7 +6,7 @@ import { appReducer, climateWarehouseReducer, projectRatingsReducer } from './re
 const rootReducer = combineReducers({
   app: appReducer,
   climateWarehouse: climateWarehouseReducer,
-  projectRatingsReducer: projectRatingsReducer
+  projectRatings: projectRatingsReducer
 });
 
 export default createStore(rootReducer, applyMiddleware(ReduxThunk));
