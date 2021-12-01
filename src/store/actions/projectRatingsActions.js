@@ -15,10 +15,14 @@ export const actions = keyMirror('GET_DATA');
 export const mockedResponse = {
   type: actions.GET_DATA,
   // Different envs import this differently
-  payload: _.get(mockedProjectRatingsResponse, 'default', mockedProjectRatingsResponse),
+  payload: _.get(
+    mockedProjectRatingsResponse,
+    'default',
+    mockedProjectRatingsResponse,
+  ),
 };
 
-export const getData = ({ useMockedResponse = true }) => {
+export const getData = ({ useMockedResponse = false, useApiMock = false }) => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
 
@@ -26,7 +30,9 @@ export const getData = ({ useMockedResponse = true }) => {
       if (useMockedResponse) {
         dispatch(mockedResponse);
       } else {
-        const response = fetch(`${constants.API_HOST}/v1/ratings`);
+        let url = `${constants.API_HOST}/v1/ratings`;
+        if (useApiMock) url = `${url}?useMock=true`;
+        const response = fetch(url);
 
         if (response.ok) {
           const results = await response.json();
