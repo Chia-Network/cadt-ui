@@ -2,8 +2,7 @@ import _ from 'lodash';
 import { keyMirror } from '../store-functions';
 import constants from '../../constants';
 
-import { coBenefitResponseStub } from '../../mocks';
-import { mockedProjectRatingsResponse } from '../../mocks';
+import { coBenefitResponseStub, projectRatingResponseStub } from '../../mocks';
 
 import {
   activateProgressIndicator,
@@ -13,13 +12,13 @@ import {
 
 export const actions = keyMirror('GET_RATINGS_DATA', 'GET_COBENEFITS');
 
-export const mockRatingsResponse = {
+export const mockedRatingsResponse = {
   type: actions.GET_RATINGS_DATA,
   // Different envs import this differently
   payload: _.get(
-    mockedProjectRatingsResponse,
+    projectRatingResponseStub,
     'default',
-    mockedProjectRatingsResponse,
+    projectRatingResponseStub,
   ),
 };
 
@@ -32,7 +31,7 @@ export const getRatingsData = ({
 
     try {
       if (useMockedResponse) {
-        dispatch(mockRatingsResponse);
+        dispatch(mockedRatingsResponse);
       } else {
         let url = `${constants.API_HOST}/ratings`;
         if (useApiMock) url = `${url}?useMock=true`;
