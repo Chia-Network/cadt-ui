@@ -24,8 +24,9 @@ export const getCoBenefits = ({
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
+
       if (useMockedResponse) {
-        dispatch(mockedTokenResponse);
+        dispatch(mockedCoBenefitResponse);
       } else {
         let url = `${constants.API_HOST}/co-benefits`;
         if (useApiMock) {
