@@ -33,7 +33,10 @@ const getClimateWarehouseTable = (
       if (useMockedResponse) {
         dispatch(mockAction);
       } else {
-        if (useApiMock) url = `${url}?useMock=true`;
+        if (useApiMock) {
+          url = `${url}?useMock=true`;
+        }
+
         const response = fetch(url);
 
         if (response.ok) {
