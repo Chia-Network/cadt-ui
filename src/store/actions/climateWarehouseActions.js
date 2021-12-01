@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { keyMirror } from '../store-functions';
 import constants from '../../constants';
+import { coBenefitResponseStub } from '../../mocks';
 
 import {
   activateProgressIndicator,
@@ -10,24 +11,36 @@ import {
 
 export const actions = keyMirror('GET_COBENEFITS');
 
-export const getCoBenefits = ({ useMockedResponse = false }) => {
+const mockedCoBenefitResponse = {
+  type: actions.GET_COBENEFITS,
+  // Different envs import this differently
+  payload: _.get(coBenefitResponseStub, 'default', coBenefitResponseStub),
+};
+
+export const getCoBenefits = ({
+  useMockedResponse = false,
+  useApiMock = false,
+}) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
-
-      let url = `${constants.API_HOST}/co-benefits`;
       if (useMockedResponse) {
-        url = `${url}/useMock=true`;
-      }
+        dispatch(mockedTokenResponse);
+      } else {
+        let url = `${constants.API_HOST}/co-benefits`;
+        if (useApiMock) {
+          url = `${url}?useMock=true`;
+        }
 
-      const response = fetch(url);
+        const response = fetch(url);
 
-      if (response.ok) {
-        const results = await response.json();
-        dispatch({
-          type: actions.GET_COBENEFITS,
-          payload: results,
-        });
+        if (response.ok) {
+          const results = await response.json();
+          dispatch({
+            type: actions.GET_COBENEFITS,
+            payload: results,
+          });
+        }
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
