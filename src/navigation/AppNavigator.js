@@ -20,7 +20,7 @@ const AppNavigator = () => {
           <Route exact path="/">
             <Pages.Home />
           </Route>
-          <Route exact path="/co-benifets">
+          <Route exact path="/co-benefits">
             <Pages.CoBenefits />
           </Route>
           <Route exact path="/locations">
