@@ -15,7 +15,7 @@ const Ratings = () => {
         <div>Project Ratings</div>
         {climateWarehouseStore.ratings && (
           <DataTable
-            headings={['type', 'rating', 'link', 'scale']}
+            headings={Object.keys(climateWarehouseStore.ratings[0])}
             data={climateWarehouseStore.ratings}
           />
         )}

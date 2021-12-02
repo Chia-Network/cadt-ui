@@ -5,13 +5,16 @@ import { IndeterminateProgressOverlay, NavBar } from '../components/';
 import * as Pages from '../pages';
 
 import { AppContainer, AppHeader } from '../components';
+import { Card } from '@mui/material';
 
 const AppNavigator = () => {
   const { showProgressOverlay } = useSelector(store => store.app);
   return (
     <AppContainer>
       <AppHeader />
-      <NavBar />
+      <Card>
+        <NavBar />
+      </Card>
       <Router>
         {showProgressOverlay && <IndeterminateProgressOverlay />}
         <Suspense fallback={<IndeterminateProgressOverlay />}>

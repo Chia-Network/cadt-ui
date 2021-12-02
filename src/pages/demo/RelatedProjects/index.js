@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Card, DataTable } from '../../../components';
 import { getRelatedProjects } from '../../../store/actions/climateWarehouseActions';
 import { useSelector, useDispatch } from 'react-redux';
-import { relatedProjectsResponseStub } from '../../../mocks';
 
 const RelatedProjects = () => {
   const dispatch = useDispatch();
@@ -18,7 +17,7 @@ const RelatedProjects = () => {
         <div>Related Project</div>
         {climateWarehouseStore.relatedProjects && (
           <DataTable
-            headings={Object.keys(relatedProjectsResponseStub[0])}
+            headings={Object.keys(climateWarehouseStore.relatedProjects[0])}
             data={climateWarehouseStore.relatedProjects}
           />
         )}

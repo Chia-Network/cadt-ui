@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Card, DataTable } from '../../../components';
 import { useSelector, useDispatch } from 'react-redux';
-import { vintagesResponseStub } from '../../../mocks';
 import { getVintages } from '../../../store/actions/climateWarehouseActions';
 
 const Vintages = () => {
@@ -16,7 +15,7 @@ const Vintages = () => {
         <div>Vintages</div>
         {climateWarehouseStore.vintages && (
           <DataTable
-            headings={Object.keys(vintagesResponseStub[0])}
+            headings={Object.keys(climateWarehouseStore.vintages[0])}
             data={climateWarehouseStore.vintages}
           />
         )}

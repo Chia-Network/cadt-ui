@@ -17,7 +17,7 @@ const CoBenefits = () => {
         <div>Co-Benefits</div>
         {climateWarehouseStore.coBenefits && (
           <DataTable
-            headings={['Co-Benefit']}
+            headings={Object.keys(climateWarehouseStore.coBenefits[0])}
             data={climateWarehouseStore.coBenefits}
           />
         )}

@@ -16,7 +16,7 @@ const Locations = () => {
         <div>Locations</div>
         {climateWarehouseStore.projectLocations && (
           <DataTable
-            headings={['in_country_region', 'host_country']}
+            headings={Object.keys(climateWarehouseStore.projectLocations[0])}
             data={climateWarehouseStore.projectLocations}
           />
         )}
