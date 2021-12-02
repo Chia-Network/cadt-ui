@@ -7,6 +7,7 @@ import {
   projectRatingResponseStub,
   qualificationsResponseStub,
   relatedProjectsResponseStub,
+  unitsResponseStub,
 } from '../../mocks';
 
 import {
@@ -20,6 +21,7 @@ export const actions = keyMirror(
   'GET_COBENEFITS',
   'GET_QUALIFICATIONS',
   'GET_RELATED_PROJECTS',
+  'GET_UNITS',
 );
 
 const getClimateWarehouseTable = (
@@ -139,6 +141,25 @@ export const getRelatedProjects = options => {
         `${constants.API_HOST}/related-projects`,
         actions.GET_RELATED_PROJECTS,
         mockRelatedProjectsResponse,
+        options,
+      ),
+    );
+  };
+};
+
+export const mockUnitsResponse = {
+  type: actions.GET_UNITS,
+  // Different envs import this differently
+  payload: _.get(unitsResponseStub, 'default', unitsResponseStub),
+};
+
+export const getUnits = options => {
+  return dispatch => {
+    dispatch(
+      getClimateWarehouseTable(
+        `${constants.API_HOST}/units`,
+        actions.GET_UNITS,
+        mockUnitsResponse,
         options,
       ),
     );
