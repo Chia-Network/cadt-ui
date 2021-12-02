@@ -7,6 +7,10 @@ import {
   projectRatingResponseStub,
   qualificationsResponseStub,
   projectLocationsResponseStub,
+  relatedProjectsResponseStub,
+  unitsResponseStub,
+  projectsResponseStub,
+  vintagesResponseStub,
 } from '../../mocks';
 
 import {
@@ -20,6 +24,10 @@ export const actions = keyMirror(
   'GET_COBENEFITS',
   'GET_QUALIFICATIONS',
   'GET_PROJECT_LOCATIONS',
+  'GET_RELATED_PROJECTS',
+  'GET_UNITS',
+  'GET_PROJECTS',
+  'GET_VINTAGES',
 );
 
 const getClimateWarehouseTable = (
@@ -139,6 +147,85 @@ export const getProjectLocations = options => {
         `${constants.API_HOST}/locations`,
         actions.GET_PROJECT_LOCATIONS,
         mockProjectLocationsResponse,
+      ),
+    );
+  };
+};
+
+export const mockRelatedProjectsResponse = {
+  type: actions.GET_RELATED_PROJECTS,
+  // Different envs import this differently
+  payload: _.get(
+    relatedProjectsResponseStub,
+    'default',
+    relatedProjectsResponseStub,
+  ),
+};
+
+export const getRelatedProjects = options => {
+  return dispatch => {
+    dispatch(
+      getClimateWarehouseTable(
+        `${constants.API_HOST}/related-projects`,
+        actions.GET_RELATED_PROJECTS,
+        mockRelatedProjectsResponse,
+        options,
+      ),
+    );
+  };
+};
+
+export const mockUnitsResponse = {
+  type: actions.GET_UNITS,
+  // Different envs import this differently
+  payload: _.get(unitsResponseStub, 'default', unitsResponseStub),
+};
+
+export const getUnits = options => {
+  return dispatch => {
+    dispatch(
+      getClimateWarehouseTable(
+        `${constants.API_HOST}/units`,
+        actions.GET_UNITS,
+        mockUnitsResponse,
+        options,
+      ),
+    );
+  };
+};
+
+export const mockProjectsResponse = {
+  type: actions.GET_PROJECTS,
+  // Different envs import this differently
+  payload: _.get(projectsResponseStub, 'default', projectsResponseStub),
+};
+
+export const getProjects = options => {
+  return dispatch => {
+    dispatch(
+      getClimateWarehouseTable(
+        `${constants.API_HOST}/projects`,
+        actions.GET_PROJECTS,
+        mockProjectsResponse,
+        options,
+      ),
+    );
+  };
+};
+
+export const mockVintagesResponse = {
+  type: actions.GET_VINTAGES,
+  // Different envs import this differently
+  payload: _.get(vintagesResponseStub, 'default', vintagesResponseStub),
+};
+
+export const getVintages = options => {
+  return dispatch => {
+    dispatch(
+      getClimateWarehouseTable(
+        `${constants.API_HOST}/vintages`,
+        actions.GET_VINTAGES,
+        mockVintagesResponse,
         options,
       ),
     );

@@ -12,6 +12,7 @@ const Home = () => {
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
 
   useEffect(() => dispatch(getRatings({ useMockedResponse: true })), []);
+  
 
   const resultsPages = useMemo(() => {
     if (!climateWarehouseStore.ratings) {
