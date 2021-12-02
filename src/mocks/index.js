@@ -4,3 +4,4 @@ export * as coBenefitResponseStub from './co-benefits.json';
 export * as qualificationsResponseStub from './qualifications.json';
 export * as relatedProjectsResponseStub from './related-projects.json';
 export * as unitsResponseStub from './units.json';
+export * as projectsResponseStub from './projects.json';
