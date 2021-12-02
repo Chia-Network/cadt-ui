@@ -43,7 +43,8 @@
     "pack": "build --dir",
     "dist": "npm run build && build",
     "requirements-check": "node check_node_version.js",
-    "postinstall": "npm run requirements-check && install-app-deps"
+    "postinstall": "npm run requirements-check && install-app-deps",
+    "release": "./node_modules/.bin/standard-version && git push --tags"
   },
   "eslintConfig": {
     "extends": [
