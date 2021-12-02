@@ -1,0 +1,22 @@
+[
+    {
+      "state": "New York",
+      "city": "Brooklyn"
+    },
+    {
+      "state": "Michigan",
+      "city": "Detroit"
+    },
+    {
+      "state": "Washington",
+      "city": "Seattle"
+    },
+    {
+      "state": "Florida",
+      "city": "Orlando"
+    },
+    {
+      "state": "California",
+      "rating": "Los Angeles"
+    }
+]
