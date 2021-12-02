@@ -1,15 +1,25 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
-
-import { Card, H3 } from '../../../components';
+import React, { useEffect } from 'react';
+import { Card, DataTable } from '../../../components';
+import { useSelector, useDispatch } from 'react-redux';
+import { vintagesResponseStub } from '../../../mocks';
+import { getVintages } from '../../../store/actions/climateWarehouseActions';
 
 const Vintages = () => {
-  const intl = useIntl();
+  const dispatch = useDispatch();
+  const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+
+  useEffect(() => dispatch(getVintages({ useMockedResponse: true })), []);
 
   return (
     <>
       <Card>
-        <H3>{intl.formatMessage({ id: 'hello-world' })}</H3>
+        <div>Vintages</div>
+        {climateWarehouseStore.vintages && (
+          <DataTable
+            headings={Object.keys(vintagesResponseStub[0])}
+            data={climateWarehouseStore.vintages}
+          />
+        )}
       </Card>
     </>
   );

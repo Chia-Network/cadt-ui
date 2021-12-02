@@ -40,7 +40,7 @@ const AppNavigator = () => {
             <Pages.Vintages />
           </Route>
           <Route exact path="/projects">
-            <Pages.Vintages />
+            <Pages.Projects />
           </Route>
         </Suspense>
       </Router>
