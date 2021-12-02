@@ -8,7 +8,7 @@ const NavBar = withTheme(() => {
         <a href="/">Home</a>
       </li>
       <li>
-        <a href="/co-benifets">Co-Benifets</a>
+        <a href="/co-benefits">Co-Benefits</a>
       </li>
       <li>
         <a href="/locations">Project Locations</a>
