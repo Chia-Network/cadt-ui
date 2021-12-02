@@ -1,15 +1,24 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
+import React, { useEffect } from 'react';
+import { getRatings } from '../../store/actions/climateWarehouseActions';
 
-import { Card, H3 } from '../../../components';
+import { Card, DataTable } from '../../../components';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Ratings = () => {
-  const intl = useIntl();
+  const dispatch = useDispatch();
+  const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+
+  useEffect(() => dispatch(getRatings({ useMockedResponse: true })), []);
 
   return (
     <>
       <Card>
-        <H3>{intl.formatMessage({ id: 'hello-world' })}</H3>
+        {climateWarehouseStore.ratings && (
+          <DataTable
+            headings={['type', 'rating', 'link', 'scale']}
+            data={climateWarehouseStore.ratings}
+          />
+        )}
       </Card>
     </>
   );

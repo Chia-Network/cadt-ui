@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {ThemeProvider} from 'styled-components';
-import {IntlProvider} from 'react-intl';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
+import { IntlProvider } from 'react-intl';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {setLocale, setThemeFromLocalStorage} from './store/actions/app';
-import {loadLocaleData} from './translations';
+import { setLocale, setThemeFromLocalStorage } from './store/actions/app';
+import { loadLocaleData } from './translations';
 
-import {AppNavigator} from './navigation';
+import { AppNavigator } from './navigation';
 import theme from './theme';
 
-import {IndeterminateProgressOverlay} from './components';
+import { IndeterminateProgressOverlay } from './components';
 
 const App = () => {
   const dispatch = useDispatch();
