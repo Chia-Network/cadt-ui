@@ -5,7 +5,8 @@ import { actions as climateWarehouseActions } from '../actions/climateWarehouseA
 const initialState = {
   ratings: null,
   coBenefits: null,
-  qualifications: null
+  qualifications: null,
+  units: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -18,6 +19,9 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_QUALIFICATIONS:
       return u({ qualifications: action.payload }, state);
+
+    case climateWarehouseActions.GET_UNITS:
+      return u({ units: action.payload }, state);
 
     default:
       return state;
