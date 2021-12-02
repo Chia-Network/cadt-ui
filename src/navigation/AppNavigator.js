@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, NavBar } from '../components/';
 import * as Pages from '../pages';
 
-import { AppContainer, AppHeader } from '../components';
-import { Card } from '@mui/material';
+import { AppContainer, AppHeader, Card } from '../components';
 
 const AppNavigator = () => {
   const { showProgressOverlay } = useSelector(store => store.app);
