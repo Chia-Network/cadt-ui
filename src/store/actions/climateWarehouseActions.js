@@ -132,11 +132,11 @@ export const mockRelatedProjectsResponse = {
   ),
 };
 
-export const getQualifications = options => {
+export const getRelatedProjects = options => {
   return dispatch => {
     dispatch(
       getClimateWarehouseTable(
-        `${constants.API_HOST}/qualifications`,
+        `${constants.API_HOST}/related-projects`,
         actions.GET_RELATED_PROJECTS,
         mockRelatedProjectsResponse,
         options,
