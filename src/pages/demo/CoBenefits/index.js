@@ -1,9 +1,9 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Card, H3 } from '../../components';
+import { Card, H3 } from '../../../components';
 
-const Home = () => {
+const CoBenefits = () => {
   const intl = useIntl();
 
   return (
@@ -15,4 +15,4 @@ const Home = () => {
   );
 };
 
-export { Home };
+export { CoBenefits };

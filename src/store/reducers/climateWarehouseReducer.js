@@ -26,7 +26,7 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_PROJECT_LOCATIONS:
       return u({ projectLocations: action.payload }, state);
-      
+
     case climateWarehouseActions.GET_RELATED_PROJECTS:
       return u({ relatedProjects: action.payload }, state);
 

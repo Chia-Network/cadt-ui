@@ -147,6 +147,7 @@ export const getProjectLocations = options => {
         `${constants.API_HOST}/locations`,
         actions.GET_PROJECT_LOCATIONS,
         mockProjectLocationsResponse,
+        options,
       ),
     );
   };
