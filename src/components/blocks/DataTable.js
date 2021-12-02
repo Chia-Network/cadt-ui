@@ -131,7 +131,7 @@ const DataTable = withTheme(({ headings, data }) => {
     return _.chunk(data, constants.MAX_TABLE_SIZE);
   }, [data]);
 
-  if (!paginatedData) {
+  if (!data) {
     return null;
   }
 
