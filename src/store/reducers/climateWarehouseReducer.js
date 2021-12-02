@@ -6,7 +6,7 @@ const initialState = {
   ratings: null,
   coBenefits: null,
   qualifications: null,
-  relatedProjects: null
+  relatedProjects: null,
   units: null,
 };
 
@@ -20,7 +20,7 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_QUALIFICATIONS:
       return u({ qualifications: action.payload }, state);
-    
+
     case climateWarehouseActions.GET_RELATED_PROJECTS:
       return u({ relatedProjects: action.payload }, state);
 

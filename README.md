@@ -1,4 +1,4 @@
-# Carbon Asset Token Retirement Explorer
+# Climate Warehouse Auxillery App
 
 Auxillery App for the Climate Warehouse
 
@@ -46,6 +46,7 @@ The first part of this is the commit "type". The most common types are "feat" fo
 - `refactor` is for changes to code which should not be detectable by users or testers
 - `test` is for changes which only touch test files or related tooling
 - `build` is for changes which only touch our develop/release tools
+- `chore` is for housekeeping tasks such as hydrating from another branch
 
 After the type and scope there should be a colon.
 

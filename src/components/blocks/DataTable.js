@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import _ from 'lodash';
+
+import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import ReactPaginate from 'react-paginate';
@@ -121,12 +123,24 @@ const DataTable = withTheme(({ headings, data }) => {
     setPage(event.selected);
   };
 
-  if (currentPage > data.length) {
+  const paginatedData = useMemo(() => {
+    if (!data) {
+      return undefined;
+    }
+
+    return _.chunk(data, constants.MAX_TABLE_SIZE);
+  }, [data]);
+
+  if (!paginatedData) {
+    return null;
+  }
+
+  if (currentPage > paginatedData.length) {
     setPage(0);
     return null;
   }
 
-  if (!data[currentPage]) {
+  if (!paginatedData[currentPage]) {
     return null;
   }
 
@@ -139,7 +153,7 @@ const DataTable = withTheme(({ headings, data }) => {
           onPageChange={handlePageClick}
           forcePage={currentPage}
           pageRangeDisplayed={5}
-          pageCount={(data && data.length) || 0}
+          pageCount={(paginatedData && paginatedData.length) || 0}
           previousLabel="<"
           renderOnZeroPageCount={null}
           containerClassName="pagination"
@@ -162,7 +176,7 @@ const DataTable = withTheme(({ headings, data }) => {
           </tr>
         </THead>
         <tbody>
-          {data[currentPage].map((record, index) => (
+          {paginatedData[currentPage].map((record, index) => (
             <Tr index={index} selectedTheme={appStore.theme} key={index}>
               {Object.keys(record).map((key, index) => (
                 <Td selectedTheme={appStore.theme} key={index}>
