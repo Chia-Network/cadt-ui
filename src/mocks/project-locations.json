@@ -1,22 +1,27 @@
 [
-    {
-      "state": "New York",
-      "city": "Brooklyn"
-    },
-    {
-      "state": "Michigan",
-      "city": "Detroit"
-    },
-    {
-      "state": "Washington",
-      "city": "Seattle"
-    },
-    {
-      "state": "Florida",
-      "city": "Orlando"
-    },
-    {
-      "state": "California",
-      "rating": "Los Angeles"
-    }
+  {
+    "project_location": "New York",
+    "in_country_region": true,
+    "host_country": "United States"
+  },
+  {
+    "project_location": "Michigan",
+    "in_country_region": true,
+    "host_country": "United States"
+  },
+  {
+    "project_location": "Washington",
+    "in_country_region": false,
+    "host_country": "China"
+  },
+  {
+    "project_location": "Florida",
+    "in_country_region": false,
+    "host_country": "Russia"
+  },
+  {
+    "project_location": "California",
+    "in_country_region": "true",
+    "host_country": "United States"
+  }
 ]
