@@ -17,7 +17,7 @@
     "host_country": "Russia"
   },
   {
-    "in_country_region": "true",
+    "in_country_region": true,
     "host_country": "United States"
   }
 ]

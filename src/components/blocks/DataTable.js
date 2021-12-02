@@ -180,7 +180,7 @@ const DataTable = withTheme(({ headings, data }) => {
             <Tr index={index} selectedTheme={appStore.theme} key={index}>
               {Object.keys(record).map((key, index) => (
                 <Td selectedTheme={appStore.theme} key={index}>
-                  {record[key]}
+                  {record[key].toString()}
                 </Td>
               ))}
             </Tr>
