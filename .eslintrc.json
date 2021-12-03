@@ -12,13 +12,17 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:jest/recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:mocha/recommended"
   ],
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "mocha/no-mocha-arrows": false
   },
-  "plugins": ["react"],
+  "plugins": [
+    "react",
+    "mocha"
+  ],
   "settings": {
     "react": {
       "version": "detect"
