@@ -9,8 +9,8 @@ import {
   Subtitle,
   MenuText,
   ButtonText,
-  TableCellHeaderText,
-  TableCellText,
+  TableCellLinkText,
+  DataTable,
 } from '../../components';
 
 const Home = () => {
@@ -24,8 +24,23 @@ const Home = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
-        <TableCellHeaderText>This is a Table Cell Header</TableCellHeaderText>
-        <TableCellText>This is Table Cell Text</TableCellText>
+        <DataTable
+          headings={['Column 1', 'Column 2', 'Column 3']}
+          data={[
+            {
+              column1: 'TEST_VALUE',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+          ]}
+          actions={
+            <>
+              <TableCellLinkText href="#">Example Action</TableCellLinkText>
+              {'  '}
+              <TableCellLinkText href="#">Example Action 2</TableCellLinkText>
+            </>
+          }
+        />
       </Card>
     </>
   );

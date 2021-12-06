@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import ReactPaginate from 'react-paginate';
+import { TableCellHeaderText, TableCellText } from '../typography';
 
 import constants from '../../constants';
 
@@ -23,13 +24,9 @@ const THead = styled('thead')`
 
 const Th = styled('th')`
   padding: 1rem;
-  font-size: 0.875rem;
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
   display: table-cell;
   text-align: left;
-  font-family: ${props => props.theme.typography.primary.regular};
-  font-weight: 400;
-  line-height: 1.43;
   border-bottom: ${props =>
     props.selectedTheme === constants.THEME.DARK
       ? '1px solid rgba(81, 81, 81, 1)'
@@ -67,11 +64,7 @@ const Tr = styled('tr')`
 const Td = styled('td')`
   display: table-cell;
   padding: 1rem;
-  font-size: 0.875rem;
   text-align: left;
-  font-family: ${props => props.theme.typography.primary.regular};
-  font-weight: 400;
-  line-height: 1.43;
   border-bottom: 1px solid
     ${props =>
       props.selectedTheme === constants.THEME.DARK
@@ -115,7 +108,7 @@ const StyledPaginateContainer = styled.div`
   }
 `;
 
-const DataTable = withTheme(({ headings, data }) => {
+const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
   const appStore = useSelector(state => state.app);
 
@@ -167,12 +160,21 @@ const DataTable = withTheme(({ headings, data }) => {
             {headings.map((heading, index) => (
               <Th
                 start={index === 0}
-                end={index === headings.length - 1}
+                end={!actions && index === headings.length - 1}
                 selectedTheme={appStore.theme}
                 key={index}>
-                {heading}
+                <TableCellHeaderText>{heading}</TableCellHeaderText>
               </Th>
             ))}
+            {actions && (
+              <Th
+                start={false}
+                end={true}
+                selectedTheme={appStore.theme}
+                key={'action'}>
+                <TableCellHeaderText>Action</TableCellHeaderText>
+              </Th>
+            )}
           </tr>
         </THead>
         <tbody>
@@ -180,9 +182,10 @@ const DataTable = withTheme(({ headings, data }) => {
             <Tr index={index} selectedTheme={appStore.theme} key={index}>
               {Object.keys(record).map((key, index) => (
                 <Td selectedTheme={appStore.theme} key={index}>
-                  {record[key].toString()}
+                  <TableCellText>{record[key].toString()}</TableCellText>
                 </Td>
               ))}
+              {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}
             </Tr>
           ))}
         </tbody>
