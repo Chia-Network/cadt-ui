@@ -7,8 +7,8 @@ const Text = withTheme(styled('h2')`
   font-size: 2rem;
   font-family: ${props => props.theme.typography.primary};
   font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: -1px;
+  line-height: 3rem;
+  letter-spacing: -0.0625rem;
 `);
 
 const H2 = withTheme(({ children, color }) => {
