@@ -11,6 +11,8 @@ import {
   ButtonText,
   TableCellLinkText,
   DataTable,
+  PrimaryButton,
+  LightThemeIcon,
 } from '../../components';
 
 const Home = () => {
@@ -41,6 +43,74 @@ const Home = () => {
             </>
           }
         />
+        <div
+          style={{
+            display: 'flex',
+            height: '100px',
+            justifyContent: 'flex-start',
+            width: '80%',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+          }}>
+          <PrimaryButton label="Button" size="large" />
+          <PrimaryButton label="Button" size="default" />
+          <PrimaryButton label="Button" size="small" />
+          <PrimaryButton label="Button" size="large" danger={true} />
+          <PrimaryButton label="Button" size="default" danger={true} />
+          <PrimaryButton label="Button" size="small" danger={true} />
+          <PrimaryButton
+            label="Button"
+            size="large"
+            icon={<LightThemeIcon color="white" />}
+          />
+          <PrimaryButton
+            label="Button"
+            size="default"
+            icon={<LightThemeIcon color="white" />}
+          />
+          <PrimaryButton
+            label="Button"
+            size="small"
+            icon={<LightThemeIcon color="white" height={15} />}
+          />
+          <PrimaryButton
+            label="Button"
+            size="large"
+            danger={true}
+            loading={true}
+          />
+          <PrimaryButton
+            label="Button"
+            size="default"
+            danger={true}
+            loading={true}
+          />
+          <PrimaryButton
+            label="Button"
+            size="small"
+            danger={true}
+            loading={true}
+          />
+
+          <PrimaryButton
+            label="Button"
+            size="large"
+            danger={true}
+            disabled={true}
+          />
+          <PrimaryButton
+            label="Button"
+            size="default"
+            danger={true}
+            disabled={true}
+          />
+          <PrimaryButton
+            label="Button"
+            size="small"
+            danger={true}
+            disabled={true}
+          />
+        </div>
       </Card>
     </>
   );
