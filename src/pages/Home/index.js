@@ -1,16 +1,15 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 
-import { Card, H3, H2, H4 } from '../../components';
+import { Card, H3, H2, H4, H1 } from '../../components';
 
 const Home = () => {
-  const intl = useIntl();
 
   return (
     <>
       <Card>
-        <H3>{intl.formatMessage({ id: 'hello-world' })}</H3>
+        <H1>This is an H1</H1>
         <H2>This is an H2</H2>
+        <H3>This is an H3</H3>
         <H4>This is an H4</H4>
       </Card>
     </>
