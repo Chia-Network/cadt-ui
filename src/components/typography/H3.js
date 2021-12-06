@@ -4,11 +4,12 @@ import styled, { withTheme } from 'styled-components';
 
 const Text = withTheme(styled('h1')`
   color: ${props =>
-    props.color || props.theme.colors[props.selectedTheme].onSurface};
-  font-size: 1rem;
+    props.color || '#000000'};
+  font-size: 1.5rem;
   font-family: ${props => props.theme.typography.primary};
-  font-weight: 400;
-  line-height: 1.5;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
   letter-spacing: 0.00938em;
 `);
 

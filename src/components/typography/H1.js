@@ -6,10 +6,10 @@ const Text = withTheme(styled('h1')`
   color: ${props =>
     props.color || '#000000'};
   font-size: 3.375rem;
-  font-family:${props => 'Nunito Sans' || props.theme.typography.primary};
+  font-family:${props => props.theme.typography.primary};
   font-style: normal;
   font-weight: 800;
-  line-height: ${'150%' || '5.0625rem'};
+  line-height: '150%';
   letter-spacing: -0.0625rem;
 `);
 
