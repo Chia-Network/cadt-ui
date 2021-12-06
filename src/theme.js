@@ -86,7 +86,7 @@ const colors = {
 };
 
 const typography = {
-  primary: 'Nunito',
+  primary: 'NunitoSans',
 };
 
 const theme = {
