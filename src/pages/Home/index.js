@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Card, H3, H2, H4, H1, Subtitle } from '../../components';
+import { Card, H3, H2, H4, H1, Subtitle, MenuText } from '../../components';
 
 const Home = () => {
   return (
@@ -11,6 +11,7 @@ const Home = () => {
         <H3>This is an header H3</H3>
         <H4>This is an header H4</H4>
         <Subtitle>This is a Subtitle</Subtitle>
+        <MenuText>This is Menu Text</MenuText>
       </Card>
     </>
   );
