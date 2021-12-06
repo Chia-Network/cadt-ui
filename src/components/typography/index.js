@@ -4,4 +4,5 @@ export * from './H3';
 export * from './H4';
 export * from './Subtitle';
 export * from './MenuText'
+export * from './TableCellHeaderText'
 export * from './GlobalFontProvider';
