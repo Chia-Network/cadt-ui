@@ -5,3 +5,4 @@ export * from './H4';
 export * from './Subtitle';
 export * from './MenuText'
 export * from './GlobalFontProvider';
+export * from './ButtonText';
