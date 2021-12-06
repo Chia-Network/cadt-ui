@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 
-const Text = withTheme(styled('h1')`
+const Text = withTheme(styled('p')`
   color: ${props =>
     props.color || '#000000'};
   font-size: 1.5rem;
