@@ -1,18 +1,17 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
-import styled, {withTheme} from 'styled-components';
+import { useSelector } from 'react-redux';
+import styled, { withTheme } from 'styled-components';
 
-const Text = withTheme(styled('h1')`
-  color: ${props =>
-    props.color || props.theme.colors[props.selectedTheme].onSurface};
-  font-size: 1.25rem;
+const Text = withTheme(styled('h2')`
+  color: ${props => props.color || '#000000'};
+  font-size: 2rem;
   font-family: ${props => props.theme.typography.primary};
   font-weight: 400;
-  line-height: 1.334;
-  letter-spacing: 0em;
+  line-height: 1.5;
+  letter-spacing: -1px;
 `);
 
-const H2 = withTheme(({children, color}) => {
+const H2 = withTheme(({ children, color }) => {
   const appStore = useSelector(state => state.app);
   return (
     <Text color={color} selectedTheme={appStore.theme}>
@@ -21,4 +20,4 @@ const H2 = withTheme(({children, color}) => {
   );
 });
 
-export {H2};
+export { H2 };
