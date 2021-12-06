@@ -5,7 +5,7 @@ import styled, { withTheme } from 'styled-components';
 const Text = withTheme(styled('h1')`
   color: ${props => props.color || '#000000'};
   font-size: 3.375rem;
-  font-family: ${props => props.theme.typography.primary};
+  font-family: ${props => props.theme.typography.primary.extraBold};
   font-style: normal;
   font-weight: 800;
   line-height: 150%;

@@ -27,7 +27,7 @@ const Th = styled('th')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
   display: table-cell;
   text-align: left;
-  font-family: ${props => props.theme.typography.primary};
+  font-family: ${props => props.theme.typography.primary.regular};
   font-weight: 400;
   line-height: 1.43;
   border-bottom: ${props =>
@@ -69,7 +69,7 @@ const Td = styled('td')`
   padding: 1rem;
   font-size: 0.875rem;
   text-align: left;
-  font-family: ${props => props.theme.typography.primary};
+  font-family: ${props => props.theme.typography.primary.regular};
   font-weight: 400;
   line-height: 1.43;
   border-bottom: 1px solid

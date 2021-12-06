@@ -3,14 +3,13 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 
 const Text = withTheme(styled('p')`
-  color: ${props =>
-    props.color || '#000000'};
+  color: ${props => props.color || '#000000'};
   font-size: 1.5rem;
-  font-family: ${props => props.theme.typography.primary};
+  font-family: ${props => props.theme.typography.primary.light};
   font-style: normal;
   font-weight: 300;
   line-height: 150%;
-  letter-spacing: -0.439024px;
+  letter-spacing: -0.0274rem;
 `);
 
 const Subtitle = withTheme(({ children, color }) => {
