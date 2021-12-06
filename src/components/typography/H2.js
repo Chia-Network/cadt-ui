@@ -6,7 +6,7 @@ const Text = withTheme(styled('h2')`
   color: ${props => props.color || '#000000'};
   font-size: 2rem;
   font-family: ${props => props.theme.typography.primary};
-  font-weight: 400;
+  font-weight: bold;
   line-height: 3rem;
   letter-spacing: -0.0625rem;
 `);
