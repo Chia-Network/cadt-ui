@@ -9,7 +9,8 @@ import {
   Subtitle,
   MenuText,
   ButtonText,
-  TableCellHeaderText
+  TableCellHeaderText,
+  TableCellText,
 } from '../../components';
 
 const Home = () => {
@@ -24,6 +25,7 @@ const Home = () => {
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
         <TableCellHeaderText>This is a Table Cell Header</TableCellHeaderText>
+        <TableCellText>This is Table Cell Text</TableCellText>
       </Card>
     </>
   );
