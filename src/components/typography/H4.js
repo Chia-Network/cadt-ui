@@ -8,6 +8,7 @@ const Text = withTheme(styled('h4')`
   font-family: ${props => props.theme.typography.primary};
   font-weight: 600;
   line-height: 1.9688rem;
+  font-style: normal;
   letter-spacing: -0.0275rem;
 `);
 
