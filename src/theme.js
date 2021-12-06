@@ -26,17 +26,13 @@ const headings = {
 const colors = {
   light: {
     // The color displayed most frequently across the app screens
-    primary: 'NOT USED',
-    primaryVarient: 'NOT USED',
+    primary: '#3B8EE0',
     // Secondary color provides more ways to accent and distinguish the app
-    secondary: 'NOT USED',
-    secondaryVarient: 'NOT USED',
+    secondary: '#F2F2F2',
     // appears behind scrollable content
     background: '#fafafa',
     // affect surfaces of componennts such as cards sheets and menus
     surface: '#ffffff',
-    surfaceShadow:
-      '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);',
     //"On" colors
     // App surfaces use colors from specific categories in your color palette,
     // such as a primary color. Whenever elements, such as text or icons, appear in
@@ -90,12 +86,7 @@ const colors = {
 };
 
 const typography = {
-  primary: "'Roboto', 'Helvetica', 'Arial', 'sans-serif'",
-  primaryVariant: 'Arial',
-  secondary: 'Arial',
-  secondaryVarient: 'Arial',
-  tertiary: 'Arial',
-  tertiaryVarient: 'Arial',
+  primary: 'Nunito',
 };
 
 const theme = {
