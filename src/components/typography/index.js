@@ -6,3 +6,4 @@ export * from './Subtitle';
 export * from './MenuText'
 export * from './TableCellHeaderText'
 export * from './GlobalFontProvider';
+export * from './TableCellText';
