@@ -3,16 +3,16 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 
 const Text = withTheme(styled('h1')`
-  color: ${props => props.color || '#000000'};
-  font-size: 3.375rem;
-  font-family: ${props => props.theme.typography.primary.extraBold};
+  color: ${props =>
+    props.color || '#000000'};
+  font-size: 0.875rem;
+  font-family: ${props => props.theme.typography.primary.semiBold};
   font-style: normal;
-  font-weight: 800;
-  line-height: 150%;
-  letter-spacing: -0.0625rem;
+  font-weight: 600;
+  line-height: 1.375rem;
 `);
 
-const H1 = withTheme(({ children, color }) => {
+const TableCellHeaderText = withTheme(({ children, color }) => {
   const appStore = useSelector(state => state.app);
   return (
     <Text color={color} selectedTheme={appStore.theme}>
@@ -21,4 +21,4 @@ const H1 = withTheme(({ children, color }) => {
   );
 });
 
-export { H1 };
+export { TableCellHeaderText };

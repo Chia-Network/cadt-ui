@@ -86,7 +86,13 @@ const colors = {
 };
 
 const typography = {
-  primary: 'NunitoSans',
+  primary: {
+    regular: 'NunitoSans',
+    semiBold: 'NunitoSansSemiBold',
+    bold: 'NunitoSansBold',
+    extraBold: 'NunitoSansExtraBold',
+    light: 'NunitoSansLight',
+  },
 };
 
 const theme = {
