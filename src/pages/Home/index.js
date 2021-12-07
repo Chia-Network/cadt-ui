@@ -15,12 +15,19 @@ import {
   LightThemeIcon,
   ToolTip,
   ToolTipPlacement,
+  Popover,
+  PopoverPlacement
 } from '../../components';
 
 const Home = () => {
   const tooltipContent =
     'Distinctively monetize cost effective networks for cross-media bandwidth';
+  
+  const popoverContent =
+    'Conveniently initiate viral synergy without multi functional platforms. ';
 
+  const popoverTitle = 'Popover title';
+  
   return (
     <>
       <Card>
@@ -77,6 +84,53 @@ const Home = () => {
             placement={ToolTipPlacement.RightBottom}>
             <span>Right-Bottom</span>
           </ToolTip>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Top}>
+            <span>Tooltip Top</span>
+          </Popover>
+          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Bottom}>
+            <span>Bottom</span>
+          </Popover>
+          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Left}>
+            <span>Left</span>
+          </Popover>
+          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Right}>
+            <span>Right</span>
+          </Popover>
+          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.TopLeft}>
+            <span>Top-Left</span>
+          </Popover>
+          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.TopRight}>
+            <span>Top-Right</span>
+          </Popover>
+          <Popover title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.BottomLeft}>
+            <span>Bottom-Left</span>
+          </Popover>
+          <Popover title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.BottomRight}>
+            <span>Bottom-Right</span>
+          </Popover>
+          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.LeftTop}>
+            <span>Left-Top</span>
+          </Popover>
+          <Popover title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.LeftBottom}>
+            <span>Left-Bottom</span>
+          </Popover>
+          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.RightTop}>
+            <span>Right-Top</span>
+          </Popover>
+          <Popover title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.RightBottom}>
+            <span>Right-Bottom</span>
+          </Popover>
         </div>
 
         <DataTable
