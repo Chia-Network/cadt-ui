@@ -13,9 +13,14 @@ import {
   DataTable,
   PrimaryButton,
   LightThemeIcon,
+  ToolTip,
+  ToolTipPlacement,
 } from '../../components';
 
 const Home = () => {
+  const tooltipContent =
+    'Distinctively monetize cost effective networks for cross-media bandwidth';
+
   return (
     <>
       <Card>
@@ -26,6 +31,54 @@ const Home = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
+
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <ToolTip body={tooltipContent} placement={ToolTipPlacement.Top}>
+            <span>Tooltip Top</span>
+          </ToolTip>
+          <ToolTip body={tooltipContent} placement={ToolTipPlacement.Bottom}>
+            <span>Bottom</span>
+          </ToolTip>
+          <ToolTip body={tooltipContent} placement={ToolTipPlacement.Left}>
+            <span>Left</span>
+          </ToolTip>
+          <ToolTip body={tooltipContent} placement={ToolTipPlacement.Right}>
+            <span>Right</span>
+          </ToolTip>
+          <ToolTip body={tooltipContent} placement={ToolTipPlacement.TopLeft}>
+            <span>Top-Left</span>
+          </ToolTip>
+          <ToolTip body={tooltipContent} placement={ToolTipPlacement.TopRight}>
+            <span>Top-Right</span>
+          </ToolTip>
+          <ToolTip
+            body={tooltipContent}
+            placement={ToolTipPlacement.BottomLeft}>
+            <span>Bottom-Left</span>
+          </ToolTip>
+          <ToolTip
+            body={tooltipContent}
+            placement={ToolTipPlacement.BottomRight}>
+            <span>Bottom-Right</span>
+          </ToolTip>
+          <ToolTip body={tooltipContent} placement={ToolTipPlacement.LeftTop}>
+            <span>Left-Top</span>
+          </ToolTip>
+          <ToolTip
+            body={tooltipContent}
+            placement={ToolTipPlacement.LeftBottom}>
+            <span>Left-Bottom</span>
+          </ToolTip>
+          <ToolTip body={tooltipContent} placement={ToolTipPlacement.RightTop}>
+            <span>Right-Top</span>
+          </ToolTip>
+          <ToolTip
+            body={tooltipContent}
+            placement={ToolTipPlacement.RightBottom}>
+            <span>Right-Bottom</span>
+          </ToolTip>
+        </div>
+
         <DataTable
           headings={['Column 1', 'Column 2', 'Column 3']}
           data={[
