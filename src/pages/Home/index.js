@@ -34,6 +34,16 @@ const Home = () => {
               column2: 'TEST_VALUE',
               column3: 'TEST_VALUE',
             },
+            {
+              column1: 'TEST_VALUE',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
           ]}
           actions={
             <>

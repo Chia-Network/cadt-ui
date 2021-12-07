@@ -9,17 +9,17 @@ import { TableCellHeaderText, TableCellText } from '../typography';
 import constants from '../../constants';
 
 const Table = styled('table')`
+  background-color: white;
   width: 100%;
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
-  box-shadow: ${props => props.theme.colors[props.selectedTheme].surfaceShadow};
 `;
 
 const THead = styled('thead')`
   font-weight: 500;
   background-color: ${props =>
-    props.theme.colors[props.selectedTheme].onSurfaceSecondaryVarient};
+    props.theme.colors[props.selectedTheme].secondary};
 `;
 
 const Th = styled('th')`
@@ -27,10 +27,7 @@ const Th = styled('th')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
   display: table-cell;
   text-align: left;
-  border-bottom: ${props =>
-    props.selectedTheme === constants.THEME.DARK
-      ? '1px solid rgba(81, 81, 81, 1)'
-      : '1px solid rgba(224, 224, 224, 1)'};
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
 
   letter-spacing: 0.01071em;
   vertical-align: inherit;
@@ -50,14 +47,16 @@ const Th = styled('th')`
 
 const Tr = styled('tr')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-  background-color: ${props => props.theme.colors[props.selectedTheme].surface};
+  background-color: ${props =>
+    props.theme.hexToRgba(
+      props.theme.colors[props.selectedTheme].secondary,
+      0.3,
+    )};
 
   ${props =>
     props.index % 2 !== 0 &&
     `
-  background-color: ${
-    props.theme.colors[props.selectedTheme].onSurfacePrimaryVarient
-  };
+  background-color: white;
   `}
 `;
 
@@ -65,11 +64,7 @@ const Td = styled('td')`
   display: table-cell;
   padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid
-    ${props =>
-      props.selectedTheme === constants.THEME.DARK
-        ? 'rgba(81, 81, 81, 1)'
-        : 'rgba(224, 224, 224, 1)'};
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
   letter-spacing: 0.01071em;
   vertical-align: inherit;
 `;
