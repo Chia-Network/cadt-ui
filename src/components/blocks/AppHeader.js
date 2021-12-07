@@ -1,17 +1,10 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
 import constants from '../../constants';
-import { toggleTheme } from '../../store/actions/app';
-import {
-  H1,
-  ChiaLogo,
-  LightThemeIcon,
-  DarkThemeIcon,
-  LocaleSwitcher,
-} from '../../components';
+import { H1, ChiaLogo, LocaleSwitcher } from '../../components';
 
 const AppHeaderContainer = styled('header')`
   width: 100%;
@@ -31,22 +24,13 @@ const LogoContainer = styled('div')`
   align-items: center;
 `;
 
-const ThemeSwitchContainer = styled('div')`
-  padding: 0 3.125rem;
-`;
-
 const AppOptionsContainer = styled('div')`
   display: flex;
   align-items: center;
 `;
 
 const AppHeader = withTheme(() => {
-  const dispatch = useDispatch();
   const appStore = useSelector(state => state.app);
-
-  const handleThemeSwitch = () => {
-    dispatch(toggleTheme);
-  };
 
   return (
     <AppHeaderContainer selectedTheme={appStore.theme}>
@@ -58,13 +42,6 @@ const AppHeader = withTheme(() => {
       </H1>
       <AppOptionsContainer>
         <LocaleSwitcher />
-        <ThemeSwitchContainer onClick={handleThemeSwitch}>
-          {appStore.theme === constants.THEME.DARK ? (
-            <LightThemeIcon cursor="pointer" />
-          ) : (
-            <DarkThemeIcon cursor="pointer" />
-          )}
-        </ThemeSwitchContainer>
       </AppOptionsContainer>
     </AppHeaderContainer>
   );

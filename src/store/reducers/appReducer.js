@@ -6,7 +6,7 @@ import constants from '../../constants';
 const initialState = {
   placeholderValue: 'THIS STRING WAS LOADED FROM THE STORE!',
   showProgressOverlay: false,
-  theme: constants.THEME.LIGHT,
+  theme: constants.THEME.DEFAULT,
   errorMessage: null,
   locale: null,
 };
