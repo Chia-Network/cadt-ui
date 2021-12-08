@@ -14,6 +14,7 @@ import {
 
 const AlertCard = withTheme(styled('div')`
   position: relative;
+  ${props => !props.alertBody && 'display: flex;justify-content: center;'}
   width: 24rem;
   margin: 5px;
   ${props => props.alertBody && `height: 6.375rem;`}
@@ -118,9 +119,9 @@ const AlertBody = withTheme(styled('div')`
 
 const ShowIcons = withTheme(styled('div')`
   position: absolute;
-  left: 1.0625rem;
-  bottom: 0.75rem;
-  top: 0.875rem;
+  ${props => !props.alertBody && 'left: 1.0625rem;bottom: 0.75rem'}
+  ${props =>
+    props.alertBody && 'left: 1.0625rem;bottom: 0.75rem;top: 0.875rem;'}
 `);
 
 const Alert = withTheme(
@@ -129,45 +130,45 @@ const Alert = withTheme(
       <>
         <AlertCard type={type} banner={banner} alertBody={alertBody}>
           {showIcon && !alertBody && type === 'info' && (
-            <ShowIcons showIcon={showIcon} type={type}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <InfoIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'info' && (
-            <ShowIcons alertBody={alertBody}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <InfoIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'success' && (
-            <ShowIcons showIcon={showIcon} type={type}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <SuccessIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'success' && (
-            <ShowIcons alertBody={alertBody}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <SuccessIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'error' && (
-            <ShowIcons showIcon={showIcon} type={type}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <ErrorIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'error' && (
-            <ShowIcons alertBody={alertBody}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <ErrorIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'warning' && (
-            <ShowIcons showIcon={showIcon} type={type}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <WarningIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'warning' && (
-            <ShowIcons alertBody={alertBody}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <WarningIcon height="21" width="21" />
             </ShowIcons>
           )}
@@ -176,7 +177,10 @@ const Alert = withTheme(
             {alertTitle}
           </AlertTitle>
           {closeable && !closeText && (
-            <CloseButton closeable={closeable} closeText={closeText} alertBody={alertBody}>
+            <CloseButton
+              closeable={closeable}
+              closeText={closeText}
+              alertBody={alertBody}>
               <CloseIcon height="8.91" width="8.66" />
             </CloseButton>
           )}
