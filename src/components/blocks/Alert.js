@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import {
   SuccessIcon,
@@ -11,6 +11,7 @@ import {
   WarningIcon,
   WarningIconSmall,
 } from '..';
+
 
 const AlertCard = withTheme(styled('div')`
   display: flex;
@@ -49,6 +50,9 @@ const AlertCard = withTheme(styled('div')`
     (props.type === 'error' &&
       props.banner &&
       `background-color: ${props.theme.colors.default.status.error.secondary};`)}
+
+
+
 `);
 
 const CloseTextButton = withTheme(styled('button')`
@@ -57,7 +61,7 @@ const CloseTextButton = withTheme(styled('button')`
   background-color: unset;
   border: none;
   color: #8C8C8C;
-
+  cursor: pointer;
   ${props =>
     props.alertBody
       ? 'margin-right: 1rem; margin-top: 1rem;'
@@ -65,35 +69,36 @@ const CloseTextButton = withTheme(styled('button')`
 `);
 
 const CloseButton = withTheme(styled('div')`
+cursor: pointer;
   ${props =>
     props.alertBody
       ? 'margin-right: 1.1675rem; margin-top: 1rem;'
-      : 'margin-right: 1.1675rem; align-self: center'}
+      : 'margin-right: 1.1675rem; align-self: center'} 
 `);
 
 const AlertTitle = withTheme(styled('div')`
 font-size: 1rem;
   font-family: ${props => props.theme.typography.primary.regular};
-  height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')}
+  height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')};
   line-height: 1.5rem;
   font-weight: 400;
   margin-bottom: 0.25rem;
 
-  ${props => !props.showIcon && !props.alertBody && 'margin-top: 0.5625rem;'}
+  ${props => !props.showIcon && !props.alertBody && 'margin-top: 0.5625rem;'};
       ${props =>
         props.showIcon &&
         !props.alertBody &&
-        'margin-left: 1rem;margin-top: 0.5625rem;'}
+        'margin-left: 1rem;margin-top: 0.5625rem;'};
 
   ${props =>
     props.showIcon && props.alertBody
       ? 'margin-left: 1.0938rem;margin-top: 1rem;'
-      : 'margin-left: 1rem;'}
+      : 'margin-left: 1rem;'};
 
       ${props =>
         !props.showIcon &&
         props.alertBody &&
-        'margin-left: 1rem;margin-top: 1rem;'}
+        'margin-left: 1rem;margin-top: 1rem;'};
 
 
 `);
@@ -114,11 +119,19 @@ const ShowIcons = withTheme(styled('div')`
       : 'margin-left: 1.0625rem; margin-top: 0.75rem;'}
 `);
 
+
+
 const Alert = withTheme(
-  ({ type, banner, alertTitle, alertBody, showIcon, closeable, closeText }) => {
+  ({ type, banner = false, alertTitle, alertBody, showIcon = false, closeable = false, closeText}) => {
+    const [ isClosed, setIsClosed ] = useState(false)
+
+  
+
+    if (isClosed) return null
     return (
       <>
-        <AlertCard type={type} banner={banner} alertBody={alertBody}>
+    
+        <AlertCard type={type} banner={banner}  alertBody={alertBody}>
           {showIcon && !alertBody && type === 'info' && (
             <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <InfoIconSmall height="14" width="14" />
@@ -182,7 +195,9 @@ const Alert = withTheme(
             <CloseTextButton
               closeText={closeText}
               closeable={closeable}
-              alertBody={alertBody}>
+              alertBody={alertBody}
+              onClick={() => setIsClosed(true)}
+              >
               {closeText}
             </CloseTextButton>
           )}
@@ -190,14 +205,18 @@ const Alert = withTheme(
             <CloseButton
               closeable={closeable}
               closeText={closeText}
-              alertBody={alertBody}>
+              alertBody={alertBody}
+              onClick={() => setIsClosed(true)}
+              >
               <CloseIcon height="8.91" width="8.66" />
             </CloseButton>
           )}
-        </AlertCard>
+        </AlertCard> 
       </>
     );
   },
 );
+
+
 
 export { Alert };
