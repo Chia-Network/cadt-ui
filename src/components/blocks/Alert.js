@@ -13,114 +13,105 @@ import {
 } from '..';
 
 const AlertCard = withTheme(styled('div')`
-  position: relative;
-  width: 24rem;
-  margin: 5px;
-  ${props => props.alertBody && `height: 6.375rem;`}
-  ${props => !props.alertBody && `height: 2.5rem;`}
+  display: flex;
+  justify-content: space-between;
+  border: none;
+  margin: 1.25rem;
   ${props =>
-    props.type === 'info' &&
-    `background-color: ${props.theme.colors.default.status.info.secondary};`}
+    props.alertBody
+      ? 'height: 6.375rem;  width: 24rem;'
+      : 'height: 2.5rem;  width: 24rem;'}
+
   ${props =>
-    props.banner === false &&
-    props.type === 'info' &&
-    `border:0.0625rem solid ${props.theme.colors.default.status.info.primary};`}
-            
-    ${props =>
-    props.type === 'error' &&
-    `background-color: ${props.theme.colors.default.status.error.secondary};`}
-    ${props =>
-    props.banner === false &&
-    props.type === 'error' &&
-    `border:0.0625rem solid ${props.theme.colors.default.status.error.primary};`}
+    (props.type === 'info' &&
+      !props.banner &&
+      `background-color: ${props.theme.colors.default.status.info.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.info.primary} `) ||
+    (props.type === 'success' &&
+      !props.banner &&
+      `background-color: ${props.theme.colors.default.status.ok.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.ok.primary}`) ||
+    (props.type === 'warning' &&
+      !props.banner &&
+      `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.warning.primary}`) ||
+    (props.type === 'error' &&
+      !props.banner &&
+      `background-color: ${props.theme.colors.default.status.error.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.error.primary} `)}
 
-    ${props =>
-    props.type === 'warning' &&
-    `background-color: ${props.theme.colors.default.status.warning.secondary};`}
-    ${props =>
-    props.banner === false &&
-    props.type === 'warning' &&
-    `border:0.0625rem solid ${props.theme.colors.default.status.warning.primary};`}
-
-    ${props =>
-    props.type === 'success' &&
-    `background-color: ${props.theme.colors.default.status.ok.secondary};`}
-    ${props =>
-    props.banner === false &&
-    props.type === 'success' &&
-    `border:0.0625rem solid ${props.theme.colors.default.status.ok.primary};`}
+      ${props =>
+    (props.type === 'info' &&
+      props.banner &&
+      `background-color: ${props.theme.colors.default.status.info.secondary};`) ||
+    (props.type === 'success' &&
+      props.banner &&
+      `background-color: ${props.theme.colors.default.status.ok.secondary};`) ||
+    (props.type === 'warning' &&
+      props.banner &&
+      `background-color: ${props.theme.colors.default.status.warning.secondary};`) ||
+    (props.type === 'error' &&
+      props.banner &&
+      `background-color: ${props.theme.colors.default.status.error.secondary};`)}
 `);
 
 const CloseTextButton = withTheme(styled('button')`
-  position: absolute;
+  width: 6.25rem;
+  height: 1.125rem;
   background-color: unset;
   border: none;
-  color: grey;
+  color: #8C8C8C;
+
   ${props =>
-    !props.alertBody
-      ? `top: 0.5625rem; right: 1rem; bottom: 0.8125rem`
-      : `top: 1rem; right: 1rem; bottom: 4.25rem`}
+    props.alertBody
+      ? 'margin-right: 1rem; margin-top: 1rem;'
+      : 'margin-right: 1rem; margin-top: 0.5625rem;'}
 `);
 
 const CloseButton = withTheme(styled('div')`
-  position: absolute;
-  height: 0.8125rem;
   ${props =>
-    !props.alertBody
-      ? `bottom: 0.9712rem; right: 1.1675rem;`
-      : `bottom: 4.6588rem; right: 1.1675rem;`}
+    props.alertBody
+      ? 'margin-right: 1.1675rem; margin-top: 1rem;'
+      : 'margin-right: 1.1675rem; align-self: center'}
 `);
 
 const AlertTitle = withTheme(styled('div')`
-  position: absolute;
+font-size: 1rem;
   font-family: ${props => props.theme.typography.primary.regular};
   height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')}
   line-height: 1.5rem;
   font-weight: 400;
+  margin-bottom: 0.25rem;
+
+  ${props => !props.showIcon && !props.alertBody && 'margin-top: 0.5625rem;'}
+      ${props =>
+        props.showIcon &&
+        !props.alertBody &&
+        'margin-left: 1rem;margin-top: 0.5625rem;'}
 
   ${props =>
-    props.showIcon &&
-    !props.alertBody &&
-    `top: 0.5625rem; left:2.625rem; right: 1rem; bottom: 0.5625rem; width: 20.375rem; font-size: 0.875rem;`}
-
-    ${props =>
-      !props.showIcon &&
-      !props.alertBody &&
-      `top: 0.5625rem; left:1rem; right: 2.25rem; bottom: 0.625rem; font-size: 0.875rem;`}
+    props.showIcon && props.alertBody
+      ? 'margin-left: 1.0938rem;margin-top: 1rem;'
+      : 'margin-left: 1rem;'}
 
       ${props =>
         !props.showIcon &&
         props.alertBody &&
-        `top: 1rem; left:1rem; right: 2.125rem; bottom: 3.875rem; width: 19.5rem;font-size: 1rem;`}
-      
+        'margin-left: 1rem;margin-top: 1rem;'}
 
-${props =>
-  props.showIcon &&
-  props.alertBody &&
-  `top: 1rem; left:3.5rem; right: 4.8125rem; bottom: 3.875rem; width: 19.5rem;font-size: 1rem;`}
+
 `);
 
 const AlertBody = withTheme(styled('div')`
-  position: absolute;
-  top: 2.75rem;
-  right: 1rem;
-  bottom: 1rem;
   font-family: ${props => props.theme.typography.primary.light};
-  font-weight: 400;
+  font-weight: normal;
   font-size: 0.875rem;
   line-height: 1.3125rem;
-  height: 2.625rem;
-  ${props =>
-    props.showIcon === true
-      ? `top: 2.75rem; left:3.5rem; right: 1rem; bottom: 1rem; width: 19.5rem;`
-      : `top: 2.75rem; left:1rem; right: 1rem; bottom: 1rem; width: 19.5rem;`}
+  margin-bottom: 1rem;
+  ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1rem')}
 `);
 
 const ShowIcons = withTheme(styled('div')`
-  position: absolute;
-  left: 1.0625rem;
-  bottom: 0.75rem;
-  top: 0.875rem;
+  ${props =>
+    props.alertBody
+      ? 'margin-left: 1.0938rem; margin-top: 1.0938rem;'
+      : 'margin-left: 1.0625rem; margin-top: 0.75rem;'}
 `);
 
 const Alert = withTheme(
@@ -129,57 +120,64 @@ const Alert = withTheme(
       <>
         <AlertCard type={type} banner={banner} alertBody={alertBody}>
           {showIcon && !alertBody && type === 'info' && (
-            <ShowIcons showIcon={showIcon} type={type}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <InfoIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'info' && (
-            <ShowIcons alertBody={alertBody}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <InfoIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'success' && (
-            <ShowIcons showIcon={showIcon} type={type}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <SuccessIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'success' && (
-            <ShowIcons alertBody={alertBody}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <SuccessIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'error' && (
-            <ShowIcons showIcon={showIcon} type={type}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <ErrorIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'error' && (
-            <ShowIcons alertBody={alertBody}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <ErrorIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'warning' && (
-            <ShowIcons showIcon={showIcon} type={type}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <WarningIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'warning' && (
-            <ShowIcons alertBody={alertBody}>
+            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
               <WarningIcon height="21" width="21" />
             </ShowIcons>
           )}
+          <div
+            style={{
+              width: '100%',
+              alignItems: 'flex-start',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+            }}>
+            <AlertTitle showIcon={showIcon} alertBody={alertBody}>
+              {alertTitle}
+            </AlertTitle>
 
-          <AlertTitle showIcon={showIcon} alertBody={alertBody}>
-            {alertTitle}
-          </AlertTitle>
-          {closeable && !closeText && (
-            <CloseButton closeable={closeable} closeText={closeText} alertBody={alertBody}>
-              <CloseIcon height="8.91" width="8.66" />
-            </CloseButton>
-          )}
+            {alertBody && (
+              <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>
+            )}
+          </div>
           {closeText && !closeable && (
             <CloseTextButton
               closeText={closeText}
@@ -188,7 +186,14 @@ const Alert = withTheme(
               {closeText}
             </CloseTextButton>
           )}
-          {alertBody && <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>}
+          {closeable && !closeText && (
+            <CloseButton
+              closeable={closeable}
+              closeText={closeText}
+              alertBody={alertBody}>
+              <CloseIcon height="8.91" width="8.66" />
+            </CloseButton>
+          )}
         </AlertCard>
       </>
     );
