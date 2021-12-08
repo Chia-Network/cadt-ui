@@ -6,3 +6,5 @@ export * from './LocaleSwitcher';
 export * from './NavBar';
 export * from './ToolTip';
 export * from './Popover';
+export * from './Alert';
+
