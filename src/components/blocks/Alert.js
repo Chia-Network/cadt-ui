@@ -14,7 +14,6 @@ import {
 
 const AlertCard = withTheme(styled('div')`
   position: relative;
-  ${props => !props.alertBody && 'display: flex;justify-content: center;'}
   width: 24rem;
   margin: 5px;
   ${props => props.alertBody && `height: 6.375rem;`}
