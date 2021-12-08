@@ -229,7 +229,7 @@ const Home = () => {
             disabled={true}
           />
         </div>
-        <div>
+        <div style={{marginTop: '100px'}}>
         <Alert type="info" banner={false} alertTitle="Alert Title" showIcon closeable/>
         <Alert type="info" banner={true} alertTitle="Alert Title" closeText="Close now"/>
         <Alert type="info" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>

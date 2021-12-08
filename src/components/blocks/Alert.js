@@ -16,25 +16,25 @@ const AlertCard = withTheme(styled('div')`
   display: flex;
   justify-content: space-between;
   border: none;
-  margin: 20px;
+  margin: 1.25rem;
   ${props =>
     props.alertBody
-      ? 'height: 102px;  width: 384px;'
-      : 'height: 40px;  width: 384px;'}
+      ? 'height: 6.375rem;  width: 24rem;'
+      : 'height: 2.5rem;  width: 24rem;'}
 
   ${props =>
     (props.type === 'info' &&
       !props.banner &&
-      `background-color: ${props.theme.colors.default.status.info.secondary}; border: 1px solid ${props.theme.colors.default.status.info.primary} `) ||
+      `background-color: ${props.theme.colors.default.status.info.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.info.primary} `) ||
     (props.type === 'success' &&
       !props.banner &&
-      `background-color: ${props.theme.colors.default.status.ok.secondary}; border: 1px solid ${props.theme.colors.default.status.ok.primary}`) ||
+      `background-color: ${props.theme.colors.default.status.ok.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.ok.primary}`) ||
     (props.type === 'warning' &&
       !props.banner &&
-      `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 1px solid ${props.theme.colors.default.status.warning.primary}`) ||
+      `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.warning.primary}`) ||
     (props.type === 'error' &&
       !props.banner &&
-      `background-color: ${props.theme.colors.default.status.error.secondary}; border: 1px solid ${props.theme.colors.default.status.error.primary} `)}
+      `background-color: ${props.theme.colors.default.status.error.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.error.primary} `)}
 
       ${props =>
     (props.type === 'info' &&
@@ -52,48 +52,48 @@ const AlertCard = withTheme(styled('div')`
 `);
 
 const CloseTextButton = withTheme(styled('button')`
-  width: 100px;
-  height: 18px;
+  width: 6.25rem;
+  height: 1.125rem;
   background-color: unset;
   border: none;
   color: #8C8C8C;
 
   ${props =>
     props.alertBody
-      ? 'margin-right: 16px; margin-top: 16px;'
-      : 'margin-right: 16px; margin-top: 9px;'}
+      ? 'margin-right: 1rem; margin-top: 1rem;'
+      : 'margin-right: 1rem; margin-top: 0.5625rem;'}
 `);
 
 const CloseButton = withTheme(styled('div')`
   ${props =>
     props.alertBody
-      ? 'margin-right: 18.68px; margin-top: 16px;'
-      : 'margin-right: 18.68px; align-self: center'}
+      ? 'margin-right: 1.1675rem; margin-top: 1rem;'
+      : 'margin-right: 1.1675rem; align-self: center'}
 `);
 
 const AlertTitle = withTheme(styled('div')`
-font-size: 16px;
+font-size: 1rem;
   font-family: ${props => props.theme.typography.primary.regular};
   height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')}
   line-height: 1.5rem;
   font-weight: 400;
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
 
-  ${props => !props.showIcon && !props.alertBody && 'margin-top: 9px;'}
+  ${props => !props.showIcon && !props.alertBody && 'margin-top: 0.5625rem;'}
       ${props =>
         props.showIcon &&
         !props.alertBody &&
-        'margin-left: 16px;margin-top: 9px;'}
+        'margin-left: 1rem;margin-top: 0.5625rem;'}
 
   ${props =>
     props.showIcon && props.alertBody
-      ? 'margin-left: 17.5px;margin-top: 16px;'
-      : 'margin-left: 16px;'}
+      ? 'margin-left: 1.0938rem;margin-top: 1rem;'
+      : 'margin-left: 1rem;'}
 
       ${props =>
         !props.showIcon &&
         props.alertBody &&
-        'margin-left: 16px;margin-top: 16px;'}
+        'margin-left: 1rem;margin-top: 1rem;'}
 
 
 `);
@@ -102,16 +102,16 @@ const AlertBody = withTheme(styled('div')`
   font-family: ${props => props.theme.typography.primary.light};
   font-weight: normal;
   font-size: 0.875rem;
-  line-height: 21px;
-  margin-bottom: 16px;
-  ${props => (props.showIcon ? 'margin-left: 17.5px;' : 'margin-left: 16px')}
+  line-height: 1.3125rem;
+  margin-bottom: 1rem;
+  ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1rem')}
 `);
 
 const ShowIcons = withTheme(styled('div')`
   ${props =>
     props.alertBody
-      ? 'margin-left: 17.5px; margin-top: 17.5px;'
-      : 'margin-left: 17px; margin-top: 12px;'}
+      ? 'margin-left: 1.0938rem; margin-top: 1.0938rem;'
+      : 'margin-left: 1.0625rem; margin-top: 0.75rem;'}
 `);
 
 const Alert = withTheme(
