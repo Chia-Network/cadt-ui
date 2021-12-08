@@ -13,114 +13,105 @@ import {
 } from '..';
 
 const AlertCard = withTheme(styled('div')`
-  position: relative;
-  width: 24rem;
-  margin: 5px;
-  ${props => props.alertBody && `height: 6.375rem;`}
-  ${props => !props.alertBody && `height: 2.5rem;`}
+  display: flex;
+  justify-content: space-between;
+  border: none;
+  margin: 20px;
   ${props =>
-    props.type === 'info' &&
-    `background-color: ${props.theme.colors.default.status.info.secondary};`}
+    props.alertBody
+      ? 'height: 102px;  width: 384px;'
+      : 'height: 40px;  width: 384px;'}
+
   ${props =>
-    props.banner === false &&
-    props.type === 'info' &&
-    `border:0.0625rem solid ${props.theme.colors.default.status.info.primary};`}
-            
-    ${props =>
-    props.type === 'error' &&
-    `background-color: ${props.theme.colors.default.status.error.secondary};`}
-    ${props =>
-    props.banner === false &&
-    props.type === 'error' &&
-    `border:0.0625rem solid ${props.theme.colors.default.status.error.primary};`}
+    (props.type === 'info' &&
+      !props.banner &&
+      `background-color: ${props.theme.colors.default.status.info.secondary}; border: 1px solid ${props.theme.colors.default.status.info.primary} `) ||
+    (props.type === 'success' &&
+      !props.banner &&
+      `background-color: ${props.theme.colors.default.status.ok.secondary}; border: 1px solid ${props.theme.colors.default.status.ok.primary}`) ||
+    (props.type === 'warning' &&
+      !props.banner &&
+      `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 1px solid ${props.theme.colors.default.status.warning.primary}`) ||
+    (props.type === 'error' &&
+      !props.banner &&
+      `background-color: ${props.theme.colors.default.status.error.secondary}; border: 1px solid ${props.theme.colors.default.status.error.primary} `)}
 
-    ${props =>
-    props.type === 'warning' &&
-    `background-color: ${props.theme.colors.default.status.warning.secondary};`}
-    ${props =>
-    props.banner === false &&
-    props.type === 'warning' &&
-    `border:0.0625rem solid ${props.theme.colors.default.status.warning.primary};`}
-
-    ${props =>
-    props.type === 'success' &&
-    `background-color: ${props.theme.colors.default.status.ok.secondary};`}
-    ${props =>
-    props.banner === false &&
-    props.type === 'success' &&
-    `border:0.0625rem solid ${props.theme.colors.default.status.ok.primary};`}
+      ${props =>
+    (props.type === 'info' &&
+      props.banner &&
+      `background-color: ${props.theme.colors.default.status.info.secondary};`) ||
+    (props.type === 'success' &&
+      props.banner &&
+      `background-color: ${props.theme.colors.default.status.ok.secondary};`) ||
+    (props.type === 'warning' &&
+      props.banner &&
+      `background-color: ${props.theme.colors.default.status.warning.secondary};`) ||
+    (props.type === 'error' &&
+      props.banner &&
+      `background-color: ${props.theme.colors.default.status.error.secondary};`)}
 `);
 
 const CloseTextButton = withTheme(styled('button')`
-  position: absolute;
+  width: 100px;
+  height: 18px;
   background-color: unset;
   border: none;
-  color: grey;
+  color: #8C8C8C;
+
   ${props =>
-    !props.alertBody
-      ? `top: 0.5625rem; right: 1rem; bottom: 0.8125rem`
-      : `top: 1rem; right: 1rem; bottom: 4.25rem`}
+    props.alertBody
+      ? 'margin-right: 16px; margin-top: 16px;'
+      : 'margin-right: 16px; margin-top: 9px;'}
 `);
 
 const CloseButton = withTheme(styled('div')`
-  position: absolute;
-  height: 0.8125rem;
   ${props =>
-    !props.alertBody
-      ? `bottom: 0.9712rem; right: 1.1675rem;`
-      : `bottom: 4.6588rem; right: 1.1675rem;`}
+    props.alertBody
+      ? 'margin-right: 18.68px; margin-top: 16px;'
+      : 'margin-right: 18.68px; align-self: center'}
 `);
 
 const AlertTitle = withTheme(styled('div')`
-  position: absolute;
+font-size: 16px;
   font-family: ${props => props.theme.typography.primary.regular};
   height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')}
   line-height: 1.5rem;
   font-weight: 400;
+  margin-bottom: 4px;
+
+  ${props => !props.showIcon && !props.alertBody && 'margin-top: 9px;'}
+      ${props =>
+        props.showIcon &&
+        !props.alertBody &&
+        'margin-left: 16px;margin-top: 9px;'}
 
   ${props =>
-    props.showIcon &&
-    !props.alertBody &&
-    `top: 0.5625rem; left:2.625rem; right: 1rem; bottom: 0.5625rem; width: 20.375rem; font-size: 0.875rem;`}
-
-    ${props =>
-      !props.showIcon &&
-      !props.alertBody &&
-      `top: 0.5625rem; left:1rem; right: 2.25rem; bottom: 0.625rem; font-size: 0.875rem;`}
+    props.showIcon && props.alertBody
+      ? 'margin-left: 17.5px;margin-top: 16px;'
+      : 'margin-left: 16px;'}
 
       ${props =>
         !props.showIcon &&
         props.alertBody &&
-        `top: 1rem; left:1rem; right: 2.125rem; bottom: 3.875rem; width: 19.5rem;font-size: 1rem;`}
-      
+        'margin-left: 16px;margin-top: 16px;'}
 
-${props =>
-  props.showIcon &&
-  props.alertBody &&
-  `top: 1rem; left:3.5rem; right: 4.8125rem; bottom: 3.875rem; width: 19.5rem;font-size: 1rem;`}
+
 `);
 
 const AlertBody = withTheme(styled('div')`
-  position: absolute;
-  top: 2.75rem;
-  right: 1rem;
-  bottom: 1rem;
   font-family: ${props => props.theme.typography.primary.light};
-  font-weight: 400;
+  font-weight: normal;
   font-size: 0.875rem;
-  line-height: 1.3125rem;
-  height: 2.625rem;
-  ${props =>
-    props.showIcon === true
-      ? `top: 2.75rem; left:3.5rem; right: 1rem; bottom: 1rem; width: 19.5rem;`
-      : `top: 2.75rem; left:1rem; right: 1rem; bottom: 1rem; width: 19.5rem;`}
+  line-height: 21px;
+  margin-bottom: 16px;
+  ${props => (props.showIcon ? 'margin-left: 17.5px;' : 'margin-left: 16px')}
 `);
 
 const ShowIcons = withTheme(styled('div')`
-  position: absolute;
-  ${props => !props.alertBody && 'left: 1.0625rem;bottom: 0.75rem'}
   ${props =>
-    props.alertBody && 'left: 1.0625rem;bottom: 0.75rem;top: 0.875rem;'}
+    props.alertBody
+      ? 'margin-left: 17.5px; margin-top: 17.5px;'
+      : 'margin-left: 17px; margin-top: 12px;'}
 `);
 
 const Alert = withTheme(
@@ -171,18 +162,22 @@ const Alert = withTheme(
               <WarningIcon height="21" width="21" />
             </ShowIcons>
           )}
+          <div
+            style={{
+              width: '100%',
+              alignItems: 'flex-start',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+            }}>
+            <AlertTitle showIcon={showIcon} alertBody={alertBody}>
+              {alertTitle}
+            </AlertTitle>
 
-          <AlertTitle showIcon={showIcon} alertBody={alertBody}>
-            {alertTitle}
-          </AlertTitle>
-          {closeable && !closeText && (
-            <CloseButton
-              closeable={closeable}
-              closeText={closeText}
-              alertBody={alertBody}>
-              <CloseIcon height="8.91" width="8.66" />
-            </CloseButton>
-          )}
+            {alertBody && (
+              <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>
+            )}
+          </div>
           {closeText && !closeable && (
             <CloseTextButton
               closeText={closeText}
@@ -191,7 +186,14 @@ const Alert = withTheme(
               {closeText}
             </CloseTextButton>
           )}
-          {alertBody && <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>}
+          {closeable && !closeText && (
+            <CloseButton
+              closeable={closeable}
+              closeText={closeText}
+              alertBody={alertBody}>
+              <CloseIcon height="8.91" width="8.66" />
+            </CloseButton>
+          )}
         </AlertCard>
       </>
     );

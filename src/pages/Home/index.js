@@ -232,19 +232,19 @@ const Home = () => {
         <div>
         <Alert type="info" banner={false} alertTitle="Alert Title" showIcon closeable/>
         <Alert type="info" banner={true} alertTitle="Alert Title" closeText="Close now"/>
-        <Alert type="info" banner={false} alertTitle="Alert Title" alertBody="Alert Body" showIcon closeable/>
+        <Alert type="info" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>
         <Alert type="info" banner={true} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." closeText="Close Now"  />
         <Alert type="warning" banner={false} alertTitle="Alert Title" showIcon closeable/>
         <Alert type="warning" banner={true} alertTitle="Alert Title" closeText="Close now"/>
-        <Alert type="warning" banner={false} alertTitle="Alert Title" alertBody="Alert Body" showIcon closeable/>
+        <Alert type="warning" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>
         <Alert type="warning" banner={true} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." closeText="Close Now"  />
         <Alert type="error" banner={false} alertTitle="Alert Title" showIcon closeable/>
         <Alert type="error" banner={true} alertTitle="Alert Title" closeText="Close now"/>
-        <Alert type="error" banner={false} alertTitle="Alert Title" alertBody="Alert Body" showIcon closeable/>
+        <Alert type="error" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>
         <Alert type="error" banner={true} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." closeText="Close Now"  />
         <Alert type="success" banner={false} alertTitle="Alert Title" showIcon closeable/>
         <Alert type="success" banner={true} alertTitle="Alert Title" closeText="Close now"/>
-        <Alert type="success" banner={false} alertTitle="Alert Title" alertBody="Alert Body" showIcon closeable/>
+        <Alert type="success" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>
         <Alert type="success" banner={true} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." closeText="Close Now"  />
         </div>
       </Card>
