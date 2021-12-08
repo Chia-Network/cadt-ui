@@ -32,8 +32,8 @@ const colors = {
     onButton: '#FFFFFF',
     status: {
       info: {
-        primary: '#52C41A',
-        secondary: '#ECF8E6',
+        primary: '#91D5FF',
+        secondary: '#E6F7FF',
       },
       error: {
         primary: '#F5222D',

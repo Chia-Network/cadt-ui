@@ -15,6 +15,7 @@ import {
 const AlertCard = withTheme(styled('div')`
   position: relative;
   width: 24rem;
+  margin: 5px;
   ${props => props.alertBody && `height: 6.375rem;`}
   ${props => !props.alertBody && `height: 2.5rem;`}
   ${props =>
