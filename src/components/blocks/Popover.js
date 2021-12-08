@@ -35,11 +35,15 @@ const StyledPopoverContent = styled('div')`
   font-style: normal;
 `;
 
+const StyledPopoverDivider = styled('div')`
+  border-bottom: 1px solid #F0F0F0;
+`;
+
 const Popover = withTheme(({ children, body, placement, title }) => {
   const popoverContent = (
     <React.Fragment>
       <StyledPopoverTitle>{title}</StyledPopoverTitle>
-      <div style={{  borderBottom: '1px solid #F0F0F0'}}></div>
+      <StyledPopoverDivider />
       <StyledPopoverContent>{body}</StyledPopoverContent>
     </React.Fragment>
   );

@@ -39,7 +39,7 @@ const Home = () => {
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
 
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '30px' }}>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.Top}>
             <span>Tooltip Top</span>
           </ToolTip>
@@ -86,7 +86,7 @@ const Home = () => {
           </ToolTip>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: '30px' }}>
           <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Top}>
             <span>Tooltip Top</span>
           </Popover>
