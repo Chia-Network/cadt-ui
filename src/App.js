@@ -9,7 +9,7 @@ import { loadLocaleData } from './translations';
 import { AppNavigator } from './navigation';
 import theme from './theme';
 
-import { IndeterminateProgressOverlay, GlobalFontProvider } from './components';
+import { IndeterminateProgressOverlay } from './components';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,7 +39,6 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalFontProvider />
       <IntlProvider
         locale="en"
         defaultLocale="en"

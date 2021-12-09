@@ -5,8 +5,8 @@ import styled, { withTheme } from 'styled-components';
 const Text = withTheme(styled('h4')`
   color: ${props => props.color || '#00000'};
   font-size: 1rem;
-  font-family: ${props => props.theme.typography.primary.bold};
-  font-weight: 700;
+  font-family: ${props => props.theme.typography.primary.regular};
+  font-weight: 400;
   line-height: 1.375rem;
   font-style: normal;
   text-transform: capitalize;
