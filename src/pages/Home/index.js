@@ -21,6 +21,8 @@ import {
   Tag,
 } from '../../components';
 
+import { LocaleIcon } from '../../components/icons';
+
 import {
   StandardInput,
   InputSizeEnum,
@@ -263,6 +265,7 @@ const Home = () => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
+              marginRight: '30px',
             }}>
             <StandardInput
               size={InputSizeEnum.large}
@@ -279,6 +282,33 @@ const Home = () => {
               size={InputSizeEnum.small}
               placeholderText={standardInputPlaceholder}
               variant={InputVariantEnum.success}
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}>
+            <StandardInput
+              size={InputSizeEnum.large}
+              placeholderText={standardInputPlaceholder}
+              state={InputStateEnum.disabled}
+              variant={InputVariantEnum.success}
+              prefix={<LocaleIcon width={14} height={14} />}
+            />
+            <StandardInput
+              size={InputSizeEnum.default}
+              placeholderText={standardInputPlaceholder}
+              variant={InputVariantEnum.success}
+              suffix={<LocaleIcon width={14} height={14} />}
+            />
+            <StandardInput
+              size={InputSizeEnum.small}
+              placeholderText={standardInputPlaceholder}
+              variant={InputVariantEnum.success}
+              prefix={<LocaleIcon width={14} height={14} />}
+              suffix={<LocaleIcon width={14} height={14} />}
             />
           </div>
         </div>

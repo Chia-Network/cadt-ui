@@ -1,7 +1,11 @@
 /* eslint-disable */
-
 import React, { useCallback, useState } from 'react';
 import styled, { css, withTheme } from 'styled-components';
+import {
+  WarningIconSmall,
+  ErrorIconSmall,
+  SuccessIconSmall,
+} from '../icons/index';
 
 const InputSizeEnum = {
   large: 'large',
@@ -28,8 +32,8 @@ const InputStateEnum = {
 const StyledInputContainer = styled('div')`
   display: flex;
   flex-direction: row;
+  align-items: center;
   background-color: white;
-  max-width: 16.25rem;
   border: 1px solid #d9d9d9;
   box-sizing: border-box;
   border-radius: 0.125rem;
@@ -159,12 +163,18 @@ const StyledInput = styled('input')`
   }};
 `;
 
+const StyledSuffixPrefixContainer = styled('div')`
+  margin-right: 0.375rem;
+`;
+
 const StandardInput = withTheme(
   ({
     size = InputSizeEnum.default,
     placeholderText,
     variant = InputVariantEnum.default,
     state = InputStateEnum.default,
+    suffix,
+    prefix,
   }) => {
     const [inputState, setInputState] = useState(state);
 
@@ -202,7 +212,9 @@ const StandardInput = withTheme(
         onMouseLeave={onMouseLeave}
         onBlur={onBlur}
         onFocus={onFocus}>
-        <div></div>
+        {prefix && (
+          <StyledSuffixPrefixContainer>{prefix}</StyledSuffixPrefixContainer>
+        )}
         <StyledInput
           size={size}
           placeholder={placeholderText}
@@ -210,7 +222,18 @@ const StandardInput = withTheme(
           variant={variant}
           disabled={inputState === InputStateEnum.disabled}
         />
-        <div></div>
+        {suffix && (
+          <StyledSuffixPrefixContainer>{suffix}</StyledSuffixPrefixContainer>
+        )}
+        {variant === InputVariantEnum.warning && (
+          <WarningIconSmall width={14} height={14} />
+        )}
+        {variant === InputVariantEnum.error && (
+          <ErrorIconSmall width={14} height={14} />
+        )}
+        {variant === InputVariantEnum.success && (
+          <SuccessIconSmall width={14} height={14} />
+        )}
       </StyledInputContainer>
     );
   },
