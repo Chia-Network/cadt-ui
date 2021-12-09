@@ -177,7 +177,9 @@ const DataTable = withTheme(({ headings, data, actions }) => {
             <Tr index={index} selectedTheme={appStore.theme} key={index}>
               {Object.keys(record).map((key, index) => (
                 <Td selectedTheme={appStore.theme} key={index}>
-                  <TableCellText>{record[key].toString()}</TableCellText>
+                  <TableCellText>
+                    {record[key] && record[key].toString()}
+                  </TableCellText>
                 </Td>
               ))}
               {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}

@@ -5,14 +5,12 @@ import { getProjects } from '../../../store/actions/climateWarehouseActions';
 
 const Projects = () => {
   const dispatch = useDispatch();
-  const climateWarehouseStore = useSelector(
-    store => store.climateWarehouse
-  );
+  const climateWarehouseStore = useSelector(store => store.climateWarehouse);
 
-  useEffect(() => dispatch(getProjects({ useMockedResponse: true })), []);
+  useEffect(() => dispatch(getProjects({ useMockedResponse: false })), []);
   return (
     <>
-       <Card>
+      <Card>
         <div>Projects</div>
         {climateWarehouseStore.projects && (
           <DataTable
