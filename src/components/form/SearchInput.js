@@ -51,15 +51,15 @@ const SearchIconContainer = styled('div')`
     (props.size === 'small' && 'width: 1.6875rem;height:1.625rem')};
 
   ${props =>
-    (typeof props.buttonText === 'string' &&
+    (props.buttonText &&
       props.size === 'large' &&
-      'width:81px; height:2.75rem;') ||
-    (typeof props.buttonText === 'string' &&
+      'width:5.0625rem; height:2.75rem;') ||
+    (props.buttonText &&
       props.size === 'default' &&
-      'width:81px; height:2.125rem;') ||
-    (typeof props.buttonText === 'string' &&
+      'width:5.0625rem; height:2.125rem;') ||
+    (props.buttonText &&
       props.size === 'small' &&
-      'width:81px; height:1.625rem;')};
+      'width:5.0625rem; height:1.625rem;')};
 
   ${props =>
     (props.usePrimaryButton &&
@@ -95,7 +95,7 @@ const ButtonSearchText = withTheme(styled('p')`
 const SearchInput = withTheme(
   ({
     usePrimaryButton = false,
-    buttonText = null,
+    buttonText,
     onChange= _.noop,
     size = 'default',
     outline = false,
