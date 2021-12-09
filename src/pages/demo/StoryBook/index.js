@@ -24,6 +24,7 @@ import {
   InputSizeEnum,
   InputStateEnum,
   InputVariantEnum,
+  SearchInput,
 } from '../../../components';
 
 const StoryBook = () => {
@@ -517,6 +518,22 @@ const StoryBook = () => {
             alertBody="Interactively monetize corporate alignments and fully tested niche markets."
             closeText="Close Now"
           />
+        </div>
+        <div>
+          <SearchInput size="small" />
+          <SearchInput size="small" outline/>
+          <SearchInput size="small" usePrimaryButton />
+          <SearchInput size="small" usePrimaryButton buttonText="Search" />
+          <SearchInput size="small" buttonText="Search" outline />
+          <SearchInput size="default" />
+          <SearchInput size="default" outline />
+          <SearchInput size="default" usePrimaryButton />
+          <SearchInput size="default" usePrimaryButton buttonText="Search" />
+          <SearchInput size="default" buttonText="Search" outline/>
+          <SearchInput size="large" />
+          <SearchInput size="large" outline />
+          <SearchInput size="large" usePrimaryButton />
+          <SearchInput size="large" buttonText="Search" usePrimaryButton  outline/>
         </div>
 
         <div>
