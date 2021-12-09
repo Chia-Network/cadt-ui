@@ -4,23 +4,23 @@ import styled, { withTheme } from 'styled-components';
 import { AddIcon, CloseIcon } from '..';
 
 const AddTag = withTheme(styled('div')`
-  margin: 10px;
+  margin: 0.625rem;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 22px;
-  width: 37px;
+  height: 1.375rem;
+  width: 2.3125rem;
   background-color: #fafafa;
-  border-radius: 2px;
+  border-radius: 0.125rem;
   ${props =>
     props.body === null
-      ? 'border: 1px dashed #D9D9D9 ; width:70px;background-color: unset'
-      : 'border 1px solid #D9D9D9'};
-  ${props => props.closeable && 'width:52px'};
+      ? 'border: 0.0625rem dashed #D9D9D9 ; width:4.375rem;background-color: unset'
+      : 'border: 0.0625rem solid #D9D9D9'};
+  ${props => props.closeable && 'width:3.25rem'};
 `);
 
 const TagBody = withTheme(styled('p')`
-  font-size: 12px;
+  font-size: 0.75rem;
 `);
 
 const TagButton = withTheme(styled('div')`
