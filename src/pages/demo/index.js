@@ -6,3 +6,4 @@ export * from './RelatedProjects';
 export * from './Units';
 export * from './Projects';
 export * from './Vintages';
+export * from './StoryBook';
