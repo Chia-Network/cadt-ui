@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { ClimateWarehouseLogo } from '../../components';
+import { Link } from 'react-router-dom';
 
 const Container = styled('div')`
   display: flex;
@@ -9,7 +10,8 @@ const Container = styled('div')`
 `;
 
 const NavContainer = styled('div')`
-  width: 256px;
+  width: 16rem;
+  min-width: 16rem;
   height: 100%;
   background-color: #3b8ee0;
 `;
@@ -20,7 +22,7 @@ const LogoContainer = styled('div')`
   margin: 10px;
 `;
 
-const MenuItem = styled('a')`
+const MenuItem = styled(Link)`
   background: ${props => (props.selected ? '#e0f4fe' : 'transparent')};
   padding: 6px 30px;
   color: ${props => (props.selected ? '#003a8c' : '#ffffff')};
@@ -31,8 +33,10 @@ const MenuItem = styled('a')`
 `;
 
 const LeftNav = withTheme(({ children }) => {
-  const location = useMemo(() => {
-    return window.location.pathname.split('/')[1];
+  const [location, setLocation] = useState(false);
+
+  useEffect(() => {
+    setLocation(window.location.pathname.split('/')[1]);
   }, [window.location]);
 
   return (
@@ -42,13 +46,22 @@ const LeftNav = withTheme(({ children }) => {
           <ClimateWarehouseLogo />
         </LogoContainer>
 
-        <MenuItem selected={location === 'projects'} href="/projects">
+        <MenuItem
+          selected={location === 'projects'}
+          to="/projects"
+          onClick={() => setLocation('projects')}>
           Projects
         </MenuItem>
-        <MenuItem selected={location === 'units'} href="/units">
+        <MenuItem
+          selected={location === 'units'}
+          to="/units"
+          onClick={() => setLocation('units')}>
           Units
         </MenuItem>
-        <MenuItem selected={location === 'storybook'} href="/storybook">
+        <MenuItem
+          selected={location === 'storybook'}
+          to="/storybook"
+          onClick={() => setLocation('storybook')}>
           StoryBook
         </MenuItem>
       </NavContainer>

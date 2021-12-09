@@ -10,9 +10,9 @@ const AppNavigator = () => {
   const { showProgressOverlay } = useSelector(store => store.app);
   return (
     <AppContainer>
-      <LeftNav>
-        <Router>
-          {showProgressOverlay && <IndeterminateProgressOverlay />}
+      {showProgressOverlay && <IndeterminateProgressOverlay />}
+      <Router>
+        <LeftNav>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
             <Route exact path="/">
               <Pages.Home />
@@ -45,8 +45,8 @@ const AppNavigator = () => {
               <Pages.StoryBook />
             </Route>
           </Suspense>
-        </Router>
-      </LeftNav>
+        </LeftNav>
+      </Router>
     </AppContainer>
   );
 };
