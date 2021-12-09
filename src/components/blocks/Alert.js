@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import {
@@ -56,8 +57,8 @@ const CloseTextButton = withTheme(styled('button')`
   height: 1.125rem;
   background-color: unset;
   border: none;
-  color: #8C8C8C;
-
+  color: #8c8c8c;
+  cursor: pointer;
   ${props =>
     props.alertBody
       ? 'margin-right: 1rem; margin-top: 1rem;'
@@ -65,6 +66,7 @@ const CloseTextButton = withTheme(styled('button')`
 `);
 
 const CloseButton = withTheme(styled('div')`
+  cursor: pointer;
   ${props =>
     props.alertBody
       ? 'margin-right: 1.1675rem; margin-top: 1rem;'
@@ -72,30 +74,28 @@ const CloseButton = withTheme(styled('div')`
 `);
 
 const AlertTitle = withTheme(styled('div')`
-font-size: 1rem;
+  font-size: 1rem;
   font-family: ${props => props.theme.typography.primary.regular};
-  height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')}
+  height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')};
   line-height: 1.5rem;
   font-weight: 400;
   margin-bottom: 0.25rem;
 
-  ${props => !props.showIcon && !props.alertBody && 'margin-top: 0.5625rem;'}
-      ${props =>
-        props.showIcon &&
-        !props.alertBody &&
-        'margin-left: 1rem;margin-top: 0.5625rem;'}
+  ${props => !props.showIcon && !props.alertBody && 'margin-top: 0.5625rem;'};
+  ${props =>
+    props.showIcon &&
+    !props.alertBody &&
+    'margin-left: 1rem;margin-top: 0.5625rem;'};
 
   ${props =>
     props.showIcon && props.alertBody
       ? 'margin-left: 1.0938rem;margin-top: 1rem;'
-      : 'margin-left: 1rem;'}
+      : 'margin-left: 1rem;'};
 
-      ${props =>
-        !props.showIcon &&
-        props.alertBody &&
-        'margin-left: 1rem;margin-top: 1rem;'}
-
-
+  ${props =>
+    !props.showIcon &&
+    props.alertBody &&
+    'margin-left: 1rem;margin-top: 1rem;'};
 `);
 
 const AlertBody = withTheme(styled('div')`
@@ -115,7 +115,16 @@ const ShowIcons = withTheme(styled('div')`
 `);
 
 const Alert = withTheme(
-  ({ type, banner, alertTitle, alertBody, showIcon, closeable, closeText }) => {
+  ({
+    type,
+    banner = false,
+    alertTitle,
+    alertBody,
+    showIcon = false,
+    closeable = false,
+    closeText,
+    onClose = _.noop,
+  }) => {
     return (
       <>
         <AlertCard type={type} banner={banner} alertBody={alertBody}>
@@ -182,7 +191,8 @@ const Alert = withTheme(
             <CloseTextButton
               closeText={closeText}
               closeable={closeable}
-              alertBody={alertBody}>
+              alertBody={alertBody}
+              onClick={onClose}>
               {closeText}
             </CloseTextButton>
           )}
@@ -190,7 +200,8 @@ const Alert = withTheme(
             <CloseButton
               closeable={closeable}
               closeText={closeText}
-              alertBody={alertBody}>
+              alertBody={alertBody}
+              onClick={onClose}>
               <CloseIcon height="8.91" width="8.66" />
             </CloseButton>
           )}
