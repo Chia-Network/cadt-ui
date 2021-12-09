@@ -15,7 +15,7 @@ const AppNavigator = () => {
           {showProgressOverlay && <IndeterminateProgressOverlay />}
           <Suspense fallback={<IndeterminateProgressOverlay />}>
             <Route exact path="/">
-              <Pages.Projects />
+              <Pages.Home />
             </Route>
             <Route exact path="/co-benefits">
               <Pages.CoBenefits />

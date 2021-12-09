@@ -42,7 +42,7 @@ const LeftNav = withTheme(({ children }) => {
           <ClimateWarehouseLogo />
         </LogoContainer>
 
-        <MenuItem selected={location === ''} href="/">
+        <MenuItem selected={location === 'projects'} href="/projects">
           Projects
         </MenuItem>
         <MenuItem selected={location === 'units'} href="/units">
