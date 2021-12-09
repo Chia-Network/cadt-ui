@@ -18,17 +18,18 @@ import {
   Popover,
   PopoverPlacement,
   Alert,
+  Tag,
 } from '../../components';
 
 const Home = () => {
   const tooltipContent =
     'Distinctively monetize cost effective networks for cross-media bandwidth';
-  
+
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
 
   const popoverTitle = 'Popover title';
-  
+
   return (
     <>
       <Card>
@@ -40,7 +41,12 @@ const Home = () => {
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
 
-        <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '30px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            marginTop: '30px',
+          }}>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.Top}>
             <span>Tooltip Top</span>
           </ToolTip>
@@ -87,47 +93,80 @@ const Home = () => {
           </ToolTip>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: '30px' }}>
-          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Top}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            paddingTop: '30px',
+          }}>
+          <Popover
+            title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.Top}>
             <span>Tooltip Top</span>
           </Popover>
-          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Bottom}>
+          <Popover
+            title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.Bottom}>
             <span>Bottom</span>
           </Popover>
-          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Left}>
+          <Popover
+            title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.Left}>
             <span>Left</span>
           </Popover>
-          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.Right}>
+          <Popover
+            title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.Right}>
             <span>Right</span>
           </Popover>
-          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.TopLeft}>
+          <Popover
+            title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.TopLeft}>
             <span>Top-Left</span>
           </Popover>
-          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.TopRight}>
+          <Popover
+            title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.TopRight}>
             <span>Top-Right</span>
           </Popover>
-          <Popover title={popoverTitle}
+          <Popover
+            title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.BottomLeft}>
             <span>Bottom-Left</span>
           </Popover>
-          <Popover title={popoverTitle}
+          <Popover
+            title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.BottomRight}>
             <span>Bottom-Right</span>
           </Popover>
-          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.LeftTop}>
+          <Popover
+            title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.LeftTop}>
             <span>Left-Top</span>
           </Popover>
-          <Popover title={popoverTitle}
+          <Popover
+            title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.LeftBottom}>
             <span>Left-Bottom</span>
           </Popover>
-          <Popover title={popoverTitle} body={popoverContent} placement={PopoverPlacement.RightTop}>
+          <Popover
+            title={popoverTitle}
+            body={popoverContent}
+            placement={PopoverPlacement.RightTop}>
             <span>Right-Top</span>
           </Popover>
-          <Popover title={popoverTitle}
+          <Popover
+            title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.RightBottom}>
             <span>Right-Bottom</span>
@@ -229,23 +268,128 @@ const Home = () => {
             disabled={true}
           />
         </div>
-        <div style={{marginTop: '100px'}}>
-        <Alert type="info" banner={false} alertTitle="Alert Title" showIcon closeable />
-        <Alert type="info" banner={true} alertTitle="Alert Title" closeText="Close now"/>
-        <Alert type="info" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>
-        <Alert type="info" banner={true} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." closeText="Close Now"  />
-        <Alert type="warning" banner={false} alertTitle="Alert Title" showIcon closeable/>
-        <Alert type="warning" banner={true} alertTitle="Alert Title" closeText="Close now"/>
-        <Alert type="warning" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>
-        <Alert type="warning" banner={true} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." closeText="Close Now"  />
-        <Alert type="error" banner={false} alertTitle="Alert Title" showIcon closeable/>
-        <Alert type="error" banner={true} alertTitle="Alert Title" closeText="Close now"/>
-        <Alert type="error" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>
-        <Alert type="error" banner={true} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." closeText="Close Now"  />
-        <Alert type="success" banner={false} alertTitle="Alert Title" showIcon closeable/>
-        <Alert type="success" banner={true} alertTitle="Alert Title" closeText="Close now"/>
-        <Alert type="success" banner={false} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." showIcon closeable/>
-        <Alert type="success" banner={true} alertTitle="Alert Title" alertBody="Interactively monetize corporate alignments and fully tested niche markets." closeText="Close Now"  />
+        <div style={{ marginTop: '100px' }}>
+          <Alert
+            type="info"
+            banner={false}
+            alertTitle="Alert Title"
+            showIcon
+            closeable
+          />
+          <Alert
+            type="info"
+            banner={true}
+            alertTitle="Alert Title"
+            closeText="Close now"
+          />
+          <Alert
+            type="info"
+            banner={false}
+            alertTitle="Alert Title"
+            alertBody="Interactively monetize corporate alignments and fully tested niche markets."
+            showIcon
+            closeable
+          />
+          <Alert
+            type="info"
+            banner={true}
+            alertTitle="Alert Title"
+            alertBody="Interactively monetize corporate alignments and fully tested niche markets."
+            closeText="Close Now"
+          />
+          <Alert
+            type="warning"
+            banner={false}
+            alertTitle="Alert Title"
+            showIcon
+            closeable
+          />
+          <Alert
+            type="warning"
+            banner={true}
+            alertTitle="Alert Title"
+            closeText="Close now"
+          />
+          <Alert
+            type="warning"
+            banner={false}
+            alertTitle="Alert Title"
+            alertBody="Interactively monetize corporate alignments and fully tested niche markets."
+            showIcon
+            closeable
+          />
+          <Alert
+            type="warning"
+            banner={true}
+            alertTitle="Alert Title"
+            alertBody="Interactively monetize corporate alignments and fully tested niche markets."
+            closeText="Close Now"
+          />
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle="Alert Title"
+            showIcon
+            closeable
+          />
+          <Alert
+            type="error"
+            banner={true}
+            alertTitle="Alert Title"
+            closeText="Close now"
+          />
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle="Alert Title"
+            alertBody="Interactively monetize corporate alignments and fully tested niche markets."
+            showIcon
+            closeable
+          />
+          <Alert
+            type="error"
+            banner={true}
+            alertTitle="Alert Title"
+            alertBody="Interactively monetize corporate alignments and fully tested niche markets."
+            closeText="Close Now"
+          />
+          <Alert
+            type="success"
+            banner={false}
+            alertTitle="Alert Title"
+            showIcon
+            closeable
+          />
+          <Alert
+            type="success"
+            banner={true}
+            alertTitle="Alert Title"
+            closeText="Close now"
+          />
+          <Alert
+            type="success"
+            banner={false}
+            alertTitle="Alert Title"
+            alertBody="Interactively monetize corporate alignments and fully tested niche markets."
+            showIcon
+            closeable
+          />
+          <Alert
+            type="success"
+            banner={true}
+            alertTitle="Alert Title"
+            alertBody="Interactively monetize corporate alignments and fully tested niche markets."
+            closeText="Close Now"
+          />
+        </div>
+
+        <div>
+          <Tag addNew />
+          <Tag closeable body="Tag" onClose />
+          <Tag addNew body="Tag" />
+          <Tag body="Tag" />
+          <Tag />
+          <Tag />
         </div>
       </Card>
     </>
