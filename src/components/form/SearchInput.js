@@ -96,7 +96,7 @@ const SearchInput = withTheme(
   ({
     usePrimaryButton = false,
     buttonText = null,
-    onChange,
+    onChange=_.noop,
     size = 'default',
     outline = false,
     onSearch = _.noop,
