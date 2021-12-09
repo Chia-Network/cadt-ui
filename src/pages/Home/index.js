@@ -17,9 +17,18 @@ import {
   ToolTipPlacement,
 } from '../../components';
 
+import {
+  StandardInput,
+  InputSizeEnum,
+  InputStateEnum,
+  InputVariantEnum,
+} from '../../components/form';
+
 const Home = () => {
   const tooltipContent =
     'Distinctively monetize cost effective networks for cross-media bandwidth';
+
+  const standardInputPlaceholder = 'placeholder text';
 
   return (
     <>
@@ -31,7 +40,6 @@ const Home = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
-
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.Top}>
             <span>Tooltip Top</span>
@@ -77,6 +85,107 @@ const Home = () => {
             placement={ToolTipPlacement.RightBottom}>
             <span>Right-Bottom</span>
           </ToolTip>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            height: '120px',
+            marginTop: '20px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              marginRight: '30px',
+            }}>
+            <StandardInput
+              size={InputSizeEnum.large}
+              placeholderText={standardInputPlaceholder}
+              state={InputStateEnum.disabled}
+            />
+            <StandardInput
+              size={InputSizeEnum.default}
+              placeholderText={standardInputPlaceholder}
+            />
+            <StandardInput
+              size={InputSizeEnum.small}
+              placeholderText={standardInputPlaceholder}
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              marginRight: '30px'
+            }}>
+            <StandardInput
+              size={InputSizeEnum.large}
+              placeholderText={standardInputPlaceholder}
+              state={InputStateEnum.disabled}
+              variant={InputVariantEnum.error}
+            />
+            <StandardInput
+              size={InputSizeEnum.default}
+              placeholderText={standardInputPlaceholder}
+              variant={InputVariantEnum.error}
+            />
+            <StandardInput
+              size={InputSizeEnum.small}
+              placeholderText={standardInputPlaceholder}
+              variant={InputVariantEnum.error}
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              marginRight: '30px',
+            }}>
+            <StandardInput
+              size={InputSizeEnum.large}
+              placeholderText={standardInputPlaceholder}
+              state={InputStateEnum.disabled}
+              variant={InputVariantEnum.warning}
+            />
+            <StandardInput
+              size={InputSizeEnum.default}
+              placeholderText={standardInputPlaceholder}
+              variant={InputVariantEnum.warning}
+            />
+            <StandardInput
+              size={InputSizeEnum.small}
+              placeholderText={standardInputPlaceholder}
+              variant={InputVariantEnum.warning}
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}>
+            <StandardInput
+              size={InputSizeEnum.large}
+              placeholderText={standardInputPlaceholder}
+              state={InputStateEnum.disabled}
+              variant={InputVariantEnum.success}
+            />
+            <StandardInput
+              size={InputSizeEnum.default}
+              placeholderText={standardInputPlaceholder}
+              variant={InputVariantEnum.success}
+            />
+            <StandardInput
+              size={InputSizeEnum.small}
+              placeholderText={standardInputPlaceholder}
+              variant={InputVariantEnum.success}
+            />
+          </div>
         </div>
 
         <DataTable
