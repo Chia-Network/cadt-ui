@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useCallback, useState } from 'react';
 import styled, { css, withTheme } from 'styled-components';
 import {
