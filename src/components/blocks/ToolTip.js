@@ -17,36 +17,37 @@ const ToolTipPlacement = {
   RightBottom: 'right-end',
 };
 
-const ToolTip = withTheme(
-  ({ children, body, placement }) => {
-    return (
-      <Tooltip
-        title={body}
-        placement={placement}
-        componentsProps={{
-          popper: {
-            sx: {
-              [`& .${tooltipClasses.arrow}`]: {
-                color: '#262626',
-              },
-              [`& .${tooltipClasses.tooltip}`]: {
-                maxWidth: '12.5rem',
-                backgroundColor: '#262626',
-                padding: '0.375rem 0.5rem',
-                fontSize: '0.875rem',
-                lineHeight: '1.3125rem',
-                fontWeight: '400',
-                fontStyle: 'normal',
-                borderRadius: '0.125rem',
-              },
+const ToolTip = withTheme(({ children, body, placement }) => {
+  return (
+    <Tooltip
+      title={body}
+      placement={placement}
+      componentsProps={{
+        popper: {
+          sx: {
+            [`& .${tooltipClasses.arrow}`]: {
+              color: '#262626',
+            },
+            [`& .${tooltipClasses.tooltip}`]: {
+              maxWidth: '12.5rem',
+              backgroundColor: '#262626',
+              padding: '0.375rem 0.5rem',
+              fontSize: '0.875rem',
+              lineHeight: '1.3125rem',
+              fontWeight: '400',
+              fontStyle: 'normal',
+              borderRadius: '0.125rem',
+              boxShadow:
+                '0px 9px 28px 8px rgba(0, 0, 0, 0.05), 0px 3px 6px -4px rgba(0, 0, 0, 0.12)',
+              filter: 'drop-shadow(0px 6px 16px rgba(0, 0, 0, 0.08))',
             },
           },
-        }}
-        arrow>
-        <span>{children}</span>
-      </Tooltip>
-    );
-  },
-);
+        },
+      }}
+      arrow>
+      <span>{children}</span>
+    </Tooltip>
+  );
+});
 
 export { ToolTipPlacement, ToolTip };
