@@ -12,4 +12,5 @@ export * from './ErrorIconSmall';
 export * from './CloseIcon';
 export * from './WarningIconSmall';
 export * from './WarningIcon';
+export * from './ClimateWarehouseLogo';
 export * from './AddIcon';
