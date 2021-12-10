@@ -405,7 +405,7 @@ const StoryBook = () => {
           <InfoIcon width="20" height="20" />
           <InfoIconSmall width="20" height="20" />
           <LightThemeIcon width="20" height="20" />
-          <LocaleIcon width="20" height="20" />
+          {/* <LocaleIcon width="20" height="20" /> */}
           <MagnifyGlassIcon width="20" height="20" />
           <MagnifyGlassIconWhite width="20" height="20" />
           <SuccessIcon width="20" height="20" />
