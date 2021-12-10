@@ -25,13 +25,33 @@ import {
   InputStateEnum,
   InputVariantEnum,
   SearchInput,
+  Textarea,
+  TextareaSizeEnum,
+  TextareaStateEnum,
+  AddIcon,
+  ChiaLogo,
+  ClimateWarehouseLogo,
+  CloseIcon,
+  DarkThemeIcon,
+  ErrorIconSmall,
+  ErrorIcon,
+  InfoIconSmall,
+  InfoIcon,
+  MagnifyGlassIcon,
+  MagnifyGlassIconWhite,
+  SuccessIcon,
+  SuccessIconSmall,
+  WarningIcon,
+  WarningIconSmall,
 } from '../../../components';
 
 const StoryBook = () => {
   const tooltipContent =
     'Distinctively monetize cost effective networks for cross-media bandwidth';
 
-  const standardInputPlaceholder = 'placeholder text';
+  const standardInputPlaceholder = 'Input placeholder';
+
+  const textareaPlaceholder = 'Textarea placeholder';
 
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
@@ -53,51 +73,51 @@ const StoryBook = () => {
           style={{
             display: 'flex',
             justifyContent: 'space-around',
-            marginTop: '30px',
+            marginTop: '50px',
           }}>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.Top}>
-            <span>Tooltip Top</span>
+            <ButtonText>Tooltip Top</ButtonText>
           </ToolTip>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.Bottom}>
-            <span>Bottom</span>
+            <ButtonText>Bottom</ButtonText>
           </ToolTip>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.Left}>
-            <span>Left</span>
+            <ButtonText>Left</ButtonText>
           </ToolTip>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.Right}>
-            <span>Right</span>
+            <ButtonText>Right</ButtonText>
           </ToolTip>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.TopLeft}>
-            <span>Top-Left</span>
+            <ButtonText>Top-Left</ButtonText>
           </ToolTip>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.TopRight}>
-            <span>Top-Right</span>
+            <ButtonText>Top-Right</ButtonText>
           </ToolTip>
           <ToolTip
             body={tooltipContent}
             placement={ToolTipPlacement.BottomLeft}>
-            <span>Bottom-Left</span>
+            <ButtonText>Bottom-Left</ButtonText>
           </ToolTip>
           <ToolTip
             body={tooltipContent}
             placement={ToolTipPlacement.BottomRight}>
-            <span>Bottom-Right</span>
+            <ButtonText>Bottom-Right</ButtonText>
           </ToolTip>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.LeftTop}>
-            <span>Left-Top</span>
+            <ButtonText>Left-Top</ButtonText>
           </ToolTip>
           <ToolTip
             body={tooltipContent}
             placement={ToolTipPlacement.LeftBottom}>
-            <span>Left-Bottom</span>
+            <ButtonText>Left-Bottom</ButtonText>
           </ToolTip>
           <ToolTip body={tooltipContent} placement={ToolTipPlacement.RightTop}>
-            <span>Right-Top</span>
+            <ButtonText>Right-Top</ButtonText>
           </ToolTip>
           <ToolTip
             body={tooltipContent}
             placement={ToolTipPlacement.RightBottom}>
-            <span>Right-Bottom</span>
+            <ButtonText>Right-Bottom</ButtonText>
           </ToolTip>
         </div>
 
@@ -105,79 +125,79 @@ const StoryBook = () => {
           style={{
             display: 'flex',
             justifyContent: 'space-around',
-            paddingTop: '30px',
+            paddingTop: '50px',
           }}>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.Top}>
-            <span>Popover Top</span>
+            <ButtonText>Popover Top</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.Bottom}>
-            <span>Bottom</span>
+            <ButtonText>Bottom</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.Left}>
-            <span>Left</span>
+            <ButtonText>Left</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.Right}>
-            <span>Right</span>
+            <ButtonText>Right</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.TopLeft}>
-            <span>Top-Left</span>
+            <ButtonText>Top-Left</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.TopRight}>
-            <span>Top-Right</span>
+            <ButtonText>Top-Right</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.BottomLeft}>
-            <span>Bottom-Left</span>
+            <ButtonText>Bottom-Left</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.BottomRight}>
-            <span>Bottom-Right</span>
+            <ButtonText>Bottom-Right</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.LeftTop}>
-            <span>Left-Top</span>
+            <ButtonText>Left-Top</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.LeftBottom}>
-            <span>Left-Bottom</span>
+            <ButtonText>Left-Bottom</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.RightTop}>
-            <span>Right-Top</span>
+            <ButtonText>Right-Top</ButtonText>
           </Popover>
           <Popover
             title={popoverTitle}
             body={popoverContent}
             placement={PopoverPlacement.RightBottom}>
-            <span>Right-Bottom</span>
+            <ButtonText>Right-Bottom</ButtonText>
           </Popover>
         </div>
 
@@ -186,7 +206,7 @@ const StoryBook = () => {
             display: 'flex',
             flexDirection: 'row',
             height: '120px',
-            marginTop: '20px',
+            marginTop: '50px',
           }}>
           <div
             style={{
@@ -308,6 +328,92 @@ const StoryBook = () => {
               suffix={<LocaleIcon width={14} height={14} />}
             />
           </div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'start',
+            paddingTop: '50px',
+            height: '210px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              marginRight: '50px',
+            }}>
+            <Textarea
+              size={TextareaSizeEnum.large}
+              placeholder={textareaPlaceholder}
+            />
+            <Textarea
+              size={TextareaSizeEnum.default}
+              placeholder={textareaPlaceholder}
+            />
+            <Textarea
+              size={TextareaSizeEnum.small}
+              placeholder={textareaPlaceholder}
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+            }}>
+            <Textarea
+              size={TextareaSizeEnum.large}
+              placeholder="disabled state"
+              state={TextareaStateEnum.disabled}
+            />
+            <Textarea
+              size={TextareaSizeEnum.default}
+              placeholder="hover state"
+              state={TextareaStateEnum.hover}
+            />
+            <Textarea
+              size={TextareaSizeEnum.small}
+              placeholder="typing state"
+              state={TextareaStateEnum.typing}
+            />
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'start',
+            paddingTop: '50px',
+          }}>
+          <ChiaLogo />
+          <div style={{width: '50px'}}></div>
+          <ClimateWarehouseLogo />
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            paddingTop: '50px',
+            paddingBottom: '50px',
+          }}>
+          <AddIcon width="20" height="20" />
+          <CloseIcon width="20" height="20" />
+          <DarkThemeIcon width="20" height="20" />
+          <ErrorIcon width="20" height="20" />
+          <ErrorIconSmall width="20" height="20" />
+          <InfoIcon width="20" height="20" />
+          <InfoIconSmall width="20" height="20" />
+          <LightThemeIcon width="20" height="20" />
+          <LocaleIcon width="20" height="20" />
+          <MagnifyGlassIcon width="20" height="20" />
+          <MagnifyGlassIconWhite width="20" height="20" />
+          <SuccessIcon width="20" height="20" />
+          <SuccessIconSmall width="20" height="20" />
+          <WarningIcon width="20" height="20" />
+          <WarningIconSmall width="20" height="20" />
         </div>
 
         <DataTable
@@ -345,6 +451,7 @@ const StoryBook = () => {
             width: '80%',
             flexWrap: 'wrap',
             alignItems: 'center',
+            marginTop: '50px',
           }}>
           <PrimaryButton label="Button" size="large" />
           <PrimaryButton label="Button" size="default" />
@@ -521,7 +628,7 @@ const StoryBook = () => {
         </div>
         <div>
           <SearchInput size="small" />
-          <SearchInput size="small" outline/>
+          <SearchInput size="small" outline />
           <SearchInput size="small" usePrimaryButton />
           <SearchInput size="small" usePrimaryButton buttonText="Search" />
           <SearchInput size="small" buttonText="Search" outline />
@@ -529,11 +636,16 @@ const StoryBook = () => {
           <SearchInput size="default" outline />
           <SearchInput size="default" usePrimaryButton />
           <SearchInput size="default" usePrimaryButton buttonText="Search" />
-          <SearchInput size="default" buttonText="Search" outline/>
+          <SearchInput size="default" buttonText="Search" outline />
           <SearchInput size="large" />
           <SearchInput size="large" outline />
           <SearchInput size="large" usePrimaryButton />
-          <SearchInput size="large" buttonText="Search" usePrimaryButton  outline/>
+          <SearchInput
+            size="large"
+            buttonText="Search"
+            usePrimaryButton
+            outline
+          />
         </div>
 
         <div>
