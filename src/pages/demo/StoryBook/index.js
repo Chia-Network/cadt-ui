@@ -43,6 +43,7 @@ import {
   SuccessIconSmall,
   WarningIcon,
   WarningIconSmall,
+  Body,
 } from '../../../components';
 
 const StoryBook = () => {
@@ -215,16 +216,16 @@ const StoryBook = () => {
             }}>
             <StandardInput
               size={InputSizeEnum.large}
-              placeholderText='Large input'
+              placeholderText="Large input"
               state={InputStateEnum.disabled}
             />
             <StandardInput
               size={InputSizeEnum.default}
-              placeholderText='Default input'
+              placeholderText="Default input"
             />
             <StandardInput
               size={InputSizeEnum.small}
-              placeholderText='Small input'
+              placeholderText="Small input"
             />
           </div>
           <div
@@ -344,15 +345,15 @@ const StoryBook = () => {
             }}>
             <Textarea
               size={TextareaSizeEnum.large}
-              placeholder='Large textarea'
+              placeholder="Large textarea"
             />
             <Textarea
               size={TextareaSizeEnum.default}
-              placeholder='Default textarea'
+              placeholder="Default textarea"
             />
             <Textarea
               size={TextareaSizeEnum.small}
-              placeholder='Small textarea'
+              placeholder="Small textarea"
             />
           </div>
           <div
@@ -386,7 +387,7 @@ const StoryBook = () => {
             paddingTop: '50px',
           }}>
           <ChiaLogo />
-          <div style={{width: '50px'}}></div>
+          <div style={{ width: '50px' }}></div>
           <ClimateWarehouseLogo />
         </div>
 
@@ -653,6 +654,16 @@ const StoryBook = () => {
           <Tag body="Tag" />
           <Tag />
           <Tag />
+        </div>
+
+        <div>
+          <Body size="Big">This is Big Body Text</Body>
+          <Body>This is Regular Body Text</Body>
+          <Body size="Bold">This is Bold Body Text</Body>
+          <Body size="Small">This is Small Body Text</Body>
+          <Body size="Small Bold">This is Small Bold Body Text</Body>
+          <Body size="X-Small">This is X-Small Body text</Body>
+          <Body size="X-Small Bold">This is X-Small Bold Body Text</Body>
         </div>
       </Card>
     </>
