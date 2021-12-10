@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import styled, { withTheme } from 'styled-components';
+import styled, { withTheme, css } from 'styled-components';
 
 const Text = withTheme(styled('body')`
   color: ${props => props.color || '#000000'};
@@ -9,12 +9,38 @@ const Text = withTheme(styled('body')`
   font-weight: 400;
   line-height: 150%;
   letter-spacing: -0.0625rem;
-  ${props => props.size === "Big" && "font-size: 18px;" }
-  ${props => props.size === "Bold" && "font-weight:700" }
-  ${props => props.size === "Small" && "font-size: 14px;" }
-  ${props => props.size === "Small Bold" && "font-size: 14px;font-weight:700" }
-  ${props => props.size === "X-Small" && "font-size: 12px;" }
-  ${props => props.size === "X-Small Bold" && "font-weight:700;font-size: 12px;" }
+  ${props =>
+    props.size === 'Big' &&
+    css`
+      font-size: 18px;
+    `}
+  ${props =>
+    props.size === 'Bold' &&
+    css`
+      font-weight: 700;
+    `}
+  ${props =>
+    props.size === 'Small' &&
+    css`
+      font-size: 14px;
+    `}
+  ${props =>
+    props.size === 'Small Bold' &&
+    css`
+      font-size: 14px;
+      font-weight: 700;
+    `}
+  ${props =>
+    props.size === 'X-Small' &&
+    css`
+      font-size: 12px;
+    `}
+  ${props =>
+    props.size === 'X-Small Bold' &&
+    css`
+      font-weight: 700;
+      font-size: 12px;
+    `}
 `);
 
 const Body = withTheme(({ children, color, size }) => {
