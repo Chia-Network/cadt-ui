@@ -51,8 +51,6 @@ const StoryBook = () => {
 
   const standardInputPlaceholder = 'Input placeholder';
 
-  const textareaPlaceholder = 'Textarea placeholder';
-
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
 
@@ -217,16 +215,16 @@ const StoryBook = () => {
             }}>
             <StandardInput
               size={InputSizeEnum.large}
-              placeholderText={standardInputPlaceholder}
+              placeholderText='Large input'
               state={InputStateEnum.disabled}
             />
             <StandardInput
               size={InputSizeEnum.default}
-              placeholderText={standardInputPlaceholder}
+              placeholderText='Default input'
             />
             <StandardInput
               size={InputSizeEnum.small}
-              placeholderText={standardInputPlaceholder}
+              placeholderText='Small input'
             />
           </div>
           <div
@@ -346,15 +344,15 @@ const StoryBook = () => {
             }}>
             <Textarea
               size={TextareaSizeEnum.large}
-              placeholder={textareaPlaceholder}
+              placeholder='Large textarea'
             />
             <Textarea
               size={TextareaSizeEnum.default}
-              placeholder={textareaPlaceholder}
+              placeholder='Default textarea'
             />
             <Textarea
               size={TextareaSizeEnum.small}
-              placeholder={textareaPlaceholder}
+              placeholder='Small textarea'
             />
           </div>
           <div
