@@ -26,7 +26,7 @@ const NotificationCard = styled('div')`
 
 const CloseButton = styled('div')`
   margin-top: 1.1587rem;
-  margin-right: 1.2925rem;
+  margin-right: 1.5rem;
   cursor: pointer;
 `;
 
@@ -67,8 +67,8 @@ const Notification = withTheme(
   ({
     showIcon,
     buttonText,
-    notificationTitle = 'Notification Title',
-    notificationBody = 'Interactively monetize corporate alignments and fully tested niche markets.',
+    title,
+    body
   }) => {
     return (
       <>
@@ -101,9 +101,9 @@ const Notification = withTheme(
               </ShowIcons>
             )}
             <NotificationMessage>
-              <Body showIcon={showIcon}>{notificationTitle}</Body>
+              <Body showIcon={showIcon}>{title}</Body>
               <Body size="Small" showIcon={showIcon}>
-                {notificationBody}
+                {body}
               </Body>
             </NotificationMessage>
 
