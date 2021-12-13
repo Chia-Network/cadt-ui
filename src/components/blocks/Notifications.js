@@ -27,6 +27,7 @@ const NotificationCard = withTheme(styled('div')`
 const CloseButton = withTheme(styled('div')`
   margin-top: 1.1587rem;
   margin-right: 1.2925rem;
+  cursor: pointer;
 `);
 
 const ConfirmButton = withTheme(styled('button')`
