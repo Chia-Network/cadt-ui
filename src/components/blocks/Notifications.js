@@ -1,18 +1,32 @@
 import React from 'react';
 import styled, { css, withTheme } from 'styled-components';
-import { SuccessIcon, InfoIcon, CloseIcon, ErrorIcon, WarningIcon } from '..';
+import {
+  SuccessIcon,
+  InfoIcon,
+  CloseIcon,
+  ErrorIcon,
+  WarningIcon,
+  Body,
+  ButtonText,
+} from '..';
 
 const NotificationCard = withTheme(styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   box-shadow: 0rem 0.5625rem 1.75rem 0.5rem rgba(0, 0, 0, 0.05),
-    0rem 0.375rem 1rem rgba(0, 0, 0, 0.08), 0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
+    0rem 0.375rem 1rem rgba(0, 0, 0, 0.08),
+    0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
   background-color: #ffffff;
   border: none;
   margin: 1.25rem;
   height: ${props => (props.buttonText ? '9rem' : '6.5rem')};
   width: 25.0625rem;
+`);
+
+const CloseButton = withTheme(styled('div')`
+  margin-top: 1.1587rem;
+  margin-right: 1.2925rem;
 `);
 
 const ConfirmButton = withTheme(styled('button')`
@@ -29,45 +43,23 @@ const ConfirmButton = withTheme(styled('button')`
   cursor: pointer;
 `);
 
-const CloseButton = withTheme(styled('div')`
-  margin-top: 1.1587rem;
-  margin-right: 1.6675rem;
-  cursor: pointer;
-`);
-
-const NotificationTitle = withTheme(styled('div')`
-  font-family: ${props => props.theme.typography.primary.regular};
-  font-size: 1rem;
-  height: 1.5rem;
-  line-height: 1.5rem;
-  margin-top: 1rem;
-  margin-bottom: 0.25rem;
-  ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1.5rem')}
-`);
-
-const NotificationBody = withTheme(styled('div')`
-  font-family: ${props => props.theme.typography.primary.regular};
-  font-family: ${props => props.theme.typography.primary.light};
-  font-size: 0.875rem;
-  height: 2.75rem;
-  width: 19.5rem;
-  line-height: 1.3125rem;
-  margin-bottom: 1rem;
-  ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1.5rem')}
-`);
-
 const NotificationMessage = withTheme(styled('div')`
-  width: 100%;
-  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin-left: 1.2rem;
 `);
 
 const ShowIcons = withTheme(styled('div')`
   margin-top: 1.0938rem;
   margin-left: 1.5938rem;
-  ${props => props.showIcon && css`margin-left: 1.8438rem`};
+  ${props =>
+    props.showIcon &&
+    css`
+      margin-left: 1.8438rem;
+    `};
 `);
 
 const Notification = withTheme(
@@ -80,7 +72,12 @@ const Notification = withTheme(
     return (
       <>
         <NotificationCard buttonText={buttonText}>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-evenly',
+              height: '100%',
+            }}>
             {showIcon === 'info' && (
               <ShowIcons showIcon={showIcon}>
                 <InfoIcon height="21" width="21" />
@@ -103,19 +100,21 @@ const Notification = withTheme(
               </ShowIcons>
             )}
             <NotificationMessage>
-              <NotificationTitle showIcon={showIcon}>
-                {notificationTitle}
-              </NotificationTitle>
-              <NotificationBody showIcon={showIcon}>
+              <Body showIcon={showIcon}>{notificationTitle}</Body>
+              <Body size="Small" showIcon={showIcon}>
                 {notificationBody}
-              </NotificationBody>
+              </Body>
             </NotificationMessage>
 
             <CloseButton>
               <CloseIcon height="8.91" width="8.66" />
             </CloseButton>
           </div>
-          {buttonText && <ConfirmButton>{buttonText}</ConfirmButton>}
+          {buttonText && (
+            <ConfirmButton>
+              <ButtonText color="#ffffff">{buttonText}</ButtonText>
+            </ConfirmButton>
+          )}
         </NotificationCard>
       </>
     );
