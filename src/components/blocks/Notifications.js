@@ -14,8 +14,8 @@ const Notification = withTheme(
   ({
     showIcon,
     buttonText,
-    notificationTitle = 'Notification Title',
-    notificationBody = 'Interactively monetize corporate alignments and fully tested niche markets.',
+    title,
+    body,
   }) => {
     return (
       <>
@@ -60,7 +60,7 @@ const Notification = withTheme(
                 marginLeft: '17.5px',
               }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Body showIcon={showIcon}>{notificationTitle}</Body>
+                <Body showIcon={showIcon}>{title}</Body>
                 <div>
                   <CloseIcon height="8.91" width="8.66" />
                 </div>
@@ -72,7 +72,7 @@ const Notification = withTheme(
                   height: '44px',
                 }}>
                 <Body size="Small" showIcon={showIcon}>
-                  {notificationBody}
+                  {body}
                 </Body>
               </div>
             </div>
