@@ -44,6 +44,7 @@ import {
   WarningIcon,
   WarningIconSmall,
   Body,
+  Notification
 } from '../../../components';
 
 const StoryBook = () => {
@@ -664,6 +665,18 @@ const StoryBook = () => {
           <Body size="Small Bold">This is Small Bold Body Text</Body>
           <Body size="X-Small">This is X-Small Body text</Body>
           <Body size="X-Small Bold">This is X-Small Bold Body Text</Body>
+        </div>
+        <div>
+          <Notification />
+          <Notification buttonText="Button" />
+          <Notification showIcon="info" />
+          <Notification showIcon="info" buttonText="Button" />
+          <Notification showIcon="error" />
+          <Notification showIcon="error" buttonText="Button" />
+          <Notification showIcon="warning" />
+          <Notification showIcon="warning" buttonText="Button" />
+          <Notification showIcon="success" />
+          <Notification showIcon="success" buttonText="Button" />
         </div>
       </Card>
     </>

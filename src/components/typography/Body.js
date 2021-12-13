@@ -8,7 +8,6 @@ const Text = withTheme(styled('body')`
   font-family: ${props => props.theme.typography.primary.regular};
   font-weight: 400;
   line-height: 150%;
-  letter-spacing: -0.0625rem;
   ${props =>
     props.size === 'Big' &&
     css`

@@ -9,3 +9,4 @@ export * from './Popover';
 export * from './Alert';
 export * from './Tag';
 export * from './LeftNav';
+export * from './Notifications';
