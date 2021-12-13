@@ -1,37 +1,37 @@
 import React from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled, { css, withTheme } from 'styled-components';
 import { SuccessIcon, InfoIcon, CloseIcon, ErrorIcon, WarningIcon } from '..';
 
 const NotificationCard = withTheme(styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
-    0px 6px 16px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0rem 0.5625rem 1.75rem 0.5rem rgba(0, 0, 0, 0.05),
+    0rem 0.375rem 1rem rgba(0, 0, 0, 0.08), 0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
   background-color: #ffffff;
   border: none;
   margin: 1.25rem;
-  height: ${props => (props.buttonText ? '144px' : '104px')};
-  width: 401px;
+  height: ${props => (props.buttonText ? '9rem' : '6.5rem')};
+  width: 25.0625rem;
 `);
 
 const ConfirmButton = withTheme(styled('button')`
   font-family: ${props => props.theme.typography.primary.regular};
-  width: 59px;
-  height: 29px;
-  margin-right: 24px;
-  margin-bottom: 16px;
+  width: 3.6875rem;
+  height: 1.8125rem;
+  margin-right: 1.5rem;
+  margin-bottom: 1rem;
   align-self: flex-end;
   background-color: #1890ff;
-  border-radius: 2px;
+  border-radius: 0.125rem;
   border: none;
   color: #ffffff;
   cursor: pointer;
 `);
 
 const CloseButton = withTheme(styled('div')`
-  margin-top: 18.54px;
-  margin-right: 26.68px;
+  margin-top: 1.1587rem;
+  margin-right: 1.6675rem;
   cursor: pointer;
 `);
 
@@ -40,20 +40,20 @@ const NotificationTitle = withTheme(styled('div')`
   font-size: 1rem;
   height: 1.5rem;
   line-height: 1.5rem;
-  margin-top: 16px;
+  margin-top: 1rem;
   margin-bottom: 0.25rem;
-  ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 24px')}
+  ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1.5rem')}
 `);
 
 const NotificationBody = withTheme(styled('div')`
   font-family: ${props => props.theme.typography.primary.regular};
   font-family: ${props => props.theme.typography.primary.light};
   font-size: 0.875rem;
-  height: 44px;
-  width: 312px;
+  height: 2.75rem;
+  width: 19.5rem;
   line-height: 1.3125rem;
   margin-bottom: 1rem;
-  ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 24px')}
+  ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1.5rem')}
 `);
 
 const NotificationMessage = withTheme(styled('div')`
@@ -65,9 +65,9 @@ const NotificationMessage = withTheme(styled('div')`
 `);
 
 const ShowIcons = withTheme(styled('div')`
-  margin-top: 17.5px;
-  margin-left: 25.5px;
-  ${props => props.showIcon && 'margin-left: 29.5; margin-top: 17.5px;'};
+  margin-top: 1.0938rem;
+  margin-left: 1.5938rem;
+  ${props => props.showIcon && css`margin-left: 1.8438rem`};
 `);
 
 const Notification = withTheme(
