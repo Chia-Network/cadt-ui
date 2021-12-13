@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css, withTheme } from 'styled-components';
+import { withTheme } from 'styled-components';
 import {
   SuccessIcon,
   InfoIcon,
@@ -10,59 +10,6 @@ import {
   ButtonText,
 } from '..';
 
-const NotificationCard = withTheme(styled('div')`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  box-shadow: 0rem 0.5625rem 1.75rem 0.5rem rgba(0, 0, 0, 0.05),
-    0rem 0.375rem 1rem rgba(0, 0, 0, 0.08),
-    0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
-  background-color: #ffffff;
-  border: none;
-  margin: 1.25rem;
-  height: ${props => (props.buttonText ? '9rem' : '6.5rem')};
-  width: 25.0625rem;
-`);
-
-const CloseButton = withTheme(styled('div')`
-  margin-top: 1.1587rem;
-  margin-right: 1.2925rem;
-  cursor: pointer;
-`);
-
-const ConfirmButton = withTheme(styled('button')`
-  font-family: ${props => props.theme.typography.primary.regular};
-  width: 3.6875rem;
-  height: 1.8125rem;
-  margin-right: 1.5rem;
-  margin-bottom: 1rem;
-  align-self: flex-end;
-  background-color: #1890ff;
-  border-radius: 0.125rem;
-  border: none;
-  color: #ffffff;
-  cursor: pointer;
-`);
-
-const NotificationMessage = withTheme(styled('div')`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  margin-left: 1.2rem;
-`);
-
-const ShowIcons = withTheme(styled('div')`
-  margin-top: 1.0938rem;
-  margin-left: 1.5938rem;
-  ${props =>
-    props.showIcon &&
-    css`
-      margin-left: 1.8438rem;
-    `};
-`);
-
 const Notification = withTheme(
   ({
     showIcon,
@@ -72,51 +19,82 @@ const Notification = withTheme(
   }) => {
     return (
       <>
-        <NotificationCard buttonText={buttonText}>
+        <div
+          style={{
+            margin: '50px',
+            backgroundColor: '#ffffff',
+            display: 'flex',
+            flexDirection: 'column',
+            height: `${buttonText ? `144px` : `104px`}`,
+            width: '401px',
+          }}
+          buttonText={buttonText}>
           <div
             style={{
               display: 'flex',
-              justifyContent: 'space-evenly',
+              alignItems: 'center',
               height: '100%',
             }}>
-            {showIcon === 'info' && (
-              <ShowIcons showIcon={showIcon}>
-                <InfoIcon height="21" width="21" />
-              </ShowIcons>
-            )}
-            {showIcon === 'success' && (
-              <ShowIcons showIcon={showIcon}>
-                <SuccessIcon height="21" width="21" />
-              </ShowIcons>
-            )}
-            {showIcon === 'error' && (
-              <ShowIcons showIcon={showIcon}>
-                <ErrorIcon height="21" width="21" />
-              </ShowIcons>
-            )}
+            {showIcon && (
+              <div
+                style={{
+                  alignSelf: 'baseline',
+                  marginTop: '17.5px',
+                  marginLeft: '25.5px',
+                }}>
+                {showIcon === 'info' && <InfoIcon height="21" width="21" />}
+                {showIcon === 'success' && (
+                  <SuccessIcon height="21" width="21" />
+                )}
+                {showIcon === 'error' && <ErrorIcon height="21" width="21" />}
 
-            {showIcon === 'warning' && (
-              <ShowIcons showIcon={showIcon}>
-                <WarningIcon height="21" width="21" />
-              </ShowIcons>
+                {showIcon === 'warning' && (
+                  <WarningIcon height="21" width="21" />
+                )}
+              </div>
             )}
-            <NotificationMessage>
-              <Body showIcon={showIcon}>{notificationTitle}</Body>
-              <Body size="Small" showIcon={showIcon}>
-                {notificationBody}
-              </Body>
-            </NotificationMessage>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginLeft: '17.5px',
+              }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Body showIcon={showIcon}>{notificationTitle}</Body>
+                <div>
+                  <CloseIcon height="8.91" width="8.66" />
+                </div>
+              </div>
 
-            <CloseButton>
-              <CloseIcon height="8.91" width="8.66" />
-            </CloseButton>
+              <div
+                style={{
+                  width: `${showIcon ? `312px` : `353px`}`,
+                  height: '44px',
+                }}>
+                <Body size="Small" showIcon={showIcon}>
+                  {notificationBody}
+                </Body>
+              </div>
+            </div>
           </div>
+
           {buttonText && (
-            <ConfirmButton>
+            <div
+              style={{
+                display: 'flex',
+                alignSelf: 'flex-end',
+                marginRight: '24px',
+                marginBottom: '17px',
+                borderRadius: '2px',
+                justifyContent: 'center',
+                height: '24px',
+                width: '59px',
+                backgroundColor: '#1890FF',
+              }}>
               <ButtonText color="#ffffff">{buttonText}</ButtonText>
-            </ConfirmButton>
+            </div>
           )}
-        </NotificationCard>
+        </div>
       </>
     );
   },
