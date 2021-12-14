@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { withTheme, css } from 'styled-components';
-import { ArrowDownIcon, MagnifyGlassIcon, CloseIcon } from '../icons';
+import {
+  ArrowDownIcon,
+  MagnifyGlassIcon,
+  CloseIcon,
+  CheckIcon,
+} from '../icons';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 const SelectSizeEnum = {
@@ -89,26 +94,21 @@ const StyledBasicMenu = styled(ScrollContainer)`
   overflow-x: hidden;
   position: absolute;
   padding: 0.25rem 0rem 0.25rem 0rem;
-  top: 2.8125rem;
+  top: ${props => (props.top ? props.top + 10 + 'px' : '10px')};
   background: #ffffff;
   box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
     0px 6px 16px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12);
   border-radius: 0.125rem;
   z-index: 10;
-  ${props => {
-    if (props.size === SelectSizeEnum.large) {
-      return `top: 2.9375rem;`;
-    } else if (props.size === SelectSizeEnum.small) {
-      return `top: 1.9375rem;`;
-    } else {
-      return `top: 2.4375rem;`;
-    }
-  }};
 `;
 
 const StyledBasicMenuItem = withTheme(styled('div')`
   padding: 0.3125rem 0.75rem 0.3125rem 0.75rem;
   max-width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: clip;
@@ -206,14 +206,23 @@ const Select = ({
   options,
   selected = null,
   placeholder = 'Select',
-  width = '200px'
+  width = '200px',
 }) => {
   const [menuIsVisible, setMenuIsVisible] = useState(false);
   const [selectState, setSelectState] = useState(state);
   const [optionsList] = useState(options);
   const [selectedOptions, setSelectedOptions] = useState(selected || null);
   const [searchInputValue, setSearchInputValue] = useState('');
+  const [menuTopPosition, setMenuTopPosition] = useState(0);
   const ref = useRef();
+  const selectRef = useRef();
+
+  useEffect(() => {
+    const newHeight = selectRef.current.clientHeight;
+    if (newHeight !== menuTopPosition) {
+      setMenuTopPosition(newHeight);
+    }
+  }, [selectedOptions, selectRef.current]);
 
   useEffect(() => {
     const closeMenu = e => {
@@ -287,12 +296,12 @@ const Select = ({
       } else {
         setSelectedOptions(prevState => [...prevState, { value, label }]);
       }
-    } else if(type === SelectTypeEnum.search) {
+    } else if (type === SelectTypeEnum.search) {
       if (optionIsAlreadySelected) {
         setSelectedOptions(null);
       } else {
         setSelectedOptions([{ value, label }]);
-      }      
+      }
       setSearchInputValue('');
       setMenuIsVisible(false);
     } else {
@@ -320,6 +329,7 @@ const Select = ({
       {/* Select for Basic type */}
       {type === SelectTypeEnum.basic && (
         <StyledSelect
+          ref={selectRef}
           size={size}
           width={width}
           type={type}
@@ -343,6 +353,7 @@ const Select = ({
       {/* Select for Multiple type */}
       {type === SelectTypeEnum.multiple && (
         <StyledSelect
+          ref={selectRef}
           width={width}
           size={size}
           type={type}
@@ -379,6 +390,7 @@ const Select = ({
       {/* Select for Search type */}
       {type === SelectTypeEnum.search && (
         <StyledSelect
+          ref={selectRef}
           width={width}
           size={size}
           type={type}
@@ -424,31 +436,33 @@ const Select = ({
       )}
       {/* Menu for Basic and Multiple type */}
       {menuIsVisible && type !== SelectTypeEnum.search && (
-        <StyledBasicMenu size={size}>
-          {optionsList.map(option => (
-            <StyledBasicMenuItem
-              key={option.value}
-              isSelected={
-                selectedOptions != null &&
-                selectedOptions.length > 0 &&
-                selectedOptions.find(
-                  selected => selected.value === option.value,
-                )
-              }
-              onClick={() =>
-                toggleOptionSelection({
-                  value: option.value,
-                  label: option.label,
-                })
-              }>
-              {option.label}
-            </StyledBasicMenuItem>
-          ))}
+        <StyledBasicMenu size={size} top={menuTopPosition}>
+          {optionsList.map(option => {
+            const isSelected =
+              selectedOptions != null &&
+              selectedOptions.length > 0 &&
+              selectedOptions.find(selected => selected.value === option.value);
+            
+            return (
+              <StyledBasicMenuItem
+                key={option.value}
+                isSelected={isSelected}
+                onClick={() =>
+                  toggleOptionSelection({
+                    value: option.value,
+                    label: option.label,
+                  })
+                }>
+                {option.label}
+                {isSelected && type === SelectTypeEnum.multiple && <CheckIcon width={12} height={12} />}
+              </StyledBasicMenuItem>
+            )
+          })}
         </StyledBasicMenu>
       )}
       {/* Menu for Search type */}
       {menuIsVisible && type === SelectTypeEnum.search && (
-        <StyledBasicMenu size={size}>
+        <StyledBasicMenu size={size} top={menuTopPosition}>
           {optionsList.map(
             option =>
               option.label
@@ -480,6 +494,3 @@ const Select = ({
 };
 
 export { Select, SelectSizeEnum, SelectTypeEnum, SelectStateEnum };
-  
-// TODO add check mark if user has multiple options selected
-// TODO make menu position dynamicaly based on select element bottom margin
