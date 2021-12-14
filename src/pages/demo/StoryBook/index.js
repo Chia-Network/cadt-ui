@@ -49,6 +49,8 @@ import {
   SelectStateEnum,
   Body,
   Notification,
+  ArrowDownIcon,
+  CheckIcon,
 } from '../../../components';
 
 const StoryBook = () => {
@@ -553,6 +555,8 @@ const StoryBook = () => {
           <SuccessIconSmall width="20" height="20" />
           <WarningIcon width="20" height="20" />
           <WarningIconSmall width="20" height="20" />
+          <ArrowDownIcon width="20" height="20" />
+          <CheckIcon width="20" height="20" />
         </div>
 
         <DataTable
