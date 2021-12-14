@@ -17,3 +17,4 @@ export * from './AddIcon';
 export * from './MagnifyGlassIconWhite';
 export * from './ArrowDownIcon';
 export * from './CheckIcon';
+export * from './CloseIconWithBorder';
