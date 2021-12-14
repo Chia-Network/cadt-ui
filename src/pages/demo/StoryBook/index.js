@@ -425,32 +425,6 @@ const StoryBook = () => {
             }}>
             <Select
               size={SelectSizeEnum.large}
-              state={SelectStateEnum.default}
-              type={SelectTypeEnum.basic}
-              options={selectOptions}
-            />
-            <Select
-              size={SelectSizeEnum.default}
-              state={SelectStateEnum.default}
-              type={SelectTypeEnum.basic}
-              options={selectOptions}
-            />
-            <Select
-              size={SelectSizeEnum.small}
-              state={SelectStateEnum.default}
-              type={SelectTypeEnum.basic}
-              options={selectOptions}
-            />
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-around',
-              marginRight: '50px',
-            }}>
-            <Select
-              size={SelectSizeEnum.large}
               type={SelectTypeEnum.basic}
               options={selectOptions}
               selected={selectInitialOptions}
@@ -458,13 +432,24 @@ const StoryBook = () => {
             />
             <Select
               size={SelectSizeEnum.default}
-              state={SelectStateEnum.disabled}
               type={SelectTypeEnum.basic}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Basic select"
             />
             <Select
               size={SelectSizeEnum.small}
-              state={SelectStateEnum.disabled}
               type={SelectTypeEnum.basic}
+              options={selectOptions}
+              placeholder="Basic select"
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              type={SelectTypeEnum.basic}
+              state={SelectStateEnum.disabled}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Basic select"
             />
           </div>
           <div
@@ -485,14 +470,20 @@ const StoryBook = () => {
               size={SelectSizeEnum.default}
               type={SelectTypeEnum.multiple}
               options={selectOptions}
-              selected={selectInitialOptions}
+              selected={[selectOptions[0], selectOptions[1], selectOptions[2]]}
               placeholder="Multiple select"
             />
             <Select
               size={SelectSizeEnum.small}
               type={SelectTypeEnum.multiple}
               options={selectOptions}
-              selected={selectInitialOptions}
+              placeholder="Multiple select"
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              type={SelectTypeEnum.multiple}
+              state={SelectStateEnum.disabled}
+              options={selectOptions}
               placeholder="Multiple select"
             />
           </div>
@@ -508,13 +499,23 @@ const StoryBook = () => {
               type={SelectTypeEnum.search}
               options={selectOptions}
               placeholder="Search select"
+              selected={selectInitialOptions}
             />
             <Select
               size={SelectSizeEnum.default}
-              state={SelectStateEnum.disabled}
+              options={selectOptions}
+              state={SelectStateEnum.default}
               type={SelectTypeEnum.basic}
             />
             <Select
+              size={SelectSizeEnum.small}
+              state={SelectStateEnum.default}
+              options={selectOptions}
+              placeholder="Search select"
+              type={SelectTypeEnum.basic}
+            />
+            <Select
+              options={selectOptions}
               size={SelectSizeEnum.small}
               state={SelectStateEnum.disabled}
               type={SelectTypeEnum.basic}

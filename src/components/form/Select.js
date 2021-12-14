@@ -294,7 +294,11 @@ const Select = ({
           prevState.filter(option => option.label !== label),
         );
       } else {
-        setSelectedOptions(prevState => [...prevState, { value, label }]);
+        setSelectedOptions(prevState =>
+          prevState != null
+            ? [...prevState, { value, label }]
+            : [{ value, label }],
+        );
       }
     } else if (type === SelectTypeEnum.search) {
       if (optionIsAlreadySelected) {
