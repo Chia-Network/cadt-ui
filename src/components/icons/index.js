@@ -15,3 +15,5 @@ export * from './WarningIcon';
 export * from './ClimateWarehouseLogo';
 export * from './AddIcon';
 export * from './MagnifyGlassIconWhite';
+export * from './ArrowDownIcon';
+export * from './CheckIcon';

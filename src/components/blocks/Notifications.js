@@ -25,6 +25,7 @@ const NotificationCard = styled('div')`
 `;
 
 const CloseButton = styled('div')`
+height: fit-content;
   margin-top: 1.1587rem;
   margin-right: 1.5rem;
   cursor: pointer;
@@ -46,11 +47,13 @@ const ConfirmButton = styled('button')`
 
 const NotificationMessage = styled('div')`
   display: flex;
+  word-wrap: break-word;
   flex-direction: column;
-  justify-content: center;
+  justify-content: unset;
   width: 100%;
   height: 100%;
   margin-left: 1.2rem;
+  margin-top:16px;
 `;
 
 const ShowIcons = styled('div')`
