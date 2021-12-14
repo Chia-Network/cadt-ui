@@ -43,8 +43,14 @@ import {
   SuccessIconSmall,
   WarningIcon,
   WarningIconSmall,
+  Select,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
   Body,
-  Notification
+  Notification,
+  ArrowDownIcon,
+  CheckIcon,
 } from '../../../components';
 
 const StoryBook = () => {
@@ -55,6 +61,28 @@ const StoryBook = () => {
 
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
+  
+  const selectOptions = [
+    { label: 'Portugal', value: 'PT' },
+    { label: 'Sweden', value: 'SE' },
+    { label: 'Indonesia', value: 'ID' },
+    { label: 'France', value: 'FR' },
+    { label: 'Philippines', value: 'PH' },
+    { label: 'Thailand', value: 'TH' },
+    { label: 'Bosnia and Herzegovina', value: 'BA' },
+    { label: 'Mexico', value: 'MX' },
+    { label: 'United States', value: 'US' },
+    { label: 'Finland', value: 'FI' },
+    { label: 'Azerbaijan', value: 'AZ' },
+    { label: 'Canada', value: 'CA' },
+    { label: 'Panama', value: 'PA' },
+    { label: 'Slovenia', value: 'SI' },
+    { label: 'China', value: 'CN' },
+    { label: 'Poland', value: 'PL' },
+    { label: 'Colombia', value: 'CO' },
+  ];
+
+  const selectInitialOptions = [{ label: 'United States', value: 'US' }];
 
   const popoverTitle = 'Popover title';
 
@@ -386,6 +414,120 @@ const StoryBook = () => {
             display: 'flex',
             justifyContent: 'start',
             paddingTop: '50px',
+            height: '210px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              marginRight: '50px',
+            }}>
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.basic}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Basic select"
+            />
+            <Select
+              size={SelectSizeEnum.default}
+              type={SelectTypeEnum.basic}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Basic select"
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              type={SelectTypeEnum.basic}
+              options={selectOptions}
+              placeholder="Basic select"
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              type={SelectTypeEnum.basic}
+              state={SelectStateEnum.disabled}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Basic select"
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              marginRight: '50px',
+            }}>
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.multiple}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Multiple select"
+            />
+            <Select
+              size={SelectSizeEnum.default}
+              type={SelectTypeEnum.multiple}
+              options={selectOptions}
+              selected={[selectOptions[0], selectOptions[1], selectOptions[2]]}
+              placeholder="Multiple select"
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              type={SelectTypeEnum.multiple}
+              options={selectOptions}
+              placeholder="Multiple select"
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              type={SelectTypeEnum.multiple}
+              state={SelectStateEnum.disabled}
+              options={selectOptions}
+              placeholder="Multiple select"
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              marginRight: '50px',
+            }}>
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.search}
+              options={selectOptions}
+              placeholder="Search select"
+              selected={selectInitialOptions}
+            />
+            <Select
+              type={SelectTypeEnum.search}
+              size={SelectSizeEnum.default}
+              options={selectOptions}
+              state={SelectStateEnum.default}
+            />
+            <Select
+              type={SelectTypeEnum.search}
+              size={SelectSizeEnum.small}
+              state={SelectStateEnum.default}
+              options={selectOptions}
+              placeholder="Search select"
+            />
+            <Select
+              type={SelectTypeEnum.search}
+              options={selectOptions}
+              size={SelectSizeEnum.small}
+              state={SelectStateEnum.disabled}
+            />
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'start',
+            paddingTop: '50px',
           }}>
           <ChiaLogo />
           <div style={{ width: '50px' }}></div>
@@ -407,13 +549,15 @@ const StoryBook = () => {
           <InfoIcon width="20" height="20" />
           <InfoIconSmall width="20" height="20" />
           <LightThemeIcon width="20" height="20" />
-          {/* <LocaleIcon width="20" height="20" /> */}
+          <LocaleIcon width="20" height="20" />
           <MagnifyGlassIcon width="20" height="20" />
           <MagnifyGlassIconWhite width="20" height="20" />
           <SuccessIcon width="20" height="20" />
           <SuccessIconSmall width="20" height="20" />
           <WarningIcon width="20" height="20" />
           <WarningIconSmall width="20" height="20" />
+          <ArrowDownIcon width="20" height="20" />
+          <CheckIcon width="20" height="20" />
         </div>
 
         <DataTable
