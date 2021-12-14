@@ -502,23 +502,23 @@ const StoryBook = () => {
               selected={selectInitialOptions}
             />
             <Select
+              type={SelectTypeEnum.search}
               size={SelectSizeEnum.default}
               options={selectOptions}
               state={SelectStateEnum.default}
-              type={SelectTypeEnum.basic}
             />
             <Select
+              type={SelectTypeEnum.search}
               size={SelectSizeEnum.small}
               state={SelectStateEnum.default}
               options={selectOptions}
               placeholder="Search select"
-              type={SelectTypeEnum.basic}
             />
             <Select
+              type={SelectTypeEnum.search}
               options={selectOptions}
               size={SelectSizeEnum.small}
               state={SelectStateEnum.disabled}
-              type={SelectTypeEnum.basic}
             />
           </div>
         </div>

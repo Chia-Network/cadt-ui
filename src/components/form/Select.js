@@ -430,8 +430,8 @@ const Select = ({
               </div>
               <StyledArrowDownContainer state={selectState}>
                 <MagnifyGlassIcon
-                  height={size === SelectSizeEnum.large ? 20 : 10}
-                  width={size === SelectSizeEnum.large ? 20 : 10}
+                  height={size === SelectSizeEnum.large ? 20 : 16}
+                  width={size === SelectSizeEnum.large ? 20 : 16}
                 />
               </StyledArrowDownContainer>
             </>
