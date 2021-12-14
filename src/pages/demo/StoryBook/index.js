@@ -43,8 +43,12 @@ import {
   SuccessIconSmall,
   WarningIcon,
   WarningIconSmall,
+  Select,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
   Body,
-  Notification
+  Notification,
 } from '../../../components';
 
 const StoryBook = () => {
@@ -55,6 +59,28 @@ const StoryBook = () => {
 
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
+  
+  const selectOptions = [
+    { label: 'Portugal', value: 'PT' },
+    { label: 'Sweden', value: 'SE' },
+    { label: 'Indonesia', value: 'ID' },
+    { label: 'France', value: 'FR' },
+    { label: 'Philippines', value: 'PH' },
+    { label: 'Thailand', value: 'TH' },
+    { label: 'Bosnia and Herzegovina', value: 'BA' },
+    { label: 'Mexico', value: 'MX' },
+    { label: 'United States', value: 'US' },
+    { label: 'Finland', value: 'FI' },
+    { label: 'Azerbaijan', value: 'AZ' },
+    { label: 'Canada', value: 'CA' },
+    { label: 'Panama', value: 'PA' },
+    { label: 'Slovenia', value: 'SI' },
+    { label: 'China', value: 'CN' },
+    { label: 'Poland', value: 'PL' },
+    { label: 'Colombia', value: 'CO' },
+  ];
+
+  const selectInitialOptions = [{ label: 'United States', value: 'US' }];
 
   const popoverTitle = 'Popover title';
 
@@ -386,6 +412,119 @@ const StoryBook = () => {
             display: 'flex',
             justifyContent: 'start',
             paddingTop: '50px',
+            height: '210px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              marginRight: '50px',
+            }}>
+            <Select
+              size={SelectSizeEnum.large}
+              state={SelectStateEnum.default}
+              type={SelectTypeEnum.basic}
+              options={selectOptions}
+            />
+            <Select
+              size={SelectSizeEnum.default}
+              state={SelectStateEnum.default}
+              type={SelectTypeEnum.basic}
+              options={selectOptions}
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              state={SelectStateEnum.default}
+              type={SelectTypeEnum.basic}
+              options={selectOptions}
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              marginRight: '50px',
+            }}>
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.basic}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Basic select"
+            />
+            <Select
+              size={SelectSizeEnum.default}
+              state={SelectStateEnum.disabled}
+              type={SelectTypeEnum.basic}
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              state={SelectStateEnum.disabled}
+              type={SelectTypeEnum.basic}
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              marginRight: '50px',
+            }}>
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.multiple}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Multiple select"
+            />
+            <Select
+              size={SelectSizeEnum.default}
+              type={SelectTypeEnum.multiple}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Multiple select"
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              type={SelectTypeEnum.multiple}
+              options={selectOptions}
+              selected={selectInitialOptions}
+              placeholder="Multiple select"
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              marginRight: '50px',
+            }}>
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.search}
+              options={selectOptions}
+              placeholder="Search select"
+            />
+            <Select
+              size={SelectSizeEnum.default}
+              state={SelectStateEnum.disabled}
+              type={SelectTypeEnum.basic}
+            />
+            <Select
+              size={SelectSizeEnum.small}
+              state={SelectStateEnum.disabled}
+              type={SelectTypeEnum.basic}
+            />
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'start',
+            paddingTop: '50px',
           }}>
           <ChiaLogo />
           <div style={{ width: '50px' }}></div>
@@ -407,7 +546,7 @@ const StoryBook = () => {
           <InfoIcon width="20" height="20" />
           <InfoIconSmall width="20" height="20" />
           <LightThemeIcon width="20" height="20" />
-          {/* <LocaleIcon width="20" height="20" /> */}
+          <LocaleIcon width="20" height="20" />
           <MagnifyGlassIcon width="20" height="20" />
           <MagnifyGlassIconWhite width="20" height="20" />
           <SuccessIcon width="20" height="20" />
