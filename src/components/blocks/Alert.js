@@ -67,6 +67,7 @@ const CloseTextButton = withTheme(styled('button')`
 
 const CloseButton = withTheme(styled('div')`
   cursor: pointer;
+  height: fit-content;
   ${props =>
     props.alertBody
       ? 'margin-right: 1.1675rem; margin-top: 1rem;'
