@@ -44,7 +44,7 @@ import {
   WarningIcon,
   WarningIconSmall,
   Body,
-  Notification
+  Notification,
 } from '../../../components';
 
 const StoryBook = () => {

@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { IndeterminateProgressOverlay } from '../components/';
+import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import * as Pages from '../pages';
 
 import { AppContainer, LeftNav } from '../components';
@@ -46,7 +46,9 @@ const AppNavigator = () => {
             </Route>
           </Suspense>
         </LeftNav>
+        <Dashboard />
       </Router>
+      
     </AppContainer>
   );
 };
