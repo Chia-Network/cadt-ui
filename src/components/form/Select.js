@@ -481,9 +481,5 @@ const Select = ({
 
 export { Select, SelectSizeEnum, SelectTypeEnum, SelectStateEnum };
   
-// for multiple selection grow vertically, then scroll
-// add check mark if user has multiple options selected
-// limit menu height
-// remove scrollbar, make scrollbar dragable
-// make menu position dynamicaly based on select element bottom margin
-// pass width to select element as prop
+// TODO add check mark if user has multiple options selected
+// TODO make menu position dynamicaly based on select element bottom margin
