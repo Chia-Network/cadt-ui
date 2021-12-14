@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { withTheme, css } from 'styled-components';
 import { ArrowDownIcon, MagnifyGlassIcon, CloseIcon } from '../icons';
+import ScrollContainer from 'react-indiana-drag-scroll';
 
 const SelectSizeEnum = {
   large: 'large',
@@ -82,7 +83,7 @@ const StyledSelect = withTheme(styled('div')`
   }};
 `);
 
-const StyledBasicMenu = styled('div')`
+const StyledBasicMenu = styled(ScrollContainer)`
   max-height: 300px;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -142,8 +143,11 @@ const StyledArrowDownContainer = styled('div')`
   margin-left: 0.625rem;
 `;
 
-const StyledMultipleSelect = styled('div')`
+const StyledMultipleSelect = styled(ScrollContainer)`
   max-width: 12.5rem;
+  max-height: 80px;
+  overflow-y: scroll;
+  overflow-x: hidden;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 4px;
