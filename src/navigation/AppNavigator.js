@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { IndeterminateProgressOverlay } from '../components/';
+import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import * as Pages from '../pages';
 
-import { AppContainer, LeftNav } from '../components';
+import { AppContainer } from '../components';
 
 const AppNavigator = () => {
   const { showProgressOverlay } = useSelector(store => store.app);
@@ -12,7 +12,7 @@ const AppNavigator = () => {
     <AppContainer>
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       <Router>
-        <LeftNav>
+        <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
             <Route exact path="/">
               <Pages.Home />
@@ -45,8 +45,10 @@ const AppNavigator = () => {
               <Pages.StoryBook />
             </Route>
           </Suspense>
-        </LeftNav>
+        </Dashboard>
+       
       </Router>
+      
     </AppContainer>
   );
 };
