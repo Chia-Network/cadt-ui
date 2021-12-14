@@ -7,7 +7,7 @@ const Units = () => {
   const dispatch = useDispatch();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
 
-  useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
+  useEffect(() => dispatch(getUnits({ useMockedResponse: true })), []);
 
   return (
     <>

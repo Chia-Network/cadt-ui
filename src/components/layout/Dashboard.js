@@ -28,16 +28,19 @@ const Body = styled('div')`
   height: 46.75rem;
   margin: 1.5rem;
   background-color: #ffffff;
+  overflow: hidden;
 `;
 
-const Dashboard = withTheme(() => {
+const Dashboard = withTheme(({children}) => {
   //const appStore = useSelector(state => state.app);
   return (
     <Main>
-      <LeftNav />
+      <LeftNav/>
       <Container>
         <Headline />
-        <Body />
+        <Body>
+          {children}
+        </Body>
       </Container>
     </Main>
   );

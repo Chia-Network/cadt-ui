@@ -7,7 +7,7 @@ const Projects = () => {
   const dispatch = useDispatch();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
 
-  useEffect(() => dispatch(getProjects({ useMockedResponse: false })), []);
+  useEffect(() => dispatch(getProjects({ useMockedResponse: true })), []);
   return (
     <>
       <Card>
