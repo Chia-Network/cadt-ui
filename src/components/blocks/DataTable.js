@@ -138,7 +138,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           ))}
         </tbody>
       </Table>
-      <div style={{ marginTop: '30px' }}>
+      <div style={{ margin: '30px 0' }}>
         <Pagination
           pages={(paginatedData && paginatedData.length) || 0}
           current={(currentPage && currentPage > 0) || 1}
