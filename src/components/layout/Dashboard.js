@@ -12,7 +12,7 @@ const Container = styled('div')`
 `;
 
 const Headline = styled('div')`
-  max-width: 74rem;
+  width: 100%;
   height: 4rem;
   background-color: #ffffff;
 `;
