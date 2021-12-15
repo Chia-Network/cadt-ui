@@ -45,10 +45,8 @@ const AppNavigator = () => {
               <Pages.StoryBook />
             </Route>
           </Suspense>
-        </Dashboard>
-       
+        </Dashboard>     
       </Router>
-      
     </AppContainer>
   );
 };

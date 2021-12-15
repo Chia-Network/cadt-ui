@@ -7,6 +7,7 @@ import ReactPaginate from 'react-paginate';
 import { TableCellHeaderText, TableCellText } from '../typography';
 
 import constants from '../../constants';
+import { TableDrawer } from '.';
 
 const Table = styled('table')`
   background-color: white;
@@ -105,6 +106,7 @@ const StyledPaginateContainer = styled.div`
 
 const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
+  const [getRecord, setRecord ] = useState(null);
   const appStore = useSelector(state => state.app);
 
   const handlePageClick = event => {
@@ -131,6 +133,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   if (!paginatedData[currentPage]) {
     return null;
   }
+
 
   return (
     <>
@@ -174,7 +177,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
         </THead>
         <tbody>
           {paginatedData[currentPage].map((record, index) => (
-            <Tr index={index} selectedTheme={appStore.theme} key={index}>
+            <Tr onClick={() => setRecord(record)} index={index} selectedTheme={appStore.theme} key={index}>
               {Object.keys(record).map((key, index) => (
                 <Td selectedTheme={appStore.theme} key={index}>
                   <TableCellText>
@@ -187,6 +190,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           ))}
         </tbody>
       </Table>
+      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)}/>
     </>
   );
 });
