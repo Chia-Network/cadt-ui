@@ -3,10 +3,10 @@ import _ from 'lodash';
 import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import ReactPaginate from 'react-paginate';
 import { TableCellHeaderText, TableCellText } from '../typography';
 
 import constants from '../../constants';
+import { Pagination } from './';
 
 const Table = styled('table')`
   background-color: white;
@@ -69,46 +69,12 @@ const Td = styled('td')`
   vertical-align: inherit;
 `;
 
-// React ReactPaginate cant be directly modified by styled-components
-// so we create a wrapper that can select the sub classes within the component
-const StyledPaginateContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  .pagination {
-    padding: 0;
-    color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-    list-style-type: none;
-    display: flex;
-  }
-  .break-me {
-    cursor: default;
-  }
-  .active {
-    border-color: transparent;
-    background-color: ${props =>
-      props.selectedTheme === constants.THEME.DARK
-        ? props.theme.colors[props.selectedTheme].onSurfacePrimaryVarient
-        : props.theme.colors[props.selectedTheme].onSurfaceSecondaryVarient};
-
-    color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-    border-radius: 0.25rem;
-  }
-  li {
-    cursor: pointer;
-    width: 1.5625rem;
-    height: 1.5625rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
 const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
   const appStore = useSelector(state => state.app);
 
-  const handlePageClick = event => {
-    setPage(event.selected);
+  const handlePageClick = page => {
+    setPage(page);
   };
 
   const paginatedData = useMemo(() => {
@@ -134,21 +100,6 @@ const DataTable = withTheme(({ headings, data, actions }) => {
 
   return (
     <>
-      <StyledPaginateContainer selectedTheme={appStore.theme}>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          forcePage={currentPage}
-          pageRangeDisplayed={5}
-          pageCount={(paginatedData && paginatedData.length) || 0}
-          previousLabel="<"
-          renderOnZeroPageCount={null}
-          containerClassName="pagination"
-          activeClassName="active"
-          breakClassName="break-me"
-        />
-      </StyledPaginateContainer>
       <Table selectedTheme={appStore.theme}>
         <THead selectedTheme={appStore.theme}>
           <tr>
@@ -187,6 +138,14 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           ))}
         </tbody>
       </Table>
+      <div style={{ marginTop: '30px' }}>
+        <Pagination
+          pages={(paginatedData && paginatedData.length) || 0}
+          current={(currentPage && currentPage > 0) || 1}
+          callback={handlePageClick}
+          showLast
+        />
+      </div>
     </>
   );
 });

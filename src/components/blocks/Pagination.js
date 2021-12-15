@@ -85,14 +85,16 @@ const Pagination = ({ pages, current=1, showLast=false, callback }) => {
           <PagesContainer
             key={element}
             isActive={current === element}
-            onClick={() => callback(element)}>
+            onClick={() => current !== element && callback(element)}>
             {element}
           </PagesContainer>
         ))}
       {showLast && current + 2 + 1 < pages && (
         <>
-          <ThreeDotsIcon width={10} height={10}/>
-          <PagesContainer onClick={() => callback(pages)}>{pages}</PagesContainer>
+          <ThreeDotsIcon width={10} height={10} />
+          <PagesContainer onClick={() => callback(pages)}>
+            {pages}
+          </PagesContainer>
         </>
       )}
       <ControlsContainer
