@@ -10,4 +10,4 @@ export * from './Alert';
 export * from './Tag';
 export * from './LeftNav';
 export * from './Notifications';
-export * from './AppDrawer';
+export * from './TableDrawer';
