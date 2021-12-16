@@ -10,4 +10,5 @@ export * from './Alert';
 export * from './Tag';
 export * from './LeftNav';
 export * from './Notifications';
+export * from './Pagination';
 export * from './TableDrawer';
