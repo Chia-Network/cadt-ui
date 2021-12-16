@@ -6,7 +6,7 @@ import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 
 import constants from '../../constants';
-import { Pagination } from './';
+import { Pagination, TableDrawer } from './';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -85,6 +85,7 @@ const StyledPaginationContainer = styled('div')`
 
 const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
+  const [getRecord, setRecord ] = useState(null);
   const appStore = useSelector(state => state.app);
 
   const handlePageClick = page => {
@@ -111,6 +112,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   if (!paginatedData[currentPage]) {
     return null;
   }
+
 
   return (
     <div>
@@ -139,7 +141,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
         </THead>
         <tbody>
           {paginatedData[currentPage].map((record, index) => (
-            <Tr index={index} selectedTheme={appStore.theme} key={index}>
+            <Tr onClick={() => setRecord(record)} index={index} selectedTheme={appStore.theme} key={index}>
               {Object.keys(record).map((key, index) => (
                 <Td selectedTheme={appStore.theme} key={index}>
                   <TableCellText>
@@ -160,6 +162,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           showLast
         />
       </StyledPaginationContainer>
+      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)}/>
     </div>
   );
 });

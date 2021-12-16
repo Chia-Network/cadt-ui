@@ -18,3 +18,4 @@ export * from './MagnifyGlassIconWhite';
 export * from './ArrowDownIcon';
 export * from './CheckIcon';
 export * from './ThreeDotsIcon';
+export * from './CloseIconWithBorder';
