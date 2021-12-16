@@ -6,6 +6,7 @@ const CardContainer = styled('div')`
   border-radius: 0.25rem;
   padding: 1rem;
   margin: 0.75rem;
+  box-sizing: border-box;
   max-height: ${props => props.maxHeight};
   overflow: auto;
   overflow-x: hidden;

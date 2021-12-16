@@ -51,6 +51,7 @@ import {
   Notification,
   ArrowDownIcon,
   CheckIcon,
+  Pagination
 } from '../../../components';
 import { CreateProjectForm } from '../Projects/CreateProjectForm';
 
@@ -63,6 +64,8 @@ const StoryBook = () => {
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
   
+  const paginationCallback = e => console.log(e);
+
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
     { label: 'Sweden', value: 'SE' },
@@ -563,6 +566,54 @@ const StoryBook = () => {
           <WarningIconSmall width="20" height="20" />
           <ArrowDownIcon width="20" height="20" />
           <CheckIcon width="20" height="20" />
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-around',
+            margin: '50px 0px',
+          }}>
+          <div
+            style={{
+              display: 'inline-flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'column',
+              gap: '20px',
+            }}>
+            <Pagination pages={24} current={20} callback={paginationCallback} showLast/>
+            <Pagination pages={24} current={21} callback={paginationCallback} />
+            <Pagination pages={24} current={22} callback={paginationCallback} />
+            <Pagination pages={24} current={23} callback={paginationCallback} />
+            <Pagination pages={24} current={24} callback={paginationCallback} />
+          </div>
+          <div
+            style={{
+              display: 'inline-flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'column',
+              gap: '20px',
+            }}>
+            <Pagination pages={6} current={6} callback={paginationCallback} />
+            <Pagination pages={6} current={5} callback={paginationCallback} />
+            <Pagination pages={6} current={4} callback={paginationCallback} />
+            <Pagination pages={6} current={3} callback={paginationCallback} />
+            <Pagination pages={6} current={2} callback={paginationCallback} />
+          </div>
+          <div
+            style={{
+              display: 'inline-flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'column',
+              gap: '20px',
+            }}>
+            <Pagination pages={1} current={1} callback={paginationCallback} />
+            <Pagination pages={2} current={2} callback={paginationCallback} />
+            <Pagination pages={3} current={3} callback={paginationCallback} />
+            <Pagination pages={4} current={4} callback={paginationCallback} />
+            <Pagination pages={5} current={5} callback={paginationCallback} />
+          </div>
         </div>
 
         <DataTable
