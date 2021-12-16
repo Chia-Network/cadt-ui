@@ -26,6 +26,9 @@ const AppNavigator = () => {
             <Route exact path="/projects/add">
               <Pages.AddProject />
             </Route>
+            <Route exact path="/units/add">
+              <Pages.AddUnits />
+            </Route>
             <Route exact path="/storybook">
               <Pages.StoryBook />
             </Route>
