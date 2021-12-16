@@ -34,7 +34,7 @@ const Tag = withTheme(
         <AddTag body={body} closeable={closeable}>
           {addNew && (
             <TagButton onClick={addNew}>
-              <AddIcon width="8.06" height="8.44" />
+              <AddIcon width="8.06" height="8.44" fill="#262626" />
             </TagButton>
           )}
           <TagBody>{body === null ? 'New Tag' : body}</TagBody>

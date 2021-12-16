@@ -65,6 +65,12 @@ const LeftNav = withTheme(({ children }) => {
           Add Project
         </MenuItem>
         <MenuItem
+          selected={location === 'units/add'}
+          to="/units/add"
+          onClick={() => setLocation('units/add')}>
+          Add Unit
+        </MenuItem>
+        <MenuItem
           selected={location === 'storybook'}
           to="/storybook"
           onClick={() => setLocation('storybook')}>

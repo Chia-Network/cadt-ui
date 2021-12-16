@@ -553,7 +553,7 @@ const StoryBook = () => {
             paddingTop: '50px',
             paddingBottom: '50px',
           }}>
-          <AddIcon width="20" height="20" />
+          <AddIcon width="20" height="20" fill="#262626" />
           <CloseIcon width="20" height="20" />
           <DarkThemeIcon width="20" height="20" />
           <ErrorIcon width="20" height="20" />
