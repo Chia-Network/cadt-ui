@@ -9,7 +9,7 @@ const CardContainer = styled('div')`
   box-sizing: border-box;
   max-height: ${props => props.maxHeight};
   overflow: auto;
-  overflow-x: hidden;
+  overflow-x: scroll;
 `;
 
 const Card = withTheme(({ children, maxHeight = '100%' }) => {

@@ -1,7 +1,19 @@
 import React from 'react';
 //import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import { LeftNav } from '..';
+import { LeftNav, AddIcon, SearchInput, Tag } from '..';
+
+const Create = styled('button')`
+  cursor: pointer;
+  border: none;
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 40px;
+  width: 114px;
+  background-color: #3b8ee0;
+`;
 
 const Container = styled('div')`
   width: 100%;
@@ -24,6 +36,7 @@ const Main = styled('div')`
 `;
 
 const Body = styled('div')`
+  max-width: 71rem;
   width: calc(100% - 3rem);
   height: 46.75rem;
   margin: 1.5rem;
@@ -31,15 +44,39 @@ const Body = styled('div')`
   overflow: hidden;
 `;
 
-const Dashboard = withTheme(({children}) => {
+const Dashboard = withTheme(({ children }) => {
   //const appStore = useSelector(state => state.app);
   return (
     <Main>
-      <LeftNav/>
+      <LeftNav />
       <Container>
         <Headline />
         <Body>
-          {children}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                margin: '30px 0px'
+              }}>
+              <SearchInput outline />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                  alignItems: 'flex-start',
+                  width: '20%'
+                }}>
+                <Tag body="Unit Text" closeable />
+                <Tag body="Unit Text" closeable />
+                <Tag body="Unit Text" closeable />
+              </div>
+              <Create onClick={"location.href='projects/add'"}>
+                <AddIcon height="16.88" width="16.13" />
+                Create
+              </Create>
+            </div>
+          <div style={{ height: '85%' }}>{children}</div>
         </Body>
       </Container>
     </Main>

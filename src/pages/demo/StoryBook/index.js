@@ -53,7 +53,7 @@ import {
   CheckIcon,
   Pagination
 } from '../../../components';
-import { CreateProjectForm } from '../../../components/forms';
+import { CreateProjectForm, CreateUnitsForm } from '../../../components/forms';
 
 const StoryBook = () => {
   const tooltipContent =
@@ -103,6 +103,10 @@ const StoryBook = () => {
 
         <div style={{ marginTop: '30px', padding: '30px', border: 'solid lightgray 1px' }}>
           <CreateProjectForm />
+        </div>
+
+        <div style={{ marginTop: '30px', padding: '30px', border: 'solid lightgray 1px' }}>
+          <CreateUnitsForm />
         </div>
 
         <div

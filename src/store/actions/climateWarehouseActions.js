@@ -94,6 +94,35 @@ export const postNewProject = data => {
   };
 };
 
+export const postNewUnits = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        console.log('yay!');
+      } else {
+        dispatch(setGlobalErrorMessage('Unit could not be created'));
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 const mockedRatingsResponse = {
   type: actions.GET_RATINGS,
   // Different envs import this differently
