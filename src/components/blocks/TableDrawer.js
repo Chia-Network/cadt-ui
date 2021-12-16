@@ -2,6 +2,7 @@ import { Drawer } from '@mui/material';
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { CloseIconWithBorder, H4, Subtitle } from '..';
+import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 
 const drawerStyles = {
   marginTop: '70px',
@@ -49,7 +50,7 @@ const TableDrawer = withTheme(({ getRecord, onClose }) => {
             return (
               <>
                 <TableContent key={id}>
-                  <H4>{value[0]}</H4>
+                  <H4>{convertPascalCaseToSentenceCase(value[0])}</H4>
 
                   <Subtitle key={id}>{value[1]}</Subtitle>
                 </TableContent>

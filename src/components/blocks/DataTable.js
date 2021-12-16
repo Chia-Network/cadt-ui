@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
+import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 
 import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
@@ -85,11 +86,11 @@ const StyledPaginationContainer = styled('div')`
 
 const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
-  const [getRecord, setRecord ] = useState(null);
+  const [getRecord, setRecord] = useState(null);
   const appStore = useSelector(state => state.app);
 
   const handlePageClick = page => {
-    setPage(page-1);
+    setPage(page - 1);
   };
 
   const paginatedData = useMemo(() => {
@@ -124,7 +125,9 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                 end={!actions && index === headings.length - 1}
                 selectedTheme={appStore.theme}
                 key={index}>
-                <TableCellHeaderText>{heading}</TableCellHeaderText>
+                <TableCellHeaderText>
+                  {convertPascalCaseToSentenceCase(heading)}
+                </TableCellHeaderText>
               </Th>
             ))}
             {actions && (
@@ -159,7 +162,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
       </Table>
       <StyledPaginationContainer>
         <Pagination
-          pages={paginatedData && paginatedData.length || 0}
+          pages={(paginatedData && paginatedData.length) || 0}
           current={currentPage + 1}
           callback={handlePageClick}
           showLast

@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
-import { Card, DataTable } from '../../../components';
-import { getUnits } from '../../../store/actions/climateWarehouseActions';
+import { Card, DataTable } from '../../components';
+import { getUnits } from '../../store/actions/climateWarehouseActions';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Units = () => {
   const dispatch = useDispatch();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
 
-  useEffect(() => dispatch(getUnits({ useMockedResponse: true })), []);
+  useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
+
+  if (!climateWarehouseStore.units || !climateWarehouseStore.units.length) {
+    return null;
+  }
 
   return (
     <>
