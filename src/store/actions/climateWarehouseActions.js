@@ -81,10 +81,6 @@ export const postNewProject = data => {
 
       const response = await fetch(url, payload);
 
-      // const response = await fetch(url, {
-      //   method: 'GET',
-      // });
-
       if (response.ok) {
         console.log('yay!');
       } else {
