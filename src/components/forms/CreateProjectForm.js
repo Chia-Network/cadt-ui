@@ -6,8 +6,8 @@ import {
   InputSizeEnum,
   InputStateEnum,
   PrimaryButton,
-} from '../../../components';
-import { Body, H3 } from './../../../components/typography';
+} from '..';
+import { Body, H3 } from '../typography';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -42,7 +42,7 @@ const CreateProjectForm = () => {
     projectTag: '',
   });
 
-  async function postData(url = '', data = {}, method) {
+  async function sendRequest(url = '', data = {}, method) {
     try {
       const response = await fetch(url, {
         method: method,
@@ -59,7 +59,7 @@ const CreateProjectForm = () => {
   }
   
   const onNewProjectSubmit = async () =>
-    postData('http://localhost:3030/v1/projects', newProject, 'POST').then(data => {
+    sendRequest('http://localhost:3030/v1/projects', newProject, 'POST').then(data => {
       console.log(data);
     });
 

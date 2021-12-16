@@ -53,7 +53,7 @@ import {
   CheckIcon,
   Pagination
 } from '../../../components';
-import { CreateProjectForm } from '../Projects/CreateProjectForm';
+import { CreateProjectForm } from '../../../components/forms';
 
 const StoryBook = () => {
   const tooltipContent =
