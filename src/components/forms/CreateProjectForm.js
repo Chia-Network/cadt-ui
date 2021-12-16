@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import {
   StandardInput,
@@ -8,6 +9,7 @@ import {
   PrimaryButton,
 } from '..';
 import { Body, H3 } from '../typography';
+import { postNewProject } from '../../store/actions/climateWarehouseActions';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -18,6 +20,7 @@ const StyledFieldContainer = styled('div')`
 `;
 
 const CreateProjectForm = () => {
+  const dispatch = useDispatch();
   const [newProject, setNewProject] = useState({
     currentRegistry: '',
     registryOfOrigin: '',
@@ -41,27 +44,6 @@ const CreateProjectForm = () => {
     estimatedAnnualAverageEmissionReduction: 60,
     projectTag: '',
   });
-
-  async function sendRequest(url = '', data = {}, method) {
-    try {
-      const response = await fetch(url, {
-        method: method,
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      return response.json();
-    } catch (err) {
-      console.log(err);      
-    }
-  }
-  
-  const onNewProjectSubmit = async () =>
-    sendRequest('http://localhost:3030/v1/projects', newProject, 'POST').then(data => {
-      console.log(data);
-    });
 
   return (
     <div style={{ width: '320px' }}>
@@ -368,7 +350,7 @@ const CreateProjectForm = () => {
           }
         />
       </StyledFieldContainer>
-      <div onClick={() => onNewProjectSubmit()}>
+      <div onClick={() => dispatch(postNewProject(newProject))}>
         <PrimaryButton label="Submit" size="large" />
       </div>
     </div>
