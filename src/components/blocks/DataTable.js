@@ -89,7 +89,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const appStore = useSelector(state => state.app);
 
   const handlePageClick = page => {
-    setPage(page);
+    setPage(page-1);
   };
 
   const paginatedData = useMemo(() => {
@@ -112,7 +112,6 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   if (!paginatedData[currentPage]) {
     return null;
   }
-
 
   return (
     <div>
@@ -141,7 +140,11 @@ const DataTable = withTheme(({ headings, data, actions }) => {
         </THead>
         <tbody>
           {paginatedData[currentPage].map((record, index) => (
-            <Tr onClick={() => setRecord(record)} index={index} selectedTheme={appStore.theme} key={index}>
+            <Tr
+              onClick={() => setRecord(record)}
+              index={index}
+              selectedTheme={appStore.theme}
+              key={index}>
               {Object.keys(record).map((key, index) => (
                 <Td selectedTheme={appStore.theme} key={index}>
                   <TableCellText>
@@ -156,13 +159,13 @@ const DataTable = withTheme(({ headings, data, actions }) => {
       </Table>
       <StyledPaginationContainer>
         <Pagination
-          pages={(paginatedData && paginatedData.length) || 0}
-          current={(currentPage && currentPage > 0) || 1}
+          pages={paginatedData && paginatedData.length || 0}
+          current={currentPage + 1}
           callback={handlePageClick}
           showLast
         />
       </StyledPaginationContainer>
-      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)}/>
+      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
     </div>
   );
 });

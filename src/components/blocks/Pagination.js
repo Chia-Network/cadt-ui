@@ -53,7 +53,7 @@ const PagesContainer = withTheme(styled(ControlsContainer)`
   }};
 `);
 
-const Pagination = ({ pages, current=1, showLast=false, callback }) => {
+const Pagination = ({ pages, current = 1, showLast = false, callback }) => {
   let displayedPages = [current];
 
   let numberOfAddedPages = 1;
