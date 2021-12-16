@@ -25,13 +25,13 @@ const climateWarehouseReducer = (state = initialState, action) => {
       return u({ qualifications: action.payload }, state);
 
     case climateWarehouseActions.GET_PROJECT_LOCATIONS:
-      return u({ projectLocations: action.payload }, state);
+      return u({ projectLocations: action.payload || [] }, state);
 
     case climateWarehouseActions.GET_RELATED_PROJECTS:
       return u({ relatedProjects: action.payload }, state);
 
     case climateWarehouseActions.GET_UNITS:
-      return u({ units: action.payload }, state);
+      return u({ units: action.payload || [] }, state);
 
     case climateWarehouseActions.GET_PROJECTS:
       return u({ projects: action.payload }, state);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import {
   StandardInput,
@@ -19,7 +20,7 @@ const StyledFieldContainer = styled('div')`
   padding-bottom: 20px;
 `;
 
-const CreateProjectForm = () => {
+const CreateProjectForm = withRouter(({ history }) => {
   const dispatch = useDispatch();
   const [newProject, setNewProject] = useState({
     currentRegistry: '',
@@ -44,6 +45,11 @@ const CreateProjectForm = () => {
     estimatedAnnualAverageEmissionReduction: 60,
     projectTag: '',
   });
+
+  const handleSubmit = () => {
+    dispatch(postNewProject(newProject));
+    history.push('/projects');
+  };
 
   return (
     <div style={{ width: '320px' }}>
@@ -350,11 +356,11 @@ const CreateProjectForm = () => {
           }
         />
       </StyledFieldContainer>
-      <div onClick={() => dispatch(postNewProject(newProject))}>
+      <div onClick={handleSubmit}>
         <PrimaryButton label="Submit" size="large" />
       </div>
     </div>
   );
-};
+});
 
 export { CreateProjectForm };
