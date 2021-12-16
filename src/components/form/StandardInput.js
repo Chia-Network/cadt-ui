@@ -174,6 +174,8 @@ const StandardInput = withTheme(
     state = InputStateEnum.default,
     suffix,
     prefix,
+    value,
+    onChange
   }) => {
     const [inputState, setInputState] = useState(state);
 
@@ -220,6 +222,8 @@ const StandardInput = withTheme(
           inputState={inputState}
           variant={variant}
           disabled={inputState === InputStateEnum.disabled}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
         />
         {suffix && (
           <StyledSuffixPrefixContainer>{suffix}</StyledSuffixPrefixContainer>

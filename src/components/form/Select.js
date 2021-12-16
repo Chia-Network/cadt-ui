@@ -28,7 +28,7 @@ const SelectStateEnum = {
   disabled: 'disabled',
 };
 
-const StyledSelect = withTheme(styled('div')`
+const StyledSelect = styled('div')`
   min-width: ${props => props.width};
   max-width: ${props => props.width};
   display: flex;
@@ -86,7 +86,7 @@ const StyledSelect = withTheme(styled('div')`
         cursor: default;`;
     }
   }};
-`);
+`;
 
 const StyledBasicMenu = styled(ScrollContainer)`
   max-height: 300px;
@@ -102,7 +102,7 @@ const StyledBasicMenu = styled(ScrollContainer)`
   z-index: 10;
 `;
 
-const StyledBasicMenuItem = withTheme(styled('div')`
+const StyledBasicMenuItem = styled('div')`
   padding: 0.3125rem 0.75rem 0.3125rem 0.75rem;
   max-width: 200px;
   display: flex;
@@ -128,7 +128,7 @@ const StyledBasicMenuItem = withTheme(styled('div')`
       return `font-weight: normal;`;
     }
   }};
-`);
+`;
 
 const StyledArrowDownContainer = styled('div')`
   ${props => {
@@ -153,7 +153,7 @@ const StyledMultipleSelect = styled(ScrollContainer)`
   gap: 4px;
 `;
 
-const StyledMultipleSelectItem = withTheme(styled('div')`
+const StyledMultipleSelectItem = styled('div')`
   background: #f5f5f5;
   border-radius: 2px;
   display: flex;
@@ -166,7 +166,7 @@ const StyledMultipleSelectItem = withTheme(styled('div')`
   font-size: 0.75rem;
   line-height: 1.25rem;
   color: #262626;
-`);
+`;
 
 const StyledSearchInput = styled('input')`
   width: 100%;
@@ -199,7 +199,7 @@ const StyledSearchInput = styled('input')`
   }
 `;
 
-const Select = ({
+const Select = withTheme(({
   size = SelectSizeEnum.default,
   type = SelectTypeEnum.basic,
   state = SelectStateEnum.default,
@@ -207,6 +207,7 @@ const Select = ({
   selected = null,
   placeholder = 'Select',
   width = '200px',
+  theme
 }) => {
   const [menuIsVisible, setMenuIsVisible] = useState(false);
   const [selectState, setSelectState] = useState(state);
@@ -332,7 +333,7 @@ const Select = ({
     <div style={{ position: 'relative' }} ref={ref}>
       {/* Select for Basic type */}
       {type === SelectTypeEnum.basic && (
-        <StyledSelect
+        <StyledSelect theme={theme} 
           ref={selectRef}
           size={size}
           width={width}
@@ -356,7 +357,7 @@ const Select = ({
       )}
       {/* Select for Multiple type */}
       {type === SelectTypeEnum.multiple && (
-        <StyledSelect
+        <StyledSelect theme={theme} 
           ref={selectRef}
           width={width}
           size={size}
@@ -367,7 +368,7 @@ const Select = ({
           <StyledMultipleSelect>
             {selectedOptions != null && selectedOptions.length > 0
               ? selectedOptions.map(option => (
-                  <StyledMultipleSelectItem key={option.value}>
+                  <StyledMultipleSelectItem theme={theme} key={option.value}>
                     {option.label}
                     <div
                       style={{ marginLeft: '5px' }}
@@ -393,7 +394,7 @@ const Select = ({
       )}
       {/* Select for Search type */}
       {type === SelectTypeEnum.search && (
-        <StyledSelect
+        <StyledSelect theme={theme} 
           ref={selectRef}
           width={width}
           size={size}
@@ -448,7 +449,7 @@ const Select = ({
               selectedOptions.find(selected => selected.value === option.value);
             
             return (
-              <StyledBasicMenuItem
+              <StyledBasicMenuItem theme={theme} 
                 key={option.value}
                 isSelected={isSelected}
                 onClick={() =>
@@ -472,7 +473,7 @@ const Select = ({
               option.label
                 .toLowerCase()
                 .includes(searchInputValue.toLowerCase()) && (
-                <StyledBasicMenuItem
+                <StyledBasicMenuItem theme={theme} 
                   key={option.value}
                   isSelected={
                     selectedOptions != null &&
@@ -495,6 +496,6 @@ const Select = ({
       )}
     </div>
   );
-};
+});
 
 export { Select, SelectSizeEnum, SelectTypeEnum, SelectStateEnum };
