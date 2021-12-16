@@ -17,35 +17,20 @@ const AppNavigator = () => {
             <Route exact path="/">
               <Pages.Home />
             </Route>
-            <Route exact path="/co-benefits">
-              <Pages.CoBenefits />
-            </Route>
-            <Route exact path="/locations">
-              <Pages.Locations />
-            </Route>
-            <Route exact path="/qualifications">
-              <Pages.Qualifications />
-            </Route>
-            <Route exact path="/ratings">
-              <Pages.Ratings />
-            </Route>
-            <Route exact path="/related-projects">
-              <Pages.RelatedProjects />
-            </Route>
             <Route exact path="/units">
               <Pages.Units />
             </Route>
-            <Route exact path="/vintages">
-              <Pages.Vintages />
-            </Route>
             <Route exact path="/projects">
               <Pages.Projects />
+            </Route>
+            <Route exact path="/projects/add">
+              <Pages.AddProject />
             </Route>
             <Route exact path="/storybook">
               <Pages.StoryBook />
             </Route>
           </Suspense>
-        </Dashboard>     
+        </Dashboard>
       </Router>
     </AppContainer>
   );

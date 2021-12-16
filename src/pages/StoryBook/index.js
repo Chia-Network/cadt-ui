@@ -52,8 +52,8 @@ import {
   ArrowDownIcon,
   CheckIcon,
   Pagination
-} from '../../../components';
-import { CreateProjectForm, CreateUnitsForm } from '../../../components/forms';
+} from '../../components';
+import { CreateProjectForm, CreateUnitsForm} from '../../components/forms';
 
 const StoryBook = () => {
   const tooltipContent =

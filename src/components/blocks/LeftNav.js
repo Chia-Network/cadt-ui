@@ -36,7 +36,7 @@ const LeftNav = withTheme(({ children }) => {
   const [location, setLocation] = useState(false);
 
   useEffect(() => {
-    setLocation(window.location.pathname.split('/')[1]);
+    setLocation(window.location.pathname.split(/_(.+)/)[1]);
   }, [window.location]);
 
   return (
@@ -57,6 +57,12 @@ const LeftNav = withTheme(({ children }) => {
           to="/units"
           onClick={() => setLocation('units')}>
           Units
+        </MenuItem>
+        <MenuItem
+          selected={location === 'projects/add'}
+          to="/projects/add"
+          onClick={() => setLocation('projects/add')}>
+          Add Project
         </MenuItem>
         <MenuItem
           selected={location === 'storybook'}
