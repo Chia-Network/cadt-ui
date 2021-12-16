@@ -52,6 +52,7 @@ import {
   ArrowDownIcon,
   CheckIcon,
 } from '../../../components';
+import { CreateProjectForm } from '../Projects/CreateProjectForm';
 
 const StoryBook = () => {
   const tooltipContent =
@@ -96,6 +97,10 @@ const StoryBook = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
+
+        <div style={{ marginTop: '30px', padding: '30px', border: 'solid lightgray 1px' }}>
+          <CreateProjectForm />
+        </div>
 
         <div
           style={{
