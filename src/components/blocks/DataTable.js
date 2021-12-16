@@ -9,11 +9,13 @@ import constants from '../../constants';
 import { Pagination } from './';
 
 const Table = styled('table')`
+  box-sizing: border-box;
   background-color: white;
   width: 100%;
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
+  margin-bottom: 10px;
 `;
 
 const THead = styled('thead')`
@@ -69,6 +71,18 @@ const Td = styled('td')`
   vertical-align: inherit;
 `;
 
+const StyledPaginationContainer = styled('div')`
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: -1rem;
+  min-height: 60px;
+  padding-bottom: 10px;
+`;
+
 const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
   const appStore = useSelector(state => state.app);
@@ -99,7 +113,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   }
 
   return (
-    <>
+    <div>
       <Table selectedTheme={appStore.theme}>
         <THead selectedTheme={appStore.theme}>
           <tr>
@@ -138,15 +152,15 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           ))}
         </tbody>
       </Table>
-      <div style={{ margin: '30px 0' }}>
+      <StyledPaginationContainer>
         <Pagination
           pages={(paginatedData && paginatedData.length) || 0}
           current={(currentPage && currentPage > 0) || 1}
           callback={handlePageClick}
           showLast
         />
-      </div>
-    </>
+      </StyledPaginationContainer>
+    </div>
   );
 });
 

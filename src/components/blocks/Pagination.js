@@ -10,6 +10,7 @@ const PaginationContainer = styled('div')`
   gap: 8px;
   width: 100%;
   color: #8c8c8c;
+  background-color: white;
 `;
 
 const ControlsContainer = styled('div')`
