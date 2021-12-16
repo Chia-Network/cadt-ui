@@ -15,7 +15,6 @@ const Button = withTheme(styled('button')`
   border-radius: 2px;
   padding: 10px;
   height: 32px;
-  margin: 5px;
   cursor: pointer;
 
   ${props => props.size === 'large' && `height: 40px !important;`};

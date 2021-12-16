@@ -5,6 +5,7 @@ import {
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
+  PrimaryButton,
 } from '../../../components';
 import { Body, H3 } from './../../../components/typography';
 
@@ -40,6 +41,27 @@ const CreateProjectForm = () => {
     estimatedAnnualAverageEmissionReduction: 60,
     projectTag: '',
   });
+
+  async function postData(url = '', data = {}, method) {
+    try {
+      const response = await fetch(url, {
+        method: method,
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      return response.json();
+    } catch (err) {
+      console.log(err);      
+    }
+  }
+  
+  const onNewProjectSubmit = async () =>
+    postData('http://localhost:3030/v1/projects', newProject, 'POST').then(data => {
+      console.log(data);
+    });
 
   return (
     <div style={{ width: '320px' }}>
@@ -346,6 +368,9 @@ const CreateProjectForm = () => {
           }
         />
       </StyledFieldContainer>
+      <div onClick={() => onNewProjectSubmit()}>
+        <PrimaryButton label="Submit" size="large" />
+      </div>
     </div>
   );
 };
