@@ -66,6 +66,8 @@ const StoryBook = () => {
   
   const paginationCallback = e => console.log(e);
 
+  const addNewTagCallback = () => console.log('add tag'); 
+
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
     { label: 'Sweden', value: 'SE' },
@@ -101,11 +103,21 @@ const StoryBook = () => {
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
 
-        <div style={{ marginTop: '30px', padding: '30px', border: 'solid lightgray 1px' }}>
+        <div
+          style={{
+            marginTop: '30px',
+            padding: '30px',
+            border: 'solid lightgray 1px',
+          }}>
           <CreateProjectForm />
         </div>
 
-        <div style={{ marginTop: '30px', padding: '30px', border: 'solid lightgray 1px' }}>
+        <div
+          style={{
+            marginTop: '30px',
+            padding: '30px',
+            border: 'solid lightgray 1px',
+          }}>
           <CreateUnitsForm />
         </div>
 
@@ -586,7 +598,12 @@ const StoryBook = () => {
               flexDirection: 'column',
               gap: '20px',
             }}>
-            <Pagination pages={24} current={20} callback={paginationCallback} showLast/>
+            <Pagination
+              pages={24}
+              current={20}
+              callback={paginationCallback}
+              showLast
+            />
             <Pagination pages={24} current={21} callback={paginationCallback} />
             <Pagination pages={24} current={22} callback={paginationCallback} />
             <Pagination pages={24} current={23} callback={paginationCallback} />
@@ -853,11 +870,10 @@ const StoryBook = () => {
         </div>
 
         <div>
-          <Tag addNew />
-          <Tag closeable body="Tag" onClose />
-          <Tag addNew body="Tag" />
+          <Tag addNew={addNewTagCallback} />
+          <Tag closeable body="Tag" onClose={addNewTagCallback} />
+          <Tag addNew={addNewTagCallback} body="Tag" />
           <Tag body="Tag" />
-          <Tag />
           <Tag />
         </div>
 
