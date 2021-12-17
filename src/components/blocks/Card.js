@@ -10,6 +10,7 @@ const CardContainer = styled('div')`
   max-height: ${props => props.maxHeight};
   overflow: auto;
   overflow-x: scroll;
+  height: 100%;
 `;
 
 const Card = withTheme(({ children, maxHeight = '100%' }) => {

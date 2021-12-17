@@ -46,17 +46,19 @@ const TableDrawer = withTheme(({ getRecord, onClose }) => {
       </IconContainer>
       <TableContentContainer>
         {getRecord &&
-          Object.entries(getRecord).map((value, id) => {
-            return (
-              <>
-                <TableContent key={id}>
-                  <H4>{convertPascalCaseToSentenceCase(value[0])}</H4>
+          Object.entries(getRecord)
+            .filter(value => !Array.isArray(getRecord[value[0]]))
+            .map((value, id) => {
+              return (
+                <>
+                  <TableContent key={id}>
+                    <H4>{convertPascalCaseToSentenceCase(value[0])}</H4>
 
-                  <Subtitle key={id}>{value[1]}</Subtitle>
-                </TableContent>
-              </>
-            );
-          })}
+                    <Subtitle key={id}>{value[1]}</Subtitle>
+                  </TableContent>
+                </>
+              );
+            })}
       </TableContentContainer>
     </Drawer>
   );

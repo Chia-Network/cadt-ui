@@ -51,7 +51,15 @@ const Button = withTheme(styled('button')`
 `);
 
 const PrimaryButton = withTheme(
-  ({ label, loading = false, icon, size, danger = false, disabled }) => {
+  ({
+    label,
+    loading = false,
+    icon,
+    size,
+    danger = false,
+    disabled,
+    onClick,
+  }) => {
     const appStore = useSelector(state => state.app);
     return (
       <Button
@@ -59,7 +67,8 @@ const PrimaryButton = withTheme(
         disabled={disabled}
         size={size}
         danger={danger}
-        selectedTheme={appStore.theme}>
+        selectedTheme={appStore.theme}
+        onClick={onClick}>
         {loading && (
           <>
             <CircularProgress size={15} thickness={5} />

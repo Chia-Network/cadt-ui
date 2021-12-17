@@ -1,7 +1,7 @@
 import React from 'react';
 //import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import { LeftNav, AddIcon, SearchInput, Tag, PrimaryButton } from '..';
+import { LeftNav } from '..';
 
 const Container = styled('div')`
   width: 100%;
@@ -9,6 +9,7 @@ const Container = styled('div')`
   background-color: #e5e5e5;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 `;
 
 const Headline = styled('div')`
@@ -24,7 +25,7 @@ const Main = styled('div')`
 `;
 
 const Body = styled('div')`
-  max-width: 71rem;
+  max-width: calc(100% - 3rem);
   width: calc(100% - 3rem);
   height: 46.75rem;
   margin: 1.5rem;
@@ -40,27 +41,6 @@ const Dashboard = withTheme(({ children }) => {
       <Container>
         <Headline />
         <Body>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              margin: '30px 0px',
-            }}>
-            <SearchInput outline />
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'flex-start',
-                width: '20%',
-              }}>
-              <Tag body="Unit Text" closeable />
-              <Tag body="Unit Text" closeable />
-              <Tag body="Unit Text" closeable />
-            </div>
-            <PrimaryButton label="Create" size="large" icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />} />
-          </div>
           <div style={{ height: '85%' }}>{children}</div>
         </Body>
       </Container>

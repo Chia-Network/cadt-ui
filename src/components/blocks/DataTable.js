@@ -17,6 +17,7 @@ const Table = styled('table')`
   border-spacing: 0;
   border-collapse: collapse;
   margin-bottom: 10px;
+  overflow-x: scroll;
 `;
 
 const THead = styled('thead')`
@@ -70,6 +71,8 @@ const Td = styled('td')`
   border-bottom: 1px solid rgba(224, 224, 224, 1);
   letter-spacing: 0.01071em;
   vertical-align: inherit;
+  max-width: 100px;
+  overflow: ;
 `;
 
 const StyledPaginationContainer = styled('div')`
@@ -116,50 +119,53 @@ const DataTable = withTheme(({ headings, data, actions }) => {
 
   return (
     <div>
-      <Table selectedTheme={appStore.theme}>
-        <THead selectedTheme={appStore.theme}>
-          <tr>
-            {headings.map((heading, index) => (
-              <Th
-                start={index === 0}
-                end={!actions && index === headings.length - 1}
+      <div style={{ overflowX: 'scroll', overflowY: 'hidden' }}>
+        <Table selectedTheme={appStore.theme}>
+          <THead selectedTheme={appStore.theme}>
+            <tr>
+              {headings.map((heading, index) => (
+                <Th
+                  start={index === 0}
+                  end={!actions && index === headings.length - 1}
+                  selectedTheme={appStore.theme}
+                  key={index}>
+                  <TableCellHeaderText>
+                    {convertPascalCaseToSentenceCase(heading)}
+                  </TableCellHeaderText>
+                </Th>
+              ))}
+              {actions && (
+                <Th
+                  start={false}
+                  end={true}
+                  selectedTheme={appStore.theme}
+                  key={'action'}>
+                  <TableCellHeaderText>Action</TableCellHeaderText>
+                </Th>
+              )}
+            </tr>
+          </THead>
+          <tbody>
+            {paginatedData[currentPage].map((record, index) => (
+              <Tr
+                onClick={() => setRecord(record)}
+                index={index}
                 selectedTheme={appStore.theme}
                 key={index}>
-                <TableCellHeaderText>
-                  {convertPascalCaseToSentenceCase(heading)}
-                </TableCellHeaderText>
-              </Th>
+                {Object.keys(record)
+                .map((key, index) => (
+                  <Td selectedTheme={appStore.theme} key={index}>
+                    <TableCellText>
+                      {record[key] && record[key].toString()}
+                    </TableCellText>
+                  </Td>
+                ))}
+                {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}
+              </Tr>
             ))}
-            {actions && (
-              <Th
-                start={false}
-                end={true}
-                selectedTheme={appStore.theme}
-                key={'action'}>
-                <TableCellHeaderText>Action</TableCellHeaderText>
-              </Th>
-            )}
-          </tr>
-        </THead>
-        <tbody>
-          {paginatedData[currentPage].map((record, index) => (
-            <Tr
-              onClick={() => setRecord(record)}
-              index={index}
-              selectedTheme={appStore.theme}
-              key={index}>
-              {Object.keys(record).map((key, index) => (
-                <Td selectedTheme={appStore.theme} key={index}>
-                  <TableCellText>
-                    {record[key] && record[key].toString()}
-                  </TableCellText>
-                </Td>
-              ))}
-              {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}
-            </Tr>
-          ))}
-        </tbody>
-      </Table>
+          </tbody>
+        </Table>
+      </div>
       <StyledPaginationContainer>
         <Pagination
           pages={(paginatedData && paginatedData.length) || 0}
