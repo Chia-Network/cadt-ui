@@ -28,7 +28,7 @@ const TagButton = styled('div')`
 `;
 
 const Tag = withTheme(
-  ({ closeable, body = null, addNew, onClose = _.noop }) => {
+  ({ closeable, body = null, addNew = _.noop, onClose = _.noop }) => {
     return (
       <>
         <AddTag body={body} closeable={closeable}>
