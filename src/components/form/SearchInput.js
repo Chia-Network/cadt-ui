@@ -75,7 +75,6 @@ const SearchIconContainer = styled('div')`
 
 const SearchContainer = withTheme(styled('div')`
   font-family: ${props => props.theme.typography.primary.regular};
-  margin-top: 0.625rem;
   display: flex;
   justify-content: center;
   align-items: center;
