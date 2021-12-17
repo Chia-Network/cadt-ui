@@ -12,13 +12,13 @@ import {
 } from '..';
 
 const Container = styled('div')`
-  height: ${props => (props.basic ? '202px' : '188px')};
-  width: ${props => (props.basic ? '520px' : '400px')};
+  height: ${props => (props.basic ? '12.625rem' : '11.75rem')};
+  width: ${props => (props.basic ? '32.5rem' : '25rem')};
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
-    0px 6px 16px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0rem 0.5625rem 1.75rem 0.5rem rgba(0, 0, 0, 0.05),
+    0rem 0.375rem 1rem rgba(0, 0, 0, 0.08), 0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
 `;
 
 const ButtonContainer = styled('div')`
@@ -28,8 +28,8 @@ const ButtonContainer = styled('div')`
   ${props =>
     props.basic &&
     css`
-      height: 52px;
-      width: 472px;
+      height: 3.25rem;
+      width: 29.5rem;
       align-self: center;
       align-items: center;
     `};
@@ -37,28 +37,28 @@ const ButtonContainer = styled('div')`
 
 const IconContainer = styled('div')`
   align-self: center;
-  height: 132px;
-  margin-right: 17.5px;
+  height: 8.25rem;
+  margin-right: 1.0938rem;
 `;
 
 const MessageContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  height: ${props => (props.basic ? '100%' : '132px')};
-  width: ${props => (props.basic ? '100%' : '296px')};
+  height: ${props => (props.basic ? '100%' : '8.25rem')};
+  width: ${props => (props.basic ? '100%' : '18.5rem')};
   justify-content: space-evenly;
   align-items: ${props => (props.basic ? 'unset' : 'center')};
 `;
 
 const BodyContainer = styled('div')`
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
   ${props =>
     props.basic &&
     css`
       display: flex;
       align-items: center;
-      height: 44px;
-      width: 472px;
+      height: 2.75rem;
+      width: 29.5rem;
       flex-grow: 0.5;
       align-self: center;
       margin-bottom: 0%;
@@ -73,15 +73,15 @@ const TitleContainer = styled('div')`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 472px;
-      height: 24px;
+      width: 29.5rem;
+      height: 1.5rem;
       align-self: center;
       flex-grow: 0.25;
     `};
 `;
 
 const OkContainer = styled('div')`
-  margin-left: 8px;
+  margin-left: 0.5rem;
 `;
 const Modal = withTheme(
   ({ title, body, showButtons, onClose, onOk, type, confirmation, basic }) => {
