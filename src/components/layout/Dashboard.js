@@ -27,7 +27,7 @@ const Main = styled('div')`
 const Body = styled('div')`
   max-width: calc(100% - 3rem);
   width: calc(100% - 3rem);
-  height: 46.75rem;
+  height: 100%;
   margin: 1.5rem;
   background-color: #ffffff;
   overflow: hidden;
@@ -41,7 +41,7 @@ const Dashboard = withTheme(({ children }) => {
       <Container>
         <Headline />
         <Body>
-          <div style={{ height: '85%' }}>{children}</div>
+          <div style={{ height: 'calc(100% - 3rem)' }}>{children}</div>
         </Body>
       </Container>
     </Main>

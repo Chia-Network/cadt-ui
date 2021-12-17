@@ -118,8 +118,8 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   }
 
   return (
-    <div>
-      <div style={{ overflowX: 'scroll', overflowY: 'hidden' }}>
+    <div style={{ height: 'calc(100% - 116px)' }}>
+      <div style={{ overflowX: 'scroll', overflowY: 'hidden', height: '100%' }}>
         <Table selectedTheme={appStore.theme}>
           <THead selectedTheme={appStore.theme}>
             <tr>
@@ -152,8 +152,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                 index={index}
                 selectedTheme={appStore.theme}
                 key={index}>
-                {Object.keys(record)
-                .map((key, index) => (
+                {Object.keys(record).map((key, index) => (
                   <Td selectedTheme={appStore.theme} key={index}>
                     <TableCellText>
                       {record[key] && record[key].toString()}
