@@ -28,7 +28,6 @@ const ModalContainer = styled('div')`
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
-  z-index: 2;
   box-shadow: 0rem 0.5625rem 1.75rem 0.5rem rgba(0, 0, 0, 0.05),
     0rem 0.375rem 1rem rgba(0, 0, 0, 0.08),
     0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
