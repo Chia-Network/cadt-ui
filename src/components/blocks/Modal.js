@@ -12,13 +12,26 @@ import {
 } from '..';
 
 const Container = styled('div')`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContainer = styled('div')`
   height: ${props => (props.basic ? '12.625rem' : '11.75rem')};
   width: ${props => (props.basic ? '32.5rem' : '25rem')};
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #ffffff;
+  z-index: 2;
   box-shadow: 0rem 0.5625rem 1.75rem 0.5rem rgba(0, 0, 0, 0.05),
-    0rem 0.375rem 1rem rgba(0, 0, 0, 0.08), 0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
+    0rem 0.375rem 1rem rgba(0, 0, 0, 0.08),
+    0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
 `;
 
 const ButtonContainer = styled('div')`
@@ -86,50 +99,58 @@ const OkContainer = styled('div')`
 const Modal = withTheme(
   ({ title, body, showButtons, onClose, onOk, type, confirmation, basic }) => {
     return (
-      <Container basic={basic}>
-        {type === 'info' && !basic && (
-          <IconContainer>
-            <InfoIcon height="21" width="21" />
-          </IconContainer>
-        )}
-        {type === 'error' && !basic && (
-          <IconContainer>
-            <ErrorIcon height="21" width="21" />
-          </IconContainer>
-        )}
-        {type === 'success' && !basic && (
-          <IconContainer>
-            <SuccessIcon height="21" width="21" />
-          </IconContainer>
-        )}
-        {(type === 'warning' || confirmation) && !basic && (
-          <IconContainer>
-            <WarningIcon height="21" width="21" />
-          </IconContainer>
-        )}
-        <MessageContainer basic={basic}>
-          <TitleContainer basic={basic}>
-            <Body size="Bold">{title}</Body>
-            {basic && <CloseIcon height="8.91" width="8.66" />}
-          </TitleContainer>
-          {basic && <Divider height="1" width="520" />}
-          <BodyContainer basic={basic}>
-            <Body size="Small">{body}</Body>
-          </BodyContainer>
+      <>
+        <Container>
+          <ModalContainer basic={basic}>
+            {type === 'info' && !basic && (
+              <IconContainer>
+                <InfoIcon height="21" width="21" />
+              </IconContainer>
+            )}
+            {type === 'error' && !basic && (
+              <IconContainer>
+                <ErrorIcon height="21" width="21" />
+              </IconContainer>
+            )}
+            {type === 'success' && !basic && (
+              <IconContainer>
+                <SuccessIcon height="21" width="21" />
+              </IconContainer>
+            )}
+            {(type === 'warning' || confirmation) && !basic && (
+              <IconContainer>
+                <WarningIcon height="21" width="21" />
+              </IconContainer>
+            )}
+            <MessageContainer basic={basic}>
+              <TitleContainer basic={basic}>
+                <Body size="Bold">{title}</Body>
+                {basic && <CloseIcon height="8.91" width="8.66" />}
+              </TitleContainer>
+              {basic && <Divider height="1" width="520" />}
+              <BodyContainer basic={basic}>
+                <Body size="Small">{body}</Body>
+              </BodyContainer>
 
-          {basic && <Divider height="1" width="520" />}
-          {showButtons && (
-            <ButtonContainer basic={basic}>
-              {(confirmation || basic) && (
-                <PrimaryButton size="large" label="Cancel" onClose={onClose} />
+              {basic && <Divider height="1" width="520" />}
+              {showButtons && (
+                <ButtonContainer basic={basic}>
+                  {(confirmation || basic) && (
+                    <PrimaryButton
+                      size="large"
+                      label="Cancel"
+                      onClose={onClose}
+                    />
+                  )}
+                  <OkContainer>
+                    <PrimaryButton size="large" label="Ok" onClick={onOk} />
+                  </OkContainer>
+                </ButtonContainer>
               )}
-              <OkContainer>
-                <PrimaryButton size="large" label="Ok" onClick={onOk} />
-              </OkContainer>
-            </ButtonContainer>
-          )}
-        </MessageContainer>
-      </Container>
+            </MessageContainer>
+          </ModalContainer>
+        </Container>
+      </>
     );
   },
 );

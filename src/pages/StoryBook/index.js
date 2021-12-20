@@ -96,6 +96,14 @@ const StoryBook = () => {
   return (
     <>
       <Card>
+      <div>
+          <Modal
+            title="Modal Title"
+            body="Interactively monetize corporate alignments and fully tested niche markets."
+            showButtons
+            confirmation
+          />
+        </div>
         <H1>This is an header H1</H1>
         <H2>This is an header H2</H2>
         <H3>This is an header H3</H3>
@@ -103,44 +111,6 @@ const StoryBook = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
-        <div style={{margin: '50px 0'}}>
-          <Modal
-            title="Modal Title"
-            body="Interactively monetize corporate alignments and fully tested niche markets."
-            showButtons
-            basic
-          />
-          <Modal
-            title="Modal Title"
-            body="Interactively monetize corporate alignments and fully tested niche markets."
-            showButtons
-            confirmation
-          />
-          <Modal
-            title="Modal Title"
-            body="Interactively monetize corporate alignments and fully tested niche markets."
-            showButtons
-            type="info"
-          />
-          <Modal
-            title="Modal Title"
-            body="Interactively monetize corporate alignments and fully tested niche markets."
-            showButtons
-            type="success"
-          />
-          <Modal
-            title="Modal Title"
-            body="Interactively monetize corporate alignments and fully tested niche markets."
-            showButtons
-            type="warning"
-          />
-          <Modal
-            title="Modal Title"
-            body="Interactively monetize corporate alignments and fully tested niche markets."
-            showButtons
-            type="error"
-          />
-        </div>
         <div
           style={{
             marginTop: '30px',
