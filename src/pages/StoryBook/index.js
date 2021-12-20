@@ -51,7 +51,8 @@ import {
   Notification,
   ArrowDownIcon,
   CheckIcon,
-  Pagination
+  Pagination,
+  ComponentRepeater
 } from '../../components';
 import { CreateProjectForm, CreateUnitsForm} from '../../components/forms';
 
@@ -102,6 +103,10 @@ const StoryBook = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
+
+        <ComponentRepeater>
+          <Subtitle>This is a repeated item</Subtitle>
+        </ComponentRepeater>
 
         <div
           style={{
