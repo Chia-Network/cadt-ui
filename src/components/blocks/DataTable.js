@@ -93,7 +93,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const appStore = useSelector(state => state.app);
 
   const handlePageClick = page => {
-    setPage(page - 1);
+    setPage(page);
   };
 
   const paginatedData = useMemo(() => {
@@ -168,7 +168,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
       <StyledPaginationContainer>
         <Pagination
           pages={(paginatedData && paginatedData.length) || 0}
-          current={currentPage + 1}
+          current={currentPage}
           callback={handlePageClick}
           showLast
         />

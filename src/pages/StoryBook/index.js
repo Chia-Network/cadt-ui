@@ -600,14 +600,14 @@ const StoryBook = () => {
             }}>
             <Pagination
               pages={24}
-              current={20}
+              current={19}
               callback={paginationCallback}
               showLast
             />
-            <Pagination pages={24} current={1} callback={paginationCallback} />
+            <Pagination pages={24} current={0} callback={paginationCallback} />
+            <Pagination pages={24} current={21} callback={paginationCallback} />
             <Pagination pages={24} current={22} callback={paginationCallback} />
             <Pagination pages={24} current={23} callback={paginationCallback} />
-            <Pagination pages={24} current={24} callback={paginationCallback} />
           </div>
           <div
             style={{

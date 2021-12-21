@@ -53,54 +53,67 @@ const PagesContainer = withTheme(styled(ControlsContainer)`
   }};
 `);
 
-const Pagination = ({ pages, current = 1, showLast = false, callback }) => {
-  let displayedPages = [current];
+const Pagination = ({ pages, current, showLast = false, callback }) => {
+  // if current page number higher or equal than number of pages, first page is displayed
+  const currentPageNumber =
+    current && current > 0 && current < pages ? current + 1 : 1;
+  const numberOfPages = pages && pages !== 0 ? pages : 1;
+  const changeCurrentPageTo = value => callback(value - 1);
+  const backButtonIsDisabled = currentPageNumber === 1;
+  const nextButtonIsDisabled = currentPageNumber === numberOfPages;
 
+  let displayedPages = [currentPageNumber];
   let numberOfAddedPages = 1;
-  for (let x = 1; x < 5 && numberOfAddedPages < 5 && numberOfAddedPages < pages; x++) {
-    if (current - x > 0) {
-      displayedPages.unshift(current - x);
+  for (
+    let x = 1;
+    x < 5 && numberOfAddedPages < 5 && numberOfAddedPages < numberOfPages;
+    x++
+  ) {
+    if (currentPageNumber - x > 0) {
+      displayedPages.unshift(currentPageNumber - x);
       numberOfAddedPages++;
     }
-    if (current + x <= pages) {
-      displayedPages.push(current + x);
+    if (currentPageNumber + x <= numberOfPages) {
+      displayedPages.push(currentPageNumber + x);
       numberOfAddedPages++;
     }
   }
-
-  const thereAreNoPages = pages === 0;
-  const backButtonIsDisabled = current <= 1 || thereAreNoPages;
-  const nextButtonIsDisabled = current === pages || thereAreNoPages;
 
   return (
     <PaginationContainer>
       <ControlsContainer
         isDisabled={backButtonIsDisabled}
         isBackButton={true}
-        onClick={() => !backButtonIsDisabled && callback(current - 1)}>
+        onClick={() =>
+          !backButtonIsDisabled && changeCurrentPageTo(currentPageNumber - 1)
+        }>
         <ArrowDownIcon height={12} width={12} />
       </ControlsContainer>
       {displayedPages &&
         displayedPages.map(element => (
           <PagesContainer
             key={element}
-            isActive={current === element}
-            onClick={() => current !== element && callback(element)}>
+            isActive={currentPageNumber === element}
+            onClick={() =>
+              currentPageNumber !== element && changeCurrentPageTo(element)
+            }>
             {element}
           </PagesContainer>
         ))}
-      {showLast && current + 2 + 1 < pages && (
+      {showLast && currentPageNumber + 2 + 1 < numberOfPages && (
         <>
           <ThreeDotsIcon width={10} height={10} />
-          <PagesContainer onClick={() => callback(pages)}>
-            {pages}
+          <PagesContainer onClick={() => changeCurrentPageTo(numberOfPages)}>
+            {numberOfPages}
           </PagesContainer>
         </>
       )}
       <ControlsContainer
         isDisabled={nextButtonIsDisabled}
         isNextButton
-        onClick={() => !nextButtonIsDisabled && callback(current + 1)}>
+        onClick={() =>
+          !nextButtonIsDisabled && changeCurrentPageTo(currentPageNumber + 1)
+        }>
         <ArrowDownIcon height={12} width={12} />
       </ControlsContainer>
     </PaginationContainer>
