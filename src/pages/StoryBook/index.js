@@ -618,14 +618,14 @@ const StoryBook = () => {
             }}>
             <Pagination
               pages={24}
-              current={20}
+              current={19}
               callback={paginationCallback}
               showLast
             />
+            <Pagination pages={24} current={0} callback={paginationCallback} />
             <Pagination pages={24} current={21} callback={paginationCallback} />
             <Pagination pages={24} current={22} callback={paginationCallback} />
             <Pagination pages={24} current={23} callback={paginationCallback} />
-            <Pagination pages={24} current={24} callback={paginationCallback} />
           </div>
           <div
             style={{
@@ -659,17 +659,152 @@ const StoryBook = () => {
           headings={['Column 1', 'Column 2', 'Column 3']}
           data={[
             {
-              column1: 'TEST_VALUE',
+              column1: 'TEST_VALUE 1',
               column2: 'TEST_VALUE',
               column3: 'TEST_VALUE',
             },
             {
-              column1: 'TEST_VALUE',
+              column1: 'TEST_VALUE 2',
               column2: 'TEST_VALUE',
               column3: 'TEST_VALUE',
             },
             {
-              column1: 'TEST_VALUE',
+              column1: 'TEST_VALUE 3',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 4',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 5',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 6',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 7',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 8',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 9',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 10',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 11',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 12',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 13',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 14',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 15',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 16',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 17',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 18',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 19',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 20',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 21',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 22',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 23',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 24',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 25',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 26',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 27',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 28',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 29',
+              column2: 'TEST_VALUE',
+              column3: 'TEST_VALUE',
+            },
+            {
+              column1: 'TEST_VALUE 30',
               column2: 'TEST_VALUE',
               column3: 'TEST_VALUE',
             },
