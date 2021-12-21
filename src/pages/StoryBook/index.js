@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Card,
@@ -52,7 +52,7 @@ import {
   ArrowDownIcon,
   CheckIcon,
   Pagination,
-  Modal,
+  ComponentRepeater,
 } from '../../components';
 import { CreateProjectForm, CreateUnitsForm } from '../../components/forms';
 
@@ -93,17 +93,11 @@ const StoryBook = () => {
 
   const popoverTitle = 'Popover title';
 
+  const [repeaterValues, updateRepeaterValues] = useState([]);
+
   return (
     <>
       <Card>
-      <div>
-          <Modal
-            title="Modal Title"
-            body="Interactively monetize corporate alignments and fully tested niche markets."
-            showButtons
-            confirmation
-          />
-        </div>
         <H1>This is an header H1</H1>
         <H2>This is an header H2</H2>
         <H3>This is an header H3</H3>
@@ -111,6 +105,22 @@ const StoryBook = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
+
+        <ComponentRepeater
+          values={repeaterValues}
+          updateValues={updateRepeaterValues}
+          initialValue={'initial value'}
+          component={
+            <StandardInput
+              size={InputSizeEnum.large}
+              placeholderText="Large input"
+              state={InputStateEnum.default}
+            />
+          }
+          addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
+          removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
+        />
+
         <div
           style={{
             marginTop: '30px',
