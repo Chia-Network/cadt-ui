@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Card,
@@ -93,6 +93,8 @@ const StoryBook = () => {
 
   const popoverTitle = 'Popover title';
 
+  const [repeaterValues, updateRepeaterValues] = useState([]);
+
   return (
     <>
       <Card>
@@ -104,9 +106,20 @@ const StoryBook = () => {
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
 
-        <ComponentRepeater>
-          <Subtitle>This is a repeated item</Subtitle>
-        </ComponentRepeater>
+        <ComponentRepeater
+          values={repeaterValues}
+          updateValues={updateRepeaterValues}
+          initialValue={'initial value'}
+          component={
+            <StandardInput
+              size={InputSizeEnum.large}
+              placeholderText="Large input"
+              state={InputStateEnum.default}
+            />
+          }
+          addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
+          removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
+        />
 
         <div
           style={{

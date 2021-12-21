@@ -1,57 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import { PrimaryButton } from '../form';
+import React, { useCallback, useMemo } from 'react';
+import styled from 'styled-components';
 import _ from 'lodash';
 
-const ComponentRepeater = ({ children }) => {
-  const [instances, setInstances] = useState({});
+const StyledRepeatedComponentContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+`;
 
-  useEffect(() => {
-    addInstance();
-  }, []);
-
-  const addInstance = () => {
-    const uniqueId = _.uniqueId();
-    const newInstance = (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'start',
-          alignItems: 'center',
-        }}>
-        {React.cloneElement(children)}
-        <PrimaryButton
-          label={`Remove instance ${uniqueId}`}
-          size="small"
-          onClick={() => removeInstance(uniqueId)}
-        />
-      </div>
+const ComponentRepeater = ({
+  component,
+  values,
+  updateValues,
+  initialValue,
+  addIcon,
+  removeIcon,
+}) => {
+  const addNewInstance = useCallback(() => {
+    updateValues(prevValues =>
+      prevValues && prevValues.length
+        ? [...prevValues, _.cloneDeep(initialValue)]
+        : [_.cloneDeep(initialValue)],
     );
-    setInstances(prevInstances => ({
-      ...prevInstances,
-      [uniqueId]: newInstance,
-    }));
-  };
+  });
 
-  const removeInstance = id => {
-    setInstances(prevInstances => {
-      const instancesClone = { ...prevInstances };
-      delete instancesClone[id];
-      return instancesClone;
+  const allInstances = useMemo(() => {
+    return values.map((value, index) => {
+      const onChange = value => {
+        updateValues(prevValues => {
+          const newValues = [...prevValues];
+          newValues[index] = _.cloneDeep(value);
+          return newValues;
+        });
+      };
+      const onRemove = () => {
+        updateValues(prevValues => {
+          const newValues = [...prevValues];
+          newValues.splice(index, 1);
+          return newValues;
+        });
+      };
+      const key = index;
+      return (
+        <StyledRepeatedComponentContainer key={key}>
+          {component && React.cloneElement(component, { value, onChange })}
+          {removeIcon && <div onClick={onRemove}>{removeIcon}</div>}
+        </StyledRepeatedComponentContainer>
+      );
     });
-  };
+  }, [values]);
 
   return (
     <div>
-      <PrimaryButton
-        label={`Add instance`}
-        size="large"
-        onClick={addInstance}
-      />
-      {instances &&
-        Object.keys(instances).map(key => (
-          <React.Fragment key={key}>{instances[key]}</React.Fragment>
-        ))}
+      {addIcon && <div onClick={addNewInstance}>{addIcon}</div>}
+      {allInstances}
     </div>
   );
 };
