@@ -52,9 +52,9 @@ import {
   ArrowDownIcon,
   CheckIcon,
   Pagination,
-  ComponentRepeater
+  ComponentRepeater,
 } from '../../components';
-import { CreateProjectForm, CreateUnitsForm} from '../../components/forms';
+import { CreateProjectForm, CreateUnitsForm } from '../../components/forms';
 
 const StoryBook = () => {
   const tooltipContent =
@@ -64,10 +64,10 @@ const StoryBook = () => {
 
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
-  
+
   const paginationCallback = e => console.log(e);
 
-  const addNewTagCallback = () => console.log('add tag'); 
+  const addNewTagCallback = () => console.log('add tag');
 
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },

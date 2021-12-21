@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import styled, { withTheme, css } from 'styled-components';
 
 const TextareaStateEnum = {
@@ -16,7 +17,7 @@ const TextareaSizeEnum = {
   small: 'small',
 };
 
-const StyledTextarea = withTheme(styled('textarea')`
+const StyledTextarea = styled('textarea')`
   box-sizing: border-box;
   border: 0.0625rem solid #d9d9d9;
   color: #262626;
@@ -71,15 +72,16 @@ const StyledTextarea = withTheme(styled('textarea')`
             `;            
         }
     }};
-`);
+`;
 
-const Textarea = ({
+const Textarea = withTheme(({
   state = TextareaStateEnum.default,
   size = TextareaSizeEnum.default,
   placeholder,
 }) => {
   const [textareaState, setTextareaState] = useState(state);
-    
+  const appStore = useSelector(state => state.app);
+  
   const onMouseEnter = useCallback(() => {
     textareaState !== TextareaStateEnum.focused &&
       textareaState !== TextareaStateEnum.disabled &&
@@ -115,8 +117,9 @@ const Textarea = ({
       size={size}
       placeholder={placeholder}
       disabled={state === TextareaStateEnum.disabled}
+      selectedTheme={appStore.theme}
     />
   );
-};
+});
 
 export { Textarea, TextareaSizeEnum, TextareaStateEnum };

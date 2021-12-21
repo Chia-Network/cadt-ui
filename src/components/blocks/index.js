@@ -13,3 +13,4 @@ export * from './Notifications';
 export * from './Pagination';
 export * from './TableDrawer';
 export * from './ComponentRepeater';
+export * from './Modal';

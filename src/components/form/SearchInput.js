@@ -73,14 +73,14 @@ const SearchIconContainer = styled('div')`
       'background-color: #1890FF;height:1.75rem;')};
 `;
 
-const SearchContainer = withTheme(styled('div')`
+const SearchContainer = styled('div')`
   font-family: ${props => props.theme.typography.primary.regular};
   display: flex;
   justify-content: center;
   align-items: center;
-`);
+`;
 
-const ButtonSearchText = withTheme(styled('p')`
+const ButtonSearchText = styled('p')`
   margin: 0;
   display: flex;
   justify-content: center;
@@ -89,7 +89,7 @@ const ButtonSearchText = withTheme(styled('p')`
   height: 2.5rem;
   width: 3.125rem;
   color: ${props => (props.usePrimaryButton ? '#ffffff' : '#000000')};
-`);
+`;
 
 const SearchInput = withTheme(
   ({

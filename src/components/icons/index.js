@@ -19,3 +19,4 @@ export * from './ArrowDownIcon';
 export * from './CheckIcon';
 export * from './ThreeDotsIcon';
 export * from './CloseIconWithBorder';
+export * from './Divider';
