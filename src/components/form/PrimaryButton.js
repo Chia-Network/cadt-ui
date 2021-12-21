@@ -4,7 +4,7 @@ import styled, { withTheme } from 'styled-components';
 import { CircularProgress } from '@mui/material';
 import { ButtonText } from '../typography';
 
-const Button = withTheme(styled('button')`
+const Button = styled('button')`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -48,7 +48,7 @@ const Button = withTheme(styled('button')`
     box-sizing: border-box;
     cursor: default;
   }
-`);
+`;
 
 const PrimaryButton = withTheme(
   ({
