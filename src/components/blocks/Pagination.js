@@ -36,7 +36,7 @@ const ControlsContainer = styled('div')`
     transform: rotate(270deg);`};
 `;
 
-const PagesContainer = withTheme(styled(ControlsContainer)`
+const PagesContainer = styled(ControlsContainer)`
   font-family: ${props => props.theme.typography.primary.regular};
   font-style: normal;
   font-weight: bold;
@@ -51,9 +51,9 @@ const PagesContainer = withTheme(styled(ControlsContainer)`
                     color: #262626;`;
     }
   }};
-`);
+`;
 
-const Pagination = ({ pages, current, showLast = false, callback }) => {
+const Pagination = withTheme(({ pages, current, showLast = false, callback }) => {
   // if current page number higher or equal than number of pages, first page is displayed
   const currentPageNumber =
     current && current > 0 && current < pages ? current + 1 : 1;
@@ -118,6 +118,6 @@ const Pagination = ({ pages, current, showLast = false, callback }) => {
       </ControlsContainer>
     </PaginationContainer>
   );
-};
+});
 
 export { Pagination };

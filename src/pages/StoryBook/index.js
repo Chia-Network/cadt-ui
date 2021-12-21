@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Card,
@@ -51,9 +51,10 @@ import {
   Notification,
   ArrowDownIcon,
   CheckIcon,
-  Pagination
+  Pagination,
+  ComponentRepeater,
 } from '../../components';
-import { CreateProjectForm, CreateUnitsForm} from '../../components/forms';
+import { CreateProjectForm, CreateUnitsForm } from '../../components/forms';
 
 const StoryBook = () => {
   const tooltipContent =
@@ -63,10 +64,10 @@ const StoryBook = () => {
 
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
-  
+
   const paginationCallback = e => console.log(e);
 
-  const addNewTagCallback = () => console.log('add tag'); 
+  const addNewTagCallback = () => console.log('add tag');
 
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
@@ -92,6 +93,8 @@ const StoryBook = () => {
 
   const popoverTitle = 'Popover title';
 
+  const [repeaterValues, updateRepeaterValues] = useState([]);
+
   return (
     <>
       <Card>
@@ -102,6 +105,21 @@ const StoryBook = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
+
+        <ComponentRepeater
+          values={repeaterValues}
+          updateValues={updateRepeaterValues}
+          initialValue={'initial value'}
+          component={
+            <StandardInput
+              size={InputSizeEnum.large}
+              placeholderText="Large input"
+              state={InputStateEnum.default}
+            />
+          }
+          addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
+          removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
+        />
 
         <div
           style={{

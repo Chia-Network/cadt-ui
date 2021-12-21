@@ -199,6 +199,12 @@ const StyledSearchInput = styled('input')`
   }
 `;
 
+  const StyledSelectLabel = styled('div')`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+  `;
+
 const Select = withTheme(({
   size = SelectSizeEnum.default,
   type = SelectTypeEnum.basic,
@@ -206,8 +212,7 @@ const Select = withTheme(({
   options,
   selected = null,
   placeholder = 'Select',
-  width = '200px',
-  theme
+  width = '200px'
 }) => {
   const [menuIsVisible, setMenuIsVisible] = useState(false);
   const [selectState, setSelectState] = useState(state);
@@ -323,17 +328,11 @@ const Select = withTheme(({
     setSearchInputValue(e.target.value);
   };
 
-  const StyledSelectLabel = styled('div')`
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: clip;
-  `;
-
   return (
     <div style={{ position: 'relative' }} ref={ref}>
       {/* Select for Basic type */}
       {type === SelectTypeEnum.basic && (
-        <StyledSelect theme={theme} 
+        <StyledSelect  
           ref={selectRef}
           size={size}
           width={width}
@@ -357,7 +356,7 @@ const Select = withTheme(({
       )}
       {/* Select for Multiple type */}
       {type === SelectTypeEnum.multiple && (
-        <StyledSelect theme={theme} 
+        <StyledSelect  
           ref={selectRef}
           width={width}
           size={size}
@@ -368,7 +367,7 @@ const Select = withTheme(({
           <StyledMultipleSelect>
             {selectedOptions != null && selectedOptions.length > 0
               ? selectedOptions.map(option => (
-                  <StyledMultipleSelectItem theme={theme} key={option.value}>
+                  <StyledMultipleSelectItem  key={option.value}>
                     {option.label}
                     <div
                       style={{ marginLeft: '5px' }}
@@ -394,7 +393,7 @@ const Select = withTheme(({
       )}
       {/* Select for Search type */}
       {type === SelectTypeEnum.search && (
-        <StyledSelect theme={theme} 
+        <StyledSelect  
           ref={selectRef}
           width={width}
           size={size}
@@ -449,7 +448,7 @@ const Select = withTheme(({
               selectedOptions.find(selected => selected.value === option.value);
             
             return (
-              <StyledBasicMenuItem theme={theme} 
+              <StyledBasicMenuItem  
                 key={option.value}
                 isSelected={isSelected}
                 onClick={() =>
@@ -473,7 +472,7 @@ const Select = withTheme(({
               option.label
                 .toLowerCase()
                 .includes(searchInputValue.toLowerCase()) && (
-                <StyledBasicMenuItem theme={theme} 
+                <StyledBasicMenuItem  
                   key={option.value}
                   isSelected={
                     selectedOptions != null &&

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { ToolTip, ToolTipPlacement } from '../../components';
 
-const Text = withTheme(styled('p')`
+const Text = styled('p')`
   color: ${props => props.color || '#000000'};
   font-size: 0.875rem;
   font-family: ${props => props.theme.typography.primary.regular};
@@ -13,7 +13,7 @@ const Text = withTheme(styled('p')`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-`);
+`;
 
 const TableCellText = withTheme(({ children, color }) => {
   const appStore = useSelector(state => state.app);
