@@ -69,9 +69,8 @@ const Pagination = ({ pages, current = 1, showLast = false, callback }) => {
   }
 
   const thereAreNoPages = pages === 0;
-  const backButtonIsDisabled = pages <= 5 || current <= 5 || thereAreNoPages;
-  const nextButtonIsDisabled =
-    pages <= 5 || pages - current <= 2 || thereAreNoPages;
+  const backButtonIsDisabled = current <= 1 || thereAreNoPages;
+  const nextButtonIsDisabled = current === pages || thereAreNoPages;
 
   return (
     <PaginationContainer>

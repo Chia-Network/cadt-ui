@@ -604,7 +604,7 @@ const StoryBook = () => {
               callback={paginationCallback}
               showLast
             />
-            <Pagination pages={24} current={21} callback={paginationCallback} />
+            <Pagination pages={24} current={1} callback={paginationCallback} />
             <Pagination pages={24} current={22} callback={paginationCallback} />
             <Pagination pages={24} current={23} callback={paginationCallback} />
             <Pagination pages={24} current={24} callback={paginationCallback} />
