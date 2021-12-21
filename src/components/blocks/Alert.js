@@ -13,7 +13,7 @@ import {
   WarningIconSmall,
 } from '..';
 
-const AlertCard = withTheme(styled('div')`
+const AlertCard = styled('div')`
   display: flex;
   justify-content: space-between;
   border: none;
@@ -50,9 +50,9 @@ const AlertCard = withTheme(styled('div')`
     (props.type === 'error' &&
       props.banner &&
       `background-color: ${props.theme.colors.default.status.error.secondary};`)}
-`);
+`;
 
-const CloseTextButton = withTheme(styled('button')`
+const CloseTextButton = styled('button')`
   width: 6.25rem;
   height: 1.125rem;
   background-color: unset;
@@ -63,18 +63,18 @@ const CloseTextButton = withTheme(styled('button')`
     props.alertBody
       ? 'margin-right: 1rem; margin-top: 1rem;'
       : 'margin-right: 1rem; margin-top: 0.5625rem;'}
-`);
+`;
 
-const CloseButton = withTheme(styled('div')`
+const CloseButton = styled('div')`
   cursor: pointer;
   height: fit-content;
   ${props =>
     props.alertBody
       ? 'margin-right: 1.1675rem; margin-top: 1rem;'
       : 'margin-right: 1.1675rem; align-self: center'}
-`);
+`;
 
-const AlertTitle = withTheme(styled('div')`
+const AlertTitle = styled('div')`
   font-size: 1rem;
   font-family: ${props => props.theme.typography.primary.regular};
   height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')};
@@ -97,23 +97,23 @@ const AlertTitle = withTheme(styled('div')`
     !props.showIcon &&
     props.alertBody &&
     'margin-left: 1rem;margin-top: 1rem;'};
-`);
+`;
 
-const AlertBody = withTheme(styled('div')`
+const AlertBody = styled('div')`
   font-family: ${props => props.theme.typography.primary.light};
   font-weight: normal;
   font-size: 0.875rem;
   line-height: 1.3125rem;
   margin-bottom: 1rem;
   ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1rem')}
-`);
+`;
 
-const ShowIcons = withTheme(styled('div')`
+const ShowIcons = styled('div')`
   ${props =>
     props.alertBody
       ? 'margin-left: 1.0938rem; margin-top: 1.0938rem;'
       : 'margin-left: 1.0625rem; margin-top: 0.75rem;'}
-`);
+`;
 
 const Alert = withTheme(
   ({
