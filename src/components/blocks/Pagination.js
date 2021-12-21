@@ -100,7 +100,7 @@ const Pagination = withTheme(({ pages, current, showLast = false, callback }) =>
             {element}
           </PagesContainer>
         ))}
-      {showLast && currentPageNumber + 2 + 1 < numberOfPages && (
+      {showLast && currentPageNumber + 2 + 1 < numberOfPages && numberOfPages > 5 && (
         <>
           <ThreeDotsIcon width={10} height={10} />
           <PagesContainer onClick={() => changeCurrentPageTo(numberOfPages)}>
