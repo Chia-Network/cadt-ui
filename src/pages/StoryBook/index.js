@@ -51,9 +51,10 @@ import {
   Notification,
   ArrowDownIcon,
   CheckIcon,
-  Pagination
+  Pagination,
+  Modal,
 } from '../../components';
-import { CreateProjectForm, CreateUnitsForm} from '../../components/forms';
+import { CreateProjectForm, CreateUnitsForm } from '../../components/forms';
 
 const StoryBook = () => {
   const tooltipContent =
@@ -63,10 +64,10 @@ const StoryBook = () => {
 
   const popoverContent =
     'Conveniently initiate viral synergy without multi functional platforms. ';
-  
+
   const paginationCallback = e => console.log(e);
 
-  const addNewTagCallback = () => console.log('add tag'); 
+  const addNewTagCallback = () => console.log('add tag');
 
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
@@ -95,6 +96,14 @@ const StoryBook = () => {
   return (
     <>
       <Card>
+      <div>
+          <Modal
+            title="Modal Title"
+            body="Interactively monetize corporate alignments and fully tested niche markets."
+            showButtons
+            confirmation
+          />
+        </div>
         <H1>This is an header H1</H1>
         <H2>This is an header H2</H2>
         <H3>This is an header H3</H3>
@@ -102,7 +111,6 @@ const StoryBook = () => {
         <Subtitle>This is a Subtitle</Subtitle>
         <MenuText>This is Menu Text</MenuText>
         <ButtonText>This is Button Text</ButtonText>
-
         <div
           style={{
             marginTop: '30px',
