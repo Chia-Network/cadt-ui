@@ -53,7 +53,11 @@ import {
   CheckIcon,
   Pagination,
   ComponentRepeater,
+  Tabs,
+  Tab,
+  TabPanel,
 } from '../../components';
+
 import { CreateProjectForm, CreateUnitsForm } from '../../components/forms';
 
 const StoryBook = () => {
@@ -94,6 +98,12 @@ const StoryBook = () => {
   const popoverTitle = 'Popover title';
 
   const [repeaterValues, updateRepeaterValues] = useState([]);
+
+  const [tabValue, setTabValue] = React.useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
 
   return (
     <>
@@ -1050,6 +1060,28 @@ const StoryBook = () => {
           <Notification showIcon="warning" buttonText="Button" />
           <Notification showIcon="success" />
           <Notification showIcon="success" buttonText="Button" />
+        </div>
+
+        <div>
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            aria-label="basic tabs example">
+            <Tab label="Tab One" />
+            <Tab label="Tab Two" />
+            <Tab label="Tab Three" />
+          </Tabs>
+          <div>
+            <TabPanel value={tabValue} index={0}>
+              Item One
+            </TabPanel>
+            <TabPanel value={tabValue} index={1}>
+              Item Two
+            </TabPanel>
+            <TabPanel value={tabValue} index={2}>
+              Item Three
+            </TabPanel>
+          </div>
         </div>
       </Card>
     </>
