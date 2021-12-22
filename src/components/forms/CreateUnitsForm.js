@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+//import { useDispatch } from 'react-redux';
 
 import {
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
-  PrimaryButton,
+  //PrimaryButton,
 } from '..';
-import { Body, H3 } from '../typography';
-import { postNewUnits } from '../../store/actions/climateWarehouseActions';
+import { Body } from '../typography';
+//import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -20,7 +20,7 @@ const StyledFieldContainer = styled('div')`
 `;
 
 const CreateUnitsForm = () => {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const [newUnits, setNewUnits] = useState({
     unitsOwner: '',
     unitsBuyer: '',
@@ -38,28 +38,51 @@ const CreateUnitsForm = () => {
     correspondingAdjustment: '',
     unitTag: '',
   });
-
+  const InputContainer = styled('div')`
+  width: 320px;
+`;
   return (
-    <div style={{ width: '320px' }}>
-      <H3>Add New Unit</H3>
+    <div
+    style={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '20px 0',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          width: '90%',
+        }}>
+                <div style={{ display: 'flex', flexDirection: 'column', paddingRight: '66px' }}>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Units Owner</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Units Owner"
           state={InputStateEnum.default}
           value={newUnits.unitsOwner}
           onChange={value =>
-            setNewUnits(prev => ({ ...prev, unitsOwner: value }))
+            {setNewUnits(prev => ({ ...prev, unitsOwner: value }))
+            console.log(newUnits.unitsOwner)
+          }
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Units Buyer</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Units Buyer"
@@ -69,11 +92,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitsBuyer: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Registry</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Registry"
@@ -83,11 +108,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, registry: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Block Identifier</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Block Identifier"
@@ -97,11 +124,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitBlockIdentifier: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Identifier</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Identifier"
@@ -111,11 +140,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitIdentifier: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Qualification ID</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Qualification ID"
@@ -125,11 +156,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, qualificationID: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Type</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Type"
@@ -139,11 +172,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitType: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Count</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Count"
@@ -153,11 +188,15 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitCount: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Status</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Status"
@@ -167,11 +206,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitStatus: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Status Date</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Status Date"
@@ -181,11 +222,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitStatusDate: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Transaction Type</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Transaction Type"
@@ -195,11 +238,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, transactionType: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Issuance Location</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Issuance Location"
@@ -209,11 +254,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitIssuanceLocation: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Link</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Link"
@@ -223,11 +270,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitLink: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Corresponding Adjustment</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Corresponding Adjustment"
@@ -237,11 +286,13 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, correspondingAdjustment: value }))
           }
         />
+        </InputContainer>
       </StyledFieldContainer>
       <StyledFieldContainer>
         <StyledLabelContainer>
           <Body color={'#262626'}>Unit Tag</Body>
         </StyledLabelContainer>
+        <InputContainer>
         <StandardInput
           size={InputSizeEnum.large}
           placeholderText="Unit Tag"
@@ -251,12 +302,14 @@ const CreateUnitsForm = () => {
             setNewUnits(prev => ({ ...prev, unitTag: value }))
           }
         />
-        
+        </InputContainer>
       </StyledFieldContainer>
-      <div onClick={() => dispatch(postNewUnits(newUnits))}>
-        <PrimaryButton label="Submit" size="large" />
       </div>
-    </div>
+      </div>
+     {/* <div onClick={() => dispatch(postNewUnits(newUnits))}>
+       <PrimaryButton label="Submit" size="large" />
+       </div> */}
+   </div>
   );
 };
 

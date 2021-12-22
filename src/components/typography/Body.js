@@ -7,6 +7,7 @@ const Text = styled('body')`
   font-size: 16px;
   font-family: ${props => props.theme.typography.primary.regular};
   font-weight: 400;
+  width:100%;
   line-height: 150%;
   ${props =>
     props.size === 'Big' &&

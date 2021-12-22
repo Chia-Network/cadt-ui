@@ -8,6 +8,9 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 
 import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
+import { FormWrapper, Modal } from '..';
+
+import { EditUnitsForm } from '../forms/EditUnitsForm';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -72,7 +75,6 @@ const Td = styled('td')`
   letter-spacing: 0.01071em;
   vertical-align: inherit;
   max-width: 100px;
-  overflow: ;
 `;
 
 const StyledPaginationContainer = styled('div')`
@@ -90,7 +92,10 @@ const StyledPaginationContainer = styled('div')`
 const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
   const [getRecord, setRecord] = useState(null);
+  const [editRecord, setEditRecord] = useState(null);
+  const [edit, setEdit] = useState(false);
   const appStore = useSelector(state => state.app);
+
 
   const handlePageClick = page => {
     setPage(page);
@@ -145,22 +150,28 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               )}
             </tr>
           </THead>
-          <tbody>
+          <tbody style={{ position: 'relative'}}>
             {paginatedData[currentPage].map((record, index) => (
-              <Tr
-                onClick={() => setRecord(record)}
-                index={index}
-                selectedTheme={appStore.theme}
-                key={index}>
-                {Object.keys(record).map((key, index) => (
-                  <Td selectedTheme={appStore.theme} key={index}>
-                    <TableCellText>
-                      {record[key] && record[key].toString()}
-                    </TableCellText>
-                  </Td>
-                ))}
-                {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}
-              </Tr>
+              <>
+                <Tr
+                  index={index}
+                  selectedTheme={appStore.theme}
+                  key={index}>
+                  {Object.keys(record).map((key, index) => (
+                    <Td  onClick={() => setRecord(record)} selectedTheme={appStore.theme} key={index}>
+                      <TableCellText>
+                        {record[key] && record[key].toString()}
+                      </TableCellText>
+                      
+                    </Td>
+                  ))}
+                  {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}
+                  <div style={{ backgroundColor: 'black', height: '80px', width: '30px', marginLeft: '-30px', color: 'white', cursor: 'pointer'}} onClick={() => {
+                     setEdit(true);
+                     setEditRecord(record)
+                  }}>Edit</div>
+                </Tr>
+              </>
             ))}
           </tbody>
         </Table>
@@ -173,7 +184,20 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           showLast
         />
       </StyledPaginationContainer>
-      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+     
+        <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+     
+      {edit && (
+        <Modal
+          onClose={() => {setEdit(false); setEditRecord(null)}}
+          basic
+          form
+          showButtons
+          title="Edit Unit"
+          body={<FormWrapper tabLabel="Edit Units"><EditUnitsForm data={editRecord}/></FormWrapper>
+          }
+        />
+      )}
     </div>
   );
 });

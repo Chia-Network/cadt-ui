@@ -28,6 +28,7 @@ export const actions = keyMirror(
   'GET_UNITS',
   'GET_PROJECTS',
   'GET_VINTAGES',
+  'GET_SELECTED_UNITS',
 );
 
 const getClimateWarehouseTable = (
@@ -102,6 +103,35 @@ export const postNewUnits = data => {
       const url = `${constants.API_HOST}/units`;
       const payload = {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        console.log('yay!');
+      } else {
+        dispatch(setGlobalErrorMessage('Unit could not be created'));
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const editUnits = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units`;
+      const payload = {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -231,6 +261,13 @@ export const getRelatedProjects = options => {
         options,
       ),
     );
+  };
+};
+
+export const selectedUnit = data => {
+  return {
+    type: actions.GET_SELECTED_UNITS,
+    payload: data,
   };
 };
 
