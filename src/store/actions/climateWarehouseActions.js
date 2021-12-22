@@ -11,6 +11,7 @@ import {
   unitsResponseStub,
   projectsResponseStub,
   vintagesResponseStub,
+  stagingDataResponseStub,
 } from '../../mocks';
 
 import {
@@ -28,6 +29,7 @@ export const actions = keyMirror(
   'GET_UNITS',
   'GET_PROJECTS',
   'GET_VINTAGES',
+  'GET_STAGING_DATA',
 );
 
 const getClimateWarehouseTable = (
@@ -53,6 +55,37 @@ const getClimateWarehouseTable = (
           const results = await response.json();
           dispatch({
             type: action,
+            payload: results,
+          });
+        }
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const mockGetStagingDataResponse = {
+  type: actions.GET_PROJECT_LOCATIONS,
+  payload: _.get(stagingDataResponseStub, 'default', stagingDataResponseStub),
+};
+
+export const getStagingData = (useMockedResponse = false) => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      if (useMockedResponse) {
+        dispatch(mockGetStagingDataResponse);
+      } else {
+        const response = await fetch(`${constants.API_HOST}/staging`);
+
+        if (response.ok) {
+          const results = await response.json();
+          dispatch({
+            type: actions.GET_STAGING_DATA,
             payload: results,
           });
         }
