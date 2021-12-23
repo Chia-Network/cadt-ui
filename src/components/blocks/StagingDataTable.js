@@ -27,28 +27,24 @@ const Th = styled('th')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
   display: table-cell;
   text-align: left;
-  box-sizing: border-box;
-
   letter-spacing: 0.01071em;
   vertical-align: inherit;
 `;
 
 const Tr = styled('tr')`
-  box-sizing: border-box;
   ${props => {
-        if (props.color === 'green') {
-          return `
+    if (props.color === 'green') {
+      return `
             border: 1px solid #52C41A;
             background: #ECF8E6;
             color: #52C41A !important;`;
-          
-        } else if(props.color === 'red') {
-          return `
+    } else if (props.color === 'red') {
+      return `
           background: #FFEBEE;  
           border: 1px solid #F5222D;
           color: #F5222D !important;`;
-        }
-    }};
+    }
+  }};
 `;
 
 const Td = styled('td')`
@@ -78,9 +74,7 @@ const ChangeGroupHeader = ({ headings, appStore }) => {
       <tr>
         {headings &&
           headings.map((heading, index) => (
-            <Th
-              selectedTheme={appStore.theme}
-              key={index}>
+            <Th selectedTheme={appStore.theme} key={index}>
               <TableCellHeaderText>
                 {convertPascalCaseToSentenceCase(heading)}
               </TableCellHeaderText>
@@ -93,16 +87,21 @@ const ChangeGroupHeader = ({ headings, appStore }) => {
 
 const ChangeGroupItem = ({ headings, data, appStore, color }) => {
   return (
-    <Tr
-      onClick={() => setRecord(record)}
-      color={color}
-      selectedTheme={appStore.theme}>
-      {headings.map((key, index) => (
-        <Td selectedTheme={appStore.theme} key={index}>
-          <TableCellText>{data[key] && data[key].toString()}</TableCellText>
-        </Td>
-      ))}
-    </Tr>
+    <>
+      <Tr
+        onClick={() => setRecord(record)}
+        color={color}
+        selectedTheme={appStore.theme}>
+        {headings.map((key, index) => (
+          <Td selectedTheme={appStore.theme} key={index}>
+            <TableCellText>{data[key] && data[key].toString()}</TableCellText>
+          </Td>
+        ))}
+      </Tr>
+      <Tr>
+        <td></td>
+      </Tr>
+    </>
   );
 };
 
