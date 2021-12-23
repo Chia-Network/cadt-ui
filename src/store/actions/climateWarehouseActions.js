@@ -67,12 +67,48 @@ const getClimateWarehouseTable = (
   };
 };
 
-export const mockGetStagingDataResponse = {
-  type: actions.GET_PROJECT_LOCATIONS,
-  payload: _.get(stagingDataResponseStub, 'default', stagingDataResponseStub),
+const formatStagingData = dataArray => {
+  const splittedByTable = _.groupBy(dataArray, 'table');
+
+  splittedByTable.Projects =
+    (splittedByTable.Projects &&
+      _.groupBy(splittedByTable.Projects, 'commited')) ??
+    [];
+
+  splittedByTable.Units =
+    (splittedByTable.Units && _.groupBy(splittedByTable.Units, 'commited')) ??
+    [];
+
+  const splittedAndFormatted = {
+    projects: {
+      pending:
+        (splittedByTable.Projects.true && [...splittedByTable.Projects.true]) ??
+        [],
+      staging:
+        (splittedByTable.Projects.false && [
+          ...splittedByTable.Projects.false,
+        ]) ??
+        [],
+    },
+    units: {
+      pending:
+        (splittedByTable.Units.true && [...splittedByTable.Units.true]) ?? [],
+      staging:
+        (splittedByTable.Units.false && [...splittedByTable.Projects.false]) ??
+        [],
+    },
+  };
+  return splittedAndFormatted;
 };
 
-export const getStagingData = (useMockedResponse = false) => {
+export const mockGetStagingDataResponse = {
+  type: actions.GET_STAGING_DATA,
+  payload: formatStagingData(
+    _.get(stagingDataResponseStub, 'default', stagingDataResponseStub),
+  ),
+};
+
+export const getStagingData = ({ useMockedResponse = false }) => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
 
@@ -84,9 +120,10 @@ export const getStagingData = (useMockedResponse = false) => {
 
         if (response.ok) {
           const results = await response.json();
+
           dispatch({
             type: actions.GET_STAGING_DATA,
-            payload: results,
+            payload: formatStagingData(results),
           });
         }
       }

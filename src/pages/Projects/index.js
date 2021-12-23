@@ -10,13 +10,23 @@ import {
   PrimaryButton,
 } from '../../components';
 
-import { getProjects } from '../../store/actions/climateWarehouseActions';
+import {
+  getProjects,
+  getStagingData,
+} from '../../store/actions/climateWarehouseActions';
 
 const Projects = withRouter(({ history }) => {
   const dispatch = useDispatch();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
 
-  useEffect(() => dispatch(getProjects({ useMockedResponse: false })), []);
+  useEffect(() => {
+    dispatch(getProjects({ useMockedResponse: false }))
+    dispatch(getStagingData({ useMockedResponse: false }));
+  }, []);
+
+    useEffect(() => {
+      console.log(climateWarehouseStore.stagingData);
+    }, [climateWarehouseStore.stagingData]);
 
   if (
     !climateWarehouseStore.projects ||
