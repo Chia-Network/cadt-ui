@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import {
   SearchInput,
   Tag,
   PrimaryButton,
+  StagingDataTable,
 } from '../../components';
 
 import {
@@ -15,18 +16,28 @@ import {
   getStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
+const headings = [
+  'warehouseProjectId',
+  'currentRegistry',
+  'registryOfOrigin',
+  'originProjectId',
+  'program',
+  'projectId',
+];
+
 const Projects = withRouter(({ history }) => {
   const dispatch = useDispatch();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+  const [status] = useState('staging');
 
   useEffect(() => {
-    dispatch(getProjects({ useMockedResponse: false }))
+    dispatch(getProjects({ useMockedResponse: false }));
     dispatch(getStagingData({ useMockedResponse: false }));
   }, []);
 
-    useEffect(() => {
-      console.log(climateWarehouseStore.stagingData);
-    }, [climateWarehouseStore.stagingData]);
+  useEffect(() => {
+    console.log(climateWarehouseStore.stagingData);
+  }, [climateWarehouseStore.stagingData]);
 
   if (
     !climateWarehouseStore.projects ||
@@ -63,10 +74,16 @@ const Projects = withRouter(({ history }) => {
           onClick={() => history.push('/projects/add')}
         />
       </div>
-      {climateWarehouseStore.projects && (
+      {status === 'commited' && climateWarehouseStore.projects && (
         <DataTable
           headings={Object.keys(climateWarehouseStore.projects[0])}
           data={climateWarehouseStore.projects}
+        />
+      )}
+      {status === 'staging' && climateWarehouseStore.stagingData && (
+        <StagingDataTable
+          headings={headings}
+          data={climateWarehouseStore.stagingData.projects.staging}
         />
       )}
     </>

@@ -70,32 +70,18 @@ const getClimateWarehouseTable = (
 const formatStagingData = dataArray => {
   const splittedByTable = _.groupBy(dataArray, 'table');
 
-  splittedByTable.Projects =
-    (splittedByTable.Projects &&
-      _.groupBy(splittedByTable.Projects, 'commited')) ??
-    [];
+  splittedByTable.Projects = _.groupBy(splittedByTable.Projects, 'commited');
 
-  splittedByTable.Units =
-    (splittedByTable.Units && _.groupBy(splittedByTable.Units, 'commited')) ??
-    [];
+  splittedByTable.Units = _.groupBy(splittedByTable.Units, 'commited');
 
   const splittedAndFormatted = {
     projects: {
-      pending:
-        (splittedByTable.Projects.true && [...splittedByTable.Projects.true]) ??
-        [],
-      staging:
-        (splittedByTable.Projects.false && [
-          ...splittedByTable.Projects.false,
-        ]) ??
-        [],
+      pending: [...(splittedByTable.Projects.true || [])],
+      staging: [...(splittedByTable.Projects.false || [])],
     },
     units: {
-      pending:
-        (splittedByTable.Units.true && [...splittedByTable.Units.true]) ?? [],
-      staging:
-        (splittedByTable.Units.false && [...splittedByTable.Projects.false]) ??
-        [],
+      pending: [...(splittedByTable.Units.true || [])],
+      staging: [...(splittedByTable.Units.false || [])],
     },
   };
   return splittedAndFormatted;
