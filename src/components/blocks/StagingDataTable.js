@@ -12,7 +12,7 @@ const Table = styled('table')`
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
-  margin: 50px 0px;
+  margin: 0px 0px 50px 0px;
   width: 100%;
 `;
 
@@ -29,8 +29,8 @@ const Th = styled('th')`
   text-align: left;
   letter-spacing: 0.01071em;
   vertical-align: inherit;
-  max-width: 100px;
-  min-width: 100px;
+  max-width: 80px;
+  min-width: 80px;
 `;
 
 const Tr = styled('tr')`
@@ -68,8 +68,8 @@ const Td = styled('td')`
   text-align: left;
   letter-spacing: 0.01071em;
   vertical-align: inherit;
-  max-width: 100px;
-  min-width: 100px;
+  max-width: 80px;
+  min-width: 80px;
 `;
 
 const StagingDataTableContainer = styled('div')`
@@ -94,7 +94,7 @@ const ChangeGroupHeader = ({ headings, appStore }) => {
           </TableCellHeaderText>
         </Th>
       </Tr>
-      <Tr />   
+      <Tr />
     </THead>
   );
 };
@@ -120,7 +120,7 @@ const ChangeGroupItem = ({ headings, data, appStore, color, onClick }) => {
 const StagingDataTable = withTheme(({ headings, data }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
-  
+
   return (
     <StagingDataTableContainer>
       {data &&

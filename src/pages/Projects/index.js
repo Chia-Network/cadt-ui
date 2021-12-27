@@ -9,6 +9,9 @@ import {
   Tag,
   PrimaryButton,
   StagingDataTable,
+  Tab,
+  Tabs,
+  TabPanel,
 } from '../../components';
 
 import {
@@ -28,7 +31,12 @@ const headings = [
 const Projects = withRouter(({ history }) => {
   const dispatch = useDispatch();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
-  const [status] = useState('staging');
+
+  const [tabValue, setTabValue] = useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
 
   useEffect(() => {
     dispatch(getProjects({ useMockedResponse: false }));
@@ -74,18 +82,42 @@ const Projects = withRouter(({ history }) => {
           onClick={() => history.push('/projects/add')}
         />
       </div>
-      {status === 'commited' && climateWarehouseStore.projects && (
-        <DataTable
-          headings={Object.keys(climateWarehouseStore.projects[0])}
-          data={climateWarehouseStore.projects}
-        />
-      )}
-      {status === 'staging' && climateWarehouseStore.stagingData && (
-        <StagingDataTable
-          headings={headings}
-          data={climateWarehouseStore.stagingData.projects.staging}
-        />
-      )}
+      <div>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          aria-label="basic tabs example">
+          <Tab label="Commited" />
+          <Tab label="Staging" />
+          <Tab label="Pending" />
+        </Tabs>
+        <div>
+          <TabPanel value={tabValue} index={0}>
+            {climateWarehouseStore.projects && (
+              <DataTable
+                headings={Object.keys(climateWarehouseStore.projects[0])}
+                data={climateWarehouseStore.projects}
+              />
+            )}
+          </TabPanel>
+          <TabPanel value={tabValue} index={1}>
+            {climateWarehouseStore.stagingData && (
+              <StagingDataTable
+                headings={headings}
+                data={climateWarehouseStore.stagingData.projects.staging}
+              />
+            )}
+          </TabPanel>
+          <TabPanel value={tabValue} index={2}>
+            {climateWarehouseStore.stagingData && (
+              <StagingDataTable
+                headings={headings}
+                data={climateWarehouseStore.stagingData.projects.pending}
+              />
+            )}
+          </TabPanel>
+        </div>
+      </div>
     </>
   );
 });
