@@ -76,7 +76,12 @@ const StagingDataTableContainer = styled('div')`
   overflow-x: scroll;
 `;
 
-const ChangeGroupHeader = ({ headings, appStore, onClick }) => {
+const ChangeGroupHeader = ({
+  headings,
+  appStore,
+  onClick,
+  deleteStgingIsVisible,
+}) => {
   return (
     <THead selectedTheme={appStore.theme}>
       <Tr color="gray">
@@ -90,9 +95,11 @@ const ChangeGroupHeader = ({ headings, appStore, onClick }) => {
           ))}
         <Th selectedTheme={appStore.theme}>
           <TableCellHeaderText>
-            <div onClick={onClick}>
-              <MinusIcon width={16} height={16} />
-            </div>
+            {deleteStgingIsVisible && (
+              <div onClick={onClick}>
+                <MinusIcon width={16} height={16} />
+              </div>
+            )}
           </TableCellHeaderText>
         </Th>
       </Tr>
@@ -133,6 +140,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
               headings={headings}
               appStore={appStore}
               onClick={() => deleteStagingData(changeGroup.uuid)}
+              deleteStgingIsVisible={deleteStagingData && true}
             />
             <tbody>
               {changeGroup.action === 'DELETE' && (

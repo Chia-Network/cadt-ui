@@ -18,6 +18,7 @@ import {
   getProjects,
   getStagingData,
   deleteStagingData,
+  commitStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
 const headings = [
@@ -72,12 +73,21 @@ const Projects = withRouter(({ history }) => {
           <Tag body="Unit Text" closeable />
           <Tag body="Unit Text" closeable />
         </div>
-        <PrimaryButton
-          label="Create"
-          size="large"
-          icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-          onClick={() => history.push('/projects/add')}
-        />
+        {tabValue === 0 && (
+          <PrimaryButton
+            label="Create"
+            size="large"
+            icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
+            onClick={() => history.push('/projects/add')}
+          />
+        )}
+        {tabValue === 1 && (
+          <PrimaryButton
+            label="Commit staging"
+            size="large"
+            onClick={() => dispatch(commitStagingData())}
+          />
+        )}
       </div>
       <div>
         <Tabs
