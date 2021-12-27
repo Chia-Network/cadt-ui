@@ -96,7 +96,7 @@ const ChangeGroupHeader = ({
         <Th selectedTheme={appStore.theme}>
           <TableCellHeaderText>
             {deleteStgingIsVisible && (
-              <div onClick={onClick}>
+              <div onClick={onClick} style={{cursor: 'pointer'}}>
                 <MinusIcon width={16} height={16} />
               </div>
             )}

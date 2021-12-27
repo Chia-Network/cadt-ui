@@ -81,7 +81,7 @@ const Projects = withRouter(({ history }) => {
             onClick={() => history.push('/projects/add')}
           />
         )}
-        {tabValue === 1 && (
+        {tabValue === 1 && climateWarehouseStore.stagingData.projects.staging.length > 0 && (
           <PrimaryButton
             label="Commit staging"
             size="large"
