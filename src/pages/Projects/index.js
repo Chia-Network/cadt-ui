@@ -81,13 +81,14 @@ const Projects = withRouter(({ history }) => {
             onClick={() => history.push('/projects/add')}
           />
         )}
-        {tabValue === 1 && climateWarehouseStore.stagingData.projects.staging.length > 0 && (
-          <PrimaryButton
-            label="Commit staging"
-            size="large"
-            onClick={() => dispatch(commitStagingData())}
-          />
-        )}
+        {tabValue === 1 &&
+          climateWarehouseStore.stagingData.projects.staging.length > 0 && (
+            <PrimaryButton
+              label="Commit staging"
+              size="large"
+              onClick={() => dispatch(commitStagingData())}
+            />
+          )}
       </div>
       <div>
         <Tabs
@@ -95,8 +96,18 @@ const Projects = withRouter(({ history }) => {
           onChange={handleTabChange}
           aria-label="basic tabs example">
           <Tab label="Commited" />
-          <Tab label="Staging" />
-          <Tab label="Pending" />
+          <Tab
+            label={`Staging (${
+              climateWarehouseStore.stagingData &&
+              climateWarehouseStore.stagingData.projects.staging.length
+            })`}
+          />
+          <Tab
+            label={`Pending (${
+              climateWarehouseStore.stagingData &&
+              climateWarehouseStore.stagingData.projects.pending.length
+            })`}
+          />
         </Tabs>
         <div>
           <TabPanel value={tabValue} index={0}>
