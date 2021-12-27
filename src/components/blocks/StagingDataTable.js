@@ -4,16 +4,16 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
+import { MinusIcon } from '..';
+import { TableDrawer } from './';
 
 const Table = styled('table')`
-  box-sizing: border-box;
   background-color: white;
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
   margin: 50px 0px;
-  overflow-x: scroll;
-  width: calc(100% - 1px); ;
+  width: 100%;
 `;
 
 const THead = styled('thead')`
@@ -29,6 +29,8 @@ const Th = styled('th')`
   text-align: left;
   letter-spacing: 0.01071em;
   vertical-align: inherit;
+  max-width: 100px;
+  min-width: 100px;
 `;
 
 const Tr = styled('tr')`
@@ -37,14 +39,27 @@ const Tr = styled('tr')`
       return `
             border: 1px solid #52C41A;
             background: #ECF8E6;
-            color: #52C41A !important;`;
+            p, span {
+              color: #52C41A !important;
+            };
+            `;
     } else if (props.color === 'red') {
       return `
           background: #FFEBEE;  
           border: 1px solid #F5222D;
-          color: #F5222D !important;`;
+          p, span {
+            color: #F5222D !important;
+          };
+          `;
+    } else if (props.color === 'gray') {
+      return `border: 1px solid #F2F2F2;`;
     }
   }};
+  th:last-child {
+    text-align: center;
+    max-width: 50px;
+    min-width: 50px;
+  }
 `;
 
 const Td = styled('td')`
@@ -54,24 +69,17 @@ const Td = styled('td')`
   letter-spacing: 0.01071em;
   vertical-align: inherit;
   max-width: 100px;
+  min-width: 100px;
 `;
 
-const StyledPaginationContainer = styled('div')`
-  position: -webkit-sticky;
-  position: sticky;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  bottom: -1rem;
-  min-height: 60px;
-  padding-bottom: 10px;
+const StagingDataTableContainer = styled('div')`
+  overflow-x: scroll;
 `;
 
 const ChangeGroupHeader = ({ headings, appStore }) => {
   return (
     <THead selectedTheme={appStore.theme}>
-      <tr>
+      <Tr color="gray">
         {headings &&
           headings.map((heading, index) => (
             <Th selectedTheme={appStore.theme} key={index}>
@@ -80,23 +88,27 @@ const ChangeGroupHeader = ({ headings, appStore }) => {
               </TableCellHeaderText>
             </Th>
           ))}
-      </tr>
+        <Th selectedTheme={appStore.theme}>
+          <TableCellHeaderText>
+            <MinusIcon width={16} height={16} />
+          </TableCellHeaderText>
+        </Th>
+      </Tr>
+      <Tr />   
     </THead>
   );
 };
 
-const ChangeGroupItem = ({ headings, data, appStore, color }) => {
+const ChangeGroupItem = ({ headings, data, appStore, color, onClick }) => {
   return (
     <>
-      <Tr
-        onClick={() => setRecord(record)}
-        color={color}
-        selectedTheme={appStore.theme}>
+      <Tr color={color} selectedTheme={appStore.theme} onClick={onClick}>
         {headings.map((key, index) => (
           <Td selectedTheme={appStore.theme} key={index}>
             <TableCellText>{data[key] && data[key].toString()}</TableCellText>
           </Td>
         ))}
+        <Td selectedTheme={appStore.theme}></Td>
       </Tr>
       <Tr>
         <td></td>
@@ -107,11 +119,10 @@ const ChangeGroupItem = ({ headings, data, appStore, color }) => {
 
 const StagingDataTable = withTheme(({ headings, data }) => {
   const appStore = useSelector(state => state.app);
-
-  console.log('data: ', data);
-
+  const [getRecord, setRecord] = useState(null);
+  
   return (
-    <div>
+    <StagingDataTableContainer>
       {data &&
         headings &&
         data.map((changeGroup, index) => (
@@ -124,6 +135,7 @@ const StagingDataTable = withTheme(({ headings, data }) => {
                   headings={headings}
                   appStore={appStore}
                   color={'red'}
+                  onClick={() => setRecord(changeGroup.diff.original)}
                 />
               )}
               {changeGroup.action === 'INSERT' && (
@@ -132,6 +144,7 @@ const StagingDataTable = withTheme(({ headings, data }) => {
                   headings={headings}
                   appStore={appStore}
                   color={'green'}
+                  onClick={() => setRecord(changeGroup.diff.change[0])}
                 />
               )}
               {changeGroup.action === 'UPDATE' && (
@@ -141,12 +154,14 @@ const StagingDataTable = withTheme(({ headings, data }) => {
                     headings={headings}
                     appStore={appStore}
                     color={'red'}
+                    onClick={() => setRecord(changeGroup.diff.original)}
                   />
                   <ChangeGroupItem
                     data={changeGroup.diff.change[0]}
                     headings={headings}
                     appStore={appStore}
                     color={'green'}
+                    onClick={() => setRecord(changeGroup.diff.change[0])}
                   />
                 </>
               )}
@@ -157,86 +172,30 @@ const StagingDataTable = withTheme(({ headings, data }) => {
                     headings={headings}
                     appStore={appStore}
                     color={'red'}
+                    onClick={() => setRecord(changeGroup.diff.original)}
                   />
                   <ChangeGroupItem
                     data={changeGroup.diff.change[0]}
                     headings={headings}
                     appStore={appStore}
                     color={'green'}
+                    onClick={() => setRecord(changeGroup.diff.change[0])}
                   />
                   <ChangeGroupItem
                     data={changeGroup.diff.change[1]}
                     headings={headings}
                     appStore={appStore}
                     color={'green'}
+                    onClick={() => setRecord(changeGroup.diff.change[1])}
                   />
                 </>
               )}
             </tbody>
           </Table>
         ))}
-    </div>
+      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+    </StagingDataTableContainer>
   );
 });
 
 export { StagingDataTable };
-
-/*         "action": "UPDATE",
-    <div style={{ height: 'calc(100% - 116px)' }}>
-      <div style={{ overflowX: 'scroll', overflowY: 'hidden', height: '100%' }}>
-        <Table selectedTheme={appStore.theme}>
-          <THead selectedTheme={appStore.theme}>
-            <tr>
-              {headings.map((heading, index) => (
-                <Th
-                  start={index === 0}
-                  end={!actions && index === headings.length - 1}
-                  selectedTheme={appStore.theme}
-                  key={index}>
-                  <TableCellHeaderText>
-                    {convertPascalCaseToSentenceCase(heading)}
-                  </TableCellHeaderText>
-                </Th>
-              ))}
-              {actions && (
-                <Th
-                  start={false}
-                  end={true}
-                  selectedTheme={appStore.theme}
-                  key={'action'}>
-                  <TableCellHeaderText>Action</TableCellHeaderText>
-                </Th>
-              )}
-            </tr>
-          </THead>
-          <tbody>
-            {paginatedData[currentPage].map((record, index) => (
-              <Tr
-                onClick={() => setRecord(record)}
-                index={index}
-                selectedTheme={appStore.theme}
-                key={index}>
-                {Object.keys(record).map((key, index) => (
-                  <Td selectedTheme={appStore.theme} key={index}>
-                    <TableCellText>
-                      {record[key] && record[key].toString()}
-                    </TableCellText>
-                  </Td>
-                ))}
-                {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}
-              </Tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
-      <StyledPaginationContainer>
-        <Pagination
-          pages={(paginatedData && paginatedData.length) || 0}
-          current={currentPage}
-          callback={handlePageClick}
-          showLast
-        />
-      </StyledPaginationContainer>
-      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
-    </div>
-*/
