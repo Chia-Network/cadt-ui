@@ -121,6 +121,65 @@ export const getStagingData = ({ useMockedResponse = false }) => {
   };
 };
 
+export const commitStagingData = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/commit`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        console.log('yay!');
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteStagingData = uuid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uuid }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        console.log('yay!');
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const postNewProject = data => {
   return async dispatch => {
     try {

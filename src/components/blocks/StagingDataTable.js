@@ -76,7 +76,7 @@ const StagingDataTableContainer = styled('div')`
   overflow-x: scroll;
 `;
 
-const ChangeGroupHeader = ({ headings, appStore }) => {
+const ChangeGroupHeader = ({ headings, appStore, onClick }) => {
   return (
     <THead selectedTheme={appStore.theme}>
       <Tr color="gray">
@@ -90,7 +90,9 @@ const ChangeGroupHeader = ({ headings, appStore }) => {
           ))}
         <Th selectedTheme={appStore.theme}>
           <TableCellHeaderText>
-            <MinusIcon width={16} height={16} />
+            <div onClick={onClick}>
+              <MinusIcon width={16} height={16} />
+            </div>
           </TableCellHeaderText>
         </Th>
       </Tr>
@@ -117,7 +119,7 @@ const ChangeGroupItem = ({ headings, data, appStore, color, onClick }) => {
   );
 };
 
-const StagingDataTable = withTheme(({ headings, data }) => {
+const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
 
@@ -127,7 +129,11 @@ const StagingDataTable = withTheme(({ headings, data }) => {
         headings &&
         data.map((changeGroup, index) => (
           <Table selectedTheme={appStore.theme} key={index}>
-            <ChangeGroupHeader headings={headings} appStore={appStore} />
+            <ChangeGroupHeader
+              headings={headings}
+              appStore={appStore}
+              onClick={() => deleteStagingData(changeGroup.uuid)}
+            />
             <tbody>
               {changeGroup.action === 'DELETE' && (
                 <ChangeGroupItem

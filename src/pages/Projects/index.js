@@ -17,6 +17,7 @@ import {
 import {
   getProjects,
   getStagingData,
+  deleteStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
 const headings = [
@@ -42,10 +43,6 @@ const Projects = withRouter(({ history }) => {
     dispatch(getProjects({ useMockedResponse: false }));
     dispatch(getStagingData({ useMockedResponse: false }));
   }, []);
-
-  useEffect(() => {
-    console.log(climateWarehouseStore.stagingData);
-  }, [climateWarehouseStore.stagingData]);
 
   if (
     !climateWarehouseStore.projects ||
@@ -105,6 +102,7 @@ const Projects = withRouter(({ history }) => {
               <StagingDataTable
                 headings={headings}
                 data={climateWarehouseStore.stagingData.projects.staging}
+                deleteStagingData={uuid => dispatch(deleteStagingData(uuid))}
               />
             )}
           </TabPanel>
