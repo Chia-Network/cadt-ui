@@ -69,7 +69,6 @@ const Projects = withRouter(({ history }) => {
     { label: 'Poland', value: 'PL' },
     { label: 'Colombia', value: 'CO' },
   ];
-  const selectInitialOptions = [{ label: 'United States', value: 'US' }];
   const [tabValue, setTabValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
@@ -94,13 +93,13 @@ const Projects = withRouter(({ history }) => {
         <div style={{ maxWidth: '25.1875rem' }}>
           <SearchInput size="large" outline />
         </div>
-        <div style={{ margin: '0px 20.5px' }}>
+        <div style={{ margin: '0rem 1.2813rem',  }}>
           <Select
             size={SelectSizeEnum.large}
             type={SelectTypeEnum.basic}
             options={selectOptions}
-            selected={selectInitialOptions}
-            placeholder="Basic select"
+            placeholder="Filters"
+            width='93px'
           />
         </div>
         <div style={{ marginLeft: 'auto' }}>

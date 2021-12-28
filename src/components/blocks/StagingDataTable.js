@@ -77,12 +77,7 @@ const StagingDataTableContainer = styled('div')`
   overflow-x: scroll;
 `;
 
-const ChangeGroupHeader = ({
-  headings,
-  appStore,
-  onClick,
-  deleteStgingIsVisible,
-}) => {
+const ChangeGroupHeader = ({ headings, appStore }) => {
   return (
     <THead selectedTheme={appStore.theme}>
       <Tr color="gray">
@@ -95,13 +90,7 @@ const ChangeGroupHeader = ({
             </Th>
           ))}
         <Th selectedTheme={appStore.theme}>
-          <TableCellHeaderText>
-            {deleteStgingIsVisible && (
-              <span onClick={onClick} style={{cursor: 'pointer'}}>
-                <MinusIcon width={16} height={16} />
-              </span>
-            )}
-          </TableCellHeaderText>
+          <TableCellHeaderText></TableCellHeaderText>
         </Th>
       </Tr>
       <Tr />
@@ -109,7 +98,14 @@ const ChangeGroupHeader = ({
   );
 };
 
-const ChangeGroupItem = ({ headings, data, appStore, color, onClick }) => {
+const ChangeGroupItem = ({
+  headings,
+  data,
+  appStore,
+  color,
+  onClick,
+  onDeleteStaging,
+}) => {
   return (
     <>
       <Tr color={color} selectedTheme={appStore.theme} onClick={onClick}>
@@ -118,7 +114,13 @@ const ChangeGroupItem = ({ headings, data, appStore, color, onClick }) => {
             <TableCellText>{data[key] && data[key].toString()}</TableCellText>
           </Td>
         ))}
-        <Td selectedTheme={appStore.theme}></Td>
+        <Td selectedTheme={appStore.theme}>
+          {onDeleteStaging && (
+            <div onClick={onDeleteStaging} style={{ cursor: 'pointer', textAlign: 'right', paddingRight: '10px' }}>
+              <MinusIcon width={16} height={16} />
+            </div>
+          )}
+        </Td>
       </Tr>
       <Tr>
         <td></td>
@@ -137,12 +139,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
         headings &&
         data.map((changeGroup, index) => (
           <Table selectedTheme={appStore.theme} key={index}>
-            <ChangeGroupHeader
-              headings={headings}
-              appStore={appStore}
-              onClick={() => deleteStagingData(changeGroup.uuid)}
-              deleteStgingIsVisible={deleteStagingData && true}
-            />
+            <ChangeGroupHeader headings={headings} appStore={appStore} />
             <tbody>
               {changeGroup.action === 'DELETE' && (
                 <ChangeGroupItem
@@ -151,6 +148,12 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                   appStore={appStore}
                   color={'red'}
                   onClick={() => setRecord(changeGroup.diff.original)}
+                  onDeleteStaging={
+                    deleteStagingData &&
+                    function () {
+                      deleteStagingData(changeGroup.uuid);
+                    }
+                  }
                 />
               )}
               {changeGroup.action === 'INSERT' && (
@@ -160,6 +163,12 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                   appStore={appStore}
                   color={'green'}
                   onClick={() => setRecord(changeGroup.diff.change[0])}
+                  onDeleteStaging={
+                    deleteStagingData &&
+                    function () {
+                      deleteStagingData(changeGroup.uuid);
+                    }
+                  }
                 />
               )}
               {changeGroup.action === 'UPDATE' && (
@@ -170,6 +179,12 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'red'}
                     onClick={() => setRecord(changeGroup.diff.original)}
+                    onDeleteStaging={
+                      deleteStagingData &&
+                      function () {
+                        deleteStagingData(changeGroup.uuid);
+                      }
+                    }
                   />
                   <ChangeGroupItem
                     data={changeGroup.diff.change[0]}
@@ -177,6 +192,12 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'green'}
                     onClick={() => setRecord(changeGroup.diff.change[0])}
+                    onDeleteStaging={
+                      deleteStagingData &&
+                      function () {
+                        deleteStagingData(changeGroup.uuid);
+                      }
+                    }
                   />
                 </>
               )}
@@ -188,6 +209,12 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'red'}
                     onClick={() => setRecord(changeGroup.diff.original)}
+                    onDeleteStaging={
+                      deleteStagingData &&
+                      function () {
+                        deleteStagingData(changeGroup.uuid);
+                      }
+                    }
                   />
                   <ChangeGroupItem
                     data={changeGroup.diff.change[0]}
@@ -195,6 +222,12 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'green'}
                     onClick={() => setRecord(changeGroup.diff.change[0])}
+                    onDeleteStaging={
+                      deleteStagingData &&
+                      function () {
+                        deleteStagingData(changeGroup.uuid);
+                      }
+                    }
                   />
                   <ChangeGroupItem
                     data={changeGroup.diff.change[1]}
@@ -202,6 +235,12 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'green'}
                     onClick={() => setRecord(changeGroup.diff.change[1])}
+                    onDeleteStaging={
+                      deleteStagingData &&
+                      function () {
+                        deleteStagingData(changeGroup.uuid);
+                      }
+                    }
                   />
                 </>
               )}
