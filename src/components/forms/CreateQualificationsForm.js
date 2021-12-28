@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { StandardInput, InputSizeEnum, InputStateEnum, Divider } from '..';
@@ -16,19 +16,7 @@ const InputContainer = styled('div')`
   width: 320px;
 `;
 
-const CreateQualificationsForm = () => {
-  const [qualifications, setQualifications] = useState({
-    projectID: '',
-    qualificationType: '',
-    label: '',
-    creditingPeriod_StartDate: '',
-    creditingPeriod_EndDate: '',
-    validity_StartDate: '',
-    validity_EndDate: '',
-    unityQuantity: 0,
-    qualification_Link: '',
-  });
-
+const CreateQualificationsForm = ({ value, onChange }) => {
   return (
     <div
       style={{
@@ -46,48 +34,12 @@ const CreateQualificationsForm = () => {
           justifyContent: 'flex-start',
           width: '90%',
         }}>
-       
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             paddingRight: '66px',
-          }}> 
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body color={'#262626'}>Project ID</Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText="Project ID"
-                state={InputStateEnum.default}
-                value={qualifications.unitsOwner}
-                onChange={value =>
-                  setQualifications(prev => ({ ...prev, unitsOwner: value }))
-                }
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body color={'#262626'}>Qualification Type</Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText="Qualification Type"
-                state={InputStateEnum.default}
-                value={qualifications.qualificationType}
-                onChange={value =>
-                  setQualifications(prev => ({
-                    ...prev,
-                    qualificationType: value,
-                  }))
-                }
-              />
-            </InputContainer>
-          </StyledFieldContainer>
+          }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>Label</Body>
@@ -97,10 +49,8 @@ const CreateQualificationsForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Label"
                 state={InputStateEnum.default}
-                value={qualifications.label}
-                onChange={value =>
-                  setQualifications(prev => ({ ...prev, label: value }))
-                }
+                value={value.label}
+                onChange={event => {onChange(({...value, label: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -113,13 +63,8 @@ const CreateQualificationsForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Crediting Period Start Date"
                 state={InputStateEnum.default}
-                value={qualifications.creditingPeriod_StartDate}
-                onChange={value =>
-                  setQualifications(prev => ({
-                    ...prev,
-                    creditingPeriod_StartDate: value,
-                  }))
-                }
+                value={value.creditingPeriodStartDate}
+                onChange={event => {onChange(({...value, creditingPeriodStartDate: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -132,18 +77,11 @@ const CreateQualificationsForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Crediting Period End Date"
                 state={InputStateEnum.default}
-                value={qualifications.creditingPeriod_EndDate}
-                onChange={value =>
-                  setQualifications(prev => ({
-                    ...prev,
-                    creditingPeriod_EndDate: value,
-                  }))
-                }
+                value={value.creditingPeriodEndDate}
+                onChange={event => {onChange(({...value, creditingPeriodEndDate: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>Validity Start Date</Body>
@@ -153,16 +91,13 @@ const CreateQualificationsForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Validity Start Date"
                 state={InputStateEnum.default}
-                value={qualifications.validity_StartDate}
-                onChange={value =>
-                  setQualifications(prev => ({
-                    ...prev,
-                    validity_StartDate: value,
-                  }))
-                }
+                value={value.validityStartDate}
+                onChange={event => {onChange(({...value, validityStartDate: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>Validity End Date</Body>
@@ -172,13 +107,8 @@ const CreateQualificationsForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Validity End Date"
                 state={InputStateEnum.default}
-                value={qualifications.validity_EndDate}
-                onChange={value =>
-                  setQualifications(prev => ({
-                    ...prev,
-                    validity_EndDate: value,
-                  }))
-                }
+                value={value.validityEndDate}
+                onChange={event => {onChange(({...value, validityEndDate: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -191,10 +121,8 @@ const CreateQualificationsForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Unit Quantity"
                 state={InputStateEnum.default}
-                value={qualifications.unityQuantity}
-                onChange={value =>
-                  setQualifications(prev => ({ ...prev, unityQuantity: value }))
-                }
+                value={value.unitQuantity}
+                onChange={event => {onChange(({...value, unitQuantity: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -207,13 +135,8 @@ const CreateQualificationsForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Qualifications Link"
                 state={InputStateEnum.default}
-                value={qualifications.qualification_Link}
-                onChange={value =>
-                  setQualifications(prev => ({
-                    ...prev,
-                    qualification_Link: value,
-                  }))
-                }
+                value={value.qualificationLink}
+                onChange={event => {onChange(({...value, qualificationLink: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>

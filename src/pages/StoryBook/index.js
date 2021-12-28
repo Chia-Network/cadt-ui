@@ -98,6 +98,7 @@ const StoryBook = () => {
   const popoverTitle = 'Popover title';
 
   const [repeaterValues, updateRepeaterValues] = useState([]);
+  console.log(repeaterValues)
 
   const [tabValue, setTabValue] = React.useState(0);
 

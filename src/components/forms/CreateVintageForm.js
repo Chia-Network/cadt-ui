@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { StandardInput, InputSizeEnum, InputStateEnum, Divider } from '..';
@@ -16,14 +16,8 @@ const InputContainer = styled('div')`
   width: 320px;
 `;
 
-const CreateVintageForm = () => {
-  const [vintage, setVintage] = useState({
-    vintage_StartDate: '',
-    vintage_EndDate: '',
-    verificationApproach: '',
-    verificationDate: '',
-    verificationBody: '',
-  });
+const CreateVintageForm = ({ value, onChange }) => {
+
 
   return (
     <div
@@ -58,10 +52,8 @@ const CreateVintageForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Vintage Start Date"
                 state={InputStateEnum.default}
-                value={vintage.vintage_StartDate}
-                onChange={value =>
-                  setVintage(prev => ({ ...prev, vintage_StartDate: value }))
-                }
+                value={value.vintageStartDate}
+                onChange={event => {onChange(({...value, vintageStartDate: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -74,13 +66,8 @@ const CreateVintageForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Vintage End Date"
                 state={InputStateEnum.default}
-                value={vintage.vintage_EndDate}
-                onChange={value =>
-                  setVintage(prev => ({
-                    ...prev,
-                    vintage_EndDate: value,
-                  }))
-                }
+                value={value.vintageEndDate}
+                onChange={event => {onChange(({...value, vintageEndDate: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -93,10 +80,8 @@ const CreateVintageForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Verification Approach"
                 state={InputStateEnum.default}
-                value={vintage.verificationApproach}
-                onChange={value =>
-                  setVintage(prev => ({ ...prev, verificationApproach: value }))
-                }
+                value={value.verificationApproach}
+                onChange={event => {onChange(({...value, verificationApproach: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -109,13 +94,8 @@ const CreateVintageForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="Verification Date"
                 state={InputStateEnum.default}
-                value={vintage.verificationDate}
-                onChange={value =>
-                  setVintage(prev => ({
-                    ...prev,
-                    verificationDate: value,
-                  }))
-                }
+                value={value.verificationDate}
+                onChange={event => {onChange(({...value, verificationDate: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -128,13 +108,8 @@ const CreateVintageForm = () => {
                 size={InputSizeEnum.large}
                 placeholderText="verification Body"
                 state={InputStateEnum.default}
-                value={vintage.verificationBody}
-                onChange={value =>
-                  setVintage(prev => ({
-                    ...prev,
-                    verificationBody: value,
-                  }))
-                }
+                value={value.verificationBody}
+                onChange={event => {onChange(({...value, verificationBody: event})); console.log({value})}}
               />
             </InputContainer>
           </StyledFieldContainer>

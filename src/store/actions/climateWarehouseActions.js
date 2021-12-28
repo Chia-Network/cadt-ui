@@ -28,7 +28,7 @@ export const actions = keyMirror(
   'GET_UNITS',
   'GET_PROJECTS',
   'GET_VINTAGES',
-  'GET_SELECTED_UNITS',
+  'GET_SELECTED_UNITS'
 );
 
 const getClimateWarehouseTable = (
@@ -135,7 +135,9 @@ export const editUnits = data => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: {
+          uuid: data.uuid,
+          data: JSON.stringify(data)}
       };
 
       const response = await fetch(url, payload);
@@ -264,12 +266,6 @@ export const getRelatedProjects = options => {
   };
 };
 
-export const selectedUnit = data => {
-  return {
-    type: actions.GET_SELECTED_UNITS,
-    payload: data,
-  };
-};
 
 export const mockUnitsResponse = {
   type: actions.GET_UNITS,

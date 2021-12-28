@@ -8,7 +8,7 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 
 import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
-import { FormWrapper, Modal } from '..';
+import { EllipseIcon } from '..';
 
 import { EditUnitsForm } from '../forms/EditUnitsForm';
 
@@ -164,12 +164,14 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                       </TableCellText>
                       
                     </Td>
+                    
                   ))}
-                  {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}
-                  <div style={{ backgroundColor: 'black', height: '80px', width: '30px', marginLeft: '-30px', color: 'white', cursor: 'pointer'}} onClick={() => {
+                  
+                  {actions && <Td style={{cursor: "pointer"}} onClick={() => {
                      setEdit(true);
                      setEditRecord(record)
-                  }}>Edit</div>
+                  }}electedTheme={appStore.theme}>{actions &&<div><EllipseIcon height={"5"} width={"5"}/> <EllipseIcon height={"5"} width={"5"}/> <EllipseIcon height={"5"} width={"5"}/></div>}</Td>}
+  
                 </Tr>
               </>
             ))}
@@ -188,15 +190,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
         <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
      
       {edit && (
-        <Modal
-          onClose={() => {setEdit(false); setEditRecord(null)}}
-          basic
-          form
-          showButtons
-          title="Edit Unit"
-          body={<FormWrapper tabLabel="Edit Units"><EditUnitsForm data={editRecord}/></FormWrapper>
-          }
-        />
+       <EditUnitsForm  onClose={() => {setEdit(false); setEditRecord(null)}} data={editRecord}/>
       )}
     </div>
   );

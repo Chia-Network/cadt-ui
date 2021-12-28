@@ -19,6 +19,10 @@ const StyledFieldContainer = styled('div')`
   padding-bottom: 20px;
 `;
 
+const InputContainer = styled('div')`
+width: 320px;
+`;
+
 const CreateUnitsForm = () => {
   //const dispatch = useDispatch();
   const [newUnits, setNewUnits] = useState({
@@ -38,9 +42,6 @@ const CreateUnitsForm = () => {
     correspondingAdjustment: '',
     unitTag: '',
   });
-  const InputContainer = styled('div')`
-  width: 320px;
-`;
   return (
     <div
     style={{
@@ -71,9 +72,8 @@ const CreateUnitsForm = () => {
           state={InputStateEnum.default}
           value={newUnits.unitsOwner}
           onChange={value =>
-            {setNewUnits(prev => ({ ...prev, unitsOwner: value }))
-            console.log(newUnits.unitsOwner)
-          }
+            setNewUnits(prev => ({ ...prev, unitsOwner: value }))
+          
           }
         />
         </InputContainer>

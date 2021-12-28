@@ -166,7 +166,7 @@ const Modal = withTheme(
           <MessageContainer basic={basic} form={form}>
             <TitleContainer basic={basic} form={form}>
               <Body size="Bold">{title}</Body>
-              {basic && <CloseIcon height="8.91" width="8.66" />}
+              {basic && <div onClick={onClose} style={{cursor: 'pointer'}}><CloseIcon height="8.91" width="8.66" /></div>}
             </TitleContainer>
             {basic && <Divider />}
             <BodyContainer basic={basic} form={form}>

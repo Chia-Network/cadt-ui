@@ -20,8 +20,9 @@ const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [ create, setCreate ] = useState(false)
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+  console.log(climateWarehouseStore)
 
-  useEffect(() => dispatch(getUnits({ useMockedResponse: true })), []);
+  useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
 
   if (!climateWarehouseStore.units || !climateWarehouseStore.units.length) {
     return null;
@@ -60,6 +61,7 @@ const Units = withRouter(() => {
         <DataTable
           headings={Object.keys(climateWarehouseStore.units[0])}
           data={climateWarehouseStore.units}
+          actions
         />
         </>
       )}
