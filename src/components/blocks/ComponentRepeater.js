@@ -17,14 +17,17 @@ const ComponentRepeater = ({
   initialValue,
   addIcon,
   removeIcon,
+  maxRepetitions = 2,
 }) => {
   const addNewInstance = useCallback(() => {
-    updateValues(prevValues =>
-      prevValues && prevValues.length
-        ? [...prevValues, _.cloneDeep(initialValue)]
-        : [_.cloneDeep(initialValue)],
-    );
-  });
+    if (values.length < maxRepetitions) {
+      updateValues(prevValues =>
+        prevValues && prevValues.length
+          ? [...prevValues, _.cloneDeep(initialValue)]
+          : [_.cloneDeep(initialValue)],
+      );
+    }
+  }, [values]);
 
   const allInstances = useMemo(() => {
     return values.map((value, index) => {
