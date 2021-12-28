@@ -11,6 +11,7 @@ const initialState = {
   units: null,
   projects: null,
   vintages: null,
+  stagingData: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -38,6 +39,9 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_VINTAGES:
       return u({ vintages: action.payload }, state);
+
+    case climateWarehouseActions.GET_STAGING_DATA:
+      return u({ stagingData: action.payload }, state);
 
     default:
       return state;

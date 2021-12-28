@@ -11,6 +11,7 @@ import {
   unitsResponseStub,
   projectsResponseStub,
   vintagesResponseStub,
+  stagingDataResponseStub,
 } from '../../mocks';
 
 import {
@@ -28,6 +29,7 @@ export const actions = keyMirror(
   'GET_UNITS',
   'GET_PROJECTS',
   'GET_VINTAGES',
+  'GET_STAGING_DATA',
 );
 
 const getClimateWarehouseTable = (
@@ -56,6 +58,119 @@ const getClimateWarehouseTable = (
             payload: results,
           });
         }
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+const formatStagingData = dataArray => {
+  const splittedByTable = _.groupBy(dataArray, 'table');
+
+  splittedByTable.Projects = _.groupBy(splittedByTable.Projects, 'commited');
+
+  splittedByTable.Units = _.groupBy(splittedByTable.Units, 'commited');
+
+  const splittedAndFormatted = {
+    projects: {
+      pending: [...(splittedByTable.Projects.true || [])],
+      staging: [...(splittedByTable.Projects.false || [])],
+    },
+    units: {
+      pending: [...(splittedByTable.Units.true || [])],
+      staging: [...(splittedByTable.Units.false || [])],
+    },
+  };
+  return splittedAndFormatted;
+};
+
+export const mockGetStagingDataResponse = {
+  type: actions.GET_STAGING_DATA,
+  payload: formatStagingData(
+    _.get(stagingDataResponseStub, 'default', stagingDataResponseStub),
+  ),
+};
+
+export const getStagingData = ({ useMockedResponse = false }) => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      if (useMockedResponse) {
+        dispatch(mockGetStagingDataResponse);
+      } else {
+        const response = await fetch(`${constants.API_HOST}/staging`);
+
+        if (response.ok) {
+          const results = await response.json();
+
+          dispatch({
+            type: actions.GET_STAGING_DATA,
+            payload: formatStagingData(results),
+          });
+        }
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const commitStagingData = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/commit`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        console.log('yay!');
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteStagingData = uuid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uuid }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        console.log('yay!');
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
