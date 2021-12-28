@@ -108,16 +108,22 @@ const ChangeGroupItem = ({
 }) => {
   return (
     <>
-      <Tr color={color} selectedTheme={appStore.theme} onClick={onClick}>
+      <Tr color={color} selectedTheme={appStore.theme}>
         {headings.map((key, index) => (
-          <Td selectedTheme={appStore.theme} key={index}>
+          <Td selectedTheme={appStore.theme} key={index} onClick={onClick}>
             <TableCellText>{data[key] && data[key].toString()}</TableCellText>
           </Td>
         ))}
         <Td selectedTheme={appStore.theme}>
           {onDeleteStaging && (
-            <div onClick={onDeleteStaging} style={{ cursor: 'pointer', textAlign: 'right', paddingRight: '10px' }}>
-              <MinusIcon width={16} height={16} />
+            <div
+              style={{
+                textAlign: 'right',
+                paddingRight: '10px',
+              }}>
+              <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
+                <MinusIcon width={16} height={16} />
+              </span>
             </div>
           )}
         </Td>
@@ -192,12 +198,6 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'green'}
                     onClick={() => setRecord(changeGroup.diff.change[0])}
-                    onDeleteStaging={
-                      deleteStagingData &&
-                      function () {
-                        deleteStagingData(changeGroup.uuid);
-                      }
-                    }
                   />
                 </>
               )}
@@ -222,12 +222,6 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'green'}
                     onClick={() => setRecord(changeGroup.diff.change[0])}
-                    onDeleteStaging={
-                      deleteStagingData &&
-                      function () {
-                        deleteStagingData(changeGroup.uuid);
-                      }
-                    }
                   />
                   <ChangeGroupItem
                     data={changeGroup.diff.change[1]}
@@ -235,12 +229,6 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'green'}
                     onClick={() => setRecord(changeGroup.diff.change[1])}
-                    onDeleteStaging={
-                      deleteStagingData &&
-                      function () {
-                        deleteStagingData(changeGroup.uuid);
-                      }
-                    }
                   />
                 </>
               )}
