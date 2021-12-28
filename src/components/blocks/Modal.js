@@ -138,7 +138,7 @@ const Modal = withTheme(
     type,
     confirmation,
     basic,
-    form,
+    form = false,
   }) => {
     return (
       <Container>

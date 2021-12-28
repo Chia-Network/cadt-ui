@@ -50,7 +50,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
                 placeholderText="Label"
                 state={InputStateEnum.default}
                 value={value.label}
-                onChange={event => {onChange(({...value, label: event})); console.log({value})}}
+                onChange={event => {onChange(({...value, label: event})); console.log(value)}}
               />
             </InputContainer>
           </StyledFieldContainer>

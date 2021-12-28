@@ -10,17 +10,14 @@ import {
   SearchInput,
   Tag,
   PrimaryButton,
-  Modal,
-  FormWrapper,
-  CreateUnitsForm
+  CreateUnitsForm,
 } from '../../components';
-
 
 const Units = withRouter(() => {
   const dispatch = useDispatch();
-  const [ create, setCreate ] = useState(false)
+  const [create, setCreate] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
-  console.log(climateWarehouseStore)
+  console.log(climateWarehouseStore);
 
   useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
 
@@ -58,24 +55,14 @@ const Units = withRouter(() => {
       </div>
       {climateWarehouseStore.units && (
         <>
-        <DataTable
-          headings={Object.keys(climateWarehouseStore.units[0])}
-          data={climateWarehouseStore.units}
-          actions
-        />
+          <DataTable
+            headings={Object.keys(climateWarehouseStore.units[0])}
+            data={climateWarehouseStore.units}
+            actions
+          />
         </>
       )}
-      {create && (
-        <Modal
-          onClose={() => setCreate(false)}
-          basic
-          form
-          showButtons
-          title="Create Unit"
-          body={<FormWrapper tabLabel="Create Unit"><CreateUnitsForm /></FormWrapper>
-          }
-        />
-      )}
+      {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
     </>
   );
 });

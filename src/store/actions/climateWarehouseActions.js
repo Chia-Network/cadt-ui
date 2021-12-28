@@ -238,7 +238,8 @@ export const postNewUnits = data => {
   };
 };
 
-export const editUnits = data => {
+export const updateUnitsRecord = data => {
+  console.log(data);
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -249,9 +250,7 @@ export const editUnits = data => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: {
-          uuid: data.uuid,
-          data: JSON.stringify(data)}
+        body: data,
       };
 
       const response = await fetch(url, payload);
@@ -379,7 +378,6 @@ export const getRelatedProjects = options => {
     );
   };
 };
-
 
 export const mockUnitsResponse = {
   type: actions.GET_UNITS,

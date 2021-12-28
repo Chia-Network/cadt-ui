@@ -1,3 +1,4 @@
+import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -17,7 +18,9 @@ const InputContainer = styled('div')`
 `;
 
 const CreateVintageForm = ({ value, onChange }) => {
-
+  const onInputChange = (field, changeValue) => {
+    onChange(u({ [field]: changeValue }, value));
+  };
 
   return (
     <div
@@ -36,13 +39,12 @@ const CreateVintageForm = ({ value, onChange }) => {
           justifyContent: 'flex-start',
           width: '90%',
         }}>
-       
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             paddingRight: '66px',
-          }}> 
+          }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>Vintage Start Date</Body>
@@ -53,7 +55,9 @@ const CreateVintageForm = ({ value, onChange }) => {
                 placeholderText="Vintage Start Date"
                 state={InputStateEnum.default}
                 value={value.vintageStartDate}
-                onChange={event => {onChange(({...value, vintageStartDate: event})); console.log({value})}}
+                onChange={changeValue =>
+                  onInputChange('vintageStartDate', changeValue)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -67,7 +71,9 @@ const CreateVintageForm = ({ value, onChange }) => {
                 placeholderText="Vintage End Date"
                 state={InputStateEnum.default}
                 value={value.vintageEndDate}
-                onChange={event => {onChange(({...value, vintageEndDate: event})); console.log({value})}}
+                onChange={changeValue =>
+                  onInputChange('vintageEndDate', changeValue)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -81,7 +87,9 @@ const CreateVintageForm = ({ value, onChange }) => {
                 placeholderText="Verification Approach"
                 state={InputStateEnum.default}
                 value={value.verificationApproach}
-                onChange={event => {onChange(({...value, verificationApproach: event})); console.log({value})}}
+                onChange={changeValue =>
+                  onInputChange('verificationApproach', changeValue)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -95,7 +103,9 @@ const CreateVintageForm = ({ value, onChange }) => {
                 placeholderText="Verification Date"
                 state={InputStateEnum.default}
                 value={value.verificationDate}
-                onChange={event => {onChange(({...value, verificationDate: event})); console.log({value})}}
+                onChange={changeValue =>
+                  onInputChange('verificationDate', changeValue)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -109,7 +119,9 @@ const CreateVintageForm = ({ value, onChange }) => {
                 placeholderText="verification Body"
                 state={InputStateEnum.default}
                 value={value.verificationBody}
-                onChange={event => {onChange(({...value, verificationBody: event})); console.log({value})}}
+                onChange={changeValue =>
+                  onInputChange('verificationBody', changeValue)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
