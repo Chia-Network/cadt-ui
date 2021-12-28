@@ -180,6 +180,11 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
     return true;
   };
 
+  const onDeleteStaging = (uuid) => {
+    if (!deleteStagingData) return null;
+    return () => deleteStagingData(uuid);
+  }
+
   return (
     <StagingDataTableContainer>
       {data &&
@@ -188,15 +193,11 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
           <Table selectedTheme={appStore.theme} key={index}>
             <ChangeGroupHeader headings={headings} appStore={appStore} />
             <tbody>
-              {changeGroupIsValid(changeGroup) && (
+              {!changeGroupIsValid(changeGroup) && (
                 <InvalidChangeGroup
                   headings={headings}
                   appStore={appStore}
-                  onDeleteStaging={
-                    deleteStagingData
-                      ? () => deleteStagingData(changeGroup.uuid)
-                      : null
-                  }
+                  onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
                 />
               )}
               {changeGroup.action === 'DELETE' &&
@@ -207,11 +208,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'red'}
                     onClick={() => setRecord(changeGroup.diff.original)}
-                    onDeleteStaging={
-                      deleteStagingData
-                        ? () => deleteStagingData(changeGroup.uuid)
-                        : null
-                    }
+                    onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
                   />
                 )}
               {changeGroup.action === 'INSERT' &&
@@ -222,11 +219,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     appStore={appStore}
                     color={'green'}
                     onClick={() => setRecord(changeGroup.diff.change[0])}
-                    onDeleteStaging={
-                      deleteStagingData
-                        ? () => deleteStagingData(changeGroup.uuid)
-                        : null
-                    }
+                    onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
                   />
                 )}
               {changeGroup.action === 'UPDATE' &&
@@ -238,11 +231,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                       appStore={appStore}
                       color={'red'}
                       onClick={() => setRecord(changeGroup.diff.original)}
-                      onDeleteStaging={
-                        deleteStagingData
-                          ? () => deleteStagingData(changeGroup.uuid)
-                          : null
-                      }
+                      onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
                     />
                     {changeGroup.diff.change.map((change, index) => (
                       <ChangeGroupItem
