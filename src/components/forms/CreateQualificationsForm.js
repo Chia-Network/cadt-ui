@@ -50,7 +50,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
                 placeholderText="Label"
                 state={InputStateEnum.default}
                 value={value.label}
-                onChange={event => {onChange(({...value, label: event})); console.log(value)}}
+                onChange={event => {onChange(({...value, label: event}))}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -64,7 +64,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
                 placeholderText="Crediting Period Start Date"
                 state={InputStateEnum.default}
                 value={value.creditingPeriodStartDate}
-                onChange={event => {onChange(({...value, creditingPeriodStartDate: event})); console.log({value})}}
+                onChange={event => {onChange(({...value, creditingPeriodStartDate: event}))}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -78,7 +78,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
                 placeholderText="Crediting Period End Date"
                 state={InputStateEnum.default}
                 value={value.creditingPeriodEndDate}
-                onChange={event => {onChange(({...value, creditingPeriodEndDate: event})); console.log({value})}}
+                onChange={event => {onChange(({...value, creditingPeriodEndDate: event}))}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -92,7 +92,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
                 placeholderText="Validity Start Date"
                 state={InputStateEnum.default}
                 value={value.validityStartDate}
-                onChange={event => {onChange(({...value, validityStartDate: event})); console.log({value})}}
+                onChange={event => {onChange(({...value, validityStartDate: event}))}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -108,7 +108,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
                 placeholderText="Validity End Date"
                 state={InputStateEnum.default}
                 value={value.validityEndDate}
-                onChange={event => {onChange(({...value, validityEndDate: event})); console.log({value})}}
+                onChange={event => {onChange(({...value, validityEndDate: event}))}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -122,7 +122,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
                 placeholderText="Unit Quantity"
                 state={InputStateEnum.default}
                 value={value.unitQuantity}
-                onChange={event => {onChange(({...value, unitQuantity: event})); console.log({value})}}
+                onChange={event => {onChange(({...value, unitQuantity: event}))}}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -136,7 +136,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
                 placeholderText="Qualifications Link"
                 state={InputStateEnum.default}
                 value={value.qualificationLink}
-                onChange={event => {onChange(({...value, qualificationLink: event})); console.log({value})}}
+                onChange={event => {onChange(({...value, qualificationLink: event}))}}
               />
             </InputContainer>
           </StyledFieldContainer>

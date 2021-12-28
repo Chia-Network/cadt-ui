@@ -73,8 +73,6 @@ const EditUnitsForm = ({ data, onClose }) => {
     //dispatch(updateUnitsRecord(dataToSend));
     alert('Not yet Implemented');
   };
-  console.log({ data });
-  console.log({ vintage, qualification });
 
   return (
     <>
