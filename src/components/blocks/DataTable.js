@@ -96,7 +96,6 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const [edit, setEdit] = useState(false);
   const appStore = useSelector(state => state.app);
 
-
   const handlePageClick = page => {
     setPage(page);
   };
@@ -150,28 +149,44 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               )}
             </tr>
           </THead>
-          <tbody style={{ position: 'relative'}}>
+          <tbody style={{ position: 'relative' }}>
             {paginatedData[currentPage].map((record, index) => (
               <>
-                <Tr
-                  index={index}
-                  selectedTheme={appStore.theme}
-                  key={index}>
+                <Tr index={index} selectedTheme={appStore.theme} key={index}>
                   {Object.keys(record).map((key, index) => (
-                    <Td  onClick={() => setRecord(record)} selectedTheme={appStore.theme} key={index}>
+                    <Td
+                      onClick={() => setRecord(record)}
+                      selectedTheme={appStore.theme}
+                      key={index}>
                       <TableCellText>
                         {record[key] && record[key].toString()}
                       </TableCellText>
-                      
                     </Td>
-                    
                   ))}
-                  
-                  {actions && <Td style={{cursor: "pointer"}} onClick={() => {
-                     setEdit(true);
-                     setEditRecord(record)
-                  }}electedTheme={appStore.theme}>{actions &&<div><EllipseIcon height={"5"} width={"5"}/> <EllipseIcon height={"5"} width={"5"}/> <EllipseIcon height={"5"} width={"5"}/></div>}</Td>}
-  
+
+                  {actions && (
+                    <Td
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        setEdit(true);
+                        setEditRecord(record);
+                      }}
+                      electedTheme={appStore.theme}>
+                      {actions && (
+                        <div
+                          style={{
+                            transform: 'rotate(0.25turn)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-evenly',
+                          }}>
+                          <EllipseIcon height={'5'} width={'5'} />{' '}
+                          <EllipseIcon height={'5'} width={'5'} />{' '}
+                          <EllipseIcon height={'5'} width={'5'} />
+                        </div>
+                      )}
+                    </Td>
+                  )}
                 </Tr>
               </>
             ))}
@@ -186,11 +201,17 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           showLast
         />
       </StyledPaginationContainer>
-     
-        <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
-     
+
+      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+
       {edit && (
-       <EditUnitsForm  onClose={() => {setEdit(false); setEditRecord(null)}} data={editRecord}/>
+        <EditUnitsForm
+          onClose={() => {
+            setEdit(false);
+            setEditRecord(null);
+          }}
+          data={editRecord}
+        />
       )}
     </div>
   );

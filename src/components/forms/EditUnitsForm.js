@@ -3,11 +3,6 @@ import React, { useState, useEffect } from 'react';
 //import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
-  CreateQualificationsForm,
-  ComponentRepeater,
-  AddIcon,
-  CloseIcon,
-  CreateVintageForm,
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
@@ -17,6 +12,8 @@ import {
   Tab,
   TabPanel
 } from '..';
+import QualificationsRepeater from './QualificationsRepeater';
+import VintageRepeater from './VintageRepeater';
 //import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 
 
@@ -446,50 +443,13 @@ const EditUnitsForm = ({ data, onClose }) => {
                 </div>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
-                <div style={{ padding: '20px 30px' }}>
-                  <ComponentRepeater
-                    values={qualification}
-                    updateValues={setQualificationsRepeaterValues}
-                    initialValue={{
-                      label: '',
-                      creditingPeriodStartDate: '',
-                      creditingPeriodEndDate: '',
-                      validityStartDate: '',
-                      validityEndDate: '',
-                      unityQuantity: '',
-                      qualificationLink: '',
-                    }}
-                    component={<CreateQualificationsForm />}
-                    addIcon={
-                      <AddIcon height={14} width={14} fill={'#1890FF'} />
-                    }
-                    removeIcon={
-                      <CloseIcon height={12} width={12} fill={'#1890FF'} />
-                    }
-                  />
-                </div>
+                <QualificationsRepeater
+                  qualificationsState={qualification}
+                  newQualificationsState={setQualificationsRepeaterValues}
+                />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <div style={{ padding: '20px 30px' }}>
-                  <ComponentRepeater
-                    values={vintage}
-                    updateValues={setVintage}
-                    initialValue={{
-                      vintageStartDate: '',
-                      vintageEndDate: '',
-                      verificationApproach: '',
-                      verificationDate: '',
-                      verificationBody: '',
-                    }}
-                    component={<CreateVintageForm />}
-                    addIcon={
-                      <AddIcon height={14} width={14} fill={'#1890FF'} />
-                    }
-                    removeIcon={
-                      <CloseIcon height={12} width={12} fill={'#1890FF'} />
-                    }
-                  />
-                </div>
+                <VintageRepeater vintageState={vintage} newVintageState={setVintage}/>
               </TabPanel>
             </div>
           </div>
