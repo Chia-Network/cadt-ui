@@ -9,6 +9,7 @@ const initialState = {
   theme: constants.THEME.DEFAULT,
   errorMessage: null,
   locale: null,
+  mode: constants.MODE.WAREHOUSE
 };
 
 const appReducer = (state = initialState, action) => {
@@ -45,6 +46,16 @@ const appReducer = (state = initialState, action) => {
           : constants.THEME.DARK;
       localStorage.setItem('theme', theme);
       return u({ theme }, state);
+
+    case appActions.TOGGLE_MODE:
+      // eslint-disable-next-line
+      const mode =
+        state.mode === constants.MODE.WAREHOUSE
+          ? constants.MODE.REGISTRY
+          : constants.MODE.WAREHOUSE;
+     
+      return u({ mode }, state);
+
     default:
       return state;
   }

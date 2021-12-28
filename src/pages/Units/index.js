@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { getUnits } from '../../store/actions/climateWarehouseActions';
 
@@ -8,16 +9,43 @@ import {
   DataTable,
   AddIcon,
   SearchInput,
-  Tag,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  Select,
   PrimaryButton,
   CreateUnitsForm,
 } from '../../components';
+
+const StyleContainer = styled('div')`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 30px 0px;
+`;
 
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
-  console.log(climateWarehouseStore);
+  const selectOptions = [
+    { label: 'Portugal', value: 'PT' },
+    { label: 'Sweden', value: 'SE' },
+    { label: 'Indonesia', value: 'ID' },
+    { label: 'France', value: 'FR' },
+    { label: 'Philippines', value: 'PH' },
+    { label: 'Thailand', value: 'TH' },
+    { label: 'Bosnia and Herzegovina', value: 'BA' },
+    { label: 'Mexico', value: 'MX' },
+    { label: 'United States', value: 'US' },
+    { label: 'Finland', value: 'FI' },
+    { label: 'Azerbaijan', value: 'AZ' },
+    { label: 'Canada', value: 'CA' },
+    { label: 'Panama', value: 'PA' },
+    { label: 'Slovenia', value: 'SI' },
+    { label: 'China', value: 'CN' },
+    { label: 'Poland', value: 'PL' },
+    { label: 'Colombia', value: 'CO' },
+  ];
 
   useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
 
@@ -27,24 +55,24 @@ const Units = withRouter(() => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          margin: '30px 0px',
-        }}>
-        <SearchInput outline />
+      <StyleContainer>
+        <div style={{ maxWidth: '25.1875rem' }}>
+          <SearchInput size="large" outline />
+        </div>
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-evenly',
-            alignItems: 'flex-start',
-            width: '20%',
+            width: '50%',
           }}>
-          <Tag body="Unit Text" closeable />
-          <Tag body="Unit Text" closeable />
-          <Tag body="Unit Text" closeable />
+          
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.basic}
+              options={selectOptions}
+              placeholder="Filters"
+              width="93px"
+            />
+         
         </div>
         <PrimaryButton
           label="Create"
@@ -52,7 +80,7 @@ const Units = withRouter(() => {
           icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
           onClick={() => setCreate(true)}
         />
-      </div>
+      </StyleContainer>
       {climateWarehouseStore.units && (
         <>
           <DataTable
