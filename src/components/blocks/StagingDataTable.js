@@ -73,6 +73,7 @@ const Td = styled('td')`
 `;
 
 const StagingDataTableContainer = styled('div')`
+  height: 100%;
   overflow-x: scroll;
 `;
 

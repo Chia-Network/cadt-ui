@@ -50,21 +50,21 @@ const StyledSelect = styled('div')`
   ${props => {
     if (props.size === SelectSizeEnum.large) {
       return css`
-        min-height: 2.5rem;
+        height: 2.5rem;
         padding: 0.5rem 0.75rem 0.5rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5rem;
       `;
     } else if (props.size === SelectSizeEnum.small) {
       return css`
-        min-height: 1.5rem;
+        height: 1.5rem;
         padding: 0.0625rem 0.5rem 0.0625rem 0.5rem;
         font-size: 0.875rem;
         line-height: 1.375rem;
       `;
     } else {
       return css`
-        min-height: 2rem;
+        height: 2rem;
         padding: 0.3125rem 0.75rem 0.3125rem 0.75rem;
         font-size: 0.875rem;
         line-height: 1.375rem;

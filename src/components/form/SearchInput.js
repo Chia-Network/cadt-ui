@@ -15,6 +15,7 @@ const Input = styled('input')`
   justify-content: center;
   border-top-left-radius: 0.1rem;
   border-bottom-left-radius: 0.1rem;
+  padding-left: 0.75rem;
   font-size: 1rem;
   margin: 0;
   ${props =>
