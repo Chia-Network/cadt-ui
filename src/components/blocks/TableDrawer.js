@@ -48,13 +48,13 @@ const TableDrawer = withTheme(({ getRecord, onClose }) => {
         {getRecord &&
           Object.entries(getRecord)
             .filter(value => !Array.isArray(getRecord[value[0]]))
-            .map((value, id) => {
+            .map((value) => {
               return (
                 <>
-                  <TableContent key={id}>
+                  <TableContent key={value}>
                     <H4>{convertPascalCaseToSentenceCase(value[0])}</H4>
 
-                    <Subtitle key={id}>{value[1]}</Subtitle>
+                    <Subtitle>{JSON.stringify(value[1])}</Subtitle>
                   </TableContent>
                 </>
               );

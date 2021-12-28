@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -10,11 +10,14 @@ import {
   SearchInput,
   Tag,
   PrimaryButton,
+  CreateUnitsForm,
 } from '../../components';
 
-const Units = withRouter(({ history }) => {
+const Units = withRouter(() => {
   const dispatch = useDispatch();
+  const [create, setCreate] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+  console.log(climateWarehouseStore);
 
   useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
 
@@ -47,15 +50,19 @@ const Units = withRouter(({ history }) => {
           label="Create"
           size="large"
           icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-          onClick={() => history.push('/units/add')}
+          onClick={() => setCreate(true)}
         />
       </div>
       {climateWarehouseStore.units && (
-        <DataTable
-          headings={Object.keys(climateWarehouseStore.units[0])}
-          data={climateWarehouseStore.units}
-        />
+        <>
+          <DataTable
+            headings={Object.keys(climateWarehouseStore.units[0])}
+            data={climateWarehouseStore.units}
+            actions
+          />
+        </>
       )}
+      {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
     </>
   );
 });

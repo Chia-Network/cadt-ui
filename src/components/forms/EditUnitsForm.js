@@ -1,21 +1,21 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
 //import { useDispatch } from 'react-redux';
-
+import styled from 'styled-components';
 import {
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
-  Tabs,
-  Tab,
-  TabPanel,
   Modal,
   Body,
+  Tabs,
+  Tab,
+  TabPanel
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
-//import { postNewUnits } from '../../store/actions/climateWarehouseActions';
+//import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
+
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -24,43 +24,56 @@ const StyledLabelContainer = styled('div')`
 const StyledFieldContainer = styled('div')`
   padding-bottom: 20px;
 `;
-
 const InputContainer = styled('div')`
   width: 320px;
 `;
 
-const CreateUnitsForm = ({ onClose }) => {
+const EditUnitsForm = ({ data, onClose }) => {
   //const dispatch = useDispatch();
-  const [newQualifications, setNewQualifications] = useState([]);
-  const [newVintage, setNewVintage] = useState([]);
+
+  const [qualification, setQualificationsRepeaterValues] = useState([]);
+
+  const [vintage, setVintage] = useState([]);
+
+  const [editedUnits, setEditUnits] = useState({});
+
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-  const [newUnits, setNewUnits] = useState({
-    unitsOwner: '',
-    unitsBuyer: '',
-    registry: '',
-    unitBlockIdentifier: '',
-    unitIdentifier: '',
-    qualificationID: '',
-    unitType: '',
-    unitCount: '',
-    unitStatus: '',
-    unitStatusDate: '',
-    transactionType: '',
-    unitIssuanceLocation: '',
-    unitLink: '',
-    correspondingAdjustment: '',
-    unitTag: '',
-  });
+
+  useEffect(() => {
+    setEditUnits({
+      blockIdentifier: data.blockIdentifier,
+      buyer: data.buyer,
+      correspondingAdjustment: data.correspondingAdjustment,
+      createdAt: data.createdAt,
+      id: data.id,
+      identifier: data.identifier,
+      orgUid: data.orgUid,
+      registry: data.registry,
+      transactionType: data.transactionType,
+      unitCount: data.unitCount,
+      unitIssuanceLocation: data.unitIssuanceLocation,
+      unitLink: data.unitLink,
+      unitStatus: data.unitStatus,
+      unitStatusDate: data.unitStatusDate,
+      unitTag: data.unitTag,
+      unitType: data.unitType,
+      updatedAt: data.updatedAt,
+    });
+    setVintage([_.get(data, 'vintage', {})]);
+    setQualificationsRepeaterValues(_.get(data, 'qualification', []));
+  }, [data]);
+
   const handleEditUnits = () => {
-    const dataToSend = _.cloneDeep(newUnits);
-    dataToSend.vintage = newVintage;
-    dataToSend.qualification = newQualifications;
-    //dispatch(postNewUnits(dataToSend));
+    const dataToSend = _.cloneDeep(editedUnits);
+    dataToSend.vintage = _.head(vintage);
+    dataToSend.qualification = qualification;
+    //dispatch(updateUnitsRecord(dataToSend));
     alert('Not yet Implemented');
   };
+
   return (
     <>
       <Modal
@@ -69,14 +82,14 @@ const CreateUnitsForm = ({ onClose }) => {
         basic
         form
         showButtons
-        title="Create Units"
+        title="Edit Units"
         body={
           <div>
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
               aria-label="Tab Options">
-              <Tab label="Create Units" />
+              <Tab label="Edit Units" />
               <Tab label="Qualifications" />
               <Tab label="Vintage" />
             </Tabs>
@@ -86,9 +99,9 @@ const CreateUnitsForm = ({ onClose }) => {
                   style={{
                     width: '100%',
                     height: '100%',
+                    padding: '20px 0',
                     display: 'flex',
                     flexDirection: 'column',
-                    padding: '20px 0',
                     flexWrap: 'wrap',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -107,18 +120,18 @@ const CreateUnitsForm = ({ onClose }) => {
                       }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Units Owner</Body>
+                          <Body color={'#262626'}>Block Identifier</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Units Owner"
+                            placeholderText="Block Identifier"
                             state={InputStateEnum.default}
-                            value={newUnits.unitsOwner}
+                            value={editedUnits.blockIdentifier}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
-                                unitsOwner: value,
+                                blockIdentifier: value,
                               }))
                             }
                           />
@@ -126,18 +139,37 @@ const CreateUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Units Buyer</Body>
+                          <Body color={'#262626'}>Buyer</Body>
+                        </StyledLabelContainer>
+
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText="Buyer"
+                            state={InputStateEnum.default}
+                            value={editedUnits.buyer}
+                            onChange={value =>
+                              setEditUnits(prev => ({ ...prev, buyer: value }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>
+                            Corresponding Adjustment
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Units Buyer"
+                            placeholderText="Corresponding Adjustment"
                             state={InputStateEnum.default}
-                            value={newUnits.unitsBuyer}
+                            value={editedUnits.correspondingAdjustment}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
-                                unitsBuyer: value,
+                                correspondingAdjustment: value,
                               }))
                             }
                           />
@@ -145,18 +177,18 @@ const CreateUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Registry</Body>
+                          <Body color={'#262626'}>Created At</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Registry"
+                            placeholderText="Created At"
                             state={InputStateEnum.default}
-                            value={newUnits.registry}
+                            value={editedUnits.createdAt}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
-                                registry: value,
+                                createdAt: value,
                               }))
                             }
                           />
@@ -164,18 +196,18 @@ const CreateUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Block Identifier</Body>
+                          <Body color={'#262626'}>ID</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Block Identifier"
+                            placeholderText="ID"
                             state={InputStateEnum.default}
-                            value={newUnits.unitBlockIdentifier}
+                            value={editedUnits.id}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
-                                unitBlockIdentifier: value,
+                                id: value,
                               }))
                             }
                           />
@@ -183,18 +215,18 @@ const CreateUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Identifier</Body>
+                          <Body color={'#262626'}>Identifier</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Identifier"
+                            placeholderText="Identifier"
                             state={InputStateEnum.default}
-                            value={newUnits.unitIdentifier}
+                            value={editedUnits.identifier}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
-                                unitIdentifier: value,
+                                identifier: value,
                               }))
                             }
                           />
@@ -202,56 +234,34 @@ const CreateUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Qualification ID</Body>
+                          <Body color={'#262626'}>Org UID</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Qualification ID"
+                            placeholderText="Org UID"
                             state={InputStateEnum.default}
-                            value={newUnits.qualificationID}
+                            value={editedUnits.orgUid}
                             onChange={value =>
-                              setNewUnits(prev => ({
-                                ...prev,
-                                qualificationID: value,
-                              }))
+                              setEditUnits(prev => ({ ...prev, orgUid: value }))
                             }
                           />
                         </InputContainer>
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Type</Body>
+                          <Body color={'#262626'}>Updated At</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Type"
+                            placeholderText="Updated At"
                             state={InputStateEnum.default}
-                            value={newUnits.unitType}
+                            value={editedUnits.updatedAt}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
-                                unitType: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Count</Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText="Unit Count"
-                            state={InputStateEnum.default}
-                            value={newUnits.unitCount}
-                            onChange={value =>
-                              setNewUnits(prev => ({
-                                ...prev,
-                                unitCount: value,
+                                updatedAt: value,
                               }))
                             }
                           />
@@ -261,37 +271,18 @@ const CreateUnitsForm = ({ onClose }) => {
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Status</Body>
+                          <Body color={'#262626'}>Registry</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Status"
+                            placeholderText="Registry"
                             state={InputStateEnum.default}
-                            value={newUnits.unitStatus}
+                            value={editedUnits.registry}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
-                                unitStatus: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Status Date</Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText="Unit Status Date"
-                            state={InputStateEnum.default}
-                            value={newUnits.unitStatusDate}
-                            onChange={value =>
-                              setNewUnits(prev => ({
-                                ...prev,
-                                unitStatusDate: value,
+                                registry: value,
                               }))
                             }
                           />
@@ -306,11 +297,30 @@ const CreateUnitsForm = ({ onClose }) => {
                             size={InputSizeEnum.large}
                             placeholderText="Transaction Type"
                             state={InputStateEnum.default}
-                            value={newUnits.transactionType}
+                            value={editedUnits.transactionType}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
                                 transactionType: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>Unit Count</Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText="Unit Count"
+                            state={InputStateEnum.default}
+                            value={editedUnits.unitCount}
+                            onChange={value =>
+                              setEditUnits(prev => ({
+                                ...prev,
+                                unitCount: value,
                               }))
                             }
                           />
@@ -325,9 +335,9 @@ const CreateUnitsForm = ({ onClose }) => {
                             size={InputSizeEnum.large}
                             placeholderText="Unit Issuance Location"
                             state={InputStateEnum.default}
-                            value={newUnits.unitIssuanceLocation}
+                            value={editedUnits.unitIssuanceLocation}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
                                 unitIssuanceLocation: value,
                               }))
@@ -344,9 +354,9 @@ const CreateUnitsForm = ({ onClose }) => {
                             size={InputSizeEnum.large}
                             placeholderText="Unit Link"
                             state={InputStateEnum.default}
-                            value={newUnits.unitLink}
+                            value={editedUnits.unitLink}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
                                 unitLink: value,
                               }))
@@ -356,22 +366,39 @@ const CreateUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            Corresponding Adjustment
-                          </Body>
+                          <Body color={'#262626'}>Unit Status</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Corresponding Adjustment"
+                            placeholderText="Unit Status"
                             state={InputStateEnum.default}
-                            value={newUnits.correspondingAdjustment}
+                            value={editedUnits.unitStatus}
                             onChange={value =>
-                              setNewUnits(prev => ({
+                              setEditUnits(prev => ({
                                 ...prev,
-                                correspondingAdjustment: value,
+                                unitStatus: value,
                               }))
                             }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>Unit Status Date</Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText="Unit Status Date"
+                            state={InputStateEnum.default}
+                            value={editedUnits.unitStatusDate}
+                            onChange={value => {
+                              setEditUnits(prev => ({
+                                ...prev,
+                                unitStatusDate: value,
+                              }));
+                            }}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -384,31 +411,43 @@ const CreateUnitsForm = ({ onClose }) => {
                             size={InputSizeEnum.large}
                             placeholderText="Unit Tag"
                             state={InputStateEnum.default}
-                            value={newUnits.unitTag}
-                            onChange={value =>
-                              setNewUnits(prev => ({ ...prev, unitTag: value }))
-                            }
+                            value={editedUnits.unitTag}
+                            onChange={value => {
+                              setEditUnits(prev => ({
+                                ...prev,
+                                unitTag: value,
+                              }));
+                            }}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
                     </div>
                   </div>
-                  {/* <div onClick={() => dispatch(postNewUnits(newUnits))}>
-       <PrimaryButton label="Submit" size="large" />
-       </div> */}
+
+                  {/* <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          height: '100px',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+        }}
+        onClick={() => dispatch(editUnits(editedUnits))}>
+        <PrimaryButton label="Cancel" size="large" />
+        <div style={{padding: '0px 20px'}}>
+          <PrimaryButton label="Confirm" size="large" />
+        </div>
+      </div> */}
                 </div>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <QualificationsRepeater
-                  qualificationsState={newQualifications}
-                  newQualificationsState={setNewQualifications}
+                  qualificationsState={qualification}
+                  newQualificationsState={setQualificationsRepeaterValues}
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <VintageRepeater
-                  vintageState={newVintage}
-                  newVintageState={setNewVintage}
-                />
+                <VintageRepeater vintageState={vintage} newVintageState={setVintage}/>
               </TabPanel>
             </div>
           </div>
@@ -418,4 +457,4 @@ const CreateUnitsForm = ({ onClose }) => {
   );
 };
 
-export { CreateUnitsForm };
+export { EditUnitsForm };

@@ -99,6 +99,7 @@ const StoryBook = () => {
   const popoverTitle = 'Popover title';
 
   const [repeaterValues, updateRepeaterValues] = useState([]);
+  console.log(repeaterValues)
 
   const [tabValue, setTabValue] = React.useState(0);
 
@@ -131,6 +132,8 @@ const StoryBook = () => {
           addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
           removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
         />
+          
+        
 
         <div
           style={{
