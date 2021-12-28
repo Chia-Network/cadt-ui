@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
@@ -135,11 +134,51 @@ const ChangeGroupItem = ({
   );
 };
 
+const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
+  return (
+    <>
+      <Tr color="red" selectedTheme={appStore.theme}>
+        <Td colSpan={headings.length}>
+          <TableCellText>
+            <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
+              This change request has been currupted, click here to remove.
+            </span>
+          </TableCellText>
+        </Td>
+        <Td selectedTheme={appStore.theme}>
+          {onDeleteStaging && (
+            <div
+              style={{
+                textAlign: 'right',
+                paddingRight: '10px',
+              }}>
+              <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
+                <MinusIcon width={16} height={16} />
+              </span>
+            </div>
+          )}
+        </Td>
+      </Tr>
+    </>
+  );
+};
+
 const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
 
-  console.log(data);
+  const changeGroupIsValid = changeGroup => {
+    if (!changeGroup.diff) return false;
+    if (!changeGroup.diff.original || !changeGroup.diff.change) return false;
+    if (changeGroup.diff.change.length === 1 && !changeGroup.diff.change[0])
+      return false;
+    if (
+      changeGroup.diff.change.length === 2 &&
+      (!changeGroup.diff.change[0] || !changeGroup.change[1])
+    )
+      return false;
+    return true;
+  };
 
   return (
     <StagingDataTableContainer>
@@ -149,38 +188,19 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
           <Table selectedTheme={appStore.theme} key={index}>
             <ChangeGroupHeader headings={headings} appStore={appStore} />
             <tbody>
-              {changeGroup.action === 'DELETE' && (
-                <ChangeGroupItem
-                  data={changeGroup.diff.original}
+              {changeGroupIsValid(changeGroup) && (
+                <InvalidChangeGroup
                   headings={headings}
                   appStore={appStore}
-                  color={'red'}
-                  onClick={() => setRecord(changeGroup.diff.original)}
                   onDeleteStaging={
-                    deleteStagingData &&
-                    function () {
-                      deleteStagingData(changeGroup.uuid);
-                    }
+                    deleteStagingData
+                      ? () => deleteStagingData(changeGroup.uuid)
+                      : null
                   }
                 />
               )}
-              {changeGroup.action === 'INSERT' && (
-                <ChangeGroupItem
-                  data={changeGroup.diff.change[0]}
-                  headings={headings}
-                  appStore={appStore}
-                  color={'green'}
-                  onClick={() => setRecord(changeGroup.diff.change[0])}
-                  onDeleteStaging={
-                    deleteStagingData &&
-                    function () {
-                      deleteStagingData(changeGroup.uuid);
-                    }
-                  }
-                />
-              )}
-              {changeGroup.action === 'UPDATE' && (
-                <>
+              {changeGroup.action === 'DELETE' &&
+                changeGroupIsValid(changeGroup) && (
                   <ChangeGroupItem
                     data={changeGroup.diff.original}
                     headings={headings}
@@ -188,24 +208,54 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                     color={'red'}
                     onClick={() => setRecord(changeGroup.diff.original)}
                     onDeleteStaging={
-                      deleteStagingData &&
-                      function () {
-                        deleteStagingData(changeGroup.uuid);
-                      }
+                      deleteStagingData
+                        ? () => deleteStagingData(changeGroup.uuid)
+                        : null
                     }
                   />
-                  {changeGroup.diff.change.map((change, index) => (
+                )}
+              {changeGroup.action === 'INSERT' &&
+                changeGroupIsValid(changeGroup) && (
+                  <ChangeGroupItem
+                    data={changeGroup.diff.change[0]}
+                    headings={headings}
+                    appStore={appStore}
+                    color={'green'}
+                    onClick={() => setRecord(changeGroup.diff.change[0])}
+                    onDeleteStaging={
+                      deleteStagingData
+                        ? () => deleteStagingData(changeGroup.uuid)
+                        : null
+                    }
+                  />
+                )}
+              {changeGroup.action === 'UPDATE' &&
+                changeGroupIsValid(changeGroup) && (
+                  <>
                     <ChangeGroupItem
-                      data={change}
+                      data={changeGroup.diff.original}
                       headings={headings}
                       appStore={appStore}
-                      color={'green'}
-                      key={index}
-                      onClick={() => setRecord(change)}
+                      color={'red'}
+                      onClick={() => setRecord(changeGroup.diff.original)}
+                      onDeleteStaging={
+                        deleteStagingData
+                          ? () => deleteStagingData(changeGroup.uuid)
+                          : null
+                      }
                     />
-                  ))}
-                </>
-              )}
+                    {changeGroup.diff.change.map((change, index) => (
+                      <ChangeGroupItem
+                        data={change}
+                        headings={headings}
+                        appStore={appStore}
+                        color={'green'}
+                        key={index}
+                        onClick={() => setRecord(change)}
+                      />
+                    ))}
+                  </>
+                )}
             </tbody>
           </Table>
         ))}
