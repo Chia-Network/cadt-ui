@@ -31,6 +31,8 @@ const Body = styled('div')`
   margin: 1.5rem;
   background-color: #ffffff;
   overflow: hidden;
+  box-sizing: border-box;
+  padding: 0;
 `;
 
 const Dashboard = withTheme(({ children }) => {
@@ -41,7 +43,7 @@ const Dashboard = withTheme(({ children }) => {
       <Container>
         <Headline />
         <Body>
-          <div style={{ height: 'calc(100% - 3rem)' }}>{children}</div>
+          {children}
         </Body>
       </Container>
     </Main>

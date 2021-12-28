@@ -56,6 +56,7 @@ import {
   Tabs,
   Tab,
   TabPanel,
+  DownloadIcon,
 } from '../../components';
 
 import { CreateProjectForm, CreateUnitsForm } from '../../components/forms';
@@ -613,6 +614,7 @@ const StoryBook = () => {
           <WarningIconSmall width="20" height="20" />
           <ArrowDownIcon width="20" height="20" />
           <CheckIcon width="20" height="20" />
+          <DownloadIcon width="20" height="20" />
         </div>
 
         <div
@@ -833,12 +835,13 @@ const StoryBook = () => {
         <div
           style={{
             display: 'flex',
+            gap: '20px',
             height: '100px',
             justifyContent: 'flex-start',
             width: '80%',
             flexWrap: 'wrap',
             alignItems: 'center',
-            marginTop: '50px',
+            marginTop: '100px',
           }}>
           <PrimaryButton label="Button" size="large" />
           <PrimaryButton label="Button" size="default" />
@@ -1013,7 +1016,7 @@ const StoryBook = () => {
             closeText="Close Now"
           />
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px'}}>
           <SearchInput size="small" />
           <SearchInput size="small" outline />
           <SearchInput size="small" usePrimaryButton />

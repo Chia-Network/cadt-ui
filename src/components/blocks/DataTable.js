@@ -123,7 +123,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 116px)' }}>
+    <div style={{ height: 'calc(100% - 70px)' }}>
       <div style={{ overflowX: 'scroll', overflowY: 'hidden', height: '100%' }}>
         <Table selectedTheme={appStore.theme}>
           <THead selectedTheme={appStore.theme}>

@@ -7,3 +7,4 @@ export * as relatedProjectsResponseStub from './related-projects.json';
 export * as unitsResponseStub from './units.json';
 export * as projectsResponseStub from './projects.json';
 export * as vintagesResponseStub from './vintages.json';
+export * as stagingDataResponseStub from './staging-data.json';

@@ -21,3 +21,5 @@ export * from './ThreeDotsIcon';
 export * from './CloseIconWithBorder';
 export * from './Divider';
 export * from './EllipseIcon';
+export * from './MinusIcon';
+export * from './DownloadIcon';
