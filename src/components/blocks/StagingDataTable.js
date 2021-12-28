@@ -139,6 +139,8 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
 
+  console.log(data);
+
   return (
     <StagingDataTableContainer>
       {data &&
@@ -192,44 +194,16 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                       }
                     }
                   />
-                  <ChangeGroupItem
-                    data={changeGroup.diff.change[0]}
-                    headings={headings}
-                    appStore={appStore}
-                    color={'green'}
-                    onClick={() => setRecord(changeGroup.diff.change[0])}
-                  />
-                </>
-              )}
-              {changeGroup.action === 'SPLIT' && (
-                <>
-                  <ChangeGroupItem
-                    data={changeGroup.diff.original}
-                    headings={headings}
-                    appStore={appStore}
-                    color={'red'}
-                    onClick={() => setRecord(changeGroup.diff.original)}
-                    onDeleteStaging={
-                      deleteStagingData &&
-                      function () {
-                        deleteStagingData(changeGroup.uuid);
-                      }
-                    }
-                  />
-                  <ChangeGroupItem
-                    data={changeGroup.diff.change[0]}
-                    headings={headings}
-                    appStore={appStore}
-                    color={'green'}
-                    onClick={() => setRecord(changeGroup.diff.change[0])}
-                  />
-                  <ChangeGroupItem
-                    data={changeGroup.diff.change[1]}
-                    headings={headings}
-                    appStore={appStore}
-                    color={'green'}
-                    onClick={() => setRecord(changeGroup.diff.change[1])}
-                  />
+                  {changeGroup.diff.change.map((change, index) => (
+                    <ChangeGroupItem
+                      data={change}
+                      headings={headings}
+                      appStore={appStore}
+                      color={'green'}
+                      key={index}
+                      onClick={() => setRecord(change)}
+                    />
+                  ))}
                 </>
               )}
             </tbody>
