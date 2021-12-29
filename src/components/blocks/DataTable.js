@@ -7,6 +7,7 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
 import { EllipseIcon } from '..';
+import { useWindowSize } from '../../utils/useWindowSize';
 
 import { EditUnitsForm } from '../forms/EditUnitsForm';
 
@@ -95,12 +96,20 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const appStore = useSelector(state => state.app);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
+  const windowSize = useWindowSize();
 
   useEffect(() => {
     if (ref && ref.current) {
-      setHeight(ref.current.getBoundingClientRect().height);
+      if (
+        windowSize.height - ref.current.getBoundingClientRect().top <
+        ref.current.getBoundingClientRect().height
+      ) {
+        setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+      } else {
+        setHeight(ref.current.getBoundingClientRect().height);
+      }
     }
-  }, [ref]);
+  }, [ref, windowSize.height]);
 
   const handlePageClick = page => {
     setPage(page);
@@ -204,14 +213,14 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           </tbody>
         </Table>
       </div>
-        <StyledPaginationContainer>
-          <Pagination
-            pages={(paginatedData && paginatedData.length) || 0}
-            current={currentPage}
-            callback={handlePageClick}
-            showLast
-          />
-        </StyledPaginationContainer>
+      <StyledPaginationContainer>
+        <Pagination
+          pages={(paginatedData && paginatedData.length) || 0}
+          current={currentPage}
+          callback={handlePageClick}
+          showLast
+        />
+      </StyledPaginationContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {edit && (
         <EditUnitsForm
