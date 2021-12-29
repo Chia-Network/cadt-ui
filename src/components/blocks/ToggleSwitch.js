@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Switch } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { toggleMode } from '../../store/actions/app';
+
 
 const SwitchContainer = styled('div')`
   background: ${props => (props.selected ? '#e0f4fe' : 'transparent')};
@@ -15,15 +14,13 @@ const SwitchContainer = styled('div')`
   text-decoration: none;
 `;
 
-function ToggleSwitch() {
-    const dispatch = useDispatch();
+function ToggleSwitch({onChange}) {
+  
   return (
     <SwitchContainer>
       <div>Warehouse</div>
       <Switch
-        onChange={() => {
-          dispatch(toggleMode);
-        }}
+        onChange={onChange}
       />
       <div>Registry</div>
     </SwitchContainer>

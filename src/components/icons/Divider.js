@@ -1,11 +1,9 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
 
-const Divider = withTheme(({ width, height, fill }) => {
+const Divider = withTheme(({ fill }) => {
   return (
     <svg
-      width={`${width}px`}
-      height={`${height}px`}
       viewBox="0 0 520 1"
       fill={`${fill}`}
       xmlns="http://www.w3.org/2000/svg">

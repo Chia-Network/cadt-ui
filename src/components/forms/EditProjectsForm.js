@@ -10,12 +10,11 @@ import {
   Body,
   Tabs,
   Tab,
-  TabPanel
+  TabPanel,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
 //import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
-
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -28,14 +27,15 @@ const InputContainer = styled('div')`
   width: 320px;
 `;
 
-const EditUnitsForm = ({ data, onClose }) => {
+const EditProjectsForm = ({ data, onClose }) => {
   //const dispatch = useDispatch();
+  
 
   const [qualification, setQualificationsRepeaterValues] = useState([]);
 
   const [vintage, setVintage] = useState([]);
 
-  const [editedUnits, setEditUnits] = useState({});
+  const [editedProjects, setEditProjects] = useState({});
 
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event, newValue) => {
@@ -43,31 +43,35 @@ const EditUnitsForm = ({ data, onClose }) => {
   };
 
   useEffect(() => {
-    setEditUnits({
-      blockIdentifier: data.blockIdentifier,
-      buyer: data.buyer,
-      correspondingAdjustment: data.correspondingAdjustment,
-      createdAt: data.createdAt,
-      id: data.id,
-      identifier: data.identifier,
-      orgUid: data.orgUid,
-      registry: data.registry,
-      transactionType: data.transactionType,
-      unitCount: data.unitCount,
-      unitIssuanceLocation: data.unitIssuanceLocation,
-      unitLink: data.unitLink,
-      unitStatus: data.unitStatus,
-      unitStatusDate: data.unitStatusDate,
-      unitTag: data.unitTag,
-      unitType: data.unitType,
-      updatedAt: data.updatedAt,
+    setEditProjects({
+      currentRegistry: data.currentRegistry,
+      registryOfOrigin: data.registryOfOrigin,
+      originProjectId: data.originProjectId,
+      program: data.program,
+      projectID: data.projectID,
+      projectName: data.projectName,
+      projectLink: data.projectLink,
+      projectDeveloper: data.projectDeveloper,
+      sector: data.sector,
+      projectType: data.projectType,
+      coveredByNDC: data.coveredByNDC,
+      NDCLinkage: data.NDCLinkage,
+      projectStatus: data.projectStatus,
+      projectStatusDate: data.projectStatusDate,
+      unitMetric: data.unitMetric,
+      methodology: data.methodology,
+      methodologyVersion: data.methodologyVersion,
+      validationApproach: data.validationApproach,
+      validationDate: data.validationDate,
+      estimatedAnnualAverageEmissionReduction: data.estimatedAnnualAverageEmissionReduction,
+      projectTag: data.projectTag,
     });
-    setVintage([_.get(data, 'vintage', {})]);
-    setQualificationsRepeaterValues(_.get(data, 'qualification', []));
+    setVintage(_.get(data, 'vintages', []));
+    setQualificationsRepeaterValues(_.get(data, 'qualifications', []));
   }, [data]);
 
   const handleEditUnits = () => {
-    const dataToSend = _.cloneDeep(editedUnits);
+    const dataToSend = _.cloneDeep(editedProjects);
     dataToSend.vintage = _.head(vintage);
     dataToSend.qualification = qualification;
     //dispatch(updateUnitsRecord(dataToSend));
@@ -81,14 +85,14 @@ const EditUnitsForm = ({ data, onClose }) => {
         basic
         form
         showButtons
-        title="Edit Units"
+        title="Edit Projects"
         body={
           <div>
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
               aria-label="Tab Options">
-              <Tab label="Edit Units" />
+              <Tab label="Edit Projects" />
               <Tab label="Edit Qualifications" />
               <Tab label="Edit Vintage" />
             </Tabs>
@@ -98,9 +102,9 @@ const EditUnitsForm = ({ data, onClose }) => {
                   style={{
                     width: '100%',
                     height: '100%',
-                    padding: '20px 0',
                     display: 'flex',
                     flexDirection: 'column',
+                    padding: '20px 0',
                     flexWrap: 'wrap',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -119,18 +123,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Block Identifier</Body>
+                          <Body color={'#262626'}>Current Registry</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Block Identifier"
+                            placeholderText="Current Registry"
                             state={InputStateEnum.default}
-                            value={editedUnits.blockIdentifier}
+                            value={editedProjects.currentRegistry}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                blockIdentifier: value,
+                                currentRegistry: value,
                               }))
                             }
                           />
@@ -138,37 +142,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Buyer</Body>
-                        </StyledLabelContainer>
-
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText="Buyer"
-                            state={InputStateEnum.default}
-                            value={editedUnits.buyer}
-                            onChange={value =>
-                              setEditUnits(prev => ({ ...prev, buyer: value }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            Corresponding Adjustment
-                          </Body>
+                          <Body color={'#262626'}>Registry of Origin</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Corresponding Adjustment"
+                            placeholderText="Registry of Origin"
                             state={InputStateEnum.default}
-                            value={editedUnits.correspondingAdjustment}
+                            value={editedProjects.registryOfOrigin}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                correspondingAdjustment: value,
+                                registryOfOrigin: value,
                               }))
                             }
                           />
@@ -176,18 +161,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Created At</Body>
+                          <Body color={'#262626'}>Origin Project Id</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Created At"
+                            placeholderText="Origin Project Id"
                             state={InputStateEnum.default}
-                            value={editedUnits.createdAt}
+                            value={editedProjects.originProjectId}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                createdAt: value,
+                                originProjectId: value,
                               }))
                             }
                           />
@@ -195,18 +180,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>ID</Body>
+                          <Body color={'#262626'}>Program</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="ID"
+                            placeholderText="Program"
                             state={InputStateEnum.default}
-                            value={editedUnits.id}
+                            value={editedProjects.program}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                id: value,
+                                program: value,
                               }))
                             }
                           />
@@ -214,18 +199,35 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Identifier</Body>
+                          <Body color={'#262626'}>Project ID</Body>
+                        </StyledLabelContainer>
+                        <StandardInput
+                          size={InputSizeEnum.large}
+                          placeholderText="Project ID"
+                          state={InputStateEnum.default}
+                          value={editedProjects.projectID}
+                          onChange={value =>
+                            setEditProjects(prev => ({
+                              ...prev,
+                              projectID: value,
+                            }))
+                          }
+                        />
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>Project Name</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Identifier"
+                            placeholderText="Project Name"
                             state={InputStateEnum.default}
-                            value={editedUnits.identifier}
+                            value={editedProjects.projectName}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                identifier: value,
+                                projectName: value,
                               }))
                             }
                           />
@@ -233,34 +235,92 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Org UID</Body>
+                          <Body color={'#262626'}>Project Link</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Org UID"
+                            placeholderText="Project Link"
                             state={InputStateEnum.default}
-                            value={editedUnits.orgUid}
+                            value={editedProjects.projectLink}
                             onChange={value =>
-                              setEditUnits(prev => ({ ...prev, orgUid: value }))
+                              setEditProjects(prev => ({
+                                ...prev,
+                                projectLink: value,
+                              }))
                             }
                           />
                         </InputContainer>
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Updated At</Body>
+                          <Body color={'#262626'}>Project Developer</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Updated At"
+                            placeholderText="Project Developer"
                             state={InputStateEnum.default}
-                            value={editedUnits.updatedAt}
+                            value={editedProjects.projectDeveloper}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                updatedAt: value,
+                                projectDeveloper: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>Sector</Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText="Sector"
+                            state={InputStateEnum.default}
+                            value={editedProjects.sector}
+                            onChange={value =>
+                              setEditProjects(prev => ({
+                                ...prev,
+                                sector: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>Project Type</Body>
+                        </StyledLabelContainer>
+                        <StandardInput
+                          size={InputSizeEnum.large}
+                          placeholderText="Project Type"
+                          state={InputStateEnum.default}
+                          value={editedProjects.projectType}
+                          onChange={value =>
+                            setEditProjects(prev => ({
+                              ...prev,
+                              projectType: value,
+                            }))
+                          }
+                        />
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>Covered by NDC</Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText="Covered by NDC"
+                            state={InputStateEnum.default}
+                            value={editedProjects.coveredByNDC}
+                            onChange={value =>
+                              setEditProjects(prev => ({
+                                ...prev,
+                                coveredByNDC: value,
                               }))
                             }
                           />
@@ -270,18 +330,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Registry</Body>
+                          <Body color={'#262626'}>NDC Linkage</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Registry"
+                            placeholderText="NDC Linkage"
                             state={InputStateEnum.default}
-                            value={editedUnits.registry}
+                            value={editedProjects.NDCLinkage}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                registry: value,
+                                NDCLinkage: value,
                               }))
                             }
                           />
@@ -289,18 +349,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Transaction Type</Body>
+                          <Body color={'#262626'}>Project Status</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Transaction Type"
+                            placeholderText="Project Status"
                             state={InputStateEnum.default}
-                            value={editedUnits.transactionType}
+                            value={editedProjects.projectStatus}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                transactionType: value,
+                                projectStatus: value,
                               }))
                             }
                           />
@@ -308,18 +368,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Count</Body>
+                          <Body color={'#262626'}>Project Status Date</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Count"
+                            placeholderText="Project Status Date"
                             state={InputStateEnum.default}
-                            value={editedUnits.unitCount}
+                            value={editedProjects.projectStatusDate}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                unitCount: value,
+                                projectStatusDate: value,
                               }))
                             }
                           />
@@ -327,18 +387,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Issuance Location</Body>
+                          <Body color={'#262626'}>Unit Metric</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Issuance Location"
+                            placeholderText="Unit Metric"
                             state={InputStateEnum.default}
-                            value={editedUnits.unitIssuanceLocation}
+                            value={editedProjects.unitMetric}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                unitIssuanceLocation: value,
+                                unitMetric: value,
                               }))
                             }
                           />
@@ -346,18 +406,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Link</Body>
+                          <Body color={'#262626'}>Methodology</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Link"
+                            placeholderText="Methodology"
                             state={InputStateEnum.default}
-                            value={editedUnits.unitLink}
+                            value={editedProjects.methodology}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                unitLink: value,
+                                methodology: value,
                               }))
                             }
                           />
@@ -365,18 +425,18 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Status</Body>
+                          <Body color={'#262626'}>Methodology Version</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Status"
+                            placeholderText="Methodology Version"
                             state={InputStateEnum.default}
-                            value={editedUnits.unitStatus}
+                            value={editedProjects.methodologyVersion}
                             onChange={value =>
-                              setEditUnits(prev => ({
+                              setEditProjects(prev => ({
                                 ...prev,
-                                unitStatus: value,
+                                methodologyVersion: value,
                               }))
                             }
                           />
@@ -384,58 +444,88 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Status Date</Body>
+                          <Body color={'#262626'}>Validation Approach</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Status Date"
+                            placeholderText="Validation Approach"
                             state={InputStateEnum.default}
-                            value={editedUnits.unitStatusDate}
-                            onChange={value => {
-                              setEditUnits(prev => ({
+                            value={editedProjects.validationApproach}
+                            onChange={value =>
+                              setEditProjects(prev => ({
                                 ...prev,
-                                unitStatusDate: value,
-                              }));
-                            }}
+                                validationApproach: value,
+                              }))
+                            }
                           />
                         </InputContainer>
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Tag</Body>
+                          <Body color={'#262626'}>Validation Date</Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Tag"
+                            placeholderText="Validation Date"
                             state={InputStateEnum.default}
-                            value={editedUnits.unitTag}
-                            onChange={value => {
-                              setEditUnits(prev => ({
+                            value={editedProjects.validationDate}
+                            onChange={value =>
+                              setEditProjects(prev => ({
                                 ...prev,
-                                unitTag: value,
-                              }));
-                            }}
+                                validationDate: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>
+                            Estimated Annual Average Emission Reduction
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText="Estimated Annual Average Emission Reduction"
+                            state={InputStateEnum.default}
+                            value={
+                              editedProjects.estimatedAnnualAverageEmissionReduction
+                            }
+                            onChange={value =>
+                              setEditProjects(prev => ({
+                                ...prev,
+                                estimatedAnnualAverageEmissionReduction: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>Project Tag</Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText="Project Tag"
+                            state={InputStateEnum.default}
+                            value={editedProjects.projectTag}
+                            onChange={value =>
+                              setEditProjects(prev => ({
+                                ...prev,
+                                projectTag: value,
+                              }))
+                            }
                           />
                         </InputContainer>
                       </StyledFieldContainer>
                     </div>
                   </div>
-
-                  {/* <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          height: '100px',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-        }}
-        onClick={() => dispatch(editUnits(editedUnits))}>
-        <PrimaryButton label="Cancel" size="large" />
-        <div style={{padding: '0px 20px'}}>
-          <PrimaryButton label="Confirm" size="large" />
-        </div>
+                  {/* <div onClick={handleSubmit}>
+        <PrimaryButton label="Submit" size="large" />
       </div> */}
                 </div>
               </TabPanel>
@@ -446,7 +536,10 @@ const EditUnitsForm = ({ data, onClose }) => {
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <VintageRepeater vintageState={vintage} newVintageState={setVintage}/>
+                <VintageRepeater
+                  vintageState={vintage}
+                  newVintageState={setVintage}
+                />
               </TabPanel>
             </div>
           </div>
@@ -456,4 +549,4 @@ const EditUnitsForm = ({ data, onClose }) => {
   );
 };
 
-export { EditUnitsForm };
+export { EditProjectsForm };

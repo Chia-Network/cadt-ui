@@ -16,6 +16,7 @@ import {
   Select,
   SelectSizeEnum,
   SelectTypeEnum,
+  CreateProjectForm
 } from '../../components';
 
 import {
@@ -47,8 +48,9 @@ const StyledSubHeaderContainer = styled('div')`
   padding-right: 27.23px;
 `;
 
-const Projects = withRouter(({ history }) => {
+const Projects = withRouter(() => {
   const dispatch = useDispatch();
+  const [create, setCreate] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
@@ -93,13 +95,13 @@ const Projects = withRouter(({ history }) => {
         <div style={{ maxWidth: '25.1875rem' }}>
           <SearchInput size="large" outline />
         </div>
-        <div style={{ margin: '0rem 1.2813rem',  }}>
+        <div style={{ margin: '0rem 1.2813rem' }}>
           <Select
             size={SelectSizeEnum.large}
             type={SelectTypeEnum.basic}
             options={selectOptions}
             placeholder="Filters"
-            width='93px'
+            width="93px"
           />
         </div>
         <div style={{ marginLeft: 'auto' }}>
@@ -108,7 +110,7 @@ const Projects = withRouter(({ history }) => {
               label="Create"
               size="large"
               icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-              onClick={() => history.push('/projects/add')}
+              onClick={() => setCreate(true)}
             />
           )}
           {tabValue === 1 &&
@@ -148,6 +150,7 @@ const Projects = withRouter(({ history }) => {
             <DataTable
               headings={Object.keys(climateWarehouseStore.projects[0])}
               data={climateWarehouseStore.projects}
+              actions="Projects"
             />
           )}
         </TabPanel>
@@ -169,6 +172,7 @@ const Projects = withRouter(({ history }) => {
           )}
         </TabPanel>
       </div>
+      {create && <CreateProjectForm onClose={() => setCreate(false)} />}
     </div>
   );
 });
