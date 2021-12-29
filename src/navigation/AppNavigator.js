@@ -8,10 +8,13 @@ import { AppContainer, Modal } from '../components';
 
 const AppNavigator = () => {
   const [confirmNetworkError, setConfirmNetworkError] = useState(false);
-  const { showProgressOverlay, connectionCheck } = useSelector(store => store.app);
-
-  if (!connectionCheck && !confirmNetworkError) {
-      return (
+  const { showProgressOverlay, connectionCheck } = useSelector(
+    store => store.app,
+  );
+  return (
+    <AppContainer>
+      {showProgressOverlay && <IndeterminateProgressOverlay />}
+      {!connectionCheck && !confirmNetworkError && (
         <Modal
           type="error"
           onOk={() => setConfirmNetworkError(true)}
@@ -21,12 +24,7 @@ const AppNavigator = () => {
             'There is a connection error. The Climate Warehouse is inaccessible'
           }
         />
-      );
-    
-  }
-  return (
-    <AppContainer>
-      {showProgressOverlay && <IndeterminateProgressOverlay />}
+      )}
       <Router>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
