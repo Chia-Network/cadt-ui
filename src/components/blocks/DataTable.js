@@ -7,7 +7,7 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
 import { EllipseIcon } from '..';
-import { useWindowSize } from '../../utils/useWindowSize';
+import { useWindowSize } from '../hooks/useWindowSize';
 
 import { EditUnitsForm } from '../forms/EditUnitsForm';
 

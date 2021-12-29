@@ -5,7 +5,7 @@ import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { MinusIcon } from '..';
 import { TableDrawer } from './';
-import { useWindowSize } from '../../utils/useWindowSize';
+import { useWindowSize } from '../hooks/useWindowSize';
 
 const Table = styled('table')`
   background-color: white;
