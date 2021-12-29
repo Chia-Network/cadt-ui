@@ -17,7 +17,7 @@ const Table = styled('table')`
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
-  margin-bottom: 10px;
+  margin-bottom: 70px;
 `;
 
 const THead = styled('thead')`
@@ -81,7 +81,10 @@ const StyledPaginationContainer = styled('div')`
   justify-content: center;
   align-items: center;
   min-height: 70px;
+  width: 100%;
   max-height: 70px;
+  position: absolute;
+  bottom: 0;
 `;
 
 const DataTable = withTheme(({ headings, data, actions }) => {
@@ -125,7 +128,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   }
 
   return (
-    <div ref={ref} style={{ height: '100%' }}>
+    <div ref={ref} style={{ height: '100%', position: 'relative' }}>
       <div
         style={{
           height: `${height}px`,
@@ -200,6 +203,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
             ))}
           </tbody>
         </Table>
+      </div>
         <StyledPaginationContainer>
           <Pagination
             pages={(paginatedData && paginatedData.length) || 0}
@@ -208,7 +212,6 @@ const DataTable = withTheme(({ headings, data, actions }) => {
             showLast
           />
         </StyledPaginationContainer>
-      </div>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {edit && (
         <EditUnitsForm
