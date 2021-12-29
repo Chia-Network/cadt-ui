@@ -1,14 +1,13 @@
 import _ from 'lodash';
-
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-
 import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
 import { EllipseIcon } from '..';
+import { useWindowSize } from '../hooks/useWindowSize';
 
 import { EditUnitsForm } from '../forms/EditUnitsForm';
 
@@ -19,8 +18,7 @@ const Table = styled('table')`
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
-  margin-bottom: 10px;
-  overflow-x: scroll;
+  margin-bottom: 70px;
 `;
 
 const THead = styled('thead')`
@@ -78,15 +76,16 @@ const Td = styled('td')`
 `;
 
 const StyledPaginationContainer = styled('div')`
-  position: -webkit-sticky;
-  position: sticky;
+  box-sizing: border-box;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: -1rem;
-  min-height: 60px;
-  padding-bottom: 10px;
+  min-height: 70px;
+  width: 100%;
+  max-height: 70px;
+  position: absolute;
+  bottom: 0;
 `;
 
 const DataTable = withTheme(({ headings, data, actions }) => {
@@ -95,6 +94,13 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const [editRecord, setEditRecord] = useState(null);
   const [edit, setEdit] = useState(false);
   const appStore = useSelector(state => state.app);
+  const ref = React.useRef(null);
+  const [height, setHeight] = React.useState(0);
+  const windowSize = useWindowSize();
+
+  useEffect(() => {
+        setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+  }, [ref.current, windowSize.height]);
 
   const handlePageClick = page => {
     setPage(page);
@@ -122,8 +128,13 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 70px)' }}>
-      <div style={{ overflowX: 'scroll', overflowY: 'hidden', height: '100%' }}>
+    <div ref={ref} style={{ height: '100%', position: 'relative' }}>
+      <div
+        style={{
+          height: `${height}px`,
+          overflow: 'auto',
+          position: 'relative',
+        }}>
         <Table selectedTheme={appStore.theme}>
           <THead selectedTheme={appStore.theme}>
             <tr>
@@ -201,9 +212,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
           showLast
         />
       </StyledPaginationContainer>
-
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
-
       {edit && (
         <EditUnitsForm
           onClose={() => {
