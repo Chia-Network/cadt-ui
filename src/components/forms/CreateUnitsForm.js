@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 //import { useDispatch } from 'react-redux';
 
 import {
@@ -29,7 +30,7 @@ const InputContainer = styled('div')`
   width: 320px;
 `;
 
-const CreateUnitsForm = ({ onClose }) => {
+const CreateUnitsForm = withRouter(({ onClose }) => {
   //const dispatch = useDispatch();
   const [newQualifications, setNewQualifications] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
@@ -416,6 +417,6 @@ const CreateUnitsForm = ({ onClose }) => {
       />
     </>
   );
-};
+});
 
 export { CreateUnitsForm };

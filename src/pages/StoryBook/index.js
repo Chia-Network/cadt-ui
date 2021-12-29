@@ -59,8 +59,6 @@ import {
   DownloadIcon,
 } from '../../components';
 
-import { CreateProjectForm } from '../../components/forms';
-
 const StoryBook = () => {
   const tooltipContent =
     'Distinctively monetize cost effective networks for cross-media bandwidth';
@@ -99,7 +97,7 @@ const StoryBook = () => {
   const popoverTitle = 'Popover title';
 
   const [repeaterValues, updateRepeaterValues] = useState([]);
-  console.log(repeaterValues)
+  console.log(repeaterValues);
 
   const [tabValue, setTabValue] = React.useState(0);
 
@@ -132,18 +130,6 @@ const StoryBook = () => {
           addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
           removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
         />
-          
-        
-
-        <div
-          style={{
-            marginTop: '30px',
-            padding: '30px',
-            border: 'solid lightgray 1px',
-          }}>
-          <CreateProjectForm />
-        </div>
-
 
         <div
           style={{
@@ -1008,7 +994,7 @@ const StoryBook = () => {
             closeText="Close Now"
           />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <SearchInput size="small" />
           <SearchInput size="small" outline />
           <SearchInput size="small" usePrimaryButton />

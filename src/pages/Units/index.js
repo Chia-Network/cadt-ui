@@ -86,7 +86,7 @@ const Units = withRouter(() => {
           <DataTable
             headings={Object.keys(climateWarehouseStore.units[0])}
             data={climateWarehouseStore.units}
-            actions
+            actions="Units"
           />
         </>
       )}

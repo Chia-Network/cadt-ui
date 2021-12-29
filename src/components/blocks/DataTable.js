@@ -9,7 +9,7 @@ import { Pagination, TableDrawer } from './';
 import { EllipseIcon } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
-import { EditUnitsForm } from '../forms/EditUnitsForm';
+import { EditUnitsForm, EditProjectsForm} from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -92,7 +92,8 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
-  const [edit, setEdit] = useState(false);
+  const [editUnits, setEditUnits] = useState(false);
+  const [editProjects, setEditProjects] = useState(false);
   const appStore = useSelector(state => state.app);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
@@ -128,62 +129,62 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   }
 
   return (
-    <div ref={ref} style={{ height: '100%', position: 'relative' }}>
-      <div
-        style={{
-          height: `${height}px`,
-          overflow: 'auto',
-          position: 'relative',
-        }}>
-        <Table selectedTheme={appStore.theme}>
-          <THead selectedTheme={appStore.theme}>
-            <tr>
-              {headings.map((heading, index) => (
-                <Th
-                  start={index === 0}
-                  end={!actions && index === headings.length - 1}
-                  selectedTheme={appStore.theme}
-                  key={index}>
-                  <TableCellHeaderText>
-                    {convertPascalCaseToSentenceCase(heading)}
-                  </TableCellHeaderText>
-                </Th>
-              ))}
-              {actions && (
-                <Th
-                  start={false}
-                  end={true}
-                  selectedTheme={appStore.theme}
-                  key={'action'}>
-                  <TableCellHeaderText>Action</TableCellHeaderText>
-                </Th>
-              )}
-            </tr>
-          </THead>
-          <tbody style={{ position: 'relative' }}>
-            {paginatedData[currentPage].map((record, index) => (
-              <>
-                <Tr index={index} selectedTheme={appStore.theme} key={index}>
-                  {Object.keys(record).map((key, index) => (
-                    <Td
-                      onClick={() => setRecord(record)}
-                      selectedTheme={appStore.theme}
-                      key={index}>
-                      <TableCellText>
-                        {record[key] && record[key].toString()}
-                      </TableCellText>
-                    </Td>
-                  ))}
+    <>
+      <div ref={ref} style={{ height: '100%', position: 'relative' }}>
+        <div
+          style={{
+            height: `${height}px`,
+            overflow: 'auto',
+            position: 'relative',
+          }}>
+          <Table selectedTheme={appStore.theme}>
+            <THead selectedTheme={appStore.theme}>
+              <tr>
+                {headings.map((heading, index) => (
+                  <Th
+                    start={index === 0}
+                    end={!actions && index === headings.length - 1}
+                    selectedTheme={appStore.theme}
+                    key={index}>
+                    <TableCellHeaderText>
+                      {convertPascalCaseToSentenceCase(heading)}
+                    </TableCellHeaderText>
+                  </Th>
+                ))}
+                {actions && (
+                  <Th
+                    start={false}
+                    end={true}
+                    selectedTheme={appStore.theme}
+                    key={'action'}>
+                    <TableCellHeaderText>Action</TableCellHeaderText>
+                  </Th>
+                )}
+              </tr>
+            </THead>
+            <tbody style={{ position: 'relative' }}>
+              {paginatedData[currentPage].map((record, index) => (
+                <>
+                  <Tr index={index} selectedTheme={appStore.theme} key={index}>
+                    {Object.keys(record).map((key, index) => (
+                      <Td
+                        onClick={() => setRecord(record)}
+                        selectedTheme={appStore.theme}
+                        key={index}>
+                        <TableCellText>
+                          {record[key] && record[key].toString()}
+                        </TableCellText>
+                      </Td>
+                    ))}
 
-                  {actions && (
-                    <Td
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => {
-                        setEdit(true);
-                        setEditRecord(record);
-                      }}
-                      electedTheme={appStore.theme}>
-                      {actions && (
+                    {actions === 'Units' && (
+                      <Td
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setEditUnits(true);
+                          setEditRecord(record);
+                        }}
+                        electedTheme={appStore.theme}>
                         <div
                           style={{
                             transform: 'rotate(0.25turn)',
@@ -191,38 +192,68 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                             alignItems: 'center',
                             justifyContent: 'space-evenly',
                           }}>
-                          <EllipseIcon height={'5'} width={'5'} />{' '}
-                          <EllipseIcon height={'5'} width={'5'} />{' '}
+                          <EllipseIcon height={'5'} width={'5'} />
+                          <EllipseIcon height={'5'} width={'5'} />
                           <EllipseIcon height={'5'} width={'5'} />
                         </div>
-                      )}
-                    </Td>
-                  )}
-                </Tr>
-              </>
-            ))}
-          </tbody>
-        </Table>
+                      </Td>
+                    )}
+                    {actions === 'Projects' && (
+                      <Td
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setEditProjects(true);
+                          setEditRecord(record);
+                        }}
+                        electedTheme={appStore.theme}>
+                        <div
+                          style={{
+                            transform: 'rotate(0.25turn)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-evenly',
+                          }}>
+                          <EllipseIcon height="5" width="5" />
+                          <EllipseIcon height="5" width="5" />
+                          <EllipseIcon height="5" width="5" />
+                        </div>
+                      </Td>
+                    )}
+                  </Tr>
+                </>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        <StyledPaginationContainer>
+          <Pagination
+            pages={(paginatedData && paginatedData.length) || 0}
+            current={currentPage}
+            callback={handlePageClick}
+            showLast
+          />
+        </StyledPaginationContainer>
       </div>
-      <StyledPaginationContainer>
-        <Pagination
-          pages={(paginatedData && paginatedData.length) || 0}
-          current={currentPage}
-          callback={handlePageClick}
-          showLast
-        />
-      </StyledPaginationContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
-      {edit && (
+      {editUnits && (
         <EditUnitsForm
           onClose={() => {
-            setEdit(false);
+            setEditUnits(false);
             setEditRecord(null);
           }}
           data={editRecord}
         />
       )}
-    </div>
+      {editProjects && (
+        <EditProjectsForm
+          onClose={() => {
+            setEditProjects(false);
+            setEditRecord(null);
+          }}
+          data={editRecord}
+        />
+      )}
+    </>
   );
 });
 
