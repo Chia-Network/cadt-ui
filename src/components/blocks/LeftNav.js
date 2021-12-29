@@ -3,8 +3,8 @@ import styled, { withTheme } from 'styled-components';
 import { ClimateWarehouseLogo } from '../../components';
 import { Link } from 'react-router-dom';
 import ToggleSwitch from './ToggleSwitch';
-
-
+import { useDispatch } from 'react-redux';
+import { toggleMode } from '../../store/actions/app';
 
 const Container = styled('div')`
   display: flex;
@@ -35,10 +35,9 @@ const MenuItem = styled(Link)`
   text-decoration: none;
 `;
 
-
-
 const LeftNav = withTheme(({ children }) => {
   const [location, setLocation] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     setLocation(window.location.pathname.split(/_(.+)/)[1]);
   }, [window.location]);
@@ -49,7 +48,11 @@ const LeftNav = withTheme(({ children }) => {
         <LogoContainer>
           <ClimateWarehouseLogo />
         </LogoContainer>
-        <ToggleSwitch />
+        <ToggleSwitch
+          onChange={() => {
+            dispatch(toggleMode);
+          }}
+        />
         <MenuItem
           selected={location === 'projects'}
           to="/projects"
