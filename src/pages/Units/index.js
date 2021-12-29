@@ -14,6 +14,7 @@ import {
   Select,
   PrimaryButton,
   CreateUnitsForm,
+  Modal
 } from '../../components';
 
 const StyleContainer = styled('div')`
@@ -26,7 +27,9 @@ const StyleContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
+   const [confirmNetworkError, setConfirmNetworkError] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+  const storeLoading = useSelector(store => store.app.showProgressOverlay);
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
     { label: 'Sweden', value: 'SE' },
@@ -50,7 +53,19 @@ const Units = withRouter(() => {
   useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
 
   if (!climateWarehouseStore.units || !climateWarehouseStore.units.length) {
-    return null;
+    if (!confirmNetworkError && !storeLoading) {
+     return <Modal
+           type="error"
+           onOk={() => setConfirmNetworkError(true)}
+           showButtons
+           title="Network Error"
+           body={
+             'There is a connection error. The Climate Warehouse is inaccessible'
+           }
+         />
+     }
+     
+     return null;
   }
 
   return (

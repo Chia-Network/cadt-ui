@@ -16,7 +16,8 @@ import {
   Select,
   SelectSizeEnum,
   SelectTypeEnum,
-  CreateProjectForm
+  CreateProjectForm,
+  Modal,
 } from '../../components';
 
 import {
@@ -51,7 +52,9 @@ const StyledSubHeaderContainer = styled('div')`
 const Projects = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
+  const [confirmNetworkError, setConfirmNetworkError] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+   const storeLoading = useSelector(store => store.app.showProgressOverlay);
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
     { label: 'Sweden', value: 'SE' },
@@ -86,6 +89,20 @@ const Projects = withRouter(() => {
     !climateWarehouseStore.projects ||
     !climateWarehouseStore.projects.length
   ) {
+    if (!confirmNetworkError && !storeLoading) {
+      return (
+        <Modal
+          type="error"
+          onOk={() => setConfirmNetworkError(true)}
+          showButtons
+          title="Network Error"
+          body={
+            'There is a connection error. The Climate Warehouse is inaccessible'
+          }
+        />
+      );
+    }
+
     return null;
   }
 
