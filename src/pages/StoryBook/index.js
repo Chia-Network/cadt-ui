@@ -59,7 +59,7 @@ import {
   DownloadIcon,
 } from '../../components';
 
-import { CreateProjectForm, CreateUnitsForm } from '../../components/forms';
+import { CreateProjectForm } from '../../components/forms';
 
 const StoryBook = () => {
   const tooltipContent =
@@ -144,14 +144,6 @@ const StoryBook = () => {
           <CreateProjectForm />
         </div>
 
-        <div
-          style={{
-            marginTop: '30px',
-            padding: '30px',
-            border: 'solid lightgray 1px',
-          }}>
-          <CreateUnitsForm />
-        </div>
 
         <div
           style={{

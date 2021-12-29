@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { ClimateWarehouseLogo } from '../../components';
 import { Link } from 'react-router-dom';
+import ToggleSwitch from './ToggleSwitch';
+
+
 
 const Container = styled('div')`
   display: flex;
@@ -32,9 +35,10 @@ const MenuItem = styled(Link)`
   text-decoration: none;
 `;
 
+
+
 const LeftNav = withTheme(({ children }) => {
   const [location, setLocation] = useState(false);
-
   useEffect(() => {
     setLocation(window.location.pathname.split(/_(.+)/)[1]);
   }, [window.location]);
@@ -45,7 +49,7 @@ const LeftNav = withTheme(({ children }) => {
         <LogoContainer>
           <ClimateWarehouseLogo />
         </LogoContainer>
-
+        <ToggleSwitch />
         <MenuItem
           selected={location === 'projects'}
           to="/projects"

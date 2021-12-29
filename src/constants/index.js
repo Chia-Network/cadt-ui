@@ -5,4 +5,8 @@ export default {
   THEME: {
     DEFAULT: 'default',
   },
+  MODE: {
+    WAREHOUSE: 'warehouse',
+    REGISTRY: 'registry'
+  },
 };

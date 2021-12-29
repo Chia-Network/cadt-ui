@@ -29,7 +29,7 @@ export const actions = keyMirror(
   'GET_UNITS',
   'GET_PROJECTS',
   'GET_VINTAGES',
-  'GET_STAGING_DATA',
+  'GET_STAGING_DATA'
 );
 
 const getClimateWarehouseTable = (

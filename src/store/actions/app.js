@@ -9,6 +9,7 @@ export const actions = keyMirror(
   'SET_GLOBAL_ERROR_MESSAGE',
   'CLEAR_GLOBAL_ERROR_MESSAGE',
   'SET_LOCALE',
+  'TOGGLE_MODE'
 );
 
 export const activateProgressIndicator = {
@@ -26,6 +27,10 @@ export const setThemeFromLocalStorage = {
 
 export const toggleTheme = {
   type: actions.TOGGLE_THEME,
+};
+
+export const toggleMode = {
+  type: actions.TOGGLE_MODE,
 };
 
 export const setGlobalErrorMessage = message => ({
