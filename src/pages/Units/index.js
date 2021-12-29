@@ -13,8 +13,7 @@ import {
   SelectTypeEnum,
   Select,
   PrimaryButton,
-  CreateUnitsForm,
-  Modal
+  CreateUnitsForm
 } from '../../components';
 
 const StyleContainer = styled('div')`
@@ -27,9 +26,8 @@ const StyleContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-   const [confirmNetworkError, setConfirmNetworkError] = useState(false);
+
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
-  const storeLoading = useSelector(store => store.app.showProgressOverlay);
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
     { label: 'Sweden', value: 'SE' },
@@ -53,19 +51,7 @@ const Units = withRouter(() => {
   useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
 
   if (!climateWarehouseStore.units || !climateWarehouseStore.units.length) {
-    if (!confirmNetworkError && !storeLoading) {
-     return <Modal
-           type="error"
-           onOk={() => setConfirmNetworkError(true)}
-           showButtons
-           title="Network Error"
-           body={
-             'There is a connection error. The Climate Warehouse is inaccessible'
-           }
-         />
-     }
-     
-     return null;
+    return null;
   }
 
   return (
@@ -79,15 +65,13 @@ const Units = withRouter(() => {
             display: 'flex',
             width: '50%',
           }}>
-          
-            <Select
-              size={SelectSizeEnum.large}
-              type={SelectTypeEnum.basic}
-              options={selectOptions}
-              placeholder="Filters"
-              width="93px"
-            />
-         
+          <Select
+            size={SelectSizeEnum.large}
+            type={SelectTypeEnum.basic}
+            options={selectOptions}
+            placeholder="Filters"
+            width="93px"
+          />
         </div>
         <PrimaryButton
           label="Create"

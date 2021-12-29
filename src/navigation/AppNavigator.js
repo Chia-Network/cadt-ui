@@ -1,13 +1,29 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import * as Pages from '../pages';
 
-import { AppContainer } from '../components';
+import { AppContainer, Modal } from '../components';
 
 const AppNavigator = () => {
-  const { showProgressOverlay } = useSelector(store => store.app);
+  const [confirmNetworkError, setConfirmNetworkError] = useState(false);
+  const { showProgressOverlay, connectionCheck } = useSelector(store => store.app);
+
+  if (!connectionCheck && !confirmNetworkError) {
+      return (
+        <Modal
+          type="error"
+          onOk={() => setConfirmNetworkError(true)}
+          showButtons
+          title="Network Error"
+          body={
+            'There is a connection error. The Climate Warehouse is inaccessible'
+          }
+        />
+      );
+    
+  }
   return (
     <AppContainer>
       {showProgressOverlay && <IndeterminateProgressOverlay />}

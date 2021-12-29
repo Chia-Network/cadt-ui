@@ -9,7 +9,8 @@ const initialState = {
   theme: constants.THEME.DEFAULT,
   errorMessage: null,
   locale: null,
-  mode: constants.MODE.WAREHOUSE
+  mode: constants.MODE.WAREHOUSE,
+  connectionCheck: true
 };
 
 const appReducer = (state = initialState, action) => {
@@ -53,8 +54,11 @@ const appReducer = (state = initialState, action) => {
         state.mode === constants.MODE.WAREHOUSE
           ? constants.MODE.REGISTRY
           : constants.MODE.WAREHOUSE;
-     
+
       return u({ mode }, state);
+
+    case appActions.CONNECTION_CHECK:
+      return u({ connectionCheck: action.payload }, state);
 
     default:
       return state;
