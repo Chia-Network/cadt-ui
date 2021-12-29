@@ -5,7 +5,7 @@ import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { MinusIcon } from '..';
 import { TableDrawer } from './';
-import { useWindowSize } from '../../utils/useWindowSize'
+import { useWindowSize } from '../../utils/useWindowSize';
 
 const Table = styled('table')`
   background-color: white;
@@ -171,14 +171,8 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const windowSize = useWindowSize();
 
   useEffect(() => {
-    if (ref && ref.current) {
-      if (windowSize.height - ref.current.getBoundingClientRect().top < ref.current.getBoundingClientRect().height) {
-        setHeight(windowSize.height - ref.current.getBoundingClientRect().top);
-      } else {
-        setHeight(ref.current.getBoundingClientRect().height);
-      }
-    }
-  }, [ref, windowSize.height]);
+    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+  }, [ref.current, windowSize.height]);
 
   const changeGroupIsValid = changeGroup => {
     if (!changeGroup.diff) return false;

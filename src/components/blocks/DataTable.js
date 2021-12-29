@@ -99,17 +99,8 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const windowSize = useWindowSize();
 
   useEffect(() => {
-    if (ref && ref.current) {
-      if (
-        windowSize.height - ref.current.getBoundingClientRect().top <
-        ref.current.getBoundingClientRect().height
-      ) {
         setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
-      } else {
-        setHeight(ref.current.getBoundingClientRect().height);
-      }
-    }
-  }, [ref, windowSize.height]);
+  }, [ref.current, windowSize.height]);
 
   const handlePageClick = page => {
     setPage(page);
