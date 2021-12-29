@@ -15,3 +15,4 @@ export * from './TableDrawer';
 export * from './ComponentRepeater';
 export * from './Modal';
 export * from './StagingDataTable';
+export * from './ToggleSwitch';
