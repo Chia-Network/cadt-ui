@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { MinusIcon } from '..';
 import { TableDrawer } from './';
+import { useWindowSize } from '../hooks/useWindowSize';
 
 const Table = styled('table')`
   background-color: white;
@@ -73,7 +74,6 @@ const Td = styled('td')`
 
 const StagingDataTableContainer = styled('div')`
   height: 100%;
-  overflow-x: scroll;
 `;
 
 const ChangeGroupHeader = ({ headings, appStore }) => {
@@ -166,6 +166,13 @@ const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
 const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
+  const ref = useRef(null);
+  const [height, setHeight] = useState(0);
+  const windowSize = useWindowSize();
+
+  useEffect(() => {
+    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+  }, [ref.current, windowSize.height]);
 
   const changeGroupIsValid = changeGroup => {
     if (!changeGroup.diff) return false;
@@ -180,51 +187,29 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
     return true;
   };
 
-  const onDeleteStaging = (uuid) => {
+  const onDeleteStaging = uuid => {
     if (!deleteStagingData) return null;
     return () => deleteStagingData(uuid);
-  }
+  };
 
   return (
-    <StagingDataTableContainer>
-      {data &&
-        headings &&
-        data.map((changeGroup, index) => (
-          <Table selectedTheme={appStore.theme} key={index}>
-            <ChangeGroupHeader headings={headings} appStore={appStore} />
-            <tbody>
-              {!changeGroupIsValid(changeGroup) && (
-                <InvalidChangeGroup
-                  headings={headings}
-                  appStore={appStore}
-                  onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
-                />
-              )}
-              {changeGroup.action === 'DELETE' &&
-                changeGroupIsValid(changeGroup) && (
-                  <ChangeGroupItem
-                    data={changeGroup.diff.original}
+    <StagingDataTableContainer ref={ref}>
+      <div style={{ height: `${height}px`, overflow: 'auto' }}>
+        {data &&
+          headings &&
+          data.map((changeGroup, index) => (
+            <Table selectedTheme={appStore.theme} key={index}>
+              <ChangeGroupHeader headings={headings} appStore={appStore} />
+              <tbody>
+                {!changeGroupIsValid(changeGroup) && (
+                  <InvalidChangeGroup
                     headings={headings}
                     appStore={appStore}
-                    color={'red'}
-                    onClick={() => setRecord(changeGroup.diff.original)}
                     onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
                   />
                 )}
-              {changeGroup.action === 'INSERT' &&
-                changeGroupIsValid(changeGroup) && (
-                  <ChangeGroupItem
-                    data={changeGroup.diff.change[0]}
-                    headings={headings}
-                    appStore={appStore}
-                    color={'green'}
-                    onClick={() => setRecord(changeGroup.diff.change[0])}
-                    onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
-                  />
-                )}
-              {changeGroup.action === 'UPDATE' &&
-                changeGroupIsValid(changeGroup) && (
-                  <>
+                {changeGroup.action === 'DELETE' &&
+                  changeGroupIsValid(changeGroup) && (
                     <ChangeGroupItem
                       data={changeGroup.diff.original}
                       headings={headings}
@@ -233,22 +218,46 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                       onClick={() => setRecord(changeGroup.diff.original)}
                       onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
                     />
-                    {changeGroup.diff.change.map((change, index) => (
+                  )}
+                {changeGroup.action === 'INSERT' &&
+                  changeGroupIsValid(changeGroup) && (
+                    <ChangeGroupItem
+                      data={changeGroup.diff.change[0]}
+                      headings={headings}
+                      appStore={appStore}
+                      color={'green'}
+                      onClick={() => setRecord(changeGroup.diff.change[0])}
+                      onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
+                    />
+                  )}
+                {changeGroup.action === 'UPDATE' &&
+                  changeGroupIsValid(changeGroup) && (
+                    <>
                       <ChangeGroupItem
-                        data={change}
+                        data={changeGroup.diff.original}
                         headings={headings}
                         appStore={appStore}
-                        color={'green'}
-                        key={index}
-                        onClick={() => setRecord(change)}
+                        color={'red'}
+                        onClick={() => setRecord(changeGroup.diff.original)}
+                        onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
                       />
-                    ))}
-                  </>
-                )}
-            </tbody>
-          </Table>
-        ))}
-      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+                      {changeGroup.diff.change.map((change, index) => (
+                        <ChangeGroupItem
+                          data={change}
+                          headings={headings}
+                          appStore={appStore}
+                          color={'green'}
+                          key={index}
+                          onClick={() => setRecord(change)}
+                        />
+                      ))}
+                    </>
+                  )}
+              </tbody>
+            </Table>
+          ))}
+        <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+      </div>
     </StagingDataTableContainer>
   );
 });
