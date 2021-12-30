@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
   StandardInput,
@@ -17,7 +17,7 @@ import VintageRepeater from './VintageRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
 import ProjectLocationsRepeater from './ProjectLocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
-//import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
+import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -31,7 +31,7 @@ const InputContainer = styled('div')`
 `;
 
 const EditProjectsForm = ({ data, onClose }) => {
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [qualification, setQualificationsRepeaterValues] = useState([]);
   const [vintage, setVintage] = useState([]);
   const [projectLocations, setProjectLocations] = useState([]);
@@ -83,8 +83,7 @@ const EditProjectsForm = ({ data, onClose }) => {
     dataToSend.coBenefits = coBenefits;
     dataToSend.projectLocations = projectLocations;
     dataToSend.relatedProjects = relatedProjects;
-    //dispatch(updateUnitsRecord(dataToSend));
-    alert('Not yet Implemented');
+    dispatch(updateUnitsRecord(dataToSend));
   };
   return (
     <>
@@ -101,9 +100,9 @@ const EditProjectsForm = ({ data, onClose }) => {
               value={tabValue}
               onChange={handleTabChange}
               aria-label="Tab Options">
-              <Tab label="Projects" />
+              <Tab label="Project" />
               <Tab label="Qualifications" />
-              <Tab label="Vintage" />
+              <Tab label="Vintages" />
               <Tab label="Co-Benefits" />
               <Tab label="Project Locations" />
               <Tab label="Related Projects" />

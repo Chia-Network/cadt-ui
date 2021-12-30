@@ -37,8 +37,7 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
-
-
+  
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
