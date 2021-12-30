@@ -9,7 +9,8 @@ export const actions = keyMirror(
   'SET_GLOBAL_ERROR_MESSAGE',
   'CLEAR_GLOBAL_ERROR_MESSAGE',
   'SET_LOCALE',
-  'TOGGLE_MODE'
+  'TOGGLE_MODE',
+  'CONNECTION_CHECK',
 );
 
 export const activateProgressIndicator = {
@@ -41,6 +42,11 @@ export const setGlobalErrorMessage = message => ({
 export const clearGlobalErrorMessage = {
   type: actions.CLEAR_GLOBAL_ERROR_MESSAGE,
 };
+
+export const setConnectionCheck = bool => ({
+  type: actions.CONNECTION_CHECK,
+  payload: bool
+});
 
 export const setLocale = locale => {
   let localeToSet = locale;

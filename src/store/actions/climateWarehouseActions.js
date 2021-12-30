@@ -17,6 +17,7 @@ import {
 import {
   activateProgressIndicator,
   deactivateProgressIndicator,
+  setConnectionCheck,
   setGlobalErrorMessage,
 } from './app';
 
@@ -52,6 +53,7 @@ const getClimateWarehouseTable = (
         const response = await fetch(url);
 
         if (response.ok) {
+          dispatch(setConnectionCheck(true));
           const results = await response.json();
           dispatch({
             type: action,
@@ -60,6 +62,7 @@ const getClimateWarehouseTable = (
         }
       }
     } catch {
+      dispatch(setConnectionCheck(false))
       dispatch(setGlobalErrorMessage('Something went wrong...'));
     } finally {
       dispatch(deactivateProgressIndicator);
