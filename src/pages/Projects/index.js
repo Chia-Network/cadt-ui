@@ -49,26 +49,6 @@ const StyledSubHeaderContainer = styled('div')`
   padding-right: 27.23px;
 `;
 
-const selectOptions = [
-  { label: 'Portugal', value: 'PT' },
-  { label: 'Sweden', value: 'SE' },
-  { label: 'Indonesia', value: 'ID' },
-  { label: 'France', value: 'FR' },
-  { label: 'Philippines', value: 'PH' },
-  { label: 'Thailand', value: 'TH' },
-  { label: 'Bosnia and Herzegovina', value: 'BA' },
-  { label: 'Mexico', value: 'MX' },
-  { label: 'United States', value: 'US' },
-  { label: 'Finland', value: 'FI' },
-  { label: 'Azerbaijan', value: 'AZ' },
-  { label: 'Canada', value: 'CA' },
-  { label: 'Panama', value: 'PA' },
-  { label: 'Slovenia', value: 'SI' },
-  { label: 'China', value: 'CN' },
-  { label: 'Poland', value: 'PL' },
-  { label: 'Colombia', value: 'CO' },
-];
-
 const Projects = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
@@ -121,7 +101,7 @@ const Projects = withRouter(() => {
           <Select
             size={SelectSizeEnum.large}
             type={SelectTypeEnum.basic}
-            options={selectOptions}
+            options={[{ label: 'Filter 1', value: 'f1' }]}
             placeholder="Filters"
             width="93px"
           />
@@ -146,9 +126,7 @@ const Projects = withRouter(() => {
         </div>
       </StyledHeaderContainer>
       <StyledSubHeaderContainer>
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}>
+        <Tabs value={tabValue} onChange={handleTabChange}>
           <Tab label="Commited" />
           <Tab
             label={`Staging (${
