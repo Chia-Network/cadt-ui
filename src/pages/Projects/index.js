@@ -148,8 +148,7 @@ const Projects = withRouter(() => {
       <StyledSubHeaderContainer>
         <Tabs
           value={tabValue}
-          onChange={handleTabChange}
-          aria-label="basic tabs example">
+          onChange={handleTabChange}>
           <Tab label="Commited" />
           <Tab
             label={`Staging (${
