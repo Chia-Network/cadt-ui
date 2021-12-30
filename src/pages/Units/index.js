@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,6 +8,7 @@ import {
   getUnits,
   getStagingData,
   deleteStagingData,
+  commitStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
 import {
@@ -47,34 +49,50 @@ const StyledSubHeaderContainer = styled('div')`
   padding-right: 27.23px;
 `;
 
+const selectOptions = [
+  { label: 'Portugal', value: 'PT' },
+  { label: 'Sweden', value: 'SE' },
+  { label: 'Indonesia', value: 'ID' },
+  { label: 'France', value: 'FR' },
+  { label: 'Philippines', value: 'PH' },
+  { label: 'Thailand', value: 'TH' },
+  { label: 'Bosnia and Herzegovina', value: 'BA' },
+  { label: 'Mexico', value: 'MX' },
+  { label: 'United States', value: 'US' },
+  { label: 'Finland', value: 'FI' },
+  { label: 'Azerbaijan', value: 'AZ' },
+  { label: 'Canada', value: 'CA' },
+  { label: 'Panama', value: 'PA' },
+  { label: 'Slovenia', value: 'SI' },
+  { label: 'China', value: 'CN' },
+  { label: 'Poland', value: 'PL' },
+  { label: 'Colombia', value: 'CO' },
+];
+
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
-  const selectOptions = [
-    { label: 'Portugal', value: 'PT' },
-    { label: 'Sweden', value: 'SE' },
-    { label: 'Indonesia', value: 'ID' },
-    { label: 'France', value: 'FR' },
-    { label: 'Philippines', value: 'PH' },
-    { label: 'Thailand', value: 'TH' },
-    { label: 'Bosnia and Herzegovina', value: 'BA' },
-    { label: 'Mexico', value: 'MX' },
-    { label: 'United States', value: 'US' },
-    { label: 'Finland', value: 'FI' },
-    { label: 'Azerbaijan', value: 'AZ' },
-    { label: 'Canada', value: 'CA' },
-    { label: 'Panama', value: 'PA' },
-    { label: 'Slovenia', value: 'SI' },
-    { label: 'China', value: 'CN' },
-    { label: 'Poland', value: 'PL' },
-    { label: 'Colombia', value: 'CO' },
-  ];
   const [tabValue, setTabValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  const onSearch = useMemo(
+    () =>
+      _.debounce(
+        e =>
+          dispatch(
+            getUnits({
+              useMockedResponse: false,
+              searchQuery: e.target.value,
+            }),
+          ),
+        300,
+      ),
+    [],
+  );
 
   useEffect(() => {
     dispatch(getUnits({ useMockedResponse: false }));
@@ -85,13 +103,16 @@ const Units = withRouter(() => {
     return null;
   }
 
-  console.log(Object.keys(climateWarehouseStore.units[0]));
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <StyledHeaderContainer>
         <div style={{ maxWidth: '25.1875rem' }}>
-          <SearchInput size="large" outline />
+          <SearchInput
+            size="large"
+            onChange={onSearch}
+            disabled={tabValue !== 0}
+            outline
+          />
         </div>
         <div style={{ margin: '0rem 1.2813rem' }}>
           <Select
@@ -116,7 +137,7 @@ const Units = withRouter(() => {
               <PrimaryButton
                 label="Commit"
                 size="large"
-                onClick={() => console.log('commit')}
+                onClick={() => dispatch(commitStagingData())}
               />
             )}
         </div>
