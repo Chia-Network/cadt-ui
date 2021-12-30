@@ -17,34 +17,37 @@ const InputContainer = styled('div')`
   width: 320px;
 `;
 
+const ModalFormContainerStyle = styled('div')`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+`;
+
+const FormContainerStyle = styled('div')`
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
+`;
+
+const BodyContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  padding-right: 4.125rem;
+`;
+
 const CreateProjectLocationsForm = ({ value, onChange }) => {
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          width: '90%',
-        }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            paddingRight: '66px',
-          }}>
+    <ModalFormContainerStyle>
+      <FormContainerStyle>
+        <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>In-Country-Region</Body>
@@ -77,10 +80,10 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
               />
             </InputContainer>
           </StyledFieldContainer>
-        </div>
-      </div>
+        </BodyContainer>
+      </FormContainerStyle>
       <Divider />
-    </div>
+    </ModalFormContainerStyle>
   );
 };
 
