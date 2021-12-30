@@ -26,7 +26,7 @@ const Input = styled('input')`
 
   &:focus {
     outline: none;
-  };
+  }
 
   &::placeholder {
     font-family: ${props => props.theme.typography.primary.regular};
@@ -35,7 +35,7 @@ const Input = styled('input')`
         props.theme.colors[props.selectedTheme].onSurface,
         0.25,
       )};
-  };
+  }
 `;
 
 const SearchIconContainer = styled('div')`
@@ -70,6 +70,7 @@ const SearchIconContainer = styled('div')`
       'background-color: #1890FF;')};
 
   box-sizing: border-box;
+  ${props => props.disabled && `cursor: default; color: #d9d9d9;`}
 `;
 
 const SearchContainer = styled('div')`
@@ -96,10 +97,11 @@ const SearchInput = withTheme(
   ({
     usePrimaryButton = false,
     buttonText,
-    onChange= _.noop,
+    onChange = _.noop,
     size = 'default',
     outline = false,
     onSearch = _.noop,
+    disabled = false,
   }) => {
     const intl = useIntl();
     const appStore = useSelector(state => state.app);
@@ -113,6 +115,7 @@ const SearchInput = withTheme(
           onChange={onChange}
           size={size}
           outline={outline}
+          disabled={disabled}
         />
         <SearchIconContainer
           outline={outline}
@@ -120,7 +123,8 @@ const SearchInput = withTheme(
           size={size}
           selectedTheme={appStore.theme}
           usePrimaryButton={usePrimaryButton}
-          buttonText={buttonText}>
+          buttonText={buttonText}
+          disabled={disabled}>
           {(buttonText && (
             <ButtonSearchText usePrimaryButton={usePrimaryButton}>
               {buttonText}

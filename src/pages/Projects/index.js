@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -36,10 +37,28 @@ const headings = [
   'projectId',
 ];
 
+const StyledSectionContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
 const StyledHeaderContainer = styled('div')`
   display: flex;
   align-items: center;
   padding: 30px 24px 14px 16px;
+`;
+
+const StyledSearchContainer = styled('div')`
+  max-width: 25.1875rem;
+`;
+
+const StyledFiltersContainer = styled('div')`
+  margin: 0rem 1.2813rem;
+`;
+
+const StyledButtonContainer = styled('div')`
+  margin-left: auto;
 `;
 
 const StyledSubHeaderContainer = styled('div')`
@@ -47,6 +66,10 @@ const StyledSubHeaderContainer = styled('div')`
   justify-content: space-between;
   align-items: center;
   padding-right: 27.23px;
+`;
+
+const StyledBodyContainer = styled('div')`
+  flex-grow: 1;
 `;
 
 const NoDataMessageContainer = styled('div')`
@@ -60,35 +83,31 @@ const Projects = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
-  const selectOptions = [
-    { label: 'Portugal', value: 'PT' },
-    { label: 'Sweden', value: 'SE' },
-    { label: 'Indonesia', value: 'ID' },
-    { label: 'France', value: 'FR' },
-    { label: 'Philippines', value: 'PH' },
-    { label: 'Thailand', value: 'TH' },
-    { label: 'Bosnia and Herzegovina', value: 'BA' },
-    { label: 'Mexico', value: 'MX' },
-    { label: 'United States', value: 'US' },
-    { label: 'Finland', value: 'FI' },
-    { label: 'Azerbaijan', value: 'AZ' },
-    { label: 'Canada', value: 'CA' },
-    { label: 'Panama', value: 'PA' },
-    { label: 'Slovenia', value: 'SI' },
-    { label: 'China', value: 'CN' },
-    { label: 'Poland', value: 'PL' },
-    { label: 'Colombia', value: 'CO' },
-  ];
   const [tabValue, setTabValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
+  const onSearch = useMemo(
+    () =>
+      _.debounce(
+        event =>
+          dispatch(
+            getProjects({
+              useMockedResponse: false,
+              searchQuery: event.target.value,
+            }),
+          ),
+        300,
+      ),
+    [dispatch],
+  );
+
   useEffect(() => {
     dispatch(getProjects({ useMockedResponse: false }));
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, []);
+  }, [dispatch]);
 
   if (
     !climateWarehouseStore.projects ||
@@ -98,21 +117,26 @@ const Projects = withRouter(() => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <StyledSectionContainer>
       <StyledHeaderContainer>
-        <div style={{ maxWidth: '25.1875rem' }}>
-          <SearchInput size="large" outline />
-        </div>
-        <div style={{ margin: '0rem 1.2813rem' }}>
+        <StyledSearchContainer>
+          <SearchInput
+            size="large"
+            onChange={onSearch}
+            disabled={tabValue !== 0}
+            outline
+          />
+        </StyledSearchContainer>
+        <StyledFiltersContainer>
           <Select
             size={SelectSizeEnum.large}
             type={SelectTypeEnum.basic}
-            options={selectOptions}
+            options={[{ label: 'Filter 1', value: 'f1' }]}
             placeholder="Filters"
             width="93px"
           />
-        </div>
-        <div style={{ marginLeft: 'auto' }}>
+        </StyledFiltersContainer>
+        <StyledButtonContainer>
           {tabValue === 0 && (
             <PrimaryButton
               label="Create"
@@ -129,13 +153,10 @@ const Projects = withRouter(() => {
                 onClick={() => dispatch(commitStagingData())}
               />
             )}
-        </div>
+        </StyledButtonContainer>
       </StyledHeaderContainer>
       <StyledSubHeaderContainer>
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          aria-label="basic tabs example">
+        <Tabs value={tabValue} onChange={handleTabChange}>
           <Tab label="Commited" />
           <Tab
             label={`Staging (${
@@ -152,8 +173,8 @@ const Projects = withRouter(() => {
         </Tabs>
         <DownloadIcon />
       </StyledSubHeaderContainer>
-      <div style={{ flexGrow: '1' }}>
-        <TabPanel value={tabValue} index={0} style={{ height: '100%' }}>
+      <StyledBodyContainer>
+        <TabPanel value={tabValue} index={0}>
           {climateWarehouseStore.projects && (
             <DataTable
               headings={Object.keys(climateWarehouseStore.projects[0])}
@@ -162,7 +183,7 @@ const Projects = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel value={tabValue} index={1} style={{ height: '100%' }}>
+        <TabPanel value={tabValue} index={1}>
           {climateWarehouseStore.stagingData && climateWarehouseStore.stagingData.projects.staging.length === 0 && (
             <NoDataMessageContainer>
               <H3>No staged data at this time</H3>
@@ -176,7 +197,7 @@ const Projects = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel value={tabValue} index={2} style={{ height: '100%' }}>
+        <TabPanel value={tabValue} index={2}>
           {climateWarehouseStore.stagingData && climateWarehouseStore.stagingData.projects.pending.length === 0 && (
             <NoDataMessageContainer>
               <H3>No pending data at this time</H3>
@@ -189,9 +210,9 @@ const Projects = withRouter(() => {
             />
           )}
         </TabPanel>
-      </div>
+      </StyledBodyContainer>
       {create && <CreateProjectForm onClose={() => setCreate(false)} />}
-    </div>
+    </StyledSectionContainer>
   );
 });
 
