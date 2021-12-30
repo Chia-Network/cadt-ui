@@ -82,11 +82,11 @@ const Units = withRouter(() => {
   const onSearch = useMemo(
     () =>
       _.debounce(
-        e =>
+        event =>
           dispatch(
             getUnits({
               useMockedResponse: false,
-              searchQuery: e.target.value,
+              searchQuery: event.target.value,
             }),
           ),
         300,

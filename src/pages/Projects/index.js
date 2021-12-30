@@ -82,11 +82,11 @@ const Projects = withRouter(() => {
   const onSearch = useMemo(
     () =>
       _.debounce(
-        e =>
+        event =>
           dispatch(
             getProjects({
               useMockedResponse: false,
-              searchQuery: e.target.value,
+              searchQuery: event.target.value,
             }),
           ),
         300,
