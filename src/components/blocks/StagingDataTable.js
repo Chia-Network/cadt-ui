@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { MinusIcon } from '..';
+import { MinusIcon, H3 } from '..';
 import { TableDrawer } from './';
 import { useWindowSize } from '../hooks/useWindowSize';
 
@@ -74,6 +74,13 @@ const Td = styled('td')`
 
 const StagingDataTableContainer = styled('div')`
   height: 100%;
+`;
+
+const NoDataMessageContainer = styled('div')`
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ChangeGroupHeader = ({ headings, appStore }) => {
@@ -195,6 +202,11 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   return (
     <StagingDataTableContainer ref={ref}>
       <div style={{ height: `${height}px`, overflow: 'auto' }}>
+        {data.length === 0 && (
+          <NoDataMessageContainer>
+            <H3>No staged data at this time</H3>
+          </NoDataMessageContainer>
+        )}
         {data &&
           headings &&
           data.map((changeGroup, index) => (
