@@ -16,7 +16,7 @@ import {
   Select,
   SelectSizeEnum,
   SelectTypeEnum,
-  CreateProjectForm
+  CreateProjectForm,
 } from '../../components';
 
 import {

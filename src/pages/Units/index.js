@@ -13,7 +13,7 @@ import {
   SelectTypeEnum,
   Select,
   PrimaryButton,
-  CreateUnitsForm,
+  CreateUnitsForm
 } from '../../components';
 
 const StyleContainer = styled('div')`
@@ -26,6 +26,7 @@ const StyleContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
+
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const selectOptions = [
     { label: 'Portugal', value: 'PT' },
@@ -64,15 +65,13 @@ const Units = withRouter(() => {
             display: 'flex',
             width: '50%',
           }}>
-          
-            <Select
-              size={SelectSizeEnum.large}
-              type={SelectTypeEnum.basic}
-              options={selectOptions}
-              placeholder="Filters"
-              width="93px"
-            />
-         
+          <Select
+            size={SelectSizeEnum.large}
+            type={SelectTypeEnum.basic}
+            options={selectOptions}
+            placeholder="Filters"
+            width="93px"
+          />
         </div>
         <PrimaryButton
           label="Create"
