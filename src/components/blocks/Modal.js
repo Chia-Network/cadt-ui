@@ -138,6 +138,7 @@ const Modal = withTheme(
     type,
     confirmation,
     basic,
+    label,
     form = false,
   }) => {
     return (
@@ -206,7 +207,7 @@ const Modal = withTheme(
                   />
                 )}
                 <OkContainer>
-                  <PrimaryButton size="large" label="Ok" onClick={onOk} />
+                  <PrimaryButton size="large" label={label} onClick={onOk} />
                 </OkContainer>
               </ButtonContainer>
             )}

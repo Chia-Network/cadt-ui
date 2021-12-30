@@ -4,13 +4,27 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import * as Pages from '../pages';
 
-import { AppContainer } from '../components';
+import { AppContainer, Modal } from '../components';
 
 const AppNavigator = () => {
-  const { showProgressOverlay } = useSelector(store => store.app);
+  const { showProgressOverlay, connectionCheck } = useSelector(
+    store => store.app,
+  );
   return (
     <AppContainer>
       {showProgressOverlay && <IndeterminateProgressOverlay />}
+      {!connectionCheck && (
+        <Modal
+          type="error"
+          label="Try Again"
+          onOk={() => window.location.reload()}
+          showButtons
+          title="Network Error"
+          body={
+            'There is a connection error. The Climate Warehouse is inaccessible'
+          }
+        />
+      )}
       <Router>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
