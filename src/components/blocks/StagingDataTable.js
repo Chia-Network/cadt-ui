@@ -141,7 +141,7 @@ const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
         <Td colSpan={headings.length}>
           <TableCellText>
             <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
-              This change request has been currupted, click here to remove.
+              This change request has been corrupted, click here to remove.
             </span>
           </TableCellText>
         </Td>
