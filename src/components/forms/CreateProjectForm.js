@@ -16,6 +16,9 @@ import {
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
+import CoBenefitsRepeater from './CoBenefitsRepeater';
+import ProjectLocationsRepeater from './ProjectLocationsRepeater';
+import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 
 const StyledLabelContainer = styled('div')`
@@ -32,7 +35,10 @@ const InputContainer = styled('div')`
 
 const CreateProjectForm = withRouter(({ onClose }) => {
   const [newQualifications, setNewQualifications] = useState([]);
+  const [newRelatedProjects, setNewRelatedProjects] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
+  const [newProjectLocations, setNewProjectLocations] = useState([]);
+  const [newCoBenefits, setNewCoBenefits] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
 
@@ -63,11 +69,13 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     estimatedAnnualAverageEmissionReduction: 60,
     projectTag: '',
   });
-
   const handleSubmit = () => {
     const dataToSend = _.cloneDeep(newProject);
     dataToSend.vintage = newVintage;
+    dataToSend.coBenefits = newCoBenefits;
     dataToSend.qualification = newQualifications;
+    dataToSend.projectLocations = newProjectLocations;
+    dataToSend.relatedProjects = newRelatedProjects;
     dispatch(postNewProject(newProject));
   };
 
@@ -86,9 +94,12 @@ const CreateProjectForm = withRouter(({ onClose }) => {
               value={tabValue}
               onChange={handleTabChange}
               aria-label="Tab Options">
-              <Tab label="Create Projects" />
+              <Tab label="Project" />
               <Tab label="Qualifications" />
               <Tab label="Vintage" />
+              <Tab label="Co-Benefits" />
+              <Tab label="Project Locations" />
+              <Tab label="Related Projects" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>
@@ -533,6 +544,24 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                 <VintageRepeater
                   vintageState={newVintage}
                   newVintageState={setNewVintage}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={3}>
+                <CoBenefitsRepeater
+                  coBenefitsState={newCoBenefits}
+                  setNewCoBenefitsState={setNewCoBenefits}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={4}>
+                <ProjectLocationsRepeater
+                  projectLocationsState={newProjectLocations}
+                  setProjectLocationsState={setNewProjectLocations}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={5}>
+                <RelatedProjectsRepeater
+                  relatedProjectsState={newRelatedProjects}
+                  setRelatedProjectsState={setNewRelatedProjects}
                 />
               </TabPanel>
             </div>

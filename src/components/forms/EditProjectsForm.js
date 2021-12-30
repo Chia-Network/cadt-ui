@@ -14,6 +14,9 @@ import {
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
+import CoBenefitsRepeater from './CoBenefitsRepeater';
+import ProjectLocationsRepeater from './ProjectLocationsRepeater';
+import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 //import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 
 const StyledLabelContainer = styled('div')`
@@ -29,15 +32,14 @@ const InputContainer = styled('div')`
 
 const EditProjectsForm = ({ data, onClose }) => {
   //const dispatch = useDispatch();
-  
-
   const [qualification, setQualificationsRepeaterValues] = useState([]);
-
   const [vintage, setVintage] = useState([]);
-
+  const [projectLocations, setProjectLocations] = useState([]);
+  const [relatedProjects, setRelatedProjects] = useState([]);
+  const [coBenefits, setCoBenefits] = useState([]);
   const [editedProjects, setEditProjects] = useState({});
-
   const [tabValue, setTabValue] = useState(0);
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -63,17 +65,24 @@ const EditProjectsForm = ({ data, onClose }) => {
       methodologyVersion: data.methodologyVersion,
       validationApproach: data.validationApproach,
       validationDate: data.validationDate,
-      estimatedAnnualAverageEmissionReduction: data.estimatedAnnualAverageEmissionReduction,
+      estimatedAnnualAverageEmissionReduction:
+        data.estimatedAnnualAverageEmissionReduction,
       projectTag: data.projectTag,
     });
     setVintage(_.get(data, 'vintages', []));
+    setProjectLocations(_.get(data, 'projectLocations', []));
+    setCoBenefits(_.get(data, 'coBenefits', []));
     setQualificationsRepeaterValues(_.get(data, 'qualifications', []));
+    setRelatedProjects(_.get(data, 'relatedProjects', []));
   }, [data]);
 
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(editedProjects);
     dataToSend.vintage = _.head(vintage);
     dataToSend.qualification = qualification;
+    dataToSend.coBenefits = coBenefits;
+    dataToSend.projectLocations = projectLocations;
+    dataToSend.relatedProjects = relatedProjects;
     //dispatch(updateUnitsRecord(dataToSend));
     alert('Not yet Implemented');
   };
@@ -92,9 +101,12 @@ const EditProjectsForm = ({ data, onClose }) => {
               value={tabValue}
               onChange={handleTabChange}
               aria-label="Tab Options">
-              <Tab label="Edit Projects" />
-              <Tab label="Edit Qualifications" />
-              <Tab label="Edit Vintage" />
+              <Tab label="Projects" />
+              <Tab label="Qualifications" />
+              <Tab label="Vintage" />
+              <Tab label="Co-Benefits" />
+              <Tab label="Project Locations" />
+              <Tab label="Related Projects" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>
@@ -539,6 +551,24 @@ const EditProjectsForm = ({ data, onClose }) => {
                 <VintageRepeater
                   vintageState={vintage}
                   newVintageState={setVintage}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={3}>
+                <CoBenefitsRepeater
+                  coBenefitsState={coBenefits}
+                  setNewCoBenefitsState={setCoBenefits}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={4}>
+                <ProjectLocationsRepeater
+                  projectLocationsState={projectLocations}
+                  setProjectLocationsState={setProjectLocations}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={5}>
+                <RelatedProjectsRepeater
+                  relatedProjectsState={relatedProjects}
+                  setRelatedProjectsState={setRelatedProjects}
                 />
               </TabPanel>
             </div>
