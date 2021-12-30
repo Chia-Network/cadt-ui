@@ -36,10 +36,28 @@ const headings = [
   'registry',
 ];
 
+const StyledSectionContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
 const StyledHeaderContainer = styled('div')`
   display: flex;
   align-items: center;
   padding: 30px 24px 14px 16px;
+`;
+
+const StyledSearchContainer = styled('div')`
+  max-width: 25.1875rem;
+`;
+
+const StyledFiltersContainer = styled('div')`
+  margin: 0rem 1.2813rem;
+`;
+
+const StyledButtonContainer = styled('div')`
+  margin-left: auto;
 `;
 
 const StyledSubHeaderContainer = styled('div')`
@@ -47,6 +65,10 @@ const StyledSubHeaderContainer = styled('div')`
   justify-content: space-between;
   align-items: center;
   padding-right: 27.23px;
+`;
+
+const StyledBodyContainer = styled('div')`
+  flex-grow: 1;
 `;
 
 const Units = withRouter(() => {
@@ -71,30 +93,30 @@ const Units = withRouter(() => {
           ),
         300,
       ),
-    [],
+    [dispatch],
   );
 
   useEffect(() => {
     dispatch(getUnits({ useMockedResponse: false }));
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, []);
+  }, [dispatch]);
 
   if (!climateWarehouseStore.units || !climateWarehouseStore.units.length) {
     return null;
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <StyledSectionContainer>
       <StyledHeaderContainer>
-        <div style={{ maxWidth: '25.1875rem' }}>
+        <StyledSearchContainer>
           <SearchInput
             size="large"
             onChange={onSearch}
             disabled={tabValue !== 0}
             outline
           />
-        </div>
-        <div style={{ margin: '0rem 1.2813rem' }}>
+        </StyledSearchContainer>
+        <StyledFiltersContainer>
           <Select
             size={SelectSizeEnum.large}
             type={SelectTypeEnum.basic}
@@ -102,8 +124,8 @@ const Units = withRouter(() => {
             placeholder="Filters"
             width="93px"
           />
-        </div>
-        <div style={{ marginLeft: 'auto' }}>
+        </StyledFiltersContainer>
+        <StyledButtonContainer>
           {tabValue === 0 && (
             <PrimaryButton
               label="Create"
@@ -120,7 +142,7 @@ const Units = withRouter(() => {
                 onClick={() => dispatch(commitStagingData())}
               />
             )}
-        </div>
+        </StyledButtonContainer>
       </StyledHeaderContainer>
       <StyledSubHeaderContainer>
         <Tabs value={tabValue} onChange={handleTabChange}>
@@ -140,8 +162,8 @@ const Units = withRouter(() => {
         </Tabs>
         <DownloadIcon />
       </StyledSubHeaderContainer>
-      <div style={{ flexGrow: '1' }}>
-        <TabPanel value={tabValue} index={0} style={{ height: '100%' }}>
+      <StyledBodyContainer>
+        <TabPanel value={tabValue} index={0}>
           {climateWarehouseStore.units && (
             <>
               <DataTable
@@ -153,7 +175,7 @@ const Units = withRouter(() => {
           )}
           {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
         </TabPanel>
-        <TabPanel value={tabValue} index={1} style={{ height: '100%' }}>
+        <TabPanel value={tabValue} index={1}>
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
@@ -162,7 +184,7 @@ const Units = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel value={tabValue} index={2} style={{ height: '100%' }}>
+        <TabPanel value={tabValue} index={2}>
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
@@ -170,8 +192,8 @@ const Units = withRouter(() => {
             />
           )}
         </TabPanel>
-      </div>
-    </div>
+      </StyledBodyContainer>
+    </StyledSectionContainer>
   );
 });
 
