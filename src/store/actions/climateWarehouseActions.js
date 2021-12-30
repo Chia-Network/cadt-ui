@@ -30,7 +30,7 @@ export const actions = keyMirror(
   'GET_UNITS',
   'GET_PROJECTS',
   'GET_VINTAGES',
-  'GET_STAGING_DATA'
+  'GET_STAGING_DATA',
 );
 
 const getClimateWarehouseTable = (
@@ -389,10 +389,14 @@ export const mockUnitsResponse = {
 };
 
 export const getUnits = options => {
+  const url = options.searchQuery
+    ? `${constants.API_HOST}/units?search=${options.searchQuery}`
+    : `${constants.API_HOST}/units`;
+
   return dispatch => {
     dispatch(
       getClimateWarehouseTable(
-        `${constants.API_HOST}/units`,
+        url,
         actions.GET_UNITS,
         mockUnitsResponse,
         options,
@@ -408,10 +412,14 @@ export const mockProjectsResponse = {
 };
 
 export const getProjects = options => {
+    const url = options.searchQuery
+      ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
+      : `${constants.API_HOST}/projects`;
+  
   return dispatch => {
     dispatch(
       getClimateWarehouseTable(
-        `${constants.API_HOST}/projects`,
+        url,
         actions.GET_PROJECTS,
         mockProjectsResponse,
         options,
