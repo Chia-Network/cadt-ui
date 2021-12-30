@@ -77,6 +77,7 @@ const EditUnitsForm = ({ data, onClose }) => {
     <>
       <Modal
         onOk={handleEditUnits}
+        label="Submit"
         onClose={onClose}
         basic
         form
@@ -446,7 +447,10 @@ const EditUnitsForm = ({ data, onClose }) => {
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <VintageRepeater vintageState={vintage} newVintageState={setVintage}/>
+                <VintageRepeater
+                  vintageState={vintage}
+                  newVintageState={setVintage}
+                />
               </TabPanel>
             </div>
           </div>

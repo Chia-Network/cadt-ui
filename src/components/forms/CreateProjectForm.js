@@ -75,6 +75,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     <>
       <Modal
         onOk={handleSubmit}
+        label="Submit"
         onClose={onClose}
         basic
         form

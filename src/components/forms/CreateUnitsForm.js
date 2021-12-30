@@ -69,6 +69,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
         onClose={onClose}
         basic
         form
+        label="Submit"
         showButtons
         title="Create Units"
         body={
