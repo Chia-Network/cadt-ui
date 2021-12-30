@@ -138,7 +138,7 @@ const Modal = withTheme(
     type,
     confirmation,
     basic,
-    label,
+    label = "Ok",
     form = false,
   }) => {
     return (

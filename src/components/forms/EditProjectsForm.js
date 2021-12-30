@@ -81,7 +81,6 @@ const EditProjectsForm = ({ data, onClose }) => {
     <>
       <Modal
         onOk={handleEditUnits}
-        label="Submit"
         onClose={onClose}
         basic
         form

@@ -77,7 +77,6 @@ const EditUnitsForm = ({ data, onClose }) => {
     <>
       <Modal
         onOk={handleEditUnits}
-        label="Submit"
         onClose={onClose}
         basic
         form
