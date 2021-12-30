@@ -17,6 +17,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   CreateProjectForm,
+  H3
 } from '../../components';
 
 import {
@@ -46,6 +47,13 @@ const StyledSubHeaderContainer = styled('div')`
   justify-content: space-between;
   align-items: center;
   padding-right: 27.23px;
+`;
+
+const NoDataMessageContainer = styled('div')`
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Projects = withRouter(() => {
@@ -155,6 +163,11 @@ const Projects = withRouter(() => {
           )}
         </TabPanel>
         <TabPanel value={tabValue} index={1} style={{ height: '100%' }}>
+          {climateWarehouseStore.stagingData && climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+            <NoDataMessageContainer>
+              <H3>No staged data at this time</H3>
+            </NoDataMessageContainer>
+          )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
@@ -164,6 +177,11 @@ const Projects = withRouter(() => {
           )}
         </TabPanel>
         <TabPanel value={tabValue} index={2} style={{ height: '100%' }}>
+          {climateWarehouseStore.stagingData && climateWarehouseStore.stagingData.projects.pending.length === 0 && (
+            <NoDataMessageContainer>
+              <H3>No pending data at this time</H3>
+            </NoDataMessageContainer>
+          )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
