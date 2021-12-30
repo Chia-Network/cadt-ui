@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { getUnits } from '../../store/actions/climateWarehouseActions';
+import {
+  getUnits,
+  getStagingData,
+  deleteStagingData,
+} from '../../store/actions/climateWarehouseActions';
 
 import {
   DataTable,
@@ -14,13 +18,33 @@ import {
   Select,
   PrimaryButton,
   CreateUnitsForm,
+  DownloadIcon,
+  Tab,
+  Tabs,
+  TabPanel,
+  StagingDataTable,
 } from '../../components';
 
-const StyleContainer = styled('div')`
+const headings = [
+  'id',
+  'unitStatus',
+  'unitType',
+  'unitCount',
+  'buyer',
+  'registry',
+];
+
+const StyledHeaderContainer = styled('div')`
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
-  margin: 30px 0px;
+  padding: 30px 24px 14px 16px;
+`;
+
+const StyledSubHeaderContainer = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 27.23px;
 `;
 
 const Units = withRouter(() => {
@@ -46,52 +70,110 @@ const Units = withRouter(() => {
     { label: 'Poland', value: 'PL' },
     { label: 'Colombia', value: 'CO' },
   ];
+  const [tabValue, setTabValue] = useState(0);
 
-  useEffect(() => dispatch(getUnits({ useMockedResponse: false })), []);
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  useEffect(() => {
+    dispatch(getUnits({ useMockedResponse: false }));
+    dispatch(getStagingData({ useMockedResponse: false }));
+  }, []);
 
   if (!climateWarehouseStore.units || !climateWarehouseStore.units.length) {
     return null;
   }
 
+  console.log(Object.keys(climateWarehouseStore.units[0]));
+
   return (
-    <>
-      <StyleContainer>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <StyledHeaderContainer>
         <div style={{ maxWidth: '25.1875rem' }}>
           <SearchInput size="large" outline />
         </div>
-        <div
-          style={{
-            display: 'flex',
-            width: '50%',
-          }}>
-          
-            <Select
-              size={SelectSizeEnum.large}
-              type={SelectTypeEnum.basic}
-              options={selectOptions}
-              placeholder="Filters"
-              width="93px"
-            />
-         
-        </div>
-        <PrimaryButton
-          label="Create"
-          size="large"
-          icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-          onClick={() => setCreate(true)}
-        />
-      </StyleContainer>
-      {climateWarehouseStore.units && (
-        <>
-          <DataTable
-            headings={Object.keys(climateWarehouseStore.units[0])}
-            data={climateWarehouseStore.units}
-            actions="Units"
+        <div style={{ margin: '0rem 1.2813rem' }}>
+          <Select
+            size={SelectSizeEnum.large}
+            type={SelectTypeEnum.basic}
+            options={selectOptions}
+            placeholder="Filters"
+            width="93px"
           />
-        </>
-      )}
-      {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
-    </>
+        </div>
+        <div style={{ marginLeft: 'auto' }}>
+          {tabValue === 0 && (
+            <PrimaryButton
+              label="Create"
+              size="large"
+              icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
+              onClick={() => setCreate(true)}
+            />
+          )}
+          {tabValue === 1 &&
+            climateWarehouseStore.stagingData.units.staging.length > 0 && (
+              <PrimaryButton
+                label="Commit"
+                size="large"
+                onClick={() => console.log('commit')}
+              />
+            )}
+        </div>
+      </StyledHeaderContainer>
+      <StyledSubHeaderContainer>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          aria-label="basic tabs example">
+          <Tab label="Commited" />
+          <Tab
+            label={`Staging (${
+              climateWarehouseStore.stagingData &&
+              climateWarehouseStore.stagingData.units.staging.length
+            })`}
+          />
+          <Tab
+            label={`Pending (${
+              climateWarehouseStore.stagingData &&
+              climateWarehouseStore.stagingData.units.pending.length
+            })`}
+          />
+        </Tabs>
+        <DownloadIcon />
+      </StyledSubHeaderContainer>
+      <div style={{ flexGrow: '1' }}>
+        <TabPanel value={tabValue} index={0} style={{ height: '100%' }}>
+          {climateWarehouseStore.units && (
+            <>
+              <DataTable
+                headings={Object.keys(climateWarehouseStore.units[0])}
+                data={climateWarehouseStore.units}
+                actions="Units"
+              />
+            </>
+          )}
+          {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
+        </TabPanel>
+        <TabPanel value={tabValue} index={1} style={{ height: '100%' }}>
+          {climateWarehouseStore.stagingData && (
+            <StagingDataTable
+              headings={headings}
+              data={climateWarehouseStore.stagingData.units.staging}
+              deleteStagingData={uuid => dispatch(deleteStagingData(uuid))}
+            />
+          )}
+        </TabPanel>
+        <TabPanel value={tabValue} index={2} style={{ height: '100%' }}>
+          {climateWarehouseStore.stagingData && (
+            <StagingDataTable
+              headings={headings}
+              data={climateWarehouseStore.stagingData.units.pending}
+            />
+          )}
+        </TabPanel>
+      </div>
+    </div>
   );
 });
 
