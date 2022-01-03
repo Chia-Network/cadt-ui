@@ -90,10 +90,10 @@ const EditUnitsForm = ({ data, onClose }) => {
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
-              aria-label="Tab Options">
-              <Tab label="Edit Units" />
-              <Tab label="Edit Qualifications" />
-              <Tab label="Edit Vintage" />
+              >
+              <Tab label="Units" />
+              <Tab label="Qualifications" />
+              <Tab label="Vintages" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>

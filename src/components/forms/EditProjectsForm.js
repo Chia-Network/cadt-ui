@@ -102,7 +102,7 @@ const EditProjectsForm = ({ data, onClose }) => {
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
-              aria-label="Tab Options">
+              >
               <Tab label="Project" />
               <Tab label="Qualifications" />
               <Tab label="Vintages" />

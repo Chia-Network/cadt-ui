@@ -79,7 +79,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
-              aria-label="Tab Options">
+              >
               <Tab label="Create Units" />
               <Tab label="Qualifications" />
               <Tab label="Vintages" />
