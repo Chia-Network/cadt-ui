@@ -102,7 +102,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                     <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'units-buyer' })}
                           </Body>
                         </StyledLabelContainer>
@@ -125,7 +125,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'registry' })}
                           </Body>
                         </StyledLabelContainer>
@@ -148,7 +148,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({
                               id: 'unit-block-identifier',
                             })}
@@ -173,7 +173,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-identifier' })}
                           </Body>
                         </StyledLabelContainer>
@@ -196,7 +196,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'qualification-id' })}
                           </Body>
                         </StyledLabelContainer>
@@ -219,7 +219,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-type' })}
                           </Body>
                         </StyledLabelContainer>
@@ -242,7 +242,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-count' })}
                           </Body>
                         </StyledLabelContainer>
@@ -265,7 +265,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-status' })}
                           </Body>
                         </StyledLabelContainer>
@@ -288,7 +288,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-status-date' })}
                           </Body>
                         </StyledLabelContainer>
@@ -317,7 +317,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'transaction-type' })}
                           </Body>
                         </StyledLabelContainer>
@@ -340,7 +340,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({
                               id: 'unit-issuance-location',
                             })}
@@ -365,7 +365,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-link' })}
                           </Body>
                         </StyledLabelContainer>
@@ -388,7 +388,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({
                               id: 'corresponding-adjustment',
                             })}
@@ -413,7 +413,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-tag' })}
                           </Body>
                         </StyledLabelContainer>
@@ -436,7 +436,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'created-at' })}
                           </Body>
                         </StyledLabelContainer>
@@ -459,7 +459,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'org-uid' })}
                           </Body>
                         </StyledLabelContainer>
@@ -479,7 +479,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'updated-at' })}
                           </Body>
                         </StyledLabelContainer>

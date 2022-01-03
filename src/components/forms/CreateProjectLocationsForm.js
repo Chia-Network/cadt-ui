@@ -38,7 +38,7 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'in-country-region' })}
               </Body>
             </StyledLabelContainer>
@@ -58,7 +58,7 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'host-country' })}
               </Body>
             </StyledLabelContainer>

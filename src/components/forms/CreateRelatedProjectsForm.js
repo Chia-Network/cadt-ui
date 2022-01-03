@@ -39,7 +39,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'related-project-id' })}
               </Body>
             </StyledLabelContainer>
@@ -59,7 +59,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'related-project-type' })}
               </Body>
             </StyledLabelContainer>
@@ -77,7 +77,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'registry' })}
               </Body>
             </StyledLabelContainer>
@@ -93,7 +93,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'related-project-note' })}
               </Body>
             </StyledLabelContainer>

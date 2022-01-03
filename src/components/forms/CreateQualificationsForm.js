@@ -34,7 +34,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'label' })}
               </Body>
             </StyledLabelContainer>
@@ -52,7 +52,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'crediting-period-start-date' })}
               </Body>
             </StyledLabelContainer>
@@ -72,7 +72,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'crediting-period-end-date' })}
               </Body>
             </StyledLabelContainer>
@@ -92,7 +92,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {' '}
                 {intl.formatMessage({ id: 'validity-start-date' })}
               </Body>
@@ -115,7 +115,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'validity-end-date' })}
               </Body>
             </StyledLabelContainer>
@@ -135,7 +135,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'unit-quantity' })}
               </Body>
             </StyledLabelContainer>
@@ -153,7 +153,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'qualifications-link' })}
               </Body>
             </StyledLabelContainer>

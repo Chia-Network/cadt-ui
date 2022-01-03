@@ -39,7 +39,7 @@ const CreateVintageForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'vintage-start-date' })}
               </Body>
             </StyledLabelContainer>
@@ -59,7 +59,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'vintage-end-date' })}
               </Body>
             </StyledLabelContainer>
@@ -77,7 +77,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'verification-approach' })}
               </Body>
             </StyledLabelContainer>
@@ -97,7 +97,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {intl.formatMessage({ id: 'verification-date' })}
               </Body>
             </StyledLabelContainer>
@@ -117,7 +117,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body color={'#262626'}>
                 {' '}
                 {intl.formatMessage({ id: 'verification-body' })}
               </Body>

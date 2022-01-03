@@ -37,7 +37,7 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
       <FormContainerStyle>
         <StyledFieldContainer>
           <StyledLabelContainer>
-            <Body style={{ color: '#262626' }}>
+            <Body color={'#262626'}>
               {intl.formatMessage({ id: 'co-benefit' })}
             </Body>
           </StyledLabelContainer>

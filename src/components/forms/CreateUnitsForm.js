@@ -95,7 +95,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                     <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'units-owner' })}
                           </Body>
                         </StyledLabelContainer>
@@ -118,7 +118,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'units-buyer' })}
                           </Body>
                         </StyledLabelContainer>
@@ -141,7 +141,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'registry' })}
                           </Body>
                         </StyledLabelContainer>
@@ -164,7 +164,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({
                               id: 'unit-block-identifier',
                             })}
@@ -189,7 +189,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-identifier' })}
                           </Body>
                         </StyledLabelContainer>
@@ -212,7 +212,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'qualification-id' })}
                           </Body>
                         </StyledLabelContainer>
@@ -235,7 +235,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-type' })}
                           </Body>
                         </StyledLabelContainer>
@@ -258,7 +258,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-count' })}
                           </Body>
                         </StyledLabelContainer>
@@ -283,7 +283,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-status' })}
                           </Body>
                         </StyledLabelContainer>
@@ -306,7 +306,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-status-date' })}
                           </Body>
                         </StyledLabelContainer>
@@ -329,7 +329,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'transaction-type' })}
                           </Body>
                         </StyledLabelContainer>
@@ -352,7 +352,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({
                               id: 'unit-issuance-location',
                             })}
@@ -377,7 +377,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-link' })}
                           </Body>
                         </StyledLabelContainer>
@@ -400,7 +400,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({
                               id: 'corresponding-adjustment',
                             })}
@@ -425,7 +425,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body color={'#262626'}>
                             {intl.formatMessage({ id: 'unit-tag' })}
                           </Body>
                         </StyledLabelContainer>
