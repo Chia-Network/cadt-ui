@@ -93,7 +93,7 @@ const EditUnitsForm = ({ data, onClose }) => {
               >
               <Tab label="Units" />
               <Tab label="Qualifications" />
-              <Tab label="Vintages" />
+              <Tab label="Vintage" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>

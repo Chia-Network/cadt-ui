@@ -82,7 +82,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
               >
               <Tab label="Create Units" />
               <Tab label="Qualifications" />
-              <Tab label="Vintages" />
+              <Tab label="Vintage" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>
