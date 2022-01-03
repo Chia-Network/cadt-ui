@@ -8,5 +8,6 @@
   "value": "価値",
   "block-height": "ブロックの高さ",
   "created-at": "作成場所",
-  "notified-at": "で通知"
+  "notified-at": "で通知",
+  "max-number-added": "追加された最大数"
 }

@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { Body } from '../typography';
+import { FormattedMessage } from 'react-intl';
 
 const StyledRepeatedComponentContainer = styled('div')`
   display: flex;
@@ -66,7 +67,9 @@ const ComponentRepeater = ({
       {addIcon && values.length >= maxRepetitions && (
         <StyledRepeatedComponentContainer disabled>
           {React.cloneElement(addIcon, { fill: '#d9d9d9' })}
-          <Body color="#d9d9d9">Max number added</Body>
+          <Body color="#d9d9d9">
+            <FormattedMessage id="max-number-added" />
+          </Body>
         </StyledRepeatedComponentContainer>
       )}
       {allInstances}
