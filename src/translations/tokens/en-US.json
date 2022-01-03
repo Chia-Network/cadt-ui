@@ -8,5 +8,6 @@
   "value": "Value",
   "block-height": "Block Height",
   "created-at": "Created At",
-  "notified-at": "Notified At"
+  "notified-at": "Notified At",
+  "max-number-added": "Max number added"
 }

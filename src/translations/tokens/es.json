@@ -8,5 +8,6 @@
   "value": "Valor",
   "block-height": "Altura del bloque",
   "created-at": "Creado en",
-  "notified-at": "Notificado en"
+  "notified-at": "Notificado en",
+  "max-number-added": "Número máximo agregado"
 }
