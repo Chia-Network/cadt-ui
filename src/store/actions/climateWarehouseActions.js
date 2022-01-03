@@ -126,12 +126,13 @@ export const getStagingData = ({ useMockedResponse = false }) => {
   };
 };
 
-export const getPaginatedData = (type, page, resultsLimit) => {
+export const getPaginatedData = ({ type, page, resultsLimit }) => {
   return async dispatch => {
     const typeIsValid = type === 'projects' || type === 'units';
     const pageAndLimitAreValid =
       typeof page === 'number' && typeof resultsLimit === 'number';
-
+    console.log('get page: ', page, ' results limit to: ', resultsLimit)
+    
     if (typeIsValid && pageAndLimitAreValid) {
       dispatch(activateProgressIndicator);
       try {
@@ -153,7 +154,7 @@ export const getPaginatedData = (type, page, resultsLimit) => {
             type: action,
             payload: results.data,
           });
-          
+
           dispatch({
             type: paginationAction,
             payload: results.pageCount,

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
-  PaginatedDataTable,
+  DataTable,
   AddIcon,
   SearchInput,
   PrimaryButton,
@@ -26,6 +26,7 @@ import {
   getStagingData,
   deleteStagingData,
   commitStagingData,
+  getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
 
 const headings = [
@@ -105,8 +106,10 @@ const Projects = withRouter(() => {
   );
 
   useEffect(() => {
-    dispatch(getProjects({ useMockedResponse: false }));
     dispatch(getStagingData({ useMockedResponse: false }));
+    dispatch(
+      getPaginatedData({ type: 'projects', page: 1, resultsLimit: 7 }),
+    );
   }, [dispatch]);
 
   if (
@@ -176,7 +179,7 @@ const Projects = withRouter(() => {
       <StyledBodyContainer>
         <TabPanel value={tabValue} index={0}>
           {climateWarehouseStore.projects && (
-            <PaginatedDataTable
+            <DataTable
               headings={Object.keys(climateWarehouseStore.projects[0])}
               data={climateWarehouseStore.projects}
               actions="Projects"

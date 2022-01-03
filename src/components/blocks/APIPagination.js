@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
 import { ArrowDownIcon, ThreeDotsIcon } from '..';
+import { getPaginatedData } from '../../store/actions/climateWarehouseActions'
 
 const PaginationContainer = styled('div')`
   display: inline-flex;
@@ -53,17 +55,19 @@ const PagesContainer = styled(ControlsContainer)`
   }};
 `;
 
-const Pagination = withTheme(({ pages, current, showLast = false, callback }) => {
-  // if current page number higher or equal than number of pages, first page is displayed
-  const currentPageNumber =
-    current && current > 0 && current < pages ? current + 1 : 1;
-  const numberOfPages = pages && pages !== 0 ? pages : 1;
-  const changeCurrentPageTo = value => callback(value - 1);
+const APIPagination = withTheme(({ showLast = false }) => {
+  const dispatch = useDispatch();
+  const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+  const [currentPageNumber, setCurrentPageNumber] = useState(1);
+  const numberOfPages = climateWarehouseStore.projectsPageCount || 1;
+
   const backButtonIsDisabled = currentPageNumber === 1;
   const nextButtonIsDisabled = currentPageNumber === numberOfPages;
 
-  /* eslint-disable */
-  const [page, setPage] = useState(1);
+  const changeCurrentPageTo = (newPage) => {
+    setCurrentPageNumber(newPage);
+    dispatch(getPaginatedData({type: 'projects', page: newPage, resultsLimit: 7}));
+  };
 
   let displayedPages = [currentPageNumber];
   let numberOfAddedPages = 1;
@@ -123,4 +127,4 @@ const Pagination = withTheme(({ pages, current, showLast = false, callback }) =>
   );
 });
 
-export { Pagination };
+export { APIPagination };

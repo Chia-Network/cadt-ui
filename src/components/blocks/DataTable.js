@@ -1,11 +1,9 @@
-import _ from 'lodash';
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import constants from '../../constants';
-import { Pagination, TableDrawer } from '.';
+import { TableDrawer, APIPagination } from '.';
 import { EllipseIcon } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
@@ -185,6 +183,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               ))}
             </tbody>
           </Table>
+          <APIPagination />
         </div>
       </div>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
