@@ -75,7 +75,21 @@ const Td = styled('td')`
   max-width: 100px;
 `;
 
-const DataTable = withTheme(({ headings, data, actions }) => {
+const StyledPaginationContainer = styled('div')`
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70px;
+  width: 100%;
+  max-height: 70px;
+  position: absolute;
+  bottom: 0;
+`;
+
+const PaginatedDataTable = withTheme(({ headings, data, actions }) => {
+  const [currentPage, setPage] = useState(0);
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
   const [editUnits, setEditUnits] = useState(false);
@@ -88,6 +102,31 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   useEffect(() => {
         setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
+
+  const handlePageClick = page => {
+    setPage(page);
+  };
+
+  const paginatedData = useMemo(() => {
+    if (!data) {
+      return undefined;
+    }
+
+    return _.chunk(data, constants.MAX_TABLE_SIZE);
+  }, [data]);
+
+  if (!data) {
+    return null;
+  }
+
+  if (currentPage > paginatedData.length) {
+    setPage(0);
+    return null;
+  }
+
+  if (!paginatedData[currentPage]) {
+    return null;
+  }
 
   return (
     <>
@@ -124,7 +163,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               </tr>
             </THead>
             <tbody style={{ position: 'relative' }}>
-              {data.map((record, index) => (
+              {paginatedData[currentPage].map((record, index) => (
                 <>
                   <Tr index={index} selectedTheme={appStore.theme} key={index}>
                     {Object.keys(record).map((key, index) => (
@@ -186,6 +225,14 @@ const DataTable = withTheme(({ headings, data, actions }) => {
             </tbody>
           </Table>
         </div>
+        <StyledPaginationContainer>
+          <Pagination
+            pages={(paginatedData && paginatedData.length) || 0}
+            current={currentPage}
+            callback={handlePageClick}
+            showLast
+          />
+        </StyledPaginationContainer>
       </div>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {editUnits && (
@@ -210,4 +257,4 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   );
 });
 
-export { DataTable };
+export { PaginatedDataTable };

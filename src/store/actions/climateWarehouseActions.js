@@ -28,7 +28,9 @@ export const actions = keyMirror(
   'GET_PROJECT_LOCATIONS',
   'GET_RELATED_PROJECTS',
   'GET_UNITS',
+  'GET_UNITS_PAGE_COUNT',
   'GET_PROJECTS',
+  'GET_PROJECTS_PAGE_COUNT',
   'GET_VINTAGES',
   'GET_STAGING_DATA',
 );
@@ -62,7 +64,7 @@ const getClimateWarehouseTable = (
         }
       }
     } catch {
-      dispatch(setConnectionCheck(false))
+      dispatch(setConnectionCheck(false));
       dispatch(setGlobalErrorMessage('Something went wrong...'));
     } finally {
       dispatch(deactivateProgressIndicator);
@@ -120,6 +122,48 @@ export const getStagingData = ({ useMockedResponse = false }) => {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
     } finally {
       dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getPaginatedData = (type, page, resultsLimit) => {
+  return async dispatch => {
+    const typeIsValid = type === 'projects' || type === 'units';
+    const pageAndLimitAreValid =
+      typeof page === 'number' && typeof resultsLimit === 'number';
+
+    if (typeIsValid && pageAndLimitAreValid) {
+      dispatch(activateProgressIndicator);
+      try {
+        const response = await fetch(
+          `${constants.API_HOST}/${type}?page=${page}&limit=${resultsLimit}`,
+        );
+
+        if (response.ok) {
+          const results = await response.json();
+
+          let action = 'GET_PROJECTS';
+          let paginationAction = 'GET_PROJECTS_PAGE_COUNT';
+          if (type === 'units') {
+            action = 'GET_UNITS';
+            paginationAction = 'GET_UNITS_PAGE_COUNT';
+          }
+
+          dispatch({
+            type: action,
+            payload: results.data,
+          });
+          
+          dispatch({
+            type: paginationAction,
+            payload: results.pageCount,
+          });
+        }
+      } catch {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
     }
   };
 };
@@ -412,10 +456,10 @@ export const mockProjectsResponse = {
 };
 
 export const getProjects = options => {
-    const url = options.searchQuery
-      ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
-      : `${constants.API_HOST}/projects`;
-  
+  const url = options.searchQuery
+    ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
+    : `${constants.API_HOST}/projects`;
+
   return dispatch => {
     dispatch(
       getClimateWarehouseTable(

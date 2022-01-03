@@ -12,7 +12,7 @@ import {
 } from '../../store/actions/climateWarehouseActions';
 
 import {
-  DataTable,
+  PaginatedDataTable,
   AddIcon,
   SearchInput,
   SelectSizeEnum,
@@ -167,7 +167,7 @@ const Units = withRouter(() => {
         <TabPanel value={tabValue} index={0}>
           {climateWarehouseStore.units && (
             <>
-              <DataTable
+              <PaginatedDataTable
                 headings={Object.keys(climateWarehouseStore.units[0])}
                 data={climateWarehouseStore.units}
                 actions="Units"
