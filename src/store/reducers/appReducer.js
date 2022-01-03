@@ -1,20 +1,32 @@
 import u from 'updeep';
 
 import { actions as appActions } from '../actions/app';
+import { actions as socketActions } from '../actions/socket';
 import constants from '../../constants';
 
 const initialState = {
-  placeholderValue: 'THIS STRING WAS LOADED FROM THE STORE!',
+  socketStatus: 'Waiting for status',
   showProgressOverlay: false,
   theme: constants.THEME.DEFAULT,
   errorMessage: null,
   locale: null,
   mode: constants.MODE.WAREHOUSE,
-  connectionCheck: true
+  connectionCheck: true,
+  updateAvailablePleaseRefesh: false,
 };
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
+    case socketActions.SOCKET_STATUS:
+      return u({ socketStatus: action.payload }, state);
+
+    case socketActions.SOCKET_UNITS_UPDATE:
+    case socketActions.SOCKET_PROJECTS_UPDATE:
+      return u({ updateAvailablePleaseRefesh: true }, state);
+
+    case appActions.RESET_REFRESH_PROMPT:
+      return u({ updateAvailablePleaseRefesh: false }, state);
+
     case appActions.ACTIVATE_PROGRESS_INDICATOR:
       return u({ showProgressOverlay: true }, state);
 
