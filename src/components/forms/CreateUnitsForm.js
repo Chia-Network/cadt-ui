@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
   StandardInput,
@@ -13,25 +13,28 @@ import {
   TabPanel,
   Modal,
   Body,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
-//import { postNewUnits } from '../../store/actions/climateWarehouseActions';
+import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const InputContainer = styled('div')`
-  width: 320px;
+  width: 20rem;
 `;
 
 const CreateUnitsForm = withRouter(({ onClose }) => {
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [newQualifications, setNewQualifications] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
   const [tabValue, setTabValue] = useState(0);
@@ -59,7 +62,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
     const dataToSend = _.cloneDeep(newUnits);
     dataToSend.vintage = newVintage;
     dataToSend.qualification = newQualifications;
-    //dispatch(postNewUnits(dataToSend));
+    dispatch(postNewUnits(dataToSend));
     alert('Not yet Implemented');
   };
   return (
@@ -79,33 +82,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
               aria-label="Tab Options">
               <Tab label="Create Units" />
               <Tab label="Qualifications" />
-              <Tab label="Vintage" />
+              <Tab label="Vintages" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '20px 0',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      width: '90%',
-                    }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        paddingRight: '66px',
-                      }}>
+                <ModalFormContainerStyle>
+                  <FormContainerStyle>
+                    <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>Units Owner</Body>
@@ -258,7 +241,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                    </div>
+                    </BodyContainer>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
@@ -393,11 +376,11 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         </InputContainer>
                       </StyledFieldContainer>
                     </div>
-                  </div>
+                  </FormContainerStyle>
                   {/* <div onClick={() => dispatch(postNewUnits(newUnits))}>
        <PrimaryButton label="Submit" size="large" />
        </div> */}
-                </div>
+                </ModalFormContainerStyle>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <QualificationsRepeater

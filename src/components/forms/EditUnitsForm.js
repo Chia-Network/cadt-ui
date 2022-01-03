@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
   StandardInput,
@@ -10,11 +10,14 @@ import {
   Body,
   Tabs,
   Tab,
-  TabPanel
+  TabPanel,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
-//import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
+import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 
 
 const StyledLabelContainer = styled('div')`
@@ -22,14 +25,14 @@ const StyledLabelContainer = styled('div')`
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 const InputContainer = styled('div')`
-  width: 320px;
+  width: 20rem;
 `;
 
 const EditUnitsForm = ({ data, onClose }) => {
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [qualification, setQualificationsRepeaterValues] = useState([]);
 
@@ -70,7 +73,7 @@ const EditUnitsForm = ({ data, onClose }) => {
     const dataToSend = _.cloneDeep(editedUnits);
     dataToSend.vintage = _.head(vintage);
     dataToSend.qualification = qualification;
-    //dispatch(updateUnitsRecord(dataToSend));
+    dispatch(updateUnitsRecord(dataToSend));
     alert('Not yet Implemented');
   };
   return (
@@ -94,29 +97,9 @@ const EditUnitsForm = ({ data, onClose }) => {
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    padding: '20px 0',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      width: '90%',
-                    }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        paddingRight: '66px',
-                      }}>
+                <ModalFormContainerStyle>
+                  <FormContainerStyle>
+                    <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>Block Identifier</Body>
@@ -266,7 +249,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                    </div>
+                    </BodyContainer>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
@@ -421,7 +404,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                         </InputContainer>
                       </StyledFieldContainer>
                     </div>
-                  </div>
+                  </FormContainerStyle>
 
                   {/* <div
         style={{
@@ -437,7 +420,7 @@ const EditUnitsForm = ({ data, onClose }) => {
           <PrimaryButton label="Confirm" size="large" />
         </div>
       </div> */}
-                </div>
+                </ModalFormContainerStyle>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <QualificationsRepeater

@@ -2,7 +2,15 @@ import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
 
-import { StandardInput, InputSizeEnum, InputStateEnum, Divider } from '..';
+import {
+  StandardInput,
+  InputSizeEnum,
+  InputStateEnum,
+  Divider,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer,
+} from '..';
 import { Body } from '../typography';
 
 const StyledLabelContainer = styled('div')`
@@ -10,33 +18,11 @@ const StyledLabelContainer = styled('div')`
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const InputContainer = styled('div')`
-  width: 320px;
-`;
-
-const ModalFormContainerStyle = styled('div')`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-`;
-
-const FormContainerStyle = styled('div')`
-  display: flex;
-  justify-content: flex-start;
-  width: 90%;
-`;
-
-const BodyContainer = styled('div')`
-  display: flex;
-  flex-direction: column;
-  padding-right: 4.125rem;
+  width: 20rem;
 `;
 
 const CreateProjectLocationsForm = ({ value, onChange }) => {
@@ -74,9 +60,7 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
                 placeholderText="Host Country"
                 state={InputStateEnum.default}
                 value={value.country}
-                onChange={changeValue =>
-                  onInputChange('country', changeValue)
-                }
+                onChange={changeValue => onInputChange('country', changeValue)}
               />
             </InputContainer>
           </StyledFieldContainer>

@@ -2,7 +2,7 @@ import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
 
-import { StandardInput, InputSizeEnum, InputStateEnum, Divider } from '..';
+import { StandardInput, InputSizeEnum, InputStateEnum, Divider, ModalFormContainerStyle, FormContainerStyle, BodyContainer } from '..';
 import { Body } from '../typography';
 
 const StyledLabelContainer = styled('div')`
@@ -10,33 +10,11 @@ const StyledLabelContainer = styled('div')`
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const InputContainer = styled('div')`
-  width: 320px;
-`;
-
-const ModalFormContainerStyle = styled('div')`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-`;
-
-const FormContainerStyle = styled('div')`
-  display: flex;
-  justify-content: flex-start;
-  width: 90%;
-`;
-
-const BodyContainer = styled('div')`
-  display: flex;
-  flex-direction: column;
-  padding-right: 4.125rem;
+  width: 20rem;
 `;
 
 const CreateRelatedProjectsForm = ({ value, onChange }) => {
@@ -74,9 +52,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                 placeholderText="Related Project Type"
                 state={InputStateEnum.default}
                 value={value.type}
-                onChange={changeValue =>
-                  onInputChange('type', changeValue)
-                }
+                onChange={changeValue => onInputChange('type', changeValue)}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -90,9 +66,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                 placeholderText="Registry"
                 state={InputStateEnum.default}
                 value={value.registry}
-                onChange={changeValue =>
-                  onInputChange('registry', changeValue)
-                }
+                onChange={changeValue => onInputChange('registry', changeValue)}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -106,9 +80,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                 placeholderText="Related Project Note"
                 state={InputStateEnum.default}
                 value={value.note}
-                onChange={changeValue =>
-                  onInputChange('note', changeValue)
-                }
+                onChange={changeValue => onInputChange('note', changeValue)}
               />
             </InputContainer>
           </StyledFieldContainer>

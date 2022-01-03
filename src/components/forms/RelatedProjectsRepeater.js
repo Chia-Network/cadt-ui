@@ -10,7 +10,7 @@ function RelatedProjectsRepeater({
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
-        maxRepetitions={10}
+        maxRepetitions={100}
         values={relatedProjectsState}
         updateValues={setRelatedProjectsState}
         initialValue={{

@@ -2,7 +2,7 @@ import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
 
-import { StandardInput, InputSizeEnum, InputStateEnum, Divider } from '..';
+import { StandardInput, InputSizeEnum, InputStateEnum, Divider, ModalFormContainerStyle, FormContainerStyle, BodyContainer } from '..';
 import { Body } from '../typography';
 
 const StyledLabelContainer = styled('div')`
@@ -10,11 +10,11 @@ const StyledLabelContainer = styled('div')`
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const InputContainer = styled('div')`
-  width: 320px;
+  width: 20rem;
 `;
 
 const CreateVintageForm = ({ value, onChange }) => {
@@ -23,28 +23,9 @@ const CreateVintageForm = ({ value, onChange }) => {
   };
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          width: '90%',
-        }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            paddingRight: '66px',
-          }}>
+    <ModalFormContainerStyle>
+      <FormContainerStyle>
+        <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>Vintage Start Date</Body>
@@ -125,10 +106,10 @@ const CreateVintageForm = ({ value, onChange }) => {
               />
             </InputContainer>
           </StyledFieldContainer>
-        </div>
-      </div>
+        </BodyContainer>
+      </FormContainerStyle>
       <Divider />
-    </div>
+    </ModalFormContainerStyle>
   );
 };
 

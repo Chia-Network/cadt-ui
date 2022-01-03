@@ -13,6 +13,9 @@ import {
   TabPanel,
   Modal,
   Body,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -26,11 +29,11 @@ const StyledLabelContainer = styled('div')`
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const InputContainer = styled('div')`
-  width: 320px;
+  width: 20rem;
 `;
 
 const CreateProjectForm = withRouter(({ onClose }) => {
@@ -96,36 +99,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
               aria-label="Tab Options">
               <Tab label="Project" />
               <Tab label="Qualifications" />
-              <Tab label="Vintage" />
+              <Tab label="Vintages" />
               <Tab label="Co-Benefits" />
               <Tab label="Project Locations" />
               <Tab label="Related Projects" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '20px 0',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      width: '90%',
-                    }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        paddingRight: '66px',
-                      }}>
+                <ModalFormContainerStyle>
+                  <FormContainerStyle>
+                    <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>Current Registry</Body>
@@ -331,7 +314,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                    </div>
+                    </BodyContainer>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
@@ -528,11 +511,11 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                         </InputContainer>
                       </StyledFieldContainer>
                     </div>
-                  </div>
+                  </FormContainerStyle>
                   {/* <div onClick={handleSubmit}>
         <PrimaryButton label="Submit" size="large" />
       </div> */}
-                </div>
+                </ModalFormContainerStyle>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <QualificationsRepeater
