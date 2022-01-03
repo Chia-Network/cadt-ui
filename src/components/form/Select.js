@@ -86,6 +86,7 @@ const StyledSelect = styled('div')`
         cursor: default;`;
     }
   }};
+  ${props => props.type === SelectTypeEnum.multiple && `height: 100%;`};
 `;
 
 const StyledBasicMenu = styled(ScrollContainer)`
