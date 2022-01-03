@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import {
   DataTable,
@@ -18,7 +19,6 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   CreateProjectForm,
-  H3
 } from '../../components';
 
 import {
@@ -74,13 +74,14 @@ const StyledBodyContainer = styled('div')`
 
 const NoDataMessageContainer = styled('div')`
   display: flex;
-  height: 53.0169rem;
+  height: 100%;
   justify-content: center;
   align-items: center;
 `;
 
 const Projects = withRouter(() => {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const [create, setCreate] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
@@ -183,12 +184,13 @@ const Projects = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel value={tabValue} index={1}>
-          {climateWarehouseStore.stagingData && climateWarehouseStore.stagingData.projects.staging.length === 0 && (
-            <NoDataMessageContainer>
-              <H3>No staged data at this time</H3>
-            </NoDataMessageContainer>
-          )}
+        <TabPanel style={{ height: '100%' }} value={tabValue} index={1}>
+          {climateWarehouseStore.stagingData &&
+            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+              <NoDataMessageContainer>
+                {intl.formatMessage({ id: 'no-staged' })}
+              </NoDataMessageContainer>
+            )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
@@ -197,12 +199,13 @@ const Projects = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel value={tabValue} index={2}>
-          {climateWarehouseStore.stagingData && climateWarehouseStore.stagingData.projects.pending.length === 0 && (
-            <NoDataMessageContainer>
-              <H3>No pending data at this time</H3>
-            </NoDataMessageContainer>
-          )}
+        <TabPanel style={{ height: '100%' }} value={tabValue} index={2}>
+          {climateWarehouseStore.stagingData &&
+            climateWarehouseStore.stagingData.projects.pending.length === 0 && (
+              <NoDataMessageContainer>
+                {intl.formatMessage({ id: 'no-pending' })}
+              </NoDataMessageContainer>
+            )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}

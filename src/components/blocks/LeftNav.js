@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ToggleSwitch from './ToggleSwitch';
 import { useDispatch } from 'react-redux';
 import { toggleMode } from '../../store/actions/app';
+import { useIntl } from 'react-intl';
 
 const Container = styled('div')`
   display: flex;
@@ -38,6 +39,7 @@ const MenuItem = styled(Link)`
 const LeftNav = withTheme(({ children }) => {
   const [location, setLocation] = useState(false);
   const dispatch = useDispatch();
+  const intl = useIntl();
   useEffect(() => {
     setLocation(window.location.pathname.split(/_(.+)/)[1]);
   }, [window.location]);
@@ -57,19 +59,19 @@ const LeftNav = withTheme(({ children }) => {
           selected={location === 'projects'}
           to="/projects"
           onClick={() => setLocation('projects')}>
-          Projects
+          {intl.formatMessage({ id: 'projects' })}
         </MenuItem>
         <MenuItem
           selected={location === 'units'}
           to="/units"
           onClick={() => setLocation('units')}>
-          Units
+          {intl.formatMessage({ id: 'units' })}
         </MenuItem>
         <MenuItem
           selected={location === 'storybook'}
           to="/storybook"
           onClick={() => setLocation('storybook')}>
-          StoryBook
+          {intl.formatMessage({ id: 'storybook' })}
         </MenuItem>
       </NavContainer>
       {children}
