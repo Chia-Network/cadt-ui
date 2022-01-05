@@ -1,9 +1,18 @@
 import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
+import { useIntl, FormattedMessage } from 'react-intl';
 
-import { StandardInput, InputSizeEnum, InputStateEnum, Divider, ModalFormContainerStyle, FormContainerStyle, BodyContainer } from '..';
-import { Body } from '../typography';
+import {
+  StandardInput,
+  InputSizeEnum,
+  InputStateEnum,
+  Divider,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer,
+  Body,
+} from '..';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -18,6 +27,7 @@ const InputContainer = styled('div')`
 `;
 
 const CreateVintageForm = ({ value, onChange }) => {
+  const intl = useIntl();
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
@@ -28,12 +38,16 @@ const CreateVintageForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Vintage Start Date</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="vintage-start-date" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Vintage Start Date"
+                placeholderText={intl.formatMessage({
+                  id: 'vintage-start-date',
+                })}
                 state={InputStateEnum.default}
                 value={value.vintageStartDate}
                 onChange={changeValue =>
@@ -44,12 +58,14 @@ const CreateVintageForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Vintage End Date</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="vintage-end-date" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Vintage End Date"
+                placeholderText={intl.formatMessage({ id: 'vintage-end-date' })}
                 state={InputStateEnum.default}
                 value={value.vintageEndDate}
                 onChange={changeValue =>
@@ -60,12 +76,16 @@ const CreateVintageForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Verification Approach</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="verification-approach" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Verification Approach"
+                placeholderText={intl.formatMessage({
+                  id: 'verification-approach',
+                })}
                 state={InputStateEnum.default}
                 value={value.verificationApproach}
                 onChange={changeValue =>
@@ -76,12 +96,16 @@ const CreateVintageForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Verification Date</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="verification-date" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Verification Date"
+                placeholderText={intl.formatMessage({
+                  id: 'verification-date',
+                })}
                 state={InputStateEnum.default}
                 value={value.verificationDate}
                 onChange={changeValue =>
@@ -92,12 +116,16 @@ const CreateVintageForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Verification Body</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="verification-body" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="verification Body"
+                placeholderText={intl.formatMessage({
+                  id: 'verification-body',
+                })}
                 state={InputStateEnum.default}
                 value={value.verificationBody}
                 onChange={changeValue =>

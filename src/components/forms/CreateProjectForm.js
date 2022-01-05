@@ -15,7 +15,7 @@ import {
   Body,
   ModalFormContainerStyle,
   FormContainerStyle,
-  BodyContainer
+  BodyContainer,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -23,6 +23,7 @@ import CoBenefitsRepeater from './CoBenefitsRepeater';
 import ProjectLocationsRepeater from './ProjectLocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -44,6 +45,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
   const [newCoBenefits, setNewCoBenefits] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
+  const intl = useIntl();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -76,7 +78,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     const dataToSend = _.cloneDeep(newProject);
     dataToSend.vintage = newVintage;
     dataToSend.coBenefits = newCoBenefits;
-    dataToSend.qualification = newQualifications;
+    dataToSend.qualifications = newQualifications;
     dataToSend.projectLocations = newProjectLocations;
     dataToSend.relatedProjects = newRelatedProjects;
     dispatch(postNewProject(newProject));
@@ -93,10 +95,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
         title="Create Projects"
         body={
           <div>
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-             >
+            <Tabs value={tabValue} onChange={handleTabChange}>
               <Tab label="Project" />
               <Tab label="Qualifications" />
               <Tab label="Vintages" />
@@ -105,18 +104,25 @@ const CreateProjectForm = withRouter(({ onClose }) => {
               <Tab label="Related Projects" />
             </Tabs>
             <div>
-              <TabPanel value={tabValue} index={0}>
+              <TabPanel
+                style={{ paddingTop: '1.25rem' }}
+                value={tabValue}
+                index={0}>
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Current Registry</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="current-registry" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Current Registry"
+                            placeholderText={intl.formatMessage({
+                              id: 'current-registry',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.currentRegistry}
                             onChange={value =>
@@ -130,12 +136,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Registry of Origin</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="registry-of-origin" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Registry of Origin"
+                            placeholderText={intl.formatMessage({
+                              id: 'registry-of-origin',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.registryOfOrigin}
                             onChange={value =>
@@ -149,12 +159,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Origin Project Id</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="origin-project-id" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Origin Project Id"
+                            placeholderText={intl.formatMessage({
+                              id: 'origin-project-id',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.originProjectId}
                             onChange={value =>
@@ -168,12 +182,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Program</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="program" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Program"
+                            placeholderText={intl.formatMessage({
+                              id: 'program',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.program}
                             onChange={value =>
@@ -187,11 +205,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project ID</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="project-id" />
+                          </Body>
                         </StyledLabelContainer>
                         <StandardInput
                           size={InputSizeEnum.large}
-                          placeholderText="Project ID"
+                          placeholderText={intl.formatMessage({
+                            id: 'project-id',
+                          })}
                           state={InputStateEnum.default}
                           value={newProject.projectID}
                           onChange={value =>
@@ -204,12 +226,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Name</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="project-name" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Name"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-name',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.projectName}
                             onChange={value =>
@@ -223,12 +249,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Link</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="project-link" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Link"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-link',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.projectLink}
                             onChange={value =>
@@ -242,12 +272,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Developer</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="project-developer" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Developer"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-developer',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.projectDeveloper}
                             onChange={value =>
@@ -261,12 +295,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Sector</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="sector" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Sector"
+                            placeholderText={intl.formatMessage({
+                              id: 'sector',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.sector}
                             onChange={value =>
@@ -280,11 +318,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Type</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="project-type" />
+                          </Body>
                         </StyledLabelContainer>
                         <StandardInput
                           size={InputSizeEnum.large}
-                          placeholderText="Project Type"
+                          placeholderText={intl.formatMessage({
+                            id: 'project-type',
+                          })}
                           state={InputStateEnum.default}
                           value={newProject.projectType}
                           onChange={value =>
@@ -297,12 +339,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Covered by NDC</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="covered-by-ndc" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Covered by NDC"
+                            placeholderText={intl.formatMessage({
+                              id: 'covered-by-ndc',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.coveredByNDC}
                             onChange={value =>
@@ -318,12 +364,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>NDC Linkage</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="ndc-linkage" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="NDC Linkage"
+                            placeholderText={intl.formatMessage({
+                              id: 'ndc-linkage',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.NDCLinkage}
                             onChange={value =>
@@ -337,12 +387,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Status</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="project-status" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Status"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-status',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.projectStatus}
                             onChange={value =>
@@ -356,12 +410,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Status Date</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="project-status-date" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Status Date"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-status-date',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.projectStatusDate}
                             onChange={value =>
@@ -375,12 +433,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Metric</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="unit-metric" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Metric"
+                            placeholderText={intl.formatMessage({
+                              id: 'unit-metric',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.unitMetric}
                             onChange={value =>
@@ -394,12 +456,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Methodology</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="methodology" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Methodology"
+                            placeholderText={intl.formatMessage({
+                              id: 'methodology',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.methodology}
                             onChange={value =>
@@ -413,12 +479,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Methodology Version</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="methodology-version" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Methodology Version"
+                            placeholderText={intl.formatMessage({
+                              id: 'methodology-version',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.methodologyVersion}
                             onChange={value =>
@@ -432,12 +502,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Validation Approach</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="validation-approach" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Validation Approach"
+                            placeholderText={intl.formatMessage({
+                              id: 'validation-approach',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.validationApproach}
                             onChange={value =>
@@ -451,12 +525,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Validation Date</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="validation-date" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Validation Date"
+                            placeholderText={intl.formatMessage({
+                              id: 'validation-date',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.validationDate}
                             onChange={value =>
@@ -471,13 +549,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            Estimated Annual Average Emission Reduction
+                            <FormattedMessage id="estimated-annual-average-emission-reduction" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Estimated Annual Average Emission Reduction"
+                            placeholderText={intl.formatMessage({
+                              id: 'estimated-annual-average-emission-reduction',
+                            })}
                             state={InputStateEnum.default}
                             value={
                               newProject.estimatedAnnualAverageEmissionReduction
@@ -493,12 +573,16 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Tag</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-tag" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Tag"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-tag',
+                            })}
                             state={InputStateEnum.default}
                             value={newProject.projectTag}
                             onChange={value =>
@@ -512,9 +596,6 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       </StyledFieldContainer>
                     </div>
                   </FormContainerStyle>
-                  {/* <div onClick={handleSubmit}>
-        <PrimaryButton label="Submit" size="large" />
-      </div> */}
                 </ModalFormContainerStyle>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>

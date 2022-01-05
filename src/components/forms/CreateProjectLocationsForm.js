@@ -1,6 +1,7 @@
 import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
   StandardInput,
@@ -10,8 +11,8 @@ import {
   ModalFormContainerStyle,
   FormContainerStyle,
   BodyContainer,
+  Body,
 } from '..';
-import { Body } from '../typography';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -26,6 +27,8 @@ const InputContainer = styled('div')`
 `;
 
 const CreateProjectLocationsForm = ({ value, onChange }) => {
+  const intl = useIntl();
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
@@ -36,12 +39,16 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>In-Country-Region</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="in-country-region" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="In-Country-Region"
+                placeholderText={intl.formatMessage({
+                  id: 'in-country-region',
+                })}
                 state={InputStateEnum.default}
                 value={value.countryRegion}
                 onChange={changeValue =>
@@ -52,12 +59,16 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Host Country</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="host-country" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Host Country"
+                placeholderText={intl.formatMessage({
+                  id: 'host-country',
+                })}
                 state={InputStateEnum.default}
                 value={value.country}
                 onChange={changeValue => onInputChange('country', changeValue)}
