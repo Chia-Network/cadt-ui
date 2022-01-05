@@ -73,6 +73,19 @@ const Td = styled('td')`
   max-width: 100px;
 `;
 
+const StyledPaginationContainer = styled('div')`
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70px;
+  width: 100%;
+  max-height: 70px;
+  position: absolute;
+  bottom: 0;
+`;
+
 const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
@@ -183,10 +196,12 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
               ))}
             </tbody>
           </Table>
-          {(actions === 'Projects' || actions === 'Units') && (
-            <APIPagination actions={actions} />
-          )}
         </div>
+          {(actions === 'Projects' || actions === 'Units') && (
+            <StyledPaginationContainer>
+              <APIPagination actions={actions} />
+            </StyledPaginationContainer>
+          )}
       </div>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {editUnits && (
