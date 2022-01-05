@@ -1,9 +1,17 @@
 import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
-import { StandardInput, InputSizeEnum, InputStateEnum, Divider,ModalFormContainerStyle, FormContainerStyle } from '..';
-import { Body } from '../typography';
+import {
+  StandardInput,
+  InputSizeEnum,
+  InputStateEnum,
+  Divider,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  Body,
+} from '..';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -17,9 +25,8 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-
-
 const CreateCoBenefitsForm = ({ value, onChange }) => {
+  const intl = useIntl();
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
@@ -29,12 +36,14 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
       <FormContainerStyle>
         <StyledFieldContainer>
           <StyledLabelContainer>
-            <Body color={'#262626'}>Co-Benefit</Body>
+            <Body style={{ color: '#262626' }}>
+              {intl.formatMessage({ id: 'co-benefit' })}
+            </Body>
           </StyledLabelContainer>
           <InputContainer>
             <StandardInput
               size={InputSizeEnum.large}
-              placeholderText="Benefit"
+              placeholderText={intl.formatMessage({ id: 'co-benefit' })}
               state={InputStateEnum.default}
               value={value.benefit}
               onChange={changeValue => onInputChange('benefit', changeValue)}

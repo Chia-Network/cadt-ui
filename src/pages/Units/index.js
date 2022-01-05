@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import {
   getUnits,
@@ -25,6 +26,7 @@ import {
   Tabs,
   TabPanel,
   StagingDataTable,
+  H3
 } from '../../components';
 
 const headings = [
@@ -71,8 +73,16 @@ const StyledBodyContainer = styled('div')`
   flex-grow: 1;
 `;
 
+const NoDataMessageContainer = styled('div')`
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Units = withRouter(() => {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const [create, setCreate] = useState(false);
 
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -176,7 +186,13 @@ const Units = withRouter(() => {
           )}
           {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
         </TabPanel>
-        <TabPanel value={tabValue} index={1}>
+        <TabPanel style={{ height: '100%' }} value={tabValue} index={1}>
+          {climateWarehouseStore.stagingData &&
+            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>{intl.formatMessage({ id: 'no-staged' })}</H3>
+              </NoDataMessageContainer>
+            )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
@@ -185,7 +201,13 @@ const Units = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel value={tabValue} index={2}>
+        <TabPanel style={{ height: '100%' }} value={tabValue} index={2}>
+          {climateWarehouseStore.stagingData &&
+            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>{intl.formatMessage({ id: 'no-pending' })}</H3>
+              </NoDataMessageContainer>
+            )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
