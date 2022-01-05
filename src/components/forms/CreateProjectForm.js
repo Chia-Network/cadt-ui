@@ -13,9 +13,15 @@ import {
   TabPanel,
   Modal,
   Body,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
+import CoBenefitsRepeater from './CoBenefitsRepeater';
+import ProjectLocationsRepeater from './ProjectLocationsRepeater';
+import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 
 const StyledLabelContainer = styled('div')`
@@ -23,16 +29,19 @@ const StyledLabelContainer = styled('div')`
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const InputContainer = styled('div')`
-  width: 320px;
+  width: 20rem;
 `;
 
 const CreateProjectForm = withRouter(({ onClose }) => {
   const [newQualifications, setNewQualifications] = useState([]);
+  const [newRelatedProjects, setNewRelatedProjects] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
+  const [newProjectLocations, setNewProjectLocations] = useState([]);
+  const [newCoBenefits, setNewCoBenefits] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
 
@@ -63,11 +72,13 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     estimatedAnnualAverageEmissionReduction: 60,
     projectTag: '',
   });
-
   const handleSubmit = () => {
     const dataToSend = _.cloneDeep(newProject);
     dataToSend.vintage = newVintage;
+    dataToSend.coBenefits = newCoBenefits;
     dataToSend.qualification = newQualifications;
+    dataToSend.projectLocations = newProjectLocations;
+    dataToSend.relatedProjects = newRelatedProjects;
     dispatch(postNewProject(newProject));
   };
 
@@ -85,36 +96,19 @@ const CreateProjectForm = withRouter(({ onClose }) => {
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
-              aria-label="Tab Options">
-              <Tab label="Create Projects" />
+             >
+              <Tab label="Project" />
               <Tab label="Qualifications" />
-              <Tab label="Vintage" />
+              <Tab label="Vintages" />
+              <Tab label="Co-Benefits" />
+              <Tab label="Project Locations" />
+              <Tab label="Related Projects" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '20px 0',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      width: '90%',
-                    }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        paddingRight: '66px',
-                      }}>
+                <ModalFormContainerStyle>
+                  <FormContainerStyle>
+                    <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>Current Registry</Body>
@@ -320,7 +314,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                    </div>
+                    </BodyContainer>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
@@ -517,11 +511,11 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                         </InputContainer>
                       </StyledFieldContainer>
                     </div>
-                  </div>
+                  </FormContainerStyle>
                   {/* <div onClick={handleSubmit}>
         <PrimaryButton label="Submit" size="large" />
       </div> */}
-                </div>
+                </ModalFormContainerStyle>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <QualificationsRepeater
@@ -533,6 +527,24 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                 <VintageRepeater
                   vintageState={newVintage}
                   newVintageState={setNewVintage}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={3}>
+                <CoBenefitsRepeater
+                  coBenefitsState={newCoBenefits}
+                  setNewCoBenefitsState={setNewCoBenefits}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={4}>
+                <ProjectLocationsRepeater
+                  projectLocationsState={newProjectLocations}
+                  setProjectLocationsState={setNewProjectLocations}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={5}>
+                <RelatedProjectsRepeater
+                  relatedProjectsState={newRelatedProjects}
+                  setRelatedProjectsState={setNewRelatedProjects}
                 />
               </TabPanel>
             </div>

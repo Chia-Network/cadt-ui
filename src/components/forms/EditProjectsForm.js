@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
   StandardInput,
@@ -11,33 +11,38 @@ import {
   Tabs,
   Tab,
   TabPanel,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
-//import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
+import CoBenefitsRepeater from './CoBenefitsRepeater';
+import ProjectLocationsRepeater from './ProjectLocationsRepeater';
+import RelatedProjectsRepeater from './RelatedProjectsRepeater';
+import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 const InputContainer = styled('div')`
-  width: 320px;
+  width: 20rem;
 `;
 
 const EditProjectsForm = ({ data, onClose }) => {
-  //const dispatch = useDispatch();
-  
-
+  const dispatch = useDispatch();
   const [qualification, setQualificationsRepeaterValues] = useState([]);
-
   const [vintage, setVintage] = useState([]);
-
+  const [projectLocations, setProjectLocations] = useState([]);
+  const [relatedProjects, setRelatedProjects] = useState([]);
+  const [coBenefits, setCoBenefits] = useState([]);
   const [editedProjects, setEditProjects] = useState({});
-
   const [tabValue, setTabValue] = useState(0);
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -63,19 +68,25 @@ const EditProjectsForm = ({ data, onClose }) => {
       methodologyVersion: data.methodologyVersion,
       validationApproach: data.validationApproach,
       validationDate: data.validationDate,
-      estimatedAnnualAverageEmissionReduction: data.estimatedAnnualAverageEmissionReduction,
+      estimatedAnnualAverageEmissionReduction:
+        data.estimatedAnnualAverageEmissionReduction,
       projectTag: data.projectTag,
     });
     setVintage(_.get(data, 'vintages', []));
+    setProjectLocations(_.get(data, 'projectLocations', []));
+    setCoBenefits(_.get(data, 'coBenefits', []));
     setQualificationsRepeaterValues(_.get(data, 'qualifications', []));
+    setRelatedProjects(_.get(data, 'relatedProjects', []));
   }, [data]);
 
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(editedProjects);
     dataToSend.vintage = _.head(vintage);
     dataToSend.qualification = qualification;
-    //dispatch(updateUnitsRecord(dataToSend));
-    alert('Not yet Implemented');
+    dataToSend.coBenefits = coBenefits;
+    dataToSend.projectLocations = projectLocations;
+    dataToSend.relatedProjects = relatedProjects;
+    dispatch(updateUnitsRecord(dataToSend));
   };
   return (
     <>
@@ -91,36 +102,19 @@ const EditProjectsForm = ({ data, onClose }) => {
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
-              aria-label="Tab Options">
-              <Tab label="Edit Projects" />
-              <Tab label="Edit Qualifications" />
-              <Tab label="Edit Vintage" />
+              >
+              <Tab label="Project" />
+              <Tab label="Qualifications" />
+              <Tab label="Vintages" />
+              <Tab label="Co-Benefits" />
+              <Tab label="Project Locations" />
+              <Tab label="Related Projects" />
             </Tabs>
             <div>
               <TabPanel value={tabValue} index={0}>
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '20px 0',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      width: '90%',
-                    }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        paddingRight: '66px',
-                      }}>
+                <ModalFormContainerStyle>
+                  <FormContainerStyle>
+                    <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>Current Registry</Body>
@@ -326,7 +320,7 @@ const EditProjectsForm = ({ data, onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                    </div>
+                    </BodyContainer>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
@@ -523,11 +517,11 @@ const EditProjectsForm = ({ data, onClose }) => {
                         </InputContainer>
                       </StyledFieldContainer>
                     </div>
-                  </div>
+                  </FormContainerStyle>
                   {/* <div onClick={handleSubmit}>
         <PrimaryButton label="Submit" size="large" />
       </div> */}
-                </div>
+                </ModalFormContainerStyle>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <QualificationsRepeater
@@ -539,6 +533,24 @@ const EditProjectsForm = ({ data, onClose }) => {
                 <VintageRepeater
                   vintageState={vintage}
                   newVintageState={setVintage}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={3}>
+                <CoBenefitsRepeater
+                  coBenefitsState={coBenefits}
+                  setNewCoBenefitsState={setCoBenefits}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={4}>
+                <ProjectLocationsRepeater
+                  projectLocationsState={projectLocations}
+                  setProjectLocationsState={setProjectLocations}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={5}>
+                <RelatedProjectsRepeater
+                  relatedProjectsState={relatedProjects}
+                  setRelatedProjectsState={setRelatedProjects}
                 />
               </TabPanel>
             </div>

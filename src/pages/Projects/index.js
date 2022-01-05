@@ -74,7 +74,7 @@ const StyledBodyContainer = styled('div')`
 
 const NoDataMessageContainer = styled('div')`
   display: flex;
-  height: 100%;
+  height: 53.0169rem;
   justify-content: center;
   align-items: center;
 `;
