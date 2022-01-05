@@ -4,14 +4,15 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import * as Pages from '../pages';
 
-import { AppContainer, Modal } from '../components';
+import { AppContainer, Modal, NotificationContainer } from '../components';
 
 const AppNavigator = () => {
-  const { showProgressOverlay, connectionCheck } = useSelector(
+  const { showProgressOverlay, connectionCheck, socketStatus } = useSelector(
     store => store.app,
   );
   return (
     <AppContainer>
+      <NotificationContainer socketStatus={socketStatus} />
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
         <Modal
