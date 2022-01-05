@@ -43,7 +43,6 @@ let socket = socketIO(WS_HOST, {
 });
 
 const NotificationContainer = ({ socketStatus }) => {
-  console.log(socketStatus);
   return (
     <NotificationCard>
       <StatusColor socketStatus={socketStatus}>
