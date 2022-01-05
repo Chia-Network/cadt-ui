@@ -1,35 +1,65 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { Notification } from '../blocks/Notifications';
-
-const notificationAnimation = keyframes`
- 0% { right: -40rem}
- 100% { right: 0}
-`;
+import styled, { css } from 'styled-components';
+import socketIO from 'socket.io-client';
+import { EllipseIcon } from '..';
 
 const NotificationCard = styled('div')`
   position: absolute;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 1.25rem;
+  width: 220px;
   top: 0;
   right: 0;
-  animation-name: ${notificationAnimation};
-  animation-duration: 1.5s;
 `;
 
-function NotificationContainer({ socketStatus, setNotification }) {
+const StatusColor = styled('div')`
+  ${props =>
+    (props.socketStatus === 'CONNECTED' ||
+      props.socketStatus === 'AUTHENTICATED') &&
+    css`
+      color: green;
+    `}
+  ${props =>
+    props.socketStatus === 'Waiting for status' &&
+    css`
+      color: yellow;
+    `}
+    ${props =>
+    (props.socketStatus === 'OFFLINE' ||
+      props.socketStatus === 'UNAUTHORIZED') &&
+    css`
+      color: red;
+    `};
+`;
+
+const WS_HOST = `http://localhost:3030/v1/ws`;
+const transports = ['websocket', 'polling'];
+
+let socket = socketIO(WS_HOST, {
+  path: '/socket.io',
+  transports,
+});
+
+const NotificationContainer = ({ socketStatus }) => {
+  console.log(socketStatus);
   return (
     <NotificationCard>
-      <Notification
-        showIcon="info"
-        title="Socket Connection Status:"
-        body={socketStatus}
-        onClose={
-          socketStatus === 'AUTHENTICATED' &&
-          setTimeout(() => setNotification(false), 5000)
-        }
-        onClick={() => setNotification(false)}
-      />
+      <StatusColor socketStatus={socketStatus}>
+        {socket.id ? socket.id : 'Retrieving socket ID'}
+      </StatusColor>
+      {(socketStatus === 'CONNECTED' || socketStatus === 'AUTHENTICATED') && (
+        <EllipseIcon height={'5'} width={'5'} fill={'green'} />
+      )}
+      {socketStatus === 'Waiting for status' && (
+        <EllipseIcon height={'15'} width={'15'} fill={'yellow'} />
+      )}
+      {(socketStatus === 'OFFLINE' || socketStatus === 'UNAUTHORIZED') && (
+        <EllipseIcon height={'5'} width={'5'} fill={'red'} />
+      )}
     </NotificationCard>
   );
-}
+};
 
 export { NotificationContainer };
