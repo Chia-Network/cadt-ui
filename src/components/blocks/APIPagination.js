@@ -55,7 +55,7 @@ const PagesContainer = styled(ControlsContainer)`
   }};
 `;
 
-const APIPagination = withTheme(({ showLast = false }) => {
+const APIPagination = withTheme(({ showLast = false, actions }) => {
   const dispatch = useDispatch();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
@@ -66,7 +66,13 @@ const APIPagination = withTheme(({ showLast = false }) => {
 
   const changeCurrentPageTo = (newPage) => {
     setCurrentPageNumber(newPage);
-    dispatch(getPaginatedData({type: 'projects', page: newPage, resultsLimit: 7}));
+    dispatch(
+      getPaginatedData({
+        type: actions.toLowerCase(),
+        page: newPage,
+        resultsLimit: 7,
+      }),
+    );
   };
 
   let displayedPages = [currentPageNumber];

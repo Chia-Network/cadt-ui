@@ -7,7 +7,7 @@ import { TableDrawer, APIPagination } from '.';
 import { EllipseIcon } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
-import { EditUnitsForm, EditProjectsForm} from '..';
+import { EditUnitsForm, EditProjectsForm } from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -84,7 +84,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const windowSize = useWindowSize();
 
   useEffect(() => {
-        setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
 
   return (
@@ -183,7 +183,9 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               ))}
             </tbody>
           </Table>
-          <APIPagination />
+          {(actions === 'Projects' || actions === 'Units') && (
+            <APIPagination actions={actions} />
+          )}
         </div>
       </div>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
