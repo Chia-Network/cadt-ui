@@ -1,7 +1,7 @@
 import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
   StandardInput,
@@ -39,7 +39,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'related-project-id' })}
+                <FormattedMessage id="related-project-id" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -59,7 +59,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'related-project-type' })}
+                <FormattedMessage id="related-project-type" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -77,7 +77,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'registry' })}
+                <FormattedMessage id="registry" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -93,7 +93,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'related-project-note' })}
+                <FormattedMessage id="related-project-note" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>

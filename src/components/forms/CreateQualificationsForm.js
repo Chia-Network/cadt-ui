@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
   StandardInput,
@@ -35,7 +35,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'label' })}
+                <FormattedMessage id="label" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -53,7 +53,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'crediting-period-start-date' })}
+                <FormattedMessage id="crediting-period-start-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -73,7 +73,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'crediting-period-end-date' })}
+                <FormattedMessage id="crediting-period-end-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -93,7 +93,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'validity-start-date' })}
+                <FormattedMessage id="validity-start-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -115,7 +115,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'validity-end-date' })}
+                <FormattedMessage id="validity-end-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -135,7 +135,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'unit-quantity' })}
+                <FormattedMessage id="unit-quantity" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -153,7 +153,7 @@ const CreateQualificationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'qualifications-link' })}
+                <FormattedMessage id="qualifications-link" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>

@@ -1,7 +1,7 @@
 import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
   StandardInput,
@@ -28,6 +28,7 @@ const InputContainer = styled('div')`
 
 const CreateProjectLocationsForm = ({ value, onChange }) => {
   const intl = useIntl();
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
@@ -39,7 +40,7 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'in-country-region' })}
+                <FormattedMessage id="in-country-region" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -59,13 +60,15 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'host-country' })}
+                <FormattedMessage id="host-country" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({ id: 'host-country' })}
+                placeholderText={intl.formatMessage({
+                  id: 'host-country',
+                })}
                 state={InputStateEnum.default}
                 value={value.country}
                 onChange={changeValue => onInputChange('country', changeValue)}

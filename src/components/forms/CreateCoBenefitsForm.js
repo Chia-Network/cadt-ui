@@ -1,7 +1,7 @@
 import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
   StandardInput,
@@ -37,7 +37,7 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
         <StyledFieldContainer>
           <StyledLabelContainer>
             <Body style={{ color: '#262626' }}>
-              {intl.formatMessage({ id: 'co-benefit' })}
+              <FormattedMessage id="co-benefit" />
             </Body>
           </StyledLabelContainer>
           <InputContainer>

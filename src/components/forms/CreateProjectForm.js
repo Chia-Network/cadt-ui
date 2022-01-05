@@ -23,7 +23,7 @@ import CoBenefitsRepeater from './CoBenefitsRepeater';
 import ProjectLocationsRepeater from './ProjectLocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -114,7 +114,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'current-registry' })}
+                            <FormattedMessage id="current-registry" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -137,7 +137,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'registry-of-origin' })}
+                            <FormattedMessage id="registry-of-origin" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -160,7 +160,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'origin-project-id' })}
+                            <FormattedMessage id="origin-project-id" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -183,7 +183,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'program' })}
+                            <FormattedMessage id="program" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -206,7 +206,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'project-id' })}
+                            <FormattedMessage id="project-id" />
                           </Body>
                         </StyledLabelContainer>
                         <StandardInput
@@ -227,7 +227,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'project-name' })}
+                            <FormattedMessage id="project-name" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -250,7 +250,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'project-link' })}
+                            <FormattedMessage id="project-link" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -273,7 +273,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'project-developer' })}
+                            <FormattedMessage id="project-developer" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -296,7 +296,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'sector' })}
+                            <FormattedMessage id="sector" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -319,7 +319,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'project-type' })}
+                            <FormattedMessage id="project-type" />
                           </Body>
                         </StyledLabelContainer>
                         <StandardInput
@@ -340,7 +340,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'covered-by-ndc' })}
+                            <FormattedMessage id="covered-by-ndc" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -365,7 +365,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'ndc-linkage' })}
+                            <FormattedMessage id="ndc-linkage" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -388,7 +388,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'project-status' })}
+                            <FormattedMessage id="project-status" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -411,7 +411,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'project-status-date' })}
+                            <FormattedMessage id="project-status-date" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -434,7 +434,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'unit-metric' })}
+                            <FormattedMessage id="unit-metric" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -457,7 +457,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            {intl.formatMessage({ id: 'methodology' })}
+                            <FormattedMessage id="methodology" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -480,7 +480,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            {intl.formatMessage({ id: 'methodology-version' })}
+                            <FormattedMessage id="methodology-version" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -503,7 +503,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            {intl.formatMessage({ id: 'validation-approach' })}
+                            <FormattedMessage id="validation-approach" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -526,7 +526,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            {intl.formatMessage({ id: 'validation-date' })}
+                            <FormattedMessage id="validation-date" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -549,9 +549,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            {intl.formatMessage({
-                              id: 'estimated-annual-average-emission-reduction',
-                            })}
+                            <FormattedMessage id="estimated-annual-average-emission-reduction" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -576,7 +574,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            {intl.formatMessage({ id: 'project-tag' })}
+                            <FormattedMessage id="project-tag" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>

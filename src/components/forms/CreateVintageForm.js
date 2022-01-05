@@ -1,7 +1,7 @@
 import u from 'updeep';
 import React from 'react';
 import styled from 'styled-components';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
   StandardInput,
@@ -39,7 +39,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'vintage-start-date' })}
+                <FormattedMessage id="vintage-start-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -59,7 +59,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'vintage-end-date' })}
+                <FormattedMessage id="vintage-end-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -77,7 +77,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'verification-approach' })}
+                <FormattedMessage id="verification-approach" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -97,7 +97,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'verification-date' })}
+                <FormattedMessage id="verification-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -117,7 +117,7 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                {intl.formatMessage({ id: 'verification-body' })}
+                <FormattedMessage id="verification-body" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
