@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { TableDrawer, APIPagination } from '.';
+import constants from '../../constants';
+import { Pagination, TableDrawer } from '.';
 import { EllipseIcon } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
-import { EditUnitsForm, EditProjectsForm } from '..';
+import { EditUnitsForm, EditProjectsForm} from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -73,7 +75,21 @@ const Td = styled('td')`
   max-width: 100px;
 `;
 
+const StyledPaginationContainer = styled('div')`
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70px;
+  width: 100%;
+  max-height: 70px;
+  position: absolute;
+  bottom: 0;
+`;
+
 const DataTable = withTheme(({ headings, data, actions }) => {
+  const [currentPage, setPage] = useState(0);
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
   const [editUnits, setEditUnits] = useState(false);
@@ -84,8 +100,33 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const windowSize = useWindowSize();
 
   useEffect(() => {
-    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+        setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
+
+  const handlePageClick = page => {
+    setPage(page);
+  };
+
+  const paginatedData = useMemo(() => {
+    if (!data) {
+      return undefined;
+    }
+
+    return _.chunk(data, constants.MAX_TABLE_SIZE);
+  }, [data]);
+
+  if (!data) {
+    return null;
+  }
+
+  if (currentPage > paginatedData.length) {
+    setPage(0);
+    return null;
+  }
+
+  if (!paginatedData[currentPage]) {
+    return null;
+  }
 
   return (
     <>
@@ -122,7 +163,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               </tr>
             </THead>
             <tbody style={{ position: 'relative' }}>
-              {data.map((record, index) => (
+              {paginatedData[currentPage].map((record, index) => (
                 <>
                   <Tr index={index} selectedTheme={appStore.theme} key={index}>
                     {Object.keys(record).map((key, index) => (
@@ -183,10 +224,15 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               ))}
             </tbody>
           </Table>
-          {(actions === 'Projects' || actions === 'Units') && (
-            <APIPagination actions={actions} />
-          )}
         </div>
+        <StyledPaginationContainer>
+          <Pagination
+            pages={(paginatedData && paginatedData.length) || 0}
+            current={currentPage}
+            callback={handlePageClick}
+            showLast
+          />
+        </StyledPaginationContainer>
       </div>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {editUnits && (

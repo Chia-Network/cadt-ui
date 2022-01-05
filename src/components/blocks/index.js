@@ -1,7 +1,7 @@
 export * from './AppHeader';
 export * from './AppContainer';
 export * from './Card';
-export * from './PaginatedDataTable';
+export * from './DataTable';
 export * from './LocaleSwitcher';
 export * from './NavBar';
 export * from './ToolTip';
@@ -17,4 +17,4 @@ export * from './ComponentRepeater';
 export * from './Modal';
 export * from './StagingDataTable';
 export * from './ToggleSwitch';
-export * from './DataTable';
+export * from './APIDataTable';

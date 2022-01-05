@@ -9,10 +9,11 @@ import {
   getStagingData,
   deleteStagingData,
   commitStagingData,
+  getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
 
 import {
-  PaginatedDataTable,
+  APIDataTable,
   AddIcon,
   SearchInput,
   SelectSizeEnum,
@@ -98,7 +99,7 @@ const Units = withRouter(() => {
   );
 
   useEffect(() => {
-    dispatch(getUnits({ useMockedResponse: false }));
+    dispatch(getPaginatedData({ type: 'units', page: 1, resultsLimit: 7 }));
     dispatch(getStagingData({ useMockedResponse: false }));
   }, [dispatch]);
 
@@ -167,7 +168,7 @@ const Units = withRouter(() => {
         <TabPanel value={tabValue} index={0}>
           {climateWarehouseStore.units && (
             <>
-              <PaginatedDataTable
+              <APIDataTable
                 headings={Object.keys(climateWarehouseStore.units[0])}
                 data={climateWarehouseStore.units}
                 actions="Units"

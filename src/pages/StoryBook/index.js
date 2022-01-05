@@ -10,7 +10,7 @@ import {
   MenuText,
   ButtonText,
   TableCellLinkText,
-  PaginatedDataTable,
+  DataTable,
   PrimaryButton,
   LightThemeIcon,
   ToolTip,
@@ -648,7 +648,7 @@ const StoryBook = () => {
           </div>
         </div>
 
-        <PaginatedDataTable
+        <DataTable
           headings={['Column 1', 'Column 2', 'Column 3']}
           data={[
             {

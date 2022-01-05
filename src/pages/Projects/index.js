@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
-  DataTable,
+  APIDataTable,
   AddIcon,
   SearchInput,
   PrimaryButton,
@@ -179,7 +179,7 @@ const Projects = withRouter(() => {
       <StyledBodyContainer>
         <TabPanel value={tabValue} index={0}>
           {climateWarehouseStore.projects && (
-            <DataTable
+            <APIDataTable
               headings={Object.keys(climateWarehouseStore.projects[0])}
               data={climateWarehouseStore.projects}
               actions="Projects"
