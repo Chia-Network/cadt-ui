@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ToggleSwitch from './ToggleSwitch';
 import { useDispatch } from 'react-redux';
 import { toggleMode } from '../../store/actions/app';
+import { FormattedMessage } from 'react-intl';
 
 const Container = styled('div')`
   display: flex;
@@ -57,19 +58,19 @@ const LeftNav = withTheme(({ children }) => {
           selected={location === 'projects'}
           to="/projects"
           onClick={() => setLocation('projects')}>
-          Projects
+          <FormattedMessage id="projects" />
         </MenuItem>
         <MenuItem
           selected={location === 'units'}
           to="/units"
           onClick={() => setLocation('units')}>
-          Units
+          <FormattedMessage id="units" />
         </MenuItem>
         <MenuItem
           selected={location === 'storybook'}
           to="/storybook"
           onClick={() => setLocation('storybook')}>
-          StoryBook
+          <FormattedMessage id="storybook" />
         </MenuItem>
       </NavContainer>
       {children}

@@ -1,8 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useIntl, FormattedMessage } from 'react-intl';
 
-import { StandardInput, InputSizeEnum, InputStateEnum, Divider, ModalFormContainerStyle, FormContainerStyle, BodyContainer } from '..';
-import { Body } from '../typography';
+import {
+  StandardInput,
+  InputSizeEnum,
+  InputStateEnum,
+  Divider,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer,
+  Body,
+} from '..';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -17,63 +26,87 @@ const InputContainer = styled('div')`
 `;
 
 const CreateQualificationsForm = ({ value, onChange }) => {
+  const intl = useIntl();
+
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Label</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="label" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Label"
+                placeholderText={intl.formatMessage({ id: 'label' })}
                 state={InputStateEnum.default}
                 value={value.label}
-                onChange={event => {onChange(({...value, label: event}))}}
+                onChange={event => {
+                  onChange({ ...value, label: event });
+                }}
               />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Crediting Period Start Date</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="crediting-period-start-date" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Crediting Period Start Date"
+                placeholderText={intl.formatMessage({
+                  id: 'crediting-period-start-date',
+                })}
                 state={InputStateEnum.default}
                 value={value.creditingPeriodStartDate}
-                onChange={event => {onChange(({...value, creditingPeriodStartDate: event}))}}
+                onChange={event => {
+                  onChange({ ...value, creditingPeriodStartDate: event });
+                }}
               />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Crediting Period End Date</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="crediting-period-end-date" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Crediting Period End Date"
+                placeholderText={intl.formatMessage({
+                  id: 'crediting-period-end-date',
+                })}
                 state={InputStateEnum.default}
                 value={value.creditingPeriodEndDate}
-                onChange={event => {onChange(({...value, creditingPeriodEndDate: event}))}}
+                onChange={event => {
+                  onChange({ ...value, creditingPeriodEndDate: event });
+                }}
               />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Validity Start Date</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="validity-start-date" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Validity Start Date"
+                placeholderText={intl.formatMessage({
+                  id: 'validity-start-date',
+                })}
                 state={InputStateEnum.default}
                 value={value.validityStartDate}
-                onChange={event => {onChange(({...value, validityStartDate: event}))}}
+                onChange={event => {
+                  onChange({ ...value, validityStartDate: event });
+                }}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -81,43 +114,59 @@ const CreateQualificationsForm = ({ value, onChange }) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Validity End Date</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="validity-end-date" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Validity End Date"
+                placeholderText={intl.formatMessage({
+                  id: 'validity-end-date',
+                })}
                 state={InputStateEnum.default}
                 value={value.validityEndDate}
-                onChange={event => {onChange(({...value, validityEndDate: event}))}}
+                onChange={event => {
+                  onChange({ ...value, validityEndDate: event });
+                }}
               />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Unit Quantity</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="unit-quantity" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Unit Quantity"
+                placeholderText={intl.formatMessage({ id: 'unit-quantity' })}
                 state={InputStateEnum.default}
                 value={value.unitQuantity}
-                onChange={event => {onChange(({...value, unitQuantity: event}))}}
+                onChange={event => {
+                  onChange({ ...value, unitQuantity: event });
+                }}
               />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>Qualifications Link</Body>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="qualifications-link" />
+              </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText="Qualifications Link"
+                placeholderText={intl.formatMessage({
+                  id: 'qualifications-link',
+                })}
                 state={InputStateEnum.default}
                 value={value.qualificationLink}
-                onChange={event => {onChange(({...value, qualificationLink: event}))}}
+                onChange={event => {
+                  onChange({ ...value, qualificationLink: event });
+                }}
               />
             </InputContainer>
           </StyledFieldContainer>

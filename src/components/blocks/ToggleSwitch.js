@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Switch } from '@mui/material';
-
+import { FormattedMessage } from 'react-intl';
 
 const SwitchContainer = styled('div')`
   background: ${props => (props.selected ? '#e0f4fe' : 'transparent')};
@@ -14,15 +14,16 @@ const SwitchContainer = styled('div')`
   text-decoration: none;
 `;
 
-function ToggleSwitch({onChange}) {
-  
+function ToggleSwitch({ onChange }) {
   return (
     <SwitchContainer>
-      <div>Warehouse</div>
-      <Switch
-        onChange={onChange}
-      />
-      <div>Registry</div>
+      <div>
+        <FormattedMessage id="warehouse" />
+      </div>
+      <Switch onChange={onChange} />
+      <div>
+        <FormattedMessage id="registry" />
+      </div>
     </SwitchContainer>
   );
 }
