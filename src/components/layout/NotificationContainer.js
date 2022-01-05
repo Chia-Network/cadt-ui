@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, withTheme } from 'styled-components';
 import socketIO from 'socket.io-client';
 import { EllipseIcon } from '..';
 
@@ -9,12 +9,14 @@ const NotificationCard = styled('div')`
   justify-content: space-evenly;
   align-items: center;
   margin: 1.25rem;
-  width: 220px;
+  width: 8.125rem;
   top: 0;
   right: 0;
 `;
 
 const StatusColor = styled('div')`
+  font-size: 0.5rem;
+  font-family: ${props => props.theme.typography.primary.regular};
   ${props =>
     (props.socketStatus === 'CONNECTED' ||
       props.socketStatus === 'AUTHENTICATED') &&
@@ -42,7 +44,7 @@ let socket = socketIO(WS_HOST, {
   transports,
 });
 
-const NotificationContainer = ({ socketStatus }) => {
+const NotificationContainer = withTheme(({ socketStatus }) => {
   return (
     <NotificationCard>
       <StatusColor socketStatus={socketStatus}>
@@ -52,13 +54,13 @@ const NotificationContainer = ({ socketStatus }) => {
         <EllipseIcon height={'5'} width={'5'} fill={'green'} />
       )}
       {socketStatus === 'Waiting for status' && (
-        <EllipseIcon height={'15'} width={'15'} fill={'yellow'} />
+        <EllipseIcon height={'5'} width={'5'} fill={'yellow'} />
       )}
       {(socketStatus === 'OFFLINE' || socketStatus === 'UNAUTHORIZED') && (
         <EllipseIcon height={'5'} width={'5'} fill={'red'} />
       )}
     </NotificationCard>
   );
-};
+});
 
 export { NotificationContainer };
