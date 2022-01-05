@@ -5,3 +5,4 @@ export * from './Dashboard';
 export * from './TabPanel';
 export * from './Tabs';
 export * from './FormContainers';
+export * from './NotificationContainer';
