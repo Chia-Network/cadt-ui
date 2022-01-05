@@ -22,7 +22,6 @@ import {
 } from '../../components';
 
 import {
-  getProjects,
   getStagingData,
   deleteStagingData,
   commitStagingData,
@@ -95,8 +94,10 @@ const Projects = withRouter(() => {
       _.debounce(
         event =>
           dispatch(
-            getProjects({
-              useMockedResponse: false,
+            getPaginatedData({
+              type: 'projects',
+              page: 1,
+              resultsLimit: 7,
               searchQuery: event.target.value,
             }),
           ),

@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {
-  getUnits,
   getStagingData,
   deleteStagingData,
   commitStagingData,
@@ -88,8 +87,10 @@ const Units = withRouter(() => {
       _.debounce(
         event =>
           dispatch(
-            getUnits({
-              useMockedResponse: false,
+            getPaginatedData({
+              type: 'units',
+              page: 1,
+              resultsLimit: 7,
               searchQuery: event.target.value,
             }),
           ),

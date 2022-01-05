@@ -126,19 +126,21 @@ export const getStagingData = ({ useMockedResponse = false }) => {
   };
 };
 
-export const getPaginatedData = ({ type, page, resultsLimit }) => {
+export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
   return async dispatch => {
     const typeIsValid = type === 'projects' || type === 'units';
     const pageAndLimitAreValid =
       typeof page === 'number' && typeof resultsLimit === 'number';
-    console.log('get page: ', page, ' results limit to: ', resultsLimit)
     
     if (typeIsValid && pageAndLimitAreValid) {
       dispatch(activateProgressIndicator);
       try {
-        const response = await fetch(
-          `${constants.API_HOST}/${type}?page=${page}&limit=${resultsLimit}`,
-        );
+        let url = `${constants.API_HOST}/${type}?page=${page}&limit=${resultsLimit}`;
+        if (searchQuery) {
+          url += `&search=${searchQuery}`;
+        }
+
+        const response = await fetch(url);
 
         if (response.ok) {
           const results = await response.json();
