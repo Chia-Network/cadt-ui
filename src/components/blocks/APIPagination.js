@@ -79,16 +79,16 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
   let displayedPages = [currentPageNumber];
   let numberOfAddedPages = 1;
   for (
-    let x = 1;
-    x < 5 && numberOfAddedPages < 5 && numberOfAddedPages < numberOfPages;
-    x++
+    let i = 1;
+    i < 5 && numberOfAddedPages < 5 && numberOfAddedPages < numberOfPages;
+    i++
   ) {
-    if (currentPageNumber - x > 0) {
-      displayedPages.unshift(currentPageNumber - x);
+    if (currentPageNumber - i > 0) {
+      displayedPages.unshift(currentPageNumber - i);
       numberOfAddedPages++;
     }
-    if (currentPageNumber + x <= numberOfPages) {
-      displayedPages.push(currentPageNumber + x);
+    if (currentPageNumber + i <= numberOfPages) {
+      displayedPages.push(currentPageNumber + i);
       numberOfAddedPages++;
     }
   }
