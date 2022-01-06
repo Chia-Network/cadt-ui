@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import { useIntl } from 'react-intl';
 import constants from '../../constants';
 
 import {
@@ -94,7 +93,6 @@ const Projects = withRouter(() => {
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
-  const intl = useIntl();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -215,7 +213,7 @@ const Projects = withRouter(() => {
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.staging.length === 0 && (
               <NoDataMessageContainer>
-                <H3>{intl.formatMessage({ id: 'no-staged' })}</H3>
+                <FormattedMessage id="no-staged" />
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (
@@ -230,7 +228,7 @@ const Projects = withRouter(() => {
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.pending.length === 0 && (
               <NoDataMessageContainer>
-                <H3>{intl.formatMessage({ id: 'no-pending' })}</H3>
+                <FormattedMessage id="no-pending" />
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (

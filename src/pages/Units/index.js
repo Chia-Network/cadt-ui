@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import { useIntl } from 'react-intl';
 import constants from '../../constants';
 
 import {
@@ -91,7 +90,6 @@ const NoDataMessageContainer = styled('div')`
 
 const Units = withRouter(() => {
   const dispatch = useDispatch();
-  const intl = useIntl();
   const [create, setCreate] = useState(false);
 
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -203,22 +201,23 @@ const Units = withRouter(() => {
                 </H3>
               </NoDataMessageContainer>
             )}
-          {climateWarehouseStore.units && climateWarehouseStore.units.length > 0 && (
-            <>
-              <APIDataTable
-                headings={Object.keys(climateWarehouseStore.units[0])}
-                data={climateWarehouseStore.units}
-                actions="Units"
-              />
-            </>
-          )}
+          {climateWarehouseStore.units &&
+            climateWarehouseStore.units.length > 0 && (
+              <>
+                <APIDataTable
+                  headings={Object.keys(climateWarehouseStore.units[0])}
+                  data={climateWarehouseStore.units}
+                  actions="Units"
+                />
+              </>
+            )}
           {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
         </TabPanel>
         <TabPanel style={{ height: '100%' }} value={tabValue} index={1}>
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.staging.length === 0 && (
               <NoDataMessageContainer>
-                <H3>{intl.formatMessage({ id: 'no-staged' })}</H3>
+                <FormattedMessage id="no-staged" />
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (
@@ -233,7 +232,7 @@ const Units = withRouter(() => {
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.staging.length === 0 && (
               <NoDataMessageContainer>
-                <H3>{intl.formatMessage({ id: 'no-pending' })}</H3>
+                <FormattedMessage id="no-pending" />
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (
