@@ -7,6 +7,6 @@ export default {
   },
   MODE: {
     WAREHOUSE: 'warehouse',
-    REGISTRY: 'registry'
+    REGISTRY: 'registry',
   },
 };

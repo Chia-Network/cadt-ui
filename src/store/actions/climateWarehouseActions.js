@@ -62,7 +62,7 @@ const getClimateWarehouseTable = (
         }
       }
     } catch {
-      dispatch(setConnectionCheck(false))
+      dispatch(setConnectionCheck(false));
       dispatch(setGlobalErrorMessage('Something went wrong...'));
     } finally {
       dispatch(deactivateProgressIndicator);
@@ -188,6 +188,9 @@ export const postNewProject = data => {
     try {
       dispatch(activateProgressIndicator);
 
+      // TODO: remove once the organization endpoint is implemented
+      data.orgUid = 'f1c54511-865e-4611-976c-7c3c1f704662';
+
       const url = `${constants.API_HOST}/projects`;
       const payload = {
         method: 'POST',
@@ -200,7 +203,7 @@ export const postNewProject = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
-        console.log('yay!');
+        dispatch(getStagingData({ useMockedResponse: false }));
       } else {
         dispatch(setGlobalErrorMessage('Project could not be created'));
       }
@@ -217,6 +220,9 @@ export const postNewUnits = data => {
     try {
       dispatch(activateProgressIndicator);
 
+      // TODO: remove once the organization endpoint is implemented
+      data.orgUid = 'f1c54511-865e-4611-976c-7c3c1f704662';
+
       const url = `${constants.API_HOST}/units`;
       const payload = {
         method: 'POST',
@@ -229,7 +235,7 @@ export const postNewUnits = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
-        console.log('yay!');
+        dispatch(getStagingData({ useMockedResponse: false }));
       } else {
         dispatch(setGlobalErrorMessage('Unit could not be created'));
       }
@@ -412,10 +418,10 @@ export const mockProjectsResponse = {
 };
 
 export const getProjects = options => {
-    const url = options.searchQuery
-      ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
-      : `${constants.API_HOST}/projects`;
-  
+  const url = options.searchQuery
+    ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
+    : `${constants.API_HOST}/projects`;
+
   return dispatch => {
     dispatch(
       getClimateWarehouseTable(
