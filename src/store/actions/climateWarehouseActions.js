@@ -33,6 +33,7 @@ export const actions = keyMirror(
   'GET_PROJECTS_PAGE_COUNT',
   'GET_VINTAGES',
   'GET_STAGING_DATA',
+  'GET_ORGANIZATIONS',
 );
 
 const getClimateWarehouseTable = (
@@ -97,6 +98,31 @@ export const mockGetStagingDataResponse = {
   payload: formatStagingData(
     _.get(stagingDataResponseStub, 'default', stagingDataResponseStub),
   ),
+};
+
+export const getOrganizationData = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetch(`${constants.API_HOST}/organizations`);
+
+      if (response.ok) {
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_ORGANIZATIONS,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
 };
 
 export const getStagingData = ({ useMockedResponse = false }) => {
@@ -230,12 +256,12 @@ export const deleteStagingData = uuid => {
 };
 
 export const postNewProject = data => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
       dispatch(activateProgressIndicator);
 
-      // TODO: remove once the organization endpoint is implemented
-      data.orgUid = 'f1c54511-865e-4611-976c-7c3c1f704662';
+      const state = getState().climateWarehouse;
+      data.orgUid = _.get(state, 'organizations.me.orgUid');
 
       const url = `${constants.API_HOST}/projects`;
       const payload = {
@@ -262,12 +288,12 @@ export const postNewProject = data => {
 };
 
 export const postNewUnits = data => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
       dispatch(activateProgressIndicator);
 
-      // TODO: remove once the organization endpoint is implemented
-      data.orgUid = 'f1c54511-865e-4611-976c-7c3c1f704662';
+      const state = getState().climateWarehouse;
+      data.orgUid = _.get(state, 'organizations.me.orgUid');
 
       const url = `${constants.API_HOST}/units`;
       const payload = {

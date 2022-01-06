@@ -15,11 +15,14 @@ const Text = styled('p')`
   white-space: nowrap;
 `;
 
-const TableCellText = withTheme(({ children, color }) => {
+const TableCellText = withTheme(({ children, tooltip, color }) => {
   const appStore = useSelector(state => state.app);
   return (
-    <ToolTip body={children} placement={ToolTipPlacement.Top}>
-      <Text color={color} selectedTheme={appStore.theme} tooltip={children}>
+    <ToolTip body={tooltip || children} placement={ToolTipPlacement.Top}>
+      <Text
+        color={color}
+        selectedTheme={appStore.theme}
+        tooltip={tooltip || children}>
         {children}
       </Text>
     </ToolTip>

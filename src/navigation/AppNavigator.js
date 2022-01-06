@@ -19,7 +19,7 @@ const AppNavigator = () => {
     updateAvailablePleaseRefesh,
   } = useSelector(store => store.app);
   const [refresh, setRefresh] = useState(updateAvailablePleaseRefesh);
-
+  
   return (
     <AppContainer>
       {refresh && (

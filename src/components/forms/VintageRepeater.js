@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { AddIcon, CloseIcon } from '..';
 import { CreateVintageForm } from './CreateVintageForm';
@@ -8,7 +9,7 @@ function VintageRepeater({ vintageState, newVintageState, max = 30 }) {
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
         maxRepetitions={max}
-        values={vintageState}
+        values={_.isEmpty(vintageState) ? [] : vintageState}
         updateValues={newVintageState}
         initialValue={{
           vintageStartDate: '',
