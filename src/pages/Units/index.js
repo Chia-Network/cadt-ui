@@ -91,6 +91,7 @@ const NoDataMessageContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
+  const appStore = useSelector(store => store.app);
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
@@ -136,7 +137,35 @@ const Units = withRouter(() => {
     dispatch(getStagingData({ useMockedResponse: false }));
   }, [dispatch, tabValue]);
 
-  if (!climateWarehouseStore.units) {
+  const filteredColumnsTableData = useMemo(() => {
+    if (!climateWarehouseStore.units) {
+      return null;
+    }
+
+    return climateWarehouseStore.units
+      .filter(project => {
+        if (
+          appStore.mode === constants.MODE.WAREHOUSE ||
+          (appStore.mode === constants.MODE.REGISTRY &&
+            project.orgUid === climateWarehouseStore.organizations.me.orgUid)
+        ) {
+          return true;
+        }
+      })
+      .map(project =>
+        _.pick(project, [
+          'orgUid',
+          'buyer',
+          'registry',
+          'unitType',
+          'unitCount',
+          'unitStatus',
+          'unitStatusDate',
+        ]),
+      );
+  }, [climateWarehouseStore.units, appStore.mode]);
+
+  if (!filteredColumnsTableData) {
     return null;
   }
 
@@ -214,8 +243,8 @@ const Units = withRouter(() => {
             climateWarehouseStore.units.length > 0 && (
               <>
                 <APIDataTable
-                  headings={Object.keys(climateWarehouseStore.units[0])}
-                  data={climateWarehouseStore.units}
+                  headings={Object.keys(filteredColumnsTableData[0])}
+                  data={filteredColumnsTableData}
                   actions="Units"
                 />
               </>

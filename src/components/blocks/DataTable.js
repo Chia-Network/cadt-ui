@@ -186,7 +186,8 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                         onClick={() => setRecord(record)}
                         selectedTheme={appStore.theme}
                         key={index}>
-                        <TableCellText>
+                        <TableCellText
+                          tooltip={record[key] && record[key].toString()}>
                           {record[key] && record[key].toString()}
                         </TableCellText>
                       </Td>

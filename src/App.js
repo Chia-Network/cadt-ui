@@ -4,6 +4,7 @@ import { IntlProvider } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setLocale, setThemeFromLocalStorage } from './store/actions/app';
+import { getOrganizationData } from './store/actions/climateWarehouseActions';
 import { initiateSocket } from './store/actions/socket';
 
 import { loadLocaleData } from './translations';
@@ -18,8 +19,8 @@ const App = () => {
   const [translationTokens, setTranslationTokens] = useState();
 
   useEffect(() => {
-    console.log('Initiating Socket');
     dispatch(initiateSocket());
+    dispatch(getOrganizationData());
   }, [dispatch]);
 
   useEffect(

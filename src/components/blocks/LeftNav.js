@@ -66,12 +66,6 @@ const LeftNav = withTheme(({ children }) => {
           onClick={() => setLocation('units')}>
           <FormattedMessage id="units" />
         </MenuItem>
-        <MenuItem
-          selected={location === 'storybook'}
-          to="/storybook"
-          onClick={() => setLocation('storybook')}>
-          <FormattedMessage id="storybook" />
-        </MenuItem>
       </NavContainer>
       {children}
     </Container>
