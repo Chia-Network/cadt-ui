@@ -9,6 +9,7 @@ const initialState = {
   projectLocations: null,
   relatedProjects: null,
   units: null,
+  pageCount: null,
   projects: null,
   vintages: null,
   stagingData: null,
@@ -42,6 +43,10 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_STAGING_DATA:
       return u({ stagingData: action.payload }, state);
+
+    case climateWarehouseActions.GET_PROJECTS_PAGE_COUNT:
+    case climateWarehouseActions.GET_UNITS_PAGE_COUNT:
+      return u({ pageCount: action.payload }, state);
 
     default:
       return state;

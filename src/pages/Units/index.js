@@ -1,19 +1,21 @@
 import _ from 'lodash';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+import constants from '../../constants';
 
 import {
-  getUnits,
   getStagingData,
   deleteStagingData,
   commitStagingData,
+  getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
 
 import {
-  DataTable,
+  H3,
+  APIDataTable,
   AddIcon,
   SearchInput,
   SelectSizeEnum,
@@ -26,7 +28,6 @@ import {
   Tabs,
   TabPanel,
   StagingDataTable,
-  H3
 } from '../../components';
 
 const headings = [
@@ -73,6 +74,13 @@ const StyledBodyContainer = styled('div')`
   flex-grow: 1;
 `;
 
+const StyledCreateOneNowContainer = styled('div')`
+  margin-left: 0.3125rem;
+  display: inline-block;
+  cursor: pointer;
+  color: #1890ff;
+`;
+
 const NoDataMessageContainer = styled('div')`
   display: flex;
   height: 100%;
@@ -82,9 +90,8 @@ const NoDataMessageContainer = styled('div')`
 
 const Units = withRouter(() => {
   const dispatch = useDispatch();
-  const intl = useIntl();
   const [create, setCreate] = useState(false);
-
+  let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
 
@@ -94,25 +101,42 @@ const Units = withRouter(() => {
 
   const onSearch = useMemo(
     () =>
-      _.debounce(
-        event =>
-          dispatch(
-            getUnits({
-              useMockedResponse: false,
-              searchQuery: event.target.value,
-            }),
-          ),
-        300,
-      ),
+      _.debounce(event => {
+        if (event.target.value !== '') {
+          history.replace({ search: `search=${event.target.value}` });
+        } else {
+          history.replace({ search: null });
+        }
+        dispatch(
+          getPaginatedData({
+            type: 'units',
+            page: 1,
+            resultsLimit: constants.MAX_TABLE_SIZE,
+            searchQuery: event.target.value,
+          }),
+        );
+      }, 300),
     [dispatch],
   );
 
   useEffect(() => {
-    dispatch(getUnits({ useMockedResponse: false }));
-    dispatch(getStagingData({ useMockedResponse: false }));
-  }, [dispatch]);
+    return () => {
+      onSearch.cancel();
+    };
+  }, []);
 
-  if (!climateWarehouseStore.units || !climateWarehouseStore.units.length) {
+  useEffect(() => {
+    dispatch(
+      getPaginatedData({
+        type: 'units',
+        page: 1,
+        resultsLimit: constants.MAX_TABLE_SIZE,
+      }),
+    );
+    dispatch(getStagingData({ useMockedResponse: false }));
+  }, [dispatch, tabValue]);
+
+  if (!climateWarehouseStore.units) {
     return null;
   }
 
@@ -175,22 +199,36 @@ const Units = withRouter(() => {
       </StyledSubHeaderContainer>
       <StyledBodyContainer>
         <TabPanel value={tabValue} index={0}>
-          {climateWarehouseStore.units && (
-            <>
-              <DataTable
-                headings={Object.keys(climateWarehouseStore.units[0])}
-                data={climateWarehouseStore.units}
-                actions="Units"
-              />
-            </>
-          )}
+          {climateWarehouseStore.units &&
+            climateWarehouseStore.units.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>
+                  <FormattedMessage id="no-units-created" />
+                  <StyledCreateOneNowContainer onClick={() => setCreate(true)}>
+                    <FormattedMessage id="create-one-now" />
+                  </StyledCreateOneNowContainer>
+                </H3>
+              </NoDataMessageContainer>
+            )}
+          {climateWarehouseStore.units &&
+            climateWarehouseStore.units.length > 0 && (
+              <>
+                <APIDataTable
+                  headings={Object.keys(climateWarehouseStore.units[0])}
+                  data={climateWarehouseStore.units}
+                  actions="Units"
+                />
+              </>
+            )}
           {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
         </TabPanel>
-        <TabPanel style={{ height: '100%' }} value={tabValue} index={1}>
+        <TabPanel value={tabValue} index={1}>
           {climateWarehouseStore.stagingData &&
-            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+            climateWarehouseStore.stagingData.units.staging.length === 0 && (
               <NoDataMessageContainer>
-                <H3>{intl.formatMessage({ id: 'no-staged' })}</H3>
+                <H3>
+                  <FormattedMessage id="no-staged" />
+                </H3>
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (
@@ -201,11 +239,13 @@ const Units = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel style={{ height: '100%' }} value={tabValue} index={2}>
+        <TabPanel value={tabValue} index={2}>
           {climateWarehouseStore.stagingData &&
-            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+            climateWarehouseStore.stagingData.units.pending.length === 0 && (
               <NoDataMessageContainer>
-                <H3>{intl.formatMessage({ id: 'no-pending' })}</H3>
+                <H3>
+                  <FormattedMessage id="no-pending" />
+                </H3>
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (

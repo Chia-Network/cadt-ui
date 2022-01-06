@@ -28,7 +28,9 @@ export const actions = keyMirror(
   'GET_PROJECT_LOCATIONS',
   'GET_RELATED_PROJECTS',
   'GET_UNITS',
+  'GET_UNITS_PAGE_COUNT',
   'GET_PROJECTS',
+  'GET_PROJECTS_PAGE_COUNT',
   'GET_VINTAGES',
   'GET_STAGING_DATA',
 );
@@ -120,6 +122,50 @@ export const getStagingData = ({ useMockedResponse = false }) => {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
     } finally {
       dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
+  return async dispatch => {
+    const typeIsValid = type === 'projects' || type === 'units';
+    const pageAndLimitAreValid =
+      typeof page === 'number' && typeof resultsLimit === 'number';
+
+    if (typeIsValid && pageAndLimitAreValid) {
+      dispatch(activateProgressIndicator);
+      try {
+        let url = `${constants.API_HOST}/${type}?page=${page}&limit=${resultsLimit}`;
+        if (searchQuery) {
+          url += `&search=${encodeURIComponent(searchQuery)}`;
+        }
+        const response = await fetch(url);
+
+        if (response.ok) {
+          const results = await response.json();
+
+          let action = actions.GET_PROJECTS;
+          let paginationAction = actions.GET_PROJECTS_PAGE_COUNT;
+          if (type === 'units') {
+            action = actions.GET_UNITS;
+            paginationAction = actions.GET_UNITS_PAGE_COUNT;
+          }
+
+          dispatch({
+            type: action,
+            payload: results.data,
+          });
+
+          dispatch({
+            type: paginationAction,
+            payload: results.pageCount,
+          });
+        }
+      } catch {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
     }
   };
 };

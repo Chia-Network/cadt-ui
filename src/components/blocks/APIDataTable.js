@@ -1,11 +1,9 @@
-import _ from 'lodash';
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme, css } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import constants from '../../constants';
-import { Pagination, TableDrawer } from './';
+import { TableDrawer, APIPagination } from '.';
 import { EllipseIcon } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
@@ -108,8 +106,7 @@ const StyledElipseContainer = styled('div')`
   justify-content: 'space-evenly';
 `;
 
-const DataTable = withTheme(({ headings, data, actions }) => {
-  const [currentPage, setPage] = useState(0);
+const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
   const [editUnits, setEditUnits] = useState(false);
@@ -122,31 +119,6 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
-
-  const handlePageClick = page => {
-    setPage(page);
-  };
-
-  const paginatedData = useMemo(() => {
-    if (!data) {
-      return undefined;
-    }
-
-    return _.chunk(data, constants.MAX_TABLE_SIZE);
-  }, [data]);
-
-  if (!data) {
-    return null;
-  }
-
-  if (currentPage > paginatedData.length) {
-    setPage(0);
-    return null;
-  }
-
-  if (!paginatedData[currentPage]) {
-    return null;
-  }
 
   return (
     <>
@@ -178,7 +150,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               </tr>
             </THead>
             <tbody style={{ position: 'relative' }}>
-              {paginatedData[currentPage].map((record, index) => (
+              {data.map((record, index) => (
                 <>
                   <Tr index={index} selectedTheme={appStore.theme} key={index}>
                     {Object.keys(record).map((key, index) => (
@@ -227,14 +199,11 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               ))}
             </tbody>
           </Table>
-          <StyledPaginationContainer>
-            <Pagination
-              pages={(paginatedData && paginatedData.length) || 0}
-              current={currentPage}
-              callback={handlePageClick}
-              showLast
-            />
-          </StyledPaginationContainer>
+          {(actions === 'Projects' || actions === 'Units') && (
+            <StyledPaginationContainer>
+              <APIPagination actions={actions} />
+            </StyledPaginationContainer>
+          )}
         </StyledScalableContainer>
       </StyledRefContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
@@ -260,4 +229,4 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   );
 });
 
-export { DataTable };
+export { APIDataTable };
