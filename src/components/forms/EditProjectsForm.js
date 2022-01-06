@@ -85,7 +85,7 @@ const EditProjectsForm = ({ data, onClose }) => {
     const dataToSend = _.cloneDeep(editedProjects);
 
     if (!_.isEmpty(vintage)) {
-      dataToSend.vintage = _.head(vintage);
+      dataToSend.vintages = vintage;
     }
 
     if (!_.isEmpty(qualifications)) {

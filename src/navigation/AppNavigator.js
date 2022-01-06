@@ -10,6 +10,7 @@ const AppNavigator = () => {
   const { showProgressOverlay, connectionCheck, socketStatus } = useSelector(
     store => store.app,
   );
+
   return (
     <AppContainer>
       <NotificationContainer socketStatus={socketStatus} />

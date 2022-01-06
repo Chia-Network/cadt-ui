@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme, css } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
@@ -70,6 +70,12 @@ const Td = styled('td')`
   letter-spacing: 0.01071em;
   vertical-align: inherit;
   max-width: 100px;
+
+  ${props =>
+    props.columnId === 'orgUid' &&
+    `
+  text-align: center;
+  `}
 `;
 
 const StyledPaginationContainer = styled('div')`
@@ -100,10 +106,10 @@ const StyledScalableContainer = styled('div')`
 `;
 
 const StyledElipseContainer = styled('div')`
-  transform: 'rotate(0.25turn)';
-  display: 'flex';
-  align-items: 'center';
-  justify-content: 'space-evenly';
+  height: 29px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 `;
 
 const APIDataTable = withTheme(({ headings, data, actions }) => {
@@ -112,6 +118,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [editUnits, setEditUnits] = useState(false);
   const [editProjects, setEditProjects] = useState(false);
   const appStore = useSelector(state => state.app);
+  const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
   const windowSize = useWindowSize();
@@ -119,6 +126,15 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
+
+  const orgUidMap = useMemo(() => {
+    const map = {};
+    Object.keys(climateWarehouseStore.organizations).forEach(key => {
+      const orgs = climateWarehouseStore.organizations;
+      map[orgs[key].orgUid] = orgs[key].icon;
+    });
+    return map;
+  });
 
   return (
     <>
@@ -134,7 +150,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                     selectedTheme={appStore.theme}
                     key={index}>
                     <TableCellHeaderText>
-                      {convertPascalCaseToSentenceCase(heading)}
+                      {heading === 'orgUid' && 'Organization'}
+                      {heading !== 'orgUid' &&
+                        convertPascalCaseToSentenceCase(heading)}
                     </TableCellHeaderText>
                   </Th>
                 ))}
@@ -143,9 +161,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                     start={false}
                     end={true}
                     selectedTheme={appStore.theme}
-                    key={'action'}>
-                    <TableCellHeaderText>Action</TableCellHeaderText>
-                  </Th>
+                    key={'action'}></Th>
                 )}
               </tr>
             </THead>
@@ -157,9 +173,21 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                       <Td
                         onClick={() => setRecord(record)}
                         selectedTheme={appStore.theme}
+                        columnId={key}
                         key={index}>
-                        <TableCellText>
-                          {record[key] && record[key].toString()}
+                        <TableCellText
+                          tooltip={record[key] && record[key].toString()}>
+                          {key === 'orgUid' && orgUidMap[record[key]] && (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: orgUidMap[record[key]],
+                              }}
+                            />
+                          )}
+
+                          {key !== 'orgUid' &&
+                            record[key] &&
+                            record[key].toString()}
                         </TableCellText>
                       </Td>
                     ))}
@@ -173,9 +201,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         }}
                         selectedTheme={appStore.theme}>
                         <StyledElipseContainer>
-                          <EllipseIcon height={'5'} width={'5'} />
-                          <EllipseIcon height={'5'} width={'5'} />
-                          <EllipseIcon height={'5'} width={'5'} />
+                          <EllipseIcon height="6" width="6" fill="#1890FF" />
+                          <EllipseIcon height="6" width="6" fill="#1890FF" />
+                          <EllipseIcon height="6" width="6" fill="#1890FF" />
                         </StyledElipseContainer>
                       </Td>
                     )}
@@ -188,9 +216,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         }}
                         selectedTheme={appStore.theme}>
                         <StyledElipseContainer>
-                          <EllipseIcon height="5" width="5" />
-                          <EllipseIcon height="5" width="5" />
-                          <EllipseIcon height="5" width="5" />
+                          <EllipseIcon height="6" width="6" fill="#1890FF" />
+                          <EllipseIcon height="6" width="6" fill="#1890FF" />
+                          <EllipseIcon height="6" width="6" fill="#1890FF" />
                         </StyledElipseContainer>
                       </Td>
                     )}

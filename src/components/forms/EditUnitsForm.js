@@ -34,7 +34,7 @@ const InputContainer = styled('div')`
 const EditUnitsForm = ({ data, onClose }) => {
   const [qualifications, setQualificationsRepeaterValues] = useState([]);
   const [vintage, setVintage] = useState([]);
-  const [editedUnits, setEditUnits] = useState({});
+  const [editedUnits, setEditUnits] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
