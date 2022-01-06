@@ -201,9 +201,21 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                         }}
                         selectedTheme={appStore.theme}>
                         <StyledElipseContainer>
-                          <EllipseIcon height={'5'} width={'5'} />
-                          <EllipseIcon height={'5'} width={'5'} />
-                          <EllipseIcon height={'5'} width={'5'} />
+                          <EllipseIcon
+                            fill="#1890FF"
+                            height={'5'}
+                            width={'5'}
+                          />
+                          <EllipseIcon
+                            fill="#1890FF"
+                            height={'5'}
+                            width={'5'}
+                          />
+                          <EllipseIcon
+                            fill="#1890FF"
+                            height={'5'}
+                            width={'5'}
+                          />
                         </StyledElipseContainer>
                       </Td>
                     )}
@@ -216,9 +228,9 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                         }}
                         selectedTheme={appStore.theme}>
                         <StyledElipseContainer>
-                          <EllipseIcon height="5" width="5" />
-                          <EllipseIcon height="5" width="5" />
-                          <EllipseIcon height="5" width="5" />
+                          <EllipseIcon fill="#1890FF" height="5" width="5" />
+                          <EllipseIcon fill="#1890FF" height="5" width="5" />
+                          <EllipseIcon fill="#1890FF" height="5" width="5" />
                         </StyledElipseContainer>
                       </Td>
                     )}

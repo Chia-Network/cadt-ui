@@ -3,7 +3,7 @@ import styled, { css, withTheme } from 'styled-components';
 import socketIO from 'socket.io-client';
 import { EllipseIcon } from '..';
 
-const NotificationCard = styled('div')`
+const SocketStatusCard = styled('div')`
   position: absolute;
   display: flex;
   justify-content: space-evenly;
@@ -44,9 +44,9 @@ let socket = socketIO(WS_HOST, {
   transports,
 });
 
-const NotificationContainer = withTheme(({ socketStatus }) => {
+const SocketStatusContainer = withTheme(({ socketStatus }) => {
   return (
-    <NotificationCard>
+    <SocketStatusCard>
       <StatusColor socketStatus={socketStatus}>
         {socket.id ? socket.id : 'Retrieving socket ID'}
       </StatusColor>
@@ -59,8 +59,8 @@ const NotificationContainer = withTheme(({ socketStatus }) => {
       {(socketStatus === 'OFFLINE' || socketStatus === 'UNAUTHORIZED') && (
         <EllipseIcon height={'5'} width={'5'} fill={'red'} />
       )}
-    </NotificationCard>
+    </SocketStatusCard>
   );
 });
 
-export { NotificationContainer };
+export { SocketStatusContainer };

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled, { css, withTheme } from 'styled-components';
 import {
   SuccessIcon,
   SuccessIconSmall,
@@ -17,39 +17,40 @@ const AlertCard = styled('div')`
   display: flex;
   justify-content: space-between;
   border: none;
-  margin: 1.25rem;
-  ${props =>
-    props.alertBody
-      ? 'height: 6.375rem;  width: 24rem;'
-      : 'height: 2.5rem;  width: 24rem;'}
-
-  ${props =>
-    (props.type === 'info' &&
-      !props.banner &&
-      `background-color: ${props.theme.colors.default.status.info.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.info.primary} `) ||
-    (props.type === 'success' &&
-      !props.banner &&
-      `background-color: ${props.theme.colors.default.status.ok.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.ok.primary}`) ||
-    (props.type === 'warning' &&
-      !props.banner &&
-      `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.warning.primary}`) ||
-    (props.type === 'error' &&
-      !props.banner &&
-      `background-color: ${props.theme.colors.default.status.error.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.error.primary} `)}
-
-      ${props =>
-    (props.type === 'info' &&
-      props.banner &&
-      `background-color: ${props.theme.colors.default.status.info.secondary};`) ||
-    (props.type === 'success' &&
-      props.banner &&
-      `background-color: ${props.theme.colors.default.status.ok.secondary};`) ||
-    (props.type === 'warning' &&
-      props.banner &&
-      `background-color: ${props.theme.colors.default.status.warning.secondary};`) ||
-    (props.type === 'error' &&
-      props.banner &&
-      `background-color: ${props.theme.colors.default.status.error.secondary};`)}
+  width: ${props => (props.alertRefresh ? '44.3125rem;' : '24rem;')}
+    ${props => (props.alertBody ? 'height: 6.375rem;' : 'height: 2.5rem;')}
+    ${props =>
+      props.alertRefresh &&
+      css`
+        height: 3.875rem;
+        align-self: center;
+      `}
+    ${props =>
+      (props.type === 'info' &&
+        !props.banner &&
+        `background-color: ${props.theme.colors.default.status.info.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.info.primary} `) ||
+      (props.type === 'success' &&
+        !props.banner &&
+        `background-color: ${props.theme.colors.default.status.ok.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.ok.primary}`) ||
+      (props.type === 'warning' &&
+        !props.banner &&
+        `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.warning.primary}`) ||
+      (props.type === 'error' &&
+        !props.banner &&
+        `background-color: ${props.theme.colors.default.status.error.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.error.primary} `)}
+    ${props =>
+      (props.type === 'info' &&
+        props.banner &&
+        `background-color: ${props.theme.colors.default.status.info.secondary};`) ||
+      (props.type === 'success' &&
+        props.banner &&
+        `background-color: ${props.theme.colors.default.status.ok.secondary};`) ||
+      (props.type === 'warning' &&
+        props.banner &&
+        `background-color: ${props.theme.colors.default.status.warning.secondary};`) ||
+      (props.type === 'error' &&
+        props.banner &&
+        `background-color: ${props.theme.colors.default.status.error.secondary};`)};
 `;
 
 const CloseTextButton = styled('button')`
@@ -72,6 +73,11 @@ const CloseButton = styled('div')`
     props.alertBody
       ? 'margin-right: 1.1675rem; margin-top: 1rem;'
       : 'margin-right: 1.1675rem; align-self: center'}
+  ${props =>
+    props.alertRefresh &&
+    css`
+      margin-top: 5.5px;
+    `}
 `;
 
 const AlertTitle = styled('div')`
@@ -113,11 +119,31 @@ const ShowIcons = styled('div')`
     props.alertBody
       ? 'margin-left: 1.0938rem; margin-top: 1.0938rem;'
       : 'margin-left: 1.0625rem; margin-top: 0.75rem;'}
+  ${props =>
+    props.alertRefresh &&
+    css`
+      margin-top: 0.4688rem;
+    `}
+`;
+
+const AlertMessageContainer = styled('div')`
+  width: 100%;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  ${props =>
+    props.alertRefresh &&
+    css`
+      align-self: center;
+    `}
 `;
 
 const Alert = withTheme(
   ({
     type,
+    onRefresh,
     banner = false,
     alertTitle,
     alertBody,
@@ -125,61 +151,91 @@ const Alert = withTheme(
     closeable = false,
     closeText,
     onClose = _.noop,
+    alertRefresh,
   }) => {
     return (
       <>
-        <AlertCard type={type} banner={banner} alertBody={alertBody}>
+        <AlertCard
+          alertRefresh={alertRefresh}
+          type={type}
+          banner={banner}
+          alertBody={alertBody}>
           {showIcon && !alertBody && type === 'info' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              alertRefresh={alertRefresh}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <InfoIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'info' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              alertRefresh={alertRefresh}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <InfoIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'success' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              alertRefresh={alertRefresh}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <SuccessIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'success' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              alertRefresh={alertRefresh}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <SuccessIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'error' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              alertRefresh={alertRefresh}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <ErrorIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'error' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              alertRefresh={alertRefresh}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <ErrorIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'warning' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              alertRefresh={alertRefresh}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <WarningIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'warning' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              alertRefresh={alertRefresh}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <WarningIcon height="21" width="21" />
             </ShowIcons>
           )}
-          <div
-            style={{
-              width: '100%',
-              alignItems: 'flex-start',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-            }}>
+          <AlertMessageContainer alertRefresh={alertRefresh}>
             <AlertTitle showIcon={showIcon} alertBody={alertBody}>
               {alertTitle}
             </AlertTitle>
@@ -187,9 +243,15 @@ const Alert = withTheme(
             {alertBody && (
               <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>
             )}
-          </div>
+          </AlertMessageContainer>
+          {alertRefresh && (
+            <a onClick={onRefresh} style={{  cursor: 'pointer',width: '120px',fontSize: "0.9rem",textDecoration: 'underline', alignSelf: 'flex-end', marginRight: '40px', marginBottom: '10px' }}>
+              Refresh Page?
+            </a>
+          )}
           {closeText && !closeable && (
             <CloseTextButton
+              alertRefresh={alertRefresh}
               closeText={closeText}
               closeable={closeable}
               alertBody={alertBody}
@@ -199,6 +261,7 @@ const Alert = withTheme(
           )}
           {closeable && !closeText && (
             <CloseButton
+              alertRefresh={alertRefresh}
               closeable={closeable}
               closeText={closeText}
               alertBody={alertBody}
