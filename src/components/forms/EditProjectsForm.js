@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
   StandardInput,
@@ -11,33 +11,40 @@ import {
   Tabs,
   Tab,
   TabPanel,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
-//import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
+import CoBenefitsRepeater from './CoBenefitsRepeater';
+import ProjectLocationsRepeater from './ProjectLocationsRepeater';
+import RelatedProjectsRepeater from './RelatedProjectsRepeater';
+import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
+import { useIntl, FormattedMessage } from 'react-intl';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 const InputContainer = styled('div')`
-  width: 320px;
+  width: 20rem;
 `;
 
 const EditProjectsForm = ({ data, onClose }) => {
-  //const dispatch = useDispatch();
-  
-
-  const [qualification, setQualificationsRepeaterValues] = useState([]);
-
+  const [qualifications, setQualificationsRepeaterValues] = useState([]);
   const [vintage, setVintage] = useState([]);
-
+  const [projectLocations, setProjectLocations] = useState([]);
+  const [relatedProjects, setRelatedProjects] = useState([]);
+  const [coBenefits, setCoBenefits] = useState([]);
   const [editedProjects, setEditProjects] = useState({});
-
   const [tabValue, setTabValue] = useState(0);
+  const dispatch = useDispatch();
+  const intl = useIntl();
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -63,19 +70,25 @@ const EditProjectsForm = ({ data, onClose }) => {
       methodologyVersion: data.methodologyVersion,
       validationApproach: data.validationApproach,
       validationDate: data.validationDate,
-      estimatedAnnualAverageEmissionReduction: data.estimatedAnnualAverageEmissionReduction,
+      estimatedAnnualAverageEmissionReduction:
+        data.estimatedAnnualAverageEmissionReduction,
       projectTag: data.projectTag,
     });
     setVintage(_.get(data, 'vintages', []));
+    setProjectLocations(_.get(data, 'projectLocations', []));
+    setCoBenefits(_.get(data, 'coBenefits', []));
     setQualificationsRepeaterValues(_.get(data, 'qualifications', []));
+    setRelatedProjects(_.get(data, 'relatedProjects', []));
   }, [data]);
 
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(editedProjects);
     dataToSend.vintage = _.head(vintage);
-    dataToSend.qualification = qualification;
-    //dispatch(updateUnitsRecord(dataToSend));
-    alert('Not yet Implemented');
+    dataToSend.qualifications = qualifications;
+    dataToSend.coBenefits = coBenefits;
+    dataToSend.projectLocations = projectLocations;
+    dataToSend.relatedProjects = relatedProjects;
+    dispatch(updateUnitsRecord(dataToSend));
   };
   return (
     <>
@@ -88,47 +101,34 @@ const EditProjectsForm = ({ data, onClose }) => {
         title="Edit Projects"
         body={
           <div>
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              aria-label="Tab Options">
-              <Tab label="Edit Projects" />
-              <Tab label="Edit Qualifications" />
-              <Tab label="Edit Vintage" />
+            <Tabs value={tabValue} onChange={handleTabChange}>
+              <Tab label="Project" />
+              <Tab label="Qualifications" />
+              <Tab label="Vintages" />
+              <Tab label="Co-Benefits" />
+              <Tab label="Project Locations" />
+              <Tab label="Related Projects" />
             </Tabs>
             <div>
-              <TabPanel value={tabValue} index={0}>
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '20px 0',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      width: '90%',
-                    }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        paddingRight: '66px',
-                      }}>
+              <TabPanel
+                style={{ paddingTop: '1.25rem' }}
+                value={tabValue}
+                index={0}>
+                <ModalFormContainerStyle>
+                  <FormContainerStyle>
+                    <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Current Registry</Body>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="current-registry" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Current Registry"
+                            placeholderText={intl.formatMessage({
+                              id: 'current-registry',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.currentRegistry}
                             onChange={value =>
@@ -142,12 +142,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Registry of Origin</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="registry-of-origin" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Registry of Origin"
+                            placeholderText={intl.formatMessage({
+                              id: 'registry-of-origin',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.registryOfOrigin}
                             onChange={value =>
@@ -161,12 +165,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Origin Project Id</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="origin-project-id" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Origin Project Id"
+                            placeholderText={intl.formatMessage({
+                              id: 'origin-project-id',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.originProjectId}
                             onChange={value =>
@@ -180,12 +188,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Program</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="program" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Program"
+                            placeholderText={intl.formatMessage({
+                              id: 'program',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.program}
                             onChange={value =>
@@ -199,11 +211,15 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project ID</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-id" />
+                          </Body>
                         </StyledLabelContainer>
                         <StandardInput
                           size={InputSizeEnum.large}
-                          placeholderText="Project ID"
+                          placeholderText={intl.formatMessage({
+                            id: 'project-id',
+                          })}
                           state={InputStateEnum.default}
                           value={editedProjects.projectID}
                           onChange={value =>
@@ -216,12 +232,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Name</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-name" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Name"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-name',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.projectName}
                             onChange={value =>
@@ -235,12 +255,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Link</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-link" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Link"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-link',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.projectLink}
                             onChange={value =>
@@ -254,12 +278,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Developer</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-developer" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Developer"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-developer',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.projectDeveloper}
                             onChange={value =>
@@ -273,12 +301,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Sector</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="sector" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Sector"
+                            placeholderText={intl.formatMessage({
+                              id: 'sector',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.sector}
                             onChange={value =>
@@ -292,11 +324,15 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Type</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-type" />
+                          </Body>
                         </StyledLabelContainer>
                         <StandardInput
                           size={InputSizeEnum.large}
-                          placeholderText="Project Type"
+                          placeholderText={intl.formatMessage({
+                            id: 'project-type',
+                          })}
                           state={InputStateEnum.default}
                           value={editedProjects.projectType}
                           onChange={value =>
@@ -309,12 +345,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Covered by NDC</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="covered-by-ndc" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Covered by NDC"
+                            placeholderText={intl.formatMessage({
+                              id: 'covered-by-ndc',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.coveredByNDC}
                             onChange={value =>
@@ -326,16 +366,20 @@ const EditProjectsForm = ({ data, onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                    </div>
+                    </BodyContainer>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>NDC Linkage</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="ndc-linkage" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="NDC Linkage"
+                            placeholderText={intl.formatMessage({
+                              id: 'ndc-linkage',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.NDCLinkage}
                             onChange={value =>
@@ -349,12 +393,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Status</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-status" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Status"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-status',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.projectStatus}
                             onChange={value =>
@@ -368,12 +416,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Status Date</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-status-date" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Status Date"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-status-date',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.projectStatusDate}
                             onChange={value =>
@@ -387,12 +439,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Unit Metric</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="unit-metric" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Unit Metric"
+                            placeholderText={intl.formatMessage({
+                              id: 'unit-metric',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.unitMetric}
                             onChange={value =>
@@ -406,12 +462,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Methodology</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="methodology" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Methodology"
+                            placeholderText={intl.formatMessage({
+                              id: 'methodology',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.methodology}
                             onChange={value =>
@@ -425,12 +485,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Methodology Version</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="methodology-version" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Methodology Version"
+                            placeholderText={intl.formatMessage({
+                              id: 'methodology-version',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.methodologyVersion}
                             onChange={value =>
@@ -444,12 +508,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Validation Approach</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="validation-approach" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Validation Approach"
+                            placeholderText={intl.formatMessage({
+                              id: 'validation-approach',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.validationApproach}
                             onChange={value =>
@@ -463,12 +531,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Validation Date</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="validation-date" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Validation Date"
+                            placeholderText={intl.formatMessage({
+                              id: 'validation-date',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.validationDate}
                             onChange={value =>
@@ -483,13 +555,15 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            Estimated Annual Average Emission Reduction
+                            <FormattedMessage id="estimated-annual-average-emission-reduction" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Estimated Annual Average Emission Reduction"
+                            placeholderText={intl.formatMessage({
+                              id: 'estimated-annual-average-emission-reduction',
+                            })}
                             state={InputStateEnum.default}
                             value={
                               editedProjects.estimatedAnnualAverageEmissionReduction
@@ -505,12 +579,16 @@ const EditProjectsForm = ({ data, onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>Project Tag</Body>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="project-tag" />
+                          </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
-                            placeholderText="Project Tag"
+                            placeholderText={intl.formatMessage({
+                              id: 'project-tag',
+                            })}
                             state={InputStateEnum.default}
                             value={editedProjects.projectTag}
                             onChange={value =>
@@ -523,15 +601,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                         </InputContainer>
                       </StyledFieldContainer>
                     </div>
-                  </div>
-                  {/* <div onClick={handleSubmit}>
-        <PrimaryButton label="Submit" size="large" />
-      </div> */}
-                </div>
+                  </FormContainerStyle>
+                </ModalFormContainerStyle>
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <QualificationsRepeater
-                  qualificationsState={qualification}
+                  qualificationsState={qualifications}
                   newQualificationsState={setQualificationsRepeaterValues}
                 />
               </TabPanel>
@@ -539,6 +614,24 @@ const EditProjectsForm = ({ data, onClose }) => {
                 <VintageRepeater
                   vintageState={vintage}
                   newVintageState={setVintage}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={3}>
+                <CoBenefitsRepeater
+                  coBenefitsState={coBenefits}
+                  setNewCoBenefitsState={setCoBenefits}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={4}>
+                <ProjectLocationsRepeater
+                  projectLocationsState={projectLocations}
+                  setProjectLocationsState={setProjectLocations}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={5}>
+                <RelatedProjectsRepeater
+                  relatedProjectsState={relatedProjects}
+                  setRelatedProjectsState={setRelatedProjects}
                 />
               </TabPanel>
             </div>

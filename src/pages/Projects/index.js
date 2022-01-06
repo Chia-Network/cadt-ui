@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import {
   APIDataTable,
@@ -88,10 +89,11 @@ const NoDataMessageContainer = styled('div')`
 `;
 
 const Projects = withRouter(() => {
-  const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
+  const dispatch = useDispatch();
+  const intl = useIntl();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -212,7 +214,7 @@ const Projects = withRouter(() => {
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.staging.length === 0 && (
               <NoDataMessageContainer>
-                <H3>No staged data at this time</H3>
+                <H3>{intl.formatMessage({ id: 'no-staged' })}</H3>
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (
@@ -227,7 +229,7 @@ const Projects = withRouter(() => {
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.pending.length === 0 && (
               <NoDataMessageContainer>
-                <H3>No pending data at this time</H3>
+                <H3>{intl.formatMessage({ id: 'no-pending' })}</H3>
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (

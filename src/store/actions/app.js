@@ -1,5 +1,5 @@
-import {keyMirror} from '../store-functions';
-import {LANGUAGE_CODES} from '../../translations';
+import { keyMirror } from '../store-functions';
+import { LANGUAGE_CODES } from '../../translations';
 
 export const actions = keyMirror(
   'ACTIVATE_PROGRESS_INDICATOR',
@@ -11,7 +11,12 @@ export const actions = keyMirror(
   'SET_LOCALE',
   'TOGGLE_MODE',
   'CONNECTION_CHECK',
+  'RESET_REFRESH_PROMPT',
 );
+
+export const resetRefreshPrompt = {
+  type: actions.RESET_REFRESH_PROMPT,
+};
 
 export const activateProgressIndicator = {
   type: actions.ACTIVATE_PROGRESS_INDICATOR,
@@ -45,7 +50,7 @@ export const clearGlobalErrorMessage = {
 
 export const setConnectionCheck = bool => ({
   type: actions.CONNECTION_CHECK,
-  payload: bool
+  payload: bool,
 });
 
 export const setLocale = locale => {

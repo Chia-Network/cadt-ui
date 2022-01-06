@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import {
   getStagingData,
@@ -89,6 +90,7 @@ const NoDataMessageContainer = styled('div')`
 
 const Units = withRouter(() => {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const [create, setCreate] = useState(false);
 
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -205,7 +207,13 @@ const Units = withRouter(() => {
           )}
           {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
         </TabPanel>
-        <TabPanel value={tabValue} index={1}>
+        <TabPanel style={{ height: '100%' }} value={tabValue} index={1}>
+          {climateWarehouseStore.stagingData &&
+            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>{intl.formatMessage({ id: 'no-staged' })}</H3>
+              </NoDataMessageContainer>
+            )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
@@ -214,7 +222,13 @@ const Units = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel value={tabValue} index={2}>
+        <TabPanel style={{ height: '100%' }} value={tabValue} index={2}>
+          {climateWarehouseStore.stagingData &&
+            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>{intl.formatMessage({ id: 'no-pending' })}</H3>
+              </NoDataMessageContainer>
+            )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}

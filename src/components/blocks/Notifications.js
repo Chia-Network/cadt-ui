@@ -19,7 +19,6 @@ const NotificationCard = styled('div')`
     0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
   background-color: #ffffff;
   border: none;
-  margin: 1.25rem;
   height: ${props => (props.buttonText ? '9rem' : '6.5rem')};
   width: 25.0625rem;
 `;
@@ -68,6 +67,8 @@ const ShowIcons = styled('div')`
 
 const Notification = withTheme(
   ({
+    onClick,
+    onClose,
     showIcon,
     buttonText,
     title,
@@ -110,7 +111,7 @@ const Notification = withTheme(
               </Body>
             </NotificationMessage>
 
-            <CloseButton>
+            <CloseButton onClose={onClose} onClick={onClick}>
               <CloseIcon height="8.91" width="8.66" />
             </CloseButton>
           </div>
