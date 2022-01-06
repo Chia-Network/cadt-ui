@@ -55,7 +55,7 @@ const EditProjectsForm = ({ data, onClose }) => {
       registryOfOrigin: data.registryOfOrigin,
       originProjectId: data.originProjectId,
       program: data.program,
-      projectID: data.projectID,
+      projectId: data.projectId,
       projectName: data.projectName,
       projectLink: data.projectLink,
       projectDeveloper: data.projectDeveloper,
@@ -83,11 +83,26 @@ const EditProjectsForm = ({ data, onClose }) => {
 
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(editedProjects);
-    dataToSend.vintage = _.head(vintage);
-    dataToSend.qualifications = qualifications;
-    dataToSend.coBenefits = coBenefits;
-    dataToSend.projectLocations = projectLocations;
-    dataToSend.relatedProjects = relatedProjects;
+
+    if (!_.isEmpty(vintage)) {
+      dataToSend.vintage = _.head(vintage);
+    }
+
+    if (!_.isEmpty(qualifications)) {
+      dataToSend.qualifications = qualifications;
+    }
+
+    if (!_.isEmpty(coBenefits)) {
+      dataToSend.coBenefits = coBenefits;
+    }
+
+    if (!_.isEmpty(projectLocations)) {
+      dataToSend.projectLocations = projectLocations;
+    }
+
+    if (!_.isEmpty(relatedProjects)) {
+      dataToSend.relatedProjects = relatedProjects;
+    }
     dispatch(updateUnitsRecord(dataToSend));
   };
   return (
@@ -221,11 +236,11 @@ const EditProjectsForm = ({ data, onClose }) => {
                             id: 'project-id',
                           })}
                           state={InputStateEnum.default}
-                          value={editedProjects.projectID}
+                          value={editedProjects.projectId}
                           onChange={value =>
                             setEditProjects(prev => ({
                               ...prev,
-                              projectID: value,
+                              projectId: value,
                             }))
                           }
                         />

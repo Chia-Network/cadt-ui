@@ -46,12 +46,11 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   };
 
   const [newUnits, setNewUnits] = useState({
-    unitsOwner: '',
-    unitsBuyer: '',
+    orgUid: '',
+    buyer: '',
     registry: '',
-    unitBlockIdentifier: '',
-    unitIdentifier: '',
-    qualificationID: '',
+    blockIdentifier: '',
+    identifier: '',
     unitType: '',
     unitCount: '',
     unitStatus: '',
@@ -64,8 +63,15 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   });
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(newUnits);
-    dataToSend.vintage = newVintage;
-    dataToSend.qualifications = newQualifications;
+
+    if (!_.isEmpty(newVintage)) {
+      dataToSend.vintage = _.head(newVintage);
+    }
+
+    if (!_.isEmpty(newQualifications)) {
+      dataToSend.qualifications = newQualifications;
+    }
+
     dispatch(postNewUnits(dataToSend));
   };
   return (
@@ -105,11 +111,11 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                               id: 'units-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitsOwner}
+                            value={newUnits.orgUid}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitsOwner: value,
+                                orgUid: value,
                               }))
                             }
                           />
@@ -128,11 +134,11 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                               id: 'units-buyer',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitsBuyer}
+                            value={newUnits.buyer}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitsBuyer: value,
+                                buyer: value,
                               }))
                             }
                           />
@@ -174,11 +180,11 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                               id: 'unit-block-identifier',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitBlockIdentifier}
+                            value={newUnits.blockIdentifier}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitBlockIdentifier: value,
+                                blockIdentifier: value,
                               }))
                             }
                           />
@@ -197,34 +203,11 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                               id: 'unit-identifier',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitIdentifier}
+                            value={newUnits.identifier}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitIdentifier: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="qualification-id" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'qualification-id',
-                            })}
-                            state={InputStateEnum.default}
-                            value={newUnits.qualificationID}
-                            onChange={value =>
-                              setNewUnits(prev => ({
-                                ...prev,
-                                qualificationID: value,
+                                identifier: value,
                               }))
                             }
                           />
@@ -448,7 +431,10 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <VintageRepeater
-                  vintageState={newVintage}
+                  max={1}
+                  vintageState={
+                    Array.isArray(newVintage) ? newVintage : [newVintage]
+                  }
                   newVintageState={setNewVintage}
                 />
               </TabPanel>

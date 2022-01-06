@@ -11,7 +11,7 @@ import {
   getCoBenefits,
   getProjectLocations,
   getQualifications,
-  getVintages
+  getVintages,
 } from '../src/store/actions/climateWarehouseActions';
 import {
   projectsResponseStub,
@@ -21,7 +21,7 @@ import {
   coBenefitResponseStub,
   projectLocationsResponseStub,
   qualificationsResponseStub,
-  vintagesResponseStub
+  vintagesResponseStub,
 } from '../src/mocks';
 
 const rootReducer = combineReducers({
@@ -45,19 +45,21 @@ describe('test climateWarehouse store actions', () => {
   });
 
   it('getCoBenefits useMockedResponse', async () => {
-    store.dispatch(getCoBenefits({ useMockedResponse: true, useApiMock: false }));
+    store.dispatch(
+      getCoBenefits({ useMockedResponse: true, useApiMock: false }),
+    );
 
     const parsedJson = JSON.parse(JSON.stringify(coBenefitResponseStub));
 
     const coBenefits = store.getState().climateWarehouse.coBenefits;
 
-    expect(coBenefits[0].cobenefit).to.equal(
-      parsedJson[0].cobenefit,
-    );
+    expect(coBenefits[0].cobenefit).to.equal(parsedJson[0].cobenefit);
   });
 
   it('getProjectLocations useMockedResponse', async () => {
-    store.dispatch(getProjectLocations({ useMockedResponse: true, useApiMock: false }));
+    store.dispatch(
+      getProjectLocations({ useMockedResponse: true, useApiMock: false }),
+    );
 
     const parsedJson = JSON.parse(JSON.stringify(projectLocationsResponseStub));
 
@@ -69,15 +71,15 @@ describe('test climateWarehouse store actions', () => {
   });
 
   it('getQualifications useMockedResponse', async () => {
-    store.dispatch(getQualifications({ useMockedResponse: true, useApiMock: false }));
+    store.dispatch(
+      getQualifications({ useMockedResponse: true, useApiMock: false }),
+    );
 
     const parsedJson = JSON.parse(JSON.stringify(qualificationsResponseStub));
 
     const projectLocations = store.getState().climateWarehouse.qualifications;
 
-    expect(projectLocations[0].project_id).to.equal(
-      parsedJson[0].project_id,
-    );
+    expect(projectLocations[0].project_id).to.equal(parsedJson[0].project_id);
   });
 
   it('getVintages useMockedResponse', async () => {
@@ -111,9 +113,7 @@ describe('test climateWarehouse store actions', () => {
 
     const ratings = store.getState().climateWarehouse.ratings;
 
-    expect(ratings[0].link).to.equal(
-      parsedJson[0].link,
-    );
+    expect(ratings[0].link).to.equal(parsedJson[0].link);
   });
 
   it('getUnits useMockedResponse', async () => {
@@ -123,8 +123,6 @@ describe('test climateWarehouse store actions', () => {
 
     const units = store.getState().climateWarehouse.units;
 
-    expect(units[0].unitBlockIdentifier).to.equal(
-      parsedJson[0].unitBlockIdentifier,
-    );
+    expect(units[0].blockIdentifier).to.equal(parsedJson[0].blockIdentifier);
   });
 });
