@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
 
 import {
   getStagingData,
@@ -12,6 +13,7 @@ import {
 } from '../../store/actions/climateWarehouseActions';
 
 import {
+  H3,
   APIDataTable,
   AddIcon,
   SearchInput,
@@ -71,6 +73,20 @@ const StyledBodyContainer = styled('div')`
   flex-grow: 1;
 `;
 
+const StyledCreateOneNowContainer = styled('div')`
+  margin-left: 0.3125rem;
+  display: inline-block;
+  cursor: pointer;
+  color: #1890ff;
+`;
+
+const NoDataMessageContainer = styled('div')`
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
@@ -104,7 +120,7 @@ const Units = withRouter(() => {
     dispatch(getStagingData({ useMockedResponse: false }));
   }, [dispatch]);
 
-  if (!climateWarehouseStore.units || !climateWarehouseStore.units.length) {
+  if (!climateWarehouseStore.units) {
     return null;
   }
 
@@ -167,7 +183,18 @@ const Units = withRouter(() => {
       </StyledSubHeaderContainer>
       <StyledBodyContainer>
         <TabPanel value={tabValue} index={0}>
-          {climateWarehouseStore.units && (
+          {climateWarehouseStore.units &&
+            climateWarehouseStore.units.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>
+                  <FormattedMessage id="no-units-created" />
+                  <StyledCreateOneNowContainer onClick={() => setCreate(true)}>
+                    <FormattedMessage id="create-one-now" />
+                  </StyledCreateOneNowContainer>
+                </H3>
+              </NoDataMessageContainer>
+            )}
+          {climateWarehouseStore.units && climateWarehouseStore.units.length > 0 && (
             <>
               <APIDataTable
                 headings={Object.keys(climateWarehouseStore.units[0])}

@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
 
 import {
   APIDataTable,
@@ -18,7 +19,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   CreateProjectForm,
-  H3
+  H3,
 } from '../../components';
 
 import {
@@ -72,6 +73,13 @@ const StyledBodyContainer = styled('div')`
   flex-grow: 1;
 `;
 
+const StyledCreateOneNowContainer = styled('div')`
+  margin-left: 0.3125rem;
+  display: inline-block;
+  cursor: pointer;
+  color: #1890FF;
+`;
+
 const NoDataMessageContainer = styled('div')`
   display: flex;
   height: 100%;
@@ -107,18 +115,19 @@ const Projects = withRouter(() => {
   );
 
   useEffect(() => {
+    dispatch(getPaginatedData({ type: 'projects', page: 1, resultsLimit: 7 }));
     dispatch(getStagingData({ useMockedResponse: false }));
-    dispatch(
-      getPaginatedData({ type: 'projects', page: 1, resultsLimit: 7 }),
-    );
   }, [dispatch]);
 
-  if (
-    !climateWarehouseStore.projects ||
-    !climateWarehouseStore.projects.length
-  ) {
+  if (!climateWarehouseStore.projects) {
     return null;
   }
+
+  console.log(
+    'warehouse and projects array',
+    climateWarehouseStore,
+    climateWarehouseStore.projects,
+  );
 
   return (
     <StyledSectionContainer>
@@ -179,20 +188,33 @@ const Projects = withRouter(() => {
       </StyledSubHeaderContainer>
       <StyledBodyContainer>
         <TabPanel value={tabValue} index={0}>
-          {climateWarehouseStore.projects && (
-            <APIDataTable
-              headings={Object.keys(climateWarehouseStore.projects[0])}
-              data={climateWarehouseStore.projects}
-              actions="Projects"
-            />
-          )}
+          {climateWarehouseStore.projects &&
+            climateWarehouseStore.projects.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>
+                  <FormattedMessage id="no-projects-created" />
+                  <StyledCreateOneNowContainer onClick={() => setCreate(true)}>
+                    <FormattedMessage id="create-one-now" />
+                  </StyledCreateOneNowContainer>
+                </H3>
+              </NoDataMessageContainer>
+            )}
+          {climateWarehouseStore.projects &&
+            climateWarehouseStore.projects.length > 0 && (
+              <APIDataTable
+                headings={Object.keys(climateWarehouseStore.projects[0])}
+                data={climateWarehouseStore.projects}
+                actions="Projects"
+              />
+            )}
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          {climateWarehouseStore.stagingData && climateWarehouseStore.stagingData.projects.staging.length === 0 && (
-            <NoDataMessageContainer>
-              <H3>No staged data at this time</H3>
-            </NoDataMessageContainer>
-          )}
+          {climateWarehouseStore.stagingData &&
+            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>No staged data at this time</H3>
+              </NoDataMessageContainer>
+            )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}
@@ -202,11 +224,12 @@ const Projects = withRouter(() => {
           )}
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          {climateWarehouseStore.stagingData && climateWarehouseStore.stagingData.projects.pending.length === 0 && (
-            <NoDataMessageContainer>
-              <H3>No pending data at this time</H3>
-            </NoDataMessageContainer>
-          )}
+          {climateWarehouseStore.stagingData &&
+            climateWarehouseStore.stagingData.projects.pending.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>No pending data at this time</H3>
+              </NoDataMessageContainer>
+            )}
           {climateWarehouseStore.stagingData && (
             <StagingDataTable
               headings={headings}

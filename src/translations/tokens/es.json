@@ -8,5 +8,8 @@
   "value": "Valor",
   "block-height": "Altura del bloque",
   "created-at": "Creado en",
-  "notified-at": "Notificado en"
+  "notified-at": "Notificado en",
+  "no-projects-created": "Parece que aún no has creado ningún proyecto.",
+  "no-units-created": "Parece que aún no has creado ninguna unidad",
+  "create-one-now": "Crear una ahora."
 }

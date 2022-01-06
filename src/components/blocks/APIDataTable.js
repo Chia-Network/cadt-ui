@@ -16,7 +16,6 @@ const Table = styled('table')`
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
-  margin-bottom: 70px;
 `;
 
 const THead = styled('thead')`
@@ -82,8 +81,7 @@ const StyledPaginationContainer = styled('div')`
   min-height: 70px;
   width: 100%;
   max-height: 70px;
-  position: absolute;
-  bottom: 0;
+  margin: 25px 0px 25px 0px;
 `;
 
 const APIDataTable = withTheme(({ headings, data, actions }) => {
@@ -196,12 +194,12 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
               ))}
             </tbody>
           </Table>
-        </div>
           {(actions === 'Projects' || actions === 'Units') && (
             <StyledPaginationContainer>
               <APIPagination actions={actions} />
             </StyledPaginationContainer>
           )}
+        </div>
       </div>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {editUnits && (

@@ -18,7 +18,6 @@ const Table = styled('table')`
   display: table;
   border-spacing: 0;
   border-collapse: collapse;
-  margin-bottom: 70px;
 `;
 
 const THead = styled('thead')`

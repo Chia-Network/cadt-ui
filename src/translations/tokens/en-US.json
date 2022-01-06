@@ -8,5 +8,8 @@
   "value": "Value",
   "block-height": "Block Height",
   "created-at": "Created At",
-  "notified-at": "Notified At"
+  "notified-at": "Notified At",
+  "no-projects-created": "It looks like you haven't created any projects yet.",
+  "no-units-created": "It looks like you haven't created any units yet.",
+  "create-one-now": "Create one now."
 }
