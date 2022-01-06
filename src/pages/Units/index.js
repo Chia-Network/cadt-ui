@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
+import { jsonToCsv } from '../../utils/csvUtils';
 import constants from '../../constants';
 
 import {
@@ -170,6 +171,17 @@ const Units = withRouter(() => {
     return null;
   }
 
+  const downloadTxtFile = () => {
+    const element = document.createElement('a');
+    const file = new Blob([jsonToCsv(climateWarehouseStore.units)], {
+      type: 'text/plain',
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = 'climateWarehouse.csv';
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
   return (
     <StyledSectionContainer>
       <StyledHeaderContainer>
@@ -225,7 +237,9 @@ const Units = withRouter(() => {
             })`}
           />
         </Tabs>
-        <DownloadIcon />
+        <div onClick={downloadTxtFile}>
+          <DownloadIcon />
+        </div>
       </StyledSubHeaderContainer>
       <StyledBodyContainer>
         <TabPanel value={tabValue} index={0}>
