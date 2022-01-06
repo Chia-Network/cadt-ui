@@ -1,7 +1,8 @@
-import React, { Suspense, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { Suspense } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
+import { resetRefreshPrompt } from '../store/actions/app';
 import * as Pages from '../pages';
 
 import {
@@ -12,20 +13,21 @@ import {
 } from '../components';
 
 const AppNavigator = () => {
+  const dispatch = useDispatch();
+
   const {
     showProgressOverlay,
     connectionCheck,
     socketStatus,
     updateAvailablePleaseRefesh,
   } = useSelector(store => store.app);
-  const [refresh, setRefresh] = useState(updateAvailablePleaseRefesh);
-  
+
   return (
     <AppContainer>
-      {refresh && (
+      {updateAvailablePleaseRefesh && (
         <UpdateRefreshContainer
           onRefresh={() => window.location.reload()}
-          onClose={() => setRefresh(false)}
+          onClose={() => dispatch(resetRefreshPrompt)}
         />
       )}
       <SocketStatusContainer socketStatus={socketStatus} />
