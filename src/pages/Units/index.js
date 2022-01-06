@@ -134,7 +134,7 @@ const Units = withRouter(() => {
       }),
     );
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, [dispatch]);
+  }, [dispatch, tabValue]);
 
   if (!climateWarehouseStore.units) {
     return null;
