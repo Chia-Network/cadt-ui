@@ -5,11 +5,11 @@ import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import constants from '../../constants';
-import { Pagination, TableDrawer } from '.';
+import { Pagination, TableDrawer } from './';
 import { EllipseIcon } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
-import { EditUnitsForm, EditProjectsForm} from '..';
+import { EditUnitsForm, EditProjectsForm } from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -83,8 +83,7 @@ const StyledPaginationContainer = styled('div')`
   min-height: 70px;
   width: 100%;
   max-height: 70px;
-  position: absolute;
-  bottom: 0;
+  margin: 25px 0px 25px 0px;
 `;
 
 const DataTable = withTheme(({ headings, data, actions }) => {
@@ -99,7 +98,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
   const windowSize = useWindowSize();
 
   useEffect(() => {
-        setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
 
   const handlePageClick = page => {
@@ -223,15 +222,15 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               ))}
             </tbody>
           </Table>
+          <StyledPaginationContainer>
+            <Pagination
+              pages={(paginatedData && paginatedData.length) || 0}
+              current={currentPage}
+              callback={handlePageClick}
+              showLast
+            />
+          </StyledPaginationContainer>
         </div>
-        <StyledPaginationContainer>
-          <Pagination
-            pages={(paginatedData && paginatedData.length) || 0}
-            current={currentPage}
-            callback={handlePageClick}
-            showLast
-          />
-        </StyledPaginationContainer>
       </div>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {editUnits && (
