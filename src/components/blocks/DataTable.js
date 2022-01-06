@@ -199,7 +199,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                           setEditUnits(true);
                           setEditRecord(record);
                         }}
-                        electedTheme={appStore.theme}>
+                        selectedTheme={appStore.theme}>
                         <StyledElipseContainer>
                           <EllipseIcon height={'5'} width={'5'} />
                           <EllipseIcon height={'5'} width={'5'} />
@@ -214,7 +214,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                           setEditProjects(true);
                           setEditRecord(record);
                         }}
-                        electedTheme={appStore.theme}>
+                        selectedTheme={appStore.theme}>
                         <StyledElipseContainer>
                           <EllipseIcon height="5" width="5" />
                           <EllipseIcon height="5" width="5" />
