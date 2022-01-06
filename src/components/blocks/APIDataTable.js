@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styled, { withTheme } from 'styled-components';
+import styled, { withTheme, css } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination } from '.';
@@ -84,6 +84,28 @@ const StyledPaginationContainer = styled('div')`
   margin: 25px 0px 25px 0px;
 `;
 
+const StyledRefContainer = styled('div')`
+  height: 100%;
+  position: relative;
+`;
+
+const StyledScalableContainer = styled('div')`
+  overflow: auto;
+  position: relative;
+  ${props =>
+    props.height &&
+    css`
+      height: ${props.height};
+    `}
+`;
+
+const StyledElipseContainer = styled('div')`
+  transform: 'rotate(0.25turn)';
+  display: 'flex';
+  align-items: 'center';
+  justify-content: 'space-evenly';
+`;
+
 const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
@@ -100,13 +122,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
 
   return (
     <>
-      <div ref={ref} style={{ height: '100%', position: 'relative' }}>
-        <div
-          style={{
-            height: `${height}px`,
-            overflow: 'auto',
-            position: 'relative',
-          }}>
+      <StyledRefContainer ref={ref}>
+        <StyledScalableContainer height={`${height}px`}>
           <Table selectedTheme={appStore.theme}>
             <THead selectedTheme={appStore.theme}>
               <tr>
@@ -155,17 +172,11 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                           setEditRecord(record);
                         }}
                         electedTheme={appStore.theme}>
-                        <div
-                          style={{
-                            transform: 'rotate(0.25turn)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-evenly',
-                          }}>
+                        <StyledElipseContainer>
                           <EllipseIcon height={'5'} width={'5'} />
                           <EllipseIcon height={'5'} width={'5'} />
                           <EllipseIcon height={'5'} width={'5'} />
-                        </div>
+                        </StyledElipseContainer>
                       </Td>
                     )}
                     {actions === 'Projects' && (
@@ -176,17 +187,11 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                           setEditRecord(record);
                         }}
                         electedTheme={appStore.theme}>
-                        <div
-                          style={{
-                            transform: 'rotate(0.25turn)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-evenly',
-                          }}>
+                        <StyledElipseContainer>
                           <EllipseIcon height="5" width="5" />
                           <EllipseIcon height="5" width="5" />
                           <EllipseIcon height="5" width="5" />
-                        </div>
+                        </StyledElipseContainer>
                       </Td>
                     )}
                   </Tr>
@@ -199,8 +204,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
               <APIPagination actions={actions} />
             </StyledPaginationContainer>
           )}
-        </div>
-      </div>
+        </StyledScalableContainer>
+      </StyledRefContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {editUnits && (
         <EditUnitsForm

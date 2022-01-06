@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styled, { withTheme } from 'styled-components';
+import styled, { withTheme, css } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import constants from '../../constants';
@@ -86,6 +86,28 @@ const StyledPaginationContainer = styled('div')`
   margin: 25px 0px 25px 0px;
 `;
 
+const StyledRefContainer = styled('div')`
+  height: 100%;
+  position: relative;
+`;
+
+const StyledScalableContainer = styled('div')`
+  overflow: auto;
+  position: relative;
+  ${props =>
+    props.height &&
+    css`
+      height: ${props.height};
+    `}
+`;
+
+const StyledElipseContainer = styled('div')`
+  transform: 'rotate(0.25turn)';
+  display: 'flex';
+  align-items: 'center';
+  justify-content: 'space-evenly';
+`;
+
 const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
   const [getRecord, setRecord] = useState(null);
@@ -128,13 +150,8 @@ const DataTable = withTheme(({ headings, data, actions }) => {
 
   return (
     <>
-      <div ref={ref} style={{ height: '100%', position: 'relative' }}>
-        <div
-          style={{
-            height: `${height}px`,
-            overflow: 'auto',
-            position: 'relative',
-          }}>
+      <StyledRefContainer ref={ref}>
+        <StyledScalableContainer height={`${height}px`}>
           <Table selectedTheme={appStore.theme}>
             <THead selectedTheme={appStore.theme}>
               <tr>
@@ -183,17 +200,11 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                           setEditRecord(record);
                         }}
                         electedTheme={appStore.theme}>
-                        <div
-                          style={{
-                            transform: 'rotate(0.25turn)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-evenly',
-                          }}>
+                        <StyledElipseContainer>
                           <EllipseIcon height={'5'} width={'5'} />
                           <EllipseIcon height={'5'} width={'5'} />
                           <EllipseIcon height={'5'} width={'5'} />
-                        </div>
+                        </StyledElipseContainer>
                       </Td>
                     )}
                     {actions === 'Projects' && (
@@ -204,17 +215,11 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                           setEditRecord(record);
                         }}
                         electedTheme={appStore.theme}>
-                        <div
-                          style={{
-                            transform: 'rotate(0.25turn)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-evenly',
-                          }}>
+                        <StyledElipseContainer>
                           <EllipseIcon height="5" width="5" />
                           <EllipseIcon height="5" width="5" />
                           <EllipseIcon height="5" width="5" />
-                        </div>
+                        </StyledElipseContainer>
                       </Td>
                     )}
                   </Tr>
@@ -230,8 +235,8 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               showLast
             />
           </StyledPaginationContainer>
-        </div>
-      </div>
+        </StyledScalableContainer>
+      </StyledRefContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {editUnits && (
         <EditUnitsForm
