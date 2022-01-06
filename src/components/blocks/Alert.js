@@ -257,7 +257,7 @@ const Alert = withTheme(
           </AlertMessageContainer>
           {bannerMode && (
             <RefreshLinkContainer onClick={onRefresh}>
-              <Body size="Small">
+              <Body color="blue" size="Small">
                 <FormattedMessage id="click-to-refresh" />
               </Body>
             </RefreshLinkContainer>
