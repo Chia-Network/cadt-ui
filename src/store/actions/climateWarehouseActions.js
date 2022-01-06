@@ -145,10 +145,10 @@ export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
         if (response.ok) {
           const results = await response.json();
 
-          let action = 'GET_PROJECTS';
+          let action = action.GET_PROJECTS;
           let paginationAction = 'GET_PROJECTS_PAGE_COUNT';
           if (type === 'units') {
-            action = 'GET_UNITS';
+            action = action.GET_UNITS;
             paginationAction = 'GET_UNITS_PAGE_COUNT';
           }
 
