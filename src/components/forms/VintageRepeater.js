@@ -3,11 +3,11 @@ import { AddIcon, CloseIcon } from '..';
 import { CreateVintageForm } from './CreateVintageForm';
 import { ComponentRepeater } from '..';
 
-function VintageRepeater({vintageState, newVintageState}) {
+function VintageRepeater({ vintageState, newVintageState, max = 30 }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
-        maxRepetitions={1}
+        maxRepetitions={max}
         values={vintageState}
         updateValues={newVintageState}
         initialValue={{

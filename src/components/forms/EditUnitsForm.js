@@ -45,11 +45,10 @@ const EditUnitsForm = ({ data, onClose }) => {
 
   useEffect(() => {
     setEditUnits({
-      unitsBuyer: data.buyer,
+      buyer: data.buyer,
       registry: data.registry,
-      unitBlockIdentifier: data.blockIdentifier,
-      unitIdentifier: data.identifier,
-      qualificationID: data.id,
+      blockIdentifier: data.blockIdentifier,
+      identifier: data.identifier,
       unitType: data.unitType,
       unitCount: data.unitCount,
       unitStatus: data.unitStatus,
@@ -63,14 +62,21 @@ const EditUnitsForm = ({ data, onClose }) => {
       orgUid: data.orgUid,
       updatedAt: data.updatedAt,
     });
-    setVintage([_.get(data, 'vintage', {})]);
+    setVintage(_.get(data, 'vintage', {}));
     setQualificationsRepeaterValues(_.get(data, 'qualifications', []));
   }, [data]);
 
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(editedUnits);
-    dataToSend.vintage = _.head(vintage);
-    dataToSend.qualifications = qualifications;
+
+    if (!_.isEmpty(vintage)) {
+      dataToSend.vintage = _.head(vintage);
+    }
+
+    if (!_.isEmpty(qualifications)) {
+      dataToSend.qualifications = qualifications;
+    }
+
     dispatch(updateUnitsRecord(dataToSend));
   };
   return (
@@ -110,11 +116,11 @@ const EditUnitsForm = ({ data, onClose }) => {
                               id: 'units-buyer',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.unitsBuyer}
+                            value={editedUnits.buyer}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                unitsBuyer: value,
+                                buyer: value,
                               }))
                             }
                           />
@@ -156,11 +162,11 @@ const EditUnitsForm = ({ data, onClose }) => {
                               id: 'unit-block-identifier',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.unitBlockIdentifier}
+                            value={editedUnits.blockIdentifier}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                unitBlockIdentifier: value,
+                                blockIdentifier: value,
                               }))
                             }
                           />
@@ -179,34 +185,11 @@ const EditUnitsForm = ({ data, onClose }) => {
                               id: 'unit-identifier',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.unitIdentifier}
+                            value={editedUnits.identifier}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                unitIdentifier: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="qualification-id" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'qualification-id',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.qualificationID}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                qualificationID: value,
+                                identifier: value,
                               }))
                             }
                           />
@@ -502,6 +485,7 @@ const EditUnitsForm = ({ data, onClose }) => {
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <VintageRepeater
+                  max={1}
                   vintageState={vintage}
                   newVintageState={setVintage}
                 />

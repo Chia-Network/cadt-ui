@@ -45,7 +45,6 @@
   "registry": "Registry",
   "unit-block-identifier": "Unit Block Identifier",
   "unit-identifier": "Unit Identifier",
-  "qualification-id": "Qualification ID",
   "unit-type": "Unit Type",
   "unit-count": "Unit Count",
   "unit-status": "Unit Status",

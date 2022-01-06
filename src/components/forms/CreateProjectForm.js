@@ -56,7 +56,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     registryOfOrigin: '',
     originProjectId: '',
     program: '',
-    projectID: '',
+    projectId: '',
     projectName: '',
     projectLink: '',
     projectDeveloper: '',
@@ -76,12 +76,27 @@ const CreateProjectForm = withRouter(({ onClose }) => {
   });
   const handleSubmit = () => {
     const dataToSend = _.cloneDeep(newProject);
-    dataToSend.vintage = newVintage;
-    dataToSend.coBenefits = newCoBenefits;
-    dataToSend.qualifications = newQualifications;
-    dataToSend.projectLocations = newProjectLocations;
-    dataToSend.relatedProjects = newRelatedProjects;
-    dispatch(postNewProject(newProject));
+
+    if (!_.isEmpty(newVintage)) {
+      dataToSend.vintages = newVintage;
+    }
+
+    if (!_.isEmpty(newCoBenefits)) {
+      dataToSend.coBenefits = newCoBenefits;
+    }
+
+    if (!_.isEmpty(newQualifications)) {
+      dataToSend.qualifications = newQualifications;
+    }
+
+    if (!_.isEmpty(newProjectLocations)) {
+      dataToSend.projectLocations = newProjectLocations;
+    }
+
+    if (!_.isEmpty(newRelatedProjects)) {
+      dataToSend.relatedProjects = newRelatedProjects;
+    }
+    dispatch(postNewProject(dataToSend));
   };
 
   return (
@@ -215,11 +230,11 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             id: 'project-id',
                           })}
                           state={InputStateEnum.default}
-                          value={newProject.projectID}
+                          value={newProject.projectId}
                           onChange={value =>
                             setNewProject(prev => ({
                               ...prev,
-                              projectID: value,
+                              projectId: value,
                             }))
                           }
                         />
