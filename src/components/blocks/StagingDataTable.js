@@ -26,7 +26,7 @@ const Th = styled('th')`
   padding: 1rem;
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
   display: table-cell;
-  text-align: left;
+  text-align: center;
   letter-spacing: 0.01071em;
   vertical-align: inherit;
   max-width: 80px;
@@ -65,7 +65,7 @@ const Tr = styled('tr')`
 const Td = styled('td')`
   display: table-cell;
   padding: 1rem;
-  text-align: left;
+  text-align: center;
   letter-spacing: 0.01071em;
   vertical-align: inherit;
   max-width: 80px;
@@ -110,7 +110,9 @@ const ChangeGroupItem = ({
       <Tr color={color} selectedTheme={appStore.theme}>
         {headings.map((key, index) => (
           <Td selectedTheme={appStore.theme} key={index} onClick={onClick}>
-            <TableCellText>{data[key] && data[key].toString()}</TableCellText>
+            <TableCellText>
+              {data[key] ? data[key].toString() : '--'}
+            </TableCellText>
           </Td>
         ))}
         <Td selectedTheme={appStore.theme}>
