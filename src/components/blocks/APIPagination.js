@@ -114,7 +114,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
             {element}
           </PagesContainer>
         ))}
-      {showLast && currentPageNumber + 2 + 1 < numberOfPages && numberOfPages > 5 && (
+      {showLast && currentPageNumber + 3 < numberOfPages && numberOfPages > 5 && (
         <>
           <ThreeDotsIcon width={10} height={10} />
           <PagesContainer onClick={() => changeCurrentPageTo(numberOfPages)}>
