@@ -131,7 +131,7 @@ export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
     const typeIsValid = type === 'projects' || type === 'units';
     const pageAndLimitAreValid =
       typeof page === 'number' && typeof resultsLimit === 'number';
-    
+
     if (typeIsValid && pageAndLimitAreValid) {
       dispatch(activateProgressIndicator);
       try {
@@ -146,10 +146,10 @@ export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
           const results = await response.json();
 
           let action = action.GET_PROJECTS;
-          let paginationAction = 'GET_PROJECTS_PAGE_COUNT';
+          let paginationAction = actions.GET_PROJECTS_PAGE_COUNT;
           if (type === 'units') {
             action = action.GET_UNITS;
-            paginationAction = 'GET_UNITS_PAGE_COUNT';
+            paginationAction = actions.GET_UNITS_PAGE_COUNT;
           }
 
           dispatch({
