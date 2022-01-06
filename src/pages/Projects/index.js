@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import constants from '../../constants';
@@ -93,6 +93,7 @@ const Projects = withRouter(() => {
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
+   let history = useHistory();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -102,6 +103,12 @@ const Projects = withRouter(() => {
     () =>
       _.debounce(
         event =>
+        {
+          if (event.target.value !== '') {
+            history.replace({ search: `search=${event.target.value}` });
+          } else {
+            history.replace({ search: null });
+          }
           dispatch(
             getPaginatedData({
               type: 'projects',
@@ -109,7 +116,8 @@ const Projects = withRouter(() => {
               resultsLimit: constants.MAX_TABLE_SIZE,
               searchQuery: event.target.value,
             }),
-          ),
+          )
+        },
         300,
       ),
     [dispatch],

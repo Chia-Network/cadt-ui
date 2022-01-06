@@ -137,14 +137,14 @@ export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
       try {
         let url = `${constants.API_HOST}/${type}?page=${page}&limit=${resultsLimit}`;
         if (searchQuery) {
-          url += `&search=${searchQuery}`;
+          url += `&search=${encodeURIComponent(searchQuery)}`;
         }
 
         const response = await fetch(url);
 
         if (response.ok) {
           const results = await response.json();
-          
+
           let action = actions.GET_PROJECTS;
           let paginationAction = actions.GET_PROJECTS_PAGE_COUNT;
           if (type === 'units') {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { ArrowDownIcon, ThreeDotsIcon } from '..';
 import { getPaginatedData } from '../../store/actions/climateWarehouseActions'
 import constants from '../../constants';
@@ -58,6 +59,10 @@ const PagesContainer = styled(ControlsContainer)`
 
 const APIPagination = withTheme(({ showLast = false, actions }) => {
   const dispatch = useDispatch();
+  
+  const { location } = useHistory();
+  let searchParams = new URLSearchParams(location.search);
+
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const numberOfPages = climateWarehouseStore.projectsPageCount || 1;
@@ -67,12 +72,18 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
 
   const changeCurrentPageTo = (newPage) => {
     setCurrentPageNumber(newPage);
+    
+    const options = {
+      type: actions.toLowerCase(),
+      page: newPage,
+      resultsLimit: constants.MAX_TABLE_SIZE,
+    };
+    if (searchParams.has('search')) {
+      options.searchQuery = searchParams.get('search');
+    }
+
     dispatch(
-      getPaginatedData({
-        type: actions.toLowerCase(),
-        page: newPage,
-        resultsLimit: constants.MAX_TABLE_SIZE,
-      }),
+      getPaginatedData(options),
     );
   };
 

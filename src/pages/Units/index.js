@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import constants from '../../constants';
@@ -91,7 +91,7 @@ const NoDataMessageContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-
+  let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
 
@@ -101,18 +101,21 @@ const Units = withRouter(() => {
 
   const onSearch = useMemo(
     () =>
-      _.debounce(
-        event =>
-          dispatch(
-            getPaginatedData({
-              type: 'units',
-              page: 1,
-              resultsLimit: constants.MAX_TABLE_SIZE,
-              searchQuery: event.target.value,
-            }),
-          ),
-        300,
-      ),
+      _.debounce(event => {
+        if (event.target.value !== '') {
+          history.replace({ search: `search=${event.target.value}` });
+        } else {
+          history.replace({ search: null });
+        }
+        dispatch(
+          getPaginatedData({
+            type: 'units',
+            page: 1,
+            resultsLimit: constants.MAX_TABLE_SIZE,
+            searchQuery: event.target.value,
+          }),
+        );
+      }, 300),
     [dispatch],
   );
 
