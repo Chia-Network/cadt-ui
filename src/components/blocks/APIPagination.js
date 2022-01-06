@@ -3,6 +3,7 @@ import styled, { withTheme } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { ArrowDownIcon, ThreeDotsIcon } from '..';
 import { getPaginatedData } from '../../store/actions/climateWarehouseActions'
+import constants from '../../constants';
 
 const PaginationContainer = styled('div')`
   display: inline-flex;
@@ -70,7 +71,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
       getPaginatedData({
         type: actions.toLowerCase(),
         page: newPage,
-        resultsLimit: 7,
+        resultsLimit: constants.MAX_TABLE_SIZE,
       }),
     );
   };

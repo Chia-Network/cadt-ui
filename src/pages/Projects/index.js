@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { useIntl } from 'react-intl';
+import constants from '../../constants';
 
 import {
   APIDataTable,
@@ -107,7 +108,7 @@ const Projects = withRouter(() => {
             getPaginatedData({
               type: 'projects',
               page: 1,
-              resultsLimit: 7,
+              resultsLimit: constants.MAX_TABLE_SIZE,
               searchQuery: event.target.value,
             }),
           ),
@@ -117,7 +118,13 @@ const Projects = withRouter(() => {
   );
 
   useEffect(() => {
-    dispatch(getPaginatedData({ type: 'projects', page: 1, resultsLimit: 7 }));
+    dispatch(
+      getPaginatedData({
+        type: 'projects',
+        page: 1,
+        resultsLimit: constants.MAX_TABLE_SIZE,
+      }),
+    );
     dispatch(getStagingData({ useMockedResponse: false }));
   }, [dispatch]);
 

@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { useIntl } from 'react-intl';
+import constants from '../../constants';
 
 import {
   getStagingData,
@@ -108,7 +109,7 @@ const Units = withRouter(() => {
             getPaginatedData({
               type: 'units',
               page: 1,
-              resultsLimit: 7,
+              resultsLimit: constants.MAX_TABLE_SIZE,
               searchQuery: event.target.value,
             }),
           ),
@@ -118,7 +119,13 @@ const Units = withRouter(() => {
   );
 
   useEffect(() => {
-    dispatch(getPaginatedData({ type: 'units', page: 1, resultsLimit: 7 }));
+    dispatch(
+      getPaginatedData({
+        type: 'units',
+        page: 1,
+        resultsLimit: constants.MAX_TABLE_SIZE,
+      }),
+    );
     dispatch(getStagingData({ useMockedResponse: false }));
   }, [dispatch]);
 
