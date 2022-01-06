@@ -238,7 +238,7 @@ const Units = withRouter(() => {
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
           {climateWarehouseStore.stagingData &&
-            climateWarehouseStore.stagingData.units.staging.length === 0 && (
+            climateWarehouseStore.stagingData.units.pending.length === 0 && (
               <NoDataMessageContainer>
                 <H3>
                   <FormattedMessage id="no-pending" />
