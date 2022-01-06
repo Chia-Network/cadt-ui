@@ -159,21 +159,29 @@ export const setSocketStatus = status => {
 };
 
 export const projectsHaveBeenUpdated = data => {
-  return {
-    type: actions.SOCKET_PROJECTS_UPDATE,
-    key: 'change:projects',
-    payload: {
-      ...data,
-    },
+  return dispatch => {
+    if (window.location.href.includes('/projects')) {
+      dispatch({
+        type: actions.SOCKET_PROJECTS_UPDATE,
+        key: 'change:projects',
+        payload: {
+          ...data,
+        },
+      });
+    }
   };
 };
 
 export const unitsHaveBeenUpdated = data => {
-  return {
-    type: actions.SOCKET_UNITS_UPDATE,
-    key: 'change:units',
-    payload: {
-      ...data,
-    },
+  return dispatch => {
+    if (window.location.href.includes('/units')) {
+      dispatch({
+        type: actions.SOCKET_UNITS_UPDATE,
+        key: 'change:units',
+        payload: {
+          ...data,
+        },
+      });
+    }
   };
 };
