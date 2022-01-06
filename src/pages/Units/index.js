@@ -155,6 +155,7 @@ const Units = withRouter(() => {
       .map(project =>
         _.pick(project, [
           'orgUid',
+          'uuid',
           'buyer',
           'registry',
           'unitType',
