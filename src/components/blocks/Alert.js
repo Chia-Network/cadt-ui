@@ -12,6 +12,7 @@ import {
   WarningIcon,
   WarningIconSmall,
 } from '..';
+import { FormattedMessage } from 'react-intl';
 
 const AlertCard = styled('div')`
   display: flex;
@@ -37,7 +38,7 @@ const AlertCard = styled('div')`
         `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.warning.primary}`) ||
       (props.type === 'error' &&
         !props.banner &&
-        `background-color: ${props.theme.colors.default.status.error.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.error.primary} `)}
+        `background-color: ${props.theme.colors.default.status.error.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.error.primary};`)}
     ${props =>
       (props.type === 'info' &&
         props.banner &&
@@ -76,7 +77,7 @@ const CloseButton = styled('div')`
   ${props =>
     props.alertRefresh &&
     css`
-      margin-top: 5.5px;
+      margin-top: 0.3438rem;
     `}
 `;
 
@@ -138,6 +139,16 @@ const AlertMessageContainer = styled('div')`
     css`
       align-self: center;
     `}
+`;
+
+const RefreshLinkContainer = styled('a')`
+  cursor: pointer;
+  width: 7.5rem;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  align-self: flex-end;
+  margin-right: 2.5rem;
+  margin-bottom: 0.625rem;
 `;
 
 const Alert = withTheme(
@@ -245,9 +256,9 @@ const Alert = withTheme(
             )}
           </AlertMessageContainer>
           {alertRefresh && (
-            <a onClick={onRefresh} style={{  cursor: 'pointer',width: '120px',fontSize: "0.9rem",textDecoration: 'underline', alignSelf: 'flex-end', marginRight: '40px', marginBottom: '10px' }}>
-              Refresh Page?
-            </a>
+            <RefreshLinkContainer onClick={onRefresh}>
+              <FormattedMessage id="refresh-page" />
+            </RefreshLinkContainer>
           )}
           {closeText && !closeable && (
             <CloseTextButton
