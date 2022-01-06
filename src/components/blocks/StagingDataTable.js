@@ -177,13 +177,15 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const changeGroupIsValid = changeGroup => {
     if (!changeGroup.diff) return false;
     if (!changeGroup.diff.original || !changeGroup.diff.change) return false;
-    if (changeGroup.diff.change.length === 1 && !changeGroup.diff.change[0])
+    if (changeGroup.diff.change.length === 1 && !changeGroup.diff.change[0]) {
       return false;
+    }
     if (
       changeGroup.diff.change.length === 2 &&
-      (!changeGroup.diff.change[0] || !changeGroup.change[1])
-    )
+      (!changeGroup.diff.change[0] || !changeGroup.diff.change[1])
+    ) {
       return false;
+    }
     return true;
   };
 
