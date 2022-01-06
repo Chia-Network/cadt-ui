@@ -11,6 +11,7 @@ import {
   ErrorIconSmall,
   WarningIcon,
   WarningIconSmall,
+  Body,
 } from '..';
 import { FormattedMessage } from 'react-intl';
 
@@ -18,10 +19,10 @@ const AlertCard = styled('div')`
   display: flex;
   justify-content: space-between;
   border: none;
-  width: ${props => (props.alertRefresh ? '44.3125rem;' : '24rem;')}
+  width: ${props => (props.bannerMode ? '44.3125rem;' : '24rem;')}
     ${props => (props.alertBody ? 'height: 6.375rem;' : 'height: 2.5rem;')}
     ${props =>
-      props.alertRefresh &&
+      props.bannerMode &&
       css`
         height: 3.875rem;
         align-self: center;
@@ -75,15 +76,13 @@ const CloseButton = styled('div')`
       ? 'margin-right: 1.1675rem; margin-top: 1rem;'
       : 'margin-right: 1.1675rem; align-self: center'}
   ${props =>
-    props.alertRefresh &&
+    props.bannerMode &&
     css`
       margin-top: 0.3438rem;
     `}
 `;
 
 const AlertTitle = styled('div')`
-  font-size: 1rem;
-  font-family: ${props => props.theme.typography.primary.regular};
   height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')};
   line-height: 1.5rem;
   font-weight: 400;
@@ -107,9 +106,7 @@ const AlertTitle = styled('div')`
 `;
 
 const AlertBody = styled('div')`
-  font-family: ${props => props.theme.typography.primary.regular};;
   font-weight: normal;
-  font-size: 0.875rem;
   line-height: 1.3125rem;
   margin-bottom: 1rem;
   ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1rem')}
@@ -121,7 +118,7 @@ const ShowIcons = styled('div')`
       ? 'margin-left: 1.0938rem; margin-top: 1.0938rem;'
       : 'margin-left: 1.0625rem; margin-top: 0.75rem;'}
   ${props =>
-    props.alertRefresh &&
+    props.bannerMode &&
     css`
       margin-top: 0.4688rem;
     `}
@@ -135,7 +132,7 @@ const AlertMessageContainer = styled('div')`
   justify-content: flex-start;
 
   ${props =>
-    props.alertRefresh &&
+    props.bannerMode &&
     css`
       align-self: center;
     `}
@@ -145,7 +142,6 @@ const RefreshLinkContainer = styled('a')`
   cursor: pointer;
   width: 9rem;
   font-size: 0.9rem;
-  font-family: ${props => props.theme.typography.primary.regular};
   text-decoration: underline;
   align-self: flex-end;
   margin-right: 2.5rem;
@@ -164,18 +160,18 @@ const Alert = withTheme(
     closeable = false,
     closeText,
     onClose = _.noop,
-    alertRefresh,
+    bannerMode,
   }) => {
     return (
       <>
         <AlertCard
-          alertRefresh={alertRefresh}
+          bannerMode={bannerMode}
           type={type}
           banner={banner}
           alertBody={alertBody}>
           {showIcon && !alertBody && type === 'info' && (
             <ShowIcons
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               showIcon={showIcon}
               type={type}
               alertBody={alertBody}>
@@ -184,7 +180,7 @@ const Alert = withTheme(
           )}
           {showIcon && alertBody && type === 'info' && (
             <ShowIcons
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               showIcon={showIcon}
               type={type}
               alertBody={alertBody}>
@@ -194,7 +190,7 @@ const Alert = withTheme(
 
           {showIcon && !alertBody && type === 'success' && (
             <ShowIcons
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               showIcon={showIcon}
               type={type}
               alertBody={alertBody}>
@@ -203,7 +199,7 @@ const Alert = withTheme(
           )}
           {showIcon && alertBody && type === 'success' && (
             <ShowIcons
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               showIcon={showIcon}
               type={type}
               alertBody={alertBody}>
@@ -213,7 +209,7 @@ const Alert = withTheme(
 
           {showIcon && !alertBody && type === 'error' && (
             <ShowIcons
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               showIcon={showIcon}
               type={type}
               alertBody={alertBody}>
@@ -222,7 +218,7 @@ const Alert = withTheme(
           )}
           {showIcon && alertBody && type === 'error' && (
             <ShowIcons
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               showIcon={showIcon}
               type={type}
               alertBody={alertBody}>
@@ -232,7 +228,7 @@ const Alert = withTheme(
 
           {showIcon && !alertBody && type === 'warning' && (
             <ShowIcons
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               showIcon={showIcon}
               type={type}
               alertBody={alertBody}>
@@ -241,30 +237,34 @@ const Alert = withTheme(
           )}
           {showIcon && alertBody && type === 'warning' && (
             <ShowIcons
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               showIcon={showIcon}
               type={type}
               alertBody={alertBody}>
               <WarningIcon height="21" width="21" />
             </ShowIcons>
           )}
-          <AlertMessageContainer alertRefresh={alertRefresh}>
+          <AlertMessageContainer bannerMode={bannerMode}>
             <AlertTitle showIcon={showIcon} alertBody={alertBody}>
-              {alertTitle}
+              <Body size="Small">{alertTitle}</Body>
             </AlertTitle>
 
             {alertBody && (
-              <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>
+              <Body size="Small">
+                <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>
+              </Body>
             )}
           </AlertMessageContainer>
-          {alertRefresh && (
+          {bannerMode && (
             <RefreshLinkContainer onClick={onRefresh}>
-              <FormattedMessage id="click-to-refresh" />
+              <Body size="Small">
+                <FormattedMessage id="click-to-refresh" />
+              </Body>
             </RefreshLinkContainer>
           )}
           {closeText && !closeable && (
             <CloseTextButton
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               closeText={closeText}
               closeable={closeable}
               alertBody={alertBody}
@@ -274,7 +274,7 @@ const Alert = withTheme(
           )}
           {closeable && !closeText && (
             <CloseButton
-              alertRefresh={alertRefresh}
+              bannerMode={bannerMode}
               closeable={closeable}
               closeText={closeText}
               alertBody={alertBody}

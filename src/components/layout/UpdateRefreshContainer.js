@@ -17,7 +17,7 @@ const UpdateRefreshContainer = ({onRefresh, onClose}) => {
       <Alert
         onRefresh={onRefresh}
         onClose={onClose}
-        alertRefresh
+        bannerMode
         closeable
         showIcon
         type="info"
