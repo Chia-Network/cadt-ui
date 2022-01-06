@@ -125,12 +125,6 @@ const Projects = withRouter(() => {
     return null;
   }
 
-  console.log(
-    'warehouse and projects array',
-    climateWarehouseStore,
-    climateWarehouseStore.projects,
-  );
-
   return (
     <StyledSectionContainer>
       <StyledHeaderContainer>
