@@ -78,7 +78,7 @@ const StyledCreateOneNowContainer = styled('div')`
   margin-left: 0.3125rem;
   display: inline-block;
   cursor: pointer;
-  color: #1890FF;
+  color: #1890ff;
 `;
 
 const NoDataMessageContainer = styled('div')`
@@ -114,6 +114,12 @@ const Projects = withRouter(() => {
       ),
     [dispatch],
   );
+
+  useEffect(() => {
+    return () => {
+      onSearch.cancel();
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(

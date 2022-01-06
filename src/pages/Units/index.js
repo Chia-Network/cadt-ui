@@ -117,6 +117,12 @@ const Units = withRouter(() => {
   );
 
   useEffect(() => {
+    return () => {
+      onSearch.cancel();
+    };
+  }, []);
+
+  useEffect(() => {
     dispatch(
       getPaginatedData({
         type: 'units',
