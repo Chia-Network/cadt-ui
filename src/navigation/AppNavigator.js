@@ -25,7 +25,7 @@ const AppNavigator = () => {
       {refresh && (
         <UpdateRefreshContainer
           onRefresh={() => window.location.reload()}
-          onClose={() => setRefresh(true)}
+          onClose={() => setRefresh(false)}
         />
       )}
       <SocketStatusContainer socketStatus={socketStatus} />
