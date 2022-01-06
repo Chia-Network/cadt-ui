@@ -107,7 +107,7 @@ const AlertTitle = styled('div')`
 `;
 
 const AlertBody = styled('div')`
-  font-family: ${props => props.theme.typography.primary.light};
+  font-family: ${props => props.theme.typography.primary.regular};;
   font-weight: normal;
   font-size: 0.875rem;
   line-height: 1.3125rem;
@@ -143,12 +143,14 @@ const AlertMessageContainer = styled('div')`
 
 const RefreshLinkContainer = styled('a')`
   cursor: pointer;
-  width: 7.5rem;
+  width: 9rem;
   font-size: 0.9rem;
+  font-family: ${props => props.theme.typography.primary.regular};
   text-decoration: underline;
   align-self: flex-end;
   margin-right: 2.5rem;
-  margin-bottom: 0.625rem;
+  margin-bottom: 0.525rem;
+  color: blue;
 `;
 
 const Alert = withTheme(
@@ -257,7 +259,7 @@ const Alert = withTheme(
           </AlertMessageContainer>
           {alertRefresh && (
             <RefreshLinkContainer onClick={onRefresh}>
-              <FormattedMessage id="refresh-page" />
+              <FormattedMessage id="click-to-refresh" />
             </RefreshLinkContainer>
           )}
           {closeText && !closeable && (

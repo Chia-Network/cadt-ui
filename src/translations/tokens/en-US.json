@@ -9,7 +9,7 @@
   "block-height": "Block Height",
   "created-at": "Created At",
   "notified-at": "Notified At",
-  "refresh-page": "Refresh Page",
+  "click-to-refresh": "Click to Refresh",
   "no-projects-created": "It looks like you haven't created any projects yet.",
   "no-units-created": "It looks like you haven't created any units yet.",
   "create-one-now": "Create one now.",
