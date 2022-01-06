@@ -1,19 +1,34 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import * as Pages from '../pages';
 
-import { AppContainer, Modal, NotificationContainer } from '../components';
+import {
+  AppContainer,
+  Modal,
+  SocketStatusContainer,
+  UpdateRefreshContainer,
+} from '../components';
 
 const AppNavigator = () => {
-  const { showProgressOverlay, connectionCheck, socketStatus } = useSelector(
-    store => store.app,
-  );
-
+  const {
+    showProgressOverlay,
+    connectionCheck,
+    socketStatus,
+    updateAvailablePleaseRefesh,
+  } = useSelector(store => store.app);
+  const [refresh, setRefresh] = useState(updateAvailablePleaseRefesh);
+  
   return (
     <AppContainer>
-      <NotificationContainer socketStatus={socketStatus} />
+      {refresh && (
+        <UpdateRefreshContainer
+          onRefresh={() => window.location.reload()}
+          onClose={() => setRefresh(false)}
+        />
+      )}
+      <SocketStatusContainer socketStatus={socketStatus} />
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
         <Modal

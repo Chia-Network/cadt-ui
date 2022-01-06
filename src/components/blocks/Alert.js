@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled, { css, withTheme } from 'styled-components';
 import {
   SuccessIcon,
   SuccessIconSmall,
@@ -11,45 +11,48 @@ import {
   ErrorIconSmall,
   WarningIcon,
   WarningIconSmall,
+  Body,
 } from '..';
+import { FormattedMessage } from 'react-intl';
 
 const AlertCard = styled('div')`
   display: flex;
   justify-content: space-between;
   border: none;
-  margin: 1.25rem;
-  ${props =>
-    props.alertBody
-      ? 'height: 6.375rem;  width: 24rem;'
-      : 'height: 2.5rem;  width: 24rem;'}
-
-  ${props =>
-    (props.type === 'info' &&
-      !props.banner &&
-      `background-color: ${props.theme.colors.default.status.info.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.info.primary} `) ||
-    (props.type === 'success' &&
-      !props.banner &&
-      `background-color: ${props.theme.colors.default.status.ok.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.ok.primary}`) ||
-    (props.type === 'warning' &&
-      !props.banner &&
-      `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.warning.primary}`) ||
-    (props.type === 'error' &&
-      !props.banner &&
-      `background-color: ${props.theme.colors.default.status.error.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.error.primary} `)}
-
-      ${props =>
-    (props.type === 'info' &&
-      props.banner &&
-      `background-color: ${props.theme.colors.default.status.info.secondary};`) ||
-    (props.type === 'success' &&
-      props.banner &&
-      `background-color: ${props.theme.colors.default.status.ok.secondary};`) ||
-    (props.type === 'warning' &&
-      props.banner &&
-      `background-color: ${props.theme.colors.default.status.warning.secondary};`) ||
-    (props.type === 'error' &&
-      props.banner &&
-      `background-color: ${props.theme.colors.default.status.error.secondary};`)}
+  width: ${props => (props.bannerMode ? '44.3125rem;' : '24rem;')}
+    ${props => (props.alertBody ? 'height: 6.375rem;' : 'height: 2.5rem;')}
+    ${props =>
+      props.bannerMode &&
+      css`
+        height: 3.875rem;
+        align-self: center;
+      `}
+    ${props =>
+      (props.type === 'info' &&
+        !props.banner &&
+        `background-color: ${props.theme.colors.default.status.info.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.info.primary} `) ||
+      (props.type === 'success' &&
+        !props.banner &&
+        `background-color: ${props.theme.colors.default.status.ok.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.ok.primary}`) ||
+      (props.type === 'warning' &&
+        !props.banner &&
+        `background-color: ${props.theme.colors.default.status.warning.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.warning.primary}`) ||
+      (props.type === 'error' &&
+        !props.banner &&
+        `background-color: ${props.theme.colors.default.status.error.secondary}; border: 0.0625rem solid ${props.theme.colors.default.status.error.primary};`)}
+    ${props =>
+      (props.type === 'info' &&
+        props.banner &&
+        `background-color: ${props.theme.colors.default.status.info.secondary};`) ||
+      (props.type === 'success' &&
+        props.banner &&
+        `background-color: ${props.theme.colors.default.status.ok.secondary};`) ||
+      (props.type === 'warning' &&
+        props.banner &&
+        `background-color: ${props.theme.colors.default.status.warning.secondary};`) ||
+      (props.type === 'error' &&
+        props.banner &&
+        `background-color: ${props.theme.colors.default.status.error.secondary};`)};
 `;
 
 const CloseTextButton = styled('button')`
@@ -72,11 +75,14 @@ const CloseButton = styled('div')`
     props.alertBody
       ? 'margin-right: 1.1675rem; margin-top: 1rem;'
       : 'margin-right: 1.1675rem; align-self: center'}
+  ${props =>
+    props.bannerMode &&
+    css`
+      margin-top: 0.3438rem;
+    `}
 `;
 
 const AlertTitle = styled('div')`
-  font-size: 1rem;
-  font-family: ${props => props.theme.typography.primary.regular};
   height: ${props => (props.alertBody ? '1.5rem;' : '1.375rem;')};
   line-height: 1.5rem;
   font-weight: 400;
@@ -100,9 +106,7 @@ const AlertTitle = styled('div')`
 `;
 
 const AlertBody = styled('div')`
-  font-family: ${props => props.theme.typography.primary.light};
   font-weight: normal;
-  font-size: 0.875rem;
   line-height: 1.3125rem;
   margin-bottom: 1rem;
   ${props => (props.showIcon ? 'margin-left: 1.0938rem;' : 'margin-left: 1rem')}
@@ -113,11 +117,42 @@ const ShowIcons = styled('div')`
     props.alertBody
       ? 'margin-left: 1.0938rem; margin-top: 1.0938rem;'
       : 'margin-left: 1.0625rem; margin-top: 0.75rem;'}
+  ${props =>
+    props.bannerMode &&
+    css`
+      margin-top: 0.4688rem;
+    `}
+`;
+
+const AlertMessageContainer = styled('div')`
+  width: 100%;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  ${props =>
+    props.bannerMode &&
+    css`
+      align-self: center;
+    `}
+`;
+
+const RefreshLinkContainer = styled('a')`
+  cursor: pointer;
+  width: 9rem;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  align-self: flex-end;
+  margin-right: 2.5rem;
+  margin-bottom: 0.525rem;
+  color: blue;
 `;
 
 const Alert = withTheme(
   ({
     type,
+    onRefresh,
     banner = false,
     alertTitle,
     alertBody,
@@ -125,71 +160,111 @@ const Alert = withTheme(
     closeable = false,
     closeText,
     onClose = _.noop,
+    bannerMode,
   }) => {
     return (
       <>
-        <AlertCard type={type} banner={banner} alertBody={alertBody}>
+        <AlertCard
+          bannerMode={bannerMode}
+          type={type}
+          banner={banner}
+          alertBody={alertBody}>
           {showIcon && !alertBody && type === 'info' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              bannerMode={bannerMode}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <InfoIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'info' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              bannerMode={bannerMode}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <InfoIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'success' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              bannerMode={bannerMode}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <SuccessIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'success' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              bannerMode={bannerMode}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <SuccessIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'error' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              bannerMode={bannerMode}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <ErrorIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'error' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              bannerMode={bannerMode}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <ErrorIcon height="21" width="21" />
             </ShowIcons>
           )}
 
           {showIcon && !alertBody && type === 'warning' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              bannerMode={bannerMode}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <WarningIconSmall height="14" width="14" />
             </ShowIcons>
           )}
           {showIcon && alertBody && type === 'warning' && (
-            <ShowIcons showIcon={showIcon} type={type} alertBody={alertBody}>
+            <ShowIcons
+              bannerMode={bannerMode}
+              showIcon={showIcon}
+              type={type}
+              alertBody={alertBody}>
               <WarningIcon height="21" width="21" />
             </ShowIcons>
           )}
-          <div
-            style={{
-              width: '100%',
-              alignItems: 'flex-start',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-            }}>
+          <AlertMessageContainer bannerMode={bannerMode}>
             <AlertTitle showIcon={showIcon} alertBody={alertBody}>
-              {alertTitle}
+              <Body size="Small">{alertTitle}</Body>
             </AlertTitle>
 
             {alertBody && (
-              <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>
+              <Body size="Small">
+                <AlertBody showIcon={showIcon}>{alertBody}</AlertBody>
+              </Body>
             )}
-          </div>
+          </AlertMessageContainer>
+          {bannerMode && (
+            <RefreshLinkContainer onClick={onRefresh}>
+              <Body color="blue" size="Small">
+                <FormattedMessage id="click-to-refresh" />
+              </Body>
+            </RefreshLinkContainer>
+          )}
           {closeText && !closeable && (
             <CloseTextButton
+              bannerMode={bannerMode}
               closeText={closeText}
               closeable={closeable}
               alertBody={alertBody}
@@ -199,6 +274,7 @@ const Alert = withTheme(
           )}
           {closeable && !closeText && (
             <CloseButton
+              bannerMode={bannerMode}
               closeable={closeable}
               closeText={closeText}
               alertBody={alertBody}
