@@ -65,7 +65,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
 
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
-  const numberOfPages = climateWarehouseStore.projectsPageCount || 1;
+  const numberOfPages = climateWarehouseStore.pageCount || 1;
 
   const backButtonIsDisabled = currentPageNumber === 1;
   const nextButtonIsDisabled = currentPageNumber === numberOfPages;

@@ -139,7 +139,7 @@ export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
         if (searchQuery) {
           url += `&search=${encodeURIComponent(searchQuery)}`;
         }
-
+        console.log('request sent to: ', type, url );
         const response = await fetch(url);
 
         if (response.ok) {
