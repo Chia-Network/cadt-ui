@@ -219,11 +219,13 @@ const Units = withRouter(() => {
             )}
           {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
         </TabPanel>
-        <TabPanel style={{ height: '100%' }} value={tabValue} index={1}>
+        <TabPanel value={tabValue} index={1}>
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.staging.length === 0 && (
               <NoDataMessageContainer>
-                <FormattedMessage id="no-staged" />
+                <H3>
+                  <FormattedMessage id="no-staged" />
+                </H3>
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (
@@ -234,11 +236,13 @@ const Units = withRouter(() => {
             />
           )}
         </TabPanel>
-        <TabPanel style={{ height: '100%' }} value={tabValue} index={2}>
+        <TabPanel value={tabValue} index={2}>
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.staging.length === 0 && (
               <NoDataMessageContainer>
-                <FormattedMessage id="no-pending" />
+                <H3>
+                  <FormattedMessage id="no-pending" />
+                </H3>
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (

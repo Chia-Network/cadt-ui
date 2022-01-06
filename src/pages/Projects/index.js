@@ -219,7 +219,9 @@ const Projects = withRouter(() => {
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.staging.length === 0 && (
               <NoDataMessageContainer>
-                <FormattedMessage id="no-staged" />
+                <H3>
+                  <FormattedMessage id="no-staged" />
+                </H3>
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (
@@ -234,7 +236,9 @@ const Projects = withRouter(() => {
           {climateWarehouseStore.stagingData &&
             climateWarehouseStore.stagingData.projects.pending.length === 0 && (
               <NoDataMessageContainer>
-                <FormattedMessage id="no-pending" />
+                <H3>
+                  <FormattedMessage id="no-pending" />
+                </H3>
               </NoDataMessageContainer>
             )}
           {climateWarehouseStore.stagingData && (
