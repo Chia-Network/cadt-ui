@@ -95,7 +95,7 @@ const NoDataMessageContainer = styled('div')`
 `;
 
 const Projects = withRouter(() => {
-  const [create, setCreate] = useState(false);
+  const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const appStore = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
@@ -137,7 +137,7 @@ const Projects = withRouter(() => {
 
   useEffect(() => {
     if (appStore.errorMessage === 'Project could not be created') {
-      setCreate(false);
+      setCreateFormIsDisplayed(false);
     }
   }, [appStore.errorMessage]);
 
@@ -221,7 +221,7 @@ const Projects = withRouter(() => {
               label={intl.formatMessage({ id: 'create' })}
               size="large"
               icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-              onClick={() => setCreate(true)}
+              onClick={() => setCreateFormIsDisplayed(true)}
             />
           )}
           {tabValue === 1 &&
@@ -264,7 +264,7 @@ const Projects = withRouter(() => {
                     <>
                       <FormattedMessage id="no-projects-created" />
                       <StyledCreateOneNowContainer
-                        onClick={() => setCreate(true)}>
+                        onClick={() => setCreateFormIsDisplayed(true)}>
                         <FormattedMessage id="create-one-now" />
                       </StyledCreateOneNowContainer>
                     </>
@@ -318,7 +318,9 @@ const Projects = withRouter(() => {
           )}
         </TabPanel>
       </StyledBodyContainer>
-      {create && <CreateProjectForm onClose={() => setCreate(false)} />}
+      {createFormIsDisplayed && (
+        <CreateProjectForm onClose={() => setCreateFormIsDisplayed(false)} />
+      )}
       {appStore.errorMessage === 'Project could not be created' && (
         <NotificationCard>
           <Alert
@@ -326,7 +328,7 @@ const Projects = withRouter(() => {
             banner={false}
             alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
             alertBody={intl.formatMessage({
-              id: 'project-not-created'
+              id: 'project-not-created',
             })}
             showIcon
             closeable
