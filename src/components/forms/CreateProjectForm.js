@@ -107,16 +107,42 @@ const CreateProjectForm = withRouter(({ onClose }) => {
         basic
         form
         showButtons
-        title="Create Projects"
+        title={intl.formatMessage({
+          id: 'create-project',
+        })}
         body={
           <div>
             <Tabs value={tabValue} onChange={handleTabChange}>
-              <Tab label="Project" />
-              <Tab label="Qualifications" />
-              <Tab label="Vintages" />
-              <Tab label="Co-Benefits" />
-              <Tab label="Project Locations" />
-              <Tab label="Related Projects" />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'project',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'qualifications',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'vintages',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'co-benefits',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'project-locations',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'related-projects',
+                })}
+              />
             </Tabs>
             <div>
               <TabPanel

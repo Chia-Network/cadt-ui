@@ -82,13 +82,27 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
         basic
         form
         showButtons
-        title="Create Units"
+        title={intl.formatMessage({
+          id: 'create-unit',
+        })}
         body={
           <div>
             <Tabs value={tabValue} onChange={handleTabChange}>
-              <Tab label="Create Units" />
-              <Tab label="Qualifications" />
-              <Tab label="Vintage" />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'unit',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'qualifications',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'vintages',
+                })}
+              />
             </Tabs>
             <div>
               <TabPanel

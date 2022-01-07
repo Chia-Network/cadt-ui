@@ -87,13 +87,27 @@ const EditUnitsForm = ({ data, onClose }) => {
         basic
         form
         showButtons
-        title="Edit Units"
+        title={intl.formatMessage({
+          id: 'edit-unit',
+        })}
         body={
           <div>
             <Tabs value={tabValue} onChange={handleTabChange}>
-              <Tab label="Units" />
-              <Tab label="Qualifications" />
-              <Tab label="Vintage" />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'unit',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'qualifications',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'vintages',
+                })}
+              />
             </Tabs>
             <div>
               <TabPanel

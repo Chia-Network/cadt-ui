@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css, withTheme } from 'styled-components';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
   SuccessIcon,
   InfoIcon,
@@ -138,9 +139,11 @@ const Modal = withTheme(
     type,
     confirmation,
     basic,
-    label = "Ok",
+    label,
     form = false,
   }) => {
+    const intl = useIntl();
+
     return (
       <Container>
         <ModalContainer basic={basic} form={form}>
@@ -167,7 +170,11 @@ const Modal = withTheme(
           <MessageContainer basic={basic} form={form}>
             <TitleContainer basic={basic} form={form}>
               <Body size="Bold">{title}</Body>
-              {basic && <div onClick={onClose} style={{cursor: 'pointer'}}><CloseIcon height="8.91" width="8.66" /></div>}
+              {basic && (
+                <div onClick={onClose} style={{ cursor: 'pointer' }}>
+                  <CloseIcon height="8.91" width="8.66" />
+                </div>
+              )}
             </TitleContainer>
             {basic && <Divider />}
             <BodyContainer basic={basic} form={form}>
@@ -182,7 +189,7 @@ const Modal = withTheme(
                       color: '#3B8EE0',
                       paddingTop: '20px',
                     }}>
-                    * Required Field
+                    *<FormattedMessage id="required-field" />
                   </div>
                 </>
               )}
@@ -202,12 +209,16 @@ const Modal = withTheme(
                 {(confirmation || basic) && (
                   <PrimaryButton
                     size="large"
-                    label="Cancel"
+                    label={intl.formatMessage({ id: 'cancel' })}
                     onClick={onClose}
                   />
                 )}
                 <OkContainer>
-                  <PrimaryButton size="large" label={label} onClick={onOk} />
+                  <PrimaryButton
+                    size="large"
+                    label={label || intl.formatMessage({ id: 'ok' })}
+                    onClick={onOk}
+                  />
                 </OkContainer>
               </ButtonContainer>
             )}

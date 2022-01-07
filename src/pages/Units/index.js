@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { jsonToCsv } from '../../utils/csvUtils';
 import constants from '../../constants';
 
@@ -93,6 +93,7 @@ const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const appStore = useSelector(store => store.app);
+  const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
@@ -198,14 +199,14 @@ const Units = withRouter(() => {
             size={SelectSizeEnum.large}
             type={SelectTypeEnum.basic}
             options={[{ label: 'Filter 1', value: 'f1' }]}
-            placeholder="Filters"
+            placeholder={intl.formatMessage({ id: 'filters' })}
             width="93px"
           />
         </StyledFiltersContainer>
         <StyledButtonContainer>
           {tabValue === 0 && (
             <PrimaryButton
-              label="Create"
+              label={intl.formatMessage({ id: 'create' })}
               size="large"
               icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
               onClick={() => setCreate(true)}
@@ -214,7 +215,7 @@ const Units = withRouter(() => {
           {tabValue === 1 &&
             climateWarehouseStore.stagingData.units.staging.length > 0 && (
               <PrimaryButton
-                label="Commit"
+                label={intl.formatMessage({ id: 'commit' })}
                 size="large"
                 onClick={() => dispatch(commitStagingData())}
               />
@@ -223,15 +224,15 @@ const Units = withRouter(() => {
       </StyledHeaderContainer>
       <StyledSubHeaderContainer>
         <Tabs value={tabValue} onChange={handleTabChange}>
-          <Tab label="Commited" />
+          <Tab label={intl.formatMessage({ id: 'committed' })} />
           <Tab
-            label={`Staging (${
+            label={`${intl.formatMessage({ id: 'staging' })} (${
               climateWarehouseStore.stagingData &&
               climateWarehouseStore.stagingData.units.staging.length
             })`}
           />
           <Tab
-            label={`Pending (${
+            label={`${intl.formatMessage({ id: 'pending' })} (${
               climateWarehouseStore.stagingData &&
               climateWarehouseStore.stagingData.units.pending.length
             })`}

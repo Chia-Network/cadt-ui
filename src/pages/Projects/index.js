@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { jsonToCsv } from '../../utils/csvUtils';
 import constants from '../../constants';
 
@@ -94,6 +94,7 @@ const Projects = withRouter(() => {
   const appStore = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
+  const intl = useIntl();
   const dispatch = useDispatch();
   let history = useHistory();
 
@@ -197,14 +198,14 @@ const Projects = withRouter(() => {
             size={SelectSizeEnum.large}
             type={SelectTypeEnum.basic}
             options={[{ label: 'Filter 1', value: 'f1' }]}
-            placeholder="Filters"
+            placeholder={intl.formatMessage({ id: 'filters' })}
             width="93px"
           />
         </StyledFiltersContainer>
         <StyledButtonContainer>
           {tabValue === 0 && (
             <PrimaryButton
-              label="Create"
+              label={intl.formatMessage({ id: 'create' })}
               size="large"
               icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
               onClick={() => setCreate(true)}
@@ -213,7 +214,7 @@ const Projects = withRouter(() => {
           {tabValue === 1 &&
             climateWarehouseStore.stagingData.projects.staging.length > 0 && (
               <PrimaryButton
-                label="Commit"
+                label={intl.formatMessage({ id: 'commit' })}
                 size="large"
                 onClick={() => dispatch(commitStagingData())}
               />
@@ -222,15 +223,15 @@ const Projects = withRouter(() => {
       </StyledHeaderContainer>
       <StyledSubHeaderContainer>
         <Tabs value={tabValue} onChange={handleTabChange}>
-          <Tab label="Commited" />
+          <Tab label={intl.formatMessage({ id: 'committed' })} />
           <Tab
-            label={`Staging (${
+            label={`${intl.formatMessage({ id: 'staging' })} (${
               climateWarehouseStore.stagingData &&
               climateWarehouseStore.stagingData.projects.staging.length
             })`}
           />
           <Tab
-            label={`Pending (${
+            label={`${intl.formatMessage({ id: 'pending' })} (${
               climateWarehouseStore.stagingData &&
               climateWarehouseStore.stagingData.projects.pending.length
             })`}
