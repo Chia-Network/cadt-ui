@@ -51,7 +51,6 @@ const EditProjectsForm = ({ data, onClose }) => {
 
   useEffect(() => {
     setEditProjects({
-      currentRegistry: data.currentRegistry,
       registryOfOrigin: data.registryOfOrigin,
       originProjectId: data.originProjectId,
       program: data.program,
@@ -158,29 +157,6 @@ const EditProjectsForm = ({ data, onClose }) => {
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="current-registry" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'current-registry',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.currentRegistry}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                currentRegistry: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
