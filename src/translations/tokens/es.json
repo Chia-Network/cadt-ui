@@ -94,5 +94,6 @@
   "vintage-end-date": "Fecha de finalización de la vendimia",
   "verification-approach": "Enfoque de verificación",
   "verification-date": "Fecha de verificación",
-  "verification-body": "Organismo de verificación"
+  "verification-body": "Organismo de verificación",
+  "no-search-results": "Lo sentimos, no se han encontrado resultados. Pruebe con una búsqueda diferente."
 }

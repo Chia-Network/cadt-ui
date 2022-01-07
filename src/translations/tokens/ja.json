@@ -94,5 +94,6 @@
   "vintage-end-date": "ヴィンテージ終了日",
   "verification-approach": "検証アプローチ",
   "verification-date": "検証日",
-  "verification-body": "検証機関"
+  "verification-body": "検証機関",
+  "no-search-results": "申し訳ありませんが、結果は見つかりませんでした。別の検索を試してください。"
 }

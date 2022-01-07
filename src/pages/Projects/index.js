@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -97,6 +97,7 @@ const Projects = withRouter(() => {
   const intl = useIntl();
   const dispatch = useDispatch();
   let history = useHistory();
+  let searchRef = useRef(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -110,6 +111,7 @@ const Projects = withRouter(() => {
         } else {
           history.replace({ search: null });
         }
+        searchRef.current = event.target.value;
         dispatch(
           getPaginatedData({
             type: 'projects',
@@ -247,10 +249,18 @@ const Projects = withRouter(() => {
             climateWarehouseStore.projects.length === 0 && (
               <NoDataMessageContainer>
                 <H3>
-                  <FormattedMessage id="no-projects-created" />
-                  <StyledCreateOneNowContainer onClick={() => setCreate(true)}>
-                    <FormattedMessage id="create-one-now" />
-                  </StyledCreateOneNowContainer>
+                  {!searchRef.current && (
+                    <>
+                      <FormattedMessage id="no-projects-created" />
+                      <StyledCreateOneNowContainer
+                        onClick={() => setCreate(true)}>
+                        <FormattedMessage id="create-one-now" />
+                      </StyledCreateOneNowContainer>
+                    </>
+                  )}
+                  {searchRef.current && (
+                    <FormattedMessage id="no-search-results" />
+                  )}
                 </H3>
               </NoDataMessageContainer>
             )}
