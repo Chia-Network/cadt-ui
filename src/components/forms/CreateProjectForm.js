@@ -52,7 +52,6 @@ const CreateProjectForm = withRouter(({ onClose }) => {
   };
 
   const [newProject, setNewProject] = useState({
-    currentRegistry: '',
     registryOfOrigin: '',
     originProjectId: '',
     program: '',
@@ -153,29 +152,6 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="current-registry" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'current-registry',
-                            })}
-                            state={InputStateEnum.default}
-                            value={newProject.currentRegistry}
-                            onChange={value =>
-                              setNewProject(prev => ({
-                                ...prev,
-                                currentRegistry: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
