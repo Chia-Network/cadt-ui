@@ -136,7 +136,7 @@ const Projects = withRouter(() => {
   }, []);
 
   useEffect(() => {
-    if (appStore.errorMessage === 'Project could not be created') {
+    if (appStore.errorMessage) {
       setCreateFormIsDisplayed(false);
     }
   }, [appStore.errorMessage]);
@@ -321,7 +321,7 @@ const Projects = withRouter(() => {
       {createFormIsDisplayed && (
         <CreateProjectForm onClose={() => setCreateFormIsDisplayed(false)} />
       )}
-      {appStore.errorMessage === 'Project could not be created' && (
+      {appStore.errorMessage && (
         <NotificationCard>
           <Alert
             type="error"

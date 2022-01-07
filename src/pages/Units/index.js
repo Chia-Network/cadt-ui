@@ -135,7 +135,7 @@ const Units = withRouter(() => {
   }, []);
 
   useEffect(() => {
-    if (appStore.errorMessage === 'Unit could not be created') {
+    if (appStore.errorMessage) {
       setCreate(false);
     }
   }, [appStore.errorMessage]);
@@ -321,7 +321,7 @@ const Units = withRouter(() => {
           )}
         </TabPanel>
       </StyledBodyContainer>
-      {appStore.errorMessage === 'Unit could not be created' && (
+      {appStore.errorMessage && (
         <NotificationCard>
           <Alert
             type="error"
