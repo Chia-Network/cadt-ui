@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -22,6 +22,8 @@ import {
   SelectTypeEnum,
   CreateProjectForm,
   H3,
+  Alert,
+  NotificationCard,
 } from '../../components';
 
 import {
@@ -30,6 +32,8 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+
+import { setGlobalErrorMessage } from '../../store/actions/app';
 
 const headings = [
   'warehouseProjectId',
@@ -44,6 +48,7 @@ const StyledSectionContainer = styled('div')`
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 `;
 
 const StyledHeaderContainer = styled('div')`
@@ -90,13 +95,14 @@ const NoDataMessageContainer = styled('div')`
 `;
 
 const Projects = withRouter(() => {
-  const [create, setCreate] = useState(false);
+  const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const appStore = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
   const dispatch = useDispatch();
   let history = useHistory();
+  let searchRef = useRef(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -110,6 +116,7 @@ const Projects = withRouter(() => {
         } else {
           history.replace({ search: null });
         }
+        searchRef.current = event.target.value;
         dispatch(
           getPaginatedData({
             type: 'projects',
@@ -127,6 +134,12 @@ const Projects = withRouter(() => {
       onSearch.cancel();
     };
   }, []);
+
+  useEffect(() => {
+    if (appStore.errorMessage) {
+      setCreateFormIsDisplayed(false);
+    }
+  }, [appStore.errorMessage]);
 
   useEffect(() => {
     dispatch(
@@ -208,7 +221,7 @@ const Projects = withRouter(() => {
               label={intl.formatMessage({ id: 'create' })}
               size="large"
               icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-              onClick={() => setCreate(true)}
+              onClick={() => setCreateFormIsDisplayed(true)}
             />
           )}
           {tabValue === 1 &&
@@ -247,10 +260,18 @@ const Projects = withRouter(() => {
             climateWarehouseStore.projects.length === 0 && (
               <NoDataMessageContainer>
                 <H3>
-                  <FormattedMessage id="no-projects-created" />
-                  <StyledCreateOneNowContainer onClick={() => setCreate(true)}>
-                    <FormattedMessage id="create-one-now" />
-                  </StyledCreateOneNowContainer>
+                  {!searchRef.current && (
+                    <>
+                      <FormattedMessage id="no-projects-created" />
+                      <StyledCreateOneNowContainer
+                        onClick={() => setCreateFormIsDisplayed(true)}>
+                        <FormattedMessage id="create-one-now" />
+                      </StyledCreateOneNowContainer>
+                    </>
+                  )}
+                  {searchRef.current && (
+                    <FormattedMessage id="no-search-results" />
+                  )}
                 </H3>
               </NoDataMessageContainer>
             )}
@@ -297,7 +318,24 @@ const Projects = withRouter(() => {
           )}
         </TabPanel>
       </StyledBodyContainer>
-      {create && <CreateProjectForm onClose={() => setCreate(false)} />}
+      {createFormIsDisplayed && (
+        <CreateProjectForm onClose={() => setCreateFormIsDisplayed(false)} />
+      )}
+      {appStore.errorMessage && (
+        <NotificationCard>
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
+            alertBody={intl.formatMessage({
+              id: 'project-not-created',
+            })}
+            showIcon
+            closeable
+            onClose={() => dispatch(setGlobalErrorMessage(null))}
+          />
+        </NotificationCard>
+      )}
     </StyledSectionContainer>
   );
 });

@@ -56,6 +56,7 @@ const getClimateWarehouseTable = (
         const response = await fetch(url);
 
         if (response.ok) {
+          dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
           const results = await response.json();
 
@@ -109,6 +110,7 @@ export const getOrganizationData = () => {
       const response = await fetch(`${constants.API_HOST}/organizations`);
 
       if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
         const results = await response.json();
 
         dispatch({
@@ -137,6 +139,7 @@ export const getStagingData = ({ useMockedResponse = false }) => {
         const response = await fetch(`${constants.API_HOST}/staging`);
 
         if (response.ok) {
+          dispatch(setGlobalErrorMessage(null));
           const results = await response.json();
 
           dispatch({
@@ -169,6 +172,7 @@ export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
         const response = await fetch(url);
 
         if (response.ok) {
+          dispatch(setGlobalErrorMessage(null));
           const results = await response.json();
 
           let action = actions.GET_PROJECTS;
@@ -214,6 +218,7 @@ export const commitStagingData = () => {
 
       if (response.ok) {
         console.log('yay!');
+        dispatch(setGlobalErrorMessage(null));
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
         dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
@@ -244,6 +249,7 @@ export const deleteStagingData = uuid => {
 
       if (response.ok) {
         console.log('yay!');
+        dispatch(setGlobalErrorMessage(null));
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
         dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
@@ -276,6 +282,7 @@ export const postNewProject = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
         dispatch(setGlobalErrorMessage('Project could not be created'));
@@ -308,6 +315,7 @@ export const postNewUnits = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
         dispatch(setGlobalErrorMessage('Unit could not be created'));
@@ -339,6 +347,7 @@ export const updateUnitsRecord = data => {
 
       if (response.ok) {
         console.log('yay!');
+        dispatch(setGlobalErrorMessage(null));
       } else {
         dispatch(setGlobalErrorMessage('Unit could not be created'));
       }

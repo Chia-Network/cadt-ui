@@ -97,6 +97,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
       dataToSend.relatedProjects = newRelatedProjects;
     }
     dispatch(postNewProject(dataToSend));
+    onClose();
   };
 
   return (

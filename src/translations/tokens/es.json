@@ -94,5 +94,9 @@
   "vintage-end-date": "Fecha de finalización de la vendimia",
   "verification-approach": "Enfoque de verificación",
   "verification-date": "Fecha de verificación",
-  "verification-body": "Organismo de verificación"
+  "verification-body": "Organismo de verificación",
+  "no-search-results": "Lo sentimos, no se han encontrado resultados. Pruebe con una búsqueda diferente.",
+  "something-went-wrong": "Perdón, algo salió mal.",
+  "project-not-created": "No se pudo crear el proyecto.",
+  "unit-not-created": "No se pudo crear la unidad."
 }

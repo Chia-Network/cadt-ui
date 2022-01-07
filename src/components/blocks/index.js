@@ -18,3 +18,4 @@ export * from './Modal';
 export * from './StagingDataTable';
 export * from './ToggleSwitch';
 export * from './APIDataTable';
+export * from './NotificationCard';
