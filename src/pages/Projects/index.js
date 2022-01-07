@@ -144,27 +144,17 @@ const Projects = withRouter(() => {
       return null;
     }
 
-    return climateWarehouseStore.projects
-      .filter(project => {
-        if (
-          appStore.mode === constants.MODE.WAREHOUSE ||
-          (appStore.mode === constants.MODE.REGISTRY &&
-            project.orgUid === climateWarehouseStore.organizations.me.orgUid)
-        ) {
-          return true;
-        }
-      })
-      .map(project =>
-        _.pick(project, [
-          'orgUid',
-          'warehouseProjectId',
-          'currentRegistry',
-          'registryOfOrigin',
-          'originProjectId',
-          'program',
-          'projectName',
-        ]),
-      );
+    return climateWarehouseStore.projects.map(project =>
+      _.pick(project, [
+        'orgUid',
+        'warehouseProjectId',
+        'currentRegistry',
+        'registryOfOrigin',
+        'originProjectId',
+        'program',
+        'projectName',
+      ]),
+    );
   }, [climateWarehouseStore.projects, appStore.mode]);
 
   if (!filteredColumnsTableData) {

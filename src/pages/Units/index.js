@@ -144,28 +144,18 @@ const Units = withRouter(() => {
       return null;
     }
 
-    return climateWarehouseStore.units
-      .filter(project => {
-        if (
-          appStore.mode === constants.MODE.WAREHOUSE ||
-          (appStore.mode === constants.MODE.REGISTRY &&
-            project.orgUid === climateWarehouseStore.organizations.me.orgUid)
-        ) {
-          return true;
-        }
-      })
-      .map(project =>
-        _.pick(project, [
-          'orgUid',
-          'uuid',
-          'buyer',
-          'registry',
-          'unitType',
-          'unitCount',
-          'unitStatus',
-          'unitStatusDate',
-        ]),
-      );
+    return climateWarehouseStore.units.map(project =>
+      _.pick(project, [
+        'orgUid',
+        'uuid',
+        'buyer',
+        'registry',
+        'unitType',
+        'unitCount',
+        'unitStatus',
+        'unitStatusDate',
+      ]),
+    );
   }, [climateWarehouseStore.units, appStore.mode]);
 
   if (!filteredColumnsTableData) {
