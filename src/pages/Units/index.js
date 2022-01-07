@@ -328,7 +328,7 @@ const Units = withRouter(() => {
             banner={false}
             alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
             alertBody={intl.formatMessage({
-              id: 'unit-not-created',
+              id: 'unit-not-created'
             })}
             showIcon
             closeable
