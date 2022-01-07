@@ -73,6 +73,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
     }
 
     dispatch(postNewUnits(dataToSend));
+    onClose();
   };
   return (
     <>

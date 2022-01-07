@@ -14,6 +14,8 @@ import {
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
 
+import { setGlobalErrorMessage } from '../../store/actions/app';
+
 import {
   H3,
   APIDataTable,
@@ -29,6 +31,8 @@ import {
   Tabs,
   TabPanel,
   StagingDataTable,
+  NotificationCard,
+  Alert,
 } from '../../components';
 
 const headings = [
@@ -129,6 +133,12 @@ const Units = withRouter(() => {
       onSearch.cancel();
     };
   }, []);
+
+  useEffect(() => {
+    if (appStore.errorMessage === 'Unit could not be created') {
+      setCreate(false);
+    }
+  }, [appStore.errorMessage]);
 
   useEffect(() => {
     dispatch(
@@ -311,6 +321,21 @@ const Units = withRouter(() => {
           )}
         </TabPanel>
       </StyledBodyContainer>
+      {appStore.errorMessage === 'Unit could not be created' && (
+        <NotificationCard>
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
+            alertBody={intl.formatMessage({
+              id: 'unit-not-created',
+            })}
+            showIcon
+            closeable
+            onClose={() => dispatch(setGlobalErrorMessage(null))}
+          />
+        </NotificationCard>
+      )}
     </StyledSectionContainer>
   );
 });

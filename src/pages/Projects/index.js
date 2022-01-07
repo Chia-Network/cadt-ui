@@ -22,6 +22,8 @@ import {
   SelectTypeEnum,
   CreateProjectForm,
   H3,
+  Alert,
+  NotificationCard,
 } from '../../components';
 
 import {
@@ -30,6 +32,8 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+
+import { setGlobalErrorMessage } from '../../store/actions/app';
 
 const headings = [
   'warehouseProjectId',
@@ -44,6 +48,7 @@ const StyledSectionContainer = styled('div')`
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 `;
 
 const StyledHeaderContainer = styled('div')`
@@ -129,6 +134,12 @@ const Projects = withRouter(() => {
       onSearch.cancel();
     };
   }, []);
+
+  useEffect(() => {
+    if (appStore.errorMessage === 'Project could not be created') {
+      setCreate(false);
+    }
+  }, [appStore.errorMessage]);
 
   useEffect(() => {
     dispatch(
@@ -308,6 +319,21 @@ const Projects = withRouter(() => {
         </TabPanel>
       </StyledBodyContainer>
       {create && <CreateProjectForm onClose={() => setCreate(false)} />}
+      {appStore.errorMessage === 'Project could not be created' && (
+        <NotificationCard>
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
+            alertBody={intl.formatMessage({
+              id: 'project-not-created',
+            })}
+            showIcon
+            closeable
+            onClose={() => dispatch(setGlobalErrorMessage(null))}
+          />
+        </NotificationCard>
+      )}
     </StyledSectionContainer>
   );
 });

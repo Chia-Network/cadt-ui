@@ -95,5 +95,8 @@
   "verification-approach": "Verification Approach",
   "verification-date": "Verification Date",
   "verification-body": "Verification Body",
-  "no-search-results": "Sorry, no results were found. Try a different search."
+  "no-search-results": "Sorry, no results were found. Try a different search.",
+  "something-went-wrong": "Sorry, something went wrong.",
+  "project-not-created": "The project could not be created.",
+  "unit-not-created": "The unit could not be created."
 }
