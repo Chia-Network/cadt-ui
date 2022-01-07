@@ -189,7 +189,7 @@ const Modal = withTheme(
                       color: '#3B8EE0',
                       paddingTop: '20px',
                     }}>
-                    <FormattedMessage id="required-field" />
+                    *<FormattedMessage id="required-field" />
                   </div>
                 </>
               )}
