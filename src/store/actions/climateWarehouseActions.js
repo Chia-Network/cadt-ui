@@ -268,7 +268,11 @@ export const postNewProject = data => {
       dispatch(activateProgressIndicator);
 
       const state = getState().climateWarehouse;
-      data.orgUid = _.get(state, 'organizations.me.orgUid');
+
+      // All newly created projects belong to this organization
+      data.orgUid = Object.keys(_.get(state, 'organizations', {})).find(key =>
+        _.get(state, `organizations.${key}.writeAccess`),
+      );
 
       const url = `${constants.API_HOST}/projects`;
       const payload = {
@@ -301,7 +305,11 @@ export const postNewUnits = data => {
       dispatch(activateProgressIndicator);
 
       const state = getState().climateWarehouse;
-      data.orgUid = _.get(state, 'organizations.me.orgUid');
+
+      // All newly created units belong to this organization
+      data.orgUid = Object.keys(_.get(state, 'organizations', {})).find(key =>
+        _.get(state, `organizations.${key}.writeAccess`),
+      );
 
       const url = `${constants.API_HOST}/units`;
       const payload = {
@@ -320,7 +328,8 @@ export const postNewUnits = data => {
       } else {
         dispatch(setGlobalErrorMessage('Unit could not be created'));
       }
-    } catch {
+    } catch (err) {
+      console.log(err);
       dispatch(setGlobalErrorMessage('Something went wrong...'));
     } finally {
       dispatch(deactivateProgressIndicator);

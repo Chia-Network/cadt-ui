@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme, css } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
@@ -127,15 +127,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
 
-  const orgUidMap = useMemo(() => {
-    const map = {};
-    Object.keys(climateWarehouseStore.organizations).forEach(key => {
-      const orgs = climateWarehouseStore.organizations;
-      map[orgs[key].orgUid] = orgs[key].icon;
-    });
-    return map;
-  });
-
   return (
     <>
       <StyledRefContainer ref={ref}>
@@ -177,13 +168,19 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         key={index}>
                         <TableCellText
                           tooltip={record[key] && record[key].toString()}>
-                          {key === 'orgUid' && orgUidMap[record[key]] && (
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: orgUidMap[record[key]],
-                              }}
-                            />
-                          )}
+                          {key === 'orgUid' &&
+                            climateWarehouseStore.organizations[
+                              record[key]
+                            ] && (
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    climateWarehouseStore.organizations[
+                                      record[key]
+                                    ].icon,
+                                }}
+                              />
+                            )}
 
                           {key !== 'orgUid' &&
                             record[key] &&
