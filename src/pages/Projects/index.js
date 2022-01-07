@@ -326,7 +326,7 @@ const Projects = withRouter(() => {
             banner={false}
             alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
             alertBody={intl.formatMessage({
-              id: 'project-not-created',
+              id: 'project-not-created'
             })}
             showIcon
             closeable
