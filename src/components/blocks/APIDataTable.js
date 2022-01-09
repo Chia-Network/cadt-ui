@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme, css } from 'styled-components';
@@ -127,6 +128,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
 
+  console.log(climateWarehouseStore.organizations);
   return (
     <>
       <StyledRefContainer ref={ref}>
@@ -167,18 +169,23 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         columnId={key}
                         key={index}>
                         <TableCellText
-                          tooltip={record[key] && record[key].toString()}>
+                          tooltip={
+                            record[key] &&
+                            `${_.get(
+                              climateWarehouseStore,
+                              `organizations[${record[key]}].name`,
+                            )}: ${record[key].toString()}`
+                          }>
                           {key === 'orgUid' &&
                             climateWarehouseStore.organizations[
                               record[key]
                             ] && (
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html:
-                                    climateWarehouseStore.organizations[
-                                      record[key]
-                                    ].icon,
-                                }}
+                              <img
+                                src={
+                                  climateWarehouseStore.organizations[
+                                    record[key]
+                                  ].icon
+                                }
                               />
                             )}
 
