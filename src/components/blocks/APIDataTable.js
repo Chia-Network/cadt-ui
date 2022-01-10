@@ -130,7 +130,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
 
   return (
     <>
-      <SplitUnitForm organizations={climateWarehouseStore.organizations} />
+      {false && <SplitUnitForm organizations={climateWarehouseStore.organizations} />}
       <StyledRefContainer ref={ref}>
         <StyledScalableContainer height={`${height}px`}>
           <Table selectedTheme={appStore.theme}>
