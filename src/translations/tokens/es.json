@@ -98,5 +98,6 @@
   "no-search-results": "Lo sentimos, no se han encontrado resultados. Pruebe con una búsqueda diferente.",
   "something-went-wrong": "Perdón, algo salió mal.",
   "project-not-created": "No se pudo crear el proyecto.",
-  "unit-not-created": "No se pudo crear la unidad."
+  "unit-not-created": "No se pudo crear la unidad.",
+  "transactions-committed": "Sus transacciones han sido confirmadas."
 }
