@@ -172,10 +172,6 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const [height, setHeight] = useState(0);
   const windowSize = useWindowSize();
 
-  useEffect(() => {
-    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
-  }, [ref.current, windowSize.height]);
-
   const changeGroupIsValid = changeGroup => {
     if (!changeGroup.diff) {
       return false;
@@ -198,6 +194,10 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
 
     return true;
   };
+
+  useEffect(() => {
+    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+  }, [ref.current, windowSize.height, data]);
 
   const onDeleteStaging = uuid => {
     if (!deleteStagingData) return null;

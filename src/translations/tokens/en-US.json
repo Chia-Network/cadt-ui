@@ -98,5 +98,6 @@
   "no-search-results": "Sorry, no results were found. Try a different search.",
   "something-went-wrong": "Sorry, something went wrong.",
   "project-not-created": "The project could not be created.",
-  "unit-not-created": "The unit could not be created."
+  "unit-not-created": "The unit could not be created.",
+  "transactions-committed": "Your transactions have been committed."
 }
