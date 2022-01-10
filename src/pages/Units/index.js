@@ -234,7 +234,6 @@ const Units = withRouter(() => {
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
-        <DateSelect />
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
