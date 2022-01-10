@@ -128,10 +128,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
 
-  console.log(climateWarehouseStore.organizations);
   return (
     <>
-      <SplitUnitForm />
+      <SplitUnitForm organizations={climateWarehouseStore.organizations} />
       <StyledRefContainer ref={ref}>
         <StyledScalableContainer height={`${height}px`}>
           <Table selectedTheme={appStore.theme}>

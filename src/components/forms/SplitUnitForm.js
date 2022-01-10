@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Modal, Body, InputSizeEnum, InputStateEnum, StandardInput } from '..';
+import {
+  Modal,
+  Body,
+  InputSizeEnum,
+  InputStateEnum,
+  StandardInput,
+  Select,
+  SelectSizeEnum,
+  SelectTypeEnum,
+} from '..';
 
 const InputContainer = styled('div')`
   width: 20rem;
@@ -28,13 +37,18 @@ const StyledSplitEntry = styled('div')`
   align-items: flex-end;
 `;
 
-const SplitUnitForm = ({ onClose }) => {
+const SplitUnitForm = ({ onClose, organizations }) => {
   const [data, setData] = useState([
     { unitCount: null, orgUid: null },
     { unitCount: null, orgUid: null },
   ]);
 
   const intl = useIntl();
+
+  const organizationsArray = Object.keys(organizations).map(key => ({
+    value: key,
+    label: organizations[key].name,
+  }));
 
   return (
     <Modal
@@ -85,14 +99,15 @@ const SplitUnitForm = ({ onClose }) => {
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
-                  <StandardInput
-                    size={InputSizeEnum.large}
-                    state={InputStateEnum.default}
-                    value={item.orgUid}
+                  <Select
+                    size={SelectSizeEnum.large}
+                    type={SelectTypeEnum.basic}
+                    options={organizationsArray}
+                    placeholder="Select"
                     onChange={value =>
                       setData(prevData => {
                         const newData = [...prevData];
-                        newData[index].orgUid = value;
+                        newData[index].orgUid = value[0].value;
                         return newData;
                       })
                     }
