@@ -46,7 +46,6 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   };
 
   const [newUnits, setNewUnits] = useState({
-    warehouseUnitId: '',
     unitBlockStart: '',
     unitBlockEnd: '',
     countryJuridictionOfOwner: '',
@@ -108,29 +107,6 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="warehouse-unit-id" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'warehouse-unit-id',
-                            })}
-                            state={InputStateEnum.default}
-                            value={newUnits.warehouseUnitId}
-                            onChange={value =>
-                              setNewUnits(prev => ({
-                                ...prev,
-                                warehouseUnitId: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>

@@ -45,7 +45,6 @@ const EditUnitsForm = ({ data, onClose }) => {
 
   useEffect(() => {
     setEditUnits({
-      warehouseUnitId: data.warehouseUnitId,
       unitBlockStart: data.unitBlockStart,
       unitBlockEnd: data.unitBlockEnd,
       countryJuridictionOfOwner: data.countryJuridictionOfOwner,
@@ -110,29 +109,6 @@ const EditUnitsForm = ({ data, onClose }) => {
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="warehouse-unit-id" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'warehouse-unit-id',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.warehouseUnitId}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                warehouseUnitId: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
@@ -225,6 +201,8 @@ const EditUnitsForm = ({ data, onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
+                    </BodyContainer>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
@@ -271,8 +249,6 @@ const EditUnitsForm = ({ data, onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                    </BodyContainer>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
