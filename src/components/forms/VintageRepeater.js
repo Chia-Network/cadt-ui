@@ -12,11 +12,13 @@ function VintageRepeater({ vintageState, newVintageState, max = 30 }) {
         values={_.isEmpty(vintageState) ? [] : vintageState}
         updateValues={newVintageState}
         initialValue={{
-          vintageStartDate: '',
-          vintageEndDate: '',
+          startDate: '',
+          endDate: '',
           verificationApproach: '',
           verificationDate: '',
           verificationBody: '',
+          projectId: '',
+          unitId: '',
         }}
         component={<CreateVintageForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}

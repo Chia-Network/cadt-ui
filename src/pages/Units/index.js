@@ -33,6 +33,7 @@ import {
   StagingDataTable,
   NotificationCard,
   Alert,
+  DateSelect,
 } from '../../components';
 
 const headings = [
@@ -159,14 +160,15 @@ const Units = withRouter(() => {
 
     return climateWarehouseStore.units.map(project =>
       _.pick(project, [
-        'orgUid',
-        'uuid',
-        'buyer',
-        'registry',
-        'unitType',
-        'unitCount',
-        'unitStatus',
-        'unitStatusDate',
+        'warehouseUnitId',
+        'unitBlockStart',
+        'unitBlockEnd',
+        'countryJuridictionOfOwner',
+        'inCountryJuridictionOfOwner',
+        'intendedBuyerOrgUid',
+        'tags',
+        'tokenIssuanceHash',
+        'marketplaceIdentifier',
       ]),
     );
   }, [climateWarehouseStore.units, appStore.mode]);
@@ -232,6 +234,7 @@ const Units = withRouter(() => {
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
+        <DateSelect />
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
