@@ -36,12 +36,14 @@ import {
 } from '../../components';
 
 const headings = [
-  'id',
-  'unitStatus',
-  'unitType',
-  'unitCount',
-  'buyer',
-  'registry',
+  'unitBlockStart',
+  'unitBlockEnd',
+  'countryJuridictionOfOwner',
+  'inCountryJuridictionOfOwner',
+  'intendedBuyerOrgUid',
+  'tags',
+  'tokenIssuanceHash',
+  'marketplaceIdentifier',
 ];
 
 const StyledSectionContainer = styled('div')`
@@ -159,7 +161,6 @@ const Units = withRouter(() => {
 
     return climateWarehouseStore.units.map(project =>
       _.pick(project, [
-        'warehouseUnitId',
         'unitBlockStart',
         'unitBlockEnd',
         'countryJuridictionOfOwner',
