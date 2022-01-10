@@ -8,14 +8,15 @@ const InputContainer = styled('div')`
 `;
 
 const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
+  padding-bottom: 2.25rem;
 `;
 
 const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
+  padding: 0.3rem 0 0.3rem 0;
 `;
 
 const StyledContainer = styled('div')`
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
 `;
@@ -24,6 +25,7 @@ const StyledSplitEntry = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: flex-end;
 `;
 
 const SplitUnitForm = ({ onClose }) => {
@@ -51,6 +53,11 @@ const SplitUnitForm = ({ onClose }) => {
           {data.map((item, index) => (
             <StyledSplitEntry key={index}>
               <StyledFieldContainer>
+                <div>
+                  <Body size="Bold">
+                    <FormattedMessage id="record" /> {index + 1}
+                  </Body>
+                </div>
                 <StyledLabelContainer>
                   <Body color={'#262626'}>
                     <FormattedMessage id="nr-of-units" />

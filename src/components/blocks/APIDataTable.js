@@ -8,7 +8,7 @@ import { TableDrawer, APIPagination } from '.';
 import { EllipseIcon } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
-import { EditUnitsForm, EditProjectsForm } from '..';
+import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -131,6 +131,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   console.log(climateWarehouseStore.organizations);
   return (
     <>
+      <SplitUnitForm />
       <StyledRefContainer ref={ref}>
         <StyledScalableContainer height={`${height}px`}>
           <Table selectedTheme={appStore.theme}>

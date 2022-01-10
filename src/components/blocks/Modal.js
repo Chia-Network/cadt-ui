@@ -100,7 +100,7 @@ const BodyContainer = styled('div')`
       height: fit-content;
       width: 868px;
       height: 724px;
-      overflow: scroll;
+      overflow: auto;
     `}
 `;
 
