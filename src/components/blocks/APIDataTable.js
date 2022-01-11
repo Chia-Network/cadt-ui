@@ -7,6 +7,7 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination } from '.';
 import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
+import { useIntl } from 'react-intl';
 
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
 
@@ -116,6 +117,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
   const windowSize = useWindowSize();
+  const intl = useIntl();
 
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
@@ -190,16 +192,29 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         </TableCellText>
                       </Td>
                     ))}
-
                     {actions === 'Units' && (
                       <Td
                         style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          // setEditUnits(true);
-                          // setEditRecord(record);
-                        }}
                         selectedTheme={appStore.theme}>
-                        <BasicMenu />
+                        <BasicMenu
+                          options={[
+                            {
+                              label: intl.formatMessage({
+                                id: 'edit-unit',
+                              }),
+                              action: () => {
+                                setEditUnits(true);
+                                setEditRecord(record);
+                              },
+                            },
+                            {
+                              label: intl.formatMessage({
+                                id: 'split',
+                              }),
+                              action: () => console.log('split'),
+                            },
+                          ]}
+                        />
                       </Td>
                     )}
                     {actions === 'Projects' && (

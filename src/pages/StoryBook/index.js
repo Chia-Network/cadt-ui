@@ -59,6 +59,7 @@ import {
   DownloadIcon,
   EllipsisMenuIcon,
   EllipseIcon,
+  BasicMenu,
 } from '../../components';
 
 const StoryBook = () => {
@@ -557,6 +558,26 @@ const StoryBook = () => {
               state={SelectStateEnum.disabled}
             />
           </div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'start',
+            paddingTop: '50px',
+          }}>
+          <BasicMenu
+            options={[
+              { label: 'item 1', action: () => console.log('click on item 1') },
+              { label: 'item 1', action: () => console.log('click on item 2') },
+            ]}
+          />
+          <BasicMenu
+            options={[
+              { label: 'item 1', action: () => console.log('click on item 1') },
+              { label: 'item 1', action: () => console.log('click on item 2') },
+            ]}
+          >Menu</BasicMenu>
         </div>
 
         <div
