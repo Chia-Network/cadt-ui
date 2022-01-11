@@ -6,7 +6,7 @@ import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
-import { EllipseIcon } from '..';
+import { BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
 import { EditUnitsForm, EditProjectsForm } from '..';
@@ -99,13 +99,6 @@ const StyledScalableContainer = styled('div')`
     css`
       height: ${props.height};
     `}
-`;
-
-const StyledElipseContainer = styled('div')`
-  transform: 'rotate(0.25turn)';
-  display: 'flex';
-  align-items: 'center';
-  justify-content: 'space-evenly';
 `;
 
 const DataTable = withTheme(({ headings, data, actions }) => {
@@ -201,11 +194,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                           setEditRecord(record);
                         }}
                         selectedTheme={appStore.theme}>
-                        <StyledElipseContainer>
-                          <EllipseIcon height={'5'} width={'5'} />
-                          <EllipseIcon height={'5'} width={'5'} />
-                          <EllipseIcon height={'5'} width={'5'} />
-                        </StyledElipseContainer>
+                        <BasicMenu />
                       </Td>
                     )}
                     {actions === 'Projects' && (
@@ -216,11 +205,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                           setEditRecord(record);
                         }}
                         selectedTheme={appStore.theme}>
-                        <StyledElipseContainer>
-                          <EllipseIcon height="5" width="5" />
-                          <EllipseIcon height="5" width="5" />
-                          <EllipseIcon height="5" width="5" />
-                        </StyledElipseContainer>
+                        <BasicMenu />
                       </Td>
                     )}
                   </Tr>

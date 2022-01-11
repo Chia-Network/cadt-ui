@@ -1,14 +1,15 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
+
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination } from '.';
-import { EllipseIcon } from '..';
+import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-
-import { EditUnitsForm, EditProjectsForm } from '..';
+import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -106,29 +107,21 @@ const StyledScalableContainer = styled('div')`
     `}
 `;
 
-const StyledElipseContainer = styled('div')`
-  height: 29px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-`;
-
 const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
-  const [editUnits, setEditUnits] = useState(false);
-  const [editProjects, setEditProjects] = useState(false);
+  const [unitToBeSplit, setUnitToBeSplit] = useState(null);
   const appStore = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
   const windowSize = useWindowSize();
+  const intl = useIntl();
 
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
 
-  console.log(climateWarehouseStore.organizations);
   return (
     <>
       <StyledRefContainer ref={ref}>
@@ -195,35 +188,38 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         </TableCellText>
                       </Td>
                     ))}
-
                     {actions === 'Units' && (
                       <Td
                         style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          setEditUnits(true);
-                          setEditRecord(record);
-                        }}
                         selectedTheme={appStore.theme}>
-                        <StyledElipseContainer>
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                        </StyledElipseContainer>
+                        <BasicMenu
+                          options={[
+                            {
+                              label: intl.formatMessage({
+                                id: 'edit-unit',
+                              }),
+                              action: () => {
+                                setEditRecord(record);
+                              },
+                            },
+                            {
+                              label: intl.formatMessage({
+                                id: 'split',
+                              }),
+                              action: () => setUnitToBeSplit(record),
+                            },
+                          ]}
+                        />
                       </Td>
                     )}
                     {actions === 'Projects' && (
                       <Td
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
-                          setEditProjects(true);
                           setEditRecord(record);
                         }}
                         selectedTheme={appStore.theme}>
-                        <StyledElipseContainer>
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                        </StyledElipseContainer>
+                        <EllipsisMenuIcon />
                       </Td>
                     )}
                   </Tr>
@@ -239,22 +235,27 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
         </StyledScalableContainer>
       </StyledRefContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
-      {editUnits && (
+      {actions === 'Units' && editRecord && (
         <EditUnitsForm
           onClose={() => {
-            setEditUnits(false);
             setEditRecord(null);
           }}
           data={editRecord}
         />
       )}
-      {editProjects && (
+      {actions === 'Projects' && editRecord && (
         <EditProjectsForm
           onClose={() => {
-            setEditProjects(false);
             setEditRecord(null);
           }}
           data={editRecord}
+        />
+      )}
+      {unitToBeSplit && (
+        <SplitUnitForm
+          organizations={climateWarehouseStore.organizations}
+          onClose={() => setUnitToBeSplit(null)}
+          record={unitToBeSplit}
         />
       )}
     </>

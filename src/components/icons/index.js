@@ -23,3 +23,4 @@ export * from './Divider';
 export * from './EllipseIcon';
 export * from './MinusIcon';
 export * from './DownloadIcon';
+export * from './EllipsisMenuIcon';

@@ -99,5 +99,9 @@
   "something-went-wrong": "申し訳ありませんが、問題が発生しました。",
   "project-not-created": "プロジェクトを作成できませんでした。",
   "unit-not-created": "ユニットを作成できませんでした。",
-  "transactions-committed": "トランザクションがコミットされました。"
+  "transactions-committed": "トランザクションがコミットされました。",
+  "split": "スプリット",
+  "nr-of-units": "ユニット数",
+  "record": "記録",
+  "click-to-add": "クリックして追加"
 }
