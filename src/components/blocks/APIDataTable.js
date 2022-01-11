@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
+
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination } from '.';
 import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { useIntl } from 'react-intl';
-
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
 
 const Table = styled('table')`
@@ -112,6 +112,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [editRecord, setEditRecord] = useState(null);
   const [editUnits, setEditUnits] = useState(false);
   const [editProjects, setEditProjects] = useState(false);
+  const [unitToBeSplit, setUnitToBeSplit] = useState(null);
   const appStore = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const ref = React.useRef(null);
@@ -125,9 +126,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
 
   return (
     <>
-      {false && (
-        <SplitUnitForm organizations={climateWarehouseStore.organizations} />
-      )}
       <StyledRefContainer ref={ref}>
         <StyledScalableContainer height={`${height}px`}>
           <Table selectedTheme={appStore.theme}>
@@ -211,7 +209,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                               label: intl.formatMessage({
                                 id: 'split',
                               }),
-                              action: () => console.log('split'),
+                              action: () => setUnitToBeSplit(record),
                             },
                           ]}
                         />
@@ -257,6 +255,12 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
             setEditRecord(null);
           }}
           data={editRecord}
+        />
+      )}
+      {unitToBeSplit && (
+        <SplitUnitForm
+          organizations={climateWarehouseStore.organizations}
+          onClose={() => setUnitToBeSplit(null)}
         />
       )}
     </>
