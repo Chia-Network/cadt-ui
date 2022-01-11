@@ -41,6 +41,10 @@ const ModalContainer = styled('div')`
     css`
       height: fit-content;
       width: fit-content;
+      @media (max-width:866px){
+        width: 100%;
+        height: 100%;
+      }
     `}
 `;
 
@@ -101,6 +105,9 @@ const BodyContainer = styled('div')`
       width: 868px;
       height: 724px;
       overflow: scroll;
+      @media (max-width:868px){
+        width: 100%;
+      }
     `}
 `;
 
