@@ -337,6 +337,36 @@ export const postNewUnits = data => {
   };
 };
 
+export const splitUnits = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units/split`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(setGlobalErrorMessage('Unit could not be split.'));
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const updateUnitsRecord = data => {
   console.log(data);
   return async dispatch => {

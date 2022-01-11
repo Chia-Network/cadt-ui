@@ -12,3 +12,4 @@ export * from './VintageRepeater';
 export * from './RelatedProjectsRepeater';
 export * from './EditUnitsForm';
 export * from './EditProjectsForm';
+export * from './SplitUnitForm';

@@ -104,7 +104,7 @@ const BodyContainer = styled('div')`
       height: fit-content;
       width: 868px;
       height: 724px;
-      overflow: scroll;
+      overflow: auto;
       @media (max-width:868px){
         width: 100%;
       }

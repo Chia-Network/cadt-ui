@@ -57,6 +57,9 @@ import {
   Tab,
   TabPanel,
   DownloadIcon,
+  EllipsisMenuIcon,
+  EllipseIcon,
+  BasicMenu,
 } from '../../components';
 
 const StoryBook = () => {
@@ -563,6 +566,26 @@ const StoryBook = () => {
             justifyContent: 'start',
             paddingTop: '50px',
           }}>
+          <BasicMenu
+            options={[
+              { label: 'item 1', action: () => console.log('click on item 1') },
+              { label: 'item 1', action: () => console.log('click on item 2') },
+            ]}
+          />
+          <BasicMenu
+            options={[
+              { label: 'item 1', action: () => console.log('click on item 1') },
+              { label: 'item 1', action: () => console.log('click on item 2') },
+            ]}
+          >Menu</BasicMenu>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'start',
+            paddingTop: '50px',
+          }}>
           <ChiaLogo />
           <div style={{ width: '50px' }}></div>
           <ClimateWarehouseLogo />
@@ -593,6 +616,8 @@ const StoryBook = () => {
           <ArrowDownIcon width="20" height="20" />
           <CheckIcon width="20" height="20" />
           <DownloadIcon width="20" height="20" />
+          <EllipsisMenuIcon />
+          <EllipseIcon height="6" width="6" fill="#1890FF" />
         </div>
 
         <div

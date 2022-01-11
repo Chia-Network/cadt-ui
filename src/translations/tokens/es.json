@@ -99,5 +99,9 @@
   "something-went-wrong": "Perdón, algo salió mal.",
   "project-not-created": "No se pudo crear el proyecto.",
   "unit-not-created": "No se pudo crear la unidad.",
-  "transactions-committed": "Sus transacciones han sido confirmadas."
+  "transactions-committed": "Sus transacciones han sido confirmadas.",
+  "split": "Separar",
+  "nr-of-units": "# de unidades",
+  "record": "Record",
+  "click-to-add": "Haga clic para agregar"
 }
