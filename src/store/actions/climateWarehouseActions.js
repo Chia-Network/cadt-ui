@@ -338,7 +338,7 @@ export const postNewUnits = data => {
 };
 
 export const splitUnits = data => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
 
@@ -357,7 +357,7 @@ export const splitUnits = data => {
         dispatch(setGlobalErrorMessage(null));
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(setGlobalErrorMessage('Unit could not be created'));
+        dispatch(setGlobalErrorMessage('Unit could not be split.'));
       }
     } catch (err) {
       console.log(err);

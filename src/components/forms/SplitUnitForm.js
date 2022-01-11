@@ -53,6 +53,10 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     value: key,
     label: organizations[key].name,
   }));
+  organizationsArray.unshift({
+    value: record.unitOwnerOrgUid,
+    label: 'none'
+  });
 
   const validationSchema = yup
     .array()
@@ -76,7 +80,12 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     validationSchema
       .validate(data, { abortEarly: false, recursive: true })
       .then(() => {
-        dispatch(splitUnits);
+        dispatch(
+          splitUnits({
+            warehouseUnitId: record.warehouseUnitId,
+            records: data,
+          }),
+        );
       })
       .catch(err => {
         err.errors.forEach(error => console.log(error));
