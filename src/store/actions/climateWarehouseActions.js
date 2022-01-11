@@ -350,7 +350,6 @@ export const splitUnits = data => {
         },
         body: JSON.stringify(data),
       };
-
       const response = await fetch(url, payload);
 
       if (response.ok) {

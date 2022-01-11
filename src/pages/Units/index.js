@@ -42,6 +42,7 @@ const headings = [
   'unitCount',
   'buyer',
   'registry',
+  'warehouseUnitId',
 ];
 
 const StyledSectionContainer = styled('div')`
@@ -167,6 +168,7 @@ const Units = withRouter(() => {
         'unitCount',
         'unitStatus',
         'unitStatusDate',
+        'warehouseUnitId',
       ]),
     );
   }, [climateWarehouseStore.units, appStore.mode]);

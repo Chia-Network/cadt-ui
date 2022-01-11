@@ -43,8 +43,8 @@ const StyledSplitEntry = styled('div')`
 const SplitUnitForm = ({ onClose, organizations, record }) => {
   const dispatch = useDispatch();
   const [data, setData] = useState([
-    { unitCount: null, unitOwnerOrgUid: null },
-    { unitCount: null, unitOwnerOrgUid: null },
+    { unitCount: null, unitOwnerOrgUid: record.unitOwnerOrgUid },
+    { unitCount: null, unitOwnerOrgUid: record.unitOwnerOrgUid },
   ]);
 
   const intl = useIntl();
@@ -86,6 +86,7 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
             records: data,
           }),
         );
+        onClose();
       })
       .catch(err => {
         err.errors.forEach(error => console.log(error));
