@@ -39,19 +39,19 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="vintage-start-date" />
+                <FormattedMessage id="start-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'vintage-start-date',
+                  id: 'start-date',
                 })}
                 state={InputStateEnum.default}
                 value={value.vintageStartDate}
                 onChange={changeValue =>
-                  onInputChange('vintageStartDate', changeValue)
+                  onInputChange('startDate', changeValue)
                 }
               />
             </InputContainer>
@@ -59,18 +59,16 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="vintage-end-date" />
+                <FormattedMessage id="end-date" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({ id: 'vintage-end-date' })}
+                placeholderText={intl.formatMessage({ id: 'end-date' })}
                 state={InputStateEnum.default}
-                value={value.vintageEndDate}
-                onChange={changeValue =>
-                  onInputChange('vintageEndDate', changeValue)
-                }
+                value={value.endDate}
+                onChange={changeValue => onInputChange('endDate', changeValue)}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -114,6 +112,8 @@ const CreateVintageForm = ({ value, onChange }) => {
               />
             </InputContainer>
           </StyledFieldContainer>
+        </BodyContainer>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
@@ -134,7 +134,45 @@ const CreateVintageForm = ({ value, onChange }) => {
               />
             </InputContainer>
           </StyledFieldContainer>
-        </BodyContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="project-id" />
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'project-id',
+                })}
+                state={InputStateEnum.default}
+                value={value.projectId}
+                onChange={changeValue =>
+                  onInputChange('projectId', changeValue)
+                }
+              />
+            </InputContainer>
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body style={{ color: '#262626' }}>
+                <FormattedMessage id="unit-id" />
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-id',
+                })}
+                state={InputStateEnum.default}
+                value={value.unitId}
+                onChange={changeValue => onInputChange('unitId', changeValue)}
+              />
+            </InputContainer>
+          </StyledFieldContainer>
+        </div>
       </FormContainerStyle>
       <Divider />
     </ModalFormContainerStyle>

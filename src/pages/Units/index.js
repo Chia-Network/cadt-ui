@@ -36,13 +36,14 @@ import {
 } from '../../components';
 
 const headings = [
-  'id',
-  'unitStatus',
-  'unitType',
-  'unitCount',
-  'buyer',
-  'registry',
-  'warehouseUnitId',
+  'unitBlockStart',
+  'unitBlockEnd',
+  'countryJuridictionOfOwner',
+  'inCountryJuridictionOfOwner',
+  'intendedBuyerOrgUid',
+  'tags',
+  'tokenIssuanceHash',
+  'marketplaceIdentifier',
 ];
 
 const StyledSectionContainer = styled('div')`
@@ -160,15 +161,15 @@ const Units = withRouter(() => {
 
     return climateWarehouseStore.units.map(project =>
       _.pick(project, [
-        'orgUid',
-        'uuid',
-        'buyer',
-        'registry',
-        'unitType',
-        'unitCount',
-        'unitStatus',
-        'unitStatusDate',
         'warehouseUnitId',
+        'unitBlockStart',
+        'unitBlockEnd',
+        'countryJuridictionOfOwner',
+        'inCountryJuridictionOfOwner',
+        'intendedBuyerOrgUid',
+        'tags',
+        'tokenIssuanceHash',
+        'marketplaceIdentifier',
       ]),
     );
   }, [climateWarehouseStore.units, appStore.mode]);

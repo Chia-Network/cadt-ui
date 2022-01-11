@@ -45,28 +45,26 @@ const EditUnitsForm = ({ data, onClose }) => {
 
   useEffect(() => {
     setEditUnits({
-      buyer: data.buyer,
-      registry: data.registry,
-      blockIdentifier: data.blockIdentifier,
-      identifier: data.identifier,
-      unitType: data.unitType,
-      unitCount: data.unitCount,
-      unitStatus: data.unitStatus,
-      unitStatusDate: data.unitStatusDate,
-      transactionType: data.transactionType,
-      unitIssuanceLocation: data.unitIssuanceLocation,
-      unitLink: data.unitLink,
-      correspondingAdjustment: data.correspondingAdjustment,
-      unitTag: data.unitTag,
-      createdAt: data.createdAt,
-      orgUid: data.orgUid,
-      updatedAt: data.updatedAt,
+      warehouseUnitId: data.warehouseUnitId,
+      unitBlockStart: data.unitBlockStart,
+      unitBlockEnd: data.unitBlockEnd,
+      countryJuridictionOfOwner: data.countryJuridictionOfOwner,
+      inCountryJuridictionOfOwner: data.inCountryJuridictionOfOwner,
+      intendedBuyerOrgUid: data.intendedBuyerOrgUid,
+      tags: data.tags,
+      tokenIssuanceHash: data.tokenIssuanceHash,
+      marketplaceIdentifier: data.marketplaceIdentifier,
     });
     setVintage(_.get(data, 'vintage', {}));
     setQualificationsRepeaterValues(_.get(data, 'qualifications', []));
   }, [data]);
 
   const handleEditUnits = () => {
+    for (let key of Object.keys(editedUnits)) {
+      if (editedUnits[key] === '') {
+        delete editedUnits[key];
+      }
+    }
     const dataToSend = _.cloneDeep(editedUnits);
 
     if (!_.isEmpty(vintage)) {
@@ -81,6 +79,7 @@ const EditUnitsForm = ({ data, onClose }) => {
   };
   return (
     <>
+    {console.log(editedUnits)}
       <Modal
         onOk={handleEditUnits}
         onClose={onClose}
@@ -120,21 +119,21 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="units-buyer" />
+                            <FormattedMessage id="unit-block-start" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'units-buyer',
+                              id: 'unit-block-start',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.buyer}
+                            value={editedUnits.unitBlockStart}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                buyer: value,
+                                unitBlockStart: value,
                               }))
                             }
                           />
@@ -143,21 +142,21 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="registry" />
+                            <FormattedMessage id="unit-block-end" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'registry',
+                              id: 'unit-block-end',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.registry}
+                            value={editedUnits.unitBlockEnd}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                registry: value,
+                                unitBlockEnd: value,
                               }))
                             }
                           />
@@ -166,21 +165,21 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-block-identifier" />
+                            <FormattedMessage id="country-juridiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-block-identifier',
+                              id: 'country-juridiction-of-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.blockIdentifier}
+                            value={editedUnits.countryJuridictionOfOwner}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                blockIdentifier: value,
+                                countryJuridictionOfOwner: value,
                               }))
                             }
                           />
@@ -189,90 +188,21 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-identifier" />
+                            <FormattedMessage id="in-country-juridiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-identifier',
+                              id: 'in-country-juridiction-of-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.identifier}
+                            value={editedUnits.inCountryJuridictionOfOwner}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                identifier: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-type" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-type',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitType}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitType: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-count" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-count',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitCount}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitCount: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-status" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-status',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitStatus}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitStatus: value,
+                                inCountryJuridictionOfOwner: value,
                               }))
                             }
                           />
@@ -283,21 +213,21 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-status-date" />
+                            <FormattedMessage id="intended-buyer-org-uid" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-status-date',
+                              id: 'intended-buyer-org-uid',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.unitStatusDate}
+                            value={editedUnits.intendedBuyerOrgUid}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                unitStatusDate: value,
+                                intendedBuyerOrgUid: value,
                               }))
                             }
                           />
@@ -306,184 +236,69 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="transaction-type" />
+                            <FormattedMessage id="tags" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'transaction-type',
+                              id: 'tags',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.transactionType}
+                            value={editedUnits.tags}
+                            onChange={value =>
+                              setEditUnits(prev => ({
+                                ...prev,
+                                tags: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="token-issuance-hash" />
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText={intl.formatMessage({
+                              id: 'token-issuance-hash',
+                            })}
+                            state={InputStateEnum.default}
+                            value={editedUnits.tokenIssuanceHash}
+                            onChange={value =>
+                              setEditUnits(prev => ({
+                                ...prev,
+                                tokenIssuanceHash: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body style={{ color: '#262626' }}>
+                            <FormattedMessage id="marketplace-identifier" />
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText={intl.formatMessage({
+                              id: 'marketplace-identifier',
+                            })}
+                            state={InputStateEnum.default}
+                            value={editedUnits.marketplaceIdentifier}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
                                 transactionType: value,
                               }))
                             }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-issuance-location" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-issuance-location',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitIssuanceLocation}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitIssuanceLocation: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-link" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-link',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitLink}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitLink: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="corresponding-adjustment" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'corresponding-adjustment',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.correspondingAdjustment}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                correspondingAdjustment: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-tag" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-tag',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitTag}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitTag: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="created-at" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'created-at',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.createdAt}
-                            onChange={value => {
-                              setEditUnits(prev => ({
-                                ...prev,
-                                createdAt: value,
-                              }));
-                            }}
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="org-uid" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'org-uid',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.orgUid}
-                            onChange={value => {
-                              setEditUnits(prev => ({
-                                ...prev,
-                                orgUid: value,
-                              }));
-                            }}
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="updated-at" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'updated-at',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.updatedAt}
-                            onChange={value => {
-                              setEditUnits(prev => ({
-                                ...prev,
-                                updatedAt: value,
-                              }));
-                            }}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
