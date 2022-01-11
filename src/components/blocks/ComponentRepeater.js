@@ -62,6 +62,9 @@ const ComponentRepeater = ({
       {addIcon && values.length < maxRepetitions && (
         <StyledRepeatedComponentContainer onClick={addNewInstance}>
           {addIcon}
+          <Body color="#1890ff">
+            <FormattedMessage id="click-to-add" />
+          </Body>
         </StyledRepeatedComponentContainer>
       )}
       {addIcon && values.length >= maxRepetitions && (

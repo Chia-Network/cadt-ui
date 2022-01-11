@@ -102,5 +102,6 @@
   "transactions-committed": "Your transactions have been committed.",
   "split": "Split",
   "nr-of-units": "# of Units",
-  "record": "Record"
+  "record": "Record",
+  "click-to-add": "Click to add"
 }

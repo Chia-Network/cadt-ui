@@ -102,5 +102,6 @@
   "transactions-committed": "トランザクションがコミットされました。",
   "split": "スプリット",
   "nr-of-units": "ユニット数",
-  "record": "記録"
+  "record": "記録",
+  "click-to-add": "クリックして追加"
 }

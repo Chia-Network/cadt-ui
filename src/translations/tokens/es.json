@@ -102,5 +102,6 @@
   "transactions-committed": "Sus transacciones han sido confirmadas.",
   "split": "Separar",
   "nr-of-units": "# de unidades",
-  "record": "Record"
+  "record": "Record",
+  "click-to-add": "Haga clic para agregar"
 }
