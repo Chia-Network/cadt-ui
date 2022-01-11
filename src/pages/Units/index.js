@@ -161,6 +161,7 @@ const Units = withRouter(() => {
 
     return climateWarehouseStore.units.map(project =>
       _.pick(project, [
+        'warehouseUnitId',
         'unitBlockStart',
         'unitBlockEnd',
         'countryJuridictionOfOwner',

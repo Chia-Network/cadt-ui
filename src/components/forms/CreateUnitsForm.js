@@ -55,9 +55,16 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
     tokenIssuanceHash: '',
     marketplaceIdentifier: '',
   });
+
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(newUnits);
-
+    for (let key in dataToSend) {
+      if (dataToSend[key] === '') {
+        delete dataToSend[key];
+      }
+    }
+    ///injects orgUID
+console.log(dataToSend)
     if (!_.isEmpty(newVintage)) {
       dataToSend.vintage = _.head(newVintage);
     }

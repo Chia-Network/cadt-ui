@@ -45,6 +45,7 @@ const EditUnitsForm = ({ data, onClose }) => {
 
   useEffect(() => {
     setEditUnits({
+      warehouseUnitId: data.warehouseUnitId,
       unitBlockStart: data.unitBlockStart,
       unitBlockEnd: data.unitBlockEnd,
       countryJuridictionOfOwner: data.countryJuridictionOfOwner,
@@ -59,6 +60,11 @@ const EditUnitsForm = ({ data, onClose }) => {
   }, [data]);
 
   const handleEditUnits = () => {
+    for (let key of Object.keys(editedUnits)) {
+      if (editedUnits[key] === '') {
+        delete editedUnits[key];
+      }
+    }
     const dataToSend = _.cloneDeep(editedUnits);
 
     if (!_.isEmpty(vintage)) {
@@ -73,6 +79,7 @@ const EditUnitsForm = ({ data, onClose }) => {
   };
   return (
     <>
+    {console.log(editedUnits)}
       <Modal
         onOk={handleEditUnits}
         onClose={onClose}

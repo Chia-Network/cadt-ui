@@ -300,6 +300,7 @@ export const postNewProject = data => {
 };
 
 export const postNewUnits = data => {
+  console.log(data)
   return async (dispatch, getState) => {
     try {
       dispatch(activateProgressIndicator);
@@ -349,7 +350,7 @@ export const updateUnitsRecord = data => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: data,
+        body: JSON.stringify(data),
       };
 
       const response = await fetch(url, payload);
