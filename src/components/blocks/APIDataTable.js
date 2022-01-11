@@ -1,14 +1,11 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { useSelector } from 'react-redux';
 import styled, { withTheme, css } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination } from '.';
-import { EllipseIcon } from '..';
+import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
@@ -107,13 +104,6 @@ const StyledScalableContainer = styled('div')`
     css`
       height: ${props.height};
     `}
-`;
-
-const StyledElipseContainer = styled('div')`
-  height: 29px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
 `;
 
 const APIDataTable = withTheme(({ headings, data, actions }) => {
@@ -220,11 +210,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                           setEditRecord(record);
                         }}
                         selectedTheme={appStore.theme}>
-                        <StyledElipseContainer>
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                        </StyledElipseContainer>
+                        <EllipsisMenuIcon />
                       </Td>
                     )}
                   </Tr>
@@ -263,57 +249,3 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
 });
 
 export { APIDataTable };
-
-export default function BasicMenu({
-  options = [
-    { label: 'item 1', action: () => console.log('click on item 1') },
-    { label: 'item 1', action: () => console.log('click on item 2') },
-  ],
-}) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <div>
-      <Button
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}>
-        <StyledElipseContainer>
-          <EllipseIcon height="6" width="6" fill="#1890FF" />
-          <EllipseIcon height="6" width="6" fill="#1890FF" />
-          <EllipseIcon height="6" width="6" fill="#1890FF" />
-        </StyledElipseContainer>
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}>
-        {options &&
-          options.length > 0 &&
-          options.map((option, index) => (
-            <MenuItem
-              onClick={() => {
-                option.action();
-                handleClose();
-              }}
-              key={index}>
-              {option.label}
-            </MenuItem>
-          ))}
-      </Menu>
-    </div>
-  );
-}

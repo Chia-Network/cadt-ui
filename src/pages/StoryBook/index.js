@@ -57,6 +57,8 @@ import {
   Tab,
   TabPanel,
   DownloadIcon,
+  EllipsisMenuIcon,
+  EllipseIcon,
 } from '../../components';
 
 const StoryBook = () => {
@@ -593,6 +595,8 @@ const StoryBook = () => {
           <ArrowDownIcon width="20" height="20" />
           <CheckIcon width="20" height="20" />
           <DownloadIcon width="20" height="20" />
+          <EllipsisMenuIcon />
+          <EllipseIcon height="6" width="6" fill="#1890FF" />
         </div>
 
         <div
