@@ -110,8 +110,6 @@ const StyledScalableContainer = styled('div')`
 const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
-  const [editUnits, setEditUnits] = useState(false);
-  const [editProjects, setEditProjects] = useState(false);
   const [unitToBeSplit, setUnitToBeSplit] = useState(null);
   const appStore = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
@@ -201,7 +199,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                                 id: 'edit-unit',
                               }),
                               action: () => {
-                                setEditUnits(true);
                                 setEditRecord(record);
                               },
                             },
@@ -219,7 +216,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                       <Td
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
-                          setEditProjects(true);
                           setEditRecord(record);
                         }}
                         selectedTheme={appStore.theme}>
@@ -239,19 +235,17 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
         </StyledScalableContainer>
       </StyledRefContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
-      {editUnits && (
+      {actions === 'Units' && editRecord && (
         <EditUnitsForm
           onClose={() => {
-            setEditUnits(false);
             setEditRecord(null);
           }}
           data={editRecord}
         />
       )}
-      {editProjects && (
+      {actions === 'Projects' && editRecord && (
         <EditProjectsForm
           onClose={() => {
-            setEditProjects(false);
             setEditRecord(null);
           }}
           data={editRecord}
