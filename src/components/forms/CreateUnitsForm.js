@@ -63,8 +63,6 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
         delete dataToSend[key];
       }
     }
-    ///injects orgUID
-console.log(dataToSend)
     if (!_.isEmpty(newVintage)) {
       dataToSend.vintage = _.head(newVintage);
     }

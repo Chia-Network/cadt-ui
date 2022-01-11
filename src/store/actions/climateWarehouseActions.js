@@ -300,17 +300,9 @@ export const postNewProject = data => {
 };
 
 export const postNewUnits = data => {
-  console.log(data)
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
-
-      const state = getState().climateWarehouse;
-
-      // All newly created units belong to this organization
-      data.orgUid = Object.keys(_.get(state, 'organizations', {})).find(key =>
-        _.get(state, `organizations.${key}.writeAccess`),
-      );
 
       const url = `${constants.API_HOST}/units`;
       const payload = {
@@ -339,7 +331,6 @@ export const postNewUnits = data => {
 };
 
 export const updateUnitsRecord = data => {
-  console.log(data);
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
