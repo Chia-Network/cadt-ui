@@ -37,6 +37,14 @@ const BasicMenu = ({
         onClose={handleClose}
         MenuListProps={{
           'aria-labelledby': 'basic-button',
+        }}
+        sx={{
+          borderRadius: '0.125rem',
+          '& .MuiMenu-paper': {
+            borderRadius: '1px',
+            boxShadow:
+              '0px 9px 28px 8px rgba(0, 0, 0, 0.05), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12)',
+          },
         }}>
         {options &&
           options.length > 0 &&
