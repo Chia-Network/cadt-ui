@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useDispatch } from 'react-redux';
+import * as yup from 'yup';
 import {
   Modal,
   Body,
@@ -11,6 +13,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
 } from '..';
+import { splitUnits } from '../../store/actions/climateWarehouseActions';
 
 const InputContainer = styled('div')`
   width: 20rem;
@@ -37,10 +40,11 @@ const StyledSplitEntry = styled('div')`
   align-items: flex-end;
 `;
 
-const SplitUnitForm = ({ onClose, organizations }) => {
+const SplitUnitForm = ({ onClose, organizations, record }) => {
+  const dispatch = useDispatch();
   const [data, setData] = useState([
-    { unitCount: null, orgUid: null },
-    { unitCount: null, orgUid: null },
+    { unitCount: null, unitOwnerOrgUid: null },
+    { unitCount: null, unitOwnerOrgUid: null },
   ]);
 
   const intl = useIntl();
@@ -50,11 +54,38 @@ const SplitUnitForm = ({ onClose, organizations }) => {
     label: organizations[key].name,
   }));
 
+  const validationSchema = yup
+    .array()
+    .of(
+      yup.object().shape({
+        unitCount: yup
+          .number()
+          .required({ unitCount: 'unitCount is required.' })
+          .positive()
+          .integer(),
+        unitOwnerOrgUid: yup.string().nullable(),
+      }),
+    )
+    .test(
+      'test array elements sum',
+      'unit counts do not add up',
+      value => value[0].unitCount + value[1].unitCount === record.unitCount,
+    );
+
+  const onSubmit = () => {
+    validationSchema
+      .validate(data, { abortEarly: false, recursive: true })
+      .then(() => {
+        dispatch(splitUnits);
+      })
+      .catch(err => {
+        err.errors.forEach(error => console.log(error));
+      });
+  };
+
   return (
     <Modal
-      onOk={() => {
-        console.log('ok');
-      }}
+      onOk={onSubmit}
       onClose={onClose}
       basic
       form
@@ -107,7 +138,7 @@ const SplitUnitForm = ({ onClose, organizations }) => {
                     onChange={value =>
                       setData(prevData => {
                         const newData = [...prevData];
-                        newData[index].orgUid = value[0].value;
+                        newData[index].unitOwnerOrgUid = value[0].value;
                         return newData;
                       })
                     }

@@ -255,6 +255,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
         <SplitUnitForm
           organizations={climateWarehouseStore.organizations}
           onClose={() => setUnitToBeSplit(null)}
+          record={unitToBeSplit}
         />
       )}
     </>
