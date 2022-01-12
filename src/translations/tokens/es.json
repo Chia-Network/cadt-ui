@@ -104,5 +104,9 @@
   "nr-of-units": "# de unidades",
   "record": "Record",
   "click-to-add": "Haga clic para agregar",
-  "unit-cannot-be-split": "La unidad no se puede dividir porque el conteo es 1."
+  "unit-cannot-be-split": "La unidad no se puede dividir porque el conteo es 1.",
+  "unit-could-not-be-split": "La unidad no se pudo dividir.",
+  "units-dont-add-up": "La suma de las unidades divididas no suman el recuento inicial de",
+  "unit-count-must-be-a-valid-integer": "El recuento de unidades no es válido. Agrega un número positivo.",
+  "no-change": "Ningún cambio"
 }

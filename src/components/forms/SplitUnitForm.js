@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import _ from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import {
   Modal,
@@ -14,8 +15,11 @@ import {
   SelectTypeEnum,
   NotificationCard,
   Alert,
+  SelectStateEnum,
+  InputVariantEnum,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
+import { setGlobalErrorMessage } from '../../store/actions/app';
 
 const InputContainer = styled('div')`
   width: 20rem;
@@ -48,8 +52,10 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     { unitCount: null, unitOwnerOrgUid: record.unitOwnerOrgUid },
     { unitCount: null, unitOwnerOrgUid: record.unitOwnerOrgUid },
   ]);
-
+  const appStore = useSelector(store => store.app);
   const intl = useIntl();
+  const [validationErrors, setValidationErrors] = useState([]);
+  const submitButtonPressed = useRef(null);
 
   const organizationsArray = Object.keys(organizations).map(key => ({
     value: key,
@@ -57,24 +63,22 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
   }));
   organizationsArray.unshift({
     value: record.unitOwnerOrgUid,
-    label: 'none',
+    label: intl.formatMessage({
+      id: 'no-change',
+    }),
   });
 
   const validationSchema = yup
     .array()
     .of(
       yup.object().shape({
-        unitCount: yup
-          .number()
-          .required({ unitCount: 'unitCount is required.' })
-          .positive()
-          .integer(),
+        unitCount: yup.number().required().positive().integer(),
         unitOwnerOrgUid: yup.string().nullable(),
       }),
     )
     .test(
       'test array elements sum',
-      'unit counts do not add up',
+      'units do not add up',
       value => value[0].unitCount + value[1].unitCount === record.unitCount,
     );
 
@@ -84,22 +88,66 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     validationSchema
       .validate(data, { abortEarly: false, recursive: true })
       .then(() => {
+        submitButtonPressed.current = true;
+        setValidationErrors([]);
         dispatch(
           splitUnits({
             warehouseUnitId: record.warehouseUnitId,
             records: data,
           }),
         );
-        onClose();
       })
       .catch(err => {
-        err.errors.forEach(error => console.log(error));
+        setValidationErrors([...err.errors]);
       });
+  };
+
+  useEffect(() => {
+    if (
+      !appStore.errorMessage &&
+      submitButtonPressed &&
+      submitButtonPressed.current
+    ) {
+      onClose();
+    }
+  }, [appStore.errorMessage]);
+
+  const getInputFieldState = index => {
+    if (_.includes(validationErrors, 'units do not add up')) {
+      return InputVariantEnum.error;
+    }
+    if (
+      validationErrors.findIndex(element => element.includes(`${index}`)) !== -1
+    ) {
+      return InputVariantEnum.error;
+    }
+    return InputVariantEnum.default;
+  };
+
+  const getValidationFormattedError = () => {
+    if (
+      validationErrors.findIndex(element => element.includes('0')) !== -1 ||
+      validationErrors.findIndex(element => element.includes('1')) !== -1
+    ) {
+      return intl.formatMessage({
+        id: 'unit-count-must-be-a-valid-integer',
+      });
+    } else if (_.includes(validationErrors, 'units do not add up')) {
+      return (
+        intl.formatMessage({
+          id: 'units-dont-add-up',
+        }) +
+        ' ' +
+        record.unitCount +
+        '.'
+      );
+    }
+    return '';
   };
 
   return (
     <>
-      {!unitIsSplitable && (
+      {unitIsSplitable === false && (
         <NotificationCard>
           <Alert
             type="error"
@@ -110,6 +158,34 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
             })}
             showIcon
             closeable
+          />
+        </NotificationCard>
+      )}
+      {appStore.errorMessage && (
+        <NotificationCard>
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
+            alertBody={intl.formatMessage({
+              id: 'unit-could-not-be-split',
+            })}
+            showIcon
+            closeable
+            onClose={() => dispatch(setGlobalErrorMessage(null))}
+          />
+        </NotificationCard>
+      )}
+      {validationErrors.length > 0 && (
+        <NotificationCard>
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle={intl.formatMessage({ id: 'unit' })}
+            alertBody={getValidationFormattedError()}
+            showIcon
+            closeable
+            onClose={() => setValidationErrors([])}
           />
         </NotificationCard>
       )}
@@ -145,6 +221,7 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
                           ? InputStateEnum.default
                           : InputStateEnum.disabled
                       }
+                      variant={getInputFieldState(index)}
                       value={item.unitCount}
                       onChange={value =>
                         setData(prevData => {
@@ -168,8 +245,8 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
                       type={SelectTypeEnum.basic}
                       state={
                         unitIsSplitable
-                          ? InputStateEnum.default
-                          : InputStateEnum.disabled
+                          ? SelectStateEnum.default
+                          : SelectStateEnum.disabled
                       }
                       options={organizationsArray}
                       placeholder="Select"
