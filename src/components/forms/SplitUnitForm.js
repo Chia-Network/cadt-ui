@@ -78,8 +78,6 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
       value => value[0].unitCount + value[1].unitCount === record.unitCount,
     );
 
-  console.log(record);
-  console.log(record.unitCount);
   const unitIsSplitable = record.unitCount !== 1;
 
   const onSubmit = () => {
