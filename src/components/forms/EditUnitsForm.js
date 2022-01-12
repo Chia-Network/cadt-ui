@@ -43,54 +43,50 @@ const EditUnitsForm = ({ data, onClose }) => {
   const intl = useIntl();
   const [getUnitType, setUnitType] = useState([
     {
-      label: intl.formatMessage({
-        id: 'heard-reduction',
-      }),
-      value: intl.formatMessage({
-        id: 'heard-reduction',
-      }),
+      label: 'heard-reduction',
+      value: 'heard-reduction',
     },
     {
-      label: intl.formatMessage({ id: 'removal' }),
-      value: intl.formatMessage({ id: 'removal' }),
+      label: 'removal',
+      value: 'removal',
     },
   ]);
   const [getUnitStatus, setUnitStatus] = useState([
     {
-      label: intl.formatMessage({ id: 'held' }),
-      value: intl.formatMessage({ id: 'held' }),
+      label: 'Held',
+      value: 'Held',
     },
     {
-      label: intl.formatMessage({ id: 'for-sale' }),
-      value: intl.formatMessage({ id: 'for-sale' }),
+      label: 'For Sale',
+      value: 'For Sale',
     },
     {
-      label: intl.formatMessage({ id: 'retired' }),
-      value: intl.formatMessage({ id: 'retired' }),
+      label: 'Retired',
+      value: 'Retired',
     },
   ]);
   const [getCAD, setCAD] = useState([
     {
-      label: intl.formatMessage({ id: 'committed' }),
-      value: intl.formatMessage({ id: 'committed' }),
+      label: 'Commited',
+      value: 'Commited',
     },
     {
-      label: intl.formatMessage({ id: 'not-required' }),
-      value: intl.formatMessage({ id: 'not-required' }),
+      label: 'Not Required',
+      value: 'Not Required',
     },
     {
-      label: intl.formatMessage({ id: 'unknown' }),
-      value: intl.formatMessage({ id: 'unknown' }),
+      label: 'Unknown',
+      value: 'Unknown',
     },
   ]);
   const [getCAS, setCAS] = useState([
     {
-      label: intl.formatMessage({ id: 'not-started' }),
-      value: intl.formatMessage({ id: 'not-started' }),
+      label: 'Not Started',
+      value: 'Not Started',
     },
     {
-      label: intl.formatMessage({ id: 'pending' }),
-      value: intl.formatMessage({ id: 'pending' }),
+      label: 'Pending',
+      value: 'Pending',
     },
   ]);
 
@@ -164,7 +160,6 @@ const EditUnitsForm = ({ data, onClose }) => {
   };
   return (
     <>
-      {console.log(data)}
       <Modal
         onOk={handleEditUnits}
         onClose={onClose}
@@ -204,7 +199,8 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            *<FormattedMessage id="country-juridiction-of-owner" />
+                            *
+                            <FormattedMessage id="country-juridiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -569,7 +565,8 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            *<FormattedMessage id="corresponding-adjustment-declaration" />
+                            *
+                            <FormattedMessage id="corresponding-adjustment-declaration" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -591,7 +588,8 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            *<FormattedMessage id="corresponding-adjustment-status" />
+                            *
+                            <FormattedMessage id="corresponding-adjustment-status" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
