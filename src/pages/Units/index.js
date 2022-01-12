@@ -170,6 +170,7 @@ const Units = withRouter(() => {
         'tags',
         'tokenIssuanceHash',
         'marketplaceIdentifier',
+        'unitCount',
       ]),
     );
   }, [climateWarehouseStore.units, appStore.mode]);

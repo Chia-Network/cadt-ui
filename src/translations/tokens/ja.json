@@ -103,5 +103,6 @@
   "split": "スプリット",
   "nr-of-units": "ユニット数",
   "record": "記録",
-  "click-to-add": "クリックして追加"
+  "click-to-add": "クリックして追加",
+  "unit-cannot-be-split": "カウントが1であるため、ユニットを分割できません。"
 }

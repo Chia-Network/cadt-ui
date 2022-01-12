@@ -115,5 +115,6 @@
   "split": "Split",
   "nr-of-units": "# of Units",
   "record": "Record",
-  "click-to-add": "Click to add"
+  "click-to-add": "Click to add",
+  "unit-cannot-be-split": "The unit cannot be split because the count is 1."
 }

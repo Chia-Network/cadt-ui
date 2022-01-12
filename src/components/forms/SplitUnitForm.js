@@ -12,6 +12,8 @@ import {
   Select,
   SelectSizeEnum,
   SelectTypeEnum,
+  NotificationCard,
+  Alert,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
 
@@ -55,7 +57,7 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
   }));
   organizationsArray.unshift({
     value: record.unitOwnerOrgUid,
-    label: 'none'
+    label: 'none',
   });
 
   const validationSchema = yup
@@ -76,6 +78,10 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
       value => value[0].unitCount + value[1].unitCount === record.unitCount,
     );
 
+  console.log(record);
+  console.log(record.unitCount);
+  const unitIsSplitable = record.unitCount !== 1;
+
   const onSubmit = () => {
     validationSchema
       .validate(data, { abortEarly: false, recursive: true })
@@ -94,72 +100,97 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
   };
 
   return (
-    <Modal
-      onOk={onSubmit}
-      onClose={onClose}
-      basic
-      form
-      showButtons
-      title={intl.formatMessage({
-        id: 'split',
-      })}
-      body={
-        <StyledContainer>
-          {data.map((item, index) => (
-            <StyledSplitEntry key={index}>
-              <StyledFieldContainer>
-                <div>
-                  <Body size="Bold">
-                    <FormattedMessage id="record" /> {index + 1}
-                  </Body>
-                </div>
-                <StyledLabelContainer>
-                  <Body color={'#262626'}>
-                    <FormattedMessage id="nr-of-units" />
-                  </Body>
-                </StyledLabelContainer>
-                <InputContainer>
-                  <StandardInput
-                    size={InputSizeEnum.large}
-                    state={InputStateEnum.default}
-                    value={item.unitCount}
-                    onChange={value =>
-                      setData(prevData => {
-                        const newData = [...prevData];
-                        newData[index].unitCount = value;
-                        return newData;
-                      })
-                    }
-                  />
-                </InputContainer>
-              </StyledFieldContainer>
-              <StyledFieldContainer>
-                <StyledLabelContainer>
-                  <Body color={'#262626'}>
-                    <FormattedMessage id="units-owner" />
-                  </Body>
-                </StyledLabelContainer>
-                <InputContainer>
-                  <Select
-                    size={SelectSizeEnum.large}
-                    type={SelectTypeEnum.basic}
-                    options={organizationsArray}
-                    placeholder="Select"
-                    onChange={value =>
-                      setData(prevData => {
-                        const newData = [...prevData];
-                        newData[index].unitOwnerOrgUid = value[0].value;
-                        return newData;
-                      })
-                    }
-                  />
-                </InputContainer>
-              </StyledFieldContainer>
-            </StyledSplitEntry>
-          ))}
-        </StyledContainer>
-      }
-    />
+    <>
+      {!unitIsSplitable && (
+        <NotificationCard>
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle={intl.formatMessage({ id: 'unit' })}
+            alertBody={intl.formatMessage({
+              id: 'unit-cannot-be-split',
+            })}
+            showIcon
+            closeable
+          />
+        </NotificationCard>
+      )}
+      <Modal
+        onOk={onSubmit}
+        onClose={onClose}
+        basic
+        form
+        showButtons
+        title={intl.formatMessage({
+          id: 'split',
+        })}
+        body={
+          <StyledContainer>
+            {data.map((item, index) => (
+              <StyledSplitEntry key={index}>
+                <StyledFieldContainer>
+                  <div>
+                    <Body size="Bold">
+                      <FormattedMessage id="record" /> {index + 1}
+                    </Body>
+                  </div>
+                  <StyledLabelContainer>
+                    <Body color={'#262626'}>
+                      <FormattedMessage id="nr-of-units" />
+                    </Body>
+                  </StyledLabelContainer>
+                  <InputContainer>
+                    <StandardInput
+                      size={InputSizeEnum.large}
+                      state={
+                        unitIsSplitable
+                          ? InputStateEnum.default
+                          : InputStateEnum.disabled
+                      }
+                      value={item.unitCount}
+                      onChange={value =>
+                        setData(prevData => {
+                          const newData = [...prevData];
+                          newData[index].unitCount = value;
+                          return newData;
+                        })
+                      }
+                    />
+                  </InputContainer>
+                </StyledFieldContainer>
+                <StyledFieldContainer>
+                  <StyledLabelContainer>
+                    <Body color={'#262626'}>
+                      <FormattedMessage id="units-owner" />
+                    </Body>
+                  </StyledLabelContainer>
+                  <InputContainer>
+                    <Select
+                      size={SelectSizeEnum.large}
+                      type={SelectTypeEnum.basic}
+                      state={
+                        unitIsSplitable
+                          ? InputStateEnum.default
+                          : InputStateEnum.disabled
+                      }
+                      options={organizationsArray}
+                      placeholder="Select"
+                      onChange={value =>
+                        setData(prevData => {
+                          const newData = [...prevData];
+                          newData[index].unitOwnerOrgUid = value[0].value;
+                          return newData;
+                        })
+                      }
+                    />
+                  </InputContainer>
+                </StyledFieldContainer>
+              </StyledSplitEntry>
+            ))}
+          </StyledContainer>
+        }
+      />
+    </>
   );
 };
 

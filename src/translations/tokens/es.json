@@ -103,5 +103,6 @@
   "split": "Separar",
   "nr-of-units": "# de unidades",
   "record": "Record",
-  "click-to-add": "Haga clic para agregar"
+  "click-to-add": "Haga clic para agregar",
+  "unit-cannot-be-split": "La unidad no se puede dividir porque el conteo es 1."
 }
