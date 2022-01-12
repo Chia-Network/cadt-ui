@@ -36,14 +36,24 @@ import {
 } from '../../components';
 
 const headings = [
-  'unitBlockStart',
-  'unitBlockEnd',
   'countryJuridictionOfOwner',
   'inCountryJuridictionOfOwner',
+  'serialNumberBlock',
+  'unitIdentifier',
+  'unitType',
   'intendedBuyerOrgUid',
+  'marketplace',
   'tags',
+  'unitStatus',
+  'unitTransactionType',
+  'unitStatusReason',
   'tokenIssuanceHash',
   'marketplaceIdentifier',
+  'unitsIssuanceLocation',
+  'unitRegistryLink',
+  'unitMarketplaceLink',
+  'cooresponingAdjustmentDeclaration',
+  'correspondingAdjustmentStatus',
 ];
 
 const StyledSectionContainer = styled('div')`
@@ -162,14 +172,24 @@ const Units = withRouter(() => {
     return climateWarehouseStore.units.map(project =>
       _.pick(project, [
         'warehouseUnitId',
-        'unitBlockStart',
-        'unitBlockEnd',
         'countryJuridictionOfOwner',
         'inCountryJuridictionOfOwner',
+        'serialNumberBlock',
+        'unitIdentifier',
+        'unitType',
         'intendedBuyerOrgUid',
+        'marketplace',
         'tags',
+        'unitStatus',
+        'unitTransactionType',
+        'unitStatusReason',
         'tokenIssuanceHash',
         'marketplaceIdentifier',
+        'unitsIssuanceLocation',
+        'unitRegistryLink',
+        'unitMarketplaceLink',
+        'correspondingAdjustmentDeclaration',
+        'correspondingAdjustmentStatus',
       ]),
     );
   }, [climateWarehouseStore.units, appStore.mode]);
