@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
 
@@ -9,7 +9,14 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination } from '.';
 import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
+import {
+  EditUnitsForm,
+  EditProjectsForm,
+  SplitUnitForm,
+  NotificationCard,
+  Alert,
+} from '..';
+import { setGlobalErrorMessage } from '../../store/actions/app';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -117,6 +124,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [height, setHeight] = React.useState(0);
   const windowSize = useWindowSize();
   const intl = useIntl();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
@@ -257,6 +265,21 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           onClose={() => setUnitToBeSplit(null)}
           record={unitToBeSplit}
         />
+      )}
+      {appStore.errorMessage && (
+        <NotificationCard>
+          <Alert
+            type="error"
+            banner={false}
+            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
+            alertBody={intl.formatMessage({
+              id: 'unit-could-not-be-split',
+            })}
+            showIcon
+            closeable
+            onClose={() => dispatch(setGlobalErrorMessage(null))}
+          />
+        </NotificationCard>
       )}
     </>
   );

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,13 +13,15 @@ import {
   Select,
   SelectSizeEnum,
   SelectTypeEnum,
-  NotificationCard,
-  Alert,
   SelectStateEnum,
   InputVariantEnum,
+  Message,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
-import { setGlobalErrorMessage } from '../../store/actions/app';
+import {
+  NotificationMessageTypeEnum,
+  setNotificationMessage,
+} from '../../store/actions/app';
 
 const InputContainer = styled('div')`
   width: 20rem;
@@ -52,10 +54,9 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     { unitCount: null, unitOwnerOrgUid: record.unitOwnerOrgUid },
     { unitCount: null, unitOwnerOrgUid: record.unitOwnerOrgUid },
   ]);
-  const appStore = useSelector(store => store.app);
   const intl = useIntl();
   const [validationErrors, setValidationErrors] = useState([]);
-  const submitButtonPressed = useRef(null);
+  const appStore = useSelector(state => state.app);
 
   const organizationsArray = Object.keys(organizations).map(key => ({
     value: key,
@@ -67,6 +68,19 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
       id: 'no-change',
     }),
   });
+
+  const unitIsSplitable = record.unitCount !== 1;
+  useEffect(() => {
+    if (unitIsSplitable === false) {
+      console.log(appStore.notifcation);
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-cannot-be-split',
+        ),
+      );
+    }
+  }, []);
 
   const validationSchema = yup
     .array()
@@ -82,13 +96,10 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
       value => value[0].unitCount + value[1].unitCount === record.unitCount,
     );
 
-  const unitIsSplitable = record.unitCount !== 1;
-
   const onSubmit = () => {
     validationSchema
       .validate(data, { abortEarly: false, recursive: true })
       .then(() => {
-        submitButtonPressed.current = true;
         setValidationErrors([]);
         dispatch(
           splitUnits({
@@ -96,6 +107,7 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
             records: data,
           }),
         );
+        onClose();
       })
       .catch(err => {
         setValidationErrors([...err.errors]);
@@ -103,14 +115,15 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
   };
 
   useEffect(() => {
-    if (
-      !appStore.errorMessage &&
-      submitButtonPressed &&
-      submitButtonPressed.current
-    ) {
-      onClose();
+    if (validationErrors.length > 0) {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          getValidationErrorId(),
+        ),
+      );
     }
-  }, [appStore.errorMessage]);
+  }, [validationErrors]);
 
   const getInputFieldState = index => {
     if (_.includes(validationErrors, 'units do not add up')) {
@@ -124,77 +137,33 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     return InputVariantEnum.default;
   };
 
-  const getValidationFormattedError = () => {
+  const getValidationErrorId = () => {
     if (
       validationErrors.findIndex(element => element.includes('0')) !== -1 ||
       validationErrors.findIndex(element => element.includes('1')) !== -1
     ) {
-      return intl.formatMessage({
-        id: 'unit-count-must-be-a-valid-integer',
-      });
-    } else if (_.includes(validationErrors, 'units do not add up')) {
-      return (
-        intl.formatMessage({
-          id: 'units-dont-add-up',
-        }) +
-        ' ' +
-        record.unitCount +
-        '.'
-      );
+      return 'unit-count-must-be-a-valid-integer';
+    }
+    if (_.includes(validationErrors, 'units do not add up')) {
+      return 'units-dont-add-up';
     }
     return '';
   };
 
   return (
     <>
-      {unitIsSplitable === false && (
-        <NotificationCard>
-          <Alert
-            type="error"
-            banner={false}
-            alertTitle={intl.formatMessage({ id: 'unit' })}
-            alertBody={intl.formatMessage({
-              id: 'unit-cannot-be-split',
-            })}
-            showIcon
-            closeable
-          />
-        </NotificationCard>
-      )}
-      {appStore.errorMessage && (
-        <NotificationCard>
-          <Alert
-            type="error"
-            banner={false}
-            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
-            alertBody={intl.formatMessage({
-              id: 'unit-could-not-be-split',
-            })}
-            showIcon
-            closeable
-            onClose={() => dispatch(setGlobalErrorMessage(null))}
-          />
-        </NotificationCard>
-      )}
-      {validationErrors.length > 0 && (
-        <NotificationCard>
-          <Alert
-            type="error"
-            banner={false}
-            alertTitle={intl.formatMessage({ id: 'unit' })}
-            alertBody={getValidationFormattedError()}
-            showIcon
-            closeable
-            onClose={() => setValidationErrors([])}
-          />
-        </NotificationCard>
+      {appStore.notification && (
+        <Message
+          id={appStore.notification.id}
+          type={appStore.notification.type}
+        />
       )}
       <Modal
         onOk={onSubmit}
         onClose={onClose}
         basic
         form
-        showButtons
+        showButtons={unitIsSplitable}
         title={intl.formatMessage({
           id: 'split',
         })}

@@ -17,8 +17,10 @@ import {
 import {
   activateProgressIndicator,
   deactivateProgressIndicator,
+  NotificationMessageTypeEnum,
   setConnectionCheck,
   setGlobalErrorMessage,
+  setNotificationMessage,
 } from './app';
 
 export const actions = keyMirror(
@@ -346,14 +348,29 @@ export const splitUnits = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
-        dispatch(setGlobalErrorMessage(null));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'all good',
+          ),
+        );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(setGlobalErrorMessage('Unit could not be split.'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'did not work',
+          ),
+        );
       }
     } catch (err) {
       console.log(err);
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'did not work',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }

@@ -4,6 +4,8 @@ import { actions as appActions } from '../actions/app';
 import { actions as socketActions } from '../actions/socket';
 import constants from '../../constants';
 
+// import { Message } from '../../components'
+
 const initialState = {
   socketStatus: 'Waiting for status',
   showProgressOverlay: false,
@@ -13,6 +15,7 @@ const initialState = {
   mode: constants.MODE.WAREHOUSE,
   connectionCheck: true,
   updateAvailablePleaseRefesh: false,
+  notification: null
 };
 
 const appReducer = (state = initialState, action) => {
@@ -71,6 +74,11 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.CONNECTION_CHECK:
       return u({ connectionCheck: action.payload }, state);
+
+    case appActions.SET_NOTIFICATION:
+      console.log('notification saved in store: ', action.payload);
+      // return u({ notification: action.payload }, state);
+      return u({ notification: action.payload }, state);
 
     default:
       return state;
