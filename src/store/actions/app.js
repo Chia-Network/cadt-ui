@@ -1,5 +1,6 @@
 import { keyMirror } from '../store-functions';
 import { LANGUAGE_CODES } from '../../translations';
+import _ from 'lodash';
 
 export const actions = keyMirror(
   'ACTIVATE_PROGRESS_INDICATOR',
@@ -12,6 +13,7 @@ export const actions = keyMirror(
   'TOGGLE_MODE',
   'CONNECTION_CHECK',
   'RESET_REFRESH_PROMPT',
+  'SET_NOTIFICATION',
 );
 
 export const resetRefreshPrompt = {
@@ -52,6 +54,35 @@ export const setConnectionCheck = bool => ({
   type: actions.CONNECTION_CHECK,
   payload: bool,
 });
+
+export const NotificationMessageTypeEnum = {
+  error: 'error',
+  success: 'success',
+  null: 'null',
+};
+
+export const setNotificationMessage = (type, id) => {
+  return async dispatch => {
+    if (
+      _.includes(Object.keys(NotificationMessageTypeEnum), type) &&
+      typeof id === 'string'
+    ) {
+      dispatch({
+        type: actions.SET_NOTIFICATION,
+        payload: {
+          id,
+          type,
+        },
+      });
+    } 
+    if (type === null) {
+      dispatch({
+        type: actions.SET_NOTIFICATION,
+        payload: null
+      })
+    }
+  };
+};
 
 export const setLocale = locale => {
   let localeToSet = locale;
