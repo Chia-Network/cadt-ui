@@ -4,8 +4,6 @@ import { actions as appActions } from '../actions/app';
 import { actions as socketActions } from '../actions/socket';
 import constants from '../../constants';
 
-// import { Message } from '../../components'
-
 const initialState = {
   socketStatus: 'Waiting for status',
   showProgressOverlay: false,
