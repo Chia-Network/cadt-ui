@@ -16,6 +16,7 @@ import {
   ModalFormContainerStyle,
   FormContainerStyle,
   BodyContainer,
+  DateSelect
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -41,6 +42,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
   const [newQualifications, setNewQualifications] = useState([]);
   const [newRelatedProjects, setNewRelatedProjects] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
+  const [date, setDate] = useState();
+  const [validationDate, setValidationDate] = useState();
   const [newProjectLocations, setNewProjectLocations] = useState([]);
   const [newCoBenefits, setNewCoBenefits] = useState([]);
   const [tabValue, setTabValue] = useState(0);
@@ -64,12 +67,10 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     coveredByNDC: 0,
     NDCLinkage: '',
     projectStatus: '',
-    projectStatusDate: '',
     unitMetric: '',
     methodology: '',
     methodologyVersion: 0,
     validationApproach: '',
-    validationDate: '',
     estimatedAnnualAverageEmissionReduction: 60,
     projectTag: '',
   });
@@ -87,6 +88,13 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     if (!_.isEmpty(newQualifications)) {
       dataToSend.qualifications = newQualifications;
     }
+    if (!_.isEmpty(date)) {
+      dataToSend.projectStatusDate = date?._d.toString();
+    }
+
+    if (!_.isEmpty(validationDate)) {
+      dataToSend.validationDate = validationDate?._d.toString();
+    }
 
     if (!_.isEmpty(newProjectLocations)) {
       dataToSend.projectLocations = newProjectLocations;
@@ -95,6 +103,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     if (!_.isEmpty(newRelatedProjects)) {
       dataToSend.relatedProjects = newRelatedProjects;
     }
+
+    console.log(dataToSend)
     dispatch(postNewProject(dataToSend));
     onClose();
   };
@@ -433,19 +443,10 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-status-date',
-                            })}
-                            state={InputStateEnum.default}
-                            value={newProject.projectStatusDate}
-                            onChange={value =>
-                              setNewProject(prev => ({
-                                ...prev,
-                                projectStatusDate: value,
-                              }))
-                            }
+                          <DateSelect
+                            size="large"
+                            dateValue={date}
+                            setDateValue={setDate}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -548,19 +549,10 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'validation-date',
-                            })}
-                            state={InputStateEnum.default}
-                            value={newProject.validationDate}
-                            onChange={value =>
-                              setNewProject(prev => ({
-                                ...prev,
-                                validationDate: value,
-                              }))
-                            }
+                          <DateSelect
+                            size="large"
+                            dateValue={validationDate}
+                            setDateValue={setValidationDate}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
