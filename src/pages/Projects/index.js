@@ -33,8 +33,6 @@ import {
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
 
-import { setGlobalErrorMessage } from '../../store/actions/app';
-
 const headings = [
   'warehouseProjectId',
   'currentRegistry',
@@ -48,7 +46,6 @@ const StyledSectionContainer = styled('div')`
   display: flex;
   flex-direction: column;
   height: 100%;
-  position: relative;
 `;
 
 const StyledHeaderContainer = styled('div')`
@@ -102,7 +99,8 @@ const Projects = withRouter(() => {
   const intl = useIntl();
   const dispatch = useDispatch();
   let history = useHistory();
-  let searchRef = useRef(null);
+  const searchRef = useRef(null);
+  const commitButtonPressed = useRef(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -168,7 +166,11 @@ const Projects = withRouter(() => {
         'projectName',
       ]),
     );
-  }, [climateWarehouseStore.projects, appStore.mode]);
+  }, [
+    climateWarehouseStore.projects,
+    appStore.mode,
+    climateWarehouseStore.stagingData,
+  ]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -185,129 +187,139 @@ const Projects = withRouter(() => {
     element.click();
   };
 
+  const onCommit = () => {
+    dispatch(commitStagingData());
+    commitButtonPressed.current = true;
+    setTabValue(2);
+  };
+
   return (
-    <StyledSectionContainer>
-      <StyledHeaderContainer>
-        <StyledSearchContainer>
-          <SearchInput
-            size="large"
-            onChange={onSearch}
-            disabled={tabValue !== 0}
-            outline
-          />
-        </StyledSearchContainer>
-        <StyledFiltersContainer>
-          <Select
-            size={SelectSizeEnum.large}
-            type={SelectTypeEnum.basic}
-            options={[{ label: 'Filter 1', value: 'f1' }]}
-            placeholder={intl.formatMessage({ id: 'filters' })}
-            width="93px"
-          />
-        </StyledFiltersContainer>
-        <StyledButtonContainer>
-          {tabValue === 0 && (
-            <PrimaryButton
-              label={intl.formatMessage({ id: 'create' })}
+    <>
+      <StyledSectionContainer>
+        <StyledHeaderContainer>
+          <StyledSearchContainer>
+            <SearchInput
               size="large"
-              icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-              onClick={() => setCreateFormIsDisplayed(true)}
+              onChange={onSearch}
+              disabled={tabValue !== 0}
+              outline
             />
-          )}
-          {tabValue === 1 &&
-            climateWarehouseStore.stagingData.projects.staging.length > 0 && (
+          </StyledSearchContainer>
+          <StyledFiltersContainer>
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.basic}
+              options={[{ label: 'Filter 1', value: 'f1' }]}
+              placeholder={intl.formatMessage({ id: 'filters' })}
+              width="93px"
+            />
+          </StyledFiltersContainer>
+          <StyledButtonContainer>
+            {tabValue === 0 && (
               <PrimaryButton
-                label={intl.formatMessage({ id: 'commit' })}
+                label={intl.formatMessage({ id: 'create' })}
                 size="large"
-                onClick={() => dispatch(commitStagingData())}
+                icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
+                onClick={() => setCreateFormIsDisplayed(true)}
               />
             )}
-        </StyledButtonContainer>
-      </StyledHeaderContainer>
-      <StyledSubHeaderContainer>
-        <Tabs value={tabValue} onChange={handleTabChange}>
-          <Tab label={intl.formatMessage({ id: 'committed' })} />
-          <Tab
-            label={`${intl.formatMessage({ id: 'staging' })} (${
-              climateWarehouseStore.stagingData &&
-              climateWarehouseStore.stagingData.projects.staging.length
-            })`}
-          />
-          <Tab
-            label={`${intl.formatMessage({ id: 'pending' })} (${
-              climateWarehouseStore.stagingData &&
-              climateWarehouseStore.stagingData.projects.pending.length
-            })`}
-          />
-        </Tabs>
-        <div onClick={downloadTxtFile}>
-          <DownloadIcon />
-        </div>
-      </StyledSubHeaderContainer>
-      <StyledBodyContainer>
-        <TabPanel value={tabValue} index={0}>
-          {climateWarehouseStore.projects &&
-            climateWarehouseStore.projects.length === 0 && (
-              <NoDataMessageContainer>
-                <H3>
-                  {!searchRef.current && (
-                    <>
-                      <FormattedMessage id="no-projects-created" />
-                      <StyledCreateOneNowContainer
-                        onClick={() => setCreateFormIsDisplayed(true)}>
-                        <FormattedMessage id="create-one-now" />
-                      </StyledCreateOneNowContainer>
-                    </>
-                  )}
-                  {searchRef.current && (
-                    <FormattedMessage id="no-search-results" />
-                  )}
-                </H3>
-              </NoDataMessageContainer>
-            )}
-          {climateWarehouseStore.projects &&
-            climateWarehouseStore.projects.length > 0 && (
-              <APIDataTable
-                headings={Object.keys(filteredColumnsTableData[0])}
-                data={filteredColumnsTableData}
-                actions="Projects"
+            {tabValue === 1 &&
+              climateWarehouseStore.stagingData.projects.staging.length > 0 && (
+                <PrimaryButton
+                  label={intl.formatMessage({ id: 'commit' })}
+                  size="large"
+                  onClick={onCommit}
+                />
+              )}
+          </StyledButtonContainer>
+        </StyledHeaderContainer>
+        <StyledSubHeaderContainer>
+          <Tabs value={tabValue} onChange={handleTabChange}>
+            <Tab label={intl.formatMessage({ id: 'committed' })} />
+            <Tab
+              label={`${intl.formatMessage({ id: 'staging' })} (${
+                climateWarehouseStore.stagingData &&
+                climateWarehouseStore.stagingData.projects.staging.length
+              })`}
+            />
+            <Tab
+              label={`${intl.formatMessage({ id: 'pending' })} (${
+                climateWarehouseStore.stagingData &&
+                climateWarehouseStore.stagingData.projects.pending.length
+              })`}
+            />
+          </Tabs>
+          <div onClick={downloadTxtFile}>
+            <DownloadIcon />
+          </div>
+        </StyledSubHeaderContainer>
+        <StyledBodyContainer>
+          <TabPanel value={tabValue} index={0}>
+            {climateWarehouseStore.projects &&
+              climateWarehouseStore.projects.length === 0 && (
+                <NoDataMessageContainer>
+                  <H3>
+                    {!searchRef.current && (
+                      <>
+                        <FormattedMessage id="no-projects-created" />
+                        <StyledCreateOneNowContainer
+                          onClick={() => setCreateFormIsDisplayed(true)}>
+                          <FormattedMessage id="create-one-now" />
+                        </StyledCreateOneNowContainer>
+                      </>
+                    )}
+                    {searchRef.current && (
+                      <FormattedMessage id="no-search-results" />
+                    )}
+                  </H3>
+                </NoDataMessageContainer>
+              )}
+            {climateWarehouseStore.projects &&
+              climateWarehouseStore.projects.length > 0 && (
+                <APIDataTable
+                  headings={Object.keys(filteredColumnsTableData[0])}
+                  data={filteredColumnsTableData}
+                  actions="Projects"
+                />
+              )}
+          </TabPanel>
+          <TabPanel value={tabValue} index={1}>
+            {climateWarehouseStore.stagingData &&
+              climateWarehouseStore.stagingData.projects.staging.length ===
+                0 && (
+                <NoDataMessageContainer>
+                  <H3>
+                    <FormattedMessage id="no-staged" />
+                  </H3>
+                </NoDataMessageContainer>
+              )}
+            {climateWarehouseStore.stagingData && (
+              <StagingDataTable
+                headings={headings}
+                data={climateWarehouseStore.stagingData.projects.staging}
+                deleteStagingData={uuid => dispatch(deleteStagingData(uuid))}
               />
             )}
-        </TabPanel>
-        <TabPanel value={tabValue} index={1}>
-          {climateWarehouseStore.stagingData &&
-            climateWarehouseStore.stagingData.projects.staging.length === 0 && (
-              <NoDataMessageContainer>
-                <H3>
-                  <FormattedMessage id="no-staged" />
-                </H3>
-              </NoDataMessageContainer>
+          </TabPanel>
+          <TabPanel value={tabValue} index={2}>
+            {climateWarehouseStore.stagingData &&
+              climateWarehouseStore.stagingData.projects.pending.length ===
+                0 && (
+                <NoDataMessageContainer>
+                  <H3>
+                    <FormattedMessage id="no-pending" />
+                  </H3>
+                </NoDataMessageContainer>
+              )}
+            {climateWarehouseStore.stagingData && (
+              <StagingDataTable
+                headings={headings}
+                data={climateWarehouseStore.stagingData.projects.pending}
+              />
             )}
-          {climateWarehouseStore.stagingData && (
-            <StagingDataTable
-              headings={headings}
-              data={climateWarehouseStore.stagingData.projects.staging}
-              deleteStagingData={uuid => dispatch(deleteStagingData(uuid))}
-            />
-          )}
-        </TabPanel>
-        <TabPanel value={tabValue} index={2}>
-          {climateWarehouseStore.stagingData &&
-            climateWarehouseStore.stagingData.projects.pending.length === 0 && (
-              <NoDataMessageContainer>
-                <H3>
-                  <FormattedMessage id="no-pending" />
-                </H3>
-              </NoDataMessageContainer>
-            )}
-          {climateWarehouseStore.stagingData && (
-            <StagingDataTable
-              headings={headings}
-              data={climateWarehouseStore.stagingData.projects.pending}
-            />
-          )}
-        </TabPanel>
-      </StyledBodyContainer>
+          </TabPanel>
+        </StyledBodyContainer>
+      </StyledSectionContainer>
       {createFormIsDisplayed && (
         <CreateProjectForm onClose={() => setCreateFormIsDisplayed(false)} />
       )}
@@ -322,11 +334,26 @@ const Projects = withRouter(() => {
             })}
             showIcon
             closeable
-            onClose={() => dispatch(setGlobalErrorMessage(null))}
           />
         </NotificationCard>
       )}
-    </StyledSectionContainer>
+      {commitButtonPressed &&
+        commitButtonPressed.current &&
+        !appStore.errorMessage && (
+          <NotificationCard>
+            <Alert
+              type="success"
+              banner={false}
+              alertTitle={intl.formatMessage({ id: 'committed' })}
+              alertBody={intl.formatMessage({
+                id: 'transactions-committed',
+              })}
+              showIcon
+              closeable
+            />
+          </NotificationCard>
+        )}
+    </>
   );
 });
 

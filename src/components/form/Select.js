@@ -213,7 +213,8 @@ const Select = withTheme(({
   options,
   selected = null,
   placeholder = 'Select',
-  width = '200px'
+  width = '200px',
+  onChange
 }) => {
   const [menuIsVisible, setMenuIsVisible] = useState(false);
   const [selectState, setSelectState] = useState(state);
@@ -228,6 +229,10 @@ const Select = withTheme(({
     const newHeight = selectRef.current.clientHeight;
     if (newHeight !== menuTopPosition) {
       setMenuTopPosition(newHeight);
+    }
+
+    if (onChange && selectedOptions) {
+      onChange(selectedOptions);
     }
   }, [selectedOptions, selectRef.current]);
 

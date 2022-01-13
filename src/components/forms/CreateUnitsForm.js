@@ -8,6 +8,8 @@ import {
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
+  SelectSizeEnum,
+  SelectTypeEnum,
   Tabs,
   Tab,
   TabPanel,
@@ -16,11 +18,18 @@ import {
   ModalFormContainerStyle,
   FormContainerStyle,
   BodyContainer,
+  Select,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
+import {
+  correspondingAdjustmentDeclarationValues,
+  correspondingAdjustmentStatusValues,
+  unitStatusValues,
+  unitTypeValues,
+} from '../../utils/pick-values';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -40,36 +49,78 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
+  const [unitType, setUnitType] = useState(null);
+  const [unitStatus, setUnitStatus] = useState(null);
+  const [
+    selectedCorrespondingAdjustmentDeclaration,
+    setSelectedCorrespondingAdjustmentDeclaration,
+  ] = useState(null);
+  const [
+    selectedCorrespondingAdjustmentStatus,
+    setSelectedCorrespondingAdjustmentStatus,
+  ] = useState(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
   const [newUnits, setNewUnits] = useState({
-    orgUid: '',
-    buyer: '',
-    registry: '',
-    blockIdentifier: '',
-    identifier: '',
-    unitType: '',
-    unitCount: '',
-    unitStatus: '',
-    unitStatusDate: '',
-    transactionType: '',
-    unitIssuanceLocation: '',
-    unitLink: '',
-    correspondingAdjustment: '',
-    unitTag: '',
+    countryJurisdictionOfOwner: '',
+    inCountryJurisdictionOfOwner: '',
+    serialNumberBlock: '',
+    unitIdentifier: '',
+    intendedBuyerOrgUid: '',
+    marketplace: '',
+    tags: '',
+    unitTransactionType: '',
+    unitStatusReason: '',
+    tokenIssuanceHash: '',
+    marketplaceIdentifier: '',
+    unitsIssuanceLocation: '',
+    unitRegistryLink: '',
+    unitMarketplaceLink: '',
   });
+
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(newUnits);
-
+    for (let key in dataToSend) {
+      if (dataToSend[key] === '') {
+        delete dataToSend[key];
+      }
+    }
     if (!_.isEmpty(newVintage)) {
+      for (let key of Object.keys(newVintage[0])) {
+        if (newVintage[0][key] === '') {
+          delete newVintage[0][key];
+        }
+      }
       dataToSend.vintage = _.head(newVintage);
     }
 
     if (!_.isEmpty(newQualifications)) {
+      for (let i = 0; i < newQualifications.length; i++) {
+        for (let key of Object.keys(newQualifications[i])) {
+          if (newQualifications[i][key] === '') {
+            delete newQualifications[i][key];
+          }
+        }
+      }
       dataToSend.qualifications = newQualifications;
+    }
+
+    if (!_.isEmpty(unitType)) {
+      dataToSend.unitType = unitType[0].value;
+    }
+    if (!_.isEmpty(unitStatus)) {
+      dataToSend.unitStatus = unitStatus[0].value;
+    }
+    if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
+      dataToSend.correspondingAdjustmentDeclaration =
+        selectedCorrespondingAdjustmentDeclaration[0].value;
+    }
+    if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
+      dataToSend.correspondingAdjustmentStatus =
+        selectedCorrespondingAdjustmentStatus[0].value;
     }
 
     dispatch(postNewUnits(dataToSend));
@@ -116,21 +167,22 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="units-owner" />
+                            *
+                            <FormattedMessage id="country-jurisdiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'units-owner',
+                              id: 'country-jurisdiction-of-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.orgUid}
+                            value={newUnits.countryJurisdictionOfOwner}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                orgUid: value,
+                                countryJurisdictionOfOwner: value,
                               }))
                             }
                           />
@@ -139,21 +191,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="units-buyer" />
+                            <FormattedMessage id="in-country-jurisdiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'units-buyer',
+                              id: 'in-country-jurisdiction-of-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.buyer}
+                            value={newUnits.inCountryJurisdictionOfOwner}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                buyer: value,
+                                inCountryJurisdictionOfOwner: value,
                               }))
                             }
                           />
@@ -162,44 +214,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="registry" />
+                            *<FormattedMessage id="serial-number-block" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'registry',
+                              id: 'serial-number-block',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.registry}
+                            value={newUnits.serialNumberBlock}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                registry: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="unit-block-identifier" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-block-identifier',
-                            })}
-                            state={InputStateEnum.default}
-                            value={newUnits.blockIdentifier}
-                            onChange={value =>
-                              setNewUnits(prev => ({
-                                ...prev,
-                                blockIdentifier: value,
+                                serialNumberBlock: value,
                               }))
                             }
                           />
@@ -208,7 +237,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-identifier" />
+                            *<FormattedMessage id="unit-identifier" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -218,11 +247,11 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                               id: 'unit-identifier',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.identifier}
+                            value={newUnits.unitIdentifier}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                identifier: value,
+                                unitIdentifier: value,
                               }))
                             }
                           />
@@ -231,21 +260,39 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-type" />
+                            *<FormattedMessage id="unit-type" />
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={unitTypeValues}
+                            onChange={value => setUnitType(value)}
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="intended-buyer-org-uid" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-type',
+                              id: 'intended-buyer-org-uid',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitType}
+                            value={newUnits.intendedBuyerOrgUid}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitType: value,
+                                intendedBuyerOrgUid: value,
                               }))
                             }
                           />
@@ -254,23 +301,64 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-count" />
+                            <FormattedMessage id="marketplace" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-count',
+                              id: 'marketplace',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitCount}
+                            value={newUnits.marketplace}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitCount: value,
+                                marketplace: value,
                               }))
                             }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>
+                            <FormattedMessage id="tags" />
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText={intl.formatMessage({
+                              id: 'tags',
+                            })}
+                            state={InputStateEnum.default}
+                            value={newUnits.tags}
+                            onChange={value =>
+                              setNewUnits(prev => ({
+                                ...prev,
+                                tags: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>
+                            *<FormattedMessage id="unit-status" />
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={unitStatusValues}
+                            onChange={value => setUnitStatus(value)}
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -279,21 +367,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-status" />
+                            <FormattedMessage id="unit-transaction-type" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-status',
+                              id: 'unit-transaction-type',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitStatus}
+                            value={newUnits.unitTransactionType}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitStatus: value,
+                                unitTransactionType: value,
                               }))
                             }
                           />
@@ -302,21 +390,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-status-date" />
+                            <FormattedMessage id="unit-status-reason" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-status-date',
+                              id: 'unit-status-reason',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitStatusDate}
+                            value={newUnits.unitStatusReason}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitStatusDate: value,
+                                unitStatusReason: value,
                               }))
                             }
                           />
@@ -325,21 +413,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="transaction-type" />
+                            <FormattedMessage id="token-issuance-hash" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'transaction-type',
+                              id: 'token-issuance-hash',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.transactionType}
+                            value={newUnits.tokenIssuanceHash}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                transactionType: value,
+                                tokenIssuanceHash: value,
                               }))
                             }
                           />
@@ -348,21 +436,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-issuance-location" />
+                            <FormattedMessage id="marketplace-identifier" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-issuance-location',
+                              id: 'marketplace-identifier',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitIssuanceLocation}
+                            value={newUnits.marketplaceIdentifier}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitIssuanceLocation: value,
+                                marketplaceIdentifier: value,
                               }))
                             }
                           />
@@ -371,21 +459,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-link" />
+                            *<FormattedMessage id="units-issuance-location" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-link',
+                              id: 'units-issuance-location',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitLink}
+                            value={newUnits.unitsIssuanceLocation}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                unitLink: value,
+                                unitsIssuanceLocation: value,
                               }))
                             }
                           />
@@ -394,21 +482,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="corresponding-adjustment" />
+                            *<FormattedMessage id="unit-registry-link" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'corresponding-adjustment',
+                              id: 'unit-registry-link',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.correspondingAdjustment}
+                            value={newUnits.unitRegistryLink}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                correspondingAdjustment: value,
+                                unitRegistryLink: value,
                               }))
                             }
                           />
@@ -417,20 +505,67 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-tag" />
+                            <FormattedMessage id="unit-marketplace-link" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'unit-tag',
+                              id: 'unit-marketplace-link',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.unitTag}
+                            value={newUnits.unitMarketplaceLink}
                             onChange={value =>
-                              setNewUnits(prev => ({ ...prev, unitTag: value }))
+                              setNewUnits(prev => ({
+                                ...prev,
+                                unitMarketplaceLink: value,
+                              }))
                             }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>
+                            *
+                            <FormattedMessage id="corresponding-adjustment-declaration" />
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={correspondingAdjustmentDeclarationValues}
+                            onChange={value =>
+                              setSelectedCorrespondingAdjustmentDeclaration(
+                                value,
+                              )
+                            }
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body color={'#262626'}>
+                            *
+                            <FormattedMessage id="corresponding-adjustment-status" />
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={correspondingAdjustmentStatusValues}
+                            onChange={value =>
+                              setSelectedCorrespondingAdjustmentStatus(value)
+                            }
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>

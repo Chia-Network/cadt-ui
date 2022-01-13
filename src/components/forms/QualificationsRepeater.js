@@ -11,13 +11,14 @@ function QualificationsRepeater({qualificationsState, newQualificationsState}) {
           values={qualificationsState}
           updateValues={newQualificationsState}
           initialValue={{
+            qualificationId: '',
+            qualificationLink: '',
+            projectId: '',
+            type: '',
             label: '',
             creditingPeriodStartDate: '',
             creditingPeriodEndDate: '',
-            validityStartDate: '',
-            validityEndDate: '',
-            unityQuantity: '',
-            qualificationLink: '',
+            unitId: '',
           }}
           component={<CreateQualificationsForm />}
           addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}

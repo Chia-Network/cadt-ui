@@ -17,8 +17,10 @@ import {
 import {
   activateProgressIndicator,
   deactivateProgressIndicator,
+  NotificationMessageTypeEnum,
   setConnectionCheck,
   setGlobalErrorMessage,
+  setNotificationMessage,
 } from './app';
 
 export const actions = keyMirror(
@@ -300,16 +302,9 @@ export const postNewProject = data => {
 };
 
 export const postNewUnits = data => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
-
-      const state = getState().climateWarehouse;
-
-      // All newly created units belong to this organization
-      data.orgUid = Object.keys(_.get(state, 'organizations', {})).find(key =>
-        _.get(state, `organizations.${key}.writeAccess`),
-      );
 
       const url = `${constants.API_HOST}/units`;
       const payload = {
@@ -337,8 +332,53 @@ export const postNewUnits = data => {
   };
 };
 
+export const splitUnits = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units/split`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-successfully-split',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+        console.log('yay!');
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-could-not-be-split',
+          ),
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-could-not-be-split',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const updateUnitsRecord = data => {
-  console.log(data);
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -349,7 +389,7 @@ export const updateUnitsRecord = data => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: data,
+        body: JSON.stringify(data),
       };
 
       const response = await fetch(url, payload);

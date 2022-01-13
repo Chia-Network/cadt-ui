@@ -34,7 +34,8 @@
     "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
     "updeep": "^1.2.1",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "nf start -p 3001",

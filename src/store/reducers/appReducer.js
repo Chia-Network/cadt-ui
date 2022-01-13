@@ -13,6 +13,7 @@ const initialState = {
   mode: constants.MODE.WAREHOUSE,
   connectionCheck: true,
   updateAvailablePleaseRefesh: false,
+  notification: null
 };
 
 const appReducer = (state = initialState, action) => {
@@ -71,6 +72,9 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.CONNECTION_CHECK:
       return u({ connectionCheck: action.payload }, state);
+
+    case appActions.SET_NOTIFICATION:
+      return u({ notification: action.payload }, state);
 
     default:
       return state;

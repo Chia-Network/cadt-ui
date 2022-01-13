@@ -1,13 +1,19 @@
+import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
+
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { TableDrawer, APIPagination } from '.';
-import { EllipseIcon } from '..';
+import { TableDrawer, APIPagination, Message } from '.';
+import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-
-import { EditUnitsForm, EditProjectsForm } from '..';
+import {
+  EditUnitsForm,
+  EditProjectsForm,
+  SplitUnitForm,
+} from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -105,23 +111,16 @@ const StyledScalableContainer = styled('div')`
     `}
 `;
 
-const StyledElipseContainer = styled('div')`
-  height: 29px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-`;
-
 const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
-  const [editUnits, setEditUnits] = useState(false);
-  const [editProjects, setEditProjects] = useState(false);
-  const appStore = useSelector(state => state.app);
+  const [unitToBeSplit, setUnitToBeSplit] = useState(null);
+  const { theme, notification} = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
   const windowSize = useWindowSize();
+  const intl = useIntl();
 
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
@@ -131,14 +130,14 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
     <>
       <StyledRefContainer ref={ref}>
         <StyledScalableContainer height={`${height}px`}>
-          <Table selectedTheme={appStore.theme}>
-            <THead selectedTheme={appStore.theme}>
+          <Table selectedTheme={theme}>
+            <THead selectedTheme={theme}>
               <tr>
                 {headings.map((heading, index) => (
                   <Th
                     start={index === 0}
                     end={!actions && index === headings.length - 1}
-                    selectedTheme={appStore.theme}
+                    selectedTheme={theme}
                     key={index}>
                     <TableCellHeaderText>
                       {heading === 'orgUid' && 'Organization'}
@@ -151,7 +150,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                   <Th
                     start={false}
                     end={true}
-                    selectedTheme={appStore.theme}
+                    selectedTheme={theme}
                     key={'action'}></Th>
                 )}
               </tr>
@@ -159,26 +158,31 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
             <tbody style={{ position: 'relative' }}>
               {data.map((record, index) => (
                 <>
-                  <Tr index={index} selectedTheme={appStore.theme} key={index}>
+                  <Tr index={index} selectedTheme={theme} key={index}>
                     {Object.keys(record).map((key, index) => (
                       <Td
                         onClick={() => setRecord(record)}
-                        selectedTheme={appStore.theme}
+                        selectedTheme={theme}
                         columnId={key}
                         key={index}>
                         <TableCellText
-                          tooltip={record[key] && record[key].toString()}>
+                          tooltip={
+                            record[key] &&
+                            `${_.get(
+                              climateWarehouseStore,
+                              `organizations[${record[key]}].name`,
+                            )}: ${record[key].toString()}`
+                          }>
                           {key === 'orgUid' &&
                             climateWarehouseStore.organizations[
                               record[key]
                             ] && (
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html:
-                                    climateWarehouseStore.organizations[
-                                      record[key]
-                                    ].icon,
-                                }}
+                              <img
+                                src={
+                                  climateWarehouseStore.organizations[
+                                    record[key]
+                                  ].icon
+                                }
                               />
                             )}
 
@@ -188,35 +192,38 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         </TableCellText>
                       </Td>
                     ))}
-
                     {actions === 'Units' && (
                       <Td
                         style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          setEditUnits(true);
-                          setEditRecord(record);
-                        }}
-                        selectedTheme={appStore.theme}>
-                        <StyledElipseContainer>
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                        </StyledElipseContainer>
+                        selectedTheme={theme}>
+                        <BasicMenu
+                          options={[
+                            {
+                              label: intl.formatMessage({
+                                id: 'edit-unit',
+                              }),
+                              action: () => {
+                                setEditRecord(record);
+                              },
+                            },
+                            {
+                              label: intl.formatMessage({
+                                id: 'split',
+                              }),
+                              action: () => setUnitToBeSplit(record),
+                            },
+                          ]}
+                        />
                       </Td>
                     )}
                     {actions === 'Projects' && (
                       <Td
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
-                          setEditProjects(true);
                           setEditRecord(record);
                         }}
-                        selectedTheme={appStore.theme}>
-                        <StyledElipseContainer>
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                          <EllipseIcon height="6" width="6" fill="#1890FF" />
-                        </StyledElipseContainer>
+                        selectedTheme={theme}>
+                        <EllipsisMenuIcon />
                       </Td>
                     )}
                   </Tr>
@@ -232,24 +239,32 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
         </StyledScalableContainer>
       </StyledRefContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
-      {editUnits && (
+      {actions === 'Units' && editRecord && (
         <EditUnitsForm
           onClose={() => {
-            setEditUnits(false);
             setEditRecord(null);
           }}
           data={editRecord}
         />
       )}
-      {editProjects && (
+      {actions === 'Projects' && editRecord && (
         <EditProjectsForm
           onClose={() => {
-            setEditProjects(false);
             setEditRecord(null);
           }}
           data={editRecord}
         />
       )}
+      {unitToBeSplit && (
+        <SplitUnitForm
+          organizations={climateWarehouseStore.organizations}
+          onClose={() => setUnitToBeSplit(null)}
+          record={unitToBeSplit}
+        />
+      )}
+      {
+        notification && <Message type={notification.type} id={notification.id} />
+      }
     </>
   );
 });

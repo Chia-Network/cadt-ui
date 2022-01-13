@@ -98,5 +98,17 @@
   "no-search-results": "Lo sentimos, no se han encontrado resultados. Pruebe con una búsqueda diferente.",
   "something-went-wrong": "Perdón, algo salió mal.",
   "project-not-created": "No se pudo crear el proyecto.",
-  "unit-not-created": "No se pudo crear la unidad."
+  "unit-not-created": "No se pudo crear la unidad.",
+  "transactions-committed": "Sus transacciones han sido confirmadas.",
+  "split": "Separar",
+  "nr-of-units": "# de unidades",
+  "record": "Record",
+  "click-to-add": "Haga clic para agregar",
+  "unit-cannot-be-split": "La unidad no se puede dividir porque el conteo es 1.",
+  "unit-could-not-be-split": "La unidad no se pudo dividir.",
+  "units-dont-add-up": "Los recuentos de unidades divididas no suman el recuento inicial.",
+  "unit-count-must-be-a-valid-integer": "El recuento de unidades no es válido. Agrega un número positivo.",
+  "no-change": "Ningún cambio",
+  "unit-successfully-split": "La unidad se dividió con éxito.",
+  "success": "Éxito"
 }
