@@ -51,8 +51,14 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   const intl = useIntl();
   const [unitType, setUnitType] = useState(null);
   const [unitStatus, setUnitStatus] = useState(null);
-  const [cad, setCAD] = useState(null);
-  const [cas, setCAS] = useState(null);
+  const [
+    selectedCorrespondingAdjustmentDeclaration,
+    setSelectedCorrespondingAdjustmentDeclaration,
+  ] = useState(null);
+  const [
+    selectedCorrespondingAdjustmentStatus,
+    setSelectedCorrespondingAdjustmentStatus,
+  ] = useState(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -108,11 +114,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
     if (!_.isEmpty(unitStatus)) {
       dataToSend.unitStatus = unitStatus[0].value;
     }
-    if (!_.isEmpty(cad)) {
-      dataToSend.correspondingAdjustmentDeclaration = cad[0].value;
+    if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
+      dataToSend.correspondingAdjustmentDeclaration =
+        selectedCorrespondingAdjustmentDeclaration[0].value;
     }
-    if (!_.isEmpty(cas)) {
-      dataToSend.correspondingAdjustmentStatus = cas[0].value;
+    if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
+      dataToSend.correspondingAdjustmentStatus =
+        selectedCorrespondingAdjustmentStatus[0].value;
     }
 
     dispatch(postNewUnits(dataToSend));
@@ -525,8 +533,14 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
                             options={cadValues}
-                            onChange={value => setCAD(value)}
-                            placeholder="CAD"
+                            onChange={value =>
+                              setSelectedCorrespondingAdjustmentDeclaration(
+                                value,
+                              )
+                            }
+                            placeholder={intl.formatMessage({
+                              id: 'corresponding-adjustment-declaration',
+                            })}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -542,8 +556,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
                             options={casValues}
-                            onChange={value => setCAS(value)}
-                            placeholder="CAS"
+                            onChange={value =>
+                              setSelectedCorrespondingAdjustmentStatus(value)
+                            }
+                            placeholder={intl.formatMessage({
+                              id: 'corresponding-adjustment-status',
+                            })}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
