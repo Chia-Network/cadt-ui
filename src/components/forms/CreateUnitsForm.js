@@ -269,7 +269,9 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={unitTypeValues}
                             onChange={value => setUnitType(value)}
-                            placeholder="Unit Type"
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -354,7 +356,9 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={unitStatusValues}
                             onChange={value => setUnitStatus(value)}
-                            placeholder="Unit Status"
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -538,9 +542,9 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                                 value,
                               )
                             }
-                            placeholder={intl.formatMessage({
-                              id: 'corresponding-adjustment-declaration',
-                            })}
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -559,9 +563,9 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             onChange={value =>
                               setSelectedCorrespondingAdjustmentStatus(value)
                             }
-                            placeholder={intl.formatMessage({
-                              id: 'corresponding-adjustment-status',
-                            })}
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>

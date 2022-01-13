@@ -274,7 +274,9 @@ const EditUnitsForm = ({ data, onClose }) => {
                             selected={[
                               { label: data.unitType, value: data.unitType },
                             ]}
-                            placeholder="Unit Type"
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -365,7 +367,9 @@ const EditUnitsForm = ({ data, onClose }) => {
                                 value: data.unitStatus,
                               },
                             ]}
-                            placeholder="Unit Type"
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -555,7 +559,9 @@ const EditUnitsForm = ({ data, onClose }) => {
                                 value: data.correspondingAdjustmentDeclaration,
                               },
                             ]}
-                            placeholder="Unit Type"
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -580,7 +586,9 @@ const EditUnitsForm = ({ data, onClose }) => {
                                 value: data.correspondingAdjustmentStatus,
                               },
                             ]}
-                            placeholder="Unit Type"
+                            placeholder={`-- ${intl.formatMessage({
+                              id: 'select',
+                            })} --`}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
