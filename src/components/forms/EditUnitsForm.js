@@ -79,7 +79,6 @@ const EditUnitsForm = ({ data, onClose }) => {
   };
   return (
     <>
-    {console.log(editedUnits)}
       <Modal
         onOk={handleEditUnits}
         onClose={onClose}
