@@ -24,7 +24,12 @@ import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { cadValues, casValues, unitStatusValues, unitTypeValues } from '../../utils/helper';
+import {
+  cadValues,
+  casValues,
+  unitStatusValues,
+  unitTypeValues,
+} from '../../utils/pick-values';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -44,10 +49,10 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const [getUnitType, setUnitType] = useState(unitTypeValues);
-  const [getUnitStatus, setUnitStatus] = useState(unitStatusValues);
-  const [getCAD, setCAD] = useState(cadValues);
-  const [getCAS, setCAS] = useState(casValues);
+  const [getUnitType, setUnitType] = useState(null);
+  const [getUnitStatus, setUnitStatus] = useState(null);
+  const [getCAD, setCAD] = useState(null);
+  const [getCAS, setCAS] = useState(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -254,7 +259,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={getUnitType}
+                            options={unitTypeValues}
                             onChange={value => setUnitType(value)}
                             placeholder="Unit Type"
                           />
@@ -339,7 +344,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={getUnitStatus}
+                            options={unitStatusValues}
                             onChange={value => setUnitStatus(value)}
                             placeholder="Unit Status"
                           />
@@ -519,7 +524,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={getCAD}
+                            options={cadValues}
                             onChange={value => setCAD(value)}
                             placeholder="CAD"
                           />
@@ -536,7 +541,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={getCAS}
+                            options={casValues}
                             onChange={value => setCAS(value)}
                             placeholder="CAS"
                           />
