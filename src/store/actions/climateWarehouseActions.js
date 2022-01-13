@@ -355,6 +355,7 @@ export const splitUnits = data => {
           ),
         );
         dispatch(getStagingData({ useMockedResponse: false }));
+        console.log('yay!');
       } else {
         dispatch(
           setNotificationMessage(
