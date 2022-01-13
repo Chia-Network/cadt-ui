@@ -47,10 +47,10 @@ const EditUnitsForm = ({ data, onClose }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const [getUnitType, setUnitType] = useState(null);
-  const [getUnitStatus, setUnitStatus] = useState(null);
-  const [getCAD, setCAD] = useState(null);
-  const [getCAS, setCAS] = useState(null);
+  const [unitType, setUnitType] = useState(null);
+  const [unitStatus, setUnitStatus] = useState(null);
+  const [cad, setCAD] = useState(null);
+  const [cas, setCAS] = useState(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -105,17 +105,17 @@ const EditUnitsForm = ({ data, onClose }) => {
       }
       dataToSend.qualifications = qualifications;
     }
-    if (!_.isEmpty(getUnitType)) {
-      dataToSend.unitType = getUnitType[0].value;
+    if (!_.isEmpty(unitType)) {
+      dataToSend.unitType = unitType[0].value;
     }
-    if (!_.isEmpty(getUnitStatus)) {
-      dataToSend.unitStatus = getUnitStatus[0].value;
+    if (!_.isEmpty(unitStatus)) {
+      dataToSend.unitStatus = unitStatus[0].value;
     }
-    if (!_.isEmpty(getCAD)) {
-      dataToSend.correspondingAdjustmentDeclaration = getCAD[0].value;
+    if (!_.isEmpty(cad)) {
+      dataToSend.correspondingAdjustmentDeclaration = cad[0].value;
     }
-    if (!_.isEmpty(getCAS)) {
-      dataToSend.correspondingAdjustmentStatus = getCAS[0].value;
+    if (!_.isEmpty(cas)) {
+      dataToSend.correspondingAdjustmentStatus = cas[0].value;
     }
 
     dispatch(updateUnitsRecord(dataToSend));
