@@ -23,8 +23,8 @@ import VintageRepeater from './VintageRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
-  cadValues,
-  casValues,
+  correspondingAdjustmentDeclarationValues,
+  correspondingAdjustmentStatusValues,
   unitStatusValues,
   unitTypeValues,
 } from '../../utils/pick-values';
@@ -65,8 +65,8 @@ const EditUnitsForm = ({ data, onClose }) => {
   useEffect(() => {
     setEditUnits({
       warehouseUnitId: data.warehouseUnitId,
-      countryJuridictionOfOwner: data.countryJuridictionOfOwner,
-      inCountryJuridictionOfOwner: data.inCountryJuridictionOfOwner,
+      countryJurisdictionOfOwner: data.countryJurisdictionOfOwner,
+      inCountryJurisdictionOfOwner: data.inCountryJurisdictionOfOwner,
       serialNumberBlock: data.serialNumberBlock,
       unitIdentifier: data.unitIdentifier,
       intendedBuyerOrgUid: data.intendedBuyerOrgUid,
@@ -170,21 +170,21 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
                             *
-                            <FormattedMessage id="country-juridiction-of-owner" />
+                            <FormattedMessage id="country-jurisdiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'country-juridiction-of-owner',
+                              id: 'country-jurisdiction-of-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.countryJuridictionOfOwner}
+                            value={editedUnits.countryJurisdictionOfOwner}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                countryJuridictionOfOwner: value,
+                                countryJurisdictionOfOwner: value,
                               }))
                             }
                           />
@@ -193,21 +193,21 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="in-country-juridiction-of-owner" />
+                            <FormattedMessage id="in-country-jurisdiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'in-country-juridiction-of-owner',
+                              id: 'in-country-jurisdiction-of-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={editedUnits.inCountryJuridictionOfOwner}
+                            value={editedUnits.inCountryJurisdictionOfOwner}
                             onChange={value =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                inCountryJuridictionOfOwner: value,
+                                inCountryJurisdictionOfOwner: value,
                               }))
                             }
                           />
@@ -547,7 +547,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={cadValues}
+                            options={correspondingAdjustmentDeclarationValues}
                             onChange={value =>
                               setSelectedCorrespondingAdjustmentDeclaration(
                                 value,
@@ -576,7 +576,7 @@ const EditUnitsForm = ({ data, onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={casValues}
+                            options={correspondingAdjustmentStatusValues}
                             onChange={value =>
                               setSelectedCorrespondingAdjustmentStatus(value)
                             }

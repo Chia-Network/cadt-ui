@@ -24,7 +24,7 @@ export const unitStatusValues = [
   },
 ];
 
-export const cadValues = [
+export const correspondingAdjustmentDeclarationValues = [
   {
     label: 'Commited',
     value: 'Commited',
@@ -39,7 +39,7 @@ export const cadValues = [
   },
 ];
 
-export const casValues = [
+export const correspondingAdjustmentStatusValues = [
   {
     label: 'Not Started',
     value: 'Not Started',

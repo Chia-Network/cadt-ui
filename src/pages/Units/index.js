@@ -36,8 +36,8 @@ import {
 } from '../../components';
 
 const headings = [
-  'countryJuridictionOfOwner',
-  'inCountryJuridictionOfOwner',
+  'countryJurisdictionOfOwner',
+  'inCountryJurisdictionOfOwner',
   'serialNumberBlock',
   'unitIdentifier',
   'unitType',
@@ -172,8 +172,8 @@ const Units = withRouter(() => {
     return climateWarehouseStore.units.map(project =>
       _.pick(project, [
         'warehouseUnitId',
-        'countryJuridictionOfOwner',
-        'inCountryJuridictionOfOwner',
+        'countryJurisdictionOfOwner',
+        'inCountryJurisdictionOfOwner',
         'serialNumberBlock',
         'unitIdentifier',
         'unitType',
@@ -185,14 +185,11 @@ const Units = withRouter(() => {
         'unitStatusReason',
         'tokenIssuanceHash',
         'marketplaceIdentifier',
-
         'unitsIssuanceLocation',
         'unitRegistryLink',
         'unitMarketplaceLink',
         'correspondingAdjustmentDeclaration',
         'correspondingAdjustmentStatus',
-        'unitCount',
-
       ]),
     );
   }, [climateWarehouseStore.units, appStore.mode]);

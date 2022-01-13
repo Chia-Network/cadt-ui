@@ -25,8 +25,8 @@ import VintageRepeater from './VintageRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
-  cadValues,
-  casValues,
+  correspondingAdjustmentDeclarationValues,
+  correspondingAdjustmentStatusValues,
   unitStatusValues,
   unitTypeValues,
 } from '../../utils/pick-values';
@@ -65,8 +65,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   };
 
   const [newUnits, setNewUnits] = useState({
-    countryJuridictionOfOwner: '',
-    inCountryJuridictionOfOwner: '',
+    countryJurisdictionOfOwner: '',
+    inCountryJurisdictionOfOwner: '',
     serialNumberBlock: '',
     unitIdentifier: '',
     intendedBuyerOrgUid: '',
@@ -168,21 +168,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
-                            <FormattedMessage id="country-juridiction-of-owner" />
+                            <FormattedMessage id="country-jurisdiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'country-juridiction-of-owner',
+                              id: 'country-jurisdiction-of-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.countryJuridictionOfOwner}
+                            value={newUnits.countryJurisdictionOfOwner}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                countryJuridictionOfOwner: value,
+                                countryJurisdictionOfOwner: value,
                               }))
                             }
                           />
@@ -191,21 +191,21 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="in-country-juridiction-of-owner" />
+                            <FormattedMessage id="in-country-jurisdiction-of-owner" />
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
-                              id: 'in-country-juridiction-of-owner',
+                              id: 'in-country-jurisdiction-of-owner',
                             })}
                             state={InputStateEnum.default}
-                            value={newUnits.inCountryJuridictionOfOwner}
+                            value={newUnits.inCountryJurisdictionOfOwner}
                             onChange={value =>
                               setNewUnits(prev => ({
                                 ...prev,
-                                inCountryJuridictionOfOwner: value,
+                                inCountryJurisdictionOfOwner: value,
                               }))
                             }
                           />
@@ -536,7 +536,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={cadValues}
+                            options={correspondingAdjustmentDeclarationValues}
                             onChange={value =>
                               setSelectedCorrespondingAdjustmentDeclaration(
                                 value,
@@ -559,7 +559,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={casValues}
+                            options={correspondingAdjustmentStatusValues}
                             onChange={value =>
                               setSelectedCorrespondingAdjustmentStatus(value)
                             }
