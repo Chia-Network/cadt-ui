@@ -185,14 +185,11 @@ const Units = withRouter(() => {
         'unitStatusReason',
         'tokenIssuanceHash',
         'marketplaceIdentifier',
-
         'unitsIssuanceLocation',
         'unitRegistryLink',
         'unitMarketplaceLink',
         'correspondingAdjustmentDeclaration',
         'correspondingAdjustmentStatus',
-        'unitCount',
-
       ]),
     );
   }, [climateWarehouseStore.units, appStore.mode]);
