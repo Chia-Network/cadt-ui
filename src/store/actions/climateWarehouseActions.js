@@ -351,7 +351,7 @@ export const splitUnits = data => {
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
-            'all good',
+            'unit-successfully-split',
           ),
         );
         dispatch(getStagingData({ useMockedResponse: false }));
@@ -359,7 +359,7 @@ export const splitUnits = data => {
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'did not work',
+            'unit-could-not-be-split',
           ),
         );
       }
@@ -368,7 +368,7 @@ export const splitUnits = data => {
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
-          'did not work',
+          'unit-could-not-be-split',
         ),
       );
     } finally {

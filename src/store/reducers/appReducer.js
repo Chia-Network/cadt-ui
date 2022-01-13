@@ -76,8 +76,6 @@ const appReducer = (state = initialState, action) => {
       return u({ connectionCheck: action.payload }, state);
 
     case appActions.SET_NOTIFICATION:
-      console.log('notification saved in store: ', action.payload);
-      // return u({ notification: action.payload }, state);
       return u({ notification: action.payload }, state);
 
     default:

@@ -81,22 +81,6 @@ export const setNotificationMessage = (type, id) => {
         payload: null
       })
     }
-    // switch (type) {
-    //   case NotificationMessageTypeEnum.error:
-    //     dispatch({
-    //       type: actions.SET_NOTIFICATION,
-    //       payload: (
-    //         <Message body={msg} type={NotificationMessageTypeEnum.error} />
-    //       ),
-    //     });
-    //     break;
-
-    //   default:
-    //     dispatch({
-    //       type: actions.SET_NOTIFICATION,
-    //       payload: null,
-    //     });
-    // }
   };
 };
 

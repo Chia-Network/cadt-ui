@@ -106,7 +106,9 @@
   "click-to-add": "クリックして追加",
   "unit-cannot-be-split": "カウントが1であるため、ユニットを分割できません。",
   "unit-could-not-be-split": "ユニットを分割できませんでした。",
-  "units-dont-add-up": "分割単位の合計は、の初期カウントに加算されません",
+  "units-dont-add-up": "分割されたユニットのカウントは、最初のカウントには加算されません。",
   "unit-count-must-be-a-valid-integer": "ユニット数が無効です。正の数を追加します。",
-  "no-change": "変化なし"
+  "no-change": "変化なし",
+  "unit-successfully-split": "ユニットは正常に分割されました。",
+  "success": "成功"
 }

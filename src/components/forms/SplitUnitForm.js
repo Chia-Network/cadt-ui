@@ -56,7 +56,7 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
   ]);
   const intl = useIntl();
   const [validationErrors, setValidationErrors] = useState([]);
-  const appStore = useSelector(state => state.app);
+  const { notification } = useSelector(state => state.app);
 
   const organizationsArray = Object.keys(organizations).map(key => ({
     value: key,
@@ -72,7 +72,6 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
   const unitIsSplitable = record.unitCount !== 1;
   useEffect(() => {
     if (unitIsSplitable === false) {
-      console.log(appStore.notifcation);
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -107,12 +106,19 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
             records: data,
           }),
         );
-        onClose();
       })
       .catch(err => {
         setValidationErrors([...err.errors]);
       });
   };
+
+  const unitWasSuccessfullySplit =
+    notification && notification.id === 'unit-successfully-split';
+  useEffect(() => {
+    if (unitWasSuccessfullySplit) {
+      onClose();
+    }
+  }, [notification]);
 
   useEffect(() => {
     if (validationErrors.length > 0) {
@@ -152,11 +158,8 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
 
   return (
     <>
-      {appStore.notification && (
-        <Message
-          id={appStore.notification.id}
-          type={appStore.notification.type}
-        />
+      {notification && !unitWasSuccessfullySplit && (
+        <Message id={notification.id} type={notification.type} />
       )}
       <Modal
         onOk={onSubmit}

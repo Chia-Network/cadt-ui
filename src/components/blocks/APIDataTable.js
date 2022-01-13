@@ -1,22 +1,19 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
 
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { TableDrawer, APIPagination } from '.';
+import { TableDrawer, APIPagination, Message } from '.';
 import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import {
   EditUnitsForm,
   EditProjectsForm,
   SplitUnitForm,
-  NotificationCard,
-  Alert,
 } from '..';
-import { setGlobalErrorMessage } from '../../store/actions/app';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -118,13 +115,12 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
   const [unitToBeSplit, setUnitToBeSplit] = useState(null);
-  const appStore = useSelector(state => state.app);
+  const { theme, notification} = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
   const windowSize = useWindowSize();
   const intl = useIntl();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
@@ -134,14 +130,14 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
     <>
       <StyledRefContainer ref={ref}>
         <StyledScalableContainer height={`${height}px`}>
-          <Table selectedTheme={appStore.theme}>
-            <THead selectedTheme={appStore.theme}>
+          <Table selectedTheme={theme}>
+            <THead selectedTheme={theme}>
               <tr>
                 {headings.map((heading, index) => (
                   <Th
                     start={index === 0}
                     end={!actions && index === headings.length - 1}
-                    selectedTheme={appStore.theme}
+                    selectedTheme={theme}
                     key={index}>
                     <TableCellHeaderText>
                       {heading === 'orgUid' && 'Organization'}
@@ -154,7 +150,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                   <Th
                     start={false}
                     end={true}
-                    selectedTheme={appStore.theme}
+                    selectedTheme={theme}
                     key={'action'}></Th>
                 )}
               </tr>
@@ -162,11 +158,11 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
             <tbody style={{ position: 'relative' }}>
               {data.map((record, index) => (
                 <>
-                  <Tr index={index} selectedTheme={appStore.theme} key={index}>
+                  <Tr index={index} selectedTheme={theme} key={index}>
                     {Object.keys(record).map((key, index) => (
                       <Td
                         onClick={() => setRecord(record)}
-                        selectedTheme={appStore.theme}
+                        selectedTheme={theme}
                         columnId={key}
                         key={index}>
                         <TableCellText
@@ -199,7 +195,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                     {actions === 'Units' && (
                       <Td
                         style={{ cursor: 'pointer' }}
-                        selectedTheme={appStore.theme}>
+                        selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
@@ -226,7 +222,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         onClick={() => {
                           setEditRecord(record);
                         }}
-                        selectedTheme={appStore.theme}>
+                        selectedTheme={theme}>
                         <EllipsisMenuIcon />
                       </Td>
                     )}
@@ -266,21 +262,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           record={unitToBeSplit}
         />
       )}
-      {appStore.errorMessage && (
-        <NotificationCard>
-          <Alert
-            type="error"
-            banner={false}
-            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
-            alertBody={intl.formatMessage({
-              id: 'unit-could-not-be-split',
-            })}
-            showIcon
-            closeable
-            onClose={() => dispatch(setGlobalErrorMessage(null))}
-          />
-        </NotificationCard>
-      )}
+      {
+        notification && <Message type={notification.type} id={notification.id} />
+      }
     </>
   );
 });

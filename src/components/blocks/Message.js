@@ -36,7 +36,7 @@ const Message = ({ type, id }) => {
           <Alert
             type="success"
             banner={false}
-            alertTitle={intl.formatMessage({ id: 'Ok' })}
+            alertTitle={intl.formatMessage({ id: 'success' })}
             alertBody={intl.formatMessage({ id })}
             showIcon
             closeable
