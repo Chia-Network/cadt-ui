@@ -158,7 +158,13 @@ export const getStagingData = ({ useMockedResponse = false }) => {
   };
 };
 
-export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
+export const getPaginatedData = ({
+  type,
+  page,
+  resultsLimit,
+  searchQuery,
+  orgUid,
+}) => {
   return async dispatch => {
     const typeIsValid = type === 'projects' || type === 'units';
     const pageAndLimitAreValid =
@@ -170,6 +176,9 @@ export const getPaginatedData = ({ type, page, resultsLimit, searchQuery }) => {
         let url = `${constants.API_HOST}/${type}?page=${page}&limit=${resultsLimit}`;
         if (searchQuery) {
           url += `&search=${encodeURIComponent(searchQuery)}`;
+        }
+        if (orgUid && typeof orgUid === 'string') {
+          url += `&orgUid=${orgUid}`;
         }
         const response = await fetch(url);
 

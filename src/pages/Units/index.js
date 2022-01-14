@@ -23,7 +23,6 @@ import {
   SearchInput,
   SelectSizeEnum,
   SelectTypeEnum,
-  Select,
   PrimaryButton,
   CreateUnitsForm,
   DownloadIcon,
@@ -33,6 +32,7 @@ import {
   StagingDataTable,
   NotificationCard,
   Alert,
+  SelectOrganizations,
 } from '../../components';
 
 const headings = [
@@ -113,7 +113,8 @@ const Units = withRouter(() => {
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
-  let searchRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState(null);
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
   const commitButtonPressed = useRef(null);
 
   const handleTabChange = (event, newValue) => {
@@ -128,15 +129,7 @@ const Units = withRouter(() => {
         } else {
           history.replace({ search: null });
         }
-        searchRef.current = event.target.value;
-        dispatch(
-          getPaginatedData({
-            type: 'units',
-            page: 1,
-            resultsLimit: constants.MAX_TABLE_SIZE,
-            searchQuery: event.target.value,
-          }),
-        );
+        setSearchQuery(event.target.value);
       }, 300),
     [dispatch],
   );
@@ -154,15 +147,21 @@ const Units = withRouter(() => {
   }, [appStore.errorMessage]);
 
   useEffect(() => {
-    dispatch(
-      getPaginatedData({
-        type: 'units',
-        page: 1,
-        resultsLimit: constants.MAX_TABLE_SIZE,
-      }),
-    );
+    console.log('trigger');
+    const options = {
+      type: 'units',
+      page: 1,
+      resultsLimit: constants.MAX_TABLE_SIZE,
+    };
+    if (searchQuery) {
+      options.searchQuery = searchQuery;
+    }
+    if (selectedOrganization && selectedOrganization !== 'all') {
+      options.orgUid = selectedOrganization;
+    }
+    dispatch(getPaginatedData(options));
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, [dispatch, tabValue]);
+  }, [dispatch, tabValue, searchQuery, selectedOrganization]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
@@ -190,6 +189,7 @@ const Units = withRouter(() => {
         'unitMarketplaceLink',
         'correspondingAdjustmentDeclaration',
         'correspondingAdjustmentStatus',
+        'unitCount',
       ]),
     );
   }, [climateWarehouseStore.units, appStore.mode]);
@@ -215,6 +215,12 @@ const Units = withRouter(() => {
     setTabValue(2);
   };
 
+  const onOrganizationSelect = selectedOption => {
+    const orgUid = selectedOption[0].orgUid;
+    setSelectedOrganization(orgUid);
+    history.replace({ search: `orgUid=${orgUid}` });
+  };
+
   return (
     <>
       <StyledSectionContainer>
@@ -227,15 +233,17 @@ const Units = withRouter(() => {
               outline
             />
           </StyledSearchContainer>
-          <StyledFiltersContainer>
-            <Select
-              size={SelectSizeEnum.large}
-              type={SelectTypeEnum.basic}
-              options={[{ label: 'Filter 1', value: 'f1' }]}
-              placeholder={intl.formatMessage({ id: 'filters' })}
-              width="93px"
-            />
-          </StyledFiltersContainer>
+          {tabValue === 0 && (
+            <StyledFiltersContainer>
+              <SelectOrganizations
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                placeholder={intl.formatMessage({ id: 'filters' })}
+                width="200px"
+                onChange={onOrganizationSelect}
+              />
+            </StyledFiltersContainer>
+          )}
           <StyledButtonContainer>
             {tabValue === 0 && (
               <PrimaryButton
@@ -281,18 +289,17 @@ const Units = withRouter(() => {
               climateWarehouseStore.units.length === 0 && (
                 <NoDataMessageContainer>
                   <H3>
-                    {!searchRef.current && (
+                    {!searchQuery && (
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}>
+                          onClick={() => setCreate(true)}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
                     )}
-                    {searchRef.current && (
-                      <FormattedMessage id="no-search-results" />
-                    )}
+                    {searchQuery && <FormattedMessage id="no-search-results" />}
                   </H3>
                 </NoDataMessageContainer>
               )}

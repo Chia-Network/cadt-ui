@@ -16,12 +16,10 @@ import {
   SelectStateEnum,
   InputVariantEnum,
   Message,
+  LocalMessageTypeEnum,
+  LocalMessage,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
-import {
-  NotificationMessageTypeEnum,
-  setNotificationMessage,
-} from '../../store/actions/app';
 
 const InputContainer = styled('div')`
   width: 20rem;
@@ -70,16 +68,6 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
   });
 
   const unitIsSplitable = record.unitCount !== 1;
-  useEffect(() => {
-    if (unitIsSplitable === false) {
-      dispatch(
-        setNotificationMessage(
-          NotificationMessageTypeEnum.error,
-          'unit-cannot-be-split',
-        ),
-      );
-    }
-  }, []);
 
   const validationSchema = yup
     .array()
@@ -120,17 +108,6 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     }
   }, [notification]);
 
-  useEffect(() => {
-    if (validationErrors.length > 0) {
-      dispatch(
-        setNotificationMessage(
-          NotificationMessageTypeEnum.error,
-          getValidationErrorId(),
-        ),
-      );
-    }
-  }, [validationErrors]);
-
   const getInputFieldState = index => {
     if (_.includes(validationErrors, 'units do not add up')) {
       return InputVariantEnum.error;
@@ -143,15 +120,21 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     return InputVariantEnum.default;
   };
 
-  const getValidationErrorId = () => {
+  const getValidationLocalMessage = () => {
     if (
       validationErrors.findIndex(element => element.includes('0')) !== -1 ||
       validationErrors.findIndex(element => element.includes('1')) !== -1
     ) {
-      return 'unit-count-must-be-a-valid-integer';
+      return intl.formatMessage({
+        id: 'unit-count-must-be-a-valid-integer',
+      });
     }
     if (_.includes(validationErrors, 'units do not add up')) {
-      return 'units-dont-add-up';
+      return `
+        ${intl.formatMessage({
+          id: 'units-dont-add-up',
+        })} ${record.unitCount}.
+        `;
     }
     return '';
   };
@@ -160,6 +143,13 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     <>
       {notification && !unitWasSuccessfullySplit && (
         <Message id={notification.id} type={notification.type} />
+      )}
+      {validationErrors.length > 0 && (
+        <LocalMessage
+          msg={getValidationLocalMessage()}
+          type={LocalMessageTypeEnum.error}
+          onClose={() => setValidationErrors([])}
+        />
       )}
       <Modal
         onOk={onSubmit}
