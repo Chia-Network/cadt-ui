@@ -163,6 +163,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
         selectedCorrespondingAdjustmentStatus[0].value;
     }
     const isValid = await unitsSchema.isValid(dataToSend);
+    console.log(notification)
     if (isValid) {
       dispatch(postNewUnits(dataToSend));
       setError(false);
@@ -175,7 +176,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   return (
     <>
       {error && <Message id={notification?.id} type={notification?.error} />}
-      {success && <Message id={notification?.id} type={notification?.error} />}
+      {success && <Message id={notification?.id} type={notification?.success} />}
       <Modal
         onOk={handleEditUnits}
         onClose={onClose}
