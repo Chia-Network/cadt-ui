@@ -179,7 +179,6 @@ const Units = withRouter(() => {
         'unitType',
         'intendedBuyerOrgUid',
         'marketplace',
-        'unitCount',
         'tags',
         'unitStatus',
         'unitTransactionType',
