@@ -179,6 +179,7 @@ const Units = withRouter(() => {
         'unitType',
         'intendedBuyerOrgUid',
         'marketplace',
+        'unitCount',
         'tags',
         'unitStatus',
         'unitTransactionType',
@@ -285,7 +286,8 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}>
+                          onClick={() => setCreate(true)}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

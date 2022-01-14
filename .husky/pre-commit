@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-git-authors-cli && lint-staged
+npx git-authors-cli && npx lint-staged
