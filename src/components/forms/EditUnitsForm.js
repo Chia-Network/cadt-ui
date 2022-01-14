@@ -22,6 +22,7 @@ import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import {
   correspondingAdjustmentDeclarationValues,
   correspondingAdjustmentStatusValues,
