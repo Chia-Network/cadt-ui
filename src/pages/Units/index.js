@@ -147,7 +147,6 @@ const Units = withRouter(() => {
   }, [appStore.errorMessage]);
 
   useEffect(() => {
-    console.log('trigger');
     const options = {
       type: 'units',
       page: 1,
@@ -233,7 +232,7 @@ const Units = withRouter(() => {
               outline
             />
           </StyledSearchContainer>
-          {tabValue === 0 && (
+          { tabValue === 0 && 
             <StyledFiltersContainer>
               <SelectOrganizations
                 size={SelectSizeEnum.large}
@@ -243,7 +242,7 @@ const Units = withRouter(() => {
                 onChange={onOrganizationSelect}
               />
             </StyledFiltersContainer>
-          )}
+          }
           <StyledButtonContainer>
             {tabValue === 0 && (
               <PrimaryButton
@@ -293,8 +292,7 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}
-                        >
+                          onClick={() => setCreate(true)}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

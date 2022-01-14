@@ -17,7 +17,7 @@ import {
   Tabs,
   TabPanel,
   DownloadIcon,
-  Select,
+  SelectOrganizations,
   SelectSizeEnum,
   SelectTypeEnum,
   CreateProjectForm,
@@ -99,11 +99,18 @@ const Projects = withRouter(() => {
   const intl = useIntl();
   const dispatch = useDispatch();
   let history = useHistory();
-  const searchRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState(null);
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
   const commitButtonPressed = useRef(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+
+  const onOrganizationSelect = selectedOption => {
+    const orgUid = selectedOption[0].orgUid;
+    setSelectedOrganization(orgUid);
+    history.replace({ search: `orgUid=${orgUid}` });
   };
 
   const onSearch = useMemo(
@@ -114,15 +121,7 @@ const Projects = withRouter(() => {
         } else {
           history.replace({ search: null });
         }
-        searchRef.current = event.target.value;
-        dispatch(
-          getPaginatedData({
-            type: 'projects',
-            page: 1,
-            resultsLimit: constants.MAX_TABLE_SIZE,
-            searchQuery: event.target.value,
-          }),
-        );
+        setSearchQuery(event.target.value);
       }, 300),
     [dispatch],
   );
@@ -140,15 +139,20 @@ const Projects = withRouter(() => {
   }, [appStore.errorMessage]);
 
   useEffect(() => {
-    dispatch(
-      getPaginatedData({
-        type: 'projects',
-        page: 1,
-        resultsLimit: constants.MAX_TABLE_SIZE,
-      }),
-    );
+    const options = {
+      type: 'projects',
+      page: 1,
+      resultsLimit: constants.MAX_TABLE_SIZE,
+    };
+    if (searchQuery) {
+      options.searchQuery = searchQuery;
+    }
+    if (selectedOrganization && selectedOrganization !== 'all') {
+      options.orgUid = selectedOrganization;
+    }
+    dispatch(getPaginatedData(options));
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, [dispatch, tabValue]);
+  }, [dispatch, tabValue, searchQuery, selectedOrganization]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.projects) {
@@ -206,13 +210,17 @@ const Projects = withRouter(() => {
             />
           </StyledSearchContainer>
           <StyledFiltersContainer>
-            <Select
-              size={SelectSizeEnum.large}
-              type={SelectTypeEnum.basic}
-              options={[{ label: 'Filter 1', value: 'f1' }]}
-              placeholder={intl.formatMessage({ id: 'filters' })}
-              width="93px"
-            />
+            {tabValue === 0 && (
+              <StyledFiltersContainer>
+                <SelectOrganizations
+                  size={SelectSizeEnum.large}
+                  type={SelectTypeEnum.basic}
+                  placeholder={intl.formatMessage({ id: 'filters' })}
+                  width="200px"
+                  onChange={onOrganizationSelect}
+                />
+              </StyledFiltersContainer>
+            )}
           </StyledFiltersContainer>
           <StyledButtonContainer>
             {tabValue === 0 && (
@@ -259,7 +267,7 @@ const Projects = withRouter(() => {
               climateWarehouseStore.projects.length === 0 && (
                 <NoDataMessageContainer>
                   <H3>
-                    {!searchRef.current && (
+                    {!searchQuery && (
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
@@ -268,7 +276,7 @@ const Projects = withRouter(() => {
                         </StyledCreateOneNowContainer>
                       </>
                     )}
-                    {searchRef.current && (
+                    {searchQuery && (
                       <FormattedMessage id="no-search-results" />
                     )}
                   </H3>

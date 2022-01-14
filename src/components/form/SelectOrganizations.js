@@ -101,6 +101,7 @@ const StyledBasicMenu = styled(ScrollContainer)`
 `;
 
 const StyledBasicMenuItem = styled('div')`
+  text-transform: capitalize;
   padding: 0.3125rem 0.75rem 0.3125rem 0.75rem;
   max-width: 200px;
   display: flex;
@@ -203,6 +204,10 @@ const StyledSelectLabel = styled('div')`
   text-overflow: clip;
 `;
 
+const StyledIconContainer = styled('div')`
+  padding-left: 2px;
+`;
+
 const SelectOrganizations = withTheme(
   ({
     size = SelectSizeEnum.default,
@@ -234,7 +239,9 @@ const SelectOrganizations = withTheme(
     const [searchInputValue, setSearchInputValue] = useState('');
     const [menuTopPosition, setMenuTopPosition] = useState(0);
     const ref = useRef();
-    const selectRef = useRef();
+    const selectRef = useRef(); 
+
+    console.log(state, selectState);
 
     useEffect(() => {
       const newHeight = selectRef.current.clientHeight;
@@ -359,8 +366,7 @@ const SelectOrganizations = withTheme(
             state={selectState}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0].name
@@ -383,8 +389,7 @@ const SelectOrganizations = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -398,8 +403,7 @@ const SelectOrganizations = withTheme(
                             name: option.name,
                             icon: option.icon,
                           })
-                        }
-                      >
+                        }>
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -424,8 +428,7 @@ const SelectOrganizations = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             {selectState !== SelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -483,11 +486,12 @@ const SelectOrganizations = withTheme(
                       name: option.name,
                       icon: option.icon,
                     })
-                  }
-                >
+                  }>
                   {option.name}
                   {option.icon && (
-                    <img src={option.icon} width={17} height={17} />
+                    <StyledIconContainer>
+                      <img src={option.icon} width={17} height={17} />
+                    </StyledIconContainer>
                   )}
                 </StyledBasicMenuItem>
               );
@@ -517,8 +521,7 @@ const SelectOrganizations = withTheme(
                         name: option.name,
                         icon: option.icon,
                       })
-                    }
-                  >
+                    }>
                     {option.name}
                   </StyledBasicMenuItem>
                 ),
