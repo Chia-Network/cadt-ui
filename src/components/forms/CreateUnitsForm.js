@@ -1,13 +1,16 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { unitsSchema } from './UnitsValidations';
 
 import {
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
+  InputVariantEnum,
   SelectSizeEnum,
   SelectTypeEnum,
   Tabs,
@@ -19,6 +22,7 @@ import {
   FormContainerStyle,
   BodyContainer,
   Select,
+  Message,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -30,6 +34,10 @@ import {
   unitStatusValues,
   unitTypeValues,
 } from '../../utils/pick-values';
+import {
+  NotificationMessageTypeEnum,
+  setNotificationMessage,
+} from '../../store/actions/app';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -47,10 +55,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   const [newQualifications, setNewQualifications] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
   const [tabValue, setTabValue] = useState(0);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
   const intl = useIntl();
   const [unitType, setUnitType] = useState(null);
   const [unitStatus, setUnitStatus] = useState(null);
+  const { notification } = useSelector(state => state.app);
   const [
     selectedCorrespondingAdjustmentDeclaration,
     setSelectedCorrespondingAdjustmentDeclaration,
@@ -81,7 +92,36 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
     unitMarketplaceLink: '',
   });
 
-  const handleEditUnits = () => {
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'One or more fields were not completed correctly',
+        ),
+      );
+    }
+    if (success) {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.success,
+          'Unit Successfully Submitted!',
+        ),
+      );
+    }
+    setError(false);
+  }, [error, success]);
+
+  const getInputFieldState = () => {
+    if (notification?.type === 'error') {
+      return InputVariantEnum.error;
+    }
+    if (notification?.type === 'success') {
+      return InputVariantEnum.success;
+    }
+  };
+
+  const handleEditUnits = async () => {
     const dataToSend = _.cloneDeep(newUnits);
     for (let key in dataToSend) {
       if (dataToSend[key] === '') {
@@ -122,12 +162,20 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
       dataToSend.correspondingAdjustmentStatus =
         selectedCorrespondingAdjustmentStatus[0].value;
     }
-
-    dispatch(postNewUnits(dataToSend));
-    onClose();
+    const isValid = await unitsSchema.isValid(dataToSend);
+    if (isValid) {
+      dispatch(postNewUnits(dataToSend));
+      setError(false);
+      setSuccess(true);
+      onClose();
+    } else {
+      setError(true);
+    }
   };
   return (
     <>
+      {error && <Message id={notification?.id} type={notification?.error} />}
+      {success && <Message id={notification?.id} type={notification?.error} />}
       <Modal
         onOk={handleEditUnits}
         onClose={onClose}
@@ -173,6 +221,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
+                            variant={getInputFieldState()}
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
                               id: 'country-jurisdiction-of-owner',
@@ -219,6 +268,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
+                            variant={getInputFieldState()}
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
                               id: 'serial-number-block',
@@ -242,6 +292,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
+                            variant={getInputFieldState()}
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
                               id: 'unit-identifier',
@@ -464,6 +515,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
+                            variant={getInputFieldState()}
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
                               id: 'units-issuance-location',
@@ -487,6 +539,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         </StyledLabelContainer>
                         <InputContainer>
                           <StandardInput
+                            variant={getInputFieldState()}
                             size={InputSizeEnum.large}
                             placeholderText={intl.formatMessage({
                               id: 'unit-registry-link',
