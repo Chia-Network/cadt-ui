@@ -134,7 +134,7 @@
   "click-to-add": "Click to add",
   "unit-cannot-be-split": "The unit cannot be split because the count is 1.",
   "unit-could-not-be-split": "The unit could not be split.",
-  "units-dont-add-up": "The split unit counts don't add up to the initial count.",
+  "units-dont-add-up": "The split unit counts don't add up to the initial count of ",
   "unit-count-must-be-a-valid-integer": "Unit count is invalid. Add a positive number.",
   "no-change": "No Change",
   "unit-successfully-split": "The unit was successfully split.",
