@@ -33,6 +33,10 @@ const StyledLabelContainer = styled('div')`
   padding: 0.3rem 0 0.3rem 0;
 `;
 
+const StyledTotalUnitsAvailable = styled('div')`
+  padding-bottom: 30px;
+`;
+
 const StyledContainer = styled('div')`
   padding-top: 2rem;
   display: flex;
@@ -167,6 +171,14 @@ const SplitUnitForm = ({ onClose, record }) => {
             {data.map((item, index) => (
               <StyledSplitEntry key={index}>
                 <StyledFieldContainer>
+                  {index === 0 && (
+                    <StyledTotalUnitsAvailable>
+                      <Body size="Bold">
+                        <FormattedMessage id="total-units-available" />
+                        : {fullRecord.unitCount}
+                      </Body>
+                    </StyledTotalUnitsAvailable>
+                  )}
                   <div>
                     <Body size="Bold">
                       <FormattedMessage id="record" /> {index + 1}

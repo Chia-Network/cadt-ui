@@ -111,5 +111,7 @@
   "no-change": "Ningún cambio",
   "unit-successfully-split": "La unidad se dividió con éxito.",
   "success": "Éxito",
-  "all-organizations": "Todas las organizaciones"
+  "all-organizations": "Todas las organizaciones",
+  "total-units-available": "Total de unidades divididas disponibles"
 }
+

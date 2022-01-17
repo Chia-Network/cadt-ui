@@ -111,5 +111,6 @@
   "no-change": "変化なし",
   "unit-successfully-split": "ユニットは正常に分割されました。",
   "success": "成功",
-  "all-organizations": "すべての組織"
+  "all-organizations": "すべての組織",
+  "total-units-available": "利用可能な分割ユニットの合計"
 }

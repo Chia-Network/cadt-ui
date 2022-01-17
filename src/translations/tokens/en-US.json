@@ -139,5 +139,6 @@
   "no-change": "No Change",
   "unit-successfully-split": "The unit was successfully split.",
   "success": "Success",
-  "all-organizations": "All organizations"
+  "all-organizations": "All organizations",
+  "total-units-available": "Total split units available"
 }
