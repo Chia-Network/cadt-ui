@@ -13,7 +13,9 @@ const LocalMessage = ({ type, msg, onClose }) => {
   const ref = useRef(null);
 
   const handleOnClose = () => {
-    onClose();
+    if (onClose) {
+      onClose();
+    }
     if (ref && ref.current) {
       ref.current.remove();
     }

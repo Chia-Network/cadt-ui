@@ -110,5 +110,6 @@
   "unit-count-must-be-a-valid-integer": "ユニット数が無効です。正の数を追加します。",
   "no-change": "変化なし",
   "unit-successfully-split": "ユニットは正常に分割されました。",
-  "success": "成功"
+  "success": "成功",
+  "all-organizations": "すべての組織"
 }

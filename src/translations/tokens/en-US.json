@@ -138,5 +138,6 @@
   "unit-count-must-be-a-valid-integer": "Unit count is invalid. Add a positive number.",
   "no-change": "No Change",
   "unit-successfully-split": "The unit was successfully split.",
-  "success": "Success"
+  "success": "Success",
+  "all-organizations": "All organizations"
 }

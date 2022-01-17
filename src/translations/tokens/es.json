@@ -110,5 +110,6 @@
   "unit-count-must-be-a-valid-integer": "El recuento de unidades no es válido. Agrega un número positivo.",
   "no-change": "Ningún cambio",
   "unit-successfully-split": "La unidad se dividió con éxito.",
-  "success": "Éxito"
+  "success": "Éxito",
+  "all-organizations": "Todas las organizaciones"
 }

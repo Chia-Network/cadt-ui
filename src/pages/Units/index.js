@@ -232,7 +232,7 @@ const Units = withRouter(() => {
               outline
             />
           </StyledSearchContainer>
-          { tabValue === 0 && 
+          {tabValue === 0 && (
             <StyledFiltersContainer>
               <SelectOrganizations
                 size={SelectSizeEnum.large}
@@ -240,9 +240,10 @@ const Units = withRouter(() => {
                 placeholder={intl.formatMessage({ id: 'filters' })}
                 width="200px"
                 onChange={onOrganizationSelect}
+                displayAllOrganizations
               />
             </StyledFiltersContainer>
-          }
+          )}
           <StyledButtonContainer>
             {tabValue === 0 && (
               <PrimaryButton
@@ -292,8 +293,7 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}
-                        >
+                          onClick={() => setCreate(true)}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

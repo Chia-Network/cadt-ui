@@ -218,6 +218,7 @@ const Projects = withRouter(() => {
                   placeholder={intl.formatMessage({ id: 'filters' })}
                   width="200px"
                   onChange={onOrganizationSelect}
+                  displayAllOrganizations
                 />
               </StyledFiltersContainer>
             )}
@@ -276,9 +277,7 @@ const Projects = withRouter(() => {
                         </StyledCreateOneNowContainer>
                       </>
                     )}
-                    {searchQuery && (
-                      <FormattedMessage id="no-search-results" />
-                    )}
+                    {searchQuery && <FormattedMessage id="no-search-results" />}
                   </H3>
                 </NoDataMessageContainer>
               )}
