@@ -56,7 +56,12 @@ const SplitUnitForm = ({ onClose, record }) => {
   const [validationErrors, setValidationErrors] = useState([]);
   const { notification } = useSelector(state => state.app);
 
-  const unitIsSplitable = record.unitCount !== 1;
+  const { units } = useSelector(store => store.climateWarehouse);
+  const fullRecord = units.filter(
+    unit => unit.warehouseUnitId === record.warehouseUnitId,
+  )[0];
+
+  const unitIsSplitable = fullRecord.unitCount !== 1;
 
   const validationSchema = yup
     .array()
@@ -69,7 +74,7 @@ const SplitUnitForm = ({ onClose, record }) => {
     .test(
       'test array elements sum',
       'units do not add up',
-      value => value[0].unitCount + value[1].unitCount === record.unitCount,
+      value => value[0].unitCount + value[1].unitCount === fullRecord.unitCount,
     );
 
   const onSubmit = () => {
@@ -79,7 +84,7 @@ const SplitUnitForm = ({ onClose, record }) => {
         setValidationErrors([]);
         dispatch(
           splitUnits({
-            warehouseUnitId: record.warehouseUnitId,
+            warehouseUnitId: fullRecord.warehouseUnitId,
             records: data,
           }),
         );
@@ -122,7 +127,7 @@ const SplitUnitForm = ({ onClose, record }) => {
       return `
         ${intl.formatMessage({
           id: 'units-dont-add-up',
-        })} ${record.unitCount}.
+        })} ${fullRecord.unitCount}.
         `;
     }
     return '';
@@ -214,7 +219,7 @@ const SplitUnitForm = ({ onClose, record }) => {
                           newData[index].unitOwnerOrgUid =
                             value[0].orgUid !== 'none'
                               ? value[0].orgUid
-                              : record.unitOwnerOrgUid;
+                              : fullRecord.unitOwnerOrgUid;
                           return newData;
                         })
                       }
