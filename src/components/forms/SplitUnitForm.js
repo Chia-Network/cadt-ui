@@ -10,18 +10,16 @@ import {
   InputSizeEnum,
   InputStateEnum,
   StandardInput,
-  Select,
   SelectSizeEnum,
   SelectTypeEnum,
   SelectStateEnum,
   InputVariantEnum,
   Message,
+  LocalMessageTypeEnum,
+  LocalMessage,
+  SelectOrganizations,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
-import {
-  NotificationMessageTypeEnum,
-  setNotificationMessage,
-} from '../../store/actions/app';
 
 const InputContainer = styled('div')`
   width: 20rem;
@@ -33,6 +31,10 @@ const StyledFieldContainer = styled('div')`
 
 const StyledLabelContainer = styled('div')`
   padding: 0.3rem 0 0.3rem 0;
+`;
+
+const StyledTotalUnitsAvailable = styled('div')`
+  padding-bottom: 30px;
 `;
 
 const StyledContainer = styled('div')`
@@ -48,7 +50,7 @@ const StyledSplitEntry = styled('div')`
   align-items: flex-end;
 `;
 
-const SplitUnitForm = ({ onClose, organizations, record }) => {
+const SplitUnitForm = ({ onClose, record }) => {
   const dispatch = useDispatch();
   const [data, setData] = useState([
     { unitCount: null, unitOwnerOrgUid: record.unitOwnerOrgUid },
@@ -58,28 +60,12 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
   const [validationErrors, setValidationErrors] = useState([]);
   const { notification } = useSelector(state => state.app);
 
-  const organizationsArray = Object.keys(organizations).map(key => ({
-    value: key,
-    label: organizations[key].name,
-  }));
-  organizationsArray.unshift({
-    value: record.unitOwnerOrgUid,
-    label: intl.formatMessage({
-      id: 'no-change',
-    }),
-  });
+  const { units } = useSelector(store => store.climateWarehouse);
+  const fullRecord = units.filter(
+    unit => unit.warehouseUnitId === record.warehouseUnitId,
+  )[0];
 
-  const unitIsSplitable = record.unitCount !== 1;
-  useEffect(() => {
-    if (unitIsSplitable === false) {
-      dispatch(
-        setNotificationMessage(
-          NotificationMessageTypeEnum.error,
-          'unit-cannot-be-split',
-        ),
-      );
-    }
-  }, []);
+  const unitIsSplitable = fullRecord.unitCount !== 1;
 
   const validationSchema = yup
     .array()
@@ -92,7 +78,7 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     .test(
       'test array elements sum',
       'units do not add up',
-      value => value[0].unitCount + value[1].unitCount === record.unitCount,
+      value => value[0].unitCount + value[1].unitCount === fullRecord.unitCount,
     );
 
   const onSubmit = () => {
@@ -102,7 +88,7 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
         setValidationErrors([]);
         dispatch(
           splitUnits({
-            warehouseUnitId: record.warehouseUnitId,
+            warehouseUnitId: fullRecord.warehouseUnitId,
             records: data,
           }),
         );
@@ -120,17 +106,6 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     }
   }, [notification]);
 
-  useEffect(() => {
-    if (validationErrors.length > 0) {
-      dispatch(
-        setNotificationMessage(
-          NotificationMessageTypeEnum.error,
-          getValidationErrorId(),
-        ),
-      );
-    }
-  }, [validationErrors]);
-
   const getInputFieldState = index => {
     if (_.includes(validationErrors, 'units do not add up')) {
       return InputVariantEnum.error;
@@ -143,15 +118,21 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     return InputVariantEnum.default;
   };
 
-  const getValidationErrorId = () => {
+  const getValidationLocalMessage = () => {
     if (
       validationErrors.findIndex(element => element.includes('0')) !== -1 ||
       validationErrors.findIndex(element => element.includes('1')) !== -1
     ) {
-      return 'unit-count-must-be-a-valid-integer';
+      return intl.formatMessage({
+        id: 'unit-count-must-be-a-valid-integer',
+      });
     }
     if (_.includes(validationErrors, 'units do not add up')) {
-      return 'units-dont-add-up';
+      return `
+        ${intl.formatMessage({
+          id: 'units-dont-add-up',
+        })} ${fullRecord.unitCount}.
+        `;
     }
     return '';
   };
@@ -160,6 +141,21 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
     <>
       {notification && !unitWasSuccessfullySplit && (
         <Message id={notification.id} type={notification.type} />
+      )}
+      {validationErrors.length > 0 && (
+        <LocalMessage
+          msg={getValidationLocalMessage()}
+          type={LocalMessageTypeEnum.error}
+          onClose={() => setValidationErrors([])}
+        />
+      )}
+      {unitIsSplitable === false && (
+        <LocalMessage
+          msg={intl.formatMessage({
+            id: 'unit-cannot-be-split',
+          })}
+          type={LocalMessageTypeEnum.error}
+        />
       )}
       <Modal
         onOk={onSubmit}
@@ -175,6 +171,14 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
             {data.map((item, index) => (
               <StyledSplitEntry key={index}>
                 <StyledFieldContainer>
+                  {index === 0 && (
+                    <StyledTotalUnitsAvailable>
+                      <Body size="Bold">
+                        <FormattedMessage id="total-units-available" />
+                        : {fullRecord.unitCount}
+                      </Body>
+                    </StyledTotalUnitsAvailable>
+                  )}
                   <div>
                     <Body size="Bold">
                       <FormattedMessage id="record" /> {index + 1}
@@ -212,7 +216,7 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
                     </Body>
                   </StyledLabelContainer>
                   <InputContainer>
-                    <Select
+                    <SelectOrganizations
                       size={SelectSizeEnum.large}
                       type={SelectTypeEnum.basic}
                       state={
@@ -220,15 +224,18 @@ const SplitUnitForm = ({ onClose, organizations, record }) => {
                           ? SelectStateEnum.default
                           : SelectStateEnum.disabled
                       }
-                      options={organizationsArray}
                       placeholder="Select"
                       onChange={value =>
                         setData(prevData => {
                           const newData = [...prevData];
-                          newData[index].unitOwnerOrgUid = value[0].value;
+                          newData[index].unitOwnerOrgUid =
+                            value[0].orgUid !== 'none'
+                              ? value[0].orgUid
+                              : fullRecord.unitOwnerOrgUid;
                           return newData;
                         })
                       }
+                      displayNoChangeOrganization
                     />
                   </InputContainer>
                 </StyledFieldContainer>

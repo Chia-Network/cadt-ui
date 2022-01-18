@@ -98,17 +98,25 @@
   "no-search-results": "Lo sentimos, no se han encontrado resultados. Pruebe con una búsqueda diferente.",
   "something-went-wrong": "Perdón, algo salió mal.",
   "project-not-created": "No se pudo crear el proyecto.",
+  "project-successfully-created": "El proyecto fue creado con éxito.",
   "unit-not-created": "No se pudo crear la unidad.",
+  "unit-successfully-created": "La unidad fue creada con éxito.",
+  "unit-could-not-be-edited": "No se pudo editar la unidad.",
+  "unit-successfully-edited": "La unidad fue editada con éxito.",
   "transactions-committed": "Sus transacciones han sido confirmadas.",
+  "transactions-not-committed": "No se pudieron confirmar sus transacciones.",
   "split": "Separar",
   "nr-of-units": "# de unidades",
   "record": "Record",
   "click-to-add": "Haga clic para agregar",
   "unit-cannot-be-split": "La unidad no se puede dividir porque el conteo es 1.",
   "unit-could-not-be-split": "La unidad no se pudo dividir.",
-  "units-dont-add-up": "Los recuentos de unidades divididas no suman el recuento inicial.",
+  "units-dont-add-up": "Los recuentos de unidades divididas no suman el recuento inicial de ",
   "unit-count-must-be-a-valid-integer": "El recuento de unidades no es válido. Agrega un número positivo.",
   "no-change": "Ningún cambio",
   "unit-successfully-split": "La unidad se dividió con éxito.",
-  "success": "Éxito"
+  "success": "Éxito",
+  "all-organizations": "Todas las organizaciones",
+  "total-units-available": "Total de unidades divididas disponibles"
 }
+

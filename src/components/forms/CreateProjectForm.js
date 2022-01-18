@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import {
@@ -17,6 +17,7 @@ import {
   FormContainerStyle,
   BodyContainer,
   DateSelect
+  Message,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -49,6 +50,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
+  const { notification } = useSelector(state => state.app);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -106,11 +108,21 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     }
 
     dispatch(postNewProject(dataToSend));
-    onClose();
   };
+
+  const projectWasSuccessfullyCreated =
+    notification && notification.id === 'project-successfully-created';
+  useEffect(() => {
+    if (projectWasSuccessfullyCreated) {
+      onClose();
+    }
+  }, [notification]);
 
   return (
     <>
+      {notification && !projectWasSuccessfullyCreated && (
+        <Message id={notification.id} type={notification.type} />
+      )}
       <Modal
         onOk={handleSubmit}
         onClose={onClose}
@@ -158,7 +170,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
+                index={0}
+              >
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>

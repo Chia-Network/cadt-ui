@@ -3,7 +3,7 @@ import styled, { withTheme } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { ArrowDownIcon, ThreeDotsIcon } from '..';
-import { getPaginatedData } from '../../store/actions/climateWarehouseActions'
+import { getPaginatedData } from '../../store/actions/climateWarehouseActions';
 import constants from '../../constants';
 
 const PaginationContainer = styled('div')`
@@ -59,7 +59,7 @@ const PagesContainer = styled(ControlsContainer)`
 
 const APIPagination = withTheme(({ showLast = false, actions }) => {
   const dispatch = useDispatch();
-  
+
   const { location } = useHistory();
   let searchParams = new URLSearchParams(location.search);
 
@@ -70,9 +70,9 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
   const backButtonIsDisabled = currentPageNumber === 1;
   const nextButtonIsDisabled = currentPageNumber === numberOfPages;
 
-  const changeCurrentPageTo = (newPage) => {
+  const changeCurrentPageTo = newPage => {
     setCurrentPageNumber(newPage);
-    
+
     const options = {
       type: actions.toLowerCase(),
       page: newPage,
@@ -81,10 +81,10 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
     if (searchParams.has('search')) {
       options.searchQuery = searchParams.get('search');
     }
-
-    dispatch(
-      getPaginatedData(options),
-    );
+    if (searchParams.has('search') && searchParams.get('orgUid') !== 'all') {
+      options.orgUid = searchParams.get('orgUid');
+    }
+    dispatch(getPaginatedData(options));
   };
 
   let displayedPages = [currentPageNumber];
