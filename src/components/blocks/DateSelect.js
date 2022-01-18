@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { LocalizationProvider } from '@mui/lab';
-import DateAdapter from '@mui/lab/AdapterMoment';
+import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import styled, { css } from 'styled-components';
 
@@ -91,7 +91,6 @@ const DateSelect = ({
           );
         }}
       />
-      {console.log(`${dateValue?._d}`)}
     </LocalizationProvider>
   );
 };

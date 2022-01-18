@@ -16,6 +16,7 @@
     "@mui/material": "^5.0.6",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "dayjs": "^1.10.7",
     "electron": "^15.3.0",
     "http-proxy-middleware": "^0.19.1",
     "json2csv": "^5.0.6",
