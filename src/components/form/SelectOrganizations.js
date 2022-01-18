@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { withTheme, css } from 'styled-components';
 import { useSelector } from 'react-redux';
-
+import { useIntl } from 'react-intl';
 import { ArrowDownIcon, MagnifyGlassIcon, CloseIcon } from '../icons';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
@@ -217,7 +217,10 @@ const SelectOrganizations = withTheme(
     placeholder = 'Select',
     width = '200px',
     onChange,
+    displayAllOrganizations = false,
+    displayNoChangeOrganization = false,
   }) => {
+    const intl = useIntl();
     const { organizations } = useSelector(store => store.climateWarehouse);
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
@@ -226,22 +229,40 @@ const SelectOrganizations = withTheme(
       name: organizations[orgUid].name,
       icon: organizations[orgUid].icon,
     }));
+
     const allOrganizationsItem = {
       orgUid: 'all',
-      name: 'All organizations',
+      name: intl.formatMessage({
+        id: 'all-organizations',
+      }),
       icon: '',
     };
-    organizationsList.unshift(allOrganizationsItem);
+    if (displayAllOrganizations) {
+      organizationsList.unshift(allOrganizationsItem);
+    }
+
+    const noChangeOrganization = {
+      orgUid: 'none',
+      name: intl.formatMessage({
+        id: 'no-change',
+      }),
+      icon: '',
+    };
+    if (displayNoChangeOrganization) {
+      organizationsList.unshift(noChangeOrganization);
+    }
+
     const [optionsList] = useState(organizationsList);
     const [selectedOptions, setSelectedOptions] = useState(
-      selected || [allOrganizationsItem],
+      selected ||
+        (displayAllOrganizations && [allOrganizationsItem]) ||
+        (displayNoChangeOrganization && [noChangeOrganization]) ||
+        null,
     );
     const [searchInputValue, setSearchInputValue] = useState('');
     const [menuTopPosition, setMenuTopPosition] = useState(0);
     const ref = useRef();
-    const selectRef = useRef(); 
-
-    console.log(state, selectState);
+    const selectRef = useRef();
 
     useEffect(() => {
       const newHeight = selectRef.current.clientHeight;

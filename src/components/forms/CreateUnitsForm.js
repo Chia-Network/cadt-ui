@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -19,6 +19,7 @@ import {
   FormContainerStyle,
   BodyContainer,
   Select,
+  Message,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -44,6 +45,7 @@ const InputContainer = styled('div')`
 `;
 
 const CreateUnitsForm = withRouter(({ onClose }) => {
+  const { notification } = useSelector(state => state.app);
   const [newQualifications, setNewQualifications] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
   const [tabValue, setTabValue] = useState(0);
@@ -122,12 +124,22 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
       dataToSend.correspondingAdjustmentStatus =
         selectedCorrespondingAdjustmentStatus[0].value;
     }
-
     dispatch(postNewUnits(dataToSend));
-    onClose();
   };
+
+  const unitWasSuccessfullyCreated =
+    notification && notification.id === 'unit-successfully-created';
+  useEffect(() => {
+    if (unitWasSuccessfullyCreated) {
+      onClose();
+    }
+  }, [notification]);
+
   return (
     <>
+      {notification && !unitWasSuccessfullyCreated && (
+        <Message id={notification.id} type={notification.type} />
+      )}
       <Modal
         onOk={handleEditUnits}
         onClose={onClose}
@@ -160,7 +172,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
+                index={0}
+              >
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>

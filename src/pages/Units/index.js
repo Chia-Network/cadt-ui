@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -13,8 +13,6 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
-
-import { setGlobalErrorMessage } from '../../store/actions/app';
 
 import {
   H3,
@@ -30,9 +28,8 @@ import {
   Tabs,
   TabPanel,
   StagingDataTable,
-  NotificationCard,
-  Alert,
   SelectOrganizations,
+  Message,
 } from '../../components';
 
 const headings = [
@@ -108,14 +105,13 @@ const NoDataMessageContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const appStore = useSelector(store => store.app);
+  const { notification, mode } = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
-  const commitButtonPressed = useRef(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -139,12 +135,6 @@ const Units = withRouter(() => {
       onSearch.cancel();
     };
   }, []);
-
-  useEffect(() => {
-    if (appStore.errorMessage) {
-      setCreate(false);
-    }
-  }, [appStore.errorMessage]);
 
   useEffect(() => {
     const options = {
@@ -191,7 +181,7 @@ const Units = withRouter(() => {
         'unitCount',
       ]),
     );
-  }, [climateWarehouseStore.units, appStore.mode]);
+  }, [climateWarehouseStore.units, mode]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -210,7 +200,6 @@ const Units = withRouter(() => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    commitButtonPressed.current = true;
     setTabValue(2);
   };
 
@@ -232,7 +221,7 @@ const Units = withRouter(() => {
               outline
             />
           </StyledSearchContainer>
-          { tabValue === 0 && 
+          {tabValue === 0 && (
             <StyledFiltersContainer>
               <SelectOrganizations
                 size={SelectSizeEnum.large}
@@ -240,9 +229,10 @@ const Units = withRouter(() => {
                 placeholder={intl.formatMessage({ id: 'filters' })}
                 width="200px"
                 onChange={onOrganizationSelect}
+                displayAllOrganizations
               />
             </StyledFiltersContainer>
-          }
+          )}
           <StyledButtonContainer>
             {tabValue === 0 && (
               <PrimaryButton
@@ -349,37 +339,9 @@ const Units = withRouter(() => {
           </TabPanel>
         </StyledBodyContainer>
       </StyledSectionContainer>
-      {appStore.errorMessage && (
-        <NotificationCard>
-          <Alert
-            type="error"
-            banner={false}
-            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
-            alertBody={intl.formatMessage({
-              id: 'unit-not-created',
-            })}
-            showIcon
-            closeable
-            onClose={() => dispatch(setGlobalErrorMessage(null))}
-          />
-        </NotificationCard>
+      {notification && (
+        <Message id={notification.id} type={notification.type} />
       )}
-      {commitButtonPressed &&
-        commitButtonPressed.current &&
-        !appStore.errorMessage && (
-          <NotificationCard>
-            <Alert
-              type="success"
-              banner={false}
-              alertTitle={intl.formatMessage({ id: 'committed' })}
-              alertBody={intl.formatMessage({
-                id: 'transactions-committed',
-              })}
-              showIcon
-              closeable
-            />
-          </NotificationCard>
-        )}
     </>
   );
 });

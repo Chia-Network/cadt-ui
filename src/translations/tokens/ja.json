@@ -98,8 +98,13 @@
   "no-search-results": "申し訳ありませんが、結果は見つかりませんでした。別の検索を試してください。",
   "something-went-wrong": "申し訳ありませんが、問題が発生しました。",
   "project-not-created": "プロジェクトを作成できませんでした。",
+  "project-successfully-created": "プロジェクトは正常に作成されました。",
   "unit-not-created": "ユニットを作成できませんでした。",
+  "unit-successfully-created": "ユニットは正常に作成されました。",
+  "unit-could-not-be-edited": "ユニットを編集できませんでした。",
+  "unit-successfully-edited": "ユニットは正常に編集されました。",
   "transactions-committed": "トランザクションがコミットされました。",
+  "transactions-not-committed": "トランザクションをコミットできませんでした。",
   "split": "スプリット",
   "nr-of-units": "ユニット数",
   "record": "記録",
@@ -110,5 +115,7 @@
   "unit-count-must-be-a-valid-integer": "ユニット数が無効です。正の数を追加します。",
   "no-change": "変化なし",
   "unit-successfully-split": "ユニットは正常に分割されました。",
-  "success": "成功"
+  "success": "成功",
+  "all-organizations": "すべての組織",
+  "total-units-available": "利用可能な分割ユニットの合計"
 }
