@@ -229,13 +229,28 @@ export const commitStagingData = () => {
 
       if (response.ok) {
         console.log('yay!');
-        dispatch(setGlobalErrorMessage(null));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transactions-committed',
+          ),
+        );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'transactions-not-committed',
+          ),
+        );
       }
     } catch {
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transactions-not-committed',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -297,13 +312,28 @@ export const postNewProject = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
-        dispatch(setGlobalErrorMessage(null));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'project-successfully-created',
+          ),
+        );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(setGlobalErrorMessage('Project could not be created'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'project-not-created',
+          ),
+        );
       }
     } catch {
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'project-not-created',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -327,14 +357,29 @@ export const postNewUnits = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
-        dispatch(setGlobalErrorMessage(null));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-successfully-created',
+          ),
+        );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(setGlobalErrorMessage('Unit could not be created'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-not-created',
+          ),
+        );
       }
     } catch (err) {
       console.log(err);
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-not-created',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
