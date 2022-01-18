@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -22,8 +22,7 @@ import {
   SelectTypeEnum,
   CreateProjectForm,
   H3,
-  Alert,
-  NotificationCard,
+  Message,
 } from '../../components';
 
 import {
@@ -93,7 +92,7 @@ const NoDataMessageContainer = styled('div')`
 
 const Projects = withRouter(() => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const appStore = useSelector(store => store.app);
+  const { mode, notification } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -101,7 +100,6 @@ const Projects = withRouter(() => {
   let history = useHistory();
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
-  const commitButtonPressed = useRef(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -131,12 +129,6 @@ const Projects = withRouter(() => {
       onSearch.cancel();
     };
   }, []);
-
-  useEffect(() => {
-    if (appStore.errorMessage) {
-      setCreateFormIsDisplayed(false);
-    }
-  }, [appStore.errorMessage]);
 
   useEffect(() => {
     const options = {
@@ -170,11 +162,7 @@ const Projects = withRouter(() => {
         'projectName',
       ]),
     );
-  }, [
-    climateWarehouseStore.projects,
-    appStore.mode,
-    climateWarehouseStore.stagingData,
-  ]);
+  }, [climateWarehouseStore.projects, mode, climateWarehouseStore.stagingData]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -193,7 +181,6 @@ const Projects = withRouter(() => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    commitButtonPressed.current = true;
     setTabValue(2);
   };
 
@@ -272,7 +259,8 @@ const Projects = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreateFormIsDisplayed(true)}>
+                          onClick={() => setCreateFormIsDisplayed(true)}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -330,36 +318,9 @@ const Projects = withRouter(() => {
       {createFormIsDisplayed && (
         <CreateProjectForm onClose={() => setCreateFormIsDisplayed(false)} />
       )}
-      {appStore.errorMessage && (
-        <NotificationCard>
-          <Alert
-            type="error"
-            banner={false}
-            alertTitle={intl.formatMessage({ id: 'something-went-wrong' })}
-            alertBody={intl.formatMessage({
-              id: 'project-not-created',
-            })}
-            showIcon
-            closeable
-          />
-        </NotificationCard>
+      {notification && (
+        <Message id={notification.id} type={notification.type} />
       )}
-      {commitButtonPressed &&
-        commitButtonPressed.current &&
-        !appStore.errorMessage && (
-          <NotificationCard>
-            <Alert
-              type="success"
-              banner={false}
-              alertTitle={intl.formatMessage({ id: 'committed' })}
-              alertBody={intl.formatMessage({
-                id: 'transactions-committed',
-              })}
-              showIcon
-              closeable
-            />
-          </NotificationCard>
-        )}
     </>
   );
 });
