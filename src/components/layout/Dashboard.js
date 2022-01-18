@@ -42,9 +42,7 @@ const Dashboard = withTheme(({ children }) => {
       <LeftNav />
       <Container>
         <Headline />
-        <Body>
-          {children}
-        </Body>
+        <Body>{children}</Body>
       </Container>
     </Main>
   );
