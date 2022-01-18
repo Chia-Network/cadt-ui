@@ -23,6 +23,7 @@ import {
   CreateProjectForm,
   H3,
   Message,
+  UploadCSV
 } from '../../components';
 
 import {
@@ -88,6 +89,12 @@ const NoDataMessageContainer = styled('div')`
   height: 100%;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledCSVOperationsContainer = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
 `;
 
 const Projects = withRouter(() => {
@@ -245,9 +252,14 @@ const Projects = withRouter(() => {
               })`}
             />
           </Tabs>
-          <div onClick={downloadTxtFile}>
-            <DownloadIcon />
-          </div>
+          <StyledCSVOperationsContainer>
+            <span onClick={downloadTxtFile}>
+              <DownloadIcon />
+            </span>
+            <span>
+              <UploadCSV type="projects" />
+            </span>
+          </StyledCSVOperationsContainer>
         </StyledSubHeaderContainer>
         <StyledBodyContainer>
           <TabPanel value={tabValue} index={0}>
@@ -259,8 +271,7 @@ const Projects = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreateFormIsDisplayed(true)}
-                        >
+                          onClick={() => setCreateFormIsDisplayed(true)}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

@@ -117,5 +117,7 @@
   "unit-successfully-split": "ユニットは正常に分割されました。",
   "success": "成功",
   "all-organizations": "すべての組織",
-  "total-units-available": "利用可能な分割ユニットの合計"
+  "total-units-available": "利用可能な分割ユニットの合計",
+  "upload-successful": "ファイルが正常にアップロードされました。",
+  "file-could-not-be-uploaded": "ファイルをアップロードできませんでした。"
 }
