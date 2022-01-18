@@ -117,6 +117,8 @@ const Units = withRouter(() => {
     setTabValue(newValue);
   };
 
+  console.log('test');
+
   const onSearch = useMemo(
     () =>
       _.debounce(event => {
