@@ -90,11 +90,11 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     }
 
     if (!_.isEmpty(date)) {
-      dataToSend.projectStatusDate = date.$d.toString();
+      dataToSend.projectStatusDate = `${date.$M + 1}/${date.$D}/${date.$y}`;
     }
     
     if (!_.isEmpty(validationDate)) {
-      dataToSend.validationDate = validationDate.$d.toString();
+      dataToSend.validationDate = `${validationDate.$M + 1}/${validationDate.$D}/${validationDate.$y}`;
     }
 
     if (!_.isEmpty(newProjectLocations)) {
@@ -104,7 +104,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     if (!_.isEmpty(newRelatedProjects)) {
       dataToSend.relatedProjects = newRelatedProjects;
     }
-    console.log(dataToSend)
+
     dispatch(postNewProject(dataToSend));
     onClose();
   };
