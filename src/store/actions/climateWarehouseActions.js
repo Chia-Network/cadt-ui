@@ -288,16 +288,9 @@ export const deleteStagingData = uuid => {
 };
 
 export const postNewProject = data => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
-
-      const state = getState().climateWarehouse;
-
-      // All newly created projects belong to this organization
-      data.orgUid = Object.keys(_.get(state, 'organizations', {})).find(key =>
-        _.get(state, `organizations.${key}.writeAccess`),
-      );
 
       const url = `${constants.API_HOST}/projects`;
       const payload = {

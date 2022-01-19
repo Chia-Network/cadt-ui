@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { toggleMode } from '../../store/actions/app';
 import { FormattedMessage } from 'react-intl';
 import { resetRefreshPrompt } from '../../store/actions/app';
-import { LocaleSwitcher } from '../../components';
 
 const Container = styled('div')`
   display: flex;
@@ -63,7 +62,8 @@ const LeftNav = withTheme(({ children }) => {
           onClick={() => {
             dispatch(resetRefreshPrompt);
             setLocation('projects');
-          }}>
+          }}
+        >
           <FormattedMessage id="projects" />
         </MenuItem>
         <MenuItem
@@ -72,20 +72,10 @@ const LeftNav = withTheme(({ children }) => {
           onClick={() => {
             dispatch(resetRefreshPrompt);
             setLocation('units');
-          }}>
+          }}
+        >
           <FormattedMessage id="units" />
         </MenuItem>
-
-        <hr style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <LocaleSwitcher />
-        </div>
-        <hr style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
       </NavContainer>
       {children}
     </Container>

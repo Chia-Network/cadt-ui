@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { jsonToCsv } from '../../utils/csvUtils';
+import { downloadTxtFile } from '../../utils/csvUtils';
 import constants from '../../constants';
 
 import {
@@ -23,6 +23,7 @@ import {
   CreateProjectForm,
   H3,
   Message,
+  UploadCSV
 } from '../../components';
 
 import {
@@ -88,6 +89,12 @@ const NoDataMessageContainer = styled('div')`
   height: 100%;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledCSVOperationsContainer = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
 `;
 
 const Projects = withRouter(() => {
@@ -168,17 +175,6 @@ const Projects = withRouter(() => {
     return null;
   }
 
-  const downloadTxtFile = () => {
-    const element = document.createElement('a');
-    const file = new Blob([jsonToCsv(climateWarehouseStore.projects)], {
-      type: 'text/plain',
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = 'climateWarehouse.csv';
-    document.body.appendChild(element); // Required for this to work in FireFox
-    element.click();
-  };
-
   const onCommit = () => {
     dispatch(commitStagingData());
     setTabValue(2);
@@ -245,9 +241,14 @@ const Projects = withRouter(() => {
               })`}
             />
           </Tabs>
-          <div onClick={downloadTxtFile}>
-            <DownloadIcon />
-          </div>
+          <StyledCSVOperationsContainer>
+            <span onClick={() => downloadTxtFile(climateWarehouseStore.projects)}>
+              <DownloadIcon />
+            </span>
+            <span>
+              <UploadCSV type="projects" />
+            </span>
+          </StyledCSVOperationsContainer>
         </StyledSubHeaderContainer>
         <StyledBodyContainer>
           <TabPanel value={tabValue} index={0}>
@@ -259,8 +260,7 @@ const Projects = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreateFormIsDisplayed(true)}
-                        >
+                          onClick={() => setCreateFormIsDisplayed(true)}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

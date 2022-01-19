@@ -117,6 +117,8 @@
   "unit-successfully-split": "La unidad se dividió con éxito.",
   "success": "Éxito",
   "all-organizations": "Todas las organizaciones",
-  "total-units-available": "Total de unidades divididas disponibles"
+  "total-units-available": "Total de unidades divididas disponibles",
+  "upload-successful": "Su archivo se cargó con éxito.",
+  "file-could-not-be-uploaded": "No se pudo cargar su archivo."
 }
 

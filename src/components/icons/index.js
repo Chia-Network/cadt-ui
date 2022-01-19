@@ -24,3 +24,4 @@ export * from './EllipseIcon';
 export * from './MinusIcon';
 export * from './DownloadIcon';
 export * from './EllipsisMenuIcon';
+export * from './UploadIcon';

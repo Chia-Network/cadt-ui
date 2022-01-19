@@ -10,8 +10,8 @@ const SocketStatusCard = styled('div')`
   align-items: center;
   margin: 1.25rem;
   width: 8.125rem;
-  top: 0;
-  right: 0;
+  bottom: 0;
+  left: 0;
 `;
 
 const StatusColor = styled('div')`

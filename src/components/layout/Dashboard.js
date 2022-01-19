@@ -1,7 +1,7 @@
 import React from 'react';
 //import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import { LeftNav } from '..';
+import { LeftNav, LocaleSwitcher } from '..';
 
 const Container = styled('div')`
   width: 100%;
@@ -35,16 +35,27 @@ const Body = styled('div')`
   padding: 0;
 `;
 
+const StyledLocalContainer = styled('div')`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0rem 1.5rem 0rem 1.5rem;
+  box-sizing: border-box;
+`;
+
 const Dashboard = withTheme(({ children }) => {
   //const appStore = useSelector(state => state.app);
   return (
     <Main>
       <LeftNav />
       <Container>
-        <Headline />
-        <Body>
-          {children}
-        </Body>
+        <Headline>
+          <StyledLocalContainer>
+            <LocaleSwitcher />
+          </StyledLocalContainer>
+        </Headline>
+        <Body>{children}</Body>
       </Container>
     </Main>
   );
