@@ -289,7 +289,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
         {deleteFromStaging && (
           <Modal
             title="Notification"
-            body="Are you sure you would like to delete this change group"
+            body={`Are you sure you would like to delete ${deleteUUID}`}
             showButtons
             confirmation
             onClose={() => setDeleteFromStaging(false)}
