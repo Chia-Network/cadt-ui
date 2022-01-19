@@ -30,6 +30,7 @@ import {
   correspondingAdjustmentStatusValues,
   unitStatusValues,
   unitTypeValues,
+  vintageRepeaterValues,
 } from '../../utils/pick-values';
 
 const StyledLabelContainer = styled('div')`
@@ -46,8 +47,14 @@ const InputContainer = styled('div')`
 
 const CreateUnitsForm = withRouter(({ onClose }) => {
   const { notification } = useSelector(state => state.app);
+  const climateWarehouseStore = useSelector(
+    state => state.climateWarehouse.units,
+  );
+
   const [newQualifications, setNewQualifications] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
+  const [getPreviousVintage, setPreviousVintage] = useState([]);
+  const [getVintageValue, setVintageValue] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -65,7 +72,6 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-
   const [newUnits, setNewUnits] = useState({
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
@@ -83,6 +89,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
     unitMarketplaceLink: '',
   });
 
+  useEffect(() => {
+    climateWarehouseStore.map(unit => {
+      if (unit.vintage)
+        setPreviousVintage(prev => [...prev, _.forEach(unit.vintage)]);
+    });
+  }, [climateWarehouseStore]);
+
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(newUnits);
     for (let key in dataToSend) {
@@ -90,6 +103,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
         delete dataToSend[key];
       }
     }
+
     if (!_.isEmpty(newVintage)) {
       for (let key of Object.keys(newVintage[0])) {
         if (newVintage[0][key] === '') {
@@ -172,8 +186,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}
-              >
+                index={0}>
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
@@ -593,13 +606,31 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <VintageRepeater
-                  max={1}
-                  vintageState={
-                    Array.isArray(newVintage) ? newVintage : [newVintage]
-                  }
-                  newVintageState={setNewVintage}
-                />
+                <div style={{ margin: '0.6rem' }}>
+                  <Select
+                    size={SelectSizeEnum.large}
+                    type={SelectTypeEnum.basic}
+                    options={vintageRepeaterValues}
+                    onChange={value => setVintageValue(value)}
+                    selected={[vintageRepeaterValues[1]]}
+                  />
+                </div>
+
+                {getVintageValue[0]?.value === 'previous vintages' && (
+                  <VintageRepeater
+                    max={0}
+                    vintageState={getPreviousVintage}
+                    newVintageState={setPreviousVintage}
+                  />
+                )}
+
+                {getVintageValue[0]?.value === 'new' && (
+                  <VintageRepeater
+                    max={1}
+                    vintageState={newVintage}
+                    newVintageState={setNewVintage}
+                  />
+                )}
               </TabPanel>
             </div>
           </div>

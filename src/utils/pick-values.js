@@ -49,3 +49,14 @@ export const correspondingAdjustmentStatusValues = [
     value: 'Pending',
   },
 ];
+
+export const vintageRepeaterValues = [
+  {
+    label: 'Previous Vintages',
+    value: 'previous vintages',
+  },
+  {
+    label: 'New',
+    value: 'new',
+  },
+];
