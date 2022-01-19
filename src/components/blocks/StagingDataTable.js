@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { MinusIcon } from '..';
+import { Modal, MinusIcon } from '..';
 import { TableDrawer } from './';
 import { useWindowSize } from '../hooks/useWindowSize';
 
@@ -122,7 +122,7 @@ const ChangeGroupItem = ({
                 textAlign: 'right',
                 paddingRight: '10px',
               }}>
-              <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
+              <span onClick={onClick} style={{ cursor: 'pointer' }}>
                 <MinusIcon width={16} height={16} />
               </span>
             </div>
@@ -168,6 +168,7 @@ const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
 const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
+  const [deleteFromStaging, setDeleteFromStaging] = useState(false);
   const ref = useRef(null);
   const [height, setHeight] = useState(0);
   const windowSize = useWindowSize();
@@ -227,7 +228,10 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                       headings={headings}
                       appStore={appStore}
                       color={'red'}
-                      onClick={() => setRecord(changeGroup.diff.original)}
+                      onClick={() => {
+                        setRecord(changeGroup.diff.original);
+                        setDeleteFromStaging(true);
+                      }}
                       onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
                     />
                   )}
@@ -270,6 +274,20 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
           ))}
         <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       </div>
+      {deleteFromStaging && (
+        <Modal
+          title="Notification"
+          body="Are you sure you would like to delete this change group"
+          showButtons
+          confirmation
+          onClose={() => setDeleteFromStaging(false)}
+          onOk={() => {
+            setDeleteFromStaging(false);
+            return onDeleteStaging();
+            
+          }}
+        />
+      )}
     </StagingDataTableContainer>
   );
 });

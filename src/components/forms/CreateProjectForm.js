@@ -16,7 +16,7 @@ import {
   ModalFormContainerStyle,
   FormContainerStyle,
   BodyContainer,
-  DateSelect
+  DateSelect,
   Message,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
