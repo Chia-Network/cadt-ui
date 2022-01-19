@@ -7,9 +7,10 @@ import {
   RegistryIcon,
 } from '../../components';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { resetRefreshPrompt } from '../../store/actions/app';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 const Container = styled('div')`
   display: flex;
@@ -63,6 +64,9 @@ const LeftNav = withTheme(({ children }) => {
     setLocation(window.location.pathname.split(/_(.+)/)[1]);
   }, [window.location]);
 
+  const { organizations } = useSelector(store => store.climateWarehouse);
+  const myOrgUid = getMyOrgUid(organizations || {});
+
   return (
     <Container>
       <NavContainer>
@@ -102,11 +106,25 @@ const LeftNav = withTheme(({ children }) => {
             <FormattedMessage id="registry" />
           </ButtonText>
         </StyledTitleContainer>
-        <MenuItem>
+        <MenuItem
+          selected={location === 'my-projects'}
+          to={`/projects?orgUid=${myOrgUid}`}
+          onClick={() => {
+            dispatch(resetRefreshPrompt);
+            setLocation('my-projects');
+          }}
+        >
           <FormattedMessage id="projects" />
         </MenuItem>
         <div></div>
-        <MenuItem>
+        <MenuItem
+          selected={location === 'my-units'}
+          to={`/units?orgUid=${myOrgUid}`}
+          onClick={() => {
+            dispatch(resetRefreshPrompt);
+            setLocation('my-units');
+          }}
+        >
           <FormattedMessage id="units" />
         </MenuItem>
       </NavContainer>

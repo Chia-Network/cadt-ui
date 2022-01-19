@@ -4,7 +4,7 @@ Auxillery App for the Climate Warehouse
 
 ## Quickstart
 
-### Installation`
+### Installation
 
 ```
 npm install -g react-scripts
