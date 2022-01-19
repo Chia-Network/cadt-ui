@@ -30,6 +30,7 @@ import {
   StagingDataTable,
   SelectOrganizations,
   Message,
+  UploadCSV,
 } from '../../components';
 
 const headings = [
@@ -100,6 +101,12 @@ const NoDataMessageContainer = styled('div')`
   height: 100%;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledCSVOperationsContainer = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
 `;
 
 const Units = withRouter(() => {
@@ -257,9 +264,14 @@ const Units = withRouter(() => {
               })`}
             />
           </Tabs>
-          <div onClick={() => downloadTxtFile(climateWarehouseStore.units)}>
-            <DownloadIcon />
-          </div>
+          <StyledCSVOperationsContainer>
+            <span onClick={() => downloadTxtFile(climateWarehouseStore.units)}>
+              <DownloadIcon />
+            </span>
+            <span>
+              <UploadCSV type="units" />
+            </span>
+          </StyledCSVOperationsContainer>
         </StyledSubHeaderContainer>
         <StyledBodyContainer>
           <TabPanel value={tabValue} index={0}>
@@ -271,8 +283,7 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}
-                        >
+                          onClick={() => setCreate(true)}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
