@@ -16,7 +16,7 @@ import {
   ModalFormContainerStyle,
   FormContainerStyle,
   BodyContainer,
-  DateSelect
+  DateSelect,
   Message,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
@@ -94,9 +94,11 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     if (!_.isEmpty(date)) {
       dataToSend.projectStatusDate = `${date.$M + 1}/${date.$D}/${date.$y}`;
     }
-    
+
     if (!_.isEmpty(validationDate)) {
-      dataToSend.validationDate = `${validationDate.$M + 1}/${validationDate.$D}/${validationDate.$y}`;
+      dataToSend.validationDate = `${validationDate.$M + 1}/${
+        validationDate.$D
+      }/${validationDate.$y}`;
     }
 
     if (!_.isEmpty(newProjectLocations)) {
