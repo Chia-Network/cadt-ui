@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { MinusIcon } from '..';
+import { Modal, MinusIcon } from '..';
 import { TableDrawer } from './';
 import { useWindowSize } from '../hooks/useWindowSize';
 
@@ -168,6 +168,8 @@ const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
 const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
+  const [deleteFromStaging, setDeleteFromStaging] = useState(false);
+  const [deleteUUID, setDeleteUUID] = useState();
   const ref = useRef(null);
   const [height, setHeight] = useState(0);
   const windowSize = useWindowSize();
@@ -201,7 +203,10 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
 
   const onDeleteStaging = uuid => {
     if (!deleteStagingData) return null;
-    return () => deleteStagingData(uuid);
+    return () => {
+      deleteStagingData(uuid);
+      setDeleteFromStaging(false);
+    };
   };
 
   return (
@@ -217,7 +222,10 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                   <InvalidChangeGroup
                     headings={headings}
                     appStore={appStore}
-                    onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
+                    onDeleteStaging={() => {
+                      setDeleteUUID(changeGroup.uuid);
+                      setDeleteFromStaging(true);
+                    }}
                   />
                 )}
                 {changeGroup.action === 'DELETE' &&
@@ -227,8 +235,11 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                       headings={headings}
                       appStore={appStore}
                       color={'red'}
-                      onClick={() => setRecord(changeGroup.diff.original)}
-                      onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
+                      onClick={setRecord(changeGroup.diff.original)}
+                      onDeleteStaging={() => {
+                        setDeleteUUID(changeGroup.uuid);
+                        setDeleteFromStaging(true);
+                      }}
                     />
                   )}
                 {changeGroup.action === 'INSERT' &&
@@ -239,7 +250,10 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                       appStore={appStore}
                       color={'green'}
                       onClick={() => setRecord(changeGroup.diff.change[0])}
-                      onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
+                      onDeleteStaging={() => {
+                        setDeleteUUID(changeGroup.uuid);
+                        setDeleteFromStaging(true);
+                      }}
                     />
                   )}
                 {changeGroup.action === 'UPDATE' &&
@@ -251,7 +265,10 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                         appStore={appStore}
                         color={'red'}
                         onClick={() => setRecord(changeGroup.diff.original)}
-                        onDeleteStaging={onDeleteStaging(changeGroup.uuid)}
+                        onDeleteStaging={() => {
+                          setDeleteUUID(changeGroup.uuid);
+                          setDeleteFromStaging(true);
+                        }}
                       />
                       {changeGroup.diff.change.map((change, index) => (
                         <ChangeGroupItem
@@ -269,6 +286,16 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
             </Table>
           ))}
         <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+        {deleteFromStaging && (
+          <Modal
+            title="Notification"
+            body="Are you sure you want to delete"
+            showButtons
+            confirmation
+            onClose={() => setDeleteFromStaging(false)}
+            onOk={onDeleteStaging(deleteUUID)}
+          />
+        )}
       </div>
     </StagingDataTableContainer>
   );
