@@ -80,12 +80,13 @@ const MessageContainer = styled('div')`
   flex-direction: column;
   height: ${props => (props.basic ? '100%' : '8.25rem')};
   width: ${props => (props.basic ? '100%' : '18.5rem')};
-  justify-content: space-evenly;
-  align-items: ${props => (props.basic ? 'unset' : 'center')};
+  /* justify-content: space-evenly; */
+  align-items: ${props => (props.basic ? 'unset' : 'flex-start')};
 `;
 
 const BodyContainer = styled('div')`
-  margin-bottom: 1.5rem;
+  width: 100%;
+  height: 50%;
   ${props =>
     props.basic &&
     css`
@@ -112,7 +113,8 @@ const BodyContainer = styled('div')`
 `;
 
 const TitleContainer = styled('div')`
-  align-self: flex-start;
+  width: 100%;
+  height: fit-content;
   ${props =>
     props.basic &&
     css`
