@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { UploadIcon } from '../../components';
 import constants from '../../constants';
@@ -7,15 +8,24 @@ import {
   NotificationMessageTypeEnum,
 } from '../../store/actions/app';
 
+const StyledInput = styled('input')`
+  visibility: hidden; 
+  width: 0px;
+  height: 0px;
+`;
+
+const StyledIframe = styled('iframe')`
+  width: 0px;
+  height: 0px;
+`;
+
 const UploadCSV = ({ type }) => {
-  const inputRef = useRef(null);
   const formRef = useRef(null);
   const dispatch = useDispatch();
 
-  const onChange = () => {
-    if (inputRef && inputRef.current && formRef && formRef.current) {
-      const fileName = inputRef.current.files[0].name;
-      const fileNameIsValid = /\.csv$/.test(fileName);
+  const onChange = (e) => {
+    if (e.target.value && e.target.value !== '' && formRef && formRef.current) {
+      const fileNameIsValid = /\.csv$/.test(e.target.value);
       if (fileNameIsValid) {
         try {
           formRef.current.submit();
@@ -50,19 +60,19 @@ const UploadCSV = ({ type }) => {
       action={url}
       ref={formRef}
       encType="multipart/form-data"
-      method="post">
+      method="post"
+      target="iframe">
       <label htmlFor="csv">
         <UploadIcon width="16" height="16" />
       </label>
-      <input
-        ref={inputRef}
+      <StyledInput
         type="file"
         id="csv"
         name="csv"
-        style={{ visibility: 'hidden', width: '0px' }}
         accept=".csv"
         onChange={onChange}
       />
+      <StyledIframe name="iframe" hidden />
     </form>
   );
 };
