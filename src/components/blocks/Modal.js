@@ -80,7 +80,6 @@ const MessageContainer = styled('div')`
   flex-direction: column;
   height: ${props => (props.basic ? '100%' : '8.25rem')};
   width: ${props => (props.basic ? '100%' : '18.5rem')};
-  /* justify-content: space-evenly; */
   align-items: ${props => (props.basic ? 'unset' : 'flex-start')};
 `;
 
