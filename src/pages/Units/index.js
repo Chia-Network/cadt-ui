@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { jsonToCsv } from '../../utils/csvUtils';
+import { downloadTxtFile } from '../../utils/csvUtils';
 import constants from '../../constants';
 
 import {
@@ -194,17 +194,6 @@ const Units = withRouter(() => {
     return null;
   }
 
-  const downloadTxtFile = () => {
-    const element = document.createElement('a');
-    const file = new Blob([jsonToCsv(climateWarehouseStore.units)], {
-      type: 'text/plain',
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = 'climateWarehouse.csv';
-    document.body.appendChild(element); // Required for this to work in FireFox
-    element.click();
-  };
-
   const onCommit = () => {
     dispatch(commitStagingData());
     setTabValue(2);
@@ -276,7 +265,7 @@ const Units = withRouter(() => {
             />
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span onClick={downloadTxtFile}>
+            <span onClick={() => downloadTxtFile(climateWarehouseStore.units)}>
               <DownloadIcon />
             </span>
             <span>
