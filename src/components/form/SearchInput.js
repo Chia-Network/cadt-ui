@@ -15,8 +15,10 @@ const Input = styled('input')`
   justify-content: center;
   border-top-left-radius: 0.1rem;
   border-bottom-left-radius: 0.1rem;
+  padding-left: 0.75rem;
   font-size: 1rem;
   margin: 0;
+  box-sizing: border-box;
   ${props =>
     (props.size === 'large' && 'width: 31.5625rem;height:2.5rem') ||
     (props.size === 'default' && 'width: 32.0625rem;height:2rem') ||
@@ -43,63 +45,63 @@ const SearchIconContainer = styled('div')`
   align-items: center;
   border-top-right-radius: 0.1rem;
   border-bottom-right-radius: 0.1rem;
+
   ${props => props.outline && 'border: 0.0625rem solid #d9d9d9;'};
   border-left-style: none;
   ${props =>
-    (props.size === 'large' && 'width: 2.6875rem;height:2.625rem') ||
-    (props.size === 'default' && 'width: 2.1875rem;height:2.125rem') ||
-    (props.size === 'small' && 'width: 1.6875rem;height:1.625rem')};
+    (props.size === 'large' && 'width: 2.6875rem;height:2.5rem') ||
+    (props.size === 'default' && 'width: 2.1875rem;height:2rem') ||
+    (props.size === 'small' && 'width: 1.6875rem;height:1.5rem')};
 
   ${props =>
-    (props.buttonText &&
-      props.size === 'large' &&
-      'width:5.0625rem; height:2.75rem;') ||
-    (props.buttonText &&
-      props.size === 'default' &&
-      'width:5.0625rem; height:2.125rem;') ||
-    (props.buttonText &&
-      props.size === 'small' &&
-      'width:5.0625rem; height:1.625rem;')};
+    (props.buttonText && props.size === 'large' && 'width:5.0625rem;') ||
+    (props.buttonText && props.size === 'default' && 'width:5.0625rem;') ||
+    (props.buttonText && props.size === 'small' && 'width:5.0625rem;')};
 
   ${props =>
     (props.usePrimaryButton &&
       props.size === 'large' &&
-      'background-color: #1890FF;height:2.75rem;') ||
+      'background-color: #1890FF;') ||
     (props.usePrimaryButton &&
       props.size === 'default' &&
-      'background-color: #1890FF;height:2.25rem;') ||
+      'background-color: #1890FF;') ||
     (props.usePrimaryButton &&
       props.size === 'small' &&
-      'background-color: #1890FF;height:1.75rem;')};
+      'background-color: #1890FF;')};
+
+  box-sizing: border-box;
+  ${props => props.disabled && `cursor: default; color: #d9d9d9;`}
 `;
 
-const SearchContainer = withTheme(styled('div')`
+const SearchContainer = styled('div')`
   font-family: ${props => props.theme.typography.primary.regular};
-  margin-top: 0.625rem;
   display: flex;
   justify-content: center;
   align-items: center;
-`);
+  padding: 0;
+  margin: 0;
+`;
 
-const ButtonSearchText = withTheme(styled('p')`
+const ButtonSearchText = styled('p')`
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1rem;
-  height: 2.5rem;
   width: 3.125rem;
   color: ${props => (props.usePrimaryButton ? '#ffffff' : '#000000')};
-`);
+  box-sizing: border-box;
+`;
 
 const SearchInput = withTheme(
   ({
     usePrimaryButton = false,
     buttonText,
-    onChange= _.noop,
+    onChange = _.noop,
     size = 'default',
     outline = false,
     onSearch = _.noop,
+    disabled = false,
   }) => {
     const intl = useIntl();
     const appStore = useSelector(state => state.app);
@@ -113,6 +115,7 @@ const SearchInput = withTheme(
           onChange={onChange}
           size={size}
           outline={outline}
+          disabled={disabled}
         />
         <SearchIconContainer
           outline={outline}
@@ -120,7 +123,8 @@ const SearchInput = withTheme(
           size={size}
           selectedTheme={appStore.theme}
           usePrimaryButton={usePrimaryButton}
-          buttonText={buttonText}>
+          buttonText={buttonText}
+          disabled={disabled}>
           {(buttonText && (
             <ButtonSearchText usePrimaryButton={usePrimaryButton}>
               {buttonText}

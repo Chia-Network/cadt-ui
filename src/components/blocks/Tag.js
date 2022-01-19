@@ -3,8 +3,7 @@ import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { AddIcon, CloseIcon } from '..';
 
-const AddTag = withTheme(styled('div')`
-  margin: 0.625rem;
+const AddTag = styled('div')`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -16,26 +15,26 @@ const AddTag = withTheme(styled('div')`
     props.body === null
       ? 'border: 0.0625rem dashed #D9D9D9 ; width:4.375rem;background-color: unset'
       : 'border: 0.0625rem solid #D9D9D9'};
-  ${props => props.closeable && 'width:3.25rem'};
-`);
+  ${props => props.closeable && 'width:4.25rem'};
+`;
 
-const TagBody = withTheme(styled('p')`
+const TagBody = styled('p')`
+  margin: 0;
   font-size: 0.75rem;
-`);
+`;
 
-const TagButton = withTheme(styled('div')`
+const TagButton = styled('div')`
   cursor: pointer;
-  height: 100%;
-`);
+`;
 
 const Tag = withTheme(
-  ({ closeable, body = null, addNew, onClose = _.noop }) => {
+  ({ closeable, body = null, addNew = _.noop, onClose = _.noop }) => {
     return (
       <>
         <AddTag body={body} closeable={closeable}>
           {addNew && (
             <TagButton onClick={addNew}>
-              <AddIcon width="8.06" height="8.44" />
+              <AddIcon width="8.06" height="8.44" fill="#262626" />
             </TagButton>
           )}
           <TagBody>{body === null ? 'New Tag' : body}</TagBody>

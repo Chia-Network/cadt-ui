@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { ClimateWarehouseLogo } from '../../components';
 import { Link } from 'react-router-dom';
+import ToggleSwitch from './ToggleSwitch';
+import { useDispatch } from 'react-redux';
+import { toggleMode } from '../../store/actions/app';
+import { FormattedMessage } from 'react-intl';
+import { resetRefreshPrompt } from '../../store/actions/app';
 
 const Container = styled('div')`
   display: flex;
@@ -34,9 +39,9 @@ const MenuItem = styled(Link)`
 
 const LeftNav = withTheme(({ children }) => {
   const [location, setLocation] = useState(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    setLocation(window.location.pathname.split('/')[1]);
+    setLocation(window.location.pathname.split(/_(.+)/)[1]);
   }, [window.location]);
 
   return (
@@ -45,24 +50,31 @@ const LeftNav = withTheme(({ children }) => {
         <LogoContainer>
           <ClimateWarehouseLogo />
         </LogoContainer>
-
+        <ToggleSwitch
+          onChange={() => {
+            dispatch(toggleMode);
+          }}
+        />
+        <hr style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
         <MenuItem
           selected={location === 'projects'}
           to="/projects"
-          onClick={() => setLocation('projects')}>
-          Projects
+          onClick={() => {
+            dispatch(resetRefreshPrompt);
+            setLocation('projects');
+          }}
+        >
+          <FormattedMessage id="projects" />
         </MenuItem>
         <MenuItem
           selected={location === 'units'}
           to="/units"
-          onClick={() => setLocation('units')}>
-          Units
-        </MenuItem>
-        <MenuItem
-          selected={location === 'storybook'}
-          to="/storybook"
-          onClick={() => setLocation('storybook')}>
-          StoryBook
+          onClick={() => {
+            dispatch(resetRefreshPrompt);
+            setLocation('units');
+          }}
+        >
+          <FormattedMessage id="units" />
         </MenuItem>
       </NavContainer>
       {children}

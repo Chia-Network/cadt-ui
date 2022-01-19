@@ -1,14 +1,18 @@
 import _ from 'lodash';
-
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styled, { withTheme } from 'styled-components';
-import ReactPaginate from 'react-paginate';
+import styled, { withTheme, css } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
-
+import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import constants from '../../constants';
+import { Pagination, TableDrawer } from './';
+import { BasicMenu } from '..';
+import { useWindowSize } from '../hooks/useWindowSize';
+
+import { EditUnitsForm, EditProjectsForm } from '..';
 
 const Table = styled('table')`
+  box-sizing: border-box;
   background-color: white;
   width: 100%;
   display: table;
@@ -67,48 +71,53 @@ const Td = styled('td')`
   border-bottom: 1px solid rgba(224, 224, 224, 1);
   letter-spacing: 0.01071em;
   vertical-align: inherit;
+  max-width: 100px;
 `;
 
-// React ReactPaginate cant be directly modified by styled-components
-// so we create a wrapper that can select the sub classes within the component
-const StyledPaginateContainer = styled.div`
+const StyledPaginationContainer = styled('div')`
+  box-sizing: border-box;
+  background-color: white;
   display: flex;
-  justify-content: flex-end;
-  .pagination {
-    padding: 0;
-    color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-    list-style-type: none;
-    display: flex;
-  }
-  .break-me {
-    cursor: default;
-  }
-  .active {
-    border-color: transparent;
-    background-color: ${props =>
-      props.selectedTheme === constants.THEME.DARK
-        ? props.theme.colors[props.selectedTheme].onSurfacePrimaryVarient
-        : props.theme.colors[props.selectedTheme].onSurfaceSecondaryVarient};
+  justify-content: center;
+  align-items: center;
+  min-height: 70px;
+  width: 100%;
+  max-height: 70px;
+  margin: 25px 0px 25px 0px;
+`;
 
-    color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-    border-radius: 0.25rem;
-  }
-  li {
-    cursor: pointer;
-    width: 1.5625rem;
-    height: 1.5625rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+const StyledRefContainer = styled('div')`
+  height: 100%;
+  position: relative;
+`;
+
+const StyledScalableContainer = styled('div')`
+  overflow: auto;
+  position: relative;
+  ${props =>
+    props.height &&
+    css`
+      height: ${props.height};
+    `}
 `;
 
 const DataTable = withTheme(({ headings, data, actions }) => {
   const [currentPage, setPage] = useState(0);
+  const [getRecord, setRecord] = useState(null);
+  const [editRecord, setEditRecord] = useState(null);
+  const [editUnits, setEditUnits] = useState(false);
+  const [editProjects, setEditProjects] = useState(false);
   const appStore = useSelector(state => state.app);
+  const ref = React.useRef(null);
+  const [height, setHeight] = React.useState(0);
+  const windowSize = useWindowSize();
 
-  const handlePageClick = event => {
-    setPage(event.selected);
+  useEffect(() => {
+    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
+  }, [ref.current, windowSize.height]);
+
+  const handlePageClick = page => {
+    setPage(page);
   };
 
   const paginatedData = useMemo(() => {
@@ -134,59 +143,105 @@ const DataTable = withTheme(({ headings, data, actions }) => {
 
   return (
     <>
-      <StyledPaginateContainer selectedTheme={appStore.theme}>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          forcePage={currentPage}
-          pageRangeDisplayed={5}
-          pageCount={(paginatedData && paginatedData.length) || 0}
-          previousLabel="<"
-          renderOnZeroPageCount={null}
-          containerClassName="pagination"
-          activeClassName="active"
-          breakClassName="break-me"
-        />
-      </StyledPaginateContainer>
-      <Table selectedTheme={appStore.theme}>
-        <THead selectedTheme={appStore.theme}>
-          <tr>
-            {headings.map((heading, index) => (
-              <Th
-                start={index === 0}
-                end={!actions && index === headings.length - 1}
-                selectedTheme={appStore.theme}
-                key={index}>
-                <TableCellHeaderText>{heading}</TableCellHeaderText>
-              </Th>
-            ))}
-            {actions && (
-              <Th
-                start={false}
-                end={true}
-                selectedTheme={appStore.theme}
-                key={'action'}>
-                <TableCellHeaderText>Action</TableCellHeaderText>
-              </Th>
-            )}
-          </tr>
-        </THead>
-        <tbody>
-          {paginatedData[currentPage].map((record, index) => (
-            <Tr index={index} selectedTheme={appStore.theme} key={index}>
-              {Object.keys(record).map((key, index) => (
-                <Td selectedTheme={appStore.theme} key={index}>
-                  <TableCellText>
-                    {record[key] && record[key].toString()}
-                  </TableCellText>
-                </Td>
+      <StyledRefContainer ref={ref}>
+        <StyledScalableContainer height={`${height}px`}>
+          <Table selectedTheme={appStore.theme}>
+            <THead selectedTheme={appStore.theme}>
+              <tr>
+                {headings.map((heading, index) => (
+                  <Th
+                    start={index === 0}
+                    end={!actions && index === headings.length - 1}
+                    selectedTheme={appStore.theme}
+                    key={index}>
+                    <TableCellHeaderText>
+                      {convertPascalCaseToSentenceCase(heading)}
+                    </TableCellHeaderText>
+                  </Th>
+                ))}
+                {actions && (
+                  <Th
+                    start={false}
+                    end={true}
+                    selectedTheme={appStore.theme}
+                    key={'action'}>
+                    <TableCellHeaderText>Action</TableCellHeaderText>
+                  </Th>
+                )}
+              </tr>
+            </THead>
+            <tbody style={{ position: 'relative' }}>
+              {paginatedData[currentPage].map((record, index) => (
+                <>
+                  <Tr index={index} selectedTheme={appStore.theme} key={index}>
+                    {Object.keys(record).map((key, index) => (
+                      <Td
+                        onClick={() => setRecord(record)}
+                        selectedTheme={appStore.theme}
+                        key={index}>
+                        <TableCellText
+                          tooltip={record[key] && record[key].toString()}>
+                          {record[key] && record[key].toString()}
+                        </TableCellText>
+                      </Td>
+                    ))}
+
+                    {actions === 'Units' && (
+                      <Td
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setEditUnits(true);
+                          setEditRecord(record);
+                        }}
+                        selectedTheme={appStore.theme}>
+                        <BasicMenu />
+                      </Td>
+                    )}
+                    {actions === 'Projects' && (
+                      <Td
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setEditProjects(true);
+                          setEditRecord(record);
+                        }}
+                        selectedTheme={appStore.theme}>
+                        <BasicMenu />
+                      </Td>
+                    )}
+                  </Tr>
+                </>
               ))}
-              {actions && <Td electedTheme={appStore.theme}>{actions}</Td>}
-            </Tr>
-          ))}
-        </tbody>
-      </Table>
+            </tbody>
+          </Table>
+          <StyledPaginationContainer>
+            <Pagination
+              pages={(paginatedData && paginatedData.length) || 0}
+              current={currentPage}
+              callback={handlePageClick}
+              showLast
+            />
+          </StyledPaginationContainer>
+        </StyledScalableContainer>
+      </StyledRefContainer>
+      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+      {editUnits && (
+        <EditUnitsForm
+          onClose={() => {
+            setEditUnits(false);
+            setEditRecord(null);
+          }}
+          data={editRecord}
+        />
+      )}
+      {editProjects && (
+        <EditProjectsForm
+          onClose={() => {
+            setEditProjects(false);
+            setEditRecord(null);
+          }}
+          data={editRecord}
+        />
+      )}
     </>
   );
 });

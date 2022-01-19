@@ -13,6 +13,8 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    icon: path.join(__dirname, '/../public/favicon.ico'),
+    title: "Climate Warehouse"
   });
 
   mainWindow.loadURL(

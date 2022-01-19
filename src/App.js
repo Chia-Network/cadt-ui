@@ -4,8 +4,10 @@ import { IntlProvider } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setLocale, setThemeFromLocalStorage } from './store/actions/app';
-import { loadLocaleData } from './translations';
+import { getOrganizationData } from './store/actions/climateWarehouseActions';
+import { initiateSocket } from './store/actions/socket';
 
+import { loadLocaleData } from './translations';
 import { AppNavigator } from './navigation';
 import theme from './theme';
 
@@ -15,6 +17,11 @@ const App = () => {
   const dispatch = useDispatch();
   const appStore = useSelector(state => state.app);
   const [translationTokens, setTranslationTokens] = useState();
+
+  useEffect(() => {
+    dispatch(initiateSocket());
+    dispatch(getOrganizationData());
+  }, [dispatch]);
 
   useEffect(
     () => dispatch(setThemeFromLocalStorage),

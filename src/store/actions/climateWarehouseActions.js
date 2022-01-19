@@ -11,12 +11,16 @@ import {
   unitsResponseStub,
   projectsResponseStub,
   vintagesResponseStub,
+  stagingDataResponseStub,
 } from '../../mocks';
 
 import {
   activateProgressIndicator,
   deactivateProgressIndicator,
+  NotificationMessageTypeEnum,
+  setConnectionCheck,
   setGlobalErrorMessage,
+  setNotificationMessage,
 } from './app';
 
 export const actions = keyMirror(
@@ -26,8 +30,12 @@ export const actions = keyMirror(
   'GET_PROJECT_LOCATIONS',
   'GET_RELATED_PROJECTS',
   'GET_UNITS',
+  'GET_UNITS_PAGE_COUNT',
   'GET_PROJECTS',
+  'GET_PROJECTS_PAGE_COUNT',
   'GET_VINTAGES',
+  'GET_STAGING_DATA',
+  'GET_ORGANIZATIONS',
 );
 
 const getClimateWarehouseTable = (
@@ -50,12 +58,393 @@ const getClimateWarehouseTable = (
         const response = await fetch(url);
 
         if (response.ok) {
+          dispatch(setGlobalErrorMessage(null));
+          dispatch(setConnectionCheck(true));
           const results = await response.json();
+
           dispatch({
             type: action,
             payload: results,
           });
         }
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+const formatStagingData = dataArray => {
+  const splittedByTable = _.groupBy(dataArray, 'table');
+
+  splittedByTable.Projects = _.groupBy(splittedByTable.Projects, 'commited');
+
+  splittedByTable.Units = _.groupBy(splittedByTable.Units, 'commited');
+
+  const splittedAndFormatted = {
+    projects: {
+      pending: [...(splittedByTable.Projects.true || [])],
+      staging: [...(splittedByTable.Projects.false || [])],
+    },
+    units: {
+      pending: [...(splittedByTable.Units.true || [])],
+      staging: [...(splittedByTable.Units.false || [])],
+    },
+  };
+  return splittedAndFormatted;
+};
+
+export const mockGetStagingDataResponse = {
+  type: actions.GET_STAGING_DATA,
+  payload: formatStagingData(
+    _.get(stagingDataResponseStub, 'default', stagingDataResponseStub),
+  ),
+};
+
+export const getOrganizationData = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetch(`${constants.API_HOST}/organizations`);
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_ORGANIZATIONS,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getStagingData = ({ useMockedResponse = false }) => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      if (useMockedResponse) {
+        dispatch(mockGetStagingDataResponse);
+      } else {
+        const response = await fetch(`${constants.API_HOST}/staging`);
+
+        if (response.ok) {
+          dispatch(setGlobalErrorMessage(null));
+          const results = await response.json();
+
+          dispatch({
+            type: actions.GET_STAGING_DATA,
+            payload: formatStagingData(results),
+          });
+        }
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getPaginatedData = ({
+  type,
+  page,
+  resultsLimit,
+  searchQuery,
+  orgUid,
+}) => {
+  return async dispatch => {
+    const typeIsValid = type === 'projects' || type === 'units';
+    const pageAndLimitAreValid =
+      typeof page === 'number' && typeof resultsLimit === 'number';
+
+    if (typeIsValid && pageAndLimitAreValid) {
+      dispatch(activateProgressIndicator);
+      try {
+        let url = `${constants.API_HOST}/${type}?page=${page}&limit=${resultsLimit}`;
+        if (searchQuery) {
+          url += `&search=${encodeURIComponent(searchQuery)}`;
+        }
+        if (orgUid && typeof orgUid === 'string') {
+          url += `&orgUid=${orgUid}`;
+        }
+        const response = await fetch(url);
+
+        if (response.ok) {
+          dispatch(setGlobalErrorMessage(null));
+          const results = await response.json();
+
+          let action = actions.GET_PROJECTS;
+          let paginationAction = actions.GET_PROJECTS_PAGE_COUNT;
+          if (type === 'units') {
+            action = actions.GET_UNITS;
+            paginationAction = actions.GET_UNITS_PAGE_COUNT;
+          }
+
+          dispatch({
+            type: action,
+            payload: results.data,
+          });
+
+          dispatch({
+            type: paginationAction,
+            payload: results.pageCount,
+          });
+        }
+      } catch {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
+    }
+  };
+};
+
+export const commitStagingData = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/commit`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transactions-committed',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'transactions-not-committed',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transactions-not-committed',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteStagingData = uuid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uuid }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        console.log('yay!');
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const postNewProject = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/projects`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'project-successfully-created',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'project-not-created',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'project-not-created',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const postNewUnits = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-successfully-created',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-not-created',
+          ),
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-not-created',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const splitUnits = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units/split`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-successfully-split',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+        console.log('yay!');
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-could-not-be-split',
+          ),
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-could-not-be-split',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const updateUnitsRecord = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units`;
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        console.log('yay!');
+        dispatch(setGlobalErrorMessage(null));
+      } else {
+        dispatch(setGlobalErrorMessage('Unit could not be created'));
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
@@ -183,10 +572,14 @@ export const mockUnitsResponse = {
 };
 
 export const getUnits = options => {
+  const url = options.searchQuery
+    ? `${constants.API_HOST}/units?search=${options.searchQuery}`
+    : `${constants.API_HOST}/units`;
+
   return dispatch => {
     dispatch(
       getClimateWarehouseTable(
-        `${constants.API_HOST}/units`,
+        url,
         actions.GET_UNITS,
         mockUnitsResponse,
         options,
@@ -202,10 +595,14 @@ export const mockProjectsResponse = {
 };
 
 export const getProjects = options => {
+  const url = options.searchQuery
+    ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
+    : `${constants.API_HOST}/projects`;
+
   return dispatch => {
     dispatch(
       getClimateWarehouseTable(
-        `${constants.API_HOST}/projects`,
+        url,
         actions.GET_PROJECTS,
         mockProjectsResponse,
         options,

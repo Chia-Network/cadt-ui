@@ -1,51 +1,72 @@
 import React, { Suspense } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { IndeterminateProgressOverlay } from '../components/';
+import { IndeterminateProgressOverlay, Dashboard } from '../components/';
+import { resetRefreshPrompt } from '../store/actions/app';
 import * as Pages from '../pages';
 
-import { AppContainer, LeftNav } from '../components';
+import {
+  AppContainer,
+  Modal,
+  SocketStatusContainer,
+  UpdateRefreshContainer,
+} from '../components';
 
 const AppNavigator = () => {
-  const { showProgressOverlay } = useSelector(store => store.app);
+  const dispatch = useDispatch();
+
+  const {
+    showProgressOverlay,
+    connectionCheck,
+    socketStatus,
+    updateAvailablePleaseRefesh,
+  } = useSelector(store => store.app);
+
   return (
     <AppContainer>
+      {updateAvailablePleaseRefesh && (
+        <UpdateRefreshContainer
+          onRefresh={() => window.location.reload()}
+          onClose={() => dispatch(resetRefreshPrompt)}
+        />
+      )}
+      <SocketStatusContainer socketStatus={socketStatus} />
       {showProgressOverlay && <IndeterminateProgressOverlay />}
+      {!connectionCheck && (
+        <Modal
+          type="error"
+          label="Try Again"
+          onOk={() => window.location.reload()}
+          showButtons
+          title="Network Error"
+          body={
+            'There is a connection error. The Climate Warehouse is inaccessible'
+          }
+        />
+      )}
       <Router>
-        <LeftNav>
+        <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
             <Route exact path="/">
               <Pages.Home />
             </Route>
-            <Route exact path="/co-benefits">
-              <Pages.CoBenefits />
-            </Route>
-            <Route exact path="/locations">
-              <Pages.Locations />
-            </Route>
-            <Route exact path="/qualifications">
-              <Pages.Qualifications />
-            </Route>
-            <Route exact path="/ratings">
-              <Pages.Ratings />
-            </Route>
-            <Route exact path="/related-projects">
-              <Pages.RelatedProjects />
-            </Route>
             <Route exact path="/units">
               <Pages.Units />
             </Route>
-            <Route exact path="/vintages">
-              <Pages.Vintages />
-            </Route>
             <Route exact path="/projects">
               <Pages.Projects />
+            </Route>
+            <Route exact path="/projects/add">
+              <Pages.AddProject />
+            </Route>
+            <Route exact path="/units/add">
+              <Pages.AddUnits />
             </Route>
             <Route exact path="/storybook">
               <Pages.StoryBook />
             </Route>
           </Suspense>
-        </LeftNav>
+        </Dashboard>
       </Router>
     </AppContainer>
   );

@@ -4,7 +4,7 @@ import styled, { withTheme } from 'styled-components';
 import { CircularProgress } from '@mui/material';
 import { ButtonText } from '../typography';
 
-const Button = withTheme(styled('button')`
+const Button = styled('button')`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,7 +15,6 @@ const Button = withTheme(styled('button')`
   border-radius: 2px;
   padding: 10px;
   height: 32px;
-  margin: 5px;
   cursor: pointer;
 
   ${props => props.size === 'large' && `height: 40px !important;`};
@@ -49,10 +48,18 @@ const Button = withTheme(styled('button')`
     box-sizing: border-box;
     cursor: default;
   }
-`);
+`;
 
 const PrimaryButton = withTheme(
-  ({ label, loading = false, icon, size, danger = false, disabled }) => {
+  ({
+    label,
+    loading = false,
+    icon,
+    size,
+    danger = false,
+    disabled,
+    onClick,
+  }) => {
     const appStore = useSelector(state => state.app);
     return (
       <Button
@@ -60,7 +67,8 @@ const PrimaryButton = withTheme(
         disabled={disabled}
         size={size}
         danger={danger}
-        selectedTheme={appStore.theme}>
+        selectedTheme={appStore.theme}
+        onClick={onClick}>
         {loading && (
           <>
             <CircularProgress size={15} thickness={5} />

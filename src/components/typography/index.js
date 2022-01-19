@@ -8,3 +8,4 @@ export * from './TableCellHeaderText';
 export * from './TableCellText';
 export * from './ButtonText';
 export * from './TableCellLinkText';
+export * from './Body';
