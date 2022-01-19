@@ -6,9 +6,9 @@ const Text = styled('h4')`
   color: ${props => props.color || '#000000'};
   font-size: 1rem;
   font-family: ${props => props.theme.typography.primary.regular};
-  font-weight: 400;
   line-height: 1.375rem;
   font-style: normal;
+  font-weight: 700;
   text-transform: capitalize;
   margin: 0;
   padding: 0;

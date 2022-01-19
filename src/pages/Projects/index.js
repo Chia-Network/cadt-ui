@@ -23,7 +23,7 @@ import {
   CreateProjectForm,
   H3,
   Message,
-  UploadCSV
+  UploadCSV,
 } from '../../components';
 
 import {
@@ -99,7 +99,7 @@ const StyledCSVOperationsContainer = styled('div')`
 
 const Projects = withRouter(() => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { mode, notification } = useSelector(store => store.app);
+  const { notification } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -169,7 +169,7 @@ const Projects = withRouter(() => {
         'projectName',
       ]),
     );
-  }, [climateWarehouseStore.projects, mode, climateWarehouseStore.stagingData]);
+  }, [climateWarehouseStore.projects, climateWarehouseStore.stagingData]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -242,7 +242,9 @@ const Projects = withRouter(() => {
             />
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span onClick={() => downloadTxtFile(climateWarehouseStore.projects)}>
+            <span
+              onClick={() => downloadTxtFile(climateWarehouseStore.projects)}
+            >
               <DownloadIcon />
             </span>
             <span>
@@ -260,7 +262,8 @@ const Projects = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreateFormIsDisplayed(true)}>
+                          onClick={() => setCreateFormIsDisplayed(true)}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

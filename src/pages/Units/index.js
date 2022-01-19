@@ -112,7 +112,7 @@ const StyledCSVOperationsContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification, mode } = useSelector(store => store.app);
+  const { notification } = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -188,7 +188,7 @@ const Units = withRouter(() => {
         'unitCount',
       ]),
     );
-  }, [climateWarehouseStore.units, mode]);
+  }, [climateWarehouseStore.units]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -283,7 +283,8 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}>
+                          onClick={() => setCreate(true)}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
