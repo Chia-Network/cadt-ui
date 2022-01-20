@@ -259,7 +259,7 @@ const Units = withRouter(() => {
             </StyledFiltersContainer>
           )}
           <StyledButtonContainer>
-            {tabValue === 0 && (
+            {tabValue === 0 && pageIsMyRegistryPage && (
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
@@ -280,26 +280,32 @@ const Units = withRouter(() => {
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
-            <Tab
-              label={`${intl.formatMessage({ id: 'staging' })} (${
-                climateWarehouseStore.stagingData &&
-                climateWarehouseStore.stagingData.units.staging.length
-              })`}
-            />
-            <Tab
-              label={`${intl.formatMessage({ id: 'pending' })} (${
-                climateWarehouseStore.stagingData &&
-                climateWarehouseStore.stagingData.units.pending.length
-              })`}
-            />
+            {pageIsMyRegistryPage && (
+              <>
+                <Tab
+                  label={`${intl.formatMessage({ id: 'staging' })} (${
+                    climateWarehouseStore.stagingData &&
+                    climateWarehouseStore.stagingData.units.staging.length
+                  })`}
+                />
+                <Tab
+                  label={`${intl.formatMessage({ id: 'pending' })} (${
+                    climateWarehouseStore.stagingData &&
+                    climateWarehouseStore.stagingData.units.pending.length
+                  })`}
+                />
+              </>
+            )}
           </Tabs>
           <StyledCSVOperationsContainer>
             <span onClick={() => downloadTxtFile(climateWarehouseStore.units)}>
               <DownloadIcon />
             </span>
-            <span>
-              <UploadCSV type="units" />
-            </span>
+            {pageIsMyRegistryPage && (
+              <span>
+                <UploadCSV type="units" />
+              </span>
+            )}
           </StyledCSVOperationsContainer>
         </StyledSubHeaderContainer>
         <StyledBodyContainer>
@@ -328,45 +334,53 @@ const Units = withRouter(() => {
                   <APIDataTable
                     headings={Object.keys(filteredColumnsTableData[0])}
                     data={filteredColumnsTableData}
-                    actions="Units"
+                    actions={pageIsMyRegistryPage ? 'Projects' : undefined}
                   />
                 </>
               )}
             {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
           </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            {climateWarehouseStore.stagingData &&
-              climateWarehouseStore.stagingData.units.staging.length === 0 && (
-                <NoDataMessageContainer>
-                  <H3>
-                    <FormattedMessage id="no-staged" />
-                  </H3>
-                </NoDataMessageContainer>
-              )}
-            {climateWarehouseStore.stagingData && (
-              <StagingDataTable
-                headings={headings}
-                data={climateWarehouseStore.stagingData.units.staging}
-                deleteStagingData={uuid => dispatch(deleteStagingData(uuid))}
-              />
-            )}
-          </TabPanel>
-          <TabPanel value={tabValue} index={2}>
-            {climateWarehouseStore.stagingData &&
-              climateWarehouseStore.stagingData.units.pending.length === 0 && (
-                <NoDataMessageContainer>
-                  <H3>
-                    <FormattedMessage id="no-pending" />
-                  </H3>
-                </NoDataMessageContainer>
-              )}
-            {climateWarehouseStore.stagingData && (
-              <StagingDataTable
-                headings={headings}
-                data={climateWarehouseStore.stagingData.units.pending}
-              />
-            )}
-          </TabPanel>
+          {pageIsMyRegistryPage && (
+            <>
+              <TabPanel value={tabValue} index={1}>
+                {climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.staging.length ===
+                    0 && (
+                    <NoDataMessageContainer>
+                      <H3>
+                        <FormattedMessage id="no-staged" />
+                      </H3>
+                    </NoDataMessageContainer>
+                  )}
+                {climateWarehouseStore.stagingData && (
+                  <StagingDataTable
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.units.staging}
+                    deleteStagingData={uuid =>
+                      dispatch(deleteStagingData(uuid))
+                    }
+                  />
+                )}
+              </TabPanel>
+              <TabPanel value={tabValue} index={2}>
+                {climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.pending.length ===
+                    0 && (
+                    <NoDataMessageContainer>
+                      <H3>
+                        <FormattedMessage id="no-pending" />
+                      </H3>
+                    </NoDataMessageContainer>
+                  )}
+                {climateWarehouseStore.stagingData && (
+                  <StagingDataTable
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.units.pending}
+                  />
+                )}
+              </TabPanel>
+            </>
+          )}
         </StyledBodyContainer>
       </StyledSectionContainer>
       {notification && (

@@ -221,22 +221,20 @@ const Projects = withRouter(() => {
               outline
             />
           </StyledSearchContainer>
-          <StyledFiltersContainer>
-            {tabValue === 0 && !pageIsMyRegistryPage && (
-              <StyledFiltersContainer>
-                <SelectOrganizations
-                  size={SelectSizeEnum.large}
-                  type={SelectTypeEnum.basic}
-                  placeholder={intl.formatMessage({ id: 'filters' })}
-                  width="200px"
-                  onChange={onOrganizationSelect}
-                  displayAllOrganizations
-                />
-              </StyledFiltersContainer>
-            )}
-          </StyledFiltersContainer>
+          {tabValue === 0 && !pageIsMyRegistryPage && (
+            <StyledFiltersContainer>
+              <SelectOrganizations
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                placeholder={intl.formatMessage({ id: 'filters' })}
+                width="200px"
+                onChange={onOrganizationSelect}
+                displayAllOrganizations
+              />
+            </StyledFiltersContainer>
+          )}
           <StyledButtonContainer>
-            {tabValue === 0 && (
+            {tabValue === 0 && pageIsMyRegistryPage && (
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
@@ -257,18 +255,22 @@ const Projects = withRouter(() => {
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
-            <Tab
-              label={`${intl.formatMessage({ id: 'staging' })} (${
-                climateWarehouseStore.stagingData &&
-                climateWarehouseStore.stagingData.projects.staging.length
-              })`}
-            />
-            <Tab
-              label={`${intl.formatMessage({ id: 'pending' })} (${
-                climateWarehouseStore.stagingData &&
-                climateWarehouseStore.stagingData.projects.pending.length
-              })`}
-            />
+            {pageIsMyRegistryPage && (
+              <>
+                <Tab
+                  label={`${intl.formatMessage({ id: 'staging' })} (${
+                    climateWarehouseStore.stagingData &&
+                    climateWarehouseStore.stagingData.projects.staging.length
+                  })`}
+                />
+                <Tab
+                  label={`${intl.formatMessage({ id: 'pending' })} (${
+                    climateWarehouseStore.stagingData &&
+                    climateWarehouseStore.stagingData.projects.pending.length
+                  })`}
+                />
+              </>
+            )}
           </Tabs>
           <StyledCSVOperationsContainer>
             <span
@@ -276,9 +278,11 @@ const Projects = withRouter(() => {
             >
               <DownloadIcon />
             </span>
-            <span>
-              <UploadCSV type="projects" />
-            </span>
+            {pageIsMyRegistryPage && (
+              <span>
+                <UploadCSV type="projects" />
+              </span>
+            )}
           </StyledCSVOperationsContainer>
         </StyledSubHeaderContainer>
         <StyledBodyContainer>
@@ -306,45 +310,51 @@ const Projects = withRouter(() => {
                 <APIDataTable
                   headings={Object.keys(filteredColumnsTableData[0])}
                   data={filteredColumnsTableData}
-                  actions="Projects"
+                  actions={pageIsMyRegistryPage ? 'Projects' : undefined}
                 />
               )}
           </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            {climateWarehouseStore.stagingData &&
-              climateWarehouseStore.stagingData.projects.staging.length ===
-                0 && (
-                <NoDataMessageContainer>
-                  <H3>
-                    <FormattedMessage id="no-staged" />
-                  </H3>
-                </NoDataMessageContainer>
-              )}
-            {climateWarehouseStore.stagingData && (
-              <StagingDataTable
-                headings={headings}
-                data={climateWarehouseStore.stagingData.projects.staging}
-                deleteStagingData={uuid => dispatch(deleteStagingData(uuid))}
-              />
-            )}
-          </TabPanel>
-          <TabPanel value={tabValue} index={2}>
-            {climateWarehouseStore.stagingData &&
-              climateWarehouseStore.stagingData.projects.pending.length ===
-                0 && (
-                <NoDataMessageContainer>
-                  <H3>
-                    <FormattedMessage id="no-pending" />
-                  </H3>
-                </NoDataMessageContainer>
-              )}
-            {climateWarehouseStore.stagingData && (
-              <StagingDataTable
-                headings={headings}
-                data={climateWarehouseStore.stagingData.projects.pending}
-              />
-            )}
-          </TabPanel>
+          {pageIsMyRegistryPage && (
+            <>
+              <TabPanel value={tabValue} index={1}>
+                {climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.projects.staging.length ===
+                    0 && (
+                    <NoDataMessageContainer>
+                      <H3>
+                        <FormattedMessage id="no-staged" />
+                      </H3>
+                    </NoDataMessageContainer>
+                  )}
+                {climateWarehouseStore.stagingData && (
+                  <StagingDataTable
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.projects.staging}
+                    deleteStagingData={uuid =>
+                      dispatch(deleteStagingData(uuid))
+                    }
+                  />
+                )}
+              </TabPanel>
+              <TabPanel value={tabValue} index={2}>
+                {climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.projects.pending.length ===
+                    0 && (
+                    <NoDataMessageContainer>
+                      <H3>
+                        <FormattedMessage id="no-pending" />
+                      </H3>
+                    </NoDataMessageContainer>
+                  )}
+                {climateWarehouseStore.stagingData && (
+                  <StagingDataTable
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.projects.pending}
+                  />
+                )}
+              </TabPanel>
+            </>
+          )}
         </StyledBodyContainer>
       </StyledSectionContainer>
       {createFormIsDisplayed && (
