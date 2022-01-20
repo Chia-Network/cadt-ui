@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/csvUtils';
 import constants from '../../constants';
+import { getUpdatedUrl } from '../../utils/urlUtils';
 
 import {
   getStagingData,
@@ -112,25 +113,39 @@ const StyledCSVOperationsContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification, mode } = useSelector(store => store.app);
+  const { notification } = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
+  let searchParams = new URLSearchParams(history.location.search);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
+  const pageIsMyRegistryPage =
+    searchParams.has('myRegistry') && searchParams.get('myRegistry') === 'true';
+
   const onSearch = useMemo(
     () =>
       _.debounce(event => {
         if (event.target.value !== '') {
-          history.replace({ search: `search=${event.target.value}` });
+          history.replace({
+            search: getUpdatedUrl(window.location.search, {
+              param: 'search',
+              value: event.target.value,
+            }),
+          });
         } else {
-          history.replace({ search: null });
+          history.replace({
+            search: getUpdatedUrl(window.location.search, {
+              param: 'search',
+              value: null,
+            }),
+          });
         }
         setSearchQuery(event.target.value);
       }, 300),
@@ -155,9 +170,18 @@ const Units = withRouter(() => {
     if (selectedOrganization && selectedOrganization !== 'all') {
       options.orgUid = selectedOrganization;
     }
+    if (pageIsMyRegistryPage) {
+      options.orgUid = searchParams.get('orgUid');
+    }
     dispatch(getPaginatedData(options));
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, [dispatch, tabValue, searchQuery, selectedOrganization]);
+  }, [
+    dispatch,
+    tabValue,
+    searchQuery,
+    selectedOrganization,
+    pageIsMyRegistryPage,
+  ]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
@@ -188,7 +212,7 @@ const Units = withRouter(() => {
         'unitCount',
       ]),
     );
-  }, [climateWarehouseStore.units, mode]);
+  }, [climateWarehouseStore.units]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -202,7 +226,12 @@ const Units = withRouter(() => {
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrganization(orgUid);
-    history.replace({ search: `orgUid=${orgUid}` });
+    history.replace({
+      search: getUpdatedUrl(window.location.search, {
+        param: 'orgUid',
+        value: orgUid,
+      }),
+    });
   };
 
   return (
@@ -217,7 +246,7 @@ const Units = withRouter(() => {
               outline
             />
           </StyledSearchContainer>
-          {tabValue === 0 && (
+          {tabValue === 0 && !pageIsMyRegistryPage && (
             <StyledFiltersContainer>
               <SelectOrganizations
                 size={SelectSizeEnum.large}
@@ -283,7 +312,8 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}>
+                          onClick={() => setCreate(true)}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

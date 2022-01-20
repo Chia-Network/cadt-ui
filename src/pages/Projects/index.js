@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/csvUtils';
 import constants from '../../constants';
+import { getUpdatedUrl } from '../../utils/urlUtils';
 
 import {
   APIDataTable,
@@ -23,7 +24,7 @@ import {
   CreateProjectForm,
   H3,
   Message,
-  UploadCSV
+  UploadCSV,
 } from '../../components';
 
 import {
@@ -99,7 +100,7 @@ const StyledCSVOperationsContainer = styled('div')`
 
 const Projects = withRouter(() => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { mode, notification } = useSelector(store => store.app);
+  const { notification } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -107,24 +108,43 @@ const Projects = withRouter(() => {
   let history = useHistory();
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
+  let searchParams = new URLSearchParams(history.location.search);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
+  const pageIsMyRegistryPage =
+    searchParams.has('myRegistry') && searchParams.get('myRegistry') === 'true';
+
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrganization(orgUid);
-    history.replace({ search: `orgUid=${orgUid}` });
+    history.replace({
+      search: getUpdatedUrl(window.location.search, {
+        param: 'orgUid',
+        value: orgUid,
+      }),
+    });
   };
 
   const onSearch = useMemo(
     () =>
       _.debounce(event => {
         if (event.target.value !== '') {
-          history.replace({ search: `search=${event.target.value}` });
+          history.replace({
+            search: getUpdatedUrl(window.location.search, {
+              param: 'search',
+              value: event.target.value,
+            }),
+          });
         } else {
-          history.replace({ search: null });
+          history.replace({
+            search: getUpdatedUrl(window.location.search, {
+              param: 'search',
+              value: null,
+            }),
+          });
         }
         setSearchQuery(event.target.value);
       }, 300),
@@ -149,9 +169,18 @@ const Projects = withRouter(() => {
     if (selectedOrganization && selectedOrganization !== 'all') {
       options.orgUid = selectedOrganization;
     }
+    if (pageIsMyRegistryPage) {
+      options.orgUid = searchParams.get('orgUid');
+    }
     dispatch(getPaginatedData(options));
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, [dispatch, tabValue, searchQuery, selectedOrganization]);
+  }, [
+    dispatch,
+    tabValue,
+    searchQuery,
+    selectedOrganization,
+    pageIsMyRegistryPage,
+  ]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.projects) {
@@ -169,7 +198,7 @@ const Projects = withRouter(() => {
         'projectName',
       ]),
     );
-  }, [climateWarehouseStore.projects, mode, climateWarehouseStore.stagingData]);
+  }, [climateWarehouseStore.projects, climateWarehouseStore.stagingData]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -193,7 +222,7 @@ const Projects = withRouter(() => {
             />
           </StyledSearchContainer>
           <StyledFiltersContainer>
-            {tabValue === 0 && (
+            {tabValue === 0 && !pageIsMyRegistryPage && (
               <StyledFiltersContainer>
                 <SelectOrganizations
                   size={SelectSizeEnum.large}
@@ -242,7 +271,9 @@ const Projects = withRouter(() => {
             />
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span onClick={() => downloadTxtFile(climateWarehouseStore.projects)}>
+            <span
+              onClick={() => downloadTxtFile(climateWarehouseStore.projects)}
+            >
               <DownloadIcon />
             </span>
             <span>
@@ -260,7 +291,8 @@ const Projects = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreateFormIsDisplayed(true)}>
+                          onClick={() => setCreateFormIsDisplayed(true)}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
