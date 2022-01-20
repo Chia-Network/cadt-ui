@@ -33,6 +33,7 @@ const LogoContainer = styled('div')`
 
 const MenuItem = styled(Link)`
   background: ${props => (props.selected ? '#003A8C' : 'transparent')};
+  ${props => !props.selected && `:hover {background: #40a9ff;}`};
   padding: 0.5625rem 0rem 0.75rem 4.25rem;
   color: white;
   font-family: ${props => props.theme.typography.primary.bold};
@@ -65,7 +66,7 @@ const LeftNav = withTheme(({ children }) => {
   }, [window.location]);
 
   const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations || {});
+  const myOrgUid = getMyOrgUid(organizations);
 
   return (
     <Container>
@@ -108,7 +109,7 @@ const LeftNav = withTheme(({ children }) => {
         </StyledTitleContainer>
         <MenuItem
           selected={location === 'my-projects'}
-          to={`/projects?orgUid=${myOrgUid}`}
+          to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
           onClick={() => {
             dispatch(resetRefreshPrompt);
             setLocation('my-projects');
@@ -119,7 +120,7 @@ const LeftNav = withTheme(({ children }) => {
         <div></div>
         <MenuItem
           selected={location === 'my-units'}
-          to={`/units?orgUid=${myOrgUid}`}
+          to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
           onClick={() => {
             dispatch(resetRefreshPrompt);
             setLocation('my-units');
