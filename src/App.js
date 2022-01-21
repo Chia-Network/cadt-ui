@@ -4,7 +4,7 @@ import { IntlProvider } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setLocale, setThemeFromLocalStorage } from './store/actions/app';
-import { getOrganizationData } from './store/actions/climateWarehouseActions';
+import { getOrganizationData, getVintages } from './store/actions/climateWarehouseActions';
 import { initiateSocket } from './store/actions/socket';
 
 import { loadLocaleData } from './translations';
@@ -21,6 +21,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initiateSocket());
     dispatch(getOrganizationData());
+    dispatch(getVintages(({useMockResponse: false})))
   }, [dispatch]);
 
   useEffect(

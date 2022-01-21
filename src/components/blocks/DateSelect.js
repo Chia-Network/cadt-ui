@@ -71,7 +71,7 @@ const DateSelect = ({
         label="Select time"
         value={dateValue}
         onChange={newValue => {
-          setDateValue(newValue);
+          setDateValue(`${newValue.$M + 1}/${newValue.$D}/${newValue.$y}`);
         }}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (

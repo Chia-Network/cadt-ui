@@ -92,13 +92,11 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     }
 
     if (!_.isEmpty(date)) {
-      dataToSend.projectStatusDate = `${date.$M + 1}/${date.$D}/${date.$y}`;
+      dataToSend.projectStatusDate = date;
     }
 
     if (!_.isEmpty(validationDate)) {
-      dataToSend.validationDate = `${validationDate.$M + 1}/${
-        validationDate.$D
-      }/${validationDate.$y}`;
+      dataToSend.validationDate = validationDate;
     }
 
     if (!_.isEmpty(newProjectLocations)) {
@@ -172,8 +170,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}
-              >
+                index={0}>
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>

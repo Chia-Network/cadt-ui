@@ -1,7 +1,9 @@
+import _ from 'lodash';
 import u from 'updeep';
-import React from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -12,6 +14,10 @@ import {
   FormContainerStyle,
   BodyContainer,
   Body,
+  DateSelect,
+  Select,
+  SelectTypeEnum,
+  SelectSizeEnum,
 } from '..';
 
 const StyledLabelContainer = styled('div')`
@@ -26,16 +32,46 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateVintageForm = ({ value, onChange }) => {
+const CreateVintageForm = ({ value, unitId, onChange }) => {
   const intl = useIntl();
+  const [selectedVintage, setSelectedVintage] = useState();
+  const climateWarehouseStore = useSelector(state => state.climateWarehouse);
+
+  useEffect(() => {
+    const initalVintage = climateWarehouseStore.units.find(
+      unit => unit.warehouseUnitId === unitId,
+    );
+    if (initalVintage) {
+      setSelectedVintage(initalVintage);
+    }
+  }, [unitId]);
+
+  const vintageOptions = useMemo(() => {
+    const vintages = climateWarehouseStore.vintages;
+    return vintages.map(vintage => ({ label: vintage.id, value: vintage }));
+  }, [climateWarehouseStore]);
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
+  };
+
+  const onSelectVintage = value => {
+    setSelectedVintage(value[0].value);
+    onChange(value[0].value);
   };
 
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
+          <div style={{ margin: '0.6rem' }}>
+            <Select
+              size={SelectSizeEnum.large}
+              type={SelectTypeEnum.basic}
+              options={[...vintageOptions, { label: 'New', value: value }]}
+              onChange={value => onSelectVintage(value)}
+            />
+          </div>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
@@ -43,14 +79,10 @@ const CreateVintageForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'start-date',
-                })}
-                state={InputStateEnum.default}
-                value={value.vintageStartDate}
-                onChange={changeValue =>
+              <DateSelect
+                size="large"
+                dateValue={_.get(selectedVintage, 'startDate', value.startDate)}
+                setDateValue={changeValue =>
                   onInputChange('startDate', changeValue)
                 }
               />
@@ -63,12 +95,12 @@ const CreateVintageForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({ id: 'end-date' })}
-                state={InputStateEnum.default}
-                value={value.endDate}
-                onChange={changeValue => onInputChange('endDate', changeValue)}
+              <DateSelect
+                size="large"
+                dateValue={_.get(selectedVintage, 'endDate', value.endDate)}
+                setDateValue={changeValue =>
+                  onInputChange('endDate', changeValue)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -85,7 +117,11 @@ const CreateVintageForm = ({ value, onChange }) => {
                   id: 'verification-approach',
                 })}
                 state={InputStateEnum.default}
-                value={value.verificationApproach}
+                value={_.get(
+                  selectedVintage,
+                  'verificationApproach',
+                  value.verificationApproach,
+                )}
                 onChange={changeValue =>
                   onInputChange('verificationApproach', changeValue)
                 }
@@ -99,14 +135,14 @@ const CreateVintageForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'verification-date',
-                })}
-                state={InputStateEnum.default}
-                value={value.verificationDate}
-                onChange={changeValue =>
+              <DateSelect
+                size="large"
+                dateValue={_.get(
+                  selectedVintage,
+                  'verificationDate',
+                  value.verificationDate,
+                )}
+                setDateValue={changeValue =>
                   onInputChange('verificationDate', changeValue)
                 }
               />
@@ -127,7 +163,11 @@ const CreateVintageForm = ({ value, onChange }) => {
                   id: 'verification-body',
                 })}
                 state={InputStateEnum.default}
-                value={value.verificationBody}
+                value={_.get(
+                  selectedVintage,
+                  'verificationBody',
+                  value.verificationBody,
+                )}
                 onChange={changeValue =>
                   onInputChange('verificationBody', changeValue)
                 }
@@ -147,9 +187,13 @@ const CreateVintageForm = ({ value, onChange }) => {
                   id: 'project-id',
                 })}
                 state={InputStateEnum.default}
-                value={value.projectId}
+                value={_.get(
+                  selectedVintage,
+                  'warehouseProjectId',
+                  value.warehouseProjectId,
+                )}
                 onChange={changeValue =>
-                  onInputChange('projectId', changeValue)
+                  onInputChange('warehouseProjectId', changeValue)
                 }
               />
             </InputContainer>
@@ -167,7 +211,7 @@ const CreateVintageForm = ({ value, onChange }) => {
                   id: 'unit-id',
                 })}
                 state={InputStateEnum.default}
-                value={value.unitId}
+                value={_.get(selectedVintage, 'unitId', value.unitId)}
                 onChange={changeValue => onInputChange('unitId', changeValue)}
               />
             </InputContainer>

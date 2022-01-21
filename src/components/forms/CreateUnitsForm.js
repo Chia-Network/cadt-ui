@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,15 +22,14 @@ import {
   Message,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
-import VintageRepeater from './VintageRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
+import VintageRepeater from './VintageRepeater';
 import {
   correspondingAdjustmentDeclarationValues,
   correspondingAdjustmentStatusValues,
   unitStatusValues,
   unitTypeValues,
-  vintageRepeaterValues,
 } from '../../utils/pick-values';
 
 const StyledLabelContainer = styled('div')`
@@ -47,19 +46,14 @@ const InputContainer = styled('div')`
 
 const CreateUnitsForm = withRouter(({ onClose }) => {
   const { notification } = useSelector(state => state.app);
-  const climateWarehouseStore = useSelector(
-    state => state.climateWarehouse.units,
-  );
-
   const [newQualifications, setNewQualifications] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
-  const [getPreviousVintage, setPreviousVintage] = useState([]);
-  const [getVintageValue, setVintageValue] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
   const [unitType, setUnitType] = useState(null);
   const [unitStatus, setUnitStatus] = useState(null);
+  const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const [
     selectedCorrespondingAdjustmentDeclaration,
     setSelectedCorrespondingAdjustmentDeclaration,
@@ -72,10 +66,18 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  const vintageOptions = useMemo(() => {
+    const vintages = climateWarehouseStore.vintages;
+    return vintages.map(vintage => ({ label: vintage.id, value: vintage }));
+  }, [climateWarehouseStore]);
+
+
   const [newUnits, setNewUnits] = useState({
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
     serialNumberBlock: '',
+    serialNumberPattern: '',
     unitIdentifier: '',
     intendedBuyerOrgUid: '',
     marketplace: '',
@@ -88,13 +90,6 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
     unitRegistryLink: '',
     unitMarketplaceLink: '',
   });
-
-  useEffect(() => {
-    climateWarehouseStore.map(unit => {
-      if (unit.vintage)
-        setPreviousVintage(prev => [...prev, _.forEach(unit.vintage)]);
-    });
-  }, [climateWarehouseStore]);
 
   const handleEditUnits = () => {
     const dataToSend = _.cloneDeep(newUnits);
@@ -606,31 +601,11 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <div style={{ margin: '0.6rem' }}>
-                  <Select
-                    size={SelectSizeEnum.large}
-                    type={SelectTypeEnum.basic}
-                    options={vintageRepeaterValues}
-                    onChange={value => setVintageValue(value)}
-                    selected={[vintageRepeaterValues[1]]}
-                  />
-                </div>
-
-                {getVintageValue[0]?.value === 'previous vintages' && (
-                  <VintageRepeater
-                    max={0}
-                    vintageState={getPreviousVintage}
-                    newVintageState={setPreviousVintage}
-                  />
-                )}
-
-                {getVintageValue[0]?.value === 'new' && (
-                  <VintageRepeater
-                    max={1}
-                    vintageState={newVintage}
-                    newVintageState={setNewVintage}
-                  />
-                )}
+                <VintageRepeater
+                  max={1}
+                  vintageState={newVintage}
+                  newVintageState={setNewVintage}
+                />
               </TabPanel>
             </div>
           </div>

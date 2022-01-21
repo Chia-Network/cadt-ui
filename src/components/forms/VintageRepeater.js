@@ -4,7 +4,7 @@ import { AddIcon, CloseIcon } from '..';
 import { CreateVintageForm } from './CreateVintageForm';
 import { ComponentRepeater } from '..';
 
-function VintageRepeater({ vintageState, newVintageState, max = 30 }) {
+function VintageRepeater({ vintageState, newVintageState, max = 30, unitId }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
@@ -20,7 +20,7 @@ function VintageRepeater({ vintageState, newVintageState, max = 30 }) {
           projectId: '',
           unitId: '',
         }}
-        component={<CreateVintageForm />}
+        component={<CreateVintageForm unitId={unitId} />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
         removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
       />

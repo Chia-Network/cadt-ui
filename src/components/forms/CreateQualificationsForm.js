@@ -11,6 +11,7 @@ import {
   FormContainerStyle,
   BodyContainer,
   Body,
+  DateSelect,
 } from '..';
 
 const StyledLabelContainer = styled('div')`
@@ -137,16 +138,12 @@ const CreateQualificationsForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'crediting-period-start-date',
-                })}
-                state={InputStateEnum.default}
-                value={value.creditingPeriodStartDate}
-                onChange={event => {
-                  onChange({ ...value, creditingPeriodStartDate: event });
-                }}
+              <DateSelect
+                size="large"
+                dateValue={value.creditingPeriodStartDate}
+                setDateValue={changeValue =>
+                  onChange({ ...value, creditingPeriodStartDate: changeValue })
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -157,16 +154,12 @@ const CreateQualificationsForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'crediting-period-end-date',
-                })}
-                state={InputStateEnum.default}
-                value={value.creditingPeriodEndDate}
-                onChange={event => {
-                  onChange({ ...value, creditingPeriodEndDate: event });
-                }}
+              <DateSelect
+                size="large"
+                dateValue={value.creditingPeriodEndDate}
+                setDateValue={changeValue =>
+                  onChange({ ...value, creditingPeriodEndDate: changeValue })
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
