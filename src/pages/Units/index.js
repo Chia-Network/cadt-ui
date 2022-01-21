@@ -281,20 +281,20 @@ const Units = withRouter(() => {
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
             {pageIsMyRegistryPage && (
-              <>
-                <Tab
-                  label={`${intl.formatMessage({ id: 'staging' })} (${
-                    climateWarehouseStore.stagingData &&
-                    climateWarehouseStore.stagingData.units.staging.length
-                  })`}
-                />
-                <Tab
-                  label={`${intl.formatMessage({ id: 'pending' })} (${
-                    climateWarehouseStore.stagingData &&
-                    climateWarehouseStore.stagingData.units.pending.length
-                  })`}
-                />
-              </>
+              <Tab
+                label={`${intl.formatMessage({ id: 'staging' })} (${
+                  climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.staging.length
+                })`}
+              />
+            )}
+            {pageIsMyRegistryPage && (
+              <Tab
+                label={`${intl.formatMessage({ id: 'pending' })} (${
+                  climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.pending.length
+                })`}
+              />
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
