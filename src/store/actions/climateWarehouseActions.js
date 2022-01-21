@@ -332,6 +332,57 @@ export const postNewProject = data => {
   };
 };
 
+export const uploadCSVFile = (file, type) => {
+  return async dispatch => {
+    if (type === 'projects' || type === 'units') {
+      try {
+        dispatch(activateProgressIndicator);
+
+        const formData = new FormData();
+        formData.append('csv', file);
+        // console.log('formdata sent to server: ', formData);
+
+        const url = `${constants.API_HOST}/${type}/batch`;
+        const payload = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
+        };
+
+        const response = await fetch(url, payload);
+
+        if (response.ok) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.success,
+              'upload-successful',
+            ),
+          );
+          dispatch(getStagingData({ useMockedResponse: false }));
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'file-could-not-be-uploaded',
+            ),
+          );
+        }
+      } catch {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'file-could-not-be-uploaded',
+          ),
+        );
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
+    }
+  };
+};
+
 export const postNewUnits = data => {
   return async dispatch => {
     try {
