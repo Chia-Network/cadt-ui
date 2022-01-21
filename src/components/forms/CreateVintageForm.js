@@ -46,6 +46,14 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
     }
   }, [unitId]);
 
+  const inputDisable = () => {
+    if (_.has(selectedVintage, 'id')) {
+      return InputStateEnum.disabled;
+    } else {
+      return InputStateEnum.default;
+    }
+  };
+
   const vintageOptions = useMemo(() => {
     const vintages = climateWarehouseStore.vintages;
     return vintages.map(vintage => ({ label: vintage.id, value: vintage }));
@@ -56,15 +64,22 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
   };
 
   const onSelectVintage = value => {
+    setSelectedVintage(null)
     setSelectedVintage(value[0].value);
     onChange(value[0].value);
+
+    if (Object.keys(value[0].value)) {
+      setSelectedVintage(null);
+    }
+
+  
   };
 
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
-          <div style={{ margin: '0.6rem' }}>
+          <div style={{ marginBottom: '0.6rem' }}>
             <Select
               size={SelectSizeEnum.large}
               type={SelectTypeEnum.basic}
@@ -80,6 +95,8 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                disabled={_.has(selectedVintage, 'id')}
+                disableOpenPicker={_.has(selectedVintage, 'id')}
                 size="large"
                 dateValue={_.get(selectedVintage, 'startDate', value.startDate)}
                 setDateValue={changeValue =>
@@ -96,6 +113,8 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                disabled={_.has(selectedVintage, 'id')}
+                disableOpenPicker={_.has(selectedVintage, 'id')}
                 size="large"
                 dateValue={_.get(selectedVintage, 'endDate', value.endDate)}
                 setDateValue={changeValue =>
@@ -112,11 +131,12 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                disabled={_.has(selectedVintage, 'id')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'verification-approach',
                 })}
-                state={InputStateEnum.default}
+                state={inputDisable()}
                 value={_.get(
                   selectedVintage,
                   'verificationApproach',
@@ -136,6 +156,8 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                disabled={_.has(selectedVintage, 'id')}
+                disableOpenPicker={_.has(selectedVintage, 'id')}
                 size="large"
                 dateValue={_.get(
                   selectedVintage,
@@ -158,11 +180,12 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                disabled={_.has(selectedVintage, 'id')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'verification-body',
                 })}
-                state={InputStateEnum.default}
+                state={inputDisable()}
                 value={_.get(
                   selectedVintage,
                   'verificationBody',
@@ -182,11 +205,12 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                disabled={_.has(selectedVintage, 'id')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'project-id',
                 })}
-                state={InputStateEnum.default}
+                state={inputDisable()}
                 value={_.get(
                   selectedVintage,
                   'warehouseProjectId',
@@ -206,11 +230,12 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                disabled={_.has(selectedVintage, 'id')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'unit-id',
                 })}
-                state={InputStateEnum.default}
+                state={inputDisable()}
                 value={_.get(selectedVintage, 'unitId', value.unitId)}
                 onChange={changeValue => onInputChange('unitId', changeValue)}
               />

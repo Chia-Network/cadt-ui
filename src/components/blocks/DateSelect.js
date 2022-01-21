@@ -62,6 +62,7 @@ const DateSelect = ({
   disabled,
   dateValue,
   setDateValue,
+  disableOpenPicker,
 }) => {
   const divElement = useRef(null);
 
@@ -73,6 +74,7 @@ const DateSelect = ({
         onChange={newValue => {
           setDateValue(`${newValue.$M + 1}/${newValue.$D}/${newValue.$y}`);
         }}
+        disableOpenPicker={disableOpenPicker}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
             <InputContainer

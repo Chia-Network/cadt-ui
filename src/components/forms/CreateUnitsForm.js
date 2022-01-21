@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,7 +53,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
   const intl = useIntl();
   const [unitType, setUnitType] = useState(null);
   const [unitStatus, setUnitStatus] = useState(null);
-  const climateWarehouseStore = useSelector(state => state.climateWarehouse);
+  // const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const [
     selectedCorrespondingAdjustmentDeclaration,
     setSelectedCorrespondingAdjustmentDeclaration,
@@ -67,11 +67,10 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
     setTabValue(newValue);
   };
 
-  const vintageOptions = useMemo(() => {
-    const vintages = climateWarehouseStore.vintages;
-    return vintages.map(vintage => ({ label: vintage.id, value: vintage }));
-  }, [climateWarehouseStore]);
-
+  // const vintageOptions = useMemo(() => {
+  //   const vintages = climateWarehouseStore.vintages;
+  //   return vintages.map(vintage => ({ label: vintage.id, value: vintage }));
+  // }, [climateWarehouseStore]);
 
   const [newUnits, setNewUnits] = useState({
     countryJurisdictionOfOwner: '',

@@ -17,7 +17,7 @@ function VintageRepeater({ vintageState, newVintageState, max = 30, unitId }) {
           verificationApproach: '',
           verificationDate: '',
           verificationBody: '',
-          projectId: '',
+          warehouseProjectId: '',
           unitId: '',
         }}
         component={<CreateVintageForm unitId={unitId} />}
