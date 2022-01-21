@@ -48,7 +48,7 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
 
   const inputDisable = () => {
     if (_.has(selectedVintage, 'id')) {
-      return InputStateEnum.disabled;
+      return InputStateEnum.focused;
     } else {
       return InputStateEnum.default;
     }
@@ -64,15 +64,9 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
   };
 
   const onSelectVintage = value => {
-    setSelectedVintage(null)
+    setSelectedVintage(null);
     setSelectedVintage(value[0].value);
     onChange(value[0].value);
-
-    if (Object.keys(value[0].value)) {
-      setSelectedVintage(null);
-    }
-
-  
   };
 
   return (
@@ -82,6 +76,7 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
           <div style={{ marginBottom: '0.6rem' }}>
             <Select
               size={SelectSizeEnum.large}
+              width="320px"
               type={SelectTypeEnum.basic}
               options={[...vintageOptions, { label: 'New', value: value }]}
               onChange={value => onSelectVintage(value)}
@@ -95,13 +90,13 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                disabled={_.has(selectedVintage, 'id')}
-                disableOpenPicker={_.has(selectedVintage, 'id')}
                 size="large"
                 dateValue={_.get(selectedVintage, 'startDate', value.startDate)}
                 setDateValue={changeValue =>
                   onInputChange('startDate', changeValue)
                 }
+                disabled={_.has(selectedVintage, 'id')}
+                disableOpenPicker={_.has(selectedVintage, 'id')}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -113,13 +108,13 @@ const CreateVintageForm = ({ value, unitId, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                disabled={_.has(selectedVintage, 'id')}
-                disableOpenPicker={_.has(selectedVintage, 'id')}
                 size="large"
                 dateValue={_.get(selectedVintage, 'endDate', value.endDate)}
                 setDateValue={changeValue =>
                   onInputChange('endDate', changeValue)
                 }
+                disabled={_.has(selectedVintage, 'id')}
+                disableOpenPicker={_.has(selectedVintage, 'id')}
               />
             </InputContainer>
           </StyledFieldContainer>
