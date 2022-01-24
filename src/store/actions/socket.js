@@ -1,6 +1,7 @@
 import socketIO from 'socket.io-client';
 import { messageTypes } from '../../utils/message-types';
 import { keyMirror } from '../store-functions';
+import { getStagingData } from './climateWarehouseActions';
 
 export const actions = keyMirror(
   'SOCKET_PROJECTS_UPDATE',
@@ -209,6 +210,7 @@ export const stagingHasBeenUpdated = data => {
           ...data,
         },
       });
+      dispatch(getStagingData({ useMockedResponse: false }));
     }
   };
 };
