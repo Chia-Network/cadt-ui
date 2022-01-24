@@ -206,26 +206,28 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                       </Td>
                     ))}
                     {actions === 'Units' && (
-                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
+                      <Td selectedTheme={theme}>
                         {myOrgUnits.includes(record.warehouseUnitId) && (
-                          <BasicMenu
-                            options={[
-                              {
-                                label: intl.formatMessage({
-                                  id: 'edit-unit',
-                                }),
-                                action: () => {
-                                  setEditRecord(record);
+                          <div style={{ cursor: 'pointer' }}>
+                            <BasicMenu
+                              options={[
+                                {
+                                  label: intl.formatMessage({
+                                    id: 'edit-unit',
+                                  }),
+                                  action: () => {
+                                    setEditRecord(record);
+                                  },
                                 },
-                              },
-                              {
-                                label: intl.formatMessage({
-                                  id: 'split',
-                                }),
-                                action: () => setUnitToBeSplit(record),
-                              },
-                            ]}
-                          />
+                                {
+                                  label: intl.formatMessage({
+                                    id: 'split',
+                                  }),
+                                  action: () => setUnitToBeSplit(record),
+                                },
+                              ]}
+                            />
+                          </div>
                         )}
                       </Td>
                     )}
