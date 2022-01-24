@@ -115,6 +115,8 @@ const LeftNav = withTheme(({ children }) => {
             setLocation('my-projects');
           }}
         >
+          <FormattedMessage id="my" />
+          &nbsp;
           <FormattedMessage id="projects" />
         </MenuItem>
         <div></div>
@@ -126,6 +128,8 @@ const LeftNav = withTheme(({ children }) => {
             setLocation('my-units');
           }}
         >
+          <FormattedMessage id="my" />
+          &nbsp;
           <FormattedMessage id="units" />
         </MenuItem>
       </NavContainer>
