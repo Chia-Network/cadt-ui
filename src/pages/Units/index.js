@@ -314,7 +314,7 @@ const Units = withRouter(() => {
               climateWarehouseStore.units.length === 0 && (
                 <NoDataMessageContainer>
                   <H3>
-                    {!searchQuery && (
+                    {!searchQuery && pageIsMyRegistryPage && (
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
@@ -323,6 +323,9 @@ const Units = withRouter(() => {
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
+                    )}
+                    {!searchQuery && !pageIsMyRegistryPage && (
+                      <FormattedMessage id="no-search-results" />
                     )}
                     {searchQuery && <FormattedMessage id="no-search-results" />}
                   </H3>
@@ -334,7 +337,7 @@ const Units = withRouter(() => {
                   <APIDataTable
                     headings={Object.keys(filteredColumnsTableData[0])}
                     data={filteredColumnsTableData}
-                    actions={pageIsMyRegistryPage ? 'Projects' : undefined}
+                    actions="Units"
                   />
                 </>
               )}

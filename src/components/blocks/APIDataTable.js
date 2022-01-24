@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
@@ -9,11 +9,8 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination, Message } from '.';
 import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import {
-  EditUnitsForm,
-  EditProjectsForm,
-  SplitUnitForm,
-} from '..';
+import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
+import { getMyOrgUid, getMyOrgUnits } from '../../utils/getMyOrgUid';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -115,7 +112,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
   const [unitToBeSplit, setUnitToBeSplit] = useState(null);
-  const { theme, notification} = useSelector(state => state.app);
+  const { theme, notification } = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
@@ -125,6 +122,20 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
   }, [ref.current, windowSize.height]);
+
+  const myOrgUid = useMemo(() => {
+    if (climateWarehouseStore.organizations) {
+      return getMyOrgUid(climateWarehouseStore.organizations);
+    }
+    return null;
+  }, [climateWarehouseStore.organizations]);
+  const myOrgUnits = useMemo(() => {
+    if (climateWarehouseStore.units) {
+      return getMyOrgUnits(myOrgUid, climateWarehouseStore.units);
+    }
+    return null;
+  }, [myOrgUid, climateWarehouseStore.units]);
+  // console.log(myOrgUnits, data, data.filter(unit => myOrgUnits.includes(unit.warehouseUnitId)));
 
   return (
     <>
@@ -138,7 +149,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                     start={index === 0}
                     end={!actions && index === headings.length - 1}
                     selectedTheme={theme}
-                    key={index}>
+                    key={index}
+                  >
                     <TableCellHeaderText>
                       {heading === 'orgUid' && 'Organization'}
                       {heading !== 'orgUid' &&
@@ -151,7 +163,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                     start={false}
                     end={true}
                     selectedTheme={theme}
-                    key={'action'}></Th>
+                    key={'action'}
+                  ></Th>
                 )}
               </tr>
             </THead>
@@ -164,7 +177,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         onClick={() => setRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
-                        key={index}>
+                        key={index}
+                      >
                         <TableCellText
                           tooltip={
                             record[key] &&
@@ -172,7 +186,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                               climateWarehouseStore,
                               `organizations[${record[key]}].name`,
                             )}: ${record[key].toString()}`
-                          }>
+                          }
+                        >
                           {key === 'orgUid' &&
                             climateWarehouseStore.organizations[
                               record[key]
@@ -185,7 +200,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                                 }
                               />
                             )}
-
                           {key !== 'orgUid' &&
                             record[key] &&
                             record[key].toString()}
@@ -193,37 +207,41 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                       </Td>
                     ))}
                     {actions === 'Units' && (
-                      <Td
-                        style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}>
-                        <BasicMenu
-                          options={[
-                            {
-                              label: intl.formatMessage({
-                                id: 'edit-unit',
-                              }),
-                              action: () => {
-                                setEditRecord(record);
+                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
+                        {myOrgUnits.includes(record.warehouseUnitId) && (
+                          <BasicMenu
+                            options={[
+                              {
+                                label: intl.formatMessage({
+                                  id: 'edit-unit',
+                                }),
+                                action: () => {
+                                  setEditRecord(record);
+                                },
                               },
-                            },
-                            {
-                              label: intl.formatMessage({
-                                id: 'split',
-                              }),
-                              action: () => setUnitToBeSplit(record),
-                            },
-                          ]}
-                        />
+                              {
+                                label: intl.formatMessage({
+                                  id: 'split',
+                                }),
+                                action: () => setUnitToBeSplit(record),
+                              },
+                            ]}
+                          />
+                        )}
                       </Td>
                     )}
                     {actions === 'Projects' && (
-                      <Td
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          setEditRecord(record);
-                        }}
-                        selectedTheme={theme}>
-                        <EllipsisMenuIcon />
+                      <Td selectedTheme={theme}>
+                        {myOrgUid === record.orgUid && (
+                          <div
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              setEditRecord(record);
+                            }}
+                          >
+                            <EllipsisMenuIcon />
+                          </div>
+                        )}
                       </Td>
                     )}
                   </Tr>
@@ -262,9 +280,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           record={unitToBeSplit}
         />
       )}
-      {
-        notification && <Message type={notification.type} id={notification.id} />
-      }
+      {notification && (
+        <Message type={notification.type} id={notification.id} />
+      )}
     </>
   );
 });
