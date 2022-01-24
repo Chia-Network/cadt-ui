@@ -340,14 +340,9 @@ export const uploadCSVFile = (file, type) => {
 
         const formData = new FormData();
         formData.append('csv', file);
-        // console.log('formdata sent to server: ', formData);
-
         const url = `${constants.API_HOST}/${type}/batch`;
         const payload = {
           method: 'POST',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
           body: formData,
         };
 
