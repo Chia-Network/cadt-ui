@@ -10,7 +10,7 @@ import { TableDrawer, APIPagination, Message } from '.';
 import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
-import { getMyOrgUid, getMyOrgUnits } from '../../utils/getMyOrgUid';
+import { getMyOrgUid, getMyOrgUnits } from '../../utils/getMyOrg';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -135,7 +135,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
     }
     return null;
   }, [myOrgUid, climateWarehouseStore.units]);
-  // console.log(myOrgUnits, data, data.filter(unit => myOrgUnits.includes(unit.warehouseUnitId)));
 
   return (
     <>

@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { resetRefreshPrompt } from '../../store/actions/app';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
+import { getMyOrgUid } from '../../utils/getMyOrg';
 
 const Container = styled('div')`
   display: flex;
