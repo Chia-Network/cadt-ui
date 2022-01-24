@@ -5,6 +5,7 @@ import { keyMirror } from '../store-functions';
 export const actions = keyMirror(
   'SOCKET_PROJECTS_UPDATE',
   'SOCKET_UNITS_UPDATE',
+  'SOCKET_STAGING_UPDATE',
   'SOCKET_STATUS',
 );
 
@@ -32,6 +33,10 @@ const initListenersForEachMessageType = dispatch => {
         case 'change:units':
           console.log('units have been updated');
           dispatch(unitsHaveBeenUpdated(data));
+          break;
+        case 'change:staging':
+          console.log('staging has been updated');
+          dispatch(stagingHasBeenUpdated(data));
           break;
         default:
           break;
@@ -103,6 +108,11 @@ export const initiateSocket = () => {
         console.log('Joining units updates');
         socket.emit('/subscribe', 'units', response => {
           console.log('Following units updates', response);
+        });
+
+        console.log('Joining staging updates');
+        socket.emit('/subscribe', 'staging', response => {
+          console.log('Following staging updates', response);
         });
       })
       .on('disconnect', reason => {
@@ -178,6 +188,23 @@ export const unitsHaveBeenUpdated = data => {
       dispatch({
         type: actions.SOCKET_UNITS_UPDATE,
         key: 'change:units',
+        payload: {
+          ...data,
+        },
+      });
+    }
+  };
+};
+
+export const stagingHasBeenUpdated = data => {
+  return dispatch => {
+    if (
+      window.location.href.includes('/units') ||
+      window.location.href.includes('/projects')
+    ) {
+      dispatch({
+        type: actions.SOCKET_STAGING_UPDATE,
+        key: 'change:staging',
         payload: {
           ...data,
         },
