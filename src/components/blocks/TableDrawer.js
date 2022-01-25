@@ -1,30 +1,33 @@
 import { Drawer } from '@mui/material';
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
-import { CloseIconWithBorder, H4, Subtitle } from '..';
+import { CloseIconWithBorder, Body } from '..';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 
 const drawerStyles = {
   marginTop: '70px',
   width: '340px',
-  height: '806px',
+  height: '80%',
 };
 
 const IconContainer = styled('div')`
-  align-self: flex-end;
-  margin-top: 17px;
-  margin-right: 24px;
+  top: 17px;
+  right: 24px;
+  position: absolute;
+  background-color: white;
 `;
 const TableContentContainer = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
-  width: 260px;
+  width: 100%;
+  padding: 20px 30px 20px 20px;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-self: center;
+  box-sizing: border-box;
 `;
 
 const TableContent = styled('div')`
@@ -32,6 +35,8 @@ const TableContent = styled('div')`
   flex-direction: column;
   justify-content: space-evenly;
   width: 100%;
+  padding: 7px 0px 7px 0px;
+  box-sizing: border-box;
 `;
 
 const TableDrawer = withTheme(({ getRecord, onClose }) => {
@@ -40,7 +45,8 @@ const TableDrawer = withTheme(({ getRecord, onClose }) => {
       PaperProps={{ sx: drawerStyles }}
       anchor="right"
       open={getRecord ? true : false}
-      onClose={onClose}>
+      onClose={onClose}
+    >
       <IconContainer onClick={onClose}>
         <CloseIconWithBorder height="21" width="21" />
       </IconContainer>
@@ -48,13 +54,14 @@ const TableDrawer = withTheme(({ getRecord, onClose }) => {
         {getRecord &&
           Object.entries(getRecord)
             .filter(value => !Array.isArray(getRecord[value[0]]))
-            .map((value) => {
+            .map(value => {
               return (
                 <>
                   <TableContent key={value}>
-                    <H4>{convertPascalCaseToSentenceCase(value[0])}</H4>
-
-                    <Subtitle>{JSON.stringify(value[1])}</Subtitle>
+                    <Body size="Small Bold">
+                      {convertPascalCaseToSentenceCase(value[0])}
+                    </Body>
+                    <Body>{JSON.stringify(value[1])}</Body>
                   </TableContent>
                 </>
               );
