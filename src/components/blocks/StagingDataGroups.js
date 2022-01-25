@@ -1,78 +1,69 @@
+/* eslint-disable */
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { Modal, MinusIcon } from '..';
-import { TableDrawer } from './';
+import { Modal, MinusIcon, Body } from '..';
+import { TableDrawer } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
 
-const Table = styled('table')`
+const StyledChangeGroup = styled('div')`
+  background: #f0f2f5;
+  margin: 20px 20px 20px 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  flex-wrap: wrap;
+  padding: 40px 1%;
+`;
+
+const StyledChangeCard = styled('div')`
   background-color: white;
-  display: table;
-  border-spacing: 0;
-  border-collapse: collapse;
-  margin: 0px 0px 50px 0px;
-  width: 100%;
+  width: 33%;
+  min-width: 300px;
+  max-width: 500px;
+  border-radius: 5px;
+  cursor: pointer;
 `;
 
-const THead = styled('thead')`
-  font-weight: 500;
-  background-color: ${props =>
-    props.theme.colors[props.selectedTheme].secondary};
+const StyledChangeCardTitle = styled('div')`
+  ${props =>
+    props.displayInRed
+      ? ` background-color: #ffebee;
+      border: 2px solid #f5222d;
+      body {
+        color: #f5222d;
+      }`
+      : ` background-color: #ECF8E6;
+      border: 2px solid #52C41A;
+      body {
+        color: #52C41A;
+      }`}
+  padding: 15px 5px 8px 17px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
-const Th = styled('th')`
-  padding: 1rem;
-  color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-  display: table-cell;
-  text-align: center;
-  letter-spacing: 0.01071em;
-  vertical-align: inherit;
-  max-width: 80px;
-  min-width: 80px;
+const StyledChangeCardBody = styled('div')`
+  padding: 8px 17px;
 `;
 
-const Tr = styled('tr')`
-  ${props => {
-    if (props.color === 'green') {
-      return `
-            border: 1px solid #52C41A;
-            background: #ECF8E6;
-            p, span {
-              color: #52C41A !important;
-            };
-            `;
-    } else if (props.color === 'red') {
-      return `
-          background: #FFEBEE;  
-          border: 1px solid #F5222D;
-          p, span {
-            color: #F5222D !important;
-          };
-          `;
-    } else if (props.color === 'gray') {
-      return `border: 1px solid #F2F2F2;`;
-    }
-  }};
-  th:last-child {
-    text-align: center;
-    max-width: 50px;
-    min-width: 50px;
-  }
+const StyledCardBodyItem = styled('div')`
+  padding: 4px;
 `;
 
-const Td = styled('td')`
-  display: table-cell;
-  padding: 1rem;
-  text-align: center;
-  letter-spacing: 0.01071em;
-  vertical-align: inherit;
-  max-width: 80px;
-  min-width: 80px;
+const StyledDeleteGroupIcon = styled('div')`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
 `;
 
-const StagingDataTableContainer = styled('div')`
+const StagingDataGroupsContainer = styled('div')`
   height: 100%;
 `;
 
@@ -167,7 +158,28 @@ const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
   );
 };
 
-const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
+const ChangeCard = ({ headings, data, appStore, displayInRed, onClick }) => {
+  return (
+    <StyledChangeCard onClick={onClick}>
+      <StyledChangeCardTitle displayInRed={displayInRed}>
+        <Body size="Bold">Project Details</Body>
+      </StyledChangeCardTitle>
+      <StyledChangeCardBody>
+        {headings &&
+          headings.map((heading, index) => (
+            <StyledCardBodyItem key={index}>
+              <Body size="Small Bold">
+                {convertPascalCaseToSentenceCase(heading)}
+              </Body>
+              <Body>{data[heading] ? data[heading] : '--'}</Body>
+            </StyledCardBodyItem>
+          ))}
+      </StyledChangeCardBody>
+    </StyledChangeCard>
+  );
+};
+
+const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
   const [deleteFromStaging, setDeleteFromStaging] = useState(false);
@@ -211,81 +223,61 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
     };
   };
 
+  console.log(data);
+
   return (
-    <StagingDataTableContainer ref={ref}>
+    <StagingDataGroupsContainer ref={ref}>
       <div style={{ height: `${height}px`, overflow: 'auto' }}>
         {data &&
           headings &&
           data.map((changeGroup, index) => (
-            <Table selectedTheme={appStore.theme} key={index}>
-              <ChangeGroupHeader headings={headings} appStore={appStore} />
-              <tbody>
-                {!changeGroupIsValid(changeGroup) && (
-                  <InvalidChangeGroup
-                    headings={headings}
-                    appStore={appStore}
-                    onDeleteStaging={() => {
-                      setDeleteUUID(changeGroup.uuid);
-                      setDeleteFromStaging(true);
-                    }}
-                  />
-                )}
-                {changeGroup.action === 'DELETE' &&
-                  changeGroupIsValid(changeGroup) && (
-                    <ChangeGroupItem
+            <>
+              {changeGroupIsValid(changeGroup) && (
+                <StyledChangeGroup key={index}>
+                  <StyledDeleteGroupIcon>
+                    <div
+                      onClick={() => {
+                        setDeleteUUID(changeGroup.uuid);
+                        setDeleteFromStaging(true);
+                      }}
+                    >
+                      <MinusIcon width={20} height={20} />
+                    </div>
+                  </StyledDeleteGroupIcon>
+                  {changeGroup.action === 'DELETE' && (
+                    <ChangeCard
                       data={changeGroup.diff.original}
                       headings={headings}
-                      appStore={appStore}
-                      color={'red'}
                       onClick={() => setRecord(changeGroup.diff.original)}
-                      onDeleteStaging={() => {
-                        setDeleteUUID(changeGroup.uuid);
-                        setDeleteFromStaging(true);
-                      }}
+                      displayInRed
                     />
                   )}
-                {changeGroup.action === 'INSERT' &&
-                  changeGroupIsValid(changeGroup) && (
-                    <ChangeGroupItem
+                  {changeGroup.action === 'INSERT' && (
+                    <ChangeCard
                       data={changeGroup.diff.change[0]}
                       headings={headings}
-                      appStore={appStore}
-                      color={'green'}
                       onClick={() => setRecord(changeGroup.diff.change[0])}
-                      onDeleteStaging={() => {
-                        setDeleteUUID(changeGroup.uuid);
-                        setDeleteFromStaging(true);
-                      }}
                     />
                   )}
-                {changeGroup.action === 'UPDATE' &&
-                  changeGroupIsValid(changeGroup) && (
-                    <>
-                      <ChangeGroupItem
-                        data={changeGroup.diff.original}
-                        headings={headings}
-                        appStore={appStore}
-                        color={'red'}
-                        onClick={() => setRecord(changeGroup.diff.original)}
-                        onDeleteStaging={() => {
-                          setDeleteUUID(changeGroup.uuid);
-                          setDeleteFromStaging(true);
-                        }}
-                      />
-                      {changeGroup.diff.change.map((change, index) => (
-                        <ChangeGroupItem
-                          data={change}
-                          headings={headings}
-                          appStore={appStore}
-                          color={'green'}
-                          key={index}
-                          onClick={() => setRecord(change)}
-                        />
-                      ))}
-                    </>
+                  {changeGroup.action === 'UPDATE' && (
+                    <ChangeCard
+                      data={changeGroup.diff.original}
+                      headings={headings}
+                      onClick={() => setRecord(changeGroup.diff.original)}
+                      displayInRed
+                    />
                   )}
-              </tbody>
-            </Table>
+                  {changeGroup.action === 'UPDATE' &&
+                    changeGroup.diff.change.map((change, index) => (
+                      <ChangeCard
+                        data={change}
+                        headings={headings}
+                        onClick={() => setRecord(change)}
+                      />
+                    ))}
+                </StyledChangeGroup>
+              )}
+            </>
           ))}
         <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
         {deleteFromStaging && (
@@ -299,8 +291,8 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
           />
         )}
       </div>
-    </StagingDataTableContainer>
+    </StagingDataGroupsContainer>
   );
 });
 
-export { StagingDataTable };
+export { StagingDataGroups };

@@ -13,7 +13,7 @@ import {
   AddIcon,
   SearchInput,
   PrimaryButton,
-  StagingDataTable,
+  StagingDataGroups,
   Tab,
   Tabs,
   TabPanel,
@@ -327,7 +327,7 @@ const Projects = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataTable
+                  <StagingDataGroups
                     headings={headings}
                     data={climateWarehouseStore.stagingData.projects.staging}
                     deleteStagingData={uuid =>
@@ -347,7 +347,7 @@ const Projects = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataTable
+                  <StagingDataGroups
                     headings={headings}
                     data={climateWarehouseStore.stagingData.projects.pending}
                   />
