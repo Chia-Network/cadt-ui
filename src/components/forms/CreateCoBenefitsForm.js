@@ -12,7 +12,9 @@ import {
   FormContainerStyle,
   Body,
   ToolTipContainer,
+  DescriptionIcon
 } from '..';
+import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -38,11 +40,14 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
         <StyledFieldContainer>
           <StyledLabelContainer>
             <Body style={{ color: '#262626' }}>
+              <LabelContainer>
+                <FormattedMessage id="co-benefit" />
+              </LabelContainer>
               <ToolTipContainer
                 tooltip={intl.formatMessage({
                   id: 'cobenefits-cobenefit-description',
                 })}>
-                <FormattedMessage id="co-benefit" />
+                <DescriptionIcon height="14" width="14" />
               </ToolTipContainer>
             </Body>
           </StyledLabelContainer>

@@ -13,7 +13,10 @@ import {
   BodyContainer,
   Body,
   ToolTipContainer,
+  DescriptionIcon
 } from '..';
+import { LabelContainer } from '../../utils/compUtils';
+
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -40,11 +43,14 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  <FormattedMessage id="related-project-id" />
+                </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-related-project-id-description',
                   })}>
-                  <FormattedMessage id="related-project-id" />
+                  <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
@@ -65,11 +71,14 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  <FormattedMessage id="related-project-type" />
+                </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-related-project-type-description',
                   })}>
-                  <FormattedMessage id="related-project-type" />
+                  <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
@@ -88,11 +97,14 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  <FormattedMessage id="registry" />
+                </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-registry-description',
                   })}>
-                  <FormattedMessage id="registry" />
+                  <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
@@ -109,7 +121,10 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
+                <LabelContainer>
                 <FormattedMessage id="related-project-note" />
+                </LabelContainer>
+                <DescriptionIcon height="14" width="14" />
               </Body>
             </StyledLabelContainer>
             <InputContainer>

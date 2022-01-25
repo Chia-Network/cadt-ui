@@ -13,7 +13,9 @@ import {
   BodyContainer,
   Body,
   ToolTipContainer,
+  DescriptionIcon
 } from '..';
+import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -41,11 +43,14 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  <FormattedMessage id="in-country-region" />
+                </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-in-country-region-description',
                   })}>
-                  <FormattedMessage id="in-country-region" />
+                  <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
@@ -66,11 +71,14 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  <FormattedMessage id="host-country" />
+                </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-country-description',
                   })}>
-                <FormattedMessage id="host-country" />
+                  <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>

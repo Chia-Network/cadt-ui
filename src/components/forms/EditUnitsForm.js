@@ -17,7 +17,8 @@ import {
   ModalFormContainerStyle,
   FormContainerStyle,
   BodyContainer,
-  ToolTipContainer
+  ToolTipContainer,
+  DescriptionIcon,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -30,6 +31,7 @@ import {
   unitStatusValues,
   unitTypeValues,
 } from '../../utils/pick-values';
+import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -172,11 +174,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
                             *
+                            <LabelContainer>
+                              <FormattedMessage id="country-jurisdiction-of-owner" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-country-jurisdiction-of-owner-description',
                               })}>
-                              <FormattedMessage id="country-jurisdiction-of-owner" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -200,11 +205,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
+                            <LabelContainer>
+                              <FormattedMessage id="in-country-jurisdiction-of-owner" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-in-country-jurisdiction-of-owner-description',
                               })}>
-                              <FormattedMessage id="in-country-jurisdiction-of-owner" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -228,11 +236,15 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
+                            *
+                            <LabelContainer>
+                              <FormattedMessage id="serial-number-block" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-serial-number-block-description',
                               })}>
-                              *<FormattedMessage id="serial-number-block" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -257,11 +269,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
                             *
+                            <LabelContainer>
+                              <FormattedMessage id="unit-identifier" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-identifier-description',
                               })}>
-                              <FormattedMessage id="unit-identifier" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -286,11 +301,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
                             *
+                            <LabelContainer>
+                              <FormattedMessage id="unit-type" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-type-description',
                               })}>
-                              <FormattedMessage id="unit-type" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -312,11 +330,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
+                            <LabelContainer>
+                              <FormattedMessage id="intended-buyer-org-uid" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-intended-buyer-org-uid-description',
                               })}>
-                              <FormattedMessage id="intended-buyer-org-uid" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -340,11 +361,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
+                            <LabelContainer>
+                              <FormattedMessage id="marketplace" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-marketplace-description',
                               })}>
-                              <FormattedMessage id="marketplace" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -368,11 +392,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
+                            <LabelContainer>
+                              <FormattedMessage id="tags" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-tags-description',
                               })}>
-                              <FormattedMessage id="tags" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -397,11 +424,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
+                            <LabelContainer>
+                              <FormattedMessage id="unit-status" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-status-description',
                               })}>
-                              <FormattedMessage id="unit-status" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -428,11 +458,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
+                            <LabelContainer>
+                              <FormattedMessage id="unit-transaction-type" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-transaction-type-description',
                               })}>
-                              <FormattedMessage id="unit-transaction-type" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -456,11 +489,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
+                            <LabelContainer>
+                              <FormattedMessage id="unit-status-reason" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-status-reason-description',
                               })}>
-                              <FormattedMessage id="unit-status-reason" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -484,11 +520,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
+                            <LabelContainer>
+                              <FormattedMessage id="token-issuance-hash" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-token-issuance-hash-description',
                               })}>
-                              <FormattedMessage id="token-issuance-hash" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -512,11 +551,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
+                            <LabelContainer>
+                              <FormattedMessage id="marketplace-identifier" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-marketplace-identifier-description',
                               })}>
-                              <FormattedMessage id="marketplace-identifier" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -541,11 +583,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
+                            <LabelContainer>
+                              <FormattedMessage id="units-issuance-location" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-units-issuance-location-description',
                               })}>
-                              <FormattedMessage id="units-issuance-location" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -570,11 +615,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
+                            <LabelContainer>
+                              <FormattedMessage id="unit-registry-link" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-registry-link-description',
                               })}>
-                              <FormattedMessage id="unit-registry-link" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -598,11 +646,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
+                            <LabelContainer>
+                              <FormattedMessage id="marketplace-link" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-marketplace-link-description',
                               })}>
-                              <FormattedMessage id="marketplace-link" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -627,11 +678,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
+                            <LabelContainer>
+                              <FormattedMessage id="corresponding-adjustment-declaration" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-corresponding-adjustment-declaration-description',
                               })}>
-                              <FormattedMessage id="corresponding-adjustment-declaration" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
@@ -661,11 +715,14 @@ const EditUnitsForm = ({ data, onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
+                            <LabelContainer>
+                              <FormattedMessage id="corresponding-adjustment-status" />
+                            </LabelContainer>
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-corresponding-adjustment-status-description',
                               })}>
-                              <FormattedMessage id="corresponding-adjustment-status" />
+                              <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
