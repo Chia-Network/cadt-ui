@@ -11,6 +11,7 @@ import {
   ModalFormContainerStyle,
   FormContainerStyle,
   Body,
+  ToolTipContainer,
 } from '..';
 
 const StyledLabelContainer = styled('div')`
@@ -37,7 +38,12 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
         <StyledFieldContainer>
           <StyledLabelContainer>
             <Body style={{ color: '#262626' }}>
-              <FormattedMessage id="co-benefit" />
+              <ToolTipContainer
+                tooltip={intl.formatMessage({
+                  id: 'cobenefits-cobenefit-description',
+                })}>
+                <FormattedMessage id="co-benefit" />
+              </ToolTipContainer>
             </Body>
           </StyledLabelContainer>
           <InputContainer>

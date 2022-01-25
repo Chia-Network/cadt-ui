@@ -14,6 +14,7 @@ import {
   ModalFormContainerStyle,
   FormContainerStyle,
   BodyContainer,
+  ToolTipContainer,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -160,7 +161,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="registry-of-origin" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-registry-of-origin-description',
+                              })}>
+                              <FormattedMessage id="registry-of-origin" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -183,7 +189,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="origin-project-id" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-origin-project-id-description',
+                              })}>
+                              <FormattedMessage id="origin-project-id" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -206,7 +217,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="program" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-program-description',
+                              })}>
+                              <FormattedMessage id="program" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -229,7 +245,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-id" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-id-description',
+                              })}>
+                              <FormattedMessage id="project-id" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <StandardInput
@@ -250,7 +271,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-name" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-name-description',
+                              })}>
+                              <FormattedMessage id="project-name" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -273,7 +299,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-link" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-link-description',
+                              })}>
+                              <FormattedMessage id="project-link" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -296,7 +327,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-developer" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-developer-description',
+                              })}>
+                              <FormattedMessage id="project-developer" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -319,7 +355,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="sector" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-sector-description',
+                              })}>
+                              <FormattedMessage id="sector" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -342,7 +383,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-type" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-type-description',
+                              })}>
+                              <FormattedMessage id="project-type" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <StandardInput
@@ -363,7 +409,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="covered-by-ndc" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-covered-by-ndc-description',
+                              })}>
+                              <FormattedMessage id="covered-by-ndc" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -388,7 +439,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="ndc-linkage" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-ndc-linkage-description',
+                              })}>
+                              <FormattedMessage id="ndc-linkage" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -411,7 +467,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-status" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-status-description',
+                              })}>
+                              <FormattedMessage id="project-status" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -434,7 +495,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-status-date" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-status-date-description',
+                              })}>
+                              <FormattedMessage id="project-status-date" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -457,7 +523,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-metric" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-unit-metric-description',
+                              })}>
+                              <FormattedMessage id="unit-metric" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -480,7 +551,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="methodology" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-methodology-description',
+                              })}>
+                              <FormattedMessage id="methodology" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -503,7 +579,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="methodology-version" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-methodology-version-description',
+                              })}>
+                              <FormattedMessage id="methodology-version" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -526,7 +607,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="validation-approach" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-validation-approach-description',
+                              })}>
+                              <FormattedMessage id="validation-approach" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -549,7 +635,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="validation-date" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-validation-date-description',
+                              })}>
+                              <FormattedMessage id="validation-date" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -572,7 +663,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="estimated-annual-average-emission-reduction" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-estimated-annual-average-emission-reduction-description',
+                              })}>
+                              <FormattedMessage id="estimated-annual-average-emission-reduction" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -597,7 +693,12 @@ const EditProjectsForm = ({ data, onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-tag" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-tags-description',
+                              })}>
+                              <FormattedMessage id="project-tag" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>

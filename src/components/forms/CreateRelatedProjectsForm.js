@@ -12,6 +12,7 @@ import {
   FormContainerStyle,
   BodyContainer,
   Body,
+  ToolTipContainer,
 } from '..';
 
 const StyledLabelContainer = styled('div')`
@@ -39,7 +40,12 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="related-project-id" />
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'related-projects-related-project-id-description',
+                  })}>
+                  <FormattedMessage id="related-project-id" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -59,7 +65,12 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="related-project-type" />
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'related-projects-related-project-type-description',
+                  })}>
+                  <FormattedMessage id="related-project-type" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -77,7 +88,12 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="registry" />
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'related-projects-registry-description',
+                  })}>
+                  <FormattedMessage id="registry" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>

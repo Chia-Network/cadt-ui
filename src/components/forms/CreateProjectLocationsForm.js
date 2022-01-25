@@ -12,6 +12,7 @@ import {
   FormContainerStyle,
   BodyContainer,
   Body,
+  ToolTipContainer,
 } from '..';
 
 const StyledLabelContainer = styled('div')`
@@ -40,7 +41,12 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="in-country-region" />
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'locations-in-country-region-description',
+                  })}>
+                  <FormattedMessage id="in-country-region" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
@@ -60,7 +66,12 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'locations-country-description',
+                  })}>
                 <FormattedMessage id="host-country" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>

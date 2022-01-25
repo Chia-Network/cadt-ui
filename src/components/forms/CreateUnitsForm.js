@@ -20,6 +20,7 @@ import {
   BodyContainer,
   Select,
   Message,
+  ToolTipContainer,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -172,8 +173,7 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}
-              >
+                index={0}>
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
@@ -181,7 +181,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
-                            <FormattedMessage id="country-jurisdiction-of-owner" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-country-jurisdiction-of-owner-description',
+                              })}>
+                              <FormattedMessage id="country-jurisdiction-of-owner" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -204,7 +209,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="in-country-jurisdiction-of-owner" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-in-country-jurisdiction-of-owner-description',
+                              })}>
+                              <FormattedMessage id="in-country-jurisdiction-of-owner" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -227,7 +237,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            *<FormattedMessage id="serial-number-block" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-serial-number-block-description',
+                              })}>
+                              *<FormattedMessage id="serial-number-block" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -250,7 +265,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            *<FormattedMessage id="unit-identifier" />
+                            *
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-unit-identifier-description',
+                              })}>
+                              <FormattedMessage id="unit-identifier" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -273,7 +294,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            *<FormattedMessage id="unit-type" />
+                            *
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-unit-type-description',
+                              })}>
+                              <FormattedMessage id="unit-type" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -291,7 +318,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="intended-buyer-org-uid" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-intended-buyer-org-uid-description',
+                              })}>
+                              <FormattedMessage id="intended-buyer-org-uid" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -314,7 +346,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="marketplace" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-marketplace-description',
+                              })}>
+                              <FormattedMessage id="marketplace" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -337,7 +374,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="tags" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-unit-tags-description',
+                              })}>
+                              <FormattedMessage id="tags" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -360,7 +402,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            *<FormattedMessage id="unit-status" />
+                            *
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-unit-status-description',
+                              })}>
+                              <FormattedMessage id="unit-status" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -380,7 +428,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-transaction-type" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-unit-transaction-type-description',
+                              })}>
+                              <FormattedMessage id="unit-transaction-type" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -403,7 +456,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-status-reason" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-unit-status-reason-description',
+                              })}>
+                              <FormattedMessage id="unit-status-reason" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -426,7 +484,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="token-issuance-hash" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-token-issuance-hash-description',
+                              })}>
+                              <FormattedMessage id="token-issuance-hash" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -449,7 +512,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="marketplace-identifier" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-marketplace-identifier-description',
+                              })}>
+                              <FormattedMessage id="marketplace-identifier" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -472,7 +540,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            *<FormattedMessage id="units-issuance-location" />
+                            *
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-units-issuance-location-description',
+                              })}>
+                              <FormattedMessage id="units-issuance-location" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -495,7 +569,13 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            *<FormattedMessage id="unit-registry-link" />
+                            *
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-unit-registry-link-description',
+                              })}>
+                              <FormattedMessage id="unit-registry-link" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -518,7 +598,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="unit-marketplace-link" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-marketplace-link-description',
+                              })}>
+                              <FormattedMessage id="marketplace-link" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -542,7 +627,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
-                            <FormattedMessage id="corresponding-adjustment-declaration" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-corresponding-adjustment-declaration-description',
+                              })}>
+                              <FormattedMessage id="corresponding-adjustment-declaration" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -565,7 +655,12 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
                             *
-                            <FormattedMessage id="corresponding-adjustment-status" />
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'units-corresponding-adjustment-status-description',
+                              })}>
+                              <FormattedMessage id="corresponding-adjustment-status" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
