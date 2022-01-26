@@ -3,12 +3,12 @@ import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import { TableCellHeaderText, TableCellText } from '../typography';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon } from '..';
 import { TableDrawer } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { useIntl } from 'react-intl';
+import { formatMessage } from '@formatjs/intl';
 
 const StyledChangeGroup = styled('div')`
   background: #f0f2f5;
@@ -125,6 +125,23 @@ const ChangeCard = ({
   );
 };
 
+const InvalidChangeCard = ({ onDeleteChangeGroup, title }) => {
+  return (
+    <StyledChangeCard onClick={onDeleteChangeGroup}>
+      <StyledChangeCardTitle displayInRed>
+        <Body size="Bold">{title}</Body>
+      </StyledChangeCardTitle>
+      <StyledChangeCardBody>
+        <StyledCardBodyItem>
+          <Body size="Small Bold">
+            <FormattedMessage id="change-request-corrupted" />
+          </Body>
+        </StyledCardBodyItem>
+      </StyledChangeCardBody>
+    </StyledChangeCard>
+  );
+};
+
 const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
   const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
@@ -173,7 +190,6 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
   const getTranslatedCardTitle = (tableC, actionC, changeArrayLength) => {
     const table = tableC.toLowerCase();
     const action = actionC.toLowerCase();
-    console.log(changeArrayLength);
     let translationId = 'record';
     if (table === 'projects') {
       if (action === 'delete') {
@@ -284,6 +300,32 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                         addedIsVisible
                       />
                     ))}
+                </StyledChangeGroup>
+              )}
+              {changeGroupIsValid(changeGroup) && (
+                <StyledChangeGroup>
+                  <StyledDeleteGroupIcon>
+                    <div
+                      onClick={() => {
+                        setDeleteUUID(changeGroup.uuid);
+                        setDeleteFromStaging(true);
+                      }}
+                    >
+                      <MinusIcon width={20} height={20} />
+                    </div>
+                  </StyledDeleteGroupIcon>
+                  <InvalidChangeCard
+                    title={intl.formatMessage({
+                      id:
+                        changeGroup.table.toLowerCase() === 'projects'
+                          ? 'project'
+                          : 'unit',
+                    })}
+                    onDeleteChangeGroup={() => {
+                      setDeleteUUID(changeGroup.uuid);
+                      setDeleteFromStaging(true);
+                    }}
+                  />
                 </StyledChangeGroup>
               )}
             </>

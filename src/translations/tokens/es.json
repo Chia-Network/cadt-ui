@@ -126,6 +126,7 @@
   "delete-unit": "Eliminar unidad",
   "add-unit": "Agregar unidad",
   "update-unit": "Actualización de la unidad",
-  "split-unit": "División de unidades"
+  "split-unit": "División de unidades",
+  "change-request-corrupted": "Esta solicitud de cambio se ha dañado, haga clic aquí para eliminarla."
 }
 

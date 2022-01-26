@@ -154,5 +154,6 @@
   "delete-unit": "Delete Unit",
   "add-unit": "Add Unit",
   "update-unit": "Update Unit",
-  "split-unit": "Split Unit"
+  "split-unit": "Split Unit",
+  "change-request-corrupted": "This change request has been corrupted, click here to remove it."
 }
