@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { Modal, MinusIcon, Body } from '..';
+import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon } from '..';
 import { TableDrawer } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { useIntl } from 'react-intl';
@@ -20,12 +20,13 @@ const StyledChangeGroup = styled('div')`
   align-items: center;
   position: relative;
   flex-wrap: wrap;
-  padding: 40px 1%;
+  padding: 45px 0px 40px 0px;
+  gap: 20px;
 `;
 
 const StyledChangeCard = styled('div')`
   background-color: white;
-  width: 33%;
+  width: 30%;
   min-width: 300px;
   max-width: 500px;
   border-radius: 5px;
@@ -63,7 +64,7 @@ const StyledChangeCardBody = styled('div')`
 const StyledCardBodyItem = styled('div')`
   padding: 4px;
   body {
-    word-wrap: break-word;
+    word-break: break-all;
   }
 `;
 
@@ -78,107 +79,24 @@ const StagingDataGroupsContainer = styled('div')`
   height: 100%;
 `;
 
-const ChangeGroupHeader = ({ headings, appStore }) => {
-  return (
-    <THead selectedTheme={appStore.theme}>
-      <Tr color="gray">
-        {headings &&
-          headings.map((heading, index) => (
-            <Th selectedTheme={appStore.theme} key={index}>
-              <TableCellHeaderText>
-                {convertPascalCaseToSentenceCase(heading)}
-              </TableCellHeaderText>
-            </Th>
-          ))}
-        <Th selectedTheme={appStore.theme}>
-          <TableCellHeaderText></TableCellHeaderText>
-        </Th>
-      </Tr>
-      <Tr />
-    </THead>
-  );
-};
-
-const ChangeGroupItem = ({
-  headings,
-  data,
-  appStore,
-  color,
-  onClick,
-  onDeleteStaging,
-}) => {
-  return (
-    <>
-      <Tr color={color} selectedTheme={appStore.theme}>
-        {headings.map((key, index) => (
-          <Td selectedTheme={appStore.theme} key={index} onClick={onClick}>
-            <TableCellText>
-              {data[key] ? data[key].toString() : '--'}
-            </TableCellText>
-          </Td>
-        ))}
-        <Td selectedTheme={appStore.theme}>
-          {onDeleteStaging && (
-            <div
-              style={{
-                textAlign: 'right',
-                paddingRight: '10px',
-              }}
-            >
-              <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
-                <MinusIcon width={16} height={16} />
-              </span>
-            </div>
-          )}
-        </Td>
-      </Tr>
-      <Tr>
-        <td></td>
-      </Tr>
-    </>
-  );
-};
-
-const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
-  return (
-    <>
-      <Tr color="red" selectedTheme={appStore.theme}>
-        <Td colSpan={headings.length}>
-          <TableCellText>
-            <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
-              This change request has been corrupted, click here to remove.
-            </span>
-          </TableCellText>
-        </Td>
-        <Td selectedTheme={appStore.theme}>
-          {onDeleteStaging && (
-            <div
-              style={{
-                textAlign: 'right',
-                paddingRight: '10px',
-              }}
-            >
-              <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
-                <MinusIcon width={16} height={16} />
-              </span>
-            </div>
-          )}
-        </Td>
-      </Tr>
-    </>
-  );
-};
+const StyledCardBodySubItem = styled('div')`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  word-wrap: break-word;
+`;
 
 const ChangeCard = ({
   headings,
   data,
-  appStore,
   displayInRed,
   onClick,
   title,
+  deletedIsVsible,
+  addedIsVisible,
 }) => {
-  let titleTranslationId = '';
-
   return (
     <StyledChangeCard onClick={onClick}>
       <StyledChangeCardTitle displayInRed={displayInRed}>
@@ -191,7 +109,15 @@ const ChangeCard = ({
               <Body size="Small Bold">
                 {convertPascalCaseToSentenceCase(heading)}
               </Body>
-              <Body>{data[heading] ? data[heading] : '--'}</Body>
+              <StyledCardBodySubItem>
+                <span>
+                  <Body>{data[heading] ? data[heading] : '--'}</Body>
+                </span>
+                <span>
+                  {deletedIsVsible && <ErrorIcon width="17" height="17" />}
+                  {addedIsVisible && <SuccessIcon width="17" height="17" />}
+                </span>
+              </StyledCardBodySubItem>
             </StyledCardBodyItem>
           ))}
       </StyledChangeCardBody>
@@ -340,6 +266,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                         changeGroup.action,
                         changeGroup.diff.change.length,
                       )}
+                      deletedIsVsible
                       displayInRed
                     />
                   )}
@@ -354,6 +281,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                           changeGroup.diff.change.length,
                         )}
                         onClick={() => setRecord(change)}
+                        addedIsVisible
                       />
                     ))}
                 </StyledChangeGroup>

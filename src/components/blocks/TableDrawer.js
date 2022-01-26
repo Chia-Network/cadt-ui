@@ -15,6 +15,7 @@ const IconContainer = styled('div')`
   right: 24px;
   position: absolute;
   background-color: white;
+  cursor: pointer;
 `;
 const TableContentContainer = styled('div')`
   display: flex;
