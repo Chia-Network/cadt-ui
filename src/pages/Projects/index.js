@@ -291,7 +291,7 @@ const Projects = withRouter(() => {
               climateWarehouseStore.projects.length === 0 && (
                 <NoDataMessageContainer>
                   <H3>
-                    {!searchQuery && (
+                    {!searchQuery && pageIsMyRegistryPage && (
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
@@ -300,6 +300,9 @@ const Projects = withRouter(() => {
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
+                    )}
+                    {!searchQuery && !pageIsMyRegistryPage && (
+                      <FormattedMessage id="no-search-results" />
                     )}
                     {searchQuery && <FormattedMessage id="no-search-results" />}
                   </H3>

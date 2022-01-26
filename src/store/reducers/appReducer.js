@@ -22,6 +22,7 @@ const appReducer = (state = initialState, action) => {
 
     case socketActions.SOCKET_UNITS_UPDATE:
     case socketActions.SOCKET_PROJECTS_UPDATE:
+    case socketActions.SOCKET_STAGING_UPDATE:
       return u({ updateAvailablePleaseRefesh: true }, state);
 
     case appActions.RESET_REFRESH_PROMPT:

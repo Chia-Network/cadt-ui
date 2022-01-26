@@ -18,6 +18,8 @@ import {
   BodyContainer,
   DateSelect,
   Message,
+  ToolTipContainer,
+  DescriptionIcon,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -26,6 +28,7 @@ import ProjectLocationsRepeater from './ProjectLocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -38,6 +41,8 @@ const StyledFieldContainer = styled('div')`
 const InputContainer = styled('div')`
   width: 20rem;
 `;
+
+
 
 const CreateProjectForm = withRouter(({ onClose }) => {
   const [newQualifications, setNewQualifications] = useState([]);
@@ -172,15 +177,22 @@ const CreateProjectForm = withRouter(({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}
-              >
+                index={0}>
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="registry-of-origin" />
+                            <LabelContainer>
+                              <FormattedMessage id="registry-of-origin" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-registry-of-origin-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -203,7 +215,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="origin-project-id" />
+                            <LabelContainer>
+                              <FormattedMessage id="origin-project-id" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-origin-project-id-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -226,7 +246,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="program" />
+                            <LabelContainer>
+                              <FormattedMessage id="program" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-program-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -249,7 +277,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="project-id" />
+                            <LabelContainer>
+                              <FormattedMessage id="project-id" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-id-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <StandardInput
@@ -270,7 +306,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="project-name" />
+                            <LabelContainer>
+                              <FormattedMessage id="project-name" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-name-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -293,7 +337,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="project-link" />
+                            <LabelContainer>
+                              <FormattedMessage id="project-link" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-link-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -316,7 +368,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="project-developer" />
+                            <LabelContainer>
+                              <FormattedMessage id="project-developer" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-developer-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -339,7 +399,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="sector" />
+                            <LabelContainer>
+                              <FormattedMessage id="sector" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-sector-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -362,7 +430,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="project-type" />
+                            <LabelContainer>
+                              <FormattedMessage id="project-type" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-type-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <StandardInput
@@ -383,7 +459,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="covered-by-ndc" />
+                            <LabelContainer>
+                              <FormattedMessage id="covered-by-ndc" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-covered-by-ndc-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -408,7 +492,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="ndc-linkage" />
+                            <LabelContainer>
+                              <FormattedMessage id="ndc-linkage" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-ndc-linkage-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -431,7 +523,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="project-status" />
+                            <LabelContainer>
+                              <FormattedMessage id="project-status" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-status-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -454,7 +554,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="project-status-date" />
+                            <LabelContainer>
+                              <FormattedMessage id="project-status-date" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-status-date-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -468,7 +576,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="unit-metric" />
+                            <LabelContainer>
+                              <FormattedMessage id="unit-metric" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-unit-metric-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -491,7 +607,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="methodology" />
+                            <LabelContainer>
+                              <FormattedMessage id="methodology" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-methodology-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -514,7 +638,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="methodology-version" />
+                            <LabelContainer>
+                              <FormattedMessage id="methodology-version" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-methodology-version-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -537,7 +669,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="validation-approach" />
+                            <LabelContainer>
+                              <FormattedMessage id="validation-approach" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-validation-approach-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -560,7 +700,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
-                            <FormattedMessage id="validation-date" />
+                            <LabelContainer>
+                              <FormattedMessage id="validation-date" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-validation-date-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -574,7 +722,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="estimated-annual-average-emission-reduction" />
+                            <LabelContainer>
+                              <FormattedMessage id="estimated-annual-average-emission-reduction" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-estimated-annual-average-emission-reduction-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
@@ -599,7 +755,15 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body color={'#262626'}>
-                            <FormattedMessage id="project-tag" />
+                            <LabelContainer>
+                              <FormattedMessage id="project-tag" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-tags-description',
+                              })}>
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>

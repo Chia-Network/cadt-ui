@@ -27,3 +27,4 @@ export * from './EllipsisMenuIcon';
 export * from './UploadIcon';
 export * from './WarehouseIcon';
 export * from './RegistryIcon';
+export * from './DescriptionIcon';
