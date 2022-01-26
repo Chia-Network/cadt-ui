@@ -119,6 +119,13 @@
   "all-organizations": "Todas las organizaciones",
   "total-units-available": "Total de unidades divididas disponibles",
   "upload-successful": "Su archivo se cargó con éxito.",
-  "file-could-not-be-uploaded": "No se pudo cargar su archivo."
+  "file-could-not-be-uploaded": "No se pudo cargar su archivo.",
+  "delete-project": "Eliminar proyecto",
+  "add-project": "Agregar proyecto",
+  "update-project": "Actualizar proyecto",
+  "delete-unit": "Eliminar unidad",
+  "add-unit": "Agregar unidad",
+  "update-unit": "Actualización de la unidad",
+  "split-unit": "División de unidades"
 }
 

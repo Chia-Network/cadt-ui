@@ -147,5 +147,12 @@
   "all-organizations": "All organizations",
   "total-units-available": "Total split units available",
   "upload-successful": "Your file was successfully uploaded.",
-  "file-could-not-be-uploaded": "Your file could not be uploaded."
+  "file-could-not-be-uploaded": "Your file could not be uploaded.",
+  "delete-project": "Delete Project",
+  "add-project": "Add Project",
+  "update-project": "Update Project",
+  "delete-unit": "Delete Unit",
+  "add-unit": "Add Unit",
+  "update-unit": "Update Unit",
+  "split-unit": "Split Unit"
 }

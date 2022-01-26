@@ -119,5 +119,12 @@
   "all-organizations": "すべての組織",
   "total-units-available": "利用可能な分割ユニットの合計",
   "upload-successful": "ファイルが正常にアップロードされました。",
-  "file-could-not-be-uploaded": "ファイルをアップロードできませんでした。"
+  "file-could-not-be-uploaded": "ファイルをアップロードできませんでした。",
+  "delete-project": "プロジェクトを削除",
+  "add-project": "プロジェクトを追加",
+  "update-project": "プロジェクトの更新",
+  "delete-unit": "ユニットを削除",
+  "add-unit": "ユニットを追加",
+  "update-unit": "ユニットの更新",
+  "split-unit": "スプリットユニット"
 }

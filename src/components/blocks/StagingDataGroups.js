@@ -1,4 +1,5 @@
 /* eslint-disable */
+import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
@@ -7,6 +8,7 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { Modal, MinusIcon, Body } from '..';
 import { TableDrawer } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
+import { useIntl } from 'react-intl';
 
 const StyledChangeGroup = styled('div')`
   background: #f0f2f5;
@@ -60,6 +62,9 @@ const StyledChangeCardBody = styled('div')`
 
 const StyledCardBodyItem = styled('div')`
   padding: 4px;
+  body {
+    word-wrap: break-word;
+  }
 `;
 
 const StyledDeleteGroupIcon = styled('div')`
@@ -164,11 +169,20 @@ const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
   );
 };
 
-const ChangeCard = ({ headings, data, appStore, displayInRed, onClick }) => {
+const ChangeCard = ({
+  headings,
+  data,
+  appStore,
+  displayInRed,
+  onClick,
+  title,
+}) => {
+  let titleTranslationId = '';
+
   return (
     <StyledChangeCard onClick={onClick}>
       <StyledChangeCardTitle displayInRed={displayInRed}>
-        <Body size="Bold">Project Details</Body>
+        <Body size="Bold">{title}</Body>
       </StyledChangeCardTitle>
       <StyledChangeCardBody>
         {headings &&
@@ -193,6 +207,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
   const ref = useRef(null);
   const [height, setHeight] = useState(0);
   const windowSize = useWindowSize();
+  const intl = useIntl();
 
   const changeGroupIsValid = changeGroup => {
     if (!changeGroup.diff) {
@@ -229,7 +244,46 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
     };
   };
 
-  console.log(data);
+  const getTranslatedCardTitle = (tableC, actionC, changeArrayLength) => {
+    const table = tableC.toLowerCase();
+    const action = actionC.toLowerCase();
+    console.log(changeArrayLength);
+    let translationId = 'record';
+    if (table === 'projects') {
+      if (action === 'delete') {
+        translationId = 'delete-project';
+      } else if (action === 'update') {
+        translationId = 'update-project';
+      } else if (action === 'insert') {
+        translationId = 'add-project';
+      }
+    } else if (table === 'units') {
+      if (action === 'delete') {
+        translationId = 'delete-unit';
+      } else if (action === 'add') {
+        translationId = 'add-unit';
+      } else if (action === 'update') {
+        if (changeArrayLength && changeArrayLength > 1) {
+          translationId = 'split-unit';
+        } else {
+          translationId = 'update-unit';
+        }
+      }
+    }
+    return intl.formatMessage({
+      id: translationId,
+    });
+  };
+
+  const getDiff = (a, b) => {
+    return _.reduce(
+      a,
+      function (result, value, key) {
+        return _.isEqual(value, b[key]) ? result : result.concat(key);
+      },
+      [],
+    );
+  };
 
   return (
     <StagingDataGroupsContainer ref={ref}>
@@ -255,6 +309,10 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                       data={changeGroup.diff.original}
                       headings={headings}
                       onClick={() => setRecord(changeGroup.diff.original)}
+                      title={getTranslatedCardTitle(
+                        changeGroup.table,
+                        changeGroup.action,
+                      )}
                       displayInRed
                     />
                   )}
@@ -262,14 +320,26 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                     <ChangeCard
                       data={changeGroup.diff.change[0]}
                       headings={headings}
+                      title={getTranslatedCardTitle(
+                        changeGroup.table,
+                        changeGroup.action,
+                      )}
                       onClick={() => setRecord(changeGroup.diff.change[0])}
                     />
                   )}
                   {changeGroup.action === 'UPDATE' && (
                     <ChangeCard
                       data={changeGroup.diff.original}
-                      headings={headings}
+                      headings={getDiff(
+                        changeGroup.diff.original,
+                        changeGroup.diff.change[0],
+                      )}
                       onClick={() => setRecord(changeGroup.diff.original)}
+                      title={getTranslatedCardTitle(
+                        changeGroup.table,
+                        changeGroup.action,
+                        changeGroup.diff.change.length,
+                      )}
                       displayInRed
                     />
                   )}
@@ -277,7 +347,12 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                     changeGroup.diff.change.map((change, index) => (
                       <ChangeCard
                         data={change}
-                        headings={headings}
+                        headings={getDiff(changeGroup.diff.original, change)}
+                        title={getTranslatedCardTitle(
+                          changeGroup.table,
+                          changeGroup.action,
+                          changeGroup.diff.change.length,
+                        )}
                         onClick={() => setRecord(change)}
                       />
                     ))}
