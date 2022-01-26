@@ -127,5 +127,7 @@
   "add-unit": "ユニットを追加",
   "update-unit": "ユニットの更新",
   "split-unit": "スプリットユニット",
-  "change-request-corrupted": "この変更リクエストは破損しています。削除するには、ここをクリックしてください。"
+  "change-request-corrupted": "この変更リクエストは破損しています。削除するには、ここをクリックしてください。",
+  "notification": "通知",
+  "confirm-deletion": "削除してもよろしいですか？"
 }

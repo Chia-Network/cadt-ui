@@ -1,14 +1,11 @@
-/* eslint-disable */
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon } from '..';
 import { TableDrawer } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { formatMessage } from '@formatjs/intl';
 
 const StyledChangeGroup = styled('div')`
   background: #f0f2f5;
@@ -143,7 +140,6 @@ const InvalidChangeCard = ({ onDeleteChangeGroup, title }) => {
 };
 
 const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
-  const appStore = useSelector(state => state.app);
   const [getRecord, setRecord] = useState(null);
   const [deleteFromStaging, setDeleteFromStaging] = useState(false);
   const [deleteUUID, setDeleteUUID] = useState();
@@ -289,6 +285,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                   {changeGroup.action === 'UPDATE' &&
                     changeGroup.diff.change.map((change, index) => (
                       <ChangeCard
+                        key={index}
                         data={change}
                         headings={getDiff(changeGroup.diff.original, change)}
                         title={getTranslatedCardTitle(
@@ -302,7 +299,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                     ))}
                 </StyledChangeGroup>
               )}
-              {changeGroupIsValid(changeGroup) && (
+              {!changeGroupIsValid(changeGroup) && (
                 <StyledChangeGroup>
                   <StyledDeleteGroupIcon>
                     <div
@@ -333,8 +330,12 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
         <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
         {deleteFromStaging && (
           <Modal
-            title="Notification"
-            body="Are you sure you want to delete"
+            title={intl.formatMessage({
+              id: 'notification',
+            })}
+            body={intl.formatMessage({
+              id: 'confirm-deletion',
+            })}
             showButtons
             confirmation
             onClose={() => setDeleteFromStaging(false)}
