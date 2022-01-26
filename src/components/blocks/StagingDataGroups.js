@@ -1,8 +1,8 @@
-import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
+import { getDiff } from '../../utils/objectUtils';
 import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon } from '..';
 import { TableDrawer } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
@@ -141,9 +141,7 @@ const InvalidChangeCard = ({ onDeleteChangeGroup, title }) => {
 
 const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
   const [drawerRecord, setDrawerRecord] = useState(null);
-  const [drawerUpdatedHeadingsArray, setDrawerUpdatedHeadingsArray] =
-    useState(null);
-  const drawerUpdatesSign = useRef(null);
+  const [drawerUpdates, setDrawerUpdates] = useState(null);
   const [deleteFromStaging, setDeleteFromStaging] = useState(false);
   const [deleteUUID, setDeleteUUID] = useState();
   const ref = useRef(null);
@@ -216,16 +214,6 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
     });
   };
 
-  const getDiff = (a, b) => {
-    return _.reduce(
-      a,
-      function (result, value, key) {
-        return _.isEqual(value, b[key]) ? result : result.concat(key);
-      },
-      [],
-    );
-  };
-
   return (
     <StagingDataGroupsContainer ref={ref}>
       <div style={{ height: `${height}px`, overflow: 'auto' }}>
@@ -279,13 +267,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                       )}
                       onClick={() => {
                         setDrawerRecord(changeGroup.diff.original);
-                        setDrawerUpdatedHeadingsArray(
-                          getDiff(
-                            changeGroup.diff.original,
-                            changeGroup.diff.change[0],
-                          ),
-                        );
-                        drawerUpdatesSign.current = '-';
+                        setDrawerUpdates(changeGroup.diff.change);
                       }}
                       title={getTranslatedCardTitle(
                         changeGroup.table,
@@ -308,14 +290,8 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                           changeGroup.diff.change.length,
                         )}
                         onClick={() => {
-                          setDrawerRecord(change);
-                          setDrawerUpdatedHeadingsArray(
-                            getDiff(
-                              changeGroup.diff.original,
-                              changeGroup.diff.change[0],
-                            ),
-                          );
-                          drawerUpdatesSign.current = '+';
+                          setDrawerRecord(changeGroup.diff.original);
+                          setDrawerUpdates(changeGroup.diff.change);
                         }}
                         addedIsVisible
                       />
@@ -352,17 +328,11 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
           ))}
         <TableDrawer
           drawerRecord={drawerRecord}
+          drawerUpdates={drawerUpdates}
           onClose={() => {
             setDrawerRecord(null);
-            setDrawerUpdatedHeadingsArray(null);
-            drawerUpdatesSign.current = null;
+            setDrawerUpdates(null);
           }}
-          drawerUpdatedHeadingsArray={drawerUpdatedHeadingsArray}
-          drawerUpdatesSign={
-            drawerUpdatesSign && drawerUpdatesSign.current
-              ? drawerUpdatesSign.current
-              : undefined
-          }
         />
         {deleteFromStaging && (
           <Modal
