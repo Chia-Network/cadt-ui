@@ -28,7 +28,7 @@ import {
   Tab,
   Tabs,
   TabPanel,
-  StagingDataTable,
+  StagingDataGroups,
   SelectOrganizations,
   Message,
   UploadCSV,
@@ -334,7 +334,7 @@ const Units = withRouter(() => {
                   <APIDataTable
                     headings={Object.keys(filteredColumnsTableData[0])}
                     data={filteredColumnsTableData}
-                    actions={pageIsMyRegistryPage ? 'Projects' : undefined}
+                    actions={pageIsMyRegistryPage ? 'Units' : undefined}
                   />
                 </>
               )}
@@ -353,7 +353,7 @@ const Units = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataTable
+                  <StagingDataGroups
                     headings={headings}
                     data={climateWarehouseStore.stagingData.units.staging}
                     deleteStagingData={uuid =>
@@ -373,7 +373,7 @@ const Units = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataTable
+                  <StagingDataGroups
                     headings={headings}
                     data={climateWarehouseStore.stagingData.units.pending}
                   />

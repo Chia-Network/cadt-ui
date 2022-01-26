@@ -28,6 +28,8 @@ const StyledChangeCard = styled('div')`
   max-width: 500px;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0px 8px 10px -5px rgb(0 0 0 / 20%),
+    0px 16px 24px 2px rgb(0 0 0 / 14%), 0px 6px 30px 5px rgb(0 0 0 / 12%);
 `;
 
 const StyledChangeCardTitle = styled('div')`
@@ -50,6 +52,10 @@ const StyledChangeCardTitle = styled('div')`
 
 const StyledChangeCardBody = styled('div')`
   padding: 8px 17px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 2px solid #e5e5e5;
+  border-top: none;
 `;
 
 const StyledCardBodyItem = styled('div')`

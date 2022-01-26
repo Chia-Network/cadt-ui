@@ -37,6 +37,9 @@ const TableContent = styled('div')`
   width: 100%;
   padding: 7px 0px 7px 0px;
   box-sizing: border-box;
+  body {
+    word-wrap: break-word;
+  }
 `;
 
 const TableDrawer = withTheme(({ getRecord, onClose }) => {
