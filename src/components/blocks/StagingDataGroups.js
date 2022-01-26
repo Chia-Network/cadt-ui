@@ -140,7 +140,10 @@ const InvalidChangeCard = ({ onDeleteChangeGroup, title }) => {
 };
 
 const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
-  const [getRecord, setRecord] = useState(null);
+  const [drawerRecord, setDrawerRecord] = useState(null);
+  const [drawerUpdatedHeadingsArray, setDrawerUpdatedHeadingsArray] =
+    useState(null);
+  const drawerUpdatesSign = useRef(null);
   const [deleteFromStaging, setDeleteFromStaging] = useState(false);
   const [deleteUUID, setDeleteUUID] = useState();
   const ref = useRef(null);
@@ -246,7 +249,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                     <ChangeCard
                       data={changeGroup.diff.original}
                       headings={headings}
-                      onClick={() => setRecord(changeGroup.diff.original)}
+                      onClick={() => setDrawerRecord(changeGroup.diff.original)}
                       title={getTranslatedCardTitle(
                         changeGroup.table,
                         changeGroup.action,
@@ -262,7 +265,9 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                         changeGroup.table,
                         changeGroup.action,
                       )}
-                      onClick={() => setRecord(changeGroup.diff.change[0])}
+                      onClick={() =>
+                        setDrawerRecord(changeGroup.diff.change[0])
+                      }
                     />
                   )}
                   {changeGroup.action === 'UPDATE' && (
@@ -272,7 +277,16 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                         changeGroup.diff.original,
                         changeGroup.diff.change[0],
                       )}
-                      onClick={() => setRecord(changeGroup.diff.original)}
+                      onClick={() => {
+                        setDrawerRecord(changeGroup.diff.original);
+                        setDrawerUpdatedHeadingsArray(
+                          getDiff(
+                            changeGroup.diff.original,
+                            changeGroup.diff.change[0],
+                          ),
+                        );
+                        drawerUpdatesSign.current = '-';
+                      }}
                       title={getTranslatedCardTitle(
                         changeGroup.table,
                         changeGroup.action,
@@ -293,7 +307,16 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                           changeGroup.action,
                           changeGroup.diff.change.length,
                         )}
-                        onClick={() => setRecord(change)}
+                        onClick={() => {
+                          setDrawerRecord(change);
+                          setDrawerUpdatedHeadingsArray(
+                            getDiff(
+                              changeGroup.diff.original,
+                              changeGroup.diff.change[0],
+                            ),
+                          );
+                          drawerUpdatesSign.current = '+';
+                        }}
                         addedIsVisible
                       />
                     ))}
@@ -327,7 +350,20 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
               )}
             </>
           ))}
-        <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+        <TableDrawer
+          drawerRecord={drawerRecord}
+          onClose={() => {
+            setDrawerRecord(null);
+            setDrawerUpdatedHeadingsArray(null);
+            drawerUpdatesSign.current = null;
+          }}
+          drawerUpdatedHeadingsArray={drawerUpdatedHeadingsArray}
+          drawerUpdatesSign={
+            drawerUpdatesSign && drawerUpdatesSign.current
+              ? drawerUpdatesSign.current
+              : undefined
+          }
+        />
         {deleteFromStaging && (
           <Modal
             title={intl.formatMessage({
