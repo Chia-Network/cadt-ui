@@ -228,16 +228,18 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
             <>
               {changeGroupIsValid(changeGroup) && (
                 <StyledChangeGroup key={index}>
-                  <StyledDeleteGroupIcon>
-                    <div
-                      onClick={() => {
-                        setDeleteUUID(changeGroup.uuid);
-                        setDeleteFromStaging(true);
-                      }}
-                    >
-                      <MinusIcon width={20} height={20} />
-                    </div>
-                  </StyledDeleteGroupIcon>
+                  {deleteStagingData && (
+                    <StyledDeleteGroupIcon>
+                      <div
+                        onClick={() => {
+                          setDeleteUUID(changeGroup.uuid);
+                          setDeleteFromStaging(true);
+                        }}
+                      >
+                        <MinusIcon width={20} height={20} />
+                      </div>
+                    </StyledDeleteGroupIcon>
+                  )}
                   {changeGroup.action === 'DELETE' && (
                     <ChangeCard
                       data={changeGroup.diff.original}
