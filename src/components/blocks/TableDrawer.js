@@ -78,26 +78,33 @@ const TableDrawer = withTheme(({ drawerRecord, drawerUpdates, onClose }) => {
       <TableContentContainer>
         {drawerRecord &&
           Object.entries(drawerRecord)
-            .filter(value => !Array.isArray(drawerRecord[value[0]]))
-            .map(value => {
+            .filter(
+              unfilteredKeyValuePair =>
+                !Array.isArray(drawerRecord[unfilteredKeyValuePair[0]]) &&
+                unfilteredKeyValuePair[0] !== 'unitBlockEnd' &&
+                unfilteredKeyValuePair[0] !== 'unitBlockStart',
+            )
+            .map(keyValuePair => {
               return (
-                <TableContent key={value}>
+                <TableContent key={keyValuePair}>
                   <Body size="Small Bold">
-                    {convertPascalCaseToSentenceCase(value[0])}
+                    {convertPascalCaseToSentenceCase(keyValuePair[0])}
                   </Body>
                   {updatesAreVisible &&
-                    value[1] !== drawerUpdates[0][value[0]] && (
+                    keyValuePair[1] !== drawerUpdates[0][keyValuePair[0]] && (
                       <StyledValuesContainer>
                         <StyledDetails isRed>
                           <ErrorIcon width="17" height="17" />
-                          <Body>{value[1] ? value[1] : '--'}</Body>
+                          <Body>
+                            {keyValuePair[1] ? keyValuePair[1] : '--'}
+                          </Body>
                         </StyledDetails>
 
                         <StyledDetails isGreen>
                           <SuccessIcon width="17" height="17" />
                           <Body>
-                            {drawerUpdates[0][value[0]]
-                              ? drawerUpdates[0][value[0]]
+                            {drawerUpdates[0][keyValuePair[0]]
+                              ? drawerUpdates[0][keyValuePair[0]]
                               : '--'}
                           </Body>
                         </StyledDetails>
@@ -106,8 +113,8 @@ const TableDrawer = withTheme(({ drawerRecord, drawerUpdates, onClose }) => {
                           <StyledDetails isGreen>
                             <SuccessIcon width="17" height="17" />
                             <Body>
-                              {drawerUpdates[1][value[0]]
-                                ? drawerUpdates[1][value[0]]
+                              {drawerUpdates[1][keyValuePair[0]]
+                                ? drawerUpdates[1][keyValuePair[0]]
                                 : '--'}
                             </Body>
                           </StyledDetails>
@@ -115,9 +122,9 @@ const TableDrawer = withTheme(({ drawerRecord, drawerUpdates, onClose }) => {
                       </StyledValuesContainer>
                     )}
                   {(!updatesAreVisible ||
-                    value[1] === drawerUpdates[0][value[0]]) && (
+                    keyValuePair[1] === drawerUpdates[0][keyValuePair[0]]) && (
                     <StyledDetails>
-                      <Body>{value[1]}</Body>
+                      <Body>{keyValuePair[1] ? keyValuePair[1] : '--'}</Body>
                     </StyledDetails>
                   )}
                 </TableContent>
