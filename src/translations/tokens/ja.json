@@ -215,5 +215,7 @@
   "notification": "通知",
   "confirm-deletion": "削除してもよろしいですか？",
   "my-units": "私のユニット",
-  "my-projects": "私のプロジェクト"
+  "my-projects": "私のプロジェクト",
+  "projects-list": "プロジェクトリスト",
+  "units-list": "ユニットリスト"
 }

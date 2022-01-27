@@ -215,5 +215,7 @@
   "notification": "Notificación",
   "confirm-deletion": "Por favor, confirme la eliminación",
   "my-units": "Mis Unidades",
-  "my-projects": "Mis proyectos"
+  "my-projects": "Mis proyectos",
+  "projects-list": "Lista de proyectos",
+  "units-list": "Lista de unidades"
 }

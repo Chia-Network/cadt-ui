@@ -243,5 +243,7 @@
   "notification": "Notification",
   "confirm-deletion": "Are you sure you want to delete?",
   "my-units": "My Units",
-  "my-projects": "My Projects"
+  "my-projects": "My Projects",
+  "projects-list": "Projects List",
+  "units-list": "Units List"
 }
