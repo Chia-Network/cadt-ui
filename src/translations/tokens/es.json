@@ -204,7 +204,18 @@
   "total-units-available": "Total de unidades divididas disponibles",
   "upload-successful": "Su archivo se cargó con éxito.",
   "file-could-not-be-uploaded": "No se pudo cargar su archivo.",
+  "delete-project": "Eliminar proyecto",
+  "add-project": "Agregar proyecto",
+  "update-project": "Actualizar proyecto",
+  "delete-unit": "Eliminar unidad",
+  "add-unit": "Agregar unidad",
+  "update-unit": "Actualización de la unidad",
+  "split-unit": "División de unidades",
+  "change-request-corrupted": "Esta solicitud de cambio se ha dañado, haga clic aquí para eliminarla.",
+  "notification": "Notificación",
+  "confirm-deletion": "Por favor, confirme la eliminación",
   "my-units": "Mis Unidades",
-  "my-projects": "Mis proyectos"
+  "my-projects": "Mis proyectos",
+  "projects-list": "Lista de proyectos",
+  "units-list": "Lista de unidades"
 }
-

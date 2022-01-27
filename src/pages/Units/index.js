@@ -28,7 +28,7 @@ import {
   Tab,
   Tabs,
   TabPanel,
-  StagingDataTable,
+  StagingDataGroups,
   SelectOrganizations,
   Message,
   UploadCSV,
@@ -356,7 +356,7 @@ const Units = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataTable
+                  <StagingDataGroups
                     headings={headings}
                     data={climateWarehouseStore.stagingData.units.staging}
                     deleteStagingData={uuid =>
@@ -376,7 +376,7 @@ const Units = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataTable
+                  <StagingDataGroups
                     headings={headings}
                     data={climateWarehouseStore.stagingData.units.pending}
                   />

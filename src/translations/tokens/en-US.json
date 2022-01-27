@@ -232,6 +232,18 @@
   "total-units-available": "Total split units available",
   "upload-successful": "Your file was successfully uploaded.",
   "file-could-not-be-uploaded": "Your file could not be uploaded.",
+  "delete-project": "Delete Project",
+  "add-project": "Add Project",
+  "update-project": "Update Project",
+  "delete-unit": "Delete Unit",
+  "add-unit": "Add Unit",
+  "update-unit": "Update Unit",
+  "split-unit": "Split Unit",
+  "change-request-corrupted": "This change request has been corrupted, click here to remove it.",
+  "notification": "Notification",
+  "confirm-deletion": "Are you sure you want to delete?",
   "my-units": "My Units",
-  "my-projects": "My Projects"
+  "my-projects": "My Projects",
+  "projects-list": "Projects List",
+  "units-list": "Units List"
 }
