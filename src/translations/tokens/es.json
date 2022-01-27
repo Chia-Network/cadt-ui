@@ -213,6 +213,7 @@
   "split-unit": "División de unidades",
   "change-request-corrupted": "Esta solicitud de cambio se ha dañado, haga clic aquí para eliminarla.",
   "notification": "Notificación",
-  "confirm-deletion": "Por favor, confirme la eliminación"
+  "confirm-deletion": "Por favor, confirme la eliminación",
+  "my-units": "Mis Unidades",
+  "my-projects": "Mis proyectos"
 }
-
