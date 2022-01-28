@@ -1,6 +1,6 @@
 import React from 'react';
 import { AddIcon, CloseIcon } from '..';
-import { CreateProjectLocationsForm } from './CreateProjectLocationsForm';
+import { CreateLocationsForm } from './CreateLocationsForm';
 import { ComponentRepeater } from '..';
 
 function ProjectLocationsRepeater({
@@ -14,10 +14,11 @@ function ProjectLocationsRepeater({
         values={projectLocationsState}
         updateValues={setProjectLocationsState}
         initialValue={{
-            countryRegion: '',
-            country: '',
+          country: '',
+          inCountryRegion: '',
+          geographicIdentifier: '',
         }}
-        component={<CreateProjectLocationsForm />}
+        component={<CreateLocationsForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
         removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
       />

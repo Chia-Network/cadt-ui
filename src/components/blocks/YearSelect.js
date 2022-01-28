@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
@@ -57,35 +57,20 @@ const Input = styled('input')`
   }
 `;
 
-const DateSelect = ({
-  size = 'default',
-  disabled,
-  dateValue,
-  setDateValue,
-}) => {
-  const divElement = useRef(null);
-
+const YearSelect = ({ size, yearValue, setYearValue }) => {
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
-        label="Select time"
-        value={dateValue}
+        views={['year']}
+        label="Year"
+        value={yearValue}
         onChange={newValue => {
-          setDateValue(`${newValue.$M + 1}/${newValue.$D}/${newValue.$y}`);
+          setYearValue(`${newValue.$y}`);
         }}
-        renderInput={({ inputRef, inputProps, InputProps }) => {
+        renderInput={({inputRef, inputProps, InputProps}) => {
           return (
-            <InputContainer
-              size={size}
-              ref={divElement}
-              disabled={disabled}
-              tabIndex={0}>
-              <Input
-                ref={inputRef}
-                {...inputProps}
-                placeholder="Select Date"
-                disabled={disabled}
-              />
+            <InputContainer size={size}>
+              <Input ref={inputRef} {...inputProps} helperText={null} />
               {InputProps?.endAdornment}
             </InputContainer>
           );
@@ -95,4 +80,4 @@ const DateSelect = ({
   );
 };
 
-export { DateSelect };
+export { YearSelect };

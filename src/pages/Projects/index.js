@@ -35,12 +35,25 @@ import {
 } from '../../store/actions/climateWarehouseActions';
 
 const headings = [
-  'warehouseProjectId',
   'currentRegistry',
-  'registryOfOrigin',
-  'originProjectId',
-  'program',
+  'warehouseProjectId',
   'projectId',
+  'registryOfOrigin',
+  'program',
+  'projectName',
+  'projectLink',
+  'projectDeveloper',
+  'sector',
+  'projectType',
+  'projectTags',
+  'coveredByNDC',
+  'ndcInformation',
+  'projectStatus',
+  'projectStatusDate',
+  'unitMetric',
+  'methodology',
+  'validationBody',
+  'validationDate',
 ];
 
 const StyledSectionContainer = styled('div')`
@@ -189,13 +202,25 @@ const Projects = withRouter(() => {
 
     return climateWarehouseStore.projects.map(project =>
       _.pick(project, [
-        'orgUid',
-        'warehouseProjectId',
         'currentRegistry',
+        'warehouseProjectId',
+        'projectId',
         'registryOfOrigin',
-        'originProjectId',
         'program',
         'projectName',
+        'projectLink',
+        'projectDeveloper',
+        'sector',
+        'projectType',
+        'projectTags',
+        'coveredByNDC',
+        'ndcInformation',
+        'projectStatus',
+        'projectStatusDate',
+        'unitMetric',
+        'methodology',
+        'validationBody',
+        'validationDate',
       ]),
     );
   }, [climateWarehouseStore.projects, climateWarehouseStore.stagingData]);

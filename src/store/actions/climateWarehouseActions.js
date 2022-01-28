@@ -379,6 +379,7 @@ export const uploadCSVFile = (file, type) => {
 };
 
 export const postNewUnits = data => {
+  console.log(data);
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -487,10 +488,23 @@ export const updateUnitsRecord = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-successfully-edited',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
         console.log('yay!');
         dispatch(setGlobalErrorMessage(null));
       } else {
-        dispatch(setGlobalErrorMessage('Unit could not be created'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-could-not-be-edited',
+          ),
+        );
+        dispatch(setGlobalErrorMessage('Unit could not be updated'));
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));

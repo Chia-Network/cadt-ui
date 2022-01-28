@@ -13,7 +13,7 @@ import {
   BodyContainer,
   Body,
   ToolTipContainer,
-  DescriptionIcon
+  DescriptionIcon,
 } from '..';
 import { LabelContainer } from '../../utils/compUtils';
 
@@ -29,7 +29,7 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateProjectLocationsForm = ({ value, onChange }) => {
+const CreateLocationsForm = ({ value, onChange }) => {
   const intl = useIntl();
 
   const onInputChange = (field, changeValue) => {
@@ -40,34 +40,6 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
-                <LabelContainer>
-                  <FormattedMessage id="in-country-region" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'locations-in-country-region-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'in-country-region',
-                })}
-                state={InputStateEnum.default}
-                value={value.countryRegion}
-                onChange={changeValue =>
-                  onInputChange('countryRegion', changeValue)
-                }
-              />
-            </InputContainer>
-          </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
@@ -94,6 +66,60 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
               />
             </InputContainer>
           </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  <FormattedMessage id="in-country-region" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'locations-in-country-region-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'in-country-region',
+                })}
+                state={InputStateEnum.default}
+                value={value.inCountryRegion}
+                onChange={changeValue =>
+                  onInputChange('inCountryRegion', changeValue)
+                }
+              />
+            </InputContainer>
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  <FormattedMessage id="geographic-identifier" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'locations-geographic-identifier-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'geographic-identifier',
+                })}
+                state={InputStateEnum.default}
+                value={value.geographicIdentifier}
+                onChange={changeValue => onInputChange('geographicIdentifier', changeValue)}
+              />
+            </InputContainer>
+          </StyledFieldContainer>
         </BodyContainer>
       </FormContainerStyle>
       <Divider />
@@ -101,4 +127,4 @@ const CreateProjectLocationsForm = ({ value, onChange }) => {
   );
 };
 
-export { CreateProjectLocationsForm };
+export { CreateLocationsForm };

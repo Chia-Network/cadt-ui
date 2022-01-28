@@ -9,11 +9,7 @@ import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination, Message } from '.';
 import { EllipsisMenuIcon, BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import {
-  EditUnitsForm,
-  EditProjectsForm,
-  SplitUnitForm,
-} from '..';
+import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -115,7 +111,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [getRecord, setRecord] = useState(null);
   const [editRecord, setEditRecord] = useState(null);
   const [unitToBeSplit, setUnitToBeSplit] = useState(null);
-  const { theme, notification} = useSelector(state => state.app);
+  const { theme, notification } = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
@@ -193,9 +189,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                       </Td>
                     ))}
                     {actions === 'Units' && (
-                      <Td
-                        style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}>
+                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
@@ -244,7 +238,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           onClose={() => {
             setEditRecord(null);
           }}
-          data={editRecord}
         />
       )}
       {actions === 'Projects' && editRecord && (
@@ -252,7 +245,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           onClose={() => {
             setEditRecord(null);
           }}
-          data={editRecord}
         />
       )}
       {unitToBeSplit && (
@@ -262,9 +254,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           record={unitToBeSplit}
         />
       )}
-      {
-        notification && <Message type={notification.type} id={notification.id} />
-      }
+      {notification && (
+        <Message type={notification.type} id={notification.id} />
+      )}
     </>
   );
 });

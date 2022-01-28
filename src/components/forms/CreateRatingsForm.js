@@ -12,7 +12,10 @@ import {
   FormContainerStyle,
   BodyContainer,
   Body,
+  DescriptionIcon,
+  ToolTipContainer,
 } from '..';
+import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -26,7 +29,8 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateVintageForm = ({ value, onChange }) => {
+const CreateRatingsForm = ({ value, onChange }) => {
+  console.log(value);
   const intl = useIntl();
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
@@ -39,19 +43,53 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="start-date" />
+                <LabelContainer>
+                  <FormattedMessage id="id" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'ratings-id-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'start-date',
+                  id: 'id',
                 })}
                 state={InputStateEnum.default}
-                value={value.vintageStartDate}
+                value={value.id}
+                onChange={changeValue => onInputChange('id', changeValue)}
+              />
+            </InputContainer>
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  <FormattedMessage id="rating-type" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'ratings-rating-type-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'rating-type',
+                })}
+                state={InputStateEnum.default}
+                value={value.ratingType}
                 onChange={changeValue =>
-                  onInputChange('startDate', changeValue)
+                  onInputChange('ratingType', changeValue)
                 }
               />
             </InputContainer>
@@ -59,55 +97,27 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="end-date" />
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({ id: 'end-date' })}
-                state={InputStateEnum.default}
-                value={value.endDate}
-                onChange={changeValue => onInputChange('endDate', changeValue)}
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="verification-approach" />
+                <LabelContainer>
+                  <FormattedMessage id="rating-range-highest" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'ratings-rating-range-highest-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'verification-approach',
+                  id: 'rating-range-highest',
                 })}
                 state={InputStateEnum.default}
-                value={value.verificationApproach}
+                value={value.ratingRangeHighest}
                 onChange={changeValue =>
-                  onInputChange('verificationApproach', changeValue)
-                }
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="verification-date" />
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'verification-date',
-                })}
-                state={InputStateEnum.default}
-                value={value.verificationDate}
-                onChange={changeValue =>
-                  onInputChange('verificationDate', changeValue)
+                  onInputChange('ratingRangeHighest', changeValue)
                 }
               />
             </InputContainer>
@@ -117,19 +127,27 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="verification-body" />
+                <LabelContainer>
+                  <FormattedMessage id="rating-range-lowest" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'ratings-rating-range-lowest-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'verification-body',
+                  id: 'rating-range-lowest',
                 })}
                 state={InputStateEnum.default}
-                value={value.verificationBody}
+                value={value.ratingRangeLowest}
                 onChange={changeValue =>
-                  onInputChange('verificationBody', changeValue)
+                  onInputChange('ratingRangeLowest', changeValue)
                 }
               />
             </InputContainer>
@@ -137,38 +155,52 @@ const CreateVintageForm = ({ value, onChange }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="project-id" />
+                <LabelContainer>
+                  <FormattedMessage id="rating" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'ratings-rating-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'project-id',
+                  id: 'rating',
                 })}
                 state={InputStateEnum.default}
-                value={value.projectId}
-                onChange={changeValue =>
-                  onInputChange('projectId', changeValue)
-                }
+                value={value.rating}
+                onChange={changeValue => onInputChange('rating', changeValue)}
               />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                <FormattedMessage id="unit-id" />
+                <LabelContainer>
+                  <FormattedMessage id="rating-link" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'ratings-rating-link-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'unit-id',
+                  id: 'rating-link',
                 })}
                 state={InputStateEnum.default}
-                value={value.unitId}
-                onChange={changeValue => onInputChange('unitId', changeValue)}
+                value={value.ratingLink}
+                onChange={changeValue => onInputChange('rating-link', changeValue)}
               />
             </InputContainer>
           </StyledFieldContainer>
@@ -179,4 +211,4 @@ const CreateVintageForm = ({ value, onChange }) => {
   );
 };
 
-export { CreateVintageForm };
+export { CreateRatingsForm };

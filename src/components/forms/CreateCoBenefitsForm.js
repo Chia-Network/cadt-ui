@@ -56,8 +56,8 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
               size={InputSizeEnum.large}
               placeholderText={intl.formatMessage({ id: 'co-benefit' })}
               state={InputStateEnum.default}
-              value={value.benefit}
-              onChange={changeValue => onInputChange('benefit', changeValue)}
+              value={value.cobenefit}
+              onChange={changeValue => onInputChange('cobenefit', changeValue)}
             />
           </InputContainer>
         </StyledFieldContainer>
