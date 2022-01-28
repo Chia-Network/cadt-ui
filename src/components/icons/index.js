@@ -28,3 +28,4 @@ export * from './UploadIcon';
 export * from './WarehouseIcon';
 export * from './RegistryIcon';
 export * from './DescriptionIcon';
+export * from './AddIconCircle';
