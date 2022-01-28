@@ -204,6 +204,16 @@
   "total-units-available": "利用可能な分割ユニットの合計",
   "upload-successful": "ファイルが正常にアップロードされました。",
   "file-could-not-be-uploaded": "ファイルをアップロードできませんでした。",
+  "delete-project": "プロジェクトを削除",
+  "add-project": "プロジェクトを追加",
+  "update-project": "プロジェクトの更新",
+  "delete-unit": "ユニットを削除",
+  "add-unit": "ユニットを追加",
+  "update-unit": "ユニットの更新",
+  "split-unit": "スプリットユニット",
+  "change-request-corrupted": "この変更リクエストは破損しています。削除するには、ここをクリックしてください。",
+  "notification": "通知",
+  "confirm-deletion": "削除してもよろしいですか？",
   "my-units": "私のユニット",
   "my-projects": "私のプロジェクト",
   "create-organization": "組織を作成する",
@@ -213,5 +223,7 @@
   "organization-icon": "組織アイコン",
   "organization-website": "組織のウェブサイト",
   "organization-created": "組織が正常に追加されました。",
-  "organization-not-created": "組織を追加できませんでした。"
+  "organization-not-created": "組織を追加できませんでした。",
+  "projects-list": "プロジェクトリスト",
+  "units-list": "ユニットリスト"
 }

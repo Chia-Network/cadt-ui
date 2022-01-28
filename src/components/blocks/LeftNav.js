@@ -110,7 +110,7 @@ const LeftNav = withTheme(({ children }) => {
             setLocation('projects');
           }}
         >
-          <FormattedMessage id="projects" />
+          <FormattedMessage id="projects-list" />
         </MenuItem>
         <div></div>
         <MenuItem
@@ -121,7 +121,7 @@ const LeftNav = withTheme(({ children }) => {
             setLocation('units');
           }}
         >
-          <FormattedMessage id="units" />
+          <FormattedMessage id="units-list" />
         </MenuItem>
         <StyledTitleContainer disabled={myOrgIsNotCreated}>
           <RegistryIcon height={20} width={20} />

@@ -121,7 +121,8 @@ const ChangeGroupItem = ({
               style={{
                 textAlign: 'right',
                 paddingRight: '10px',
-              }}>
+              }}
+            >
               <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
                 <MinusIcon width={16} height={16} />
               </span>
@@ -153,7 +154,8 @@ const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
               style={{
                 textAlign: 'right',
                 paddingRight: '10px',
-              }}>
+              }}
+            >
               <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
                 <MinusIcon width={16} height={16} />
               </span>
@@ -235,7 +237,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                       headings={headings}
                       appStore={appStore}
                       color={'red'}
-                      onClick={setRecord(changeGroup.diff.original)}
+                      onClick={() => setRecord(changeGroup.diff.original)}
                       onDeleteStaging={() => {
                         setDeleteUUID(changeGroup.uuid);
                         setDeleteFromStaging(true);
