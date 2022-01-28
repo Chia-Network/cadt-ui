@@ -332,6 +332,51 @@ export const postNewProject = data => {
   };
 };
 
+export const postNewOrg = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(getOrganizationData());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-created',
+          ),
+        );
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'organization-not-created',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'organization-not-created',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const uploadCSVFile = (file, type) => {
   return async dispatch => {
     if (type === 'projects' || type === 'units') {

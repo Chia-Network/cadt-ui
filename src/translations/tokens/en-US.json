@@ -233,5 +233,13 @@
   "upload-successful": "Your file was successfully uploaded.",
   "file-could-not-be-uploaded": "Your file could not be uploaded.",
   "my-units": "My Units",
-  "my-projects": "My Projects"
+  "my-projects": "My Projects",
+  "create-organization": "Create Organization",
+  "you-need-to-create-organization": "You need to create your Organization to have full access to the Registry.",
+  "organization-information": "Organization Information",
+  "organization-name": "Organization Name",
+  "organization-icon": "Organization Icon",
+  "organization-website": "Organization Website",
+  "organization-created": "Your organization was successfully added.",
+  "organization-not-created": "Your organization could not be added."
 }
