@@ -228,6 +228,14 @@
   "confirm-deletion": "削除してもよろしいですか？",
   "my-units": "私のユニット",
   "my-projects": "私のプロジェクト",
+  "create-organization": "組織を作成する",
+  "you-need-to-create-organization": "レジストリに完全にアクセスするには、組織を作成する必要があります。",
+  "organization-information": "組織情報",
+  "organization-name": "組織名",
+  "organization-icon": "組織アイコン",
+  "organization-website": "組織のウェブサイト",
+  "organization-created": "組織が正常に追加されました。",
+  "organization-not-created": "組織を追加できませんでした。",
   "projects-list": "プロジェクトリスト",
   "units-list": "ユニットリスト"
 }

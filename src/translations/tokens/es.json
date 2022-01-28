@@ -235,6 +235,14 @@
   "confirm-deletion": "Por favor, confirme la eliminación",
   "my-units": "Mis Unidades",
   "my-projects": "Mis proyectos",
+  "create-organization": "Crear organización",
+  "you-need-to-create-organization": "Debe crear su Organización para tener acceso completo al Registro.",
+  "organization-information": "Información de la organización",
+  "organization-name": "Nombre de la Organización",
+  "organization-icon": "Icono de organización",
+  "organization-website": "Sitio web de la organización",
+  "organization-created": "Su organización se agregó con éxito.",
+  "organization-not-created": "No se pudo agregar su organización.",
   "projects-list": "Lista de proyectos",
   "units-list": "Lista de unidades"
 }

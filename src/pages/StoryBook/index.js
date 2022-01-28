@@ -63,6 +63,7 @@ import {
   UploadIcon,
   WarehouseIcon,
   RegistryIcon,
+  AddIconCircle,
 } from '../../components';
 
 const StoryBook = () => {
@@ -637,6 +638,7 @@ const StoryBook = () => {
             paddingBottom: '50px',
           }}
         >
+          <AddIconCircle width="20" height="20" />
           <AddIcon width="20" height="20" fill="#262626" />
           <CloseIcon width="20" height="20" />
           <DarkThemeIcon width="20" height="20" />
