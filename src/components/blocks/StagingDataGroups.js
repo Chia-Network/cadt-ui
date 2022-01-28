@@ -106,22 +106,29 @@ const ChangeCard = ({
               heading =>
                 heading !== 'unitBlockEnd' && heading !== 'unitBlockStart',
             )
-            .map((heading, index) => (
-              <StyledCardBodyItem key={index}>
-                <Body size="Small Bold">
-                  {convertPascalCaseToSentenceCase(heading)}
-                </Body>
-                <StyledCardBodySubItem>
-                  <span>
-                    <Body>{data[heading] ? data[heading] : '--'}</Body>
-                  </span>
-                  <span>
-                    {deletedIsVsible && <ErrorIcon width="17" height="17" />}
-                    {addedIsVisible && <SuccessIcon width="17" height="17" />}
-                  </span>
-                </StyledCardBodySubItem>
-              </StyledCardBodyItem>
-            ))}
+            .map(
+              (heading, index) =>
+                !Array.isArray(data[heading]) && (
+                  <StyledCardBodyItem key={index}>
+                    <Body size="Small Bold">
+                      {convertPascalCaseToSentenceCase(heading)}
+                    </Body>
+                    <StyledCardBodySubItem>
+                      <span>
+                        <Body>{data[heading] ? data[heading] : '--'}</Body>
+                      </span>
+                      <span>
+                        {deletedIsVsible && (
+                          <ErrorIcon width="17" height="17" />
+                        )}
+                        {addedIsVisible && (
+                          <SuccessIcon width="17" height="17" />
+                        )}
+                      </span>
+                    </StyledCardBodySubItem>
+                  </StyledCardBodyItem>
+                ),
+            )}
       </StyledChangeCardBody>
     </StyledChangeCard>
   );
