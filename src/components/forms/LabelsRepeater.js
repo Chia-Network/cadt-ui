@@ -12,6 +12,7 @@ function LabelsRepeater({ labelsState, newLabelsState }) {
         updateValues={newLabelsState}
         initialValue={{
           label: '',
+          labelType: '',
           creditingPeriodStartDate: '',
           creditingPeriodEndDate: '',
           validityPeriodStartDate: '',

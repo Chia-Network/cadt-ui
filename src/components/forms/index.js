@@ -2,6 +2,7 @@ export * from './CreateProjectForm';
 export * from './CreateUnitsForm';
 export * from './CreateLabelsForm';
 export * from './CreateIssuanceForm';
+export * from './CreateEstimationsForm';
 export * from './CreateCoBenefitsForm';
 export * from './CreateLocationsForm';
 export * from './CreateRatingsForm';

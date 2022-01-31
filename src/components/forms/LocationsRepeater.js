@@ -3,16 +3,16 @@ import { AddIcon, CloseIcon } from '..';
 import { CreateLocationsForm } from './CreateLocationsForm';
 import { ComponentRepeater } from '..';
 
-function ProjectLocationsRepeater({
-  projectLocationsState,
-  setProjectLocationsState,
+function LocationsRepeater({
+  locationsState,
+  setLocationsState,
 }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
         maxRepetitions={100}
-        values={projectLocationsState}
-        updateValues={setProjectLocationsState}
+        values={locationsState}
+        updateValues={setLocationsState}
         initialValue={{
           country: '',
           inCountryRegion: '',
@@ -26,4 +26,4 @@ function ProjectLocationsRepeater({
   );
 }
 
-export default ProjectLocationsRepeater;
+export default LocationsRepeater;

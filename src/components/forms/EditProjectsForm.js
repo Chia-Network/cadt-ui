@@ -21,9 +21,9 @@ import {
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
-import ProjectLocationsRepeater from './LocationsRepeater';
+import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
-import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
+import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { LabelContainer } from '../../utils/compUtils';
 
@@ -39,7 +39,9 @@ const InputContainer = styled('div')`
 `;
 
 const EditProjectsForm = ({ onClose }) => {
-  const projects = useSelector(state => state.climateWarehouse.projects[0]);
+  const climatewarehouseProjects = useSelector(
+    state => state.climateWarehouse.projects[0],
+  );
   const [validationDate, setValidationDate] = useState();
   const [date, setDate] = useState();
   const [labels, setLabelsRepeaterValues] = useState([]);
@@ -57,43 +59,85 @@ const EditProjectsForm = ({ onClose }) => {
   };
 
   useEffect(() => {
-    setDate(projects.projectStatusDate);
-    setValidationDate(projects.validationDate);
-  },[validationDate,date]);
+    setDate(climatewarehouseProjects.projectStatusDate);
+    setValidationDate(climatewarehouseProjects.validationDate);
+  }, [validationDate, date]);
 
   useEffect(() => {
     setEditProjects({
-      currentRegistry: projects.currentRegistry,
-      projectId: projects.projectId,
-      registryOfOrigin: projects.registryOfOrigin,
-      program: projects.program,
-      projectName: projects.projectName,
-      projectLink: projects.projectLink,
-      projectDeveloper: projects.projectDeveloper,
-      sector: projects.sector,
-      projectType: projects.projectType,
-      projectTags: projects.projectTags,
-      coveredByNDC: projects.coveredByNDC,
-      ndcInformation: projects.ndcInformation,
-      projectStatus: projects.projectStatus,
-      projectStatusDate: projects.projectStatusDate,
-      unitMetric: projects.unitMetric,
-      methodology: projects.methodology,
-      validationBody: projects.validationBody,
-      validationDate: projects.validationDate,
+      warehouseProjectId: climatewarehouseProjects.warehouseProjectId,
+      projectId: climatewarehouseProjects.projectId,
+      registryOfOrigin: climatewarehouseProjects.registryOfOrigin,
+      program: climatewarehouseProjects.program,
+      projectName: climatewarehouseProjects.projectName,
+      projectLink: climatewarehouseProjects.projectLink,
+      projectDeveloper: climatewarehouseProjects.projectDeveloper,
+      sector: climatewarehouseProjects.sector,
+      projectType: climatewarehouseProjects.projectType,
+      projectTags: climatewarehouseProjects.projectTags,
+      coveredByNDC: climatewarehouseProjects.coveredByNDC,
+      ndcInformation: climatewarehouseProjects.ndcInformation,
+      projectStatus: climatewarehouseProjects.projectStatus,
+      projectStatusDate: climatewarehouseProjects.projectStatusDate,
+      unitMetric: climatewarehouseProjects.unitMetric,
+      methodology: climatewarehouseProjects.methodology,
+      validationBody: climatewarehouseProjects.validationBody,
+      validationDate: climatewarehouseProjects.validationDate,
     });
-    setIssuance(_.get(projects, 'issuances', []));
-    setLocations(_.get(projects, 'locations', []));
-    setCoBenefits(_.get(projects, 'coBenefits', []));
-    setLabelsRepeaterValues(_.get(projects, 'labels', []));
-    setRelatedProjects(_.get(projects, 'relatedProjects', []));
-  }, [projects]);
+    setIssuance(
+      climatewarehouseProjects.issuances.map(issuanceKey =>
+        _.pick(
+          issuanceKey,
+          'startDate',
+          'endDate',
+          'verificationApproach',
+          'verificationReportDate',
+          'verificationBody',
+        ),
+      ),
+    );
+    setLocations(
+      climatewarehouseProjects.projectLocations.map(projectLoc =>
+        _.pick(
+          projectLoc,
+          'country',
+          'inCountryRegion',
+          'geographicIdentifier',
+        ),
+      ),
+    );
+    setCoBenefits(
+      climatewarehouseProjects.coBenefits.map(cobenefit =>
+        _.pick(cobenefit, 'cobenefit'),
+      ),
+    );
+    setLabelsRepeaterValues(
+      climatewarehouseProjects.labels.map(label =>
+        _.pick(
+          label,
+          'label',
+          'labelType',
+          'creditingPeriodStartDate',
+          'creditingPeriodEndDate',
+          'validityPeriodStartDate',
+          'validityPeriodEndDate',
+          'unitQuantity',
+          'labelLink',
+        ),
+      ),
+    );
+    setRelatedProjects(
+      climatewarehouseProjects.relatedProjects.map(relatedProject =>
+        _.pick(relatedProject, 'relationshipType', 'registry'),
+      ),
+    );
+  }, [climatewarehouseProjects]);
 
-  const handleEditUnits = () => {
+  const handleEditProjects = () => {
     const dataToSend = _.cloneDeep(editedProjects);
 
     if (!_.isEmpty(issuance)) {
-      dataToSend.issuance = issuance;
+      dataToSend.issuances = issuance;
     }
 
     if (!_.isEmpty(labels)) {
@@ -103,6 +147,7 @@ const EditProjectsForm = ({ onClose }) => {
     if (!_.isEmpty(coBenefits)) {
       dataToSend.coBenefits = coBenefits;
     }
+
     if (!_.isEmpty(date)) {
       dataToSend.projectStatusDate = date;
     }
@@ -112,18 +157,19 @@ const EditProjectsForm = ({ onClose }) => {
     }
 
     if (!_.isEmpty(locations)) {
-      dataToSend.locations = locations;
+      dataToSend.projectLocations = locations;
     }
 
     if (!_.isEmpty(relatedProjects)) {
       dataToSend.relatedProjects = relatedProjects;
     }
-    dispatch(updateUnitsRecord(dataToSend));
+    
+    dispatch(updateProjectRecord(dataToSend));
   };
   return (
     <>
       <Modal
-        onOk={handleEditUnits}
+        onOk={handleEditProjects}
         onClose={onClose}
         basic
         form
@@ -156,7 +202,7 @@ const EditProjectsForm = ({ onClose }) => {
               />
               <Tab
                 label={intl.formatMessage({
-                  id: 'project-locations',
+                  id: 'locations',
                 })}
               />
               <Tab
@@ -173,37 +219,6 @@ const EditProjectsForm = ({ onClose }) => {
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <LabelContainer>
-                              <FormattedMessage id="current-registry" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'projects-current-registry-description',
-                              })}>
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'current-registry',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.currentRegistry}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                currentRegistry: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
@@ -737,7 +752,7 @@ const EditProjectsForm = ({ onClose }) => {
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
-                <ProjectLocationsRepeater
+                <LocationsRepeater
                   locationsState={locations}
                   setLocationsState={setLocations}
                 />

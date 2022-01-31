@@ -68,6 +68,34 @@ const CreateLabelsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
                 <LabelContainer>
+                  <FormattedMessage id="label-type" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'labels-label-type-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'label-type',
+                })}
+                state={InputStateEnum.default}
+                value={value.labelType}
+                onChange={event => {
+                  onChange({ ...value, labelType: event });
+                }}
+              />
+            </InputContainer>
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body style={{ color: '#262626' }}>
+                <LabelContainer>
                   <FormattedMessage id="crediting-period-start-date" />
                 </LabelContainer>
                 <ToolTipContainer

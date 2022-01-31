@@ -12,9 +12,9 @@ import {
   FormContainerStyle,
   BodyContainer,
   Body,
-  DateSelect,
   DescriptionIcon,
   ToolTipContainer,
+  DateSelect,
 } from '..';
 import { LabelContainer } from '../../utils/compUtils';
 
@@ -30,7 +30,7 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateIssuanceForm = ({ value, onChange }) => {
+const CreateEstimationsForm = ({ value, onChange }) => {
   console.log(value);
   const intl = useIntl();
   const onInputChange = (field, changeValue) => {
@@ -45,11 +45,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
                 <LabelContainer>
-                  <FormattedMessage id="start-date" />
+                  <FormattedMessage id="crediting-period-start" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'issuances-start-date-description',
+                    id: 'estimations-crediting-period-start-description',
                   })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
@@ -58,9 +58,9 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <InputContainer>
               <DateSelect
                 size="large"
-                dateValue={value.startDate}
+                dateValue={value.creditingPeriodStart}
                 setDateValue={changeValue =>
-                  onInputChange('startDate', changeValue)
+                  onInputChange('creditingPeriodStart', changeValue)
                 }
               />
             </InputContainer>
@@ -69,11 +69,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
                 <LabelContainer>
-                  <FormattedMessage id="end-date" />
+                  <FormattedMessage id="crediting-period-end" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'issuances-end-date-description',
+                    id: 'estimations-crediting-period-end-description',
                   })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
@@ -82,9 +82,9 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <InputContainer>
               <DateSelect
                 size="large"
-                dateValue={value.endDate}
+                dateValue={value.creditingPeriodEnd}
                 setDateValue={changeValue =>
-                  onInputChange('endDate', changeValue)
+                  onInputChange('creditingPeriodEnd', changeValue)
                 }
               />
             </InputContainer>
@@ -93,11 +93,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
                 <LabelContainer>
-                  <FormattedMessage id="verification-approach" />
+                  <FormattedMessage id="unit-count" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'issuances-verification-approach-description',
+                    id: 'ratings-unit-count-description',
                   })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
@@ -107,12 +107,12 @@ const CreateIssuanceForm = ({ value, onChange }) => {
               <StandardInput
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'verification-approach',
+                  id: 'unit-count',
                 })}
                 state={InputStateEnum.default}
-                value={value.verificationApproach}
+                value={value.unitCount}
                 onChange={changeValue =>
-                  onInputChange('verificationApproach', changeValue)
+                  onInputChange('unitCount', changeValue)
                 }
               />
             </InputContainer>
@@ -123,11 +123,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
                 <LabelContainer>
-                  <FormattedMessage id="verification-report-date" />
+                  <FormattedMessage id="verification-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'issuances-verification-report-date-description',
+                    id: 'ratings-verification-date-description',
                   })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
@@ -136,9 +136,9 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <InputContainer>
               <DateSelect
                 size="large"
-                dateValue={value.verificationReportDate}
+                dateValue={value.verificationDate}
                 setDateValue={changeValue =>
-                  onInputChange('verificationReportDate', changeValue)
+                  onInputChange('verificationDate', changeValue)
                 }
               />
             </InputContainer>
@@ -151,7 +151,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'issuances-verification-body-description',
+                    id: 'ratings-verification-body-description',
                   })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
@@ -178,4 +178,4 @@ const CreateIssuanceForm = ({ value, onChange }) => {
   );
 };
 
-export { CreateIssuanceForm };
+export { CreateEstimationsForm };

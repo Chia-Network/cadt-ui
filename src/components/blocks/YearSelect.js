@@ -63,7 +63,7 @@ const YearSelect = ({ size, yearValue, setYearValue }) => {
       <DatePicker
         views={['year']}
         label="Year"
-        value={yearValue}
+        value={yearValue ? `${yearValue}`: yearValue}
         onChange={newValue => {
           setYearValue(`${newValue.$y}`);
         }}
@@ -76,6 +76,7 @@ const YearSelect = ({ size, yearValue, setYearValue }) => {
           );
         }}
       />
+      {console.log(yearValue)}
     </LocalizationProvider>
   );
 };

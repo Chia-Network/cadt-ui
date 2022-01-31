@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import { AddIcon, CloseIcon } from '..';
 import { CreateIssuanceForm } from './CreateIssuanceForm';
@@ -9,13 +8,13 @@ function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
         maxRepetitions={max}
-        values={_.isEmpty(issuanceState) ? [] : issuanceState}
+        values={issuanceState}
         updateValues={newIssuanceState}
         initialValue={{
           startDate: '',
           endDate: '',
           verificationApproach: '',
-          verificationDate: '',
+          verificationReportDate: '',
           verificationBody: '',
         }}
         component={<CreateIssuanceForm />}

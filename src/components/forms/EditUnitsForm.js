@@ -19,7 +19,8 @@ import {
   BodyContainer,
   ToolTipContainer,
   DescriptionIcon,
-  Message
+  Message,
+  YearSelect,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -48,7 +49,8 @@ const InputContainer = styled('div')`
 const EditUnitsForm = ({ onClose }) => {
   const { notification } = useSelector(state => state.app);
   const [labels, setLabelsRepeaterValues] = useState([]);
-  const [issuance, setIssuance] = useState([]);
+  const [year, setYear] = useState('');
+  const [issuance, setIssuance] = useState([{}]);
   const [editedUnits, setEditUnits] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
@@ -64,8 +66,10 @@ const EditUnitsForm = ({ onClose }) => {
     setSelectedCorrespondingAdjustmentStatus,
   ] = useState(null);
 
-  const units = useSelector(state => state.climateWarehouse.units[0]);
-  console.log(units);
+  const climatewarehouseUnits = useSelector(
+    state => state.climateWarehouse.units[0],
+  );
+  console.log(climatewarehouseUnits);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -73,24 +77,44 @@ const EditUnitsForm = ({ onClose }) => {
 
   useEffect(() => {
     setEditUnits({
-      warehouseUnitId: units.warehouseUnitId,
-      projectLocationId: units.projectLocationId,
-      unitOwner: units.unitOwner,
-      countryJurisdictionOfOwner: units.countryJurisdictionOfOwner,
-      inCountryJurisdictionOfOwner: units.inCountryJurisdictionOfOwner,
-      serialNumberBlock: units.serialNumberBlock,
-      serialNumberPattern: units.serialNumberBlock,
-      vintageYear: units.vintageYear,
-      marketplace: units.marketplace,
-      marketplaceLink: units.marketplaceLink,
-      marketplaceIdentifier: units.marketplaceIdentifier,
-      unitTags: units.unitTags,
-      unitStatusReason: units.unitStatusReason,
-      unitRegistryLink: units.unitRegistryLink,
+      warehouseUnitId: climatewarehouseUnits.warehouseUnitId,
+      projectLocationId: climatewarehouseUnits.projectLocationId,
+      unitOwner: climatewarehouseUnits.unitOwner,
+      countryJurisdictionOfOwner:
+        climatewarehouseUnits.countryJurisdictionOfOwner,
+      inCountryJurisdictionOfOwner:
+        climatewarehouseUnits.inCountryJurisdictionOfOwner,
+      serialNumberBlock: climatewarehouseUnits.serialNumberBlock,
+      serialNumberPattern: climatewarehouseUnits.serialNumberBlock,
+      marketplace: climatewarehouseUnits.marketplace,
+      marketplaceLink: climatewarehouseUnits.marketplaceLink,
+      marketplaceIdentifier: climatewarehouseUnits.marketplaceIdentifier,
+      unitTags: climatewarehouseUnits.unitTags,
+      unitStatusReason: climatewarehouseUnits.unitStatusReason,
+      unitRegistryLink: climatewarehouseUnits.unitRegistryLink,
     });
-    setIssuance(_.get(units, 'issuance', {}));
-    setLabelsRepeaterValues(_.get(units, 'labels', []));
-  }, [units]);
+    setIssuance([_.pick(climatewarehouseUnits.issuance, 'startDate',
+          'endDate',
+          'verificationApproach',
+          'verificationReportDate',
+          'verificationBody',)])
+    setYear(_.get(climatewarehouseUnits, 'vintageYear', ''));
+    setLabelsRepeaterValues(
+      climatewarehouseUnits.labels.map(label =>
+        _.pick(
+          label,
+          'label',
+          'labelType',
+          'creditingPeriodStartDate',
+          'creditingPeriodEndDate',
+          'validityPeriodStartDate',
+          'validityPeriodEndDate',
+          'unitQuantity',
+          'labelLink',
+        ),
+      ),
+    );
+  }, [climatewarehouseUnits]);
 
   const handleEditUnits = () => {
     for (let key of Object.keys(editedUnits)) {
@@ -101,9 +125,9 @@ const EditUnitsForm = ({ onClose }) => {
     const dataToSend = _.cloneDeep(editedUnits);
 
     if (!_.isEmpty(issuance)) {
-      for (let key of Object.keys(issuance[0])) {
-        if (issuance[0][key] === '') {
-          delete issuance[0][key];
+      for (let key of Object.keys(issuance)) {
+        if (issuance[key] === '') {
+          delete issuance[key];
         }
       }
       dataToSend.issuance = _.head(issuance);
@@ -125,6 +149,9 @@ const EditUnitsForm = ({ onClose }) => {
     if (!_.isEmpty(unitStatus)) {
       dataToSend.unitStatus = unitStatus[0].value;
     }
+    if (!_.isEmpty(year)) {
+      dataToSend.vintageYear = year;
+    }
     if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
       dataToSend.correspondingAdjustmentDeclaration =
         selectedCorrespondingAdjustmentDeclaration[0].value;
@@ -133,11 +160,10 @@ const EditUnitsForm = ({ onClose }) => {
       dataToSend.correspondingAdjustmentStatus =
         selectedCorrespondingAdjustmentStatus[0].value;
     }
-
+    console.log(dataToSend);
     dispatch(updateUnitsRecord(dataToSend));
-   
   };
-console.log(notification)
+
   const unitWasSuccessfullyCreated =
     notification && notification.id === 'unit-successfully-edited';
   useEffect(() => {
@@ -391,19 +417,10 @@ console.log(notification)
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'vintage-year',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.vintageYear}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                vintageYear: value,
-                              }))
-                            }
+                          <YearSelect
+                            size="large"
+                            yearValue={year}
+                            setYearValue={setYear}
                           />
                         </InputContainer>
                       </StyledFieldContainer>
@@ -433,8 +450,8 @@ console.log(notification)
                             })} --`}
                             selected={[
                               {
-                                label: units.unitType,
-                                value: units.unitType,
+                                label: climatewarehouseUnits.unitType,
+                                value: climatewarehouseUnits.unitType,
                               },
                             ]}
                           />
@@ -592,8 +609,8 @@ console.log(notification)
                             })} --`}
                             selected={[
                               {
-                                label: units.unitStatus,
-                                value: units.unitStatus,
+                                label: climatewarehouseUnits.unitStatus,
+                                value: climatewarehouseUnits.unitStatus,
                               },
                             ]}
                           />
@@ -692,8 +709,10 @@ console.log(notification)
                             })} --`}
                             selected={[
                               {
-                                label: units.correspondingAdjustmentDeclaration,
-                                value: units.correspondingAdjustmentDeclaration,
+                                label:
+                                  climatewarehouseUnits.correspondingAdjustmentDeclaration,
+                                value:
+                                  climatewarehouseUnits.correspondingAdjustmentDeclaration,
                               },
                             ]}
                           />
@@ -727,8 +746,10 @@ console.log(notification)
                             })} --`}
                             selected={[
                               {
-                                label: units.correspondingAdjustmentStatus,
-                                value: units.correspondingAdjustmentStatus,
+                                label:
+                                  climatewarehouseUnits.correspondingAdjustmentStatus,
+                                value:
+                                  climatewarehouseUnits.correspondingAdjustmentStatus,
                               },
                             ]}
                           />

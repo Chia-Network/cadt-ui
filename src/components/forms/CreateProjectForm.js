@@ -60,7 +60,6 @@ const CreateProjectForm = withRouter(({ onClose }) => {
   };
 
   const [newProject, setNewProject] = useState({
-    currentRegistry: '',
     projectId: '',
     registryOfOrigin: '',
     program: '',
@@ -109,7 +108,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
     if (!_.isEmpty(newRelatedProjects)) {
       dataToSend.relatedProjects = newRelatedProjects;
     }
-
+    console.log(dataToSend);
     dispatch(postNewProject(dataToSend));
   };
 
@@ -177,37 +176,6 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <LabelContainer>
-                              <FormattedMessage id="current-registry" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'projects-current-registry-description',
-                              })}>
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'current-registry',
-                            })}
-                            state={InputStateEnum.default}
-                            value={newProject.currentRegistry}
-                            onChange={value =>
-                              setNewProject(prev => ({
-                                ...prev,
-                                currentRegistry: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
@@ -742,8 +710,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
                 <LocationsRepeater
-                  projectLocationsState={newProjectLocations}
-                  setProjectLocationsState={setNewProjectLocations}
+                  locationsState={newProjectLocations}
+                  setLocationsState={setNewProjectLocations}
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={5}>

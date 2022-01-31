@@ -124,7 +124,6 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
         selectedCorrespondingAdjustmentDeclaration[0].value;
     }
     if (!_.isEmpty(year)) {
-      console.log(year);
       dataToSend.vintageYear = year;
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
