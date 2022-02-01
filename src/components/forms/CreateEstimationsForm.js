@@ -105,6 +105,7 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                type="number"
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'unit-count',
