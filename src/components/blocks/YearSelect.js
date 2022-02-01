@@ -63,11 +63,11 @@ const YearSelect = ({ size, yearValue, setYearValue }) => {
       <DatePicker
         views={['year']}
         label="Year"
-        value={yearValue ? `${yearValue}`: yearValue}
+        value={yearValue ? `${yearValue}` : yearValue}
         onChange={newValue => {
           setYearValue(`${newValue.$y}`);
         }}
-        renderInput={({inputRef, inputProps, InputProps}) => {
+        renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
             <InputContainer size={size}>
               <Input ref={inputRef} {...inputProps} helperText={null} />
@@ -76,7 +76,6 @@ const YearSelect = ({ size, yearValue, setYearValue }) => {
           );
         }}
       />
-      {console.log(yearValue)}
     </LocalizationProvider>
   );
 };
