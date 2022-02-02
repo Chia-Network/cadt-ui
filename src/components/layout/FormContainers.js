@@ -13,7 +13,7 @@ export const ModalFormContainerStyle = styled('div')`
 
 export const FormContainerStyle = styled('div')`
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   width: 90%;
 `;
 

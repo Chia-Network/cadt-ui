@@ -11,6 +11,7 @@
   "notified-at": "Notificado en",
   "click-to-refresh": "Haga clic para actualizar",
   "create": "Crear",
+  "next": "Siguiente",
   "filters": "Filtros",
   "ok": "De Acuerdo",
   "cancel": "Cancelar",
@@ -244,5 +245,7 @@
   "organization-created": "Su organización se agregó con éxito.",
   "organization-not-created": "No se pudo agregar su organización.",
   "projects-list": "Lista de proyectos",
-  "units-list": "Lista de unidades"
+  "units-list": "Lista de unidades",
+  "labels": "Etiquetas",
+  "issuances": "Emisiones"
 }

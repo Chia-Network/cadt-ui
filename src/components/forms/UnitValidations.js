@@ -21,6 +21,6 @@ export const unitsSchema = yup.object().shape({
   unitRegistryLink: yup.string().required(),
   correspondingAdjustmentDeclaration: yup.string().required(),
   correspondingAdjustmentStatus: yup.string().required(),
-  issuance: yup.array().optional(),
-  labels: yup.array().optional(),
+  issuance: yup.array().optional().nullable(),
+  labels: yup.array().optional().nullable(),
 });

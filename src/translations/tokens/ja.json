@@ -11,6 +11,7 @@
   "notified-at": "で通知",
   "click-to-refresh": "クリックして更新",
   "create": "創造する",
+  "next": "次",
   "filters": "フィルター",
   "ok": "わかりました",
   "cancel": "キャンセル",
@@ -237,5 +238,7 @@
   "organization-created": "組織が正常に追加されました。",
   "organization-not-created": "組織を追加できませんでした。",
   "projects-list": "プロジェクトリスト",
-  "units-list": "ユニットリスト"
+  "units-list": "ユニットリスト",
+  "labels": "ラベル",
+  "issuances": "発行"
 }

@@ -65,7 +65,11 @@ const YearSelect = ({ size, yearValue, setYearValue }) => {
         label="Year"
         value={yearValue ? `${yearValue}` : yearValue}
         onChange={newValue => {
-          setYearValue(`${newValue.$y}`);
+          if (typeof newValue?.$y === 'number') {
+            setYearValue(`${newValue.$y}`);
+          }else{
+            return null
+          }
         }}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (

@@ -12,6 +12,7 @@
   "notified-at": "Notified At",
   "click-to-refresh": "Click to Refresh",
   "create": "Create",
+  "next": "Next",
   "filters": "Filters",
   "ok": "Ok",
   "cancel": "Cancel",
@@ -267,5 +268,7 @@
   "organization-created": "Your organization was successfully added.",
   "organization-not-created": "Your organization could not be added.",
   "projects-list": "Projects List",
-  "units-list": "Units List"
+  "units-list": "Units List",
+  "labels": "Labels",
+  "issuances": "Issuances"
 }
