@@ -147,6 +147,8 @@ const Modal = withTheme(
     left,
     width,
     height,
+    extraButtonLabel,
+    extraButtonOnClick,
   }) => {
     const [modalType, setModalType] = useState(modalTypeEnum.basic);
     const intl = useIntl();
@@ -194,10 +196,8 @@ const Modal = withTheme(
 
           <ContentContainer modalType={modalType}>
             {modalType === modalTypeEnum.basic && body}
-            {modalType === modalTypeEnum.information && (
-              <Body size="Small">{body}</Body>
-            )}
-            {modalType === modalTypeEnum.confirmation && (
+            {(modalType === modalTypeEnum.information ||
+              modalType === modalTypeEnum.confirmation) && (
               <Body size="Small">{body}</Body>
             )}
           </ContentContainer>
@@ -210,6 +210,14 @@ const Modal = withTheme(
                   size="large"
                   label={intl.formatMessage({ id: 'cancel' })}
                   onClick={onClose}
+                  type="default"
+                />
+              )}
+              {extraButtonLabel && extraButtonOnClick && (
+                <PrimaryButton
+                  size="large"
+                  label={extraButtonLabel}
+                  onClick={extraButtonOnClick}
                   type="default"
                 />
               )}
