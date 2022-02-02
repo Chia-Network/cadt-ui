@@ -895,12 +895,17 @@ const StoryBook = () => {
             marginTop: '100px',
           }}
         >
+          <PrimaryButton
+            label="Default type button"
+            size="large"
+            type="default"
+          />
           <PrimaryButton label="Button" size="large" />
           <PrimaryButton label="Button" size="default" />
           <PrimaryButton label="Button" size="small" />
-          <PrimaryButton label="Button" size="large" danger={true} />
-          <PrimaryButton label="Button" size="default" danger={true} />
-          <PrimaryButton label="Button" size="small" danger={true} />
+          <PrimaryButton label="Button" size="large" danger />
+          <PrimaryButton label="Button" size="default" danger />
+          <PrimaryButton label="Button" size="small" danger />
           <PrimaryButton
             label="Button"
             size="large"
@@ -916,43 +921,13 @@ const StoryBook = () => {
             size="small"
             icon={<LightThemeIcon color="white" height={15} />}
           />
-          <PrimaryButton
-            label="Button"
-            size="large"
-            danger={true}
-            loading={true}
-          />
-          <PrimaryButton
-            label="Button"
-            size="default"
-            danger={true}
-            loading={true}
-          />
-          <PrimaryButton
-            label="Button"
-            size="small"
-            danger={true}
-            loading={true}
-          />
+          <PrimaryButton label="Button" size="large" danger loading />
+          <PrimaryButton label="Button" size="default" danger loading />
+          <PrimaryButton label="Button" size="small" danger loading />
 
-          <PrimaryButton
-            label="Button"
-            size="large"
-            danger={true}
-            disabled={true}
-          />
-          <PrimaryButton
-            label="Button"
-            size="default"
-            danger={true}
-            disabled={true}
-          />
-          <PrimaryButton
-            label="Button"
-            size="small"
-            danger={true}
-            disabled={true}
-          />
+          <PrimaryButton label="Button" size="large" danger disabled />
+          <PrimaryButton label="Button" size="default" danger disabled />
+          <PrimaryButton label="Button" size="small" danger disabled />
         </div>
         <div style={{ marginTop: '100px' }}>
           <Alert

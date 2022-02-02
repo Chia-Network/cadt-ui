@@ -8,7 +8,7 @@ const Text = styled('h4')`
   font-family: ${props => props.theme.typography.primary.regular};
   line-height: 1.375rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
   text-transform: capitalize;
   margin: 0;
   padding: 0;

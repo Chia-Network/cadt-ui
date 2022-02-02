@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/csvUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
+import { useWindowSize } from '../../components/hooks/useWindowSize';
 
 import {
   getStagingData,
@@ -121,10 +122,29 @@ const Units = withRouter(() => {
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   let searchParams = new URLSearchParams(history.location.search);
+  const unitsContainerRef = useRef(null);
+  const [createUnitModalPosition, setCreateUnitModalPosition] = useState(null);
+  const windowSize = useWindowSize();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  useEffect(() => {
+    if (unitsContainerRef && unitsContainerRef.current) {
+      setCreateUnitModalPosition({
+        left: unitsContainerRef.current.getBoundingClientRect().x,
+        top: unitsContainerRef.current.getBoundingClientRect().y,
+        width: unitsContainerRef.current.getBoundingClientRect().width,
+        height: unitsContainerRef.current.getBoundingClientRect().height,
+      });
+    }
+  }, [
+    unitsContainerRef,
+    unitsContainerRef.current,
+    windowSize.height,
+    windowSize.width,
+  ]);
 
   const pageIsMyRegistryPage =
     searchParams.has('myRegistry') && searchParams.get('myRegistry') === 'true';
@@ -236,7 +256,7 @@ const Units = withRouter(() => {
 
   return (
     <>
-      <StyledSectionContainer>
+      <StyledSectionContainer ref={unitsContainerRef}>
         <StyledHeaderContainer>
           <StyledSearchContainer>
             <SearchInput
@@ -341,7 +361,31 @@ const Units = withRouter(() => {
                   />
                 </>
               )}
-            {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
+            {create && (
+              <CreateUnitsForm
+                onClose={() => setCreate(false)}
+                left={
+                  createUnitModalPosition
+                    ? createUnitModalPosition.left
+                    : undefined
+                }
+                top={
+                  createUnitModalPosition
+                    ? createUnitModalPosition.top
+                    : undefined
+                }
+                height={
+                  createUnitModalPosition
+                    ? createUnitModalPosition.height
+                    : undefined
+                }
+                width={
+                  createUnitModalPosition
+                    ? createUnitModalPosition.width
+                    : undefined
+                }
+              />
+            )}
           </TabPanel>
           {pageIsMyRegistryPage && (
             <>
