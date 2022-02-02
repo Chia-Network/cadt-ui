@@ -47,7 +47,7 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateUnitsForm = withRouter(({ onClose }) => {
+const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   const { notification } = useSelector(state => state.app);
   const [newQualifications, setNewQualifications] = useState([]);
   const [newVintage, setNewVintage] = useState([]);
@@ -144,6 +144,10 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
         <Message id={notification.id} type={notification.type} />
       )}
       <Modal
+        left={left}
+        top={top}
+        width={width}
+        height={height}
         onOk={handleEditUnits}
         onClose={onClose}
         basic
@@ -175,7 +179,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
+                index={0}
+              >
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
@@ -189,7 +194,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-country-jurisdiction-of-owner-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -220,7 +226,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-in-country-jurisdiction-of-owner-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -252,7 +259,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-serial-number-block-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -284,7 +292,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-identifier-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -316,7 +325,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-type-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -342,7 +352,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-intended-buyer-org-uid-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -373,7 +384,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-marketplace-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -404,7 +416,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-tags-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -436,7 +449,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-status-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -464,7 +478,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-transaction-type-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -495,7 +510,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-status-reason-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -526,7 +542,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-token-issuance-hash-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -557,7 +574,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-marketplace-identifier-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -589,7 +607,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-units-issuance-location-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -621,7 +640,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-unit-registry-link-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -653,7 +673,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-marketplace-link-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -685,7 +706,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-corresponding-adjustment-declaration-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -716,7 +738,8 @@ const CreateUnitsForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-corresponding-adjustment-status-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
