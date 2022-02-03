@@ -23,6 +23,7 @@ import {
   Message,
   YearSelect,
   unitsSchema,
+  modalTypeEnum,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -230,9 +231,7 @@ const EditUnitsForm = ({ onClose }) => {
       <Modal
         onOk={handleEditUnits}
         onClose={onClose}
-        basic
-        form
-        showButtons
+        modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'edit-unit',
         })}
@@ -259,7 +258,8 @@ const EditUnitsForm = ({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
+                index={0}
+              >
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
@@ -761,7 +761,8 @@ const EditUnitsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-corresponding-adjustment-declaration-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -803,7 +804,8 @@ const EditUnitsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'units-corresponding-adjustment-status-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>

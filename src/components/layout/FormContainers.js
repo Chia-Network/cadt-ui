@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 export const ModalFormContainerStyle = styled('div')`
   width: 100%;
   height: 100%;
@@ -13,8 +12,7 @@ export const ModalFormContainerStyle = styled('div')`
 
 export const FormContainerStyle = styled('div')`
   display: flex;
-  justify-content: center;
-  width: 90%;
+  justify-content: flex-start;
 `;
 
 export const BodyContainer = styled('div')`

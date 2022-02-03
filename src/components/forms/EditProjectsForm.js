@@ -17,6 +17,7 @@ import {
   ToolTipContainer,
   DescriptionIcon,
   DateSelect,
+  modalTypeEnum,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -171,9 +172,7 @@ const EditProjectsForm = ({ onClose }) => {
       <Modal
         onOk={handleEditProjects}
         onClose={onClose}
-        basic
-        form
-        showButtons
+        modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'edit-project',
         })}
@@ -215,7 +214,8 @@ const EditProjectsForm = ({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
+                index={0}
+              >
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
@@ -288,7 +288,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-program-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -320,7 +321,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-name-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -351,7 +353,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-link-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -382,7 +385,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-developer-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -413,7 +417,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-sector-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -444,7 +449,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-type-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -716,7 +722,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-validation-date-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>

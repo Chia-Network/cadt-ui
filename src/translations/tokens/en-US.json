@@ -16,6 +16,7 @@
   "filters": "Filters",
   "ok": "Ok",
   "cancel": "Cancel",
+  "back": "Back",
   "required-field": "Required Field",
   "commit": "Commit",
   "committed": "Committed",

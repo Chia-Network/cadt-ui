@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/csvUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
+import { useWindowSize } from '../../components/hooks/useWindowSize';
 
 import {
   APIDataTable,
@@ -122,10 +123,30 @@ const Projects = withRouter(() => {
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   let searchParams = new URLSearchParams(history.location.search);
+  const projectsContainerRef = useRef(null);
+  const [createProjectModalPosition, setCreateProjectModalPosition] =
+    useState(null);
+  const windowSize = useWindowSize();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  useEffect(() => {
+    if (projectsContainerRef && projectsContainerRef.current) {
+      setCreateProjectModalPosition({
+        left: projectsContainerRef.current.getBoundingClientRect().x,
+        top: projectsContainerRef.current.getBoundingClientRect().y,
+        width: projectsContainerRef.current.getBoundingClientRect().width,
+        height: projectsContainerRef.current.getBoundingClientRect().height,
+      });
+    }
+  }, [
+    projectsContainerRef,
+    projectsContainerRef.current,
+    windowSize.height,
+    windowSize.width,
+  ]);
 
   const pageIsMyRegistryPage =
     searchParams.has('myRegistry') && searchParams.get('myRegistry') === 'true';
@@ -236,7 +257,7 @@ const Projects = withRouter(() => {
 
   return (
     <>
-      <StyledSectionContainer>
+      <StyledSectionContainer ref={projectsContainerRef}>
         <StyledHeaderContainer>
           <StyledSearchContainer>
             <SearchInput
@@ -386,7 +407,29 @@ const Projects = withRouter(() => {
         </StyledBodyContainer>
       </StyledSectionContainer>
       {createFormIsDisplayed && (
-        <CreateProjectForm onClose={() => setCreateFormIsDisplayed(false)} />
+        <CreateProjectForm
+          onClose={() => setCreateFormIsDisplayed(false)}
+          left={
+            createProjectModalPosition
+              ? createProjectModalPosition.left
+              : undefined
+          }
+          top={
+            createProjectModalPosition
+              ? createProjectModalPosition.top
+              : undefined
+          }
+          height={
+            createProjectModalPosition
+              ? createProjectModalPosition.height
+              : undefined
+          }
+          width={
+            createProjectModalPosition
+              ? createProjectModalPosition.width
+              : undefined
+          }
+        />
       )}
       {notification && (
         <Message id={notification.id} type={notification.type} />

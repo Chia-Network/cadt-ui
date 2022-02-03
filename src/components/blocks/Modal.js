@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { useIntl } from 'react-intl';
 import {
@@ -74,12 +74,13 @@ const ButtonsContainer = styled('div')`
       props.modalType === modalTypeEnum.information ||
       props.modalType === modalTypeEnum.confirmation
     ) {
-      return `padding: 0px 2rem 24px 0px; `;
+      return `padding: 0px 2rem 24px 0px;`;
     }
   }};
 `;
 
 const ContentContainer = styled('div')`
+  box-sizing: border-box;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -137,11 +138,11 @@ const Modal = withTheme(
   ({
     title,
     body,
-    showButtons,
+    hideButtons,
     onClose,
     onOk,
-    type,
-    confirmation,
+    modalType,
+    informationType,
     label,
     top,
     left,
@@ -150,16 +151,7 @@ const Modal = withTheme(
     extraButtonLabel,
     extraButtonOnClick,
   }) => {
-    const [modalType, setModalType] = useState(modalTypeEnum.basic);
     const intl = useIntl();
-
-    useEffect(() => {
-      if (confirmation) {
-        setModalType(modalTypeEnum.confirmation);
-      } else if (type) {
-        setModalType(modalTypeEnum.information);
-      }
-    }, []);
 
     return (
       <MaskContainer>
@@ -173,10 +165,18 @@ const Modal = withTheme(
           <TitleContainer modalType={modalType}>
             {modalType === modalTypeEnum.information && (
               <span>
-                {type === 'info' && <InfoIcon height="21" width="21" />}
-                {type === 'error' && <ErrorIcon height="21" width="21" />}
-                {type === 'success' && <SuccessIcon height="21" width="21" />}
-                {type === 'warning' && <WarningIcon height="21" width="21" />}
+                {informationType === 'info' && (
+                  <InfoIcon height="21" width="21" />
+                )}
+                {informationType === 'error' && (
+                  <ErrorIcon height="21" width="21" />
+                )}
+                {informationType === 'success' && (
+                  <SuccessIcon height="21" width="21" />
+                )}
+                {informationType === 'warning' && (
+                  <WarningIcon height="21" width="21" />
+                )}
               </span>
             )}
             {modalType === modalTypeEnum.confirmation && (
@@ -202,7 +202,7 @@ const Modal = withTheme(
             )}
           </ContentContainer>
 
-          {showButtons && (
+          {!hideButtons && (
             <ButtonsContainer modalType={modalType}>
               {(modalType === modalTypeEnum.confirmation ||
                 modalType === modalTypeEnum.basic) && (

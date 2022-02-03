@@ -1,6 +1,5 @@
-/* eslint-disable */
 import _ from 'lodash';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +9,7 @@ import {
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
-  InputVariantEnum,
+  //InputVariantEnum,
   SelectSizeEnum,
   SelectTypeEnum,
   TabPanel,
@@ -25,6 +24,7 @@ import {
   DescriptionIcon,
   YearSelect,
   unitsSchema,
+  modalTypeEnum,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -171,7 +171,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   }, [notification]);
 
   
-    console.log(unitsSchema.)
+    console.log(unitsSchema)
 
   console
 
@@ -187,19 +187,23 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
         height={height}
         onOk={handleEditUnits}
         onClose={onClose}
-        basic
-        form
-        showButtons
+        modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'create-unit',
         })}
         label={intl.formatMessage({
           id: tabValue !== 2 ? 'next' : 'create',
         })}
-        extraButtonLabel={tabValue > 0 ? 'Back' : undefined}
-        extraButtonOnClick={() => {
-          setTabValue(prev => (prev > 0 ? prev - 1 : prev));
-        }}
+        extraButtonLabel={
+          tabValue > 0
+            ? intl.formatMessage({
+                id: 'back',
+              })
+            : undefined
+        }
+        extraButtonOnClick={() =>
+          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+        }
         body={
           <StyledFormContainer>
             <Stepper activeStep={tabValue} alternativeLabel>
@@ -752,7 +756,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
               </ModalFormContainerStyle>
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <LabelsRepeater labelsState={newLabels} />
+              <LabelsRepeater labelsState={newLabels} newLabelsState={setNewLabels} />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <IssuanceRepeater
@@ -760,6 +764,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                 issuanceState={
                   Array.isArray(newIssuance) ? newIssuance : [newIssuance]
                 }
+                newIssuanceState={setNewIssuance}
               />
             </TabPanel>
           </StyledFormContainer>
