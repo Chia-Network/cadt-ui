@@ -1,4 +1,3 @@
-/* eslint-disable */
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
@@ -12,8 +11,6 @@ import {
   InputStateEnum,
   SelectSizeEnum,
   SelectTypeEnum,
-  Tabs,
-  Tab,
   TabPanel,
   Modal,
   Body,
@@ -167,7 +164,13 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
         label={intl.formatMessage({
           id: tabValue !== 2 ? 'next' : 'create',
         })}
-        extraButtonLabel={tabValue > 0 ? 'Back' : undefined}
+        extraButtonLabel={
+          tabValue > 0
+            ? intl.formatMessage({
+                id: 'back',
+              })
+            : undefined
+        }
         extraButtonOnClick={() =>
           setTabValue(prev => (prev > 0 ? prev - 1 : prev))
         }
