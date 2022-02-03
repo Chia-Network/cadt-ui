@@ -133,8 +133,8 @@ const CreateProjectForm = withRouter(
 
     const stepperStepsTranslationIds = [
       'project',
-      'qualifications',
-      'vintages',
+      'labels',
+      'issuances',
       'co-benefits',
       'project-locations',
       'related-projects',
