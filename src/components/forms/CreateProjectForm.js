@@ -20,6 +20,7 @@ import {
   Message,
   ToolTipContainer,
   DescriptionIcon,
+  modalTypeEnum,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -41,8 +42,6 @@ const StyledFieldContainer = styled('div')`
 const InputContainer = styled('div')`
   width: 20rem;
 `;
-
-
 
 const CreateProjectForm = withRouter(({ onClose }) => {
   const [newQualifications, setNewQualifications] = useState([]);
@@ -133,9 +132,7 @@ const CreateProjectForm = withRouter(({ onClose }) => {
       <Modal
         onOk={handleSubmit}
         onClose={onClose}
-        basic
-        form
-        showButtons
+        modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'create-project',
         })}
@@ -177,7 +174,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
+                index={0}
+              >
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
@@ -190,7 +188,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-registry-of-origin-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -221,7 +220,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-origin-project-id-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -252,7 +252,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-program-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -283,7 +284,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-id-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -312,7 +314,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-name-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -343,7 +346,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-link-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -374,7 +378,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-developer-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -405,7 +410,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-sector-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -436,7 +442,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-type-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -465,7 +472,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-covered-by-ndc-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -498,7 +506,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-ndc-linkage-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -529,7 +538,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-status-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -560,7 +570,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-status-date-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -582,7 +593,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-unit-metric-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -613,7 +625,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-methodology-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -644,7 +657,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-methodology-version-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -675,7 +689,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-validation-approach-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -706,7 +721,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-validation-date-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -728,7 +744,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-estimated-annual-average-emission-reduction-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -761,7 +778,8 @@ const CreateProjectForm = withRouter(({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-tags-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>

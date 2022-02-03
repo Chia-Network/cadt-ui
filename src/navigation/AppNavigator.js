@@ -10,6 +10,7 @@ import {
   Modal,
   SocketStatusContainer,
   UpdateRefreshContainer,
+  modalTypeEnum,
 } from '../components';
 
 const AppNavigator = () => {
@@ -34,10 +35,10 @@ const AppNavigator = () => {
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
         <Modal
-          type="error"
+          informationType="error"
+          modalType={modalTypeEnum.information}
           label="Try Again"
           onOk={() => window.location.reload()}
-          showButtons
           title="Network Error"
           body={
             'There is a connection error. The Climate Warehouse is inaccessible'

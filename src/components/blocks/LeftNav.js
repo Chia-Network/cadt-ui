@@ -15,6 +15,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { resetRefreshPrompt } from '../../store/actions/app';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { CreateOrgForm } from '../forms';
+import { modalTypeEnum } from '.';
 
 const Container = styled('div')`
   display: flex;
@@ -193,8 +194,7 @@ const LeftNav = withTheme(({ children }) => {
         <Modal
           title={intl.formatMessage({ id: 'create-organization' })}
           body={intl.formatMessage({ id: 'you-need-to-create-organization' })}
-          showButtons
-          confirmation
+          modalType={modalTypeEnum.confirmation}
           onClose={() => setConfirmCreateOrgIsVisible(false)}
           onOk={() => {
             setCreateOrgIsVisible(true);

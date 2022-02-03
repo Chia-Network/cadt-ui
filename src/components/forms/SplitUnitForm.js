@@ -18,6 +18,7 @@ import {
   LocalMessageTypeEnum,
   LocalMessage,
   SelectOrganizations,
+  modalTypeEnum,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
 
@@ -39,6 +40,7 @@ const StyledTotalUnitsAvailable = styled('div')`
 
 const StyledContainer = styled('div')`
   padding-top: 2rem;
+  padding-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
 `;
@@ -48,6 +50,7 @@ const StyledSplitEntry = styled('div')`
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-end;
+  gap: 2rem;
 `;
 
 const SplitUnitForm = ({ onClose, record }) => {
@@ -160,9 +163,8 @@ const SplitUnitForm = ({ onClose, record }) => {
       <Modal
         onOk={onSubmit}
         onClose={onClose}
-        basic
-        form
-        showButtons={unitIsSplitable}
+        modalType={modalTypeEnum.basic}
+        hideButtons={!unitIsSplitable}
         title={intl.formatMessage({
           id: 'split',
         })}
@@ -174,8 +176,8 @@ const SplitUnitForm = ({ onClose, record }) => {
                   {index === 0 && (
                     <StyledTotalUnitsAvailable>
                       <Body size="Bold">
-                        <FormattedMessage id="total-units-available" />
-                        : {fullRecord.unitCount}
+                        <FormattedMessage id="total-units-available" />:
+                        {fullRecord.unitCount}
                       </Body>
                     </StyledTotalUnitsAvailable>
                   )}

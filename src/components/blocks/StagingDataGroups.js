@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { getDiff } from '../../utils/objectUtils';
 import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon } from '..';
-import { TableDrawer } from '.';
+import { modalTypeEnum, TableDrawer } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
 
 const StyledChangeGroup = styled('div')`
@@ -356,8 +356,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
             body={intl.formatMessage({
               id: 'confirm-deletion',
             })}
-            showButtons
-            confirmation
+            modalType={modalTypeEnum.confirmation}
             onClose={() => setDeleteFromStaging(false)}
             onOk={onDeleteStaging(deleteUUID)}
           />

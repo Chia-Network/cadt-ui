@@ -24,6 +24,7 @@ import {
   Message,
   ToolTipContainer,
   DescriptionIcon,
+  modalTypeEnum,
 } from '..';
 import QualificationsRepeater from './QualificationsRepeater';
 import VintageRepeater from './VintageRepeater';
@@ -159,9 +160,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
         height={height}
         onOk={handleEditUnits}
         onClose={onClose}
-        basic
-        form
-        showButtons
+        modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'create-unit',
         })}

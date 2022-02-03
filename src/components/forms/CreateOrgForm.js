@@ -20,6 +20,7 @@ import {
   LocalMessage,
   SelectOrganizations,
   PrimaryButton,
+  modalTypeEnum,
 } from '..';
 import { postNewOrg } from '../../store/actions/climateWarehouseActions';
 
@@ -40,8 +41,7 @@ const StyledTotalUnitsAvailable = styled('div')`
 `;
 
 const StyledContainer = styled('div')`
-  padding-top: 2rem;
-  width: 90%;
+  padding: 2rem 5rem 4rem 5rem;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -177,9 +177,7 @@ const CreateOrgForm = ({ onClose }) => {
       <Modal
         onOk={onSubmit}
         onClose={onClose}
-        basic
-        form
-        showButtons
+        modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'create-organization',
         })}
