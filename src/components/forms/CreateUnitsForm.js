@@ -62,7 +62,9 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   const [newLabels, setNewLabels] = useState([]);
   const [newIssuance, setNewIssuance] = useState([]);
   const [year, setYear] = useState();
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState({
+    unitOwner: null,
+  });
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -77,22 +79,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     setSelectedCorrespondingAdjustmentStatus,
   ] = useState(null);
 
-  const errorMessageAlert = useCallback(
-    name => {
-      return errorMessage?.map(err => {
-        if (_.includes(err, name)) {
-          return (
-            <Body size="Small" color="red">
-              {err}
-            </Body>
-          );
-        } else {
-          return null;
-        }
-      });
-    },
-    [errorMessage],
-  );
+  // const  = name => console.log(name);
 
   const [newUnits, setNewUnits] = useState({
     projectLocationId: '',
@@ -156,50 +143,37 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     }
     unitsSchema
       .validate(dataToSend, { abortEarly: false })
-      .catch(error => setErrorMessage(error.errors));
+      .catch(error => error.errors);
+    console.log(errorMessage);
     const isUnitValid = await unitsSchema.isValid(dataToSend);
-
-    if (tabValue === 2) {
+    if (isUnitValid) {
+      setErrorMessage(null);
+    }
+    if (tabValue === 2 && isUnitValid) {
+      setErrorMessage(null);
       dispatch(postNewUnits(dataToSend));
     } else {
-      if (isUnitValid) {
-        setErrorMessage(null);
-        setTabValue(prev => prev + 1);
+      if (tabValue === 2) {
+        setTabValue(2);
       } else {
-        return null;
+        setTabValue(prev => prev + 1);
       }
     }
   };
 
   const unitWasSuccessfullyCreated =
     notification && notification.id === 'unit-successfully-created';
+
   useEffect(() => {
     if (unitWasSuccessfullyCreated) {
       onClose();
     }
   }, [notification]);
 
-  const errorInputVariant = name => {
-    if (newUnits[name] !== '') {
-      if (name === 'serialNumberBlock') {
-        try {
-          const validSerialNumber = new RegExp(newUnits['serialNumberPattern']);
-          if (validSerialNumber.test(newUnits[name])) {
-            return InputVariantEnum.success;
-          } else {
-            return InputVariantEnum.error;
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        return InputVariantEnum.success;
-      }
-    } else if (errorMessageAlert(name)) {
-      return InputVariantEnum.error;
-    }
-    return InputVariantEnum.default;
-  };
+  
+    console.log(unitsSchema.)
+
+  console
 
   return (
     <>
@@ -275,7 +249,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputVariant('projectLocationId')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'project-location-id',
@@ -290,7 +263,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
-                      {errorMessageAlert('projectLocationId')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -309,7 +281,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputVariant('unitOwner')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-owner',
@@ -324,7 +295,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
-                      {errorMessageAlert('unitOwner')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -343,9 +313,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputVariant(
-                            'countryJurisdictionOfOwner',
-                          )}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'country-jurisdiction-of-owner',
@@ -360,7 +327,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
-                      {errorMessageAlert('countryJurisdictionOfOwner')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -379,9 +345,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputVariant(
-                            'inCountryJurisdictionOfOwner',
-                          )}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'in-country-jurisdiction-of-owner',
@@ -396,7 +359,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
-                      {errorMessageAlert('inCountryJurisdictionOfOwner')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -415,7 +377,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputVariant('serialNumberBlock')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'serial-number-block',
@@ -430,7 +391,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
-                      {errorMessageAlert('serialNumberBlock')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -449,7 +409,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputVariant('serialNumberPattern')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'serial-number-pattern',
@@ -464,7 +423,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
-                      {errorMessageAlert('serialNumberPattern')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -514,7 +472,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           })} --`}
                         />
                       </InputContainer>
-                      {errorMessageAlert('unitType')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -668,7 +625,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           })} --`}
                         />
                       </InputContainer>
-                      {errorMessageAlert('unitStatus')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -718,7 +674,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputVariant('unitRegistryLink')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-registry-link',
@@ -733,7 +688,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
-                      {errorMessageAlert('unitRegistryLink')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -763,7 +717,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           })} --`}
                         />
                       </InputContainer>
-                      {errorMessageAlert('correspondingAdjustmentDeclaration')}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -793,17 +746,13 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           })} --`}
                         />
                       </InputContainer>
-                      {errorMessageAlert('correspondingAdjustmentStatus')}
                     </StyledFieldContainer>
                   </div>
                 </FormContainerStyle>
               </ModalFormContainerStyle>
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <LabelsRepeater
-                labelsState={newLabels}
-                newLabelsState={setNewLabels}
-              />
+              <LabelsRepeater labelsState={newLabels} />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <IssuanceRepeater
@@ -811,7 +760,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                 issuanceState={
                   Array.isArray(newIssuance) ? newIssuance : [newIssuance]
                 }
-                newIssuanceState={setNewIssuance}
               />
             </TabPanel>
           </StyledFormContainer>
