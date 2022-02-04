@@ -36,6 +36,7 @@ export const actions = keyMirror(
   'GET_VINTAGES',
   'GET_STAGING_DATA',
   'GET_ORGANIZATIONS',
+  'GET_PICKLISTS',
 );
 
 const getClimateWarehouseTable = (
@@ -124,6 +125,47 @@ export const getOrganizationData = () => {
       }
     } catch {
       dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getPickLists = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    const tryToGetPickListsFromStorage = () => {
+      const fromStorage = localStorage.getItem('pickLists');
+      if (fromStorage) {
+        dispatch({
+          type: actions.GET_PICKLISTS,
+          payload: JSON.parse(fromStorage),
+        });
+      } else {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+      }
+    };
+
+    try {
+      const response = await fetch(
+        `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
+      );
+
+      if (response.ok) {
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_PICKLISTS,
+          payload: results,
+        });
+
+        localStorage.setItem('pickLists', JSON.stringify(results));
+      } else {
+        tryToGetPickListsFromStorage();
+      }
+    } catch {
+      tryToGetPickListsFromStorage();
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -281,6 +323,96 @@ export const deleteStagingData = uuid => {
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteUnit = warehouseUnitId => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ warehouseUnitId }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-deleted',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-could-not-be-deleted',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteProject = warehouseProjectId => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/projects`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ warehouseProjectId }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'project-deleted',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'project-could-not-be-deleted',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'project-could-not-be-deleted',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }

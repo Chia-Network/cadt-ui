@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useIntl } from 'react-intl';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { resetRefreshPrompt } from '../store/actions/app';
@@ -14,6 +15,7 @@ import {
 } from '../components';
 
 const AppNavigator = () => {
+  const intl = useIntl();
   const dispatch = useDispatch();
 
   const {
@@ -39,10 +41,8 @@ const AppNavigator = () => {
           modalType={modalTypeEnum.information}
           label="Try Again"
           onOk={() => window.location.reload()}
-          title="Network Error"
-          body={
-            'There is a connection error. The Climate Warehouse is inaccessible'
-          }
+          title={intl.formatMessage({ id: 'network-error' })}
+          body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
         />
       )}
       <Router>
