@@ -229,5 +229,7 @@
   "projects-list": "プロジェクトリスト",
   "units-list": "ユニットリスト",
   "labels": "ラベル",
-  "issuances": "発行"
+  "issuances": "発行",
+  "network-error": "ネットワークエラー",
+  "there-is-a-connection-error": "接続エラーが発生しました。 ClimateWarehouseにアクセスできません。"
 }

@@ -257,5 +257,7 @@
   "projects-list": "Projects List",
   "units-list": "Units List",
   "labels": "Labels",
-  "issuances": "Issuances"
+  "issuances": "Issuances",
+  "network-error": "Network Error",
+  "there-is-a-connection-error": "There is a connection error. The Climate Warehouse is inaccessible."
 }

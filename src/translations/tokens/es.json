@@ -229,5 +229,7 @@
   "projects-list": "Lista de proyectos",
   "units-list": "Lista de unidades",
   "labels": "Etiquetas",
-  "issuances": "Emisiones"
+  "issuances": "Emisiones",
+  "network-error": "Error de red",
+  "there-is-a-connection-error": "Hay un error de conexión. El Almacén Climático es inaccesible."
 }
