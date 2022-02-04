@@ -37,7 +37,6 @@ import {
   unitTypeValues,
 } from '../../utils/pick-values';
 import { LabelContainer } from '../../utils/compUtils';
-import { issuanceSchema } from './IssuanceValidation';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -78,8 +77,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     setSelectedCorrespondingAdjustmentStatus,
   ] = useState(null);
 
-  // const  = name => console.log(name);
-
   const [newUnits, setNewUnits] = useState({
     projectLocationId: '',
     unitOwner: '',
@@ -111,7 +108,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
           }
         }
       }
-
       dataToSend.labels = newLabels;
     } else if (_.isEmpty(newLabels) && tabValue === 1) {
       setTabValue(prev => prev + 1);
@@ -123,17 +119,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
           delete newIssuance[0][key];
         }
       }
-      await issuanceSchema
-        .validate(dataToSend, { abortEarly: false })
-        .catch(({ errors }) => {
-          for (let key in dataToSend) {
-            for (let err of errors) {
-              if (err.includes(key)) {
-                setErrorMessage(prev => ({ ...prev, [key]: err }));
-              }
-            }
-          }
-        });
+
       dataToSend.issuance = _.head(newIssuance);
     }
 
@@ -180,7 +166,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
       dispatch(postNewUnits(dataToSend));
     }
   };
-  console.log(errorMessage);
+
   const unitWasSuccessfullyCreated =
     notification && notification.id === 'unit-successfully-created';
 

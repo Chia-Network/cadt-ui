@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 export const labelSchema = yup.object().shape({
-  label: yup.string().required('label is required'),
+  label: yup.string().required('Label is required'),
   labelType: yup.string().required('labelType is required'),
   creditingPeriodStartDate: yup
     .date()
