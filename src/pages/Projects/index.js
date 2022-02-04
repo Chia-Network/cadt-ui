@@ -120,6 +120,15 @@ const Projects = withRouter(() => {
   };
 
   useEffect(() => {
+    if (notification && notification.id === 'project-deleted') {
+      setTabValue(1);
+    }
+    if (notification && notification.id === 'transactions-committed') {
+      setTabValue(2);
+    }
+  }, [notification]);
+
+  useEffect(() => {
     if (projectsContainerRef && projectsContainerRef.current) {
       setCreateProjectModalPosition({
         left: projectsContainerRef.current.getBoundingClientRect().x,
@@ -227,7 +236,6 @@ const Projects = withRouter(() => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    setTabValue(2);
   };
 
   return (

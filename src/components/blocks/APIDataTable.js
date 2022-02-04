@@ -7,7 +7,7 @@ import styled, { withTheme, css } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination, Message } from '.';
-import { BasicMenu } from '..';
+import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
 
@@ -118,6 +118,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [unitToBeSplit, setUnitToBeSplit] = useState(null);
   const { theme, notification } = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
+  const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
   const ref = React.useRef(null);
   const [height, setHeight] = React.useState(0);
   const windowSize = useWindowSize();
@@ -221,7 +222,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                                 id: 'delete-unit',
                               }),
                               action: () =>
-                                dispatch(deleteUnit(record.warehouseUnitId)),
+                                setConfirmDeletionModal({
+                                  warehouseUnitId: record.warehouseUnitId,
+                                }),
                             },
                           ]}
                         />
@@ -244,9 +247,9 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                                 id: 'delete-project',
                               }),
                               action: () =>
-                                dispatch(
-                                  deleteProject(record.warehouseProjectId),
-                                ),
+                                setConfirmDeletionModal({
+                                  warehouseProjectId: record.warehouseProjectId,
+                                }),
                             },
                           ]}
                         />
@@ -286,6 +289,26 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           organizations={climateWarehouseStore.organizations}
           onClose={() => setUnitToBeSplit(null)}
           record={unitToBeSplit}
+        />
+      )}
+      {confirmDeletionModal && (
+        <Modal
+          title={intl.formatMessage({
+            id: 'notification',
+          })}
+          body={intl.formatMessage({
+            id: 'confirm-deletion',
+          })}
+          modalType={modalTypeEnum.confirmation}
+          onClose={() => setConfirmDeletionModal(null)}
+          onOk={() => {
+            if (confirmDeletionModal.warehouseProjectId) {
+              dispatch(deleteProject(confirmDeletionModal.warehouseProjectId));
+            } else if (confirmDeletionModal.warehouseUnitId) {
+              dispatch(deleteUnit(confirmDeletionModal.warehouseUnitId));
+            }
+            setConfirmDeletionModal(null);
+          }}
         />
       )}
       {notification && (
