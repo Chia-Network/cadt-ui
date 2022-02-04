@@ -131,6 +131,15 @@ const Units = withRouter(() => {
   };
 
   useEffect(() => {
+    if (notification && notification.id === 'unit-deleted') {
+      setTabValue(1);
+    }
+    if (notification && notification.id === 'transactions-committed') {
+      setTabValue(2);
+    }
+  }, [notification]);
+
+  useEffect(() => {
     if (unitsContainerRef && unitsContainerRef.current) {
       setCreateUnitModalPosition({
         left: unitsContainerRef.current.getBoundingClientRect().x,
@@ -244,7 +253,6 @@ const Units = withRouter(() => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    setTabValue(2);
   };
 
   const onOrganizationSelect = selectedOption => {
