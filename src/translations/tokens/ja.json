@@ -235,5 +235,7 @@
   "unit-deleted": "ユニットは正常に削除されました。",
   "unit-could-not-be-deleted": "ユニットを削除できませんでした。",
   "project-deleted": "プロジェクトは正常に削除されました。",
-  "project-could-not-be-deleted": "プロジェクトを削除できませんでした。"
+  "project-could-not-be-deleted": "プロジェクトを削除できませんでした。",
+  "staging-group-could-not-be-deleted": "ステージンググループを削除できませんでした。",
+  "staging-group-deleted": "ステージンググループは正常に削除されました。"
 }

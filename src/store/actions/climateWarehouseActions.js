@@ -315,14 +315,28 @@ export const deleteStagingData = uuid => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
-        console.log('yay!');
-        dispatch(setGlobalErrorMessage(null));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'staging-group-deleted',
+          ),
+        );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'staging-group-could-not-be-deleted',
+          ),
+        );
       }
     } catch {
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'staging-group-could-not-be-deleted',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
