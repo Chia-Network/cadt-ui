@@ -231,5 +231,9 @@
   "labels": "ラベル",
   "issuances": "発行",
   "network-error": "ネットワークエラー",
-  "there-is-a-connection-error": "接続エラーが発生しました。 ClimateWarehouseにアクセスできません。"
+  "there-is-a-connection-error": "接続エラーが発生しました。 ClimateWarehouseにアクセスできません。",
+  "unit-deleted": "ユニットは正常に削除されました。",
+  "unit-could-not-be-deleted": "ユニットを削除できませんでした。",
+  "project-deleted": "プロジェクトは正常に削除されました。",
+  "project-could-not-be-deleted": "プロジェクトを削除できませんでした。"
 }

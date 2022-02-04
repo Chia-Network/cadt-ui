@@ -231,5 +231,9 @@
   "labels": "Etiquetas",
   "issuances": "Emisiones",
   "network-error": "Error de red",
-  "there-is-a-connection-error": "Hay un error de conexión. El Almacén Climático es inaccesible."
+  "there-is-a-connection-error": "Hay un error de conexión. El Almacén Climático es inaccesible.",
+  "unit-deleted": "La unidad se eliminó con éxito.",
+  "unit-could-not-be-deleted": "No se pudo eliminar la Unidad.",
+  "project-deleted": "El proyecto se eliminó con éxito.",
+  "project-could-not-be-deleted": "No se pudo eliminar el Proyecto."
 }

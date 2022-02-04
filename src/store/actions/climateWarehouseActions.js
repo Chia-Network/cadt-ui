@@ -329,6 +329,96 @@ export const deleteStagingData = uuid => {
   };
 };
 
+export const deleteUnit = warehouseUnitId => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ warehouseUnitId }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-deleted',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-could-not-be-deleted',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteProject = warehouseProjectId => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/projects`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ warehouseProjectId }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'project-deleted',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'project-could-not-be-deleted',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'project-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const postNewProject = data => {
   return async dispatch => {
     try {
