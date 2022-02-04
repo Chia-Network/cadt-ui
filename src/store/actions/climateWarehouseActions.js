@@ -464,6 +464,49 @@ export const postNewProject = data => {
   };
 };
 
+export const updateProjectRecord = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/projects`;
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'project-successfully-edited',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+        console.log('yay!');
+        dispatch(setGlobalErrorMessage(null));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'project-could-not-be-edited',
+          ),
+        );
+        dispatch(setGlobalErrorMessage('Project could not be updated'));
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const postNewOrg = data => {
   return async dispatch => {
     try {
@@ -556,6 +599,7 @@ export const uploadCSVFile = (file, type) => {
 };
 
 export const postNewUnits = data => {
+  console.log(data);
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -664,10 +708,23 @@ export const updateUnitsRecord = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-successfully-edited',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
         console.log('yay!');
         dispatch(setGlobalErrorMessage(null));
       } else {
-        dispatch(setGlobalErrorMessage('Unit could not be created'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-could-not-be-edited',
+          ),
+        );
+        dispatch(setGlobalErrorMessage('Unit could not be updated'));
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));

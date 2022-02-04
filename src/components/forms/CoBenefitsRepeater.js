@@ -11,7 +11,7 @@ function CoBenefitsRepeater({ coBenefitsState, setNewCoBenefitsState }) {
         values={coBenefitsState}
         updateValues={setNewCoBenefitsState}
         initialValue={{
-          benefit: ''
+          cobenefit: ''
         }}
         component={<CreateCoBenefitsForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}

@@ -10,11 +10,11 @@ import { TableDrawer, APIPagination, Message } from '.';
 import { BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
-
 import {
   deleteProject,
   deleteUnit,
 } from '../../store/actions/climateWarehouseActions';
+
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -270,7 +270,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           onClose={() => {
             setEditRecord(null);
           }}
-          data={editRecord}
         />
       )}
       {actions === 'Projects' && editRecord && (
@@ -278,7 +277,6 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           onClose={() => {
             setEditRecord(null);
           }}
-          data={editRecord}
         />
       )}
       {unitToBeSplit && (

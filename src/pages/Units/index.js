@@ -207,28 +207,32 @@ const Units = withRouter(() => {
     if (!climateWarehouseStore.units) {
       return null;
     }
+    console.log(climateWarehouseStore);
 
-    return climateWarehouseStore.units.map(project =>
-      _.pick(project, [
+    return climateWarehouseStore.units.map(unit =>
+      _.pick(unit, [
         'warehouseUnitId',
+        'projectLocationId',
+        'unitOwner',
         'countryJurisdictionOfOwner',
         'inCountryJurisdictionOfOwner',
         'serialNumberBlock',
-        'unitIdentifier',
-        'unitType',
-        'intendedBuyerOrgUid',
+        'serialNumberPattern',
+        'vintageYear',
+        'issuance',
+        'labels',
         'marketplace',
-        'tags',
-        'unitStatus',
-        'unitTransactionType',
-        'unitStatusReason',
-        'tokenIssuanceHash',
+        'marketplaceLink',
         'marketplaceIdentifier',
-        'unitsIssuanceLocation',
+        'unitTags',
+        'unitStatus',
+        'unitStatusReason',
+        'unitType',
         'unitRegistryLink',
         'unitMarketplaceLink',
-        'correspondingAdjustmentDeclaration',
         'correspondingAdjustmentStatus',
+        'correspondingAdjustmentDeclaration',
+        'electedCorrespondingAdjustmentStatus',
         'unitCount',
       ]),
     );
@@ -336,10 +340,9 @@ const Units = withRouter(() => {
                   <H3>
                     {!searchQuery && pageIsMyRegistryPage && (
                       <>
-                        <FormattedMessage id="no-projects-created" />
+                        <FormattedMessage id="no-units-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}
-                        >
+                          onClick={() => setCreate(true)}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

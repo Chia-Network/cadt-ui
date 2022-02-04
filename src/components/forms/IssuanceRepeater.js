@@ -1,26 +1,23 @@
-import _ from 'lodash';
 import React from 'react';
 import { AddIcon, CloseIcon } from '..';
-import { CreateVintageForm } from './CreateVintageForm';
+import { CreateIssuanceForm } from './CreateIssuanceForm';
 import { ComponentRepeater } from '..';
 
-function VintageRepeater({ vintageState, newVintageState, max = 30 }) {
+function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
         maxRepetitions={max}
-        values={_.isEmpty(vintageState) ? [] : vintageState}
-        updateValues={newVintageState}
+        values={issuanceState}
+        updateValues={newIssuanceState}
         initialValue={{
           startDate: '',
           endDate: '',
           verificationApproach: '',
-          verificationDate: '',
+          verificationReportDate: '',
           verificationBody: '',
-          projectId: '',
-          unitId: '',
         }}
-        component={<CreateVintageForm />}
+        component={<CreateIssuanceForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
         removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
       />
@@ -28,4 +25,4 @@ function VintageRepeater({ vintageState, newVintageState, max = 30 }) {
   );
 }
 
-export default VintageRepeater;
+export default IssuanceRepeater;

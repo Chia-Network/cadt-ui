@@ -21,6 +21,7 @@ export * from './NotificationCard';
 export * from './BasicMenu';
 export * from './Message';
 export * from './DateSelect';
+export * from './YearSelect';
 export * from './LocalMessage';
 export * from './UploadCSV';
 export * from './StagingDataGroups';
