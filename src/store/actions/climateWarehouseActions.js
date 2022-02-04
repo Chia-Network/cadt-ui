@@ -36,6 +36,7 @@ export const actions = keyMirror(
   'GET_VINTAGES',
   'GET_STAGING_DATA',
   'GET_ORGANIZATIONS',
+  'GET_PICKLISTS',
 );
 
 const getClimateWarehouseTable = (
@@ -124,6 +125,47 @@ export const getOrganizationData = () => {
       }
     } catch {
       dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getPickLists = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    const tryToGetPickListsFromStorage = () => {
+      const fromStorage = localStorage.getItem('pickLists');
+      if (fromStorage) {
+        dispatch({
+          type: actions.GET_PICKLISTS,
+          payload: JSON.parse(fromStorage),
+        });
+      } else {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+      }
+    };
+
+    try {
+      const response = await fetch(
+        `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
+      );
+
+      if (response.ok) {
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_PICKLISTS,
+          payload: results,
+        });
+
+        localStorage.setItem('pickLists', JSON.stringify(results));
+      } else {
+        tryToGetPickListsFromStorage();
+      }
+    } catch {
+      tryToGetPickListsFromStorage();
     } finally {
       dispatch(deactivateProgressIndicator);
     }

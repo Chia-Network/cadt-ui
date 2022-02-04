@@ -4,7 +4,10 @@ import { IntlProvider } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setLocale, setThemeFromLocalStorage } from './store/actions/app';
-import { getOrganizationData } from './store/actions/climateWarehouseActions';
+import {
+  getOrganizationData,
+  getPickLists,
+} from './store/actions/climateWarehouseActions';
 import { initiateSocket } from './store/actions/socket';
 
 import { loadLocaleData } from './translations';
@@ -21,6 +24,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initiateSocket());
     dispatch(getOrganizationData());
+    dispatch(getPickLists());
   }, [dispatch]);
 
   useEffect(
@@ -49,7 +53,8 @@ const App = () => {
       <IntlProvider
         locale="en"
         defaultLocale="en"
-        messages={translationTokens.default}>
+        messages={translationTokens.default}
+      >
         <AppNavigator />
       </IntlProvider>
     </ThemeProvider>
