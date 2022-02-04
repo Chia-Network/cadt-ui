@@ -9,7 +9,7 @@ import {
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
-  //InputVariantEnum,
+  InputVariantEnum,
   SelectSizeEnum,
   SelectTypeEnum,
   TabPanel,
@@ -37,6 +37,7 @@ import {
   unitTypeValues,
 } from '../../utils/pick-values';
 import { LabelContainer } from '../../utils/compUtils';
+import { issuanceSchema } from './IssuanceValidation';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -62,9 +63,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   const [newLabels, setNewLabels] = useState([]);
   const [newIssuance, setNewIssuance] = useState([]);
   const [year, setYear] = useState();
-  const [errorMessage, setErrorMessage] = useState({
-    unitOwner: null,
-  });
+  const [errorMessage, setErrorMessage] = useState({});
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -94,14 +93,28 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     unitTags: '',
     unitStatusReason: '',
     unitRegistryLink: '',
+    unitType: '',
+    unitStatus: '',
+    correspondingAdjustmentDeclaration: '',
+    correspondingAdjustmentStatus: '',
   });
 
   const handleEditUnits = async () => {
+    setErrorMessage({});
     const dataToSend = _.cloneDeep(newUnits);
-    for (let key in dataToSend) {
-      if (dataToSend[key] === '') {
-        delete dataToSend[key];
+
+    if (!_.isEmpty(newLabels) && tabValue === 1) {
+      for (let i = 0; i < newLabels.length; i++) {
+        for (let key of Object.keys(newLabels[i])) {
+          if (newLabels[i][key] === '') {
+            delete newLabels[i][key];
+          }
+        }
       }
+
+      dataToSend.labels = newLabels;
+    } else if (_.isEmpty(newLabels) && tabValue === 1) {
+      setTabValue(prev => prev + 1);
     }
 
     if (!_.isEmpty(newIssuance)) {
@@ -110,18 +123,18 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
           delete newIssuance[0][key];
         }
       }
-      dataToSend.issuance = _.head(newIssuance);
-    }
-
-    if (!_.isEmpty(newLabels)) {
-      for (let i = 0; i < newLabels.length; i++) {
-        for (let key of Object.keys(newLabels[i])) {
-          if (newLabels[i][key] === '') {
-            delete newLabels[i][key];
+      await issuanceSchema
+        .validate(dataToSend, { abortEarly: false })
+        .catch(({ errors }) => {
+          for (let key in dataToSend) {
+            for (let err of errors) {
+              if (err.includes(key)) {
+                setErrorMessage(prev => ({ ...prev, [key]: err }));
+              }
+            }
           }
-        }
-      }
-      dataToSend.labels = newLabels;
+        });
+      dataToSend.issuance = _.head(newIssuance);
     }
 
     if (!_.isEmpty(unitType)) {
@@ -141,26 +154,33 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
       dataToSend.correspondingAdjustmentStatus =
         selectedCorrespondingAdjustmentStatus[0].value;
     }
-    unitsSchema
+    await unitsSchema
       .validate(dataToSend, { abortEarly: false })
-      .catch(error => error.errors);
-    console.log(errorMessage);
+      .catch(({ errors }) => {
+        for (let key in dataToSend) {
+          for (let err of errors) {
+            if (err.includes(key)) {
+              setErrorMessage(prev => ({ ...prev, [key]: err }));
+            }
+          }
+        }
+      });
+
     const isUnitValid = await unitsSchema.isValid(dataToSend);
-    if (isUnitValid) {
-      setErrorMessage(null);
+    if (tabValue === 0 && isUnitValid) {
+      setTabValue(prev => prev + 1);
     }
-    if (tabValue === 2 && isUnitValid) {
-      setErrorMessage(null);
-      dispatch(postNewUnits(dataToSend));
-    } else {
-      if (tabValue === 2) {
-        setTabValue(2);
-      } else {
-        setTabValue(prev => prev + 1);
+
+    if (tabValue === 2) {
+      for (let key in dataToSend) {
+        if (dataToSend[key] === '') {
+          delete dataToSend[key];
+        }
       }
+      dispatch(postNewUnits(dataToSend));
     }
   };
-
+  console.log(errorMessage);
   const unitWasSuccessfullyCreated =
     notification && notification.id === 'unit-successfully-created';
 
@@ -170,10 +190,16 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     }
   }, [notification]);
 
-  
-    console.log(unitsSchema)
-
-  console
+  const errorInputAlert = name => {
+    for (let key in errorMessage) {
+      if (key === name) {
+        return InputVariantEnum.error;
+      } else if (!errorMessage[name]) {
+        return InputVariantEnum.success;
+      }
+    }
+    return InputVariantEnum.default;
+  };
 
   return (
     <>
@@ -253,6 +279,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('projectLocationId')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'project-location-id',
@@ -267,6 +294,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.projectLocationId && (
+                        <Body size="Small" color="red">
+                          {errorMessage.projectLocationId}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -285,6 +317,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('unitOwner')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-owner',
@@ -299,6 +332,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.unitOwner && (
+                        <Body size="Small" color="red">
+                          {errorMessage.unitOwner}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -317,6 +355,9 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert(
+                            'countryJurisdictionOfOwner',
+                          )}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'country-jurisdiction-of-owner',
@@ -331,6 +372,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.countryJurisdictionOfOwner && (
+                        <Body size="Small" color="red">
+                          {errorMessage.countryJurisdictionOfOwner}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -349,6 +395,9 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert(
+                            'inCountryJurisdictionOfOwner',
+                          )}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'in-country-jurisdiction-of-owner',
@@ -363,6 +412,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.inCountryJurisdictionOfOwner && (
+                        <Body size="Small" color="red">
+                          {errorMessage.inCountryJurisdictionOfOwner}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -381,6 +435,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('serialNumberBlock')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'serial-number-block',
@@ -395,6 +450,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.serialNumberBlock && (
+                        <Body size="Small" color="red">
+                          {errorMessage.serialNumberBlock}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -413,6 +473,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('serialNumberPattern')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'serial-number-pattern',
@@ -427,6 +488,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.serialNumberPattern && (
+                        <Body size="Small" color="red">
+                          {errorMessage.serialNumberPattern}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -476,6 +542,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           })} --`}
                         />
                       </InputContainer>
+                      {errorMessage?.unitType && (
+                        <Body size="Small" color="red">
+                          {errorMessage.unitType}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -629,6 +700,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           })} --`}
                         />
                       </InputContainer>
+                      {errorMessage?.unitStatus && (
+                        <Body size="Small" color="red">
+                          {errorMessage.unitStatus}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -678,6 +754,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('unitRegistryLink')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-registry-link',
@@ -692,6 +769,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage.unitRegistryLink && (
+                        <Body size="Small" color="red">
+                          {errorMessage.unitRegistryLink}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -721,6 +803,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           })} --`}
                         />
                       </InputContainer>
+                      {errorMessage?.correspondingAdjustmentDeclaration && (
+                        <Body size="Small" color="red">
+                          {errorMessage.correspondingAdjustmentDeclaration}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -750,13 +837,21 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           })} --`}
                         />
                       </InputContainer>
+                      {errorMessage?.correspondingAdjustmentStatus && (
+                        <Body size="Small" color="red">
+                          {errorMessage.correspondingAdjustmentStatus}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                   </div>
                 </FormContainerStyle>
               </ModalFormContainerStyle>
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <LabelsRepeater labelsState={newLabels} newLabelsState={setNewLabels} />
+              <LabelsRepeater
+                labelsState={newLabels}
+                newLabelsState={setNewLabels}
+              />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <IssuanceRepeater

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -16,6 +16,7 @@ import {
   DateSelect,
 } from '..';
 import { LabelContainer } from '../../utils/compUtils';
+import { labelSchema } from './LabelsValidation';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -30,7 +31,13 @@ const InputContainer = styled('div')`
 `;
 
 const CreateLabelsForm = ({ value, onChange }) => {
+  const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
+  labelSchema.validate(value, { abortEarly: false }).catch(({ errors }) => {
+    console.log(errors);
+  });
+
+  console.log(errorLabelMessage,setErrorLabelMessage)
 
   return (
     <ModalFormContainerStyle>

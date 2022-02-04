@@ -17,7 +17,7 @@ function LabelsRepeater({ labelsState, newLabelsState }) {
           creditingPeriodEndDate: '',
           validityPeriodStartDate: '',
           validityPeriodEndDate: '',
-          unitQuantity: '',
+          unitQuantity: 0,
           labelLink: '',
         }}
         component={<CreateLabelsForm />}

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { issuanceSchema } from './IssuanceValidation';
 import { labelSchema } from './LabelsValidation';
+
 
 
 export const unitsSchema = yup.object().shape({
@@ -24,6 +24,6 @@ export const unitsSchema = yup.object().shape({
   unitRegistryLink: yup.string().required(),
   correspondingAdjustmentDeclaration: yup.string().required(),
   correspondingAdjustmentStatus: yup.string().required(),
-  issuance: yup.array().of(issuanceSchema).optional().nullable(),
-  labels: yup.array().of(labelSchema).optional().nullable(),
+  issuance: yup.object().optional(),
+  labels: yup.array().of(labelSchema).optional(),
 });

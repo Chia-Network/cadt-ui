@@ -31,7 +31,6 @@ const InputContainer = styled('div')`
 `;
 
 const CreateIssuanceForm = ({ value, onChange }) => {
-  console.log(value);
   const intl = useIntl();
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
