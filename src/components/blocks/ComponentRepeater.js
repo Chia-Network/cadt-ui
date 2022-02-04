@@ -10,6 +10,7 @@ const StyledRepeatedComponentContainer = styled('div')`
   align-items: center;
   gap: 10px;
   margin: 20px 0;
+  ${props => !props.disabled && `cursor: pointer;`};
 `;
 
 const ComponentRepeater = ({

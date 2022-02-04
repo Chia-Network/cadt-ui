@@ -1,15 +1,20 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
 
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { TableDrawer, APIPagination, Message } from '.';
-import { EllipsisMenuIcon, BasicMenu } from '..';
+import { BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
+import {
+  deleteProject,
+  deleteUnit,
+} from '../../store/actions/climateWarehouseActions';
+
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -117,6 +122,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
   const [height, setHeight] = React.useState(0);
   const windowSize = useWindowSize();
   const intl = useIntl();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
@@ -134,7 +140,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                     start={index === 0}
                     end={!actions && index === headings.length - 1}
                     selectedTheme={theme}
-                    key={index}>
+                    key={index}
+                  >
                     <TableCellHeaderText>
                       {heading === 'orgUid' && 'Organization'}
                       {heading !== 'orgUid' &&
@@ -147,7 +154,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                     start={false}
                     end={true}
                     selectedTheme={theme}
-                    key={'action'}></Th>
+                    key={'action'}
+                  ></Th>
                 )}
               </tr>
             </THead>
@@ -160,7 +168,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                         onClick={() => setRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
-                        key={index}>
+                        key={index}
+                      >
                         <TableCellText
                           tooltip={
                             record[key] &&
@@ -168,7 +177,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                               climateWarehouseStore,
                               `organizations[${record[key]}].name`,
                             )}: ${record[key].toString()}`
-                          }>
+                          }
+                        >
                           {key === 'orgUid' &&
                             climateWarehouseStore.organizations[
                               record[key]
@@ -206,18 +216,40 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                               }),
                               action: () => setUnitToBeSplit(record),
                             },
+                            {
+                              label: intl.formatMessage({
+                                id: 'delete-unit',
+                              }),
+                              action: () =>
+                                dispatch(deleteUnit(record.warehouseUnitId)),
+                            },
                           ]}
                         />
                       </Td>
                     )}
                     {actions === 'Projects' && (
-                      <Td
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          setEditRecord(record);
-                        }}
-                        selectedTheme={theme}>
-                        <EllipsisMenuIcon />
+                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
+                        <BasicMenu
+                          options={[
+                            {
+                              label: intl.formatMessage({
+                                id: 'edit-project',
+                              }),
+                              action: () => {
+                                setEditRecord(record);
+                              },
+                            },
+                            {
+                              label: intl.formatMessage({
+                                id: 'delete-project',
+                              }),
+                              action: () =>
+                                dispatch(
+                                  deleteProject(record.warehouseProjectId),
+                                ),
+                            },
+                          ]}
+                        />
                       </Td>
                     )}
                   </Tr>

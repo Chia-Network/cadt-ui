@@ -14,12 +14,16 @@ const initialState = {
   vintages: null,
   stagingData: null,
   organizations: null,
+  pickLists: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case climateWarehouseActions.GET_ORGANIZATIONS:
       return u({ organizations: action.payload }, state);
+
+    case climateWarehouseActions.GET_PICKLISTS:
+      return u({ pickLists: action.payload }, state);
 
     case climateWarehouseActions.GET_RATINGS:
       return u({ ratings: action.payload }, state);

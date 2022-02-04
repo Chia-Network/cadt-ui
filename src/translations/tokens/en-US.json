@@ -252,6 +252,10 @@
   "add-project": "Add Project",
   "update-project": "Update Project",
   "delete-unit": "Delete Unit",
+  "unit-deleted": "The Unit was successfully deleted.",
+  "unit-could-not-be-deleted": "The Unit could not be deleted.",
+  "project-deleted": "The Project was successfully deleted.",
+  "project-could-not-be-deleted": "The Project could not be deleted.",
   "add-unit": "Add Unit",
   "update-unit": "Update Unit",
   "split-unit": "Split Unit",
@@ -271,5 +275,8 @@
   "projects-list": "Projects List",
   "units-list": "Units List",
   "labels": "Labels",
-  "issuances": "Issuances"
+  "issuances": "Issuances",
+  "network-error": "Network Error",
+  "there-is-a-connection-error": "There is a connection error. The Climate Warehouse is inaccessible."
 }
+
