@@ -277,6 +277,7 @@
   "labels": "Labels",
   "issuances": "Issuances",
   "network-error": "Network Error",
-  "there-is-a-connection-error": "There is a connection error. The Climate Warehouse is inaccessible."
+  "there-is-a-connection-error": "There is a connection error. The Climate Warehouse is inaccessible.",
+  "staging-group-could-not-be-deleted": "The staging group could not be deleted.",
+  "staging-group-deleted": "The staging group was successfully deleted."
 }
-
