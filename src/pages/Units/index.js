@@ -131,6 +131,15 @@ const Units = withRouter(() => {
   };
 
   useEffect(() => {
+    if (notification && notification.id === 'unit-deleted') {
+      setTabValue(1);
+    }
+    if (notification && notification.id === 'transactions-committed') {
+      setTabValue(2);
+    }
+  }, [notification]);
+
+  useEffect(() => {
     if (unitsContainerRef && unitsContainerRef.current) {
       setCreateUnitModalPosition({
         left: unitsContainerRef.current.getBoundingClientRect().x,
@@ -207,28 +216,32 @@ const Units = withRouter(() => {
     if (!climateWarehouseStore.units) {
       return null;
     }
+    console.log(climateWarehouseStore);
 
-    return climateWarehouseStore.units.map(project =>
-      _.pick(project, [
+    return climateWarehouseStore.units.map(unit =>
+      _.pick(unit, [
         'warehouseUnitId',
+        'projectLocationId',
+        'unitOwner',
         'countryJurisdictionOfOwner',
         'inCountryJurisdictionOfOwner',
         'serialNumberBlock',
-        'unitIdentifier',
-        'unitType',
-        'intendedBuyerOrgUid',
+        'serialNumberPattern',
+        'vintageYear',
+        'issuance',
+        'labels',
         'marketplace',
-        'tags',
-        'unitStatus',
-        'unitTransactionType',
-        'unitStatusReason',
-        'tokenIssuanceHash',
+        'marketplaceLink',
         'marketplaceIdentifier',
-        'unitsIssuanceLocation',
+        'unitTags',
+        'unitStatus',
+        'unitStatusReason',
+        'unitType',
         'unitRegistryLink',
         'unitMarketplaceLink',
-        'correspondingAdjustmentDeclaration',
         'correspondingAdjustmentStatus',
+        'correspondingAdjustmentDeclaration',
+        'electedCorrespondingAdjustmentStatus',
         'unitCount',
       ]),
     );
@@ -240,7 +253,6 @@ const Units = withRouter(() => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    setTabValue(2);
   };
 
   const onOrganizationSelect = selectedOption => {
@@ -336,10 +348,9 @@ const Units = withRouter(() => {
                   <H3>
                     {!searchQuery && pageIsMyRegistryPage && (
                       <>
-                        <FormattedMessage id="no-projects-created" />
+                        <FormattedMessage id="no-units-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}
-                        >
+                          onClick={() => setCreate(true)}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

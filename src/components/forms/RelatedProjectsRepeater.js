@@ -14,10 +14,8 @@ function RelatedProjectsRepeater({
         values={relatedProjectsState}
         updateValues={setRelatedProjectsState}
         initialValue={{
-          projectId: '',
-          type: '',
+          relationshipType: '',
           registry: '',
-          note: ''
         }}
         component={<CreateRelatedProjectsForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}

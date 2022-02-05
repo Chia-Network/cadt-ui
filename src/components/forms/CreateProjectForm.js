@@ -21,10 +21,10 @@ import {
   DescriptionIcon,
   modalTypeEnum,
 } from '..';
-import QualificationsRepeater from './QualificationsRepeater';
-import VintageRepeater from './VintageRepeater';
+import LabelsRepeater from './LabelsRepeater';
+import IssuanceRepeater from './IssuanceRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
-import ProjectLocationsRepeater from './ProjectLocationsRepeater';
+import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -818,13 +818,13 @@ const CreateProjectForm = withRouter(
                   </ModalFormContainerStyle>
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
-                  <QualificationsRepeater
+                  <IssuanceRepeater
                     qualificationsState={newQualifications}
                     newQualificationsState={setNewQualifications}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={2}>
-                  <VintageRepeater
+                  <LabelsRepeater
                     vintageState={newVintage}
                     newVintageState={setNewVintage}
                   />
@@ -836,7 +836,7 @@ const CreateProjectForm = withRouter(
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={4}>
-                  <ProjectLocationsRepeater
+                  <LocationsRepeater
                     projectLocationsState={newProjectLocations}
                     setProjectLocationsState={setNewProjectLocations}
                   />

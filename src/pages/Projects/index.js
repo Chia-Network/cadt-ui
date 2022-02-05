@@ -36,12 +36,25 @@ import {
 } from '../../store/actions/climateWarehouseActions';
 
 const headings = [
-  'warehouseProjectId',
   'currentRegistry',
-  'registryOfOrigin',
-  'originProjectId',
-  'program',
+  'warehouseProjectId',
   'projectId',
+  'registryOfOrigin',
+  'program',
+  'projectName',
+  'projectLink',
+  'projectDeveloper',
+  'sector',
+  'projectType',
+  'projectTags',
+  'coveredByNDC',
+  'ndcInformation',
+  'projectStatus',
+  'projectStatusDate',
+  'unitMetric',
+  'methodology',
+  'validationBody',
+  'validationDate',
 ];
 
 const StyledSectionContainer = styled('div')`
@@ -118,6 +131,15 @@ const Projects = withRouter(() => {
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  useEffect(() => {
+    if (notification && notification.id === 'project-deleted') {
+      setTabValue(1);
+    }
+    if (notification && notification.id === 'transactions-committed') {
+      setTabValue(2);
+    }
+  }, [notification]);
 
   useEffect(() => {
     if (projectsContainerRef && projectsContainerRef.current) {
@@ -210,13 +232,25 @@ const Projects = withRouter(() => {
 
     return climateWarehouseStore.projects.map(project =>
       _.pick(project, [
-        'orgUid',
-        'warehouseProjectId',
         'currentRegistry',
+        'warehouseProjectId',
+        'projectId',
         'registryOfOrigin',
-        'originProjectId',
         'program',
         'projectName',
+        'projectLink',
+        'projectDeveloper',
+        'sector',
+        'projectType',
+        'projectTags',
+        'coveredByNDC',
+        'ndcInformation',
+        'projectStatus',
+        'projectStatusDate',
+        'unitMetric',
+        'methodology',
+        'validationBody',
+        'validationDate',
       ]),
     );
   }, [climateWarehouseStore.projects, climateWarehouseStore.stagingData]);
@@ -227,7 +261,6 @@ const Projects = withRouter(() => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    setTabValue(2);
   };
 
   return (

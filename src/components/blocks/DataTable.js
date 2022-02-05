@@ -230,7 +230,6 @@ const DataTable = withTheme(({ headings, data, actions }) => {
             setEditUnits(false);
             setEditRecord(null);
           }}
-          data={editRecord}
         />
       )}
       {editProjects && (
