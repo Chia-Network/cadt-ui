@@ -126,7 +126,7 @@ const CreateProjectForm = withRouter(
     };
 
     const projectWasSuccessfullyCreated =
-      notification && notification.id === 'project-successfully-created';
+      notification?.id === 'project-successfully-created';
     useEffect(() => {
       if (projectWasSuccessfullyCreated) {
         onClose();

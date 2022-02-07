@@ -195,12 +195,11 @@ const EditUnitsForm = ({ onClose }) => {
     if (isUnitValid) {
       setErrorMessage(null);
       dispatch(updateUnitsRecord(dataToSend));
-      close();
     }
   };
 
   const unitWasSuccessfullyEdited =
-    notification && notification.id === 'unit-successfully-edited';
+    notification?.id === 'unit-successfully-edited';
   useEffect(() => {
     if (unitWasSuccessfullyEdited) {
       onClose();

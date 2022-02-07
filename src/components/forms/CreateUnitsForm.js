@@ -170,7 +170,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   };
 
   const unitWasSuccessfullyCreated =
-    notification && notification.id === 'unit-successfully-created';
+    notification?.id === 'unit-successfully-created';
 
   useEffect(() => {
     if (unitWasSuccessfullyCreated) {

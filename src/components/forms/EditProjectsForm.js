@@ -20,6 +20,7 @@ import {
   modalTypeEnum,
   StyledFieldRequired,
   FieldRequired,
+  Message,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -56,6 +57,7 @@ const EditProjectsForm = ({ onClose }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
+  const { notification } = useSelector(state => state.app);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -169,8 +171,20 @@ const EditProjectsForm = ({ onClose }) => {
 
     dispatch(updateProjectRecord(dataToSend));
   };
+
+  const projectWasSuccessfullyEdited =
+    notification?.id === 'project-successfully-edited';
+  useEffect(() => {
+    if (projectWasSuccessfullyEdited) {
+      onClose();
+    }
+  }, [notification]);
+
   return (
     <>
+      {notification && !projectWasSuccessfullyEdited && (
+        <Message id={notification.id} type={notification.type} />
+      )}
       <Modal
         onOk={handleEditProjects}
         onClose={onClose}
