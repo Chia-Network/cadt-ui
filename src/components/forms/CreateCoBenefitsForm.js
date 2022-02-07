@@ -12,9 +12,9 @@ import {
   FormContainerStyle,
   Body,
   ToolTipContainer,
-  DescriptionIcon
+  DescriptionIcon,
+  LabelContainer,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -46,7 +46,8 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
               <ToolTipContainer
                 tooltip={intl.formatMessage({
                   id: 'cobenefits-cobenefit-description',
-                })}>
+                })}
+              >
                 <DescriptionIcon height="14" width="14" />
               </ToolTipContainer>
             </Body>

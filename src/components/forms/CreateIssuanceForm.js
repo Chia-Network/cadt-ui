@@ -17,8 +17,8 @@ import {
   DateSelect,
   DescriptionIcon,
   ToolTipContainer,
+  LabelContainer,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
 import { issuanceSchema } from './IssuanceValidation';
 
 const StyledLabelContainer = styled('div')`
@@ -78,7 +78,8 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-start-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -103,7 +104,8 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-end-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -128,7 +130,8 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-approach-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -163,7 +166,8 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-report-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -188,7 +192,8 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-body-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

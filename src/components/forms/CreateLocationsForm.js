@@ -14,8 +14,8 @@ import {
   Body,
   ToolTipContainer,
   DescriptionIcon,
+  LabelContainer,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -49,7 +49,8 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-country-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -75,7 +76,8 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-in-country-region-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -103,7 +105,8 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-geographic-identifier-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -116,7 +119,9 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 })}
                 state={InputStateEnum.default}
                 value={value.geographicIdentifier}
-                onChange={changeValue => onInputChange('geographicIdentifier', changeValue)}
+                onChange={changeValue =>
+                  onInputChange('geographicIdentifier', changeValue)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>

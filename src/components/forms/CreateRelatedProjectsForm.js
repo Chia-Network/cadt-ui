@@ -13,10 +13,9 @@ import {
   BodyContainer,
   Body,
   ToolTipContainer,
-  DescriptionIcon
+  DescriptionIcon,
+  LabelContainer,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
-
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -49,7 +48,8 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-relationship-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -77,7 +77,8 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-registry-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

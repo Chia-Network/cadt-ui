@@ -27,6 +27,10 @@ import {
   modalTypeEnum,
   StyledFieldRequired,
   FieldRequired,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
+  LabelContainer,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -38,19 +42,6 @@ import {
   unitStatusValues,
   unitTypeValues,
 } from '../../utils/pick-values';
-import { LabelContainer } from '../../utils/compUtils';
-
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
 
 const StyledFormContainer = styled('div')`
   display: flex;

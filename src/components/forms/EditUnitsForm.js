@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import {
   StandardInput,
   InputSizeEnum,
@@ -26,6 +25,10 @@ import {
   modalTypeEnum,
   FieldRequired,
   StyledFieldRequired,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
+  LabelContainer,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -38,18 +41,6 @@ import {
   unitStatusValues,
   unitTypeValues,
 } from '../../utils/pick-values';
-import { LabelContainer } from '../../utils/compUtils';
-
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
 
 const EditUnitsForm = ({ onClose }) => {
   const { notification } = useSelector(state => state.app);

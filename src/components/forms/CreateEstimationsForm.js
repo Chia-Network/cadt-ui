@@ -15,8 +15,8 @@ import {
   DescriptionIcon,
   ToolTipContainer,
   DateSelect,
+  LabelContainer,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
