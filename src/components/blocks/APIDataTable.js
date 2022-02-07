@@ -137,8 +137,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
               <tr>
                 {headings.map((heading, index) => (
                   <Th
-                    start={index === 0}
-                    end={!actions && index === headings.length - 1}
+                    start={index === 0 ? 1 : 0}
+                    end={!actions && index === headings.length - 1 ? 1 : 0}
                     selectedTheme={theme}
                     key={index}
                   >
@@ -151,8 +151,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                 ))}
                 {actions && (
                   <Th
-                    start={false}
-                    end={true}
+                    start={0}
+                    end={1}
                     selectedTheme={theme}
                     key={'action'}
                   ></Th>
