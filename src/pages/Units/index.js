@@ -220,7 +220,6 @@ const Units = withRouter(() => {
     if (!climateWarehouseStore.units) {
       return null;
     }
-    console.log(climateWarehouseStore);
 
     return climateWarehouseStore.units.map(unit =>
       _.pick(unit, [
