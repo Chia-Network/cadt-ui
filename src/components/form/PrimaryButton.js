@@ -27,10 +27,6 @@ const Button = styled('button')`
     background-color: ${props => (props.danger ? '#FF7875' : '#40A9FF')};
   }
 
-  &:focus {
-    background-color: ${props => (props.danger ? '#FF7875' : '#40A9FF')};
-  }
-
   &:active {
     background-color: ${props => (props.danger ? '#F5222D' : '#096DD9')};
   }
@@ -54,7 +50,7 @@ const Button = styled('button')`
       if (props.loading) {
         return `
           background-color: white;
-          :hover, :focus, :active {
+          :hover, :active {
             background-color: white;
           };
           h4 { color: #BFBFBF };
@@ -64,7 +60,6 @@ const Button = styled('button')`
       return css`
         background-color: white;
         :hover,
-        :focus,
         :active {
           background-color: white;
         }
@@ -77,8 +72,7 @@ const Button = styled('button')`
         h4 {
           color: #262626;
         }
-        h4:hover,
-        h4:focus {
+        h4:hover {
           color: #40a9ff;
         }
         h4:active {

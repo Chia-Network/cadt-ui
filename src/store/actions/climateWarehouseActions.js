@@ -502,8 +502,6 @@ export const updateProjectRecord = data => {
           ),
         );
         dispatch(getStagingData({ useMockedResponse: false }));
-        console.log('yay!');
-        dispatch(setGlobalErrorMessage(null));
       } else {
         dispatch(
           setNotificationMessage(
@@ -511,10 +509,14 @@ export const updateProjectRecord = data => {
             'project-could-not-be-edited',
           ),
         );
-        dispatch(setGlobalErrorMessage('Project could not be updated'));
       }
     } catch {
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'project-could-not-be-edited',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -682,7 +684,6 @@ export const splitUnits = data => {
           ),
         );
         dispatch(getStagingData({ useMockedResponse: false }));
-        console.log('yay!');
       } else {
         dispatch(
           setNotificationMessage(
@@ -729,8 +730,6 @@ export const updateUnitsRecord = data => {
           ),
         );
         dispatch(getStagingData({ useMockedResponse: false }));
-        console.log('yay!');
-        dispatch(setGlobalErrorMessage(null));
       } else {
         dispatch(
           setNotificationMessage(
@@ -738,10 +737,14 @@ export const updateUnitsRecord = data => {
             'unit-could-not-be-edited',
           ),
         );
-        dispatch(setGlobalErrorMessage('Unit could not be updated'));
       }
     } catch {
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-could-not-be-edited',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }

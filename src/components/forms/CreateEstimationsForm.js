@@ -31,7 +31,6 @@ const InputContainer = styled('div')`
 `;
 
 const CreateEstimationsForm = ({ value, onChange }) => {
-  console.log(value);
   const intl = useIntl();
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
@@ -50,7 +49,8 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'estimations-crediting-period-start-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -74,7 +74,8 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'estimations-crediting-period-end-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -98,7 +99,8 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-unit-count-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -129,7 +131,8 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-verification-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -153,7 +156,8 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-verification-body-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

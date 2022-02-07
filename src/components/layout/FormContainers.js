@@ -1,4 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
+import { Body } from '../../components';
 
 export const ModalFormContainerStyle = styled('div')`
   width: 100%;
@@ -13,10 +16,24 @@ export const ModalFormContainerStyle = styled('div')`
 export const FormContainerStyle = styled('div')`
   display: flex;
   justify-content: flex-start;
+  gap: 2.5rem;
 `;
 
 export const BodyContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  padding-right: 4.125rem;
 `;
+
+export const StyledFieldRequired = styled('div')`
+  height: 35px;
+`;
+
+export const FieldRequired = () => {
+  return (
+    <StyledFieldRequired>
+      <Body size="Small">
+        *<FormattedMessage id="required-field" />
+      </Body>
+    </StyledFieldRequired>
+  );
+};

@@ -30,7 +30,6 @@ const InputContainer = styled('div')`
 `;
 
 const CreateRatingsForm = ({ value, onChange }) => {
-  console.log(value);
   const intl = useIntl();
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
@@ -49,7 +48,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-id-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -75,7 +75,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -103,7 +104,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-range-highest-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -133,7 +135,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-range-lowest-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -161,7 +164,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -187,7 +191,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-link-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -200,7 +205,9 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 })}
                 state={InputStateEnum.default}
                 value={value.ratingLink}
-                onChange={changeValue => onInputChange('rating-link', changeValue)}
+                onChange={changeValue =>
+                  onInputChange('rating-link', changeValue)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>

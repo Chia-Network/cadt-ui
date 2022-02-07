@@ -133,11 +133,14 @@ const Projects = withRouter(() => {
   };
 
   useEffect(() => {
-    if (notification && notification.id === 'project-deleted') {
-      setTabValue(1);
-    }
-    if (notification && notification.id === 'transactions-committed') {
-      setTabValue(2);
+    const switchTabBySuccessfulRequest = {
+      'project-deleted': 1,
+      'project-successfully-created': 1,
+      'project-successfully-edited': 1,
+      'transactions-committed': 2,
+    };
+    if (switchTabBySuccessfulRequest[notification?.id]) {
+      setTabValue(switchTabBySuccessfulRequest[notification.id]);
     }
   }, [notification]);
 

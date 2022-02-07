@@ -15,7 +15,6 @@ import {
   deleteUnit,
 } from '../../store/actions/climateWarehouseActions';
 
-
 const Table = styled('table')`
   box-sizing: border-box;
   background-color: white;
@@ -138,8 +137,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
               <tr>
                 {headings.map((heading, index) => (
                   <Th
-                    start={index === 0}
-                    end={!actions && index === headings.length - 1}
+                    start={index === 0 ? 1 : 0}
+                    end={!actions && index === headings.length - 1 ? 1 : 0}
                     selectedTheme={theme}
                     key={index}
                   >
@@ -152,8 +151,8 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                 ))}
                 {actions && (
                   <Th
-                    start={false}
-                    end={true}
+                    start={0}
+                    end={1}
                     selectedTheme={theme}
                     key={'action'}
                   ></Th>
@@ -162,101 +161,98 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
             </THead>
             <tbody style={{ position: 'relative' }}>
               {data.map((record, index) => (
-                <>
-                  <Tr index={index} selectedTheme={theme} key={index}>
-                    {Object.keys(record).map((key, index) => (
-                      <Td
-                        onClick={() => setRecord(record)}
-                        selectedTheme={theme}
-                        columnId={key}
-                        key={index}
+                <Tr index={index} selectedTheme={theme} key={index}>
+                  {Object.keys(record).map((key, index) => (
+                    <Td
+                      onClick={() => setRecord(record)}
+                      selectedTheme={theme}
+                      columnId={key}
+                      key={index}
+                    >
+                      <TableCellText
+                        tooltip={
+                          record[key] &&
+                          `${_.get(
+                            climateWarehouseStore,
+                            `organizations[${record[key]}].name`,
+                          )}: ${record[key].toString()}`
+                        }
                       >
-                        <TableCellText
-                          tooltip={
-                            record[key] &&
-                            `${_.get(
-                              climateWarehouseStore,
-                              `organizations[${record[key]}].name`,
-                            )}: ${record[key].toString()}`
-                          }
-                        >
-                          {key === 'orgUid' &&
-                            climateWarehouseStore.organizations[
-                              record[key]
-                            ] && (
-                              <img
-                                src={
-                                  climateWarehouseStore.organizations[
-                                    record[key]
-                                  ].icon
-                                }
-                              />
-                            )}
+                        {key === 'orgUid' &&
+                          climateWarehouseStore.organizations[record[key]] && (
+                            <img
+                              src={
+                                climateWarehouseStore.organizations[record[key]]
+                                  .icon
+                              }
+                            />
+                          )}
 
-                          {key !== 'orgUid' &&
-                            record[key] &&
-                            record[key].toString()}
-                        </TableCellText>
-                      </Td>
-                    ))}
-                    {actions === 'Units' && (
-                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
-                        <BasicMenu
-                          options={[
-                            {
-                              label: intl.formatMessage({
-                                id: 'edit-unit',
-                              }),
-                              action: () => {
-                                setEditRecord(record);
-                              },
+                        {key !== 'orgUid' &&
+                          record[key] &&
+                          record[key].toString()}
+                      </TableCellText>
+                    </Td>
+                  ))}
+
+                  {actions === 'Units' && (
+                    <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
+                      <BasicMenu
+                        options={[
+                          {
+                            label: intl.formatMessage({
+                              id: 'edit-unit',
+                            }),
+                            action: () => {
+                              setEditRecord(record);
                             },
-                            {
-                              label: intl.formatMessage({
-                                id: 'split',
+                          },
+                          {
+                            label: intl.formatMessage({
+                              id: 'split',
+                            }),
+                            action: () => setUnitToBeSplit(record),
+                          },
+                          {
+                            label: intl.formatMessage({
+                              id: 'delete-unit',
+                            }),
+                            action: () =>
+                              setConfirmDeletionModal({
+                                warehouseUnitId: record.warehouseUnitId,
                               }),
-                              action: () => setUnitToBeSplit(record),
+                          },
+                        ]}
+                      />
+                    </Td>
+                  )}
+
+                  {actions === 'Projects' && (
+                    <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
+                      <BasicMenu
+                        options={[
+                          {
+                            label: intl.formatMessage({
+                              id: 'edit-project',
+                            }),
+                            action: () => {
+                              setEditRecord(record);
                             },
-                            {
-                              label: intl.formatMessage({
-                                id: 'delete-unit',
+                          },
+                          {
+                            label: intl.formatMessage({
+                              id: 'delete-project',
+                            }),
+                            action: () =>
+                              setConfirmDeletionModal({
+                                warehouseProjectId: record.warehouseProjectId,
                               }),
-                              action: () =>
-                                setConfirmDeletionModal({
-                                  warehouseUnitId: record.warehouseUnitId,
-                                }),
-                            },
-                          ]}
-                        />
-                      </Td>
-                    )}
-                    {actions === 'Projects' && (
-                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
-                        <BasicMenu
-                          options={[
-                            {
-                              label: intl.formatMessage({
-                                id: 'edit-project',
-                              }),
-                              action: () => {
-                                setEditRecord(record);
-                              },
-                            },
-                            {
-                              label: intl.formatMessage({
-                                id: 'delete-project',
-                              }),
-                              action: () =>
-                                setConfirmDeletionModal({
-                                  warehouseProjectId: record.warehouseProjectId,
-                                }),
-                            },
-                          ]}
-                        />
-                      </Td>
-                    )}
-                  </Tr>
-                </>
+                          },
+                        ]}
+                      />
+                    </Td>
+                  )}
+                </Tr>
               ))}
             </tbody>
           </Table>
