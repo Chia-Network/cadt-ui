@@ -25,6 +25,8 @@ import {
   YearSelect,
   unitsSchema,
   modalTypeEnum,
+  StyledFieldRequired,
+  FieldRequired,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -244,10 +246,12 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}>
+              index={0}
+            >
               <ModalFormContainerStyle>
                 <FormContainerStyle>
                   <BodyContainer>
+                    <FieldRequired />
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
@@ -258,7 +262,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-project-location-id-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -296,7 +301,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-owner-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -334,7 +340,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-country-jurisdiction-of-owner-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -374,7 +381,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-in-country-jurisdiction-of-owner-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -414,7 +422,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-serial-number-block-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -452,7 +461,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-serial-number-pattern-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -489,7 +499,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-vintage-year-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -512,7 +523,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-type-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -543,7 +555,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -566,7 +579,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       </InputContainer>
                     </StyledFieldContainer>
                   </BodyContainer>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <BodyContainer>
+                    <StyledFieldRequired />
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
@@ -576,7 +590,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-link-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -607,7 +622,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-identifier-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -638,7 +654,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-tags-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -670,7 +687,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-status-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -701,7 +719,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-status-reason-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -733,7 +752,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-registry-link-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -771,7 +791,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-corresponding-adjustment-declaration-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -805,7 +826,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-corresponding-adjustment-status-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -829,7 +851,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         </Body>
                       )}
                     </StyledFieldContainer>
-                  </div>
+                  </BodyContainer>
                 </FormContainerStyle>
               </ModalFormContainerStyle>
             </TabPanel>

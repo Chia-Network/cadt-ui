@@ -20,6 +20,8 @@ import {
   ToolTipContainer,
   DescriptionIcon,
   modalTypeEnum,
+  StyledFieldRequired,
+  FieldRequired,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -190,6 +192,7 @@ const CreateProjectForm = withRouter(
                   <ModalFormContainerStyle>
                     <FormContainerStyle>
                       <BodyContainer>
+                        <FieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
                             <Body style={{ color: '#262626' }}>
@@ -507,7 +510,8 @@ const CreateProjectForm = withRouter(
                           </InputContainer>
                         </StyledFieldContainer>
                       </BodyContainer>
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <BodyContainer>
+                        <StyledFieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
                             <Body style={{ color: '#262626' }}>
@@ -813,7 +817,7 @@ const CreateProjectForm = withRouter(
                             />
                           </InputContainer>
                         </StyledFieldContainer>
-                      </div>
+                      </BodyContainer>
                     </FormContainerStyle>
                   </ModalFormContainerStyle>
                 </TabPanel>

@@ -18,6 +18,8 @@ import {
   DescriptionIcon,
   DateSelect,
   modalTypeEnum,
+  StyledFieldRequired,
+  FieldRequired,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -164,7 +166,7 @@ const EditProjectsForm = ({ onClose }) => {
     if (!_.isEmpty(relatedProjects)) {
       dataToSend.relatedProjects = relatedProjects;
     }
-    
+
     dispatch(updateProjectRecord(dataToSend));
   };
   return (
@@ -219,6 +221,7 @@ const EditProjectsForm = ({ onClose }) => {
                 <ModalFormContainerStyle>
                   <FormContainerStyle>
                     <BodyContainer>
+                      <FieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
@@ -228,7 +231,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-id-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -257,7 +261,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-registry-of-origin-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -479,7 +484,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-tags-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -502,7 +508,8 @@ const EditProjectsForm = ({ onClose }) => {
                         </InputContainer>
                       </StyledFieldContainer>
                     </BodyContainer>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <BodyContainer>
+                      <StyledFieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body style={{ color: '#262626' }}>
@@ -512,7 +519,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-covered-by-ndc-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -544,7 +552,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-ndc-information-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -575,7 +584,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-status-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -606,7 +616,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-project-status-date-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -628,7 +639,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-unit-metric-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -659,7 +671,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-methodology-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -691,7 +704,8 @@ const EditProjectsForm = ({ onClose }) => {
                             <ToolTipContainer
                               tooltip={intl.formatMessage({
                                 id: 'projects-validation-body-description',
-                              })}>
+                              })}
+                            >
                               <DescriptionIcon height="14" width="14" />
                             </ToolTipContainer>
                           </Body>
@@ -736,7 +750,7 @@ const EditProjectsForm = ({ onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                    </div>
+                    </BodyContainer>
                   </FormContainerStyle>
                 </ModalFormContainerStyle>
               </TabPanel>
