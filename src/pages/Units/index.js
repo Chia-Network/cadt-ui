@@ -131,11 +131,15 @@ const Units = withRouter(() => {
   };
 
   useEffect(() => {
-    if (notification && notification.id === 'unit-deleted') {
-      setTabValue(1);
-    }
-    if (notification && notification.id === 'transactions-committed') {
-      setTabValue(2);
+    const switchTabBySuccessfulRequest = {
+      'unit-deleted': 1,
+      'unit-successfully-created': 1,
+      'unit-successfully-edited': 1,
+      'unit-successfully-split': 1,
+      'transactions-committed': 2,
+    };
+    if (switchTabBySuccessfulRequest[notification?.id]) {
+      setTabValue(switchTabBySuccessfulRequest[notification.id]);
     }
   }, [notification]);
 
@@ -350,7 +354,8 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-units-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}>
+                          onClick={() => setCreate(true)}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

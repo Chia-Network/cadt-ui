@@ -199,10 +199,10 @@ const EditUnitsForm = ({ onClose }) => {
     }
   };
 
-  const unitWasSuccessfullyCreated =
+  const unitWasSuccessfullyEdited =
     notification && notification.id === 'unit-successfully-edited';
   useEffect(() => {
-    if (unitWasSuccessfullyCreated) {
+    if (unitWasSuccessfullyEdited) {
       onClose();
     }
   }, [notification]);
@@ -227,7 +227,7 @@ const EditUnitsForm = ({ onClose }) => {
 
   return (
     <>
-      {notification && !unitWasSuccessfullyCreated && (
+      {notification && !unitWasSuccessfullyEdited && (
         <Message id={notification.id} type={notification.type} />
       )}
       <Modal
