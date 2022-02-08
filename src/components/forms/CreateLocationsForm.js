@@ -77,7 +77,7 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 options={selectCountriesOptions}
                 selected={
                   value.country
-                    ? { value: value.country, label: value.country }
+                    ? [{ value: value.country, label: value.country }]
                     : undefined
                 }
                 state={SelectStateEnum.default}

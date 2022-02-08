@@ -141,7 +141,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 })}
                 selected={
                   value.labelType
-                    ? { value: value.labelType, label: value.labelType }
+                    ? [{ value: value.labelType, label: value.labelType }]
                     : undefined
                 }
                 onChange={selectedOptions =>

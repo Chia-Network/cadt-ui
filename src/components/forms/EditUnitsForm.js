@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StandardInput,
@@ -39,7 +39,6 @@ import {
   correspondingAdjustmentDeclarationValues,
   correspondingAdjustmentStatusValues,
   unitStatusValues,
-  unitTypeValues,
 } from '../../utils/pick-values';
 
 const EditUnitsForm = ({ onClose }) => {
@@ -66,11 +65,20 @@ const EditUnitsForm = ({ onClose }) => {
   const climatewarehouseUnits = useSelector(
     state => state.climateWarehouse.units[0],
   );
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectUnitTypeOptions = useMemo(
+    () =>
+      pickLists.unitType.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-
   const errorMessageAlert = useCallback(
     name => {
       return errorMessage?.map(err => {
@@ -162,7 +170,7 @@ const EditUnitsForm = ({ onClose }) => {
       dataToSend.labels = labels;
     }
     if (!_.isEmpty(unitType)) {
-      dataToSend.unitType = unitType[0].value;
+      dataToSend.unitType = unitType;
     }
     if (!_.isEmpty(unitStatus)) {
       dataToSend.unitStatus = unitStatus[0].value;
@@ -511,11 +519,13 @@ const EditUnitsForm = ({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={unitTypeValues}
-                            onChange={value => setUnitType(value)}
-                            placeholder={`-- ${intl.formatMessage({
+                            options={selectUnitTypeOptions}
+                            onChange={selectedOptions =>
+                              setUnitType(selectedOptions[0].value)
+                            }
+                            placeholder={intl.formatMessage({
                               id: 'select',
-                            })} --`}
+                            })}
                             selected={[
                               {
                                 label: climatewarehouseUnits.unitType,

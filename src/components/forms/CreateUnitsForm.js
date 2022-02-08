@@ -535,7 +535,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           options={selectUnitTypeOptions}
                           selected={
                             unitType
-                              ? { value: unitType, label: unitType }
+                              ? [{ value: unitType, label: unitType }]
                               : undefined
                           }
                           onChange={selectedOptions =>
