@@ -258,7 +258,7 @@ const EditUnitsForm = ({ onClose }) => {
                       <FieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="project-location-id" />
@@ -293,7 +293,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="unit-owner" />
@@ -328,7 +328,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="country-jurisdiction-of-owner" />
@@ -365,7 +365,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="in-country-jurisdiction-of-owner" />
                             </LabelContainer>
@@ -401,7 +401,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="serial-number-block" />
@@ -436,7 +436,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="serial-number-pattern" />
@@ -471,7 +471,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="vintage-year" />
                             </LabelContainer>
@@ -494,7 +494,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="unit-type" />
@@ -529,7 +529,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="marketplace" />
                             </LabelContainer>
@@ -564,7 +564,7 @@ const EditUnitsForm = ({ onClose }) => {
                       <StyledFieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="marketplace-link" />
                             </LabelContainer>
@@ -596,7 +596,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="marketplace-identifier" />
                             </LabelContainer>
@@ -628,7 +628,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="unit-tags" />
                             </LabelContainer>
@@ -660,7 +660,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="unit-status" />
@@ -695,7 +695,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="unit-status-reason" />
                             </LabelContainer>
@@ -727,7 +727,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="unit-registry-link" />
@@ -762,7 +762,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="corresponding-adjustment-declaration" />
@@ -805,7 +805,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="corresponding-adjustment-status" />

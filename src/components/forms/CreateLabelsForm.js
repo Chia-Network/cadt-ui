@@ -67,7 +67,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="label" />
                 </LabelContainer>
@@ -98,7 +98,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="label-type" />
                 </LabelContainer>
@@ -131,7 +131,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="crediting-period-start-date" />
                 </LabelContainer>
@@ -157,7 +157,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="crediting-period-end-date" />
                 </LabelContainer>
@@ -183,7 +183,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="validity-period-start-date" />
                 </LabelContainer>
@@ -211,7 +211,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="validity-period-end-date" />
                 </LabelContainer>
@@ -237,7 +237,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="unit-quantity" />
                 </LabelContainer>
@@ -271,7 +271,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="label-link" />
                 </LabelContainer>

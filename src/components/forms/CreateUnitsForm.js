@@ -245,14 +245,14 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <FieldRequired />
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="project-location-id" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
-                              id: 'units-project-location-id-description',
+                              id: 'project-location-id',
                             })}
                           >
                             <DescriptionIcon height="14" width="14" />
@@ -284,7 +284,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="unit-owner" />
@@ -323,7 +323,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="country-jurisdiction-of-owner" />
@@ -364,7 +364,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="in-country-jurisdiction-of-owner" />
@@ -405,7 +405,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="serial-number-block" />
@@ -444,7 +444,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="serial-number-pattern" />
@@ -483,7 +483,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body style={{ color: '#262626' }}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="vintage-year" />
                           </LabelContainer>
@@ -506,7 +506,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="unit-type" />
@@ -539,7 +539,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="marketplace" />
                           </LabelContainer>
@@ -574,7 +574,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <StyledFieldRequired />
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="marketplace-link" />
                           </LabelContainer>
@@ -606,7 +606,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="marketplace-identifier" />
                           </LabelContainer>
@@ -638,7 +638,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="unit-tags" />
                           </LabelContainer>
@@ -670,7 +670,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="unit-status" />
@@ -703,7 +703,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="unit-status-reason" />
                           </LabelContainer>
@@ -735,7 +735,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="unit-registry-link" />
@@ -774,7 +774,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="corresponding-adjustment-declaration" />
@@ -809,7 +809,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="corresponding-adjustment-status" />

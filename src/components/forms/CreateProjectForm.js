@@ -186,7 +186,7 @@ const CreateProjectForm = withRouter(
                         <FieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="registry-of-origin" />
                               </LabelContainer>
@@ -218,7 +218,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="origin-project-id" />
                               </LabelContainer>
@@ -250,7 +250,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="program" />
                               </LabelContainer>
@@ -282,7 +282,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-id" />
                               </LabelContainer>
@@ -312,7 +312,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-name" />
                               </LabelContainer>
@@ -344,7 +344,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-link" />
                               </LabelContainer>
@@ -376,7 +376,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-developer" />
                               </LabelContainer>
@@ -408,7 +408,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="sector" />
                               </LabelContainer>
@@ -440,7 +440,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-type" />
                               </LabelContainer>
@@ -470,7 +470,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="covered-by-ndc" />
                               </LabelContainer>
@@ -505,7 +505,7 @@ const CreateProjectForm = withRouter(
                         <StyledFieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="ndc-linkage" />
                               </LabelContainer>
@@ -537,7 +537,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-status" />
                               </LabelContainer>
@@ -569,7 +569,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-status-date" />
                               </LabelContainer>
@@ -592,7 +592,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="unit-metric" />
                               </LabelContainer>
@@ -624,7 +624,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="methodology" />
                               </LabelContainer>
@@ -656,7 +656,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="methodology-version" />
                               </LabelContainer>
@@ -688,7 +688,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="validation-approach" />
                               </LabelContainer>
@@ -720,7 +720,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="validation-date" />
                               </LabelContainer>
@@ -743,7 +743,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="estimated-annual-average-emission-reduction" />
                               </LabelContainer>
@@ -778,7 +778,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-tag" />
                               </LabelContainer>

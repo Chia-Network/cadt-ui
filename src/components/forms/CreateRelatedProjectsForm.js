@@ -41,7 +41,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="relationship-type" />
                 </LabelContainer>
@@ -70,7 +70,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="registry" />
                 </LabelContainer>

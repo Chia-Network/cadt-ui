@@ -188,7 +188,7 @@ const CreateOrgForm = ({ onClose }) => {
             </Body>
             <StyledFieldContainer>
               <StyledLabelContainer>
-                <Body color={'#262626'}>
+                <Body>
                   *<FormattedMessage id="organization-name" />
                 </Body>
               </StyledLabelContainer>
@@ -208,7 +208,7 @@ const CreateOrgForm = ({ onClose }) => {
             </StyledFieldContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
-                <Body color={'#262626'}>
+                <Body>
                   *<FormattedMessage id="organization-icon" />
                 </Body>
               </StyledLabelContainer>
@@ -236,7 +236,7 @@ const CreateOrgForm = ({ onClose }) => {
             </StyledFieldContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
-                <Body color={'#262626'}>
+                <Body>
                   <FormattedMessage id="organization-website" />
                 </Body>
               </StyledLabelContainer>

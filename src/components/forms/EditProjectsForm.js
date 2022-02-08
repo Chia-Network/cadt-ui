@@ -229,7 +229,7 @@ const EditProjectsForm = ({ onClose }) => {
                       <FieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-id" />
                             </LabelContainer>
@@ -259,7 +259,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="registry-of-origin" />
                             </LabelContainer>
@@ -291,7 +291,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="program" />
                             </LabelContainer>
@@ -324,7 +324,7 @@ const EditProjectsForm = ({ onClose }) => {
 
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-name" />
                             </LabelContainer>
@@ -356,7 +356,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-link" />
                             </LabelContainer>
@@ -388,7 +388,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-developer" />
                             </LabelContainer>
@@ -420,7 +420,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="sector" />
                             </LabelContainer>
@@ -452,7 +452,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-type" />
                             </LabelContainer>
@@ -482,7 +482,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-tags" />
                             </LabelContainer>
@@ -517,7 +517,7 @@ const EditProjectsForm = ({ onClose }) => {
                       <StyledFieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="covered-by-ndc" />
                             </LabelContainer>
@@ -550,7 +550,7 @@ const EditProjectsForm = ({ onClose }) => {
 
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="ndc-information" />
                             </LabelContainer>
@@ -582,7 +582,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-status" />
                             </LabelContainer>
@@ -614,7 +614,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-status-date" />
                             </LabelContainer>
@@ -637,7 +637,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="unit-metric" />
                             </LabelContainer>
@@ -669,7 +669,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="methodology" />
                             </LabelContainer>
@@ -702,7 +702,7 @@ const EditProjectsForm = ({ onClose }) => {
 
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="validation-body" />
                             </LabelContainer>
@@ -734,7 +734,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="validation-date" />
                             </LabelContainer>
