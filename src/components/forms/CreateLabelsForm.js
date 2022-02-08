@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useFormik } from 'formik';
 
 import {
   StandardInput,
@@ -32,33 +32,44 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateLabelsForm = ({ value, onChange }) => {
-  const [errorLabelMessage, setErrorLabelMessage] = useState({});
+const CreateLabelsForm = ({ value, onChange, setLabelValid, labelRef }) => {
   const intl = useIntl();
 
-  useEffect(() => {
-    const errors = async () => {
-      await labelSchema
-        .validate(value, { abortEarly: false })
-        .catch(({ errors }) => {
-          setErrorLabelMessage(errors);
-        });
-    };
-    errors();
-  }, [value]);
+  const formik = useFormik({
+    initialValues: value,
+    validationSchema: labelSchema,
+    validateOnChange: true,
+    onSubmit: () => {},
+  });
 
-  const labelErrorMessage = name => {
-    if (!_.isEmpty(errorLabelMessage)) {
-      for (let message of errorLabelMessage) {
-        if (message.includes(name)) {
-          return (
-            <Body size="Small" color="red">
-              {message}
-            </Body>
-          );
-        }
+  console.log(formik.errors);
+
+  useEffect(() => {
+    labelRef.current = formik.handleSubmit;
+  }, []);
+
+  useEffect(() => {
+    const labelResult = async () => {
+      const isLabelValid = await labelSchema.isValid(formik.values);
+      if (isLabelValid) {
+        setLabelValid(true);
+      } else {
+        setLabelValid(false);
+      }
+    };
+    labelResult();
+    onChange(formik.values);
+  }, [formik.values]);
+
+  const errorInputAlert = name => {
+    if (formik.touched[name]) {
+      if (formik.errors[name]) {
+        return InputVariantEnum.error;
+      } else {
+        return InputVariantEnum.success;
       }
     }
+    return InputVariantEnum.default;
   };
 
   return (
@@ -81,19 +92,23 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={labelErrorMessage('Label') && InputVariantEnum.error}
+                name="label"
+                onInputBlur={formik.handleBlur}
+                variant={errorInputAlert('label')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'label',
                 })}
                 state={InputStateEnum.default}
-                value={value.label}
-                onChange={event => {
-                  onChange({ ...value, label: event });
-                }}
+                value={formik.values.label}
+                onChange={formik.handleChange}
               />
             </InputContainer>
-            {labelErrorMessage('Label')}
+            {formik.errors.label && formik.touched.label && (
+              <Body size="Small" color="red">
+                {formik.errors.label}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -111,21 +126,23 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={
-                  labelErrorMessage('labelType') && InputVariantEnum.error
-                }
+                name="labelType"
+                variant={errorInputAlert('labelType')}
+                onInputBlur={formik.handleBlur}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'label-type',
                 })}
                 state={InputStateEnum.default}
                 value={value.labelType}
-                onChange={event => {
-                  onChange({ ...value, labelType: event });
-                }}
+                onChange={formik.handleChange}
               />
             </InputContainer>
-            {labelErrorMessage('labelType')}
+            {formik.errors.labelType && formik.touched.labelType && (
+              <Body size="Small" color="red">
+                {formik.errors.labelType}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -144,13 +161,17 @@ const CreateLabelsForm = ({ value, onChange }) => {
             <InputContainer>
               <DateSelect
                 size="large"
-                dateValue={value.creditingPeriodStartDate}
-                setDateValue={event =>
-                  onChange({ ...value, creditingPeriodStartDate: event })
+                dateValue={formik.values.creditingPeriodStartDate}
+                setDateValue={value =>
+                  formik.setFieldValue('creditingPeriodStartDate', value)
                 }
               />
             </InputContainer>
-            {labelErrorMessage('creditingPeriodStartDate')}
+            {formik.errors.creditingPeriodStartDate && (
+              <Body size="Small" color="red">
+                {formik.errors.creditingPeriodStartDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -168,14 +189,21 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                name="creditingPeriodEndDate"
+                onBlur={formik.handleBlur}
                 size="large"
-                dateValue={value.creditingPeriodEndDate}
-                setDateValue={event =>
-                  onChange({ ...value, creditingPeriodEndDate: event })
+                dateValue={formik.values.creditingPeriodEndDate}
+                setDateValue={value =>
+                  formik.setFieldValue('creditingPeriodEndDate', value)
                 }
               />
             </InputContainer>
-            {labelErrorMessage('creditingPeriodEndDate')}
+            {formik.errors.creditingPeriodEndDate &&
+              formik.touched.creditingPeriodEndDate && (
+                <Body size="Small" color="red">
+                  {formik.errors.creditingPeriodEndDate}
+                </Body>
+              )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -193,14 +221,21 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                name="validityPeriodStartDate"
+                onBlur={formik.handleBlur}
                 size="large"
-                dateValue={value.validityPeriodStartDate}
-                setDateValue={event =>
-                  onChange({ ...value, validityPeriodStartDate: event })
+                dateValue={formik.values.validityPeriodStartDate}
+                setDateValue={value =>
+                  formik.setFieldValue('validityPeriodStartDate', value)
                 }
               />
             </InputContainer>
-            {labelErrorMessage('validityPeriodStartDate')}
+            {formik.errors.validityPeriodStartDate &&
+              formik.touched.validityPeriodStartDate && (
+                <Body size="Small" color="red">
+                  {formik.errors.validityPeriodStartDate}
+                </Body>
+              )}
           </StyledFieldContainer>
         </BodyContainer>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -221,13 +256,18 @@ const CreateLabelsForm = ({ value, onChange }) => {
             <InputContainer>
               <DateSelect
                 size="large"
-                dateValue={value.validityPeriodEndDate}
-                setDateValue={event =>
-                  onChange({ ...value, validityPeriodEndDate: event })
+                dateValue={formik.values.validityPeriodEndDate}
+                setDateValue={value =>
+                  formik.setFieldValue('validityPeriodEndDate', value)
                 }
               />
             </InputContainer>
-            {labelErrorMessage('validityPeriodEndDate')}
+            {formik.errors.validityPeriodEndDate &&
+              formik.touched.validityPeriodEndDate && (
+                <Body size="Small" color="red">
+                  {formik.errors.validityPeriodEndDate}
+                </Body>
+              )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -245,22 +285,19 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={
-                  labelErrorMessage('unitQuantity') && InputVariantEnum.error
-                }
+                name="unitQuantity"
                 type="number"
+                onInputBlur={formik.handleBlur}
+                variant={errorInputAlert('unitQuantity')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'unit-quantity',
                 })}
                 state={InputStateEnum.default}
-                value={value.unitQuantity}
-                onChange={event => {
-                  onChange({ ...value, unitQuantity: event });
-                }}
+                value={formik.values.unitQuantity}
+                onChange={formik.handleChange}
               />
             </InputContainer>
-            {labelErrorMessage('unitQuantity')}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -278,21 +315,23 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={
-                  labelErrorMessage('labelLink') && InputVariantEnum.error
-                }
+                name="labelLink"
+                onInputBlur={formik.handleBlur}
+                variant={errorInputAlert('labelLink')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'label-link',
                 })}
                 state={InputStateEnum.default}
-                value={value.labelLink}
-                onChange={event => {
-                  onChange({ ...value, labelLink: event });
-                }}
+                value={formik.values.labelLink}
+                onChange={formik.handleChange}
               />
             </InputContainer>
-            {labelErrorMessage('labelLink')}
+            {formik.errors.labelLink && formik.touched.labelLink && (
+              <Body size="Small" color="red">
+                {formik.errors.labelLink}
+              </Body>
+            )}
           </StyledFieldContainer>
         </div>
       </FormContainerStyle>

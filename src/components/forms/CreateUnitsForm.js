@@ -1,9 +1,10 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
+import { useFormik } from 'formik';
 
 import {
   StandardInput,
@@ -63,111 +64,87 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   const { notification } = useSelector(state => state.app);
   const [newLabels, setNewLabels] = useState([]);
   const [newIssuance, setNewIssuance] = useState([]);
-  const [year, setYear] = useState();
-  const [errorMessage, setErrorMessage] = useState({});
+  const [labelValid, setLabelValid] = useState();
+  const [issuanceValid, setIssuanceValid] = useState();
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const [unitType, setUnitType] = useState(null);
-  const [unitStatus, setUnitStatus] = useState(null);
-  const [
-    selectedCorrespondingAdjustmentDeclaration,
-    setSelectedCorrespondingAdjustmentDeclaration,
-  ] = useState(null);
-  const [
-    selectedCorrespondingAdjustmentStatus,
-    setSelectedCorrespondingAdjustmentStatus,
-  ] = useState(null);
-
-  const [newUnits, setNewUnits] = useState({
-    projectLocationId: '',
-    unitOwner: '',
-    countryJurisdictionOfOwner: '',
-    inCountryJurisdictionOfOwner: '',
-    serialNumberBlock: '',
-    serialNumberPattern: '',
-    marketplace: '',
-    marketplaceLink: '',
-    marketplaceIdentifier: '',
-    unitTags: '',
-    unitStatusReason: '',
-    unitRegistryLink: '',
-    unitType: '',
-    unitStatus: '',
-    correspondingAdjustmentDeclaration: '',
-    correspondingAdjustmentStatus: '',
-  });
+  const labelRef = useRef(null);
+  const issuanceRef = useRef(null);
 
   const handleEditUnits = async () => {
-    setErrorMessage({});
-    const dataToSend = _.cloneDeep(newUnits);
+    const dataToSend = _.cloneDeep(formik.values);
+    const isUnitValid = await unitsSchema.isValid(dataToSend);
+
+    if (tabValue === 0 && isUnitValid) {
+      return setTabValue(prev => prev + 1);
+    } else if (tabValue === 0 && !isUnitValid) {
+      formik.handleSubmit();
+      return null;
+    }
 
     if (!_.isEmpty(newLabels) && tabValue === 1) {
-      for (let i = 0; i < newLabels.length; i++) {
-        for (let key of Object.keys(newLabels[i])) {
-          if (newLabels[i][key] === '') {
-            delete newLabels[i][key];
-          }
-        }
+      labelRef.current();
+      if (labelValid) {
+        setTabValue(prev => prev + 1);
+      } else {
+        return null;
       }
-      dataToSend.labels = newLabels;
     } else if (_.isEmpty(newLabels) && tabValue === 1) {
-      setTabValue(prev => prev + 1);
+      return setTabValue(prev => prev + 1);
     }
 
-    if (!_.isEmpty(newIssuance)) {
-      for (let key of Object.keys(newIssuance[0])) {
-        if (newIssuance[0][key] === '') {
-          delete newIssuance[0][key];
+    if (tabValue === 2 && !_.isEmpty(newIssuance)) {
+      issuanceRef.current();
+    }
+console.log(newLabels)
+    if (tabValue === 2) {
+      if (isUnitValid) {
+        if (labelValid) {
+          dataToSend.labels = newLabels;
         }
-      }
-
-      dataToSend.issuance = _.head(newIssuance);
-    }
-
-    if (!_.isEmpty(unitType)) {
-      dataToSend.unitType = unitType[0].value;
-    }
-    if (!_.isEmpty(unitStatus)) {
-      dataToSend.unitStatus = unitStatus[0].value;
-    }
-    if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
-      dataToSend.correspondingAdjustmentDeclaration =
-        selectedCorrespondingAdjustmentDeclaration[0].value;
-    }
-    if (!_.isEmpty(year)) {
-      dataToSend.vintageYear = year;
-    }
-    if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
-      dataToSend.correspondingAdjustmentStatus =
-        selectedCorrespondingAdjustmentStatus[0].value;
-    }
-    await unitsSchema
-      .validate(dataToSend, { abortEarly: false })
-      .catch(({ errors }) => {
+        if (issuanceValid) {
+          dataToSend.issuance = newIssuance[0];
+          return dispatch(postNewUnits(dataToSend));
+        }
         for (let key in dataToSend) {
-          for (let err of errors) {
-            if (err.includes(key)) {
-              setErrorMessage(prev => ({ ...prev, [key]: err }));
-            }
+          if (dataToSend[key] === '') {
+            delete dataToSend[key];
           }
         }
-      });
-
-    const isUnitValid = await unitsSchema.isValid(dataToSend);
-    if (tabValue === 0 && isUnitValid) {
-      setTabValue(prev => prev + 1);
-    }
-
-    if (tabValue === 2) {
-      for (let key in dataToSend) {
-        if (dataToSend[key] === '') {
-          delete dataToSend[key];
+        if (_.isEmpty(newIssuance)) {
+          return dispatch(postNewUnits(dataToSend));
         }
+      } else {
+        return null;
       }
-      dispatch(postNewUnits(dataToSend));
     }
   };
+
+  const formik = useFormik({
+    initialValues: {
+      projectLocationId: '',
+      unitOwner: '',
+      countryJurisdictionOfOwner: '',
+      inCountryJurisdictionOfOwner: '',
+      serialNumberBlock: '',
+      serialNumberPattern: '',
+      marketplace: '',
+      marketplaceLink: '',
+      marketplaceIdentifier: '',
+      unitTags: '',
+      unitStatusReason: '',
+      unitRegistryLink: '',
+      unitType: '',
+      vintageYear: '',
+      unitStatus: '',
+      correspondingAdjustmentDeclaration: '',
+      correspondingAdjustmentStatus: '',
+    },
+    validationSchema: unitsSchema,
+    validateOnChange: true,
+    onSubmit: handleEditUnits,
+  });
 
   const unitWasSuccessfullyCreated =
     notification?.id === 'unit-successfully-created';
@@ -179,10 +156,10 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   }, [notification]);
 
   const errorInputAlert = name => {
-    for (let key in errorMessage) {
-      if (key === name) {
+    if (formik.touched[name]) {
+      if (formik.errors[name]) {
         return InputVariantEnum.error;
-      } else if (!errorMessage[name]) {
+      } else {
         return InputVariantEnum.success;
       }
     }
@@ -219,7 +196,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
           setTabValue(prev => (prev > 0 ? prev - 1 : prev))
         }
         body={
-          <StyledFormContainer>
+          <StyledFormContainer onSubmit={formik.handleSubmit}>
             <Stepper activeStep={tabValue} alternativeLabel>
               <Step onClick={() => setTabValue(0)} sx={{ cursor: 'pointer' }}>
                 <StepLabel>
@@ -246,8 +223,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}
-            >
+              index={0}>
               <ModalFormContainerStyle>
                 <FormContainerStyle>
                   <BodyContainer>
@@ -262,34 +238,34 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-project-location-id-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputAlert('projectLocationId')}
+                          name="projectLocationId"
+                          variant={
+                            formik.touched.projectLocationId &&
+                            errorInputAlert('projectLocationId')
+                          }
+                          onInputBlur={formik.handleBlur}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'project-location-id',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.projectLocationId}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              projectLocationId: value,
-                            }))
-                          }
+                          onChange={formik.handleChange}
+                          value={formik.values.projectLocationId}
                         />
                       </InputContainer>
-                      {errorMessage?.projectLocationId && (
-                        <Body size="Small" color="red">
-                          {errorMessage.projectLocationId}
-                        </Body>
-                      )}
+                      {formik.errors.projectLocationId &&
+                        formik.touched.projectLocationId && (
+                          <Body size="Small" color="red">
+                            {formik.errors.projectLocationId}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -301,32 +277,31 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-owner-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputAlert('unitOwner')}
+                          name="unitOwner"
+                          variant={
+                            formik.touched.unitOwner &&
+                            errorInputAlert('unitOwner')
+                          }
+                          onInputBlur={formik.handleBlur}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-owner',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.unitOwner}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              unitOwner: value,
-                            }))
-                          }
+                          value={formik.values.unitOwner}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
-                      {errorMessage?.unitOwner && (
+                      {formik.errors.unitOwner && formik.touched.unitOwner && (
                         <Body size="Small" color="red">
-                          {errorMessage.unitOwner}
+                          {formik.errors.unitOwner}
                         </Body>
                       )}
                     </StyledFieldContainer>
@@ -340,36 +315,34 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-country-jurisdiction-of-owner-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputAlert(
-                            'countryJurisdictionOfOwner',
-                          )}
+                          name="countryJurisdictionOfOwner"
+                          variant={
+                            formik.touched.countryJurisdictionOfOwner &&
+                            errorInputAlert('countryJurisdictionOfOwner')
+                          }
+                          onInputBlur={formik.handleBlur}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'country-jurisdiction-of-owner',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.countryJurisdictionOfOwner}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              countryJurisdictionOfOwner: value,
-                            }))
-                          }
+                          value={formik.values.countryJurisdictionOfOwner}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
-                      {errorMessage?.countryJurisdictionOfOwner && (
-                        <Body size="Small" color="red">
-                          {errorMessage.countryJurisdictionOfOwner}
-                        </Body>
-                      )}
+                      {formik.errors.countryJurisdictionOfOwner &&
+                        formik.touched.countryJurisdictionOfOwner && (
+                          <Body size="Small" color="red">
+                            {formik.errors.countryJurisdictionOfOwner}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -381,36 +354,34 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-in-country-jurisdiction-of-owner-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputAlert(
-                            'inCountryJurisdictionOfOwner',
-                          )}
+                          name="inCountryJurisdictionOfOwner"
+                          onInputBlur={formik.handleBlur}
+                          variant={
+                            formik.touched.inCountryJurisdictionOfOwner &&
+                            errorInputAlert('inCountryJurisdictionOfOwner')
+                          }
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'in-country-jurisdiction-of-owner',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.inCountryJurisdictionOfOwner}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              inCountryJurisdictionOfOwner: value,
-                            }))
-                          }
+                          value={formik.values.inCountryJurisdictionOfOwner}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
-                      {errorMessage?.inCountryJurisdictionOfOwner && (
-                        <Body size="Small" color="red">
-                          {errorMessage.inCountryJurisdictionOfOwner}
-                        </Body>
-                      )}
+                      {formik.errors.inCountryJurisdictionOfOwner &&
+                        formik.touched.inCountryJurisdictionOfOwner && (
+                          <Body size="Small" color="red">
+                            {formik.errors.inCountryJurisdictionOfOwner}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -422,34 +393,34 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-serial-number-block-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputAlert('serialNumberBlock')}
+                          name="serialNumberBlock"
+                          onInputBlur={formik.handleBlur}
+                          variant={
+                            formik.touched.serialNumberBlock &&
+                            errorInputAlert('serialNumberBlock')
+                          }
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'serial-number-block',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.serialNumberBlock}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              serialNumberBlock: value,
-                            }))
-                          }
+                          value={formik.values.serialNumberBlock}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
-                      {errorMessage?.serialNumberBlock && (
-                        <Body size="Small" color="red">
-                          {errorMessage.serialNumberBlock}
-                        </Body>
-                      )}
+                      {formik.errors.serialNumberBlock &&
+                        formik.touched.serialNumberBlock && (
+                          <Body size="Small" color="red">
+                            {formik.errors.serialNumberBlock}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -461,46 +432,46 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-serial-number-pattern-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputAlert('serialNumberPattern')}
+                          name="serialNumberPattern"
+                          onInputBlur={formik.handleBlur}
+                          variant={
+                            formik.touched.serialNumberPattern &&
+                            errorInputAlert('serialNumberPattern')
+                          }
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'serial-number-pattern',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.serialNumberPattern}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              serialNumberPattern: value,
-                            }))
-                          }
+                          value={formik.values.serialNumberPattern}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
-                      {errorMessage?.serialNumberPattern && (
-                        <Body size="Small" color="red">
-                          {errorMessage.serialNumberPattern}
-                        </Body>
-                      )}
+                      {formik.errors.serialNumberPattern &&
+                        formik.touched.serialNumberPattern && (
+                          <Body size="Small" color="red">
+                            {formik.errors.serialNumberPattern}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body style={{ color: '#262626' }}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="vintage-year" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-vintage-year-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -508,10 +479,17 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       <InputContainer>
                         <YearSelect
                           size="large"
-                          yearValue={year}
-                          setYearValue={setYear}
+                          yearValue={formik.values.vintageYear}
+                          onChange={value =>
+                            formik.setFieldValue('vintageYear', value.$y)
+                          }
                         />
                       </InputContainer>
+                      {formik.errors.vintageYear && formik.touched.vintageYear && (
+                        <Body size="Small" color="red">
+                          {formik.errors.vintageYear}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -523,60 +501,69 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-type-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <Select
+                          value={formik.values.unitType}
+                          onChange={value =>
+                            formik.setFieldValue('unitType', value[0].value)
+                          }
+                          onBlur={formik.handleBlur}
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
                           options={unitTypeValues}
-                          onChange={value => setUnitType(value)}
                           placeholder={`-- ${intl.formatMessage({
                             id: 'select',
                           })} --`}
                         />
                       </InputContainer>
-                      {errorMessage?.unitType && (
+                      {formik.errors.unitType && formik.touched.unitType && (
                         <Body size="Small" color="red">
-                          {errorMessage.unitType}
+                          {formik.errors.unitType}
                         </Body>
                       )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="marketplace" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          name="marketplace"
+                          onInputBlur={formik.handleBlur}
+                          variant={
+                            formik.touched.marketplace &&
+                            errorInputAlert('marketplace')
+                          }
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'marketplace',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.marketplace}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              marketplace: value,
-                            }))
-                          }
+                          value={formik.values.marketplace}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
+                      {formik.errors.marketplace && formik.touched.marketplace && (
+                        <Body size="Small" color="red">
+                          {formik.errors.marketplace}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                   </BodyContainer>
                   <BodyContainer>
@@ -584,66 +571,80 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="marketplace-link" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-link-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          name="marketplaceLink"
+                          onInputBlur={formik.handleBlur}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'marketplace-link',
                           })}
-                          state={InputStateEnum.default}
-                          value={newUnits.marketplaceLink}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              marketplaceLink: value,
-                            }))
+                          variant={
+                            formik.touched.marketplaceLink &&
+                            errorInputAlert('marketplaceLink')
                           }
+                          state={InputStateEnum.default}
+                          value={formik.values.marketplaceLink}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
+                      {formik.errors.marketplaceLink &&
+                        formik.touched.marketplaceLink && (
+                          <Body size="Small" color="red">
+                            {formik.errors.marketplaceLink}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="marketplace-identifier" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-identifier-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          name="marketplaceIdentifier"
+                          onInputBlur={formik.handleBlur}
+                          variant={
+                            formik.touched.marketplaceIdentifier &&
+                            errorInputAlert('marketplaceIdentifier')
+                          }
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'marketplace-identifier',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.marketplaceIdentifier}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              marketplaceIdentifier: value,
-                            }))
-                          }
+                          value={formik.values.marketplaceIdentifier}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
+                      {formik.errors.marketplaceIdentifier &&
+                        formik.touched.marketplaceIdentifier && (
+                          <Body size="Small" color="red">
+                            {formik.errors.marketplaceIdentifier}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -654,26 +655,21 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-tags-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          name="unitTags"
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-tags',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.unitTags}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              unitTags: value,
-                            }))
-                          }
+                          value={formik.values.unitTags}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
                     </StyledFieldContainer>
@@ -687,60 +683,69 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-status-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <Select
+                          onBlur={formik.handleBlur}
+                          onChange={value =>
+                            formik.setFieldValue('unitStatus', value[0].value)
+                          }
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
                           options={unitStatusValues}
-                          onChange={value => setUnitStatus(value)}
                           placeholder={`-- ${intl.formatMessage({
                             id: 'select',
                           })} --`}
                         />
                       </InputContainer>
-                      {errorMessage?.unitStatus && (
+                      {formik.errors.unitStatus && formik.touched.unitStatus && (
                         <Body size="Small" color="red">
-                          {errorMessage.unitStatus}
+                          {formik.errors.unitStatus}
                         </Body>
                       )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="unit-status-reason" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-status-reason-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          name="unitStatusReason"
+                          onInputBlur={formik.handleBlur}
+                          variant={
+                            formik.touched.unitStatusReason &&
+                            errorInputAlert('unitStatusReason')
+                          }
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-status-reason',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.unitStatusReason}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              unitStatusReason: value,
-                            }))
-                          }
+                          value={formik.values.unitStatusReason}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
+                      {formik.errors.unitStatusReason &&
+                        formik.touched.unitStatusReason && (
+                          <Body size="Small" color="red">
+                            {formik.errors.unitStatusReason}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -752,34 +757,34 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-registry-link-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
-                          variant={errorInputAlert('unitRegistryLink')}
+                          name="unitRegistryLink"
+                          variant={
+                            formik.touched.unitRegistryLink &&
+                            errorInputAlert('unitRegistryLink')
+                          }
+                          onInputBlur={formik.handleBlur}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-registry-link',
                           })}
                           state={InputStateEnum.default}
-                          value={newUnits.unitRegistryLink}
-                          onChange={value =>
-                            setNewUnits(prev => ({
-                              ...prev,
-                              unitRegistryLink: value,
-                            }))
-                          }
+                          value={formik.values.unitRegistryLink}
+                          onChange={formik.handleChange}
                         />
                       </InputContainer>
-                      {errorMessage.unitRegistryLink && (
-                        <Body size="Small" color="red">
-                          {errorMessage.unitRegistryLink}
-                        </Body>
-                      )}
+                      {formik.errors.unitRegistryLink &&
+                        formik.touched.unitRegistryLink && (
+                          <Body size="Small" color="red">
+                            {formik.errors.unitRegistryLink}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -791,30 +796,33 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-corresponding-adjustment-declaration-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <Select
+                          onChange={value =>
+                            formik.setFieldValue(
+                              'correspondingAdjustmentDeclaration',
+                              value[0].value,
+                            )
+                          }
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
                           options={correspondingAdjustmentDeclarationValues}
-                          onChange={value =>
-                            setSelectedCorrespondingAdjustmentDeclaration(value)
-                          }
                           placeholder={`-- ${intl.formatMessage({
                             id: 'select',
                           })} --`}
                         />
                       </InputContainer>
-                      {errorMessage?.correspondingAdjustmentDeclaration && (
-                        <Body size="Small" color="red">
-                          {errorMessage.correspondingAdjustmentDeclaration}
-                        </Body>
-                      )}
+                      {formik.errors.correspondingAdjustmentDeclaration &&
+                        formik.touched.correspondingAdjustmentDeclaration && (
+                          <Body size="Small" color="red">
+                            {formik.errors.correspondingAdjustmentDeclaration}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -826,30 +834,33 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-corresponding-adjustment-status-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <Select
+                          onChange={value =>
+                            formik.setFieldValue(
+                              'correspondingAdjustmentStatus',
+                              value[0].value,
+                            )
+                          }
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
                           options={correspondingAdjustmentStatusValues}
-                          onChange={value =>
-                            setSelectedCorrespondingAdjustmentStatus(value)
-                          }
                           placeholder={`-- ${intl.formatMessage({
                             id: 'select',
                           })} --`}
                         />
                       </InputContainer>
-                      {errorMessage?.correspondingAdjustmentStatus && (
-                        <Body size="Small" color="red">
-                          {errorMessage.correspondingAdjustmentStatus}
-                        </Body>
-                      )}
+                      {formik.errors.correspondingAdjustmentStatus &&
+                        formik.touched.correspondingAdjustmentStatus && (
+                          <Body size="Small" color="red">
+                            {formik.errors.correspondingAdjustmentStatus}
+                          </Body>
+                        )}
                     </StyledFieldContainer>
                   </BodyContainer>
                 </FormContainerStyle>
@@ -859,6 +870,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
               <LabelsRepeater
                 labelsState={newLabels}
                 newLabelsState={setNewLabels}
+                labelRef={labelRef}
+                setLabelValid={setLabelValid}
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
@@ -868,6 +881,8 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                   Array.isArray(newIssuance) ? newIssuance : [newIssuance]
                 }
                 newIssuanceState={setNewIssuance}
+                issuanceRef={issuanceRef}
+                setIssuanceValid={setIssuanceValid}
               />
             </TabPanel>
           </StyledFormContainer>

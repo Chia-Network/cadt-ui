@@ -57,20 +57,21 @@ const Input = styled('input')`
   }
 `;
 
-const YearSelect = ({ size, yearValue, setYearValue }) => {
+const YearSelect = ({ size, yearValue, setYearValue, onChange }) => {
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
         views={['year']}
         label="Year"
         value={yearValue ? `${yearValue}` : yearValue}
-        onChange={newValue => {
+        onChange={!onChange ? newValue => {
+          
           if (typeof newValue?.$y === 'number') {
             setYearValue(`${newValue.$y}`);
-          }else{
-            return null
+          } else {
+            return null;
           }
-        }}
+        } : onChange}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
             <InputContainer size={size}>

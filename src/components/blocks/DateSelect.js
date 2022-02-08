@@ -62,6 +62,8 @@ const DateSelect = ({
   disabled,
   dateValue,
   setDateValue,
+  onBlur,
+  name,
 }) => {
   const divElement = useRef(null);
 
@@ -81,6 +83,8 @@ const DateSelect = ({
               disabled={disabled}
               tabIndex={0}>
               <Input
+                name={name}
+                onBlur={onBlur}
                 ref={inputRef}
                 {...inputProps}
                 placeholder="Select Date"

@@ -1,8 +1,7 @@
-import u from 'updeep';
-import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useFormik } from 'formik';
 
 import {
   StandardInput,
@@ -33,36 +32,44 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateIssuanceForm = ({ value, onChange }) => {
-  const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
+const CreateIssuanceForm = ({ value, onChange, issuanceRef, setIssuanceValid }) => {
   const intl = useIntl();
-  const onInputChange = (field, changeValue) => {
-    onChange(u({ [field]: changeValue }, value));
-  };
+
+  const formik = useFormik({
+    initialValues: value,
+    validationSchema: issuanceSchema,
+    validateOnChange: true,
+    onSubmit: () => {},
+  });
+
+  console.log(formik.errors);
 
   useEffect(() => {
-    const errors = async () => {
-      await issuanceSchema
-        .validate(value, { abortEarly: false })
-        .catch(({ errors }) => {
-          setErrorIssuanceMessage(errors);
-        });
-    };
-    errors();
-  }, [value]);
+    issuanceRef.current = formik.handleSubmit;
+  }, []);
 
-  const issuanceErrorMessage = name => {
-    if (!_.isEmpty(errorIssuanceMessage)) {
-      for (let message of errorIssuanceMessage) {
-        if (message.includes(name)) {
-          return (
-            <Body size="Small" color="red">
-              {message}
-            </Body>
-          );
-        }
+  useEffect(() => {
+    const issuanceResult = async () => {
+      const isIssuanceValid = await issuanceSchema.isValid(formik.values);
+      if (isIssuanceValid) {
+        setIssuanceValid(true);
+      } else {
+        setIssuanceValid(false);
+      }
+    };
+    issuanceResult();
+    onChange(formik.values);
+  }, [formik.values]);
+
+  const errorInputAlert = name => {
+    if (formik.touched[name]) {
+      if (formik.errors[name]) {
+        return InputVariantEnum.error;
+      } else {
+        return InputVariantEnum.success;
       }
     }
+    return InputVariantEnum.default;
   };
 
   return (
@@ -85,14 +92,20 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                name="startDate"
+                onBlur={formik.handleBlur}
                 size="large"
-                dateValue={value.startDate}
+                dateValue={formik.values.startDate}
                 setDateValue={changeValue =>
-                  onInputChange('startDate', changeValue)
+                  formik.setFieldValue('startDate', changeValue)
                 }
               />
             </InputContainer>
-            {issuanceErrorMessage('startDate')}
+            {formik.errors.startDate && (
+              <Body size="Small" color="red">
+                {formik.errors.startDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -110,14 +123,20 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                name="endDate"
+                onBlur={formik.handleBlur}
                 size="large"
-                dateValue={value.endDate}
+                dateValue={formik.values.endDate}
                 setDateValue={changeValue =>
-                  onInputChange('endDate', changeValue)
+                  formik.setFieldValue('endDate', changeValue)
                 }
               />
             </InputContainer>
-            {issuanceErrorMessage('endDate')}
+            {formik.errors.endDate && (
+              <Body size="Small" color="red">
+                {formik.errors.endDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -135,22 +154,24 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={
-                  issuanceErrorMessage('verificationApproach') &&
-                  InputVariantEnum.error
-                }
+                name="verificationApproach"
+                onInputBlur={formik.handleBlur}
+                variant={errorInputAlert('verificationApproach')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'verification-approach',
                 })}
                 state={InputStateEnum.default}
-                value={value.verificationApproach}
-                onChange={changeValue =>
-                  onInputChange('verificationApproach', changeValue)
-                }
+                value={formik.values.verificationApproach}
+                onChange={formik.handleChange}
               />
             </InputContainer>
-            {issuanceErrorMessage('verificationApproach')}
+            {formik.errors.verificationApproach &&
+              formik.touched.verificationApproach && (
+                <Body size="Small" color="red">
+                  {formik.errors.verificationApproach}
+                </Body>
+              )}
           </StyledFieldContainer>
         </BodyContainer>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -170,14 +191,20 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                name="verificationReportDate"
+                onBlur={formik.handleBlur}
                 size="large"
-                dateValue={value.verificationReportDate}
+                dateValue={formik.values.verificationReportDate}
                 setDateValue={changeValue =>
-                  onInputChange('verificationReportDate', changeValue)
+                  formik.setFieldValue('verificationReportDate', changeValue)
                 }
               />
             </InputContainer>
-            {issuanceErrorMessage('verificationReportDate')}
+            {formik.errors.verificationReportDate && (
+              <Body size="Small" color="red">
+                {formik.errors.verificationReportDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -195,22 +222,23 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={
-                  issuanceErrorMessage('verificationBody') &&
-                  InputVariantEnum.error
-                }
+                name="verificationBody"
+                onInputBlur={formik.handleBlur}
+                variant={errorInputAlert('verificationBody')}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'verification-body',
                 })}
                 state={InputStateEnum.default}
-                value={value.verificationBody}
-                onChange={changeValue =>
-                  onInputChange('verificationBody', changeValue)
-                }
+                value={formik.values.verificationBody}
+                onChange={formik.handleChange}
               />
             </InputContainer>
-            {issuanceErrorMessage('verificationBody')}
+            {formik.errors.verificationBody && formik.touched.verificationBody && (
+              <Body size="Small" color="red">
+                {formik.errors.verificationBody}
+              </Body>
+            )}
           </StyledFieldContainer>
         </div>
       </FormContainerStyle>

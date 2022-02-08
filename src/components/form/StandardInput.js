@@ -175,7 +175,8 @@ const StandardInput = withTheme(
     suffix,
     prefix,
     value,
-    type,
+    name,
+    onInputBlur,
     onChange,
   }) => {
     const [inputState, setInputState] = useState(state);
@@ -218,14 +219,15 @@ const StandardInput = withTheme(
           <StyledSuffixPrefixContainer>{prefix}</StyledSuffixPrefixContainer>
         )}
         <StyledInput
-          type={type}
+          name={name}
+          onBlur={onInputBlur}
           size={size}
           placeholder={placeholderText}
           inputState={inputState}
           variant={variant}
           disabled={inputState === InputStateEnum.disabled}
           value={value}
-          onChange={event => onChange(event.target.value)}
+          onChange={onChange}
         />
         {suffix && (
           <StyledSuffixPrefixContainer>{suffix}</StyledSuffixPrefixContainer>

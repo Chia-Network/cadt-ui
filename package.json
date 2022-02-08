@@ -18,6 +18,7 @@
     "@testing-library/user-event": "^12.1.10",
     "dayjs": "^1.10.7",
     "electron": "^15.3.0",
+    "formik": "^2.2.9",
     "http-proxy-middleware": "^0.19.1",
     "json2csv": "^5.0.6",
     "lodash": "^4.17.21",
