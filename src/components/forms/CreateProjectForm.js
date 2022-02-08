@@ -813,15 +813,15 @@ const CreateProjectForm = withRouter(
                   </ModalFormContainerStyle>
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
-                  <IssuanceRepeater
-                    qualificationsState={newQualifications}
-                    newQualificationsState={setNewQualifications}
+                  <LabelsRepeater
+                    labelsState={newQualifications}
+                    newLabelsState={setNewQualifications}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={2}>
-                  <LabelsRepeater
-                    vintageState={newVintage}
-                    newVintageState={setNewVintage}
+                  <IssuanceRepeater
+                    issuanceState={newVintage}
+                    newIssuanceState={setNewVintage}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={3}>
@@ -832,8 +832,8 @@ const CreateProjectForm = withRouter(
                 </TabPanel>
                 <TabPanel value={tabValue} index={4}>
                   <LocationsRepeater
-                    projectLocationsState={newProjectLocations}
-                    setProjectLocationsState={setNewProjectLocations}
+                    locationsState={newProjectLocations}
+                    setLocationsState={setNewProjectLocations}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={5}>
