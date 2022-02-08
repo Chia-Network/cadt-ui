@@ -84,8 +84,8 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 placeholder={intl.formatMessage({
                   id: 'host-country',
                 })}
-                onChange={selectedOption =>
-                  onInputChange('country', selectedOption[0].value)
+                onChange={selectedOptions =>
+                  onInputChange('country', selectedOptions[0].value)
                 }
               />
             </InputContainer>

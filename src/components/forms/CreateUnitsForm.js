@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,7 +40,6 @@ import {
   correspondingAdjustmentDeclarationValues,
   correspondingAdjustmentStatusValues,
   unitStatusValues,
-  unitTypeValues,
 } from '../../utils/pick-values';
 
 const StyledFormContainer = styled('div')`
@@ -69,7 +68,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     selectedCorrespondingAdjustmentStatus,
     setSelectedCorrespondingAdjustmentStatus,
   ] = useState(null);
-
   const [newUnits, setNewUnits] = useState({
     projectLocationId: '',
     unitOwner: '',
@@ -88,6 +86,16 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     correspondingAdjustmentDeclaration: '',
     correspondingAdjustmentStatus: '',
   });
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectUnitTypeOptions = useMemo(
+    () =>
+      pickLists.unitType.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
 
   const handleEditUnits = async () => {
     setErrorMessage({});
@@ -117,7 +125,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     }
 
     if (!_.isEmpty(unitType)) {
-      dataToSend.unitType = unitType[0].value;
+      dataToSend.unitType = unitType;
     }
     if (!_.isEmpty(unitStatus)) {
       dataToSend.unitStatus = unitStatus[0].value;
@@ -524,11 +532,18 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         <Select
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
-                          options={unitTypeValues}
-                          onChange={value => setUnitType(value)}
-                          placeholder={`-- ${intl.formatMessage({
-                            id: 'select',
-                          })} --`}
+                          options={selectUnitTypeOptions}
+                          selected={
+                            unitType
+                              ? { value: unitType, label: unitType }
+                              : undefined
+                          }
+                          onChange={selectedOptions =>
+                            setUnitType(selectedOptions[0].value)
+                          }
+                          placeholder={intl.formatMessage({
+                            id: 'unit-type',
+                          })}
                         />
                       </InputContainer>
                       {errorMessage?.unitType && (

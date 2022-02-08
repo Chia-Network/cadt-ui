@@ -305,11 +305,11 @@ const SplitUnitForm = ({ onClose, record }) => {
                         placeholder={intl.formatMessage({
                           id: 'country-jurisdiction-of-owner',
                         })}
-                        onChange={selectedOption =>
+                        onChange={selectedOptions =>
                           setData(prevData => {
                             const newData = [...prevData];
                             newData[index].countryJurisdictionOfOwner =
-                              selectedOption[0].value;
+                              selectedOptions[0].value;
                             return newData;
                           })
                         }

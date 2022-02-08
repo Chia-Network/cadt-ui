@@ -139,9 +139,13 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 placeholder={intl.formatMessage({
                   id: 'label-type',
                 })}
-                selected={value.labelType ? value.labelType : undefined}
-                onChange={selectedOption =>
-                  onChange({ ...value, labelType: selectedOption[0].value })
+                selected={
+                  value.labelType
+                    ? { value: value.labelType, label: value.labelType }
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  onChange({ ...value, labelType: selectedOptions[0].value })
                 }
               />
             </InputContainer>
