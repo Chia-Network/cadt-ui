@@ -66,7 +66,6 @@ const EditUnitsForm = ({ onClose }) => {
   const climatewarehouseUnits = useSelector(
     state => state.climateWarehouse.units[0],
   );
-  console.log(climatewarehouseUnits);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -242,7 +241,7 @@ const EditUnitsForm = ({ onClose }) => {
               />
               <Tab
                 label={intl.formatMessage({
-                  id: 'issuance',
+                  id: 'issuances',
                 })}
               />
             </Tabs>
