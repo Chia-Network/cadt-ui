@@ -780,7 +780,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="project-tag" />
+                                <FormattedMessage id="project-tags" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -795,7 +795,7 @@ const CreateProjectForm = withRouter(
                             <StandardInput
                               size={InputSizeEnum.large}
                               placeholderText={intl.formatMessage({
-                                id: 'project-tag',
+                                id: 'project-tags',
                               })}
                               state={InputStateEnum.default}
                               value={newProject.projectTag}
