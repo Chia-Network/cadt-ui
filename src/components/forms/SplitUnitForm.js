@@ -1,4 +1,3 @@
-/* eslint-disable */
 import _ from 'lodash';
 import React, { useEffect, useState, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -10,14 +9,10 @@ import {
   InputSizeEnum,
   InputStateEnum,
   StandardInput,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  SelectStateEnum,
   InputVariantEnum,
   Message,
   LocalMessageTypeEnum,
   LocalMessage,
-  SelectOrganizations,
   ModalFormContainerStyle,
   modalTypeEnum,
   FormContainerStyle,
@@ -30,6 +25,9 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
   Select,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';

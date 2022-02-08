@@ -105,7 +105,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 placeholder={intl.formatMessage({
                   id: 'rating-type',
                 })}
-                selectedOptions={
+                selected={
                   value.ratingType
                     ? { value: value.ratingType, label: value.ratingType }
                     : undefined

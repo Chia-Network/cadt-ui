@@ -1,5 +1,6 @@
 import u from 'updeep';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -15,6 +16,10 @@ import {
   ToolTipContainer,
   DescriptionIcon,
   LabelContainer,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
 } from '..';
 
 const StyledLabelContainer = styled('div')`
@@ -31,10 +36,20 @@ const InputContainer = styled('div')`
 
 const CreateLocationsForm = ({ value, onChange }) => {
   const intl = useIntl();
+  const { pickLists } = useSelector(store => store.climateWarehouse);
 
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
+
+  const selectCountriesOptions = useMemo(
+    () =>
+      pickLists.countries.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
 
   return (
     <ModalFormContainerStyle>
@@ -56,14 +71,22 @@ const CreateLocationsForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
+              <Select
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectCountriesOptions}
+                selected={
+                  value.country
+                    ? { value: value.country, label: value.country }
+                    : undefined
+                }
+                state={SelectStateEnum.default}
+                placeholder={intl.formatMessage({
                   id: 'host-country',
                 })}
-                state={InputStateEnum.default}
-                value={value.country}
-                onChange={changeValue => onInputChange('country', changeValue)}
+                onChange={selectedOption =>
+                  onInputChange('country', selectedOption.value)
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
