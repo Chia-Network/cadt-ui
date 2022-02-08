@@ -85,7 +85,7 @@ const CreateLocationsForm = ({ value, onChange }) => {
                   id: 'host-country',
                 })}
                 onChange={selectedOption =>
-                  onInputChange('country', selectedOption.value)
+                  onInputChange('country', selectedOption[0].value)
                 }
               />
             </InputContainer>

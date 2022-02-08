@@ -111,7 +111,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
                     : undefined
                 }
                 onChange={selectedOption =>
-                  onInputChange('ratingType', selectedOption.value)
+                  onInputChange('ratingType', selectedOption[0].value)
                 }
               />
             </InputContainer>

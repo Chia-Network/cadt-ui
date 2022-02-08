@@ -1,6 +1,7 @@
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
@@ -17,6 +18,10 @@ import {
   ToolTipContainer,
   DateSelect,
   LabelContainer,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
 } from '..';
 import { labelSchema } from './LabelsValidation';
 
@@ -35,6 +40,20 @@ const InputContainer = styled('div')`
 const CreateLabelsForm = ({ value, onChange }) => {
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectLabelTypeOptions = useMemo(
+    () =>
+      pickLists.labelType.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
+
+  useEffect(() => {
+    console.log('value change to: ', value);
+  }, [value]);
 
   useEffect(() => {
     const errors = async () => {
@@ -112,19 +131,18 @@ const CreateLabelsForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                variant={
-                  labelErrorMessage('labelType') && InputVariantEnum.error
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
+              <Select
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectLabelTypeOptions}
+                state={SelectStateEnum.default}
+                placeholder={intl.formatMessage({
                   id: 'label-type',
                 })}
-                state={InputStateEnum.default}
-                value={value.labelType}
-                onChange={event => {
-                  onChange({ ...value, labelType: event });
-                }}
+                selected={value.labelType ? value.labelType : undefined}
+                onChange={selectedOption =>
+                  onChange({ ...value, labelType: selectedOption[0].value })
+                }
               />
             </InputContainer>
             {labelErrorMessage('labelType')}

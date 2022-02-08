@@ -309,7 +309,7 @@ const SplitUnitForm = ({ onClose, record }) => {
                           setData(prevData => {
                             const newData = [...prevData];
                             newData[index].countryJurisdictionOfOwner =
-                              selectedOption.value;
+                              selectedOption[0].value;
                             return newData;
                           })
                         }
