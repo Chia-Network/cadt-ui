@@ -1,7 +1,8 @@
 import u from 'updeep';
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -15,6 +16,10 @@ import {
   DescriptionIcon,
   ToolTipContainer,
   LabelContainer,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
 } from '..';
 
 const StyledLabelContainer = styled('div')`
@@ -34,6 +39,16 @@ const CreateRatingsForm = ({ value, onChange }) => {
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectRatingTypeOptions = useMemo(
+    () =>
+      pickLists.ratingType.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
 
   return (
     <ModalFormContainerStyle>
@@ -82,15 +97,21 @@ const CreateRatingsForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
+              <Select
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectRatingTypeOptions}
+                state={SelectStateEnum.default}
+                placeholder={intl.formatMessage({
                   id: 'rating-type',
                 })}
-                state={InputStateEnum.default}
-                value={value.ratingType}
-                onChange={changeValue =>
-                  onInputChange('ratingType', changeValue)
+                selectedOptions={
+                  value.ratingType
+                    ? { value: value.ratingType, label: value.ratingType }
+                    : undefined
+                }
+                onChange={selectedOption =>
+                  onInputChange('ratingType', selectedOption.value)
                 }
               />
             </InputContainer>
