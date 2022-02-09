@@ -91,7 +91,15 @@ const EditProjectsForm = ({ onClose }) => {
     [pickLists],
   );
 
-  //projectStatusValues
+  const selectProjectStatusValuesOptions = useMemo(
+    () =>
+      pickLists.projectStatusValues.map(projectStatusValuesItem => ({
+        value: projectStatusValuesItem,
+        label: projectStatusValuesItem,
+      })),
+    [pickLists],
+  );
+
   //registries
 
   const handleTabChange = (event, newValue) => {
@@ -674,17 +682,30 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectProjectStatusValuesOptions}
+                            state={SelectStateEnum.default}
+                            placeholder={intl.formatMessage({
                               id: 'project-status',
                             })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectStatus}
-                            onChange={value =>
+                            selected={
+                              climatewarehouseProjects.projectStatus
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseProjects.projectStatus,
+                                      value:
+                                        climatewarehouseProjects.projectStatus,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                projectStatus: value,
+                                projectStatus: selectedOptions[0].value,
                               }))
                             }
                           />

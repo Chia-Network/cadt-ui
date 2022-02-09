@@ -118,6 +118,15 @@ const CreateProjectForm = withRouter(
       [pickLists],
     );
 
+    const selectProjectStatusValuesOptions = useMemo(
+      () =>
+        pickLists.projectStatusValues.map(projectStatusValuesItem => ({
+          value: projectStatusValuesItem,
+          label: projectStatusValuesItem,
+        })),
+      [pickLists],
+    );
+
     const handleSubmit = () => {
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
@@ -626,17 +635,28 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectProjectStatusValuesOptions}
+                              state={SelectStateEnum.default}
+                              placeholder={intl.formatMessage({
                                 id: 'project-status',
                               })}
-                              state={InputStateEnum.default}
-                              value={newProject.projectStatus}
-                              onChange={value =>
+                              selected={
+                                newProject.projectStatus
+                                  ? [
+                                      {
+                                        label: newProject.projectStatus,
+                                        value: newProject.projectStatus,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  projectStatus: value,
+                                  projectStatus: selectedOptions[0].value,
                                 }))
                               }
                             />
