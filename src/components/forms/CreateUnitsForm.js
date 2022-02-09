@@ -121,6 +121,15 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     [pickLists],
   );
 
+  const selectCountriesOptions = useMemo(
+    () =>
+      pickLists.countries.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
+
   const handleEditUnits = async () => {
     setErrorMessage({});
     const dataToSend = _.cloneDeep(newUnits);
@@ -370,22 +379,30 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
-                        <StandardInput
-                          variant={errorInputAlert(
-                            'countryJurisdictionOfOwner',
-                          )}
-                          size={InputSizeEnum.large}
-                          placeholderText={intl.formatMessage({
-                            id: 'country-jurisdiction-of-owner',
-                          })}
-                          state={InputStateEnum.default}
-                          value={newUnits.countryJurisdictionOfOwner}
-                          onChange={value =>
+                        <Select
+                          size={SelectSizeEnum.large}
+                          type={SelectTypeEnum.basic}
+                          options={selectCountriesOptions}
+                          selected={
+                            newUnits.countryJurisdictionOfOwner
+                              ? [
+                                  {
+                                    label: newUnits.countryJurisdictionOfOwner,
+                                    value: newUnits.countryJurisdictionOfOwner,
+                                  },
+                                ]
+                              : undefined
+                          }
+                          onChange={selectedOptions =>
                             setNewUnits(prev => ({
                               ...prev,
-                              countryJurisdictionOfOwner: value,
+                              countryJurisdictionOfOwner:
+                                selectedOptions[0].value,
                             }))
                           }
+                          placeholder={intl.formatMessage({
+                            id: 'country-jurisdiction-of-owner',
+                          })}
                         />
                       </InputContainer>
                       {errorMessage?.countryJurisdictionOfOwner && (

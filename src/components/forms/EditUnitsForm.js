@@ -99,6 +99,15 @@ const EditUnitsForm = ({ onClose }) => {
     [pickLists],
   );
 
+  const selectCountriesOptions = useMemo(
+    () =>
+      pickLists.countries.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -373,22 +382,32 @@ const EditUnitsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            variant={errorInputVariant(
-                              'countryJurisdictionOfOwner',
-                            )}
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'country-jurisdiction-of-owner',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.countryJurisdictionOfOwner}
-                            onChange={value =>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectCountriesOptions}
+                            selected={
+                              climatewarehouseUnits.countryJurisdictionOfOwner
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseUnits.countryJurisdictionOfOwner,
+                                      value:
+                                        climatewarehouseUnits.countryJurisdictionOfOwner,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                countryJurisdictionOfOwner: value,
+                                countryJurisdictionOfOwner:
+                                  selectedOptions[0].value,
                               }))
                             }
+                            placeholder={intl.formatMessage({
+                              id: 'country-jurisdiction-of-owner',
+                            })}
                           />
                         </InputContainer>
                         {errorMessageAlert('countryJurisdictionOfOwner')}
