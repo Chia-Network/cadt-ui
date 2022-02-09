@@ -69,7 +69,6 @@ const DateSelect = ({
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
         label="Select time"
-        format="MM/DD/YYYY"
         value={dateValue}
         onChange={newValue => {
           if (newValue) {
