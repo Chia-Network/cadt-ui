@@ -52,10 +52,6 @@ const CreateLabelsForm = ({ value, onChange }) => {
   );
 
   useEffect(() => {
-    console.log('value change to: ', value);
-  }, [value]);
-
-  useEffect(() => {
     const errors = async () => {
       await labelSchema
         .validate(value, { abortEarly: false })
