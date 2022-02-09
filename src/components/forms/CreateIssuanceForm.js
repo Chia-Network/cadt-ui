@@ -36,6 +36,7 @@ const InputContainer = styled('div')`
 const CreateIssuanceForm = ({ value, onChange }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
@@ -44,6 +45,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
     const errors = async () => {
       await issuanceSchema
         .validate(value, { abortEarly: false })
+        .then(() => setErrorIssuanceMessage([]))
         .catch(({ errors }) => {
           setErrorIssuanceMessage(errors);
         });
