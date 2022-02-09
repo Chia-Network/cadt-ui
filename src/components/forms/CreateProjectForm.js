@@ -109,6 +109,15 @@ const CreateProjectForm = withRouter(
       [pickLists],
     );
 
+    const selectProjectSectorOptions = useMemo(
+      () =>
+        pickLists.projectSector.map(projectSectorItem => ({
+          value: projectSectorItem,
+          label: projectSectorItem,
+        })),
+      [pickLists],
+    );
+
     const handleSubmit = () => {
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
@@ -455,17 +464,28 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectProjectSectorOptions}
+                              state={SelectStateEnum.default}
+                              placeholder={intl.formatMessage({
                                 id: 'sector',
                               })}
-                              state={InputStateEnum.default}
-                              value={newProject.sector}
-                              onChange={value =>
+                              selected={
+                                newProject.sector
+                                  ? [
+                                      {
+                                        label: newProject.sector,
+                                        value: newProject.sector,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  sector: value,
+                                  sector: selectedOptions[0].value,
                                 }))
                               }
                             />

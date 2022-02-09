@@ -82,7 +82,15 @@ const EditProjectsForm = ({ onClose }) => {
     [pickLists],
   );
 
-  //projectSector
+  const selectProjectSectorOptions = useMemo(
+    () =>
+      pickLists.projectSector.map(projectSectorItem => ({
+        value: projectSectorItem,
+        label: projectSectorItem,
+      })),
+    [pickLists],
+  );
+
   //projectStatusValues
   //registries
 
@@ -470,17 +478,28 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectProjectSectorOptions}
+                            state={SelectStateEnum.default}
+                            placeholder={intl.formatMessage({
                               id: 'sector',
                             })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.sector}
-                            onChange={value =>
+                            selected={
+                              climatewarehouseProjects.sector
+                                ? [
+                                    {
+                                      label: climatewarehouseProjects.sector,
+                                      value: climatewarehouseProjects.sector,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                sector: value,
+                                sector: selectedOptions[0].value,
                               }))
                             }
                           />
