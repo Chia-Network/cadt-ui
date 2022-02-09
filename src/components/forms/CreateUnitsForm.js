@@ -36,10 +36,7 @@ import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-  correspondingAdjustmentDeclarationValues,
-  correspondingAdjustmentStatusValues,
-} from '../../utils/pick-values';
+import { correspondingAdjustmentDeclarationValues } from '../../utils/pick-values';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -105,6 +102,15 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     [pickLists],
   );
 
+  const selectCorrespondingAdjustmentStatusOptions = useMemo(
+    () =>
+      pickLists.correspondingAdjustmentStatus.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
+
   const handleEditUnits = async () => {
     setErrorMessage({});
     const dataToSend = _.cloneDeep(newUnits);
@@ -147,7 +153,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
       dataToSend.correspondingAdjustmentStatus =
-        selectedCorrespondingAdjustmentStatus[0].value;
+        selectedCorrespondingAdjustmentStatus;
     }
     await unitsSchema
       .validate(dataToSend, { abortEarly: false })
@@ -857,13 +863,27 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         <Select
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
-                          options={correspondingAdjustmentStatusValues}
-                          onChange={value =>
-                            setSelectedCorrespondingAdjustmentStatus(value)
+                          options={selectCorrespondingAdjustmentStatusOptions}
+                          onChange={selectedOptions =>
+                            setSelectedCorrespondingAdjustmentStatus(
+                              selectedOptions[0].value,
+                            )
                           }
-                          placeholder={`-- ${intl.formatMessage({
-                            id: 'select',
-                          })} --`}
+                          selected={
+                            selectedCorrespondingAdjustmentStatus
+                              ? [
+                                  {
+                                    label:
+                                      selectedCorrespondingAdjustmentStatus,
+                                    value:
+                                      selectedCorrespondingAdjustmentStatus,
+                                  },
+                                ]
+                              : undefined
+                          }
+                          placeholder={intl.formatMessage({
+                            id: 'corresponding-adjustment-status',
+                          })}
                         />
                       </InputContainer>
                       {errorMessage?.correspondingAdjustmentStatus && (

@@ -35,10 +35,7 @@ import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import {
-  correspondingAdjustmentDeclarationValues,
-  correspondingAdjustmentStatusValues,
-} from '../../utils/pick-values';
+import { correspondingAdjustmentDeclarationValues } from '../../utils/pick-values';
 
 const EditUnitsForm = ({ onClose }) => {
   const { notification } = useSelector(state => state.app);
@@ -78,6 +75,15 @@ const EditUnitsForm = ({ onClose }) => {
   const selectUnitStatusOptions = useMemo(
     () =>
       pickLists.unitStatus.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
+
+  const selectCorrespondingAdjustmentStatusOptions = useMemo(
+    () =>
+      pickLists.correspondingAdjustmentStatus.map(country => ({
         value: country,
         label: country,
       })),
@@ -192,7 +198,7 @@ const EditUnitsForm = ({ onClose }) => {
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
       dataToSend.correspondingAdjustmentStatus =
-        selectedCorrespondingAdjustmentStatus[0].value;
+        selectedCorrespondingAdjustmentStatus;
     }
     unitsSchema
       .validate(dataToSend, { abortEarly: false })
@@ -846,21 +852,27 @@ const EditUnitsForm = ({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={correspondingAdjustmentStatusValues}
-                            onChange={value =>
-                              setSelectedCorrespondingAdjustmentStatus(value)
+                            options={selectCorrespondingAdjustmentStatusOptions}
+                            onChange={selectedOptions =>
+                              setSelectedCorrespondingAdjustmentStatus(
+                                selectedOptions[0].value,
+                              )
                             }
-                            placeholder={`-- ${intl.formatMessage({
-                              id: 'select',
-                            })} --`}
-                            selected={[
-                              {
-                                label:
-                                  climatewarehouseUnits.correspondingAdjustmentStatus,
-                                value:
-                                  climatewarehouseUnits.correspondingAdjustmentStatus,
-                              },
-                            ]}
+                            placeholder={intl.formatMessage({
+                              id: 'corresponding-adjustment-status',
+                            })}
+                            selected={
+                              climatewarehouseUnits.correspondingAdjustmentStatus
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseUnits.correspondingAdjustmentStatus,
+                                      value:
+                                        climatewarehouseUnits.correspondingAdjustmentStatus,
+                                    },
+                                  ]
+                                : undefined
+                            }
                           />
                         </InputContainer>
                         {errorMessageAlert('correspondingAdjustmentStatus')}
