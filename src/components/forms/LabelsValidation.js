@@ -1,22 +1,32 @@
 import * as yup from 'yup';
 
 export const labelSchema = yup.object().shape({
-  label: yup.string().required('Label is required'),
-  labelType: yup.string().required('labelType is required'),
+  label: yup.string().required('Required Field'),
+  labelType: yup.string().required('Required Field'),
   creditingPeriodStartDate: yup
     .date()
-    .required('creditingPeriodStartDate is required'),
+    .typeError('Invalid Date')
+    .required('Required Field'),
   creditingPeriodEndDate: yup
     .date()
-    .min(yup.ref('creditingPeriodStartDate'))
-    .required('creditingPeriodEndDate is required'),
-  validityPeriodStartDate: yup
-    .string()
-    .required('validityPeriodStartDate is required'),
+    .min(
+      yup.ref('creditingPeriodStartDate'),
+      "End date can't be before start date",
+    )
+    .typeError('Invalid Date')
+    .required('Required Field'),
+  validityPeriodStartDate: yup.string().required('Required Field'),
   validityPeriodEndDate: yup
     .date()
-    .min(yup.ref('validityPeriodStartDate'))
-    .required('validityPeriodEndDate is required'),
-  unitQuantity: yup.number().integer().required('unitQuantity is required'),
-  labelLink: yup.string().required('labelLink is required'),
+    .min(
+      yup.ref('validityPeriodStartDate'),
+      "End date can't be before start date",
+    )
+    .typeError('Invalid Date')
+    .required('Required Field'),
+  unitQuantity: yup
+    .number('Invalid Number')
+    .integer()
+    .required('Required Field'),
+  labelLink: yup.string().required('Required Field'),
 });

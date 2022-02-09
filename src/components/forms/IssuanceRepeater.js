@@ -3,7 +3,7 @@ import { AddIcon, CloseIcon } from '..';
 import { CreateIssuanceForm } from './CreateIssuanceForm';
 import { ComponentRepeater } from '..';
 
-function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
+function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30, issuanceRef }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
@@ -17,7 +17,7 @@ function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
           verificationReportDate: '',
           verificationBody: '',
         }}
-        component={<CreateIssuanceForm />}
+        component={<CreateIssuanceForm issuanceRef={issuanceRef} />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
         removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
       />

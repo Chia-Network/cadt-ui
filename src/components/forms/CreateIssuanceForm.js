@@ -1,5 +1,4 @@
 import u from 'updeep';
-import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -33,37 +32,32 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateIssuanceForm = ({ value, onChange }) => {
+const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
 
-  useEffect(() => {
-    const errors = async () => {
-      await issuanceSchema
-        .validate(value, { abortEarly: false })
-        .catch(({ errors }) => {
-          setErrorIssuanceMessage(errors);
+  const issuanceValidations = async () => {
+    for (let key of Object.keys(value)) {
+      await issuanceSchema.fields[key]
+        ?.validate(value[key], { abortEarly: false })
+        .catch(error => {
+          console.log(error);
+          setErrorIssuanceMessage(prev => ({
+            ...prev,
+            [key]: error.errors[0],
+          }));
         });
-    };
-    errors();
-  }, [value]);
-
-  const issuanceErrorMessage = name => {
-    if (!_.isEmpty(errorIssuanceMessage)) {
-      for (let message of errorIssuanceMessage) {
-        if (message.includes(name)) {
-          return (
-            <Body size="Small" color="red">
-              {message}
-            </Body>
-          );
-        }
-      }
     }
   };
+  console.log(errorIssuanceMessage);
+
+  useEffect(() => {
+    setErrorIssuanceMessage({});
+    issuanceRef.current = issuanceValidations;
+  }, [value]);
 
   return (
     <ModalFormContainerStyle>
@@ -93,7 +87,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {issuanceErrorMessage('startDate')}
+            {errorIssuanceMessage?.startDate && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.startDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -119,7 +117,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {issuanceErrorMessage('endDate')}
+            {errorIssuanceMessage?.endDate && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.endDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -139,7 +141,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  issuanceErrorMessage('verificationApproach') &&
+                  errorIssuanceMessage?.verificationApproach &&
                   InputVariantEnum.error
                 }
                 size={InputSizeEnum.large}
@@ -153,7 +155,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {issuanceErrorMessage('verificationApproach')}
+            {errorIssuanceMessage?.verificationApproach && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.verificationApproach}
+              </Body>
+            )}
           </StyledFieldContainer>
         </BodyContainer>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -181,7 +187,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {issuanceErrorMessage('verificationReportDate')}
+            {errorIssuanceMessage?.verificationReportDate && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.verificationReportDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -201,7 +211,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  issuanceErrorMessage('verificationBody') &&
+                  errorIssuanceMessage?.verificationBody &&
                   InputVariantEnum.error
                 }
                 size={InputSizeEnum.large}
@@ -215,7 +225,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {issuanceErrorMessage('verificationBody')}
+            {errorIssuanceMessage?.verificationBody && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.verificationBody}
+              </Body>
+            )}
           </StyledFieldContainer>
         </div>
       </FormContainerStyle>
