@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { withTheme, css } from 'styled-components';
+import { useIntl } from 'react-intl';
 import {
   ArrowDownIcon,
   MagnifyGlassIcon,
@@ -213,7 +214,7 @@ const Select = withTheme(
     state = SelectStateEnum.default,
     options,
     selected = null,
-    placeholder = 'Select',
+    placeholder,
     width = '200px',
     onChange,
   }) => {
@@ -225,6 +226,12 @@ const Select = withTheme(
     const [menuTopPosition, setMenuTopPosition] = useState(0);
     const ref = useRef();
     const selectRef = useRef();
+    const intl = useIntl();
+    const placeHolderText =
+      placeholder ||
+      ` -- ${intl.formatMessage({
+        id: 'Select',
+      })} -- `;
 
     useEffect(() => {
       const newHeight = selectRef.current.clientHeight;
@@ -354,7 +361,7 @@ const Select = withTheme(
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0].label
-                : placeholder}
+                : placeHolderText}
             </StyledSelectLabel>
             <StyledArrowDownContainer state={selectState}>
               <ArrowDownIcon
@@ -393,7 +400,7 @@ const Select = withTheme(
                       </div>
                     </StyledMultipleSelectItem>
                   ))
-                : placeholder}
+                : placeHolderText}
             </StyledMultipleSelect>
             <StyledArrowDownContainer state={selectState} onClick={onClick}>
               <ArrowDownIcon
@@ -420,7 +427,7 @@ const Select = withTheme(
                 <StyledSelectLabel>
                   {selectedOptions != null && selectedOptions.length > 0
                     ? selectedOptions[0].label
-                    : placeholder}
+                    : placeHolderText}
                 </StyledSelectLabel>
                 <StyledArrowDownContainer state={selectState}>
                   <ArrowDownIcon
@@ -437,7 +444,7 @@ const Select = withTheme(
                     type="text"
                     value={searchInputValue}
                     onChange={onSearchInputChange}
-                    placeholder={placeholder}
+                    placeholder={placeHolderText}
                     autoFocus
                   />
                 </div>

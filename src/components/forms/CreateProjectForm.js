@@ -265,9 +265,6 @@ const CreateProjectForm = withRouter(
                               type={SelectTypeEnum.basic}
                               options={selectRegistriesOptions}
                               state={SelectStateEnum.default}
-                              placeholder={intl.formatMessage({
-                                id: 'registry-of-origin',
-                              })}
                               selected={
                                 newProject.registryOfOrigin
                                   ? [
@@ -498,9 +495,6 @@ const CreateProjectForm = withRouter(
                               type={SelectTypeEnum.basic}
                               options={selectProjectSectorOptions}
                               state={SelectStateEnum.default}
-                              placeholder={intl.formatMessage({
-                                id: 'sector',
-                              })}
                               selected={
                                 newProject.sector
                                   ? [
@@ -540,9 +534,6 @@ const CreateProjectForm = withRouter(
                             type={SelectTypeEnum.basic}
                             options={selectProjectTypeOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'project-type',
-                            })}
                             selected={
                               newProject.projectType
                                 ? [
@@ -582,9 +573,6 @@ const CreateProjectForm = withRouter(
                               type={SelectTypeEnum.basic}
                               options={selectCoveredByNDCOptions}
                               state={SelectStateEnum.default}
-                              placeholder={intl.formatMessage({
-                                id: 'covered-by-ndc',
-                              })}
                               selected={
                                 newProject.coveredByNDC
                                   ? [
@@ -660,9 +648,6 @@ const CreateProjectForm = withRouter(
                               type={SelectTypeEnum.basic}
                               options={selectProjectStatusValuesOptions}
                               state={SelectStateEnum.default}
-                              placeholder={intl.formatMessage({
-                                id: 'project-status',
-                              })}
                               selected={
                                 newProject.projectStatus
                                   ? [
@@ -758,9 +743,6 @@ const CreateProjectForm = withRouter(
                               type={SelectTypeEnum.basic}
                               options={selectMethodologyOptions}
                               state={SelectStateEnum.default}
-                              placeholder={intl.formatMessage({
-                                id: 'methodology',
-                              })}
                               selected={
                                 newProject.methodology
                                   ? [

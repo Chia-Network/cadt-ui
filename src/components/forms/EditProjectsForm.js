@@ -337,9 +337,6 @@ const EditProjectsForm = ({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={selectRegistriesOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'registry-of-origin',
-                            })}
                             selected={
                               climatewarehouseProjects.registryOfOrigin
                                 ? [
@@ -511,9 +508,6 @@ const EditProjectsForm = ({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={selectProjectSectorOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'sector',
-                            })}
                             selected={
                               climatewarehouseProjects.sector
                                 ? [
@@ -553,9 +547,6 @@ const EditProjectsForm = ({ onClose }) => {
                           type={SelectTypeEnum.basic}
                           options={selectProjectTypeOptions}
                           state={SelectStateEnum.default}
-                          placeholder={intl.formatMessage({
-                            id: 'project-type',
-                          })}
                           selected={
                             climatewarehouseProjects.projectType
                               ? [
@@ -630,9 +621,6 @@ const EditProjectsForm = ({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={selectCoveredByNDCOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'covered-by-ndc',
-                            })}
                             selected={
                               climatewarehouseProjects.coveredByNDC
                                 ? [
@@ -707,9 +695,6 @@ const EditProjectsForm = ({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={selectProjectStatusValuesOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'project-status',
-                            })}
                             selected={
                               climatewarehouseProjects.projectStatus
                                 ? [
@@ -807,9 +792,6 @@ const EditProjectsForm = ({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={selectMethodologyOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'methodology',
-                            })}
                             selected={
                               climatewarehouseProjects.methodology
                                 ? [

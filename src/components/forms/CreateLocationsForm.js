@@ -81,9 +81,6 @@ const CreateLocationsForm = ({ value, onChange }) => {
                     : undefined
                 }
                 state={SelectStateEnum.default}
-                placeholder={intl.formatMessage({
-                  id: 'host-country',
-                })}
                 onChange={selectedOptions =>
                   onInputChange('country', selectedOptions[0].value)
                 }
