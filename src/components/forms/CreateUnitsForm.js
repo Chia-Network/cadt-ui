@@ -36,7 +36,6 @@ import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { correspondingAdjustmentDeclarationValues } from '../../utils/pick-values';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -86,28 +85,39 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
 
   const selectUnitStatusOptions = useMemo(
     () =>
-      pickLists.unitStatus.map(country => ({
-        value: country,
-        label: country,
+      pickLists.unitStatus.map(unitStatusItem => ({
+        value: unitStatusItem,
+        label: unitStatusItem,
       })),
     [pickLists],
   );
 
   const selectUnitTypeOptions = useMemo(
     () =>
-      pickLists.unitType.map(country => ({
-        value: country,
-        label: country,
+      pickLists.unitType.map(unitTypeItem => ({
+        value: unitTypeItem,
+        label: unitTypeItem,
       })),
     [pickLists],
   );
 
   const selectCorrespondingAdjustmentStatusOptions = useMemo(
     () =>
-      pickLists.correspondingAdjustmentStatus.map(country => ({
-        value: country,
-        label: country,
+      pickLists.correspondingAdjustmentStatus.map(adjustmentStatusItem => ({
+        value: adjustmentStatusItem,
+        label: adjustmentStatusItem,
       })),
+    [pickLists],
+  );
+
+  const selectCorrespondingAdjustmentDeclarationOptions = useMemo(
+    () =>
+      pickLists.correspondingAdjustmentDeclaration.map(
+        adjustmentDeclarationItem => ({
+          value: adjustmentDeclarationItem,
+          label: adjustmentDeclarationItem,
+        }),
+      ),
     [pickLists],
   );
 
@@ -146,7 +156,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
       dataToSend.correspondingAdjustmentDeclaration =
-        selectedCorrespondingAdjustmentDeclaration[0].value;
+        selectedCorrespondingAdjustmentDeclaration;
     }
     if (!_.isEmpty(year)) {
       dataToSend.vintageYear = year;
@@ -828,13 +838,29 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         <Select
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
-                          options={correspondingAdjustmentDeclarationValues}
-                          onChange={value =>
-                            setSelectedCorrespondingAdjustmentDeclaration(value)
+                          options={
+                            selectCorrespondingAdjustmentDeclarationOptions
                           }
-                          placeholder={`-- ${intl.formatMessage({
-                            id: 'select',
-                          })} --`}
+                          onChange={selectedOptions =>
+                            setSelectedCorrespondingAdjustmentDeclaration(
+                              selectedOptions[0].value,
+                            )
+                          }
+                          placeholder={intl.formatMessage({
+                            id: 'corresponding-adjustment-declaration',
+                          })}
+                          selected={
+                            selectedCorrespondingAdjustmentDeclaration
+                              ? [
+                                  {
+                                    value:
+                                      selectedCorrespondingAdjustmentDeclaration,
+                                    label:
+                                      selectedCorrespondingAdjustmentDeclaration,
+                                  },
+                                ]
+                              : undefined
+                          }
                         />
                       </InputContainer>
                       {errorMessage?.correspondingAdjustmentDeclaration && (

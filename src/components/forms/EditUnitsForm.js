@@ -35,8 +35,6 @@ import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { correspondingAdjustmentDeclarationValues } from '../../utils/pick-values';
-
 const EditUnitsForm = ({ onClose }) => {
   const { notification } = useSelector(state => state.app);
   const [labels, setLabelsRepeaterValues] = useState([]);
@@ -63,30 +61,41 @@ const EditUnitsForm = ({ onClose }) => {
   );
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
-  const selectUnitTypeOptions = useMemo(
+  const selectUnitStatusOptions = useMemo(
     () =>
-      pickLists.unitType.map(country => ({
-        value: country,
-        label: country,
+      pickLists.unitStatus.map(unitStatusItem => ({
+        value: unitStatusItem,
+        label: unitStatusItem,
       })),
     [pickLists],
   );
 
-  const selectUnitStatusOptions = useMemo(
+  const selectUnitTypeOptions = useMemo(
     () =>
-      pickLists.unitStatus.map(country => ({
-        value: country,
-        label: country,
+      pickLists.unitType.map(unitTypeItem => ({
+        value: unitTypeItem,
+        label: unitTypeItem,
       })),
     [pickLists],
   );
 
   const selectCorrespondingAdjustmentStatusOptions = useMemo(
     () =>
-      pickLists.correspondingAdjustmentStatus.map(country => ({
-        value: country,
-        label: country,
+      pickLists.correspondingAdjustmentStatus.map(adjustmentStatusItem => ({
+        value: adjustmentStatusItem,
+        label: adjustmentStatusItem,
       })),
+    [pickLists],
+  );
+
+  const selectCorrespondingAdjustmentDeclarationOptions = useMemo(
+    () =>
+      pickLists.correspondingAdjustmentDeclaration.map(
+        adjustmentDeclarationItem => ({
+          value: adjustmentDeclarationItem,
+          label: adjustmentDeclarationItem,
+        }),
+      ),
     [pickLists],
   );
 
@@ -194,7 +203,7 @@ const EditUnitsForm = ({ onClose }) => {
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
       dataToSend.correspondingAdjustmentDeclaration =
-        selectedCorrespondingAdjustmentDeclaration[0].value;
+        selectedCorrespondingAdjustmentDeclaration;
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
       dataToSend.correspondingAdjustmentStatus =
@@ -809,23 +818,29 @@ const EditUnitsForm = ({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={correspondingAdjustmentDeclarationValues}
-                            onChange={value =>
+                            options={
+                              selectCorrespondingAdjustmentDeclarationOptions
+                            }
+                            onChange={selectedOptions =>
                               setSelectedCorrespondingAdjustmentDeclaration(
-                                value,
+                                selectedOptions[0].value,
                               )
                             }
-                            placeholder={`-- ${intl.formatMessage({
-                              id: 'select',
-                            })} --`}
-                            selected={[
-                              {
-                                label:
-                                  climatewarehouseUnits.correspondingAdjustmentDeclaration,
-                                value:
-                                  climatewarehouseUnits.correspondingAdjustmentDeclaration,
-                              },
-                            ]}
+                            placeholder={intl.formatMessage({
+                              id: 'corresponding-adjustment-declaration',
+                            })}
+                            selected={
+                              climatewarehouseUnits.correspondingAdjustmentDeclaration
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseUnits.correspondingAdjustmentDeclaration,
+                                      value:
+                                        climatewarehouseUnits.correspondingAdjustmentDeclaration,
+                                    },
+                                  ]
+                                : undefined
+                            }
                           />
                         </InputContainer>
                         {errorMessageAlert(
