@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Stepper, Step, StepLabel } from '@mui/material';
+import dayjs from 'dayjs';
 
 import {
   StandardInput,
@@ -74,14 +75,11 @@ const CreateProjectForm = withRouter(
       sector: '',
       projectType: '',
       coveredByNDC: 0,
-      NDCLinkage: '',
       projectStatus: '',
       unitMetric: '',
+      ndcInformation: '',
       methodology: '',
-      methodologyVersion: 0,
-      validationApproach: '',
-      estimatedAnnualAverageEmissionReduction: 60,
-      projectTag: '',
+      projectTags: '',
     });
 
     const selectCoveredByNDCOptions = useMemo(
@@ -89,6 +87,15 @@ const CreateProjectForm = withRouter(
         pickLists.coveredByNDC.map(coveredByNDCItem => ({
           value: coveredByNDCItem,
           label: coveredByNDCItem,
+        })),
+      [pickLists],
+    );
+
+    const selectUnitMetricOptions = useMemo(
+      () =>
+        pickLists.unitMetric.map(unitMetricItem => ({
+          value: unitMetricItem,
+          label: unitMetricItem,
         })),
       [pickLists],
     );
@@ -155,13 +162,15 @@ const CreateProjectForm = withRouter(
         }
 
         if (!_.isEmpty(date)) {
-          dataToSend.projectStatusDate = `${date.$M + 1}/${date.$D}/${date.$y}`;
+          dataToSend.projectStatusDate = dayjs(date).format(
+            'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
+          );
         }
 
         if (!_.isEmpty(validationDate)) {
-          dataToSend.validationDate = `${validationDate.$M + 1}/${
-            validationDate.$D
-          }/${validationDate.$y}`;
+          dataToSend.validationDate = dayjs(validationDate).format(
+            'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
+          );
         }
 
         if (!_.isEmpty(newProjectLocations)) {
@@ -384,6 +393,38 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
+                                <FormattedMessage id="ndc-information" />
+                              </LabelContainer>
+                              <ToolTipContainer
+                                tooltip={intl.formatMessage({
+                                  id: 'ndc-information-description',
+                                })}
+                              >
+                                <DescriptionIcon height="14" width="14" />
+                              </ToolTipContainer>
+                            </Body>
+                          </StyledLabelContainer>
+                          <InputContainer>
+                            <StandardInput
+                              size={InputSizeEnum.large}
+                              placeholderText={intl.formatMessage({
+                                id: 'ndc-information',
+                              })}
+                              state={InputStateEnum.default}
+                              value={newProject.ndcInformation}
+                              onChange={value =>
+                                setNewProject(prev => ({
+                                  ...prev,
+                                  ndcInformation: value,
+                                }))
+                              }
+                            />
+                          </InputContainer>
+                        </StyledFieldContainer>
+                        <StyledFieldContainer>
+                          <StyledLabelContainer>
+                            <Body>
+                              <LabelContainer>
                                 <FormattedMessage id="project-name" />
                               </LabelContainer>
                               <ToolTipContainer
@@ -601,38 +642,6 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="ndc-linkage" />
-                              </LabelContainer>
-                              <ToolTipContainer
-                                tooltip={intl.formatMessage({
-                                  id: 'projects-ndc-linkage-description',
-                                })}
-                              >
-                                <DescriptionIcon height="14" width="14" />
-                              </ToolTipContainer>
-                            </Body>
-                          </StyledLabelContainer>
-                          <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'ndc-linkage',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.NDCLinkage}
-                              onChange={value =>
-                                setNewProject(prev => ({
-                                  ...prev,
-                                  NDCLinkage: value,
-                                }))
-                              }
-                            />
-                          </InputContainer>
-                        </StyledFieldContainer>
-                        <StyledFieldContainer>
-                          <StyledLabelContainer>
-                            <Body>
-                              <LabelContainer>
                                 <FormattedMessage id="project-status" />
                               </LabelContainer>
                               <ToolTipContainer
@@ -708,17 +717,25 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'unit-metric',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.unitMetric}
-                              onChange={value =>
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectUnitMetricOptions}
+                              state={SelectStateEnum.default}
+                              selected={
+                                newProject.unitMetric
+                                  ? [
+                                      {
+                                        label: newProject.unitMetric,
+                                        value: newProject.unitMetric,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  unitMetric: value,
+                                  unitMetric: selectedOptions[0].value,
                                 }))
                               }
                             />
@@ -768,70 +785,6 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="methodology-version" />
-                              </LabelContainer>
-                              <ToolTipContainer
-                                tooltip={intl.formatMessage({
-                                  id: 'projects-methodology-version-description',
-                                })}
-                              >
-                                <DescriptionIcon height="14" width="14" />
-                              </ToolTipContainer>
-                            </Body>
-                          </StyledLabelContainer>
-                          <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'methodology-version',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.methodologyVersion}
-                              onChange={value =>
-                                setNewProject(prev => ({
-                                  ...prev,
-                                  methodologyVersion: value,
-                                }))
-                              }
-                            />
-                          </InputContainer>
-                        </StyledFieldContainer>
-                        <StyledFieldContainer>
-                          <StyledLabelContainer>
-                            <Body>
-                              <LabelContainer>
-                                <FormattedMessage id="validation-approach" />
-                              </LabelContainer>
-                              <ToolTipContainer
-                                tooltip={intl.formatMessage({
-                                  id: 'projects-validation-approach-description',
-                                })}
-                              >
-                                <DescriptionIcon height="14" width="14" />
-                              </ToolTipContainer>
-                            </Body>
-                          </StyledLabelContainer>
-                          <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'validation-approach',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.validationApproach}
-                              onChange={value =>
-                                setNewProject(prev => ({
-                                  ...prev,
-                                  validationApproach: value,
-                                }))
-                              }
-                            />
-                          </InputContainer>
-                        </StyledFieldContainer>
-                        <StyledFieldContainer>
-                          <StyledLabelContainer>
-                            <Body>
-                              <LabelContainer>
                                 <FormattedMessage id="validation-date" />
                               </LabelContainer>
                               <ToolTipContainer
@@ -848,41 +801,6 @@ const CreateProjectForm = withRouter(
                               size="large"
                               dateValue={validationDate}
                               setDateValue={setValidationDate}
-                            />
-                          </InputContainer>
-                        </StyledFieldContainer>
-                        <StyledFieldContainer>
-                          <StyledLabelContainer>
-                            <Body>
-                              <LabelContainer>
-                                <FormattedMessage id="estimated-annual-average-emission-reduction" />
-                              </LabelContainer>
-                              <ToolTipContainer
-                                tooltip={intl.formatMessage({
-                                  id: 'projects-estimated-annual-average-emission-reduction-description',
-                                })}
-                              >
-                                <DescriptionIcon height="14" width="14" />
-                              </ToolTipContainer>
-                            </Body>
-                          </StyledLabelContainer>
-                          <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'estimated-annual-average-emission-reduction',
-                              })}
-                              state={InputStateEnum.default}
-                              value={
-                                newProject.estimatedAnnualAverageEmissionReduction
-                              }
-                              onChange={value =>
-                                setNewProject(prev => ({
-                                  ...prev,
-                                  estimatedAnnualAverageEmissionReduction:
-                                    value,
-                                }))
-                              }
                             />
                           </InputContainer>
                         </StyledFieldContainer>
@@ -908,11 +826,11 @@ const CreateProjectForm = withRouter(
                                 id: 'project-tags',
                               })}
                               state={InputStateEnum.default}
-                              value={newProject.projectTag}
+                              value={newProject.projectTags}
                               onChange={value =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  projectTag: value,
+                                  projectTags: value,
                                 }))
                               }
                             />
