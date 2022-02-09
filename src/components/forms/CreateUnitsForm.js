@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,6 +39,7 @@ import {
   unitTypeValues,
 } from '../../utils/pick-values';
 import { LabelContainer } from '../../utils/compUtils';
+import { labelSchema } from '.';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -62,22 +63,14 @@ const StyledFormContainer = styled('div')`
 const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   const { notification } = useSelector(state => state.app);
   const [newLabels, setNewLabels] = useState([]);
+  const [labelFormsValid, setLabelFormsValid] = useState([]);
   const [newIssuance, setNewIssuance] = useState([]);
-  const [year, setYear] = useState();
   const [errorMessage, setErrorMessage] = useState({});
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const [unitType, setUnitType] = useState(null);
-  const [unitStatus, setUnitStatus] = useState(null);
-  const [
-    selectedCorrespondingAdjustmentDeclaration,
-    setSelectedCorrespondingAdjustmentDeclaration,
-  ] = useState(null);
-  const [
-    selectedCorrespondingAdjustmentStatus,
-    setSelectedCorrespondingAdjustmentStatus,
-  ] = useState(null);
+  const labelRef = useRef();
+  const issuanceRef = useRef();
 
   const [newUnits, setNewUnits] = useState({
     projectLocationId: '',
@@ -91,6 +84,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     marketplaceIdentifier: '',
     unitTags: '',
     unitStatusReason: '',
+    vintageYear: 2020,
     unitRegistryLink: '',
     unitType: '',
     unitStatus: '',
@@ -98,75 +92,78 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     correspondingAdjustmentStatus: '',
   });
 
+  const unitsValidations = async name => {
+    for (let key of Object.keys(name)) {
+      await unitsSchema.fields[key]
+        ?.validate(newUnits[key], { abortEarly: false })
+        .catch(async error => {
+          setErrorMessage(prev => ({ ...prev, [key]: error.errors[0] }));
+        });
+    }
+  };
+
   const handleEditUnits = async () => {
-    setErrorMessage({});
     const dataToSend = _.cloneDeep(newUnits);
-
-    if (!_.isEmpty(newLabels) && tabValue === 1) {
-      for (let i = 0; i < newLabels.length; i++) {
-        for (let key of Object.keys(newLabels[i])) {
-          if (newLabels[i][key] === '') {
-            delete newLabels[i][key];
-          }
-        }
-      }
-      dataToSend.labels = newLabels;
-    } else if (_.isEmpty(newLabels) && tabValue === 1) {
-      setTabValue(prev => prev + 1);
-    }
-
-    if (!_.isEmpty(newIssuance)) {
-      for (let key of Object.keys(newIssuance[0])) {
-        if (newIssuance[0][key] === '') {
-          delete newIssuance[0][key];
-        }
-      }
-
-      dataToSend.issuance = _.head(newIssuance);
-    }
-
-    if (!_.isEmpty(unitType)) {
-      dataToSend.unitType = unitType[0].value;
-    }
-    if (!_.isEmpty(unitStatus)) {
-      dataToSend.unitStatus = unitStatus[0].value;
-    }
-    if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
-      dataToSend.correspondingAdjustmentDeclaration =
-        selectedCorrespondingAdjustmentDeclaration[0].value;
-    }
-    if (!_.isEmpty(year)) {
-      dataToSend.vintageYear = year;
-    }
-    if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
-      dataToSend.correspondingAdjustmentStatus =
-        selectedCorrespondingAdjustmentStatus[0].value;
-    }
-    await unitsSchema
-      .validate(dataToSend, { abortEarly: false })
-      .catch(({ errors }) => {
-        for (let key in dataToSend) {
-          for (let err of errors) {
-            if (err.includes(key)) {
-              setErrorMessage(prev => ({ ...prev, [key]: err }));
-            }
-          }
-        }
-      });
-
     const isUnitValid = await unitsSchema.isValid(dataToSend);
+
+    //Reset Error Messages
+    setErrorMessage({});
+
+    //Page 0
     if (tabValue === 0 && isUnitValid) {
-      setTabValue(prev => prev + 1);
+      return setTabValue(prev => prev + 1);
     }
 
+    //Page 1
+    if (!_.isEmpty(newLabels) && tabValue === 1) {
+      if (newLabels.length > 0) {
+        setLabelFormsValid([]);
+        let labelFormValid = newLabels.map(async label => {
+          const validLabel = await labelSchema.isValid(label);
+          return setLabelFormsValid(prev => [...prev, validLabel]);
+        });
+
+        if (labelFormsValid.length > 0) {
+          let checkLabelForms = await _.every(labelFormsValid);
+
+          if (checkLabelForms) {
+            return setTabValue(prev => prev + 1);
+          }
+        }
+        console.log(labelFormValid);
+      }
+
+      labelRef.current();
+    } else if (_.isEmpty(newLabels) && tabValue === 1) {
+      return setTabValue(prev => prev + 1);
+    }
+
+    //Page 2 sending form
     if (tabValue === 2) {
-      for (let key in dataToSend) {
-        if (dataToSend[key] === '') {
-          delete dataToSend[key];
+      if (!_.isEmpty(newLabels)) {
+        dataToSend.labels = newLabels;
+      }
+
+      if (!_.isEmpty(newIssuance)) {
+        dataToSend.issuance = _.head(newIssuance);
+        issuanceRef.current();
+      }
+      const isUnitValid = await unitsSchema.isValid(dataToSend);
+      if (tabValue === 2) {
+        for (let key in dataToSend) {
+          if (dataToSend[key] === '') {
+            delete dataToSend[key];
+          }
         }
       }
-      dispatch(postNewUnits(dataToSend));
+
+      if (isUnitValid) {
+        dispatch(postNewUnits(dataToSend));
+      }
     }
+
+    //Validate Full Form
+    await unitsValidations(dataToSend);
   };
 
   const unitWasSuccessfullyCreated =
@@ -246,8 +243,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}
-            >
+              index={0}>
               <ModalFormContainerStyle>
                 <FormContainerStyle>
                   <BodyContainer>
@@ -262,8 +258,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-project-location-id-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -301,8 +296,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-owner-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -340,8 +334,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-country-jurisdiction-of-owner-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -381,8 +374,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-in-country-jurisdiction-of-owner-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -422,8 +414,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-serial-number-block-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -461,8 +452,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-serial-number-pattern-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -493,14 +483,14 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body style={{ color: '#262626' }}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="vintage-year" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-vintage-year-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -508,10 +498,20 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                       <InputContainer>
                         <YearSelect
                           size="large"
-                          yearValue={year}
-                          setYearValue={setYear}
+                          yearValue={newUnits.vintageYear}
+                          onChange={value =>
+                            setNewUnits(prev => ({
+                              ...prev,
+                              vintageYear: value.$y,
+                            }))
+                          }
                         />
                       </InputContainer>
+                      {errorMessage?.vintageYear && (
+                        <Body size="Small" color="red">
+                          {errorMessage.vintageYear}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -523,8 +523,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-type-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -534,7 +533,12 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
                           options={unitTypeValues}
-                          onChange={value => setUnitType(value)}
+                          onChange={value =>
+                            setNewUnits(prev => ({
+                              ...prev,
+                              unitType: value[0].value,
+                            }))
+                          }
                           placeholder={`-- ${intl.formatMessage({
                             id: 'select',
                           })} --`}
@@ -549,20 +553,21 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="marketplace" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('marketplace')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'marketplace',
@@ -577,6 +582,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.marketplace && (
+                        <Body size="Small" color="red">
+                          {errorMessage.marketplace}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                   </BodyContainer>
                   <BodyContainer>
@@ -584,20 +594,21 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="marketplace-link" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-link-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('marketplaceLink')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'marketplace-link',
@@ -612,24 +623,30 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.marketplaceLink && (
+                        <Body size="Small" color="red">
+                          {errorMessage.marketplaceLink}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="marketplace-identifier" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-marketplace-identifier-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('marketplaceIdentifier')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'marketplace-identifier',
@@ -644,6 +661,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.marketplaceIdentifier && (
+                        <Body size="Small" color="red">
+                          {errorMessage.marketplaceIdentifier}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -654,8 +676,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-tags-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -687,8 +708,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-status-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -698,7 +718,12 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
                           options={unitStatusValues}
-                          onChange={value => setUnitStatus(value)}
+                          onChange={value =>
+                            setNewUnits(prev => ({
+                              ...prev,
+                              unitStatus: value[0].value,
+                            }))
+                          }
                           placeholder={`-- ${intl.formatMessage({
                             id: 'select',
                           })} --`}
@@ -713,20 +738,21 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <StyledFieldContainer>
                       <StyledLabelContainer>
                         <Body color={'#262626'}>
+                          *
                           <LabelContainer>
                             <FormattedMessage id="unit-status-reason" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-status-reason-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
                         <StandardInput
+                          variant={errorInputAlert('unitStatusReason')}
                           size={InputSizeEnum.large}
                           placeholderText={intl.formatMessage({
                             id: 'unit-status-reason',
@@ -741,6 +767,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           }
                         />
                       </InputContainer>
+                      {errorMessage?.unitStatusReason && (
+                        <Body size="Small" color="red">
+                          {errorMessage.unitStatusReason}
+                        </Body>
+                      )}
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
@@ -752,8 +783,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-registry-link-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -791,8 +821,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-corresponding-adjustment-declaration-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -803,7 +832,11 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           type={SelectTypeEnum.basic}
                           options={correspondingAdjustmentDeclarationValues}
                           onChange={value =>
-                            setSelectedCorrespondingAdjustmentDeclaration(value)
+                            setNewUnits(prev => ({
+                              ...prev,
+                              correspondingAdjustmentDeclaration:
+                                value[0].value,
+                            }))
                           }
                           placeholder={`-- ${intl.formatMessage({
                             id: 'select',
@@ -826,8 +859,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-corresponding-adjustment-status-description',
-                            })}
-                          >
+                            })}>
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -838,7 +870,10 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           type={SelectTypeEnum.basic}
                           options={correspondingAdjustmentStatusValues}
                           onChange={value =>
-                            setSelectedCorrespondingAdjustmentStatus(value)
+                            setNewUnits(prev => ({
+                              ...prev,
+                              correspondingAdjustmentStatus: value[0].value,
+                            }))
                           }
                           placeholder={`-- ${intl.formatMessage({
                             id: 'select',
@@ -859,6 +894,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
               <LabelsRepeater
                 labelsState={newLabels}
                 newLabelsState={setNewLabels}
+                labelRef={labelRef}
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
@@ -868,6 +904,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                   Array.isArray(newIssuance) ? newIssuance : [newIssuance]
                 }
                 newIssuanceState={setNewIssuance}
+                issuanceRef={issuanceRef}
               />
             </TabPanel>
           </StyledFormContainer>

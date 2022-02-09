@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -32,34 +31,31 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateLabelsForm = ({ value, onChange }) => {
+const CreateLabelsForm = ({ value, onChange, labelRef }) => {
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
 
-  useEffect(() => {
-    const errors = async () => {
-      await labelSchema
-        .validate(value, { abortEarly: false })
-        .catch(({ errors }) => {
-          setErrorLabelMessage(errors);
+  const labelsValidations = async () => {
+    for (let key of Object.keys(value)) {
+      await labelSchema.fields[key]
+        ?.validate(value[key], { abortEarly: false })
+        .catch(error => {
+          setErrorLabelMessage(prev => ({
+            ...prev,
+            [key]: error.errors[0],
+          }));
         });
-    };
-    errors();
-  }, [value]);
-
-  const labelErrorMessage = name => {
-    if (!_.isEmpty(errorLabelMessage)) {
-      for (let message of errorLabelMessage) {
-        if (message.includes(name)) {
-          return (
-            <Body size="Small" color="red">
-              {message}
-            </Body>
-          );
-        }
-      }
     }
   };
+
+  
+
+  useEffect(() => {
+    setErrorLabelMessage({});
+    labelRef.current = labelsValidations;
+  }, [value]);
+
+  
 
   return (
     <ModalFormContainerStyle>
@@ -81,7 +77,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={labelErrorMessage('Label') && InputVariantEnum.error}
+                variant={errorLabelMessage?.label && InputVariantEnum.error}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'label',
@@ -93,7 +89,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 }}
               />
             </InputContainer>
-            {labelErrorMessage('Label')}
+            {errorLabelMessage?.label && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.label}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -111,9 +111,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={
-                  labelErrorMessage('labelType') && InputVariantEnum.error
-                }
+                variant={errorLabelMessage?.labelType && InputVariantEnum.error}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'label-type',
@@ -125,7 +123,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 }}
               />
             </InputContainer>
-            {labelErrorMessage('labelType')}
+            {errorLabelMessage?.labelType && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.labelType}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -150,7 +152,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {labelErrorMessage('creditingPeriodStartDate')}
+            {errorLabelMessage?.creditingPeriodStartDate && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.creditingPeriodStartDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -175,7 +181,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {labelErrorMessage('creditingPeriodEndDate')}
+            {errorLabelMessage?.creditingPeriodEndDate && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.creditingPeriodEndDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -200,7 +210,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {labelErrorMessage('validityPeriodStartDate')}
+            {errorLabelMessage?.validityPeriodStartDate && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.validityPeriodStartDate}
+              </Body>
+            )}
           </StyledFieldContainer>
         </BodyContainer>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -227,7 +241,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
-            {labelErrorMessage('validityPeriodEndDate')}
+            {errorLabelMessage?.validityPeriodEndDate && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.validityPeriodEndDate}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -246,7 +264,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  labelErrorMessage('unitQuantity') && InputVariantEnum.error
+                  errorLabelMessage.unitQuantity && InputVariantEnum.error
                 }
                 type="number"
                 size={InputSizeEnum.large}
@@ -260,7 +278,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 }}
               />
             </InputContainer>
-            {labelErrorMessage('unitQuantity')}
+            {errorLabelMessage?.unitQuantity && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.unitQuantity}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -278,9 +300,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
-                variant={
-                  labelErrorMessage('labelLink') && InputVariantEnum.error
-                }
+                variant={errorLabelMessage.labelLink && InputVariantEnum.error}
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'label-link',
@@ -292,7 +312,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 }}
               />
             </InputContainer>
-            {labelErrorMessage('labelLink')}
+            {errorLabelMessage?.labelLink && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.labelLink}
+              </Body>
+            )}
           </StyledFieldContainer>
         </div>
       </FormContainerStyle>
