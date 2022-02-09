@@ -38,7 +38,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import {
   correspondingAdjustmentDeclarationValues,
   correspondingAdjustmentStatusValues,
-  unitStatusValues,
 } from '../../utils/pick-values';
 
 const EditUnitsForm = ({ onClose }) => {
@@ -70,6 +69,15 @@ const EditUnitsForm = ({ onClose }) => {
   const selectUnitTypeOptions = useMemo(
     () =>
       pickLists.unitType.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
+
+  const selectUnitStatusOptions = useMemo(
+    () =>
+      pickLists.unitStatus.map(country => ({
         value: country,
         label: country,
       })),
@@ -173,7 +181,7 @@ const EditUnitsForm = ({ onClose }) => {
       dataToSend.unitType = unitType;
     }
     if (!_.isEmpty(unitStatus)) {
-      dataToSend.unitStatus = unitStatus[0].value;
+      dataToSend.unitStatus = unitStatus;
     }
     if (!_.isEmpty(year)) {
       dataToSend.vintageYear = year;
@@ -687,17 +695,23 @@ const EditUnitsForm = ({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={unitStatusValues}
-                            onChange={value => setUnitStatus(value)}
-                            placeholder={`-- ${intl.formatMessage({
-                              id: 'select',
-                            })} --`}
-                            selected={[
-                              {
-                                label: climatewarehouseUnits.unitStatus,
-                                value: climatewarehouseUnits.unitStatus,
-                              },
-                            ]}
+                            options={selectUnitStatusOptions}
+                            onChange={selectedOptions =>
+                              setUnitStatus(selectedOptions[0].value)
+                            }
+                            placeholder={intl.formatMessage({
+                              id: 'unit-status',
+                            })}
+                            selected={
+                              climatewarehouseUnits.unitStatus
+                                ? [
+                                    {
+                                      label: climatewarehouseUnits.unitStatus,
+                                      value: climatewarehouseUnits.unitStatus,
+                                    },
+                                  ]
+                                : undefined
+                            }
                           />
                         </InputContainer>
                         {errorMessageAlert('unitStatus')}

@@ -39,7 +39,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import {
   correspondingAdjustmentDeclarationValues,
   correspondingAdjustmentStatusValues,
-  unitStatusValues,
 } from '../../utils/pick-values';
 
 const StyledFormContainer = styled('div')`
@@ -88,6 +87,15 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
   });
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
+  const selectUnitStatusOptions = useMemo(
+    () =>
+      pickLists.unitStatus.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
+
   const selectUnitTypeOptions = useMemo(
     () =>
       pickLists.unitType.map(country => ({
@@ -128,7 +136,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
       dataToSend.unitType = unitType;
     }
     if (!_.isEmpty(unitStatus)) {
-      dataToSend.unitStatus = unitStatus[0].value;
+      dataToSend.unitStatus = unitStatus;
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
       dataToSend.correspondingAdjustmentDeclaration =
@@ -703,11 +711,18 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         <Select
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
-                          options={unitStatusValues}
-                          onChange={value => setUnitStatus(value)}
-                          placeholder={`-- ${intl.formatMessage({
-                            id: 'select',
-                          })} --`}
+                          options={selectUnitStatusOptions}
+                          selected={
+                            unitStatus
+                              ? [{ label: unitStatus, value: unitStatus }]
+                              : undefined
+                          }
+                          onChange={selectedOptions =>
+                            setUnitStatus(selectedOptions[0].value)
+                          }
+                          placeholder={intl.formatMessage({
+                            id: 'unit-status',
+                          })}
                         />
                       </InputContainer>
                       {errorMessage?.unitStatus && (
