@@ -11,7 +11,7 @@ export const labelSchema = yup.object().shape({
     .min(yup.ref('creditingPeriodStartDate'))
     .required('creditingPeriodEndDate is required'),
   validityPeriodStartDate: yup
-    .string()
+    .date()
     .required('validityPeriodStartDate is required'),
   validityPeriodEndDate: yup
     .date()

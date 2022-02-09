@@ -55,6 +55,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
     const errors = async () => {
       await labelSchema
         .validate(value, { abortEarly: false })
+        .then(() => setErrorLabelMessage([]))
         .catch(({ errors }) => {
           setErrorLabelMessage(errors);
         });
