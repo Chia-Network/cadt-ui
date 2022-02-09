@@ -100,7 +100,14 @@ const EditProjectsForm = ({ onClose }) => {
     [pickLists],
   );
 
-  //registries
+  const selectRegistriesOptions = useMemo(
+    () =>
+      pickLists.registries.map(registriesItem => ({
+        value: registriesItem,
+        label: registriesItem,
+      })),
+    [pickLists],
+  );
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -325,17 +332,30 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectRegistriesOptions}
+                            state={SelectStateEnum.default}
+                            placeholder={intl.formatMessage({
                               id: 'registry-of-origin',
                             })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.registryOfOrigin}
-                            onChange={value =>
+                            selected={
+                              climatewarehouseProjects.registryOfOrigin
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseProjects.registryOfOrigin,
+                                      value:
+                                        climatewarehouseProjects.registryOfOrigin,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                registryOfOrigin: value,
+                                registryOfOrigin: selectedOptions[0].value,
                               }))
                             }
                           />

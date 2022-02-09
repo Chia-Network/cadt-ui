@@ -127,6 +127,15 @@ const CreateProjectForm = withRouter(
       [pickLists],
     );
 
+    const selectRegistriesOptions = useMemo(
+      () =>
+        pickLists.registries.map(registriesItem => ({
+          value: registriesItem,
+          label: registriesItem,
+        })),
+      [pickLists],
+    );
+
     const handleSubmit = () => {
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
@@ -251,17 +260,28 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectRegistriesOptions}
+                              state={SelectStateEnum.default}
+                              placeholder={intl.formatMessage({
                                 id: 'registry-of-origin',
                               })}
-                              state={InputStateEnum.default}
-                              value={newProject.registryOfOrigin}
-                              onChange={value =>
+                              selected={
+                                newProject.registryOfOrigin
+                                  ? [
+                                      {
+                                        label: newProject.registryOfOrigin,
+                                        value: newProject.registryOfOrigin,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  registryOfOrigin: value,
+                                  registryOfOrigin: selectedOptions[0].value,
                                 }))
                               }
                             />
