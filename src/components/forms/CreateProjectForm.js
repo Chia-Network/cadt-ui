@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -22,6 +22,14 @@ import {
   modalTypeEnum,
   StyledFieldRequired,
   FieldRequired,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
+  LabelContainer,
+  Select,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -30,19 +38,6 @@ import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { LabelContainer } from '../../utils/compUtils';
-
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -64,6 +59,7 @@ const CreateProjectForm = withRouter(
     const dispatch = useDispatch();
     const intl = useIntl();
     const { notification } = useSelector(state => state.app);
+    const { pickLists } = useSelector(store => store.climateWarehouse);
 
     const [newProject, setNewProject] = useState({
       registryOfOrigin: '',
@@ -85,6 +81,25 @@ const CreateProjectForm = withRouter(
       estimatedAnnualAverageEmissionReduction: 60,
       projectTag: '',
     });
+
+    const selectCoveredByNDCOptions = useMemo(
+      () =>
+        pickLists.coveredByNDC.map(coveredByNDCItem => ({
+          value: coveredByNDCItem,
+          label: coveredByNDCItem,
+        })),
+      [pickLists],
+    );
+
+    const selectProjectTypeOptions = useMemo(
+      () =>
+        pickLists.projectType.map(projectTypeItem => ({
+          value: projectTypeItem,
+          label: projectTypeItem,
+        })),
+      [pickLists],
+    );
+
     const handleSubmit = () => {
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
@@ -195,7 +210,7 @@ const CreateProjectForm = withRouter(
                         <FieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="registry-of-origin" />
                               </LabelContainer>
@@ -227,7 +242,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="origin-project-id" />
                               </LabelContainer>
@@ -259,7 +274,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="program" />
                               </LabelContainer>
@@ -291,7 +306,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-id" />
                               </LabelContainer>
@@ -321,7 +336,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-name" />
                               </LabelContainer>
@@ -353,7 +368,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-link" />
                               </LabelContainer>
@@ -385,7 +400,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-developer" />
                               </LabelContainer>
@@ -417,7 +432,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="sector" />
                               </LabelContainer>
@@ -449,7 +464,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-type" />
                               </LabelContainer>
@@ -462,24 +477,35 @@ const CreateProjectForm = withRouter(
                               </ToolTipContainer>
                             </Body>
                           </StyledLabelContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectProjectTypeOptions}
+                            state={SelectStateEnum.default}
+                            placeholder={intl.formatMessage({
                               id: 'project-type',
                             })}
-                            state={InputStateEnum.default}
-                            value={newProject.projectType}
-                            onChange={value =>
+                            selected={
+                              newProject.projectType
+                                ? [
+                                    {
+                                      label: newProject.projectType,
+                                      value: newProject.projectType,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setNewProject(prev => ({
                                 ...prev,
-                                projectType: value,
+                                projectType: selectedOptions[0].value,
                               }))
                             }
                           />
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="covered-by-ndc" />
                               </LabelContainer>
@@ -493,17 +519,28 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectCoveredByNDCOptions}
+                              state={SelectStateEnum.default}
+                              placeholder={intl.formatMessage({
                                 id: 'covered-by-ndc',
                               })}
-                              state={InputStateEnum.default}
-                              value={newProject.coveredByNDC}
-                              onChange={value =>
+                              selected={
+                                newProject.coveredByNDC
+                                  ? [
+                                      {
+                                        label: newProject.coveredByNDC,
+                                        value: newProject.coveredByNDC,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  coveredByNDC: value,
+                                  coveredByNDC: selectedOptions[0].value,
                                 }))
                               }
                             />
@@ -514,7 +551,7 @@ const CreateProjectForm = withRouter(
                         <StyledFieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="ndc-linkage" />
                               </LabelContainer>
@@ -546,7 +583,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-status" />
                               </LabelContainer>
@@ -578,7 +615,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="project-status-date" />
                               </LabelContainer>
@@ -601,7 +638,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="unit-metric" />
                               </LabelContainer>
@@ -633,7 +670,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="methodology" />
                               </LabelContainer>
@@ -665,7 +702,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="methodology-version" />
                               </LabelContainer>
@@ -697,7 +734,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="validation-approach" />
                               </LabelContainer>
@@ -729,7 +766,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body style={{ color: '#262626' }}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="validation-date" />
                               </LabelContainer>
@@ -752,7 +789,7 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
                                 <FormattedMessage id="estimated-annual-average-emission-reduction" />
                               </LabelContainer>
@@ -787,9 +824,9 @@ const CreateProjectForm = withRouter(
                         </StyledFieldContainer>
                         <StyledFieldContainer>
                           <StyledLabelContainer>
-                            <Body color={'#262626'}>
+                            <Body>
                               <LabelContainer>
-                                <FormattedMessage id="project-tag" />
+                                <FormattedMessage id="project-tags" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -804,7 +841,7 @@ const CreateProjectForm = withRouter(
                             <StandardInput
                               size={InputSizeEnum.large}
                               placeholderText={intl.formatMessage({
-                                id: 'project-tag',
+                                id: 'project-tags',
                               })}
                               state={InputStateEnum.default}
                               value={newProject.projectTag}
@@ -822,15 +859,15 @@ const CreateProjectForm = withRouter(
                   </ModalFormContainerStyle>
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
-                  <IssuanceRepeater
-                    qualificationsState={newQualifications}
-                    newQualificationsState={setNewQualifications}
+                  <LabelsRepeater
+                    labelsState={newQualifications}
+                    newLabelsState={setNewQualifications}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={2}>
-                  <LabelsRepeater
-                    vintageState={newVintage}
-                    newVintageState={setNewVintage}
+                  <IssuanceRepeater
+                    issuanceState={newVintage}
+                    newIssuanceState={setNewVintage}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={3}>
@@ -841,8 +878,8 @@ const CreateProjectForm = withRouter(
                 </TabPanel>
                 <TabPanel value={tabValue} index={4}>
                   <LocationsRepeater
-                    projectLocationsState={newProjectLocations}
-                    setProjectLocationsState={setNewProjectLocations}
+                    locationsState={newProjectLocations}
+                    setLocationsState={setNewProjectLocations}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={5}>

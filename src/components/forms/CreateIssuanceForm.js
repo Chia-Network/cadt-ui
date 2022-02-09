@@ -17,8 +17,8 @@ import {
   DateSelect,
   DescriptionIcon,
   ToolTipContainer,
+  LabelContainer,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
 import { issuanceSchema } from './IssuanceValidation';
 
 const StyledLabelContainer = styled('div')`
@@ -71,14 +71,15 @@ const CreateIssuanceForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="start-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-start-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -96,14 +97,15 @@ const CreateIssuanceForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="end-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-end-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -121,14 +123,15 @@ const CreateIssuanceForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="verification-approach" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-approach-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -156,14 +159,15 @@ const CreateIssuanceForm = ({ value, onChange }) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="verification-report-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-report-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -181,14 +185,15 @@ const CreateIssuanceForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="verification-body" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-body-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

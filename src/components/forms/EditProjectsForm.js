@@ -1,7 +1,6 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import {
   StandardInput,
   InputSizeEnum,
@@ -21,6 +20,14 @@ import {
   StyledFieldRequired,
   FieldRequired,
   Message,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
+  LabelContainer,
+  Select,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -29,18 +36,6 @@ import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { LabelContainer } from '../../utils/compUtils';
-
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
 
 const EditProjectsForm = ({ onClose }) => {
   const climatewarehouseProjects = useSelector(
@@ -58,6 +53,39 @@ const EditProjectsForm = ({ onClose }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
   const { notification } = useSelector(state => state.app);
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectCoveredByNDCOptions = useMemo(
+    () =>
+      pickLists.coveredByNDC.map(coveredByNDCItem => ({
+        value: coveredByNDCItem,
+        label: coveredByNDCItem,
+      })),
+    [pickLists],
+  );
+
+  const selectProjectTypeOptions = useMemo(
+    () =>
+      pickLists.projectType.map(projectTypeItem => ({
+        value: projectTypeItem,
+        label: projectTypeItem,
+      })),
+    [pickLists],
+  );
+
+  const selectMethodologyOptions = useMemo(
+    () =>
+      pickLists.methodology.map(methodologyItem => ({
+        value: methodologyItem,
+        label: methodologyItem,
+      })),
+    [pickLists],
+  );
+
+  //methodology
+  //projectSector
+  //projectStatusValues
+  //registries
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -238,7 +266,7 @@ const EditProjectsForm = ({ onClose }) => {
                       <FieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-id" />
                             </LabelContainer>
@@ -268,7 +296,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="registry-of-origin" />
                             </LabelContainer>
@@ -300,7 +328,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="program" />
                             </LabelContainer>
@@ -333,7 +361,7 @@ const EditProjectsForm = ({ onClose }) => {
 
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-name" />
                             </LabelContainer>
@@ -365,7 +393,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-link" />
                             </LabelContainer>
@@ -397,7 +425,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-developer" />
                             </LabelContainer>
@@ -429,7 +457,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="sector" />
                             </LabelContainer>
@@ -461,7 +489,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-type" />
                             </LabelContainer>
@@ -474,24 +502,35 @@ const EditProjectsForm = ({ onClose }) => {
                             </ToolTipContainer>
                           </Body>
                         </StyledLabelContainer>
-                        <StandardInput
-                          size={InputSizeEnum.large}
-                          placeholderText={intl.formatMessage({
+                        <Select
+                          size={SelectSizeEnum.large}
+                          type={SelectTypeEnum.basic}
+                          options={selectProjectTypeOptions}
+                          state={SelectStateEnum.default}
+                          placeholder={intl.formatMessage({
                             id: 'project-type',
                           })}
-                          state={InputStateEnum.default}
-                          value={editedProjects.projectType}
-                          onChange={value =>
+                          selected={
+                            climatewarehouseProjects.projectType
+                              ? [
+                                  {
+                                    label: climatewarehouseProjects.projectType,
+                                    value: climatewarehouseProjects.projectType,
+                                  },
+                                ]
+                              : undefined
+                          }
+                          onChange={selectedOptions =>
                             setEditProjects(prev => ({
                               ...prev,
-                              projectType: value,
+                              projectType: selectedOptions[0].value,
                             }))
                           }
                         />
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-tags" />
                             </LabelContainer>
@@ -526,7 +565,7 @@ const EditProjectsForm = ({ onClose }) => {
                       <StyledFieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="covered-by-ndc" />
                             </LabelContainer>
@@ -540,26 +579,38 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectCoveredByNDCOptions}
+                            state={SelectStateEnum.default}
+                            placeholder={intl.formatMessage({
                               id: 'covered-by-ndc',
                             })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.coveredByNDC}
-                            onChange={value =>
+                            selected={
+                              climatewarehouseProjects.coveredByNDC
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseProjects.coveredByNDC,
+                                      value:
+                                        climatewarehouseProjects.coveredByNDC,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                coveredByNDC: value,
+                                coveredByNDC: selectedOptions[0].value,
                               }))
                             }
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="ndc-information" />
                             </LabelContainer>
@@ -591,7 +642,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-status" />
                             </LabelContainer>
@@ -623,7 +674,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="project-status-date" />
                             </LabelContainer>
@@ -646,7 +697,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="unit-metric" />
                             </LabelContainer>
@@ -678,7 +729,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="methodology" />
                             </LabelContainer>
@@ -692,26 +743,38 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectMethodologyOptions}
+                            state={SelectStateEnum.default}
+                            placeholder={intl.formatMessage({
                               id: 'methodology',
                             })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.methodology}
-                            onChange={value =>
+                            selected={
+                              climatewarehouseProjects.methodology
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseProjects.methodology,
+                                      value:
+                                        climatewarehouseProjects.methodology,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                methodology: value,
+                                methodology: selectedOptions[0].value,
                               }))
                             }
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="validation-body" />
                             </LabelContainer>
@@ -743,7 +806,7 @@ const EditProjectsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="validation-date" />
                             </LabelContainer>

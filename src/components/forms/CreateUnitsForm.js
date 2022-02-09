@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,30 +27,15 @@ import {
   modalTypeEnum,
   StyledFieldRequired,
   FieldRequired,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
+  LabelContainer,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-  correspondingAdjustmentDeclarationValues,
-  correspondingAdjustmentStatusValues,
-  unitStatusValues,
-  unitTypeValues,
-} from '../../utils/pick-values';
-import { LabelContainer } from '../../utils/compUtils';
-
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -78,7 +63,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     selectedCorrespondingAdjustmentStatus,
     setSelectedCorrespondingAdjustmentStatus,
   ] = useState(null);
-
   const [newUnits, setNewUnits] = useState({
     projectLocationId: '',
     unitOwner: '',
@@ -97,6 +81,54 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     correspondingAdjustmentDeclaration: '',
     correspondingAdjustmentStatus: '',
   });
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectUnitStatusOptions = useMemo(
+    () =>
+      pickLists.unitStatus.map(unitStatusItem => ({
+        value: unitStatusItem,
+        label: unitStatusItem,
+      })),
+    [pickLists],
+  );
+
+  const selectUnitTypeOptions = useMemo(
+    () =>
+      pickLists.unitType.map(unitTypeItem => ({
+        value: unitTypeItem,
+        label: unitTypeItem,
+      })),
+    [pickLists],
+  );
+
+  const selectCorrespondingAdjustmentStatusOptions = useMemo(
+    () =>
+      pickLists.correspondingAdjustmentStatus.map(adjustmentStatusItem => ({
+        value: adjustmentStatusItem,
+        label: adjustmentStatusItem,
+      })),
+    [pickLists],
+  );
+
+  const selectCorrespondingAdjustmentDeclarationOptions = useMemo(
+    () =>
+      pickLists.correspondingAdjustmentDeclaration.map(
+        adjustmentDeclarationItem => ({
+          value: adjustmentDeclarationItem,
+          label: adjustmentDeclarationItem,
+        }),
+      ),
+    [pickLists],
+  );
+
+  const selectCountriesOptions = useMemo(
+    () =>
+      pickLists.countries.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
 
   const handleEditUnits = async () => {
     setErrorMessage({});
@@ -126,21 +158,21 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     }
 
     if (!_.isEmpty(unitType)) {
-      dataToSend.unitType = unitType[0].value;
+      dataToSend.unitType = unitType;
     }
     if (!_.isEmpty(unitStatus)) {
-      dataToSend.unitStatus = unitStatus[0].value;
+      dataToSend.unitStatus = unitStatus;
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
       dataToSend.correspondingAdjustmentDeclaration =
-        selectedCorrespondingAdjustmentDeclaration[0].value;
+        selectedCorrespondingAdjustmentDeclaration;
     }
     if (!_.isEmpty(year)) {
       dataToSend.vintageYear = year;
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
       dataToSend.correspondingAdjustmentStatus =
-        selectedCorrespondingAdjustmentStatus[0].value;
+        selectedCorrespondingAdjustmentStatus;
     }
     await unitsSchema
       .validate(dataToSend, { abortEarly: false })
@@ -254,14 +286,14 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <FieldRequired />
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="project-location-id" />
                           </LabelContainer>
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
-                              id: 'units-project-location-id-description',
+                              id: 'project-location-id',
                             })}
                           >
                             <DescriptionIcon height="14" width="14" />
@@ -293,7 +325,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="unit-owner" />
@@ -332,7 +364,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="country-jurisdiction-of-owner" />
@@ -347,22 +379,30 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
-                        <StandardInput
-                          variant={errorInputAlert(
-                            'countryJurisdictionOfOwner',
-                          )}
-                          size={InputSizeEnum.large}
-                          placeholderText={intl.formatMessage({
-                            id: 'country-jurisdiction-of-owner',
-                          })}
-                          state={InputStateEnum.default}
-                          value={newUnits.countryJurisdictionOfOwner}
-                          onChange={value =>
+                        <Select
+                          size={SelectSizeEnum.large}
+                          type={SelectTypeEnum.basic}
+                          options={selectCountriesOptions}
+                          selected={
+                            newUnits.countryJurisdictionOfOwner
+                              ? [
+                                  {
+                                    label: newUnits.countryJurisdictionOfOwner,
+                                    value: newUnits.countryJurisdictionOfOwner,
+                                  },
+                                ]
+                              : undefined
+                          }
+                          onChange={selectedOptions =>
                             setNewUnits(prev => ({
                               ...prev,
-                              countryJurisdictionOfOwner: value,
+                              countryJurisdictionOfOwner:
+                                selectedOptions[0].value,
                             }))
                           }
+                          placeholder={intl.formatMessage({
+                            id: 'country-jurisdiction-of-owner',
+                          })}
                         />
                       </InputContainer>
                       {errorMessage?.countryJurisdictionOfOwner && (
@@ -373,7 +413,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="in-country-jurisdiction-of-owner" />
@@ -414,7 +454,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="serial-number-block" />
@@ -453,7 +493,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="serial-number-pattern" />
@@ -492,7 +532,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body style={{ color: '#262626' }}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="vintage-year" />
                           </LabelContainer>
@@ -515,7 +555,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="unit-type" />
@@ -533,11 +573,18 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         <Select
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
-                          options={unitTypeValues}
-                          onChange={value => setUnitType(value)}
-                          placeholder={`-- ${intl.formatMessage({
-                            id: 'select',
-                          })} --`}
+                          options={selectUnitTypeOptions}
+                          selected={
+                            unitType
+                              ? [{ value: unitType, label: unitType }]
+                              : undefined
+                          }
+                          onChange={selectedOptions =>
+                            setUnitType(selectedOptions[0].value)
+                          }
+                          placeholder={intl.formatMessage({
+                            id: 'unit-type',
+                          })}
                         />
                       </InputContainer>
                       {errorMessage?.unitType && (
@@ -548,7 +595,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="marketplace" />
                           </LabelContainer>
@@ -583,7 +630,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     <StyledFieldRequired />
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="marketplace-link" />
                           </LabelContainer>
@@ -615,7 +662,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="marketplace-identifier" />
                           </LabelContainer>
@@ -647,7 +694,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="unit-tags" />
                           </LabelContainer>
@@ -679,7 +726,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="unit-status" />
@@ -697,11 +744,18 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         <Select
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
-                          options={unitStatusValues}
-                          onChange={value => setUnitStatus(value)}
-                          placeholder={`-- ${intl.formatMessage({
-                            id: 'select',
-                          })} --`}
+                          options={selectUnitStatusOptions}
+                          selected={
+                            unitStatus
+                              ? [{ label: unitStatus, value: unitStatus }]
+                              : undefined
+                          }
+                          onChange={selectedOptions =>
+                            setUnitStatus(selectedOptions[0].value)
+                          }
+                          placeholder={intl.formatMessage({
+                            id: 'unit-status',
+                          })}
                         />
                       </InputContainer>
                       {errorMessage?.unitStatus && (
@@ -712,7 +766,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           <LabelContainer>
                             <FormattedMessage id="unit-status-reason" />
                           </LabelContainer>
@@ -744,7 +798,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="unit-registry-link" />
@@ -783,7 +837,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="corresponding-adjustment-declaration" />
@@ -801,13 +855,29 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         <Select
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
-                          options={correspondingAdjustmentDeclarationValues}
-                          onChange={value =>
-                            setSelectedCorrespondingAdjustmentDeclaration(value)
+                          options={
+                            selectCorrespondingAdjustmentDeclarationOptions
                           }
-                          placeholder={`-- ${intl.formatMessage({
-                            id: 'select',
-                          })} --`}
+                          onChange={selectedOptions =>
+                            setSelectedCorrespondingAdjustmentDeclaration(
+                              selectedOptions[0].value,
+                            )
+                          }
+                          placeholder={intl.formatMessage({
+                            id: 'corresponding-adjustment-declaration',
+                          })}
+                          selected={
+                            selectedCorrespondingAdjustmentDeclaration
+                              ? [
+                                  {
+                                    value:
+                                      selectedCorrespondingAdjustmentDeclaration,
+                                    label:
+                                      selectedCorrespondingAdjustmentDeclaration,
+                                  },
+                                ]
+                              : undefined
+                          }
                         />
                       </InputContainer>
                       {errorMessage?.correspondingAdjustmentDeclaration && (
@@ -818,7 +888,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                     </StyledFieldContainer>
                     <StyledFieldContainer>
                       <StyledLabelContainer>
-                        <Body color={'#262626'}>
+                        <Body>
                           *
                           <LabelContainer>
                             <FormattedMessage id="corresponding-adjustment-status" />
@@ -836,13 +906,27 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                         <Select
                           size={SelectSizeEnum.large}
                           type={SelectTypeEnum.basic}
-                          options={correspondingAdjustmentStatusValues}
-                          onChange={value =>
-                            setSelectedCorrespondingAdjustmentStatus(value)
+                          options={selectCorrespondingAdjustmentStatusOptions}
+                          onChange={selectedOptions =>
+                            setSelectedCorrespondingAdjustmentStatus(
+                              selectedOptions[0].value,
+                            )
                           }
-                          placeholder={`-- ${intl.formatMessage({
-                            id: 'select',
-                          })} --`}
+                          selected={
+                            selectedCorrespondingAdjustmentStatus
+                              ? [
+                                  {
+                                    label:
+                                      selectedCorrespondingAdjustmentStatus,
+                                    value:
+                                      selectedCorrespondingAdjustmentStatus,
+                                  },
+                                ]
+                              : undefined
+                          }
+                          placeholder={intl.formatMessage({
+                            id: 'corresponding-adjustment-status',
+                          })}
                         />
                       </InputContainer>
                       {errorMessage?.correspondingAdjustmentStatus && (

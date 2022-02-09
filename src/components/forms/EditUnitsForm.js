@@ -1,7 +1,6 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import {
   StandardInput,
   InputSizeEnum,
@@ -26,30 +25,15 @@ import {
   modalTypeEnum,
   FieldRequired,
   StyledFieldRequired,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
+  LabelContainer,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
-
-import {
-  correspondingAdjustmentDeclarationValues,
-  correspondingAdjustmentStatusValues,
-  unitStatusValues,
-  unitTypeValues,
-} from '../../utils/pick-values';
-import { LabelContainer } from '../../utils/compUtils';
-
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
 
 const EditUnitsForm = ({ onClose }) => {
   const { notification } = useSelector(state => state.app);
@@ -75,12 +59,58 @@ const EditUnitsForm = ({ onClose }) => {
   const climatewarehouseUnits = useSelector(
     state => state.climateWarehouse.units[0],
   );
-  console.log(climatewarehouseUnits);
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectUnitStatusOptions = useMemo(
+    () =>
+      pickLists.unitStatus.map(unitStatusItem => ({
+        value: unitStatusItem,
+        label: unitStatusItem,
+      })),
+    [pickLists],
+  );
+
+  const selectUnitTypeOptions = useMemo(
+    () =>
+      pickLists.unitType.map(unitTypeItem => ({
+        value: unitTypeItem,
+        label: unitTypeItem,
+      })),
+    [pickLists],
+  );
+
+  const selectCorrespondingAdjustmentStatusOptions = useMemo(
+    () =>
+      pickLists.correspondingAdjustmentStatus.map(adjustmentStatusItem => ({
+        value: adjustmentStatusItem,
+        label: adjustmentStatusItem,
+      })),
+    [pickLists],
+  );
+
+  const selectCorrespondingAdjustmentDeclarationOptions = useMemo(
+    () =>
+      pickLists.correspondingAdjustmentDeclaration.map(
+        adjustmentDeclarationItem => ({
+          value: adjustmentDeclarationItem,
+          label: adjustmentDeclarationItem,
+        }),
+      ),
+    [pickLists],
+  );
+
+  const selectCountriesOptions = useMemo(
+    () =>
+      pickLists.countries.map(country => ({
+        value: country,
+        label: country,
+      })),
+    [pickLists],
+  );
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-
   const errorMessageAlert = useCallback(
     name => {
       return errorMessage?.map(err => {
@@ -172,21 +202,21 @@ const EditUnitsForm = ({ onClose }) => {
       dataToSend.labels = labels;
     }
     if (!_.isEmpty(unitType)) {
-      dataToSend.unitType = unitType[0].value;
+      dataToSend.unitType = unitType;
     }
     if (!_.isEmpty(unitStatus)) {
-      dataToSend.unitStatus = unitStatus[0].value;
+      dataToSend.unitStatus = unitStatus;
     }
     if (!_.isEmpty(year)) {
       dataToSend.vintageYear = year;
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
       dataToSend.correspondingAdjustmentDeclaration =
-        selectedCorrespondingAdjustmentDeclaration[0].value;
+        selectedCorrespondingAdjustmentDeclaration;
     }
     if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
       dataToSend.correspondingAdjustmentStatus =
-        selectedCorrespondingAdjustmentStatus[0].value;
+        selectedCorrespondingAdjustmentStatus;
     }
     unitsSchema
       .validate(dataToSend, { abortEarly: false })
@@ -251,7 +281,7 @@ const EditUnitsForm = ({ onClose }) => {
               />
               <Tab
                 label={intl.formatMessage({
-                  id: 'issuance',
+                  id: 'issuances',
                 })}
               />
             </Tabs>
@@ -267,7 +297,7 @@ const EditUnitsForm = ({ onClose }) => {
                       <FieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="project-location-id" />
@@ -302,7 +332,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="unit-owner" />
@@ -337,7 +367,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="country-jurisdiction-of-owner" />
@@ -352,29 +382,39 @@ const EditUnitsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            variant={errorInputVariant(
-                              'countryJurisdictionOfOwner',
-                            )}
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'country-jurisdiction-of-owner',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.countryJurisdictionOfOwner}
-                            onChange={value =>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectCountriesOptions}
+                            selected={
+                              climatewarehouseUnits.countryJurisdictionOfOwner
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseUnits.countryJurisdictionOfOwner,
+                                      value:
+                                        climatewarehouseUnits.countryJurisdictionOfOwner,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditUnits(prev => ({
                                 ...prev,
-                                countryJurisdictionOfOwner: value,
+                                countryJurisdictionOfOwner:
+                                  selectedOptions[0].value,
                               }))
                             }
+                            placeholder={intl.formatMessage({
+                              id: 'country-jurisdiction-of-owner',
+                            })}
                           />
                         </InputContainer>
                         {errorMessageAlert('countryJurisdictionOfOwner')}
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="in-country-jurisdiction-of-owner" />
                             </LabelContainer>
@@ -410,7 +450,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="serial-number-block" />
@@ -445,7 +485,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="serial-number-pattern" />
@@ -480,7 +520,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body style={{ color: '#262626' }}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="vintage-year" />
                             </LabelContainer>
@@ -503,7 +543,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="unit-type" />
@@ -521,11 +561,13 @@ const EditUnitsForm = ({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={unitTypeValues}
-                            onChange={value => setUnitType(value)}
-                            placeholder={`-- ${intl.formatMessage({
+                            options={selectUnitTypeOptions}
+                            onChange={selectedOptions =>
+                              setUnitType(selectedOptions[0].value)
+                            }
+                            placeholder={intl.formatMessage({
                               id: 'select',
-                            })} --`}
+                            })}
                             selected={[
                               {
                                 label: climatewarehouseUnits.unitType,
@@ -538,7 +580,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="marketplace" />
                             </LabelContainer>
@@ -573,7 +615,7 @@ const EditUnitsForm = ({ onClose }) => {
                       <StyledFieldRequired />
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="marketplace-link" />
                             </LabelContainer>
@@ -605,7 +647,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="marketplace-identifier" />
                             </LabelContainer>
@@ -637,7 +679,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="unit-tags" />
                             </LabelContainer>
@@ -669,7 +711,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="unit-status" />
@@ -687,24 +729,30 @@ const EditUnitsForm = ({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={unitStatusValues}
-                            onChange={value => setUnitStatus(value)}
-                            placeholder={`-- ${intl.formatMessage({
-                              id: 'select',
-                            })} --`}
-                            selected={[
-                              {
-                                label: climatewarehouseUnits.unitStatus,
-                                value: climatewarehouseUnits.unitStatus,
-                              },
-                            ]}
+                            options={selectUnitStatusOptions}
+                            onChange={selectedOptions =>
+                              setUnitStatus(selectedOptions[0].value)
+                            }
+                            placeholder={intl.formatMessage({
+                              id: 'unit-status',
+                            })}
+                            selected={
+                              climatewarehouseUnits.unitStatus
+                                ? [
+                                    {
+                                      label: climatewarehouseUnits.unitStatus,
+                                      value: climatewarehouseUnits.unitStatus,
+                                    },
+                                  ]
+                                : undefined
+                            }
                           />
                         </InputContainer>
                         {errorMessageAlert('unitStatus')}
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             <LabelContainer>
                               <FormattedMessage id="unit-status-reason" />
                             </LabelContainer>
@@ -736,7 +784,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="unit-registry-link" />
@@ -771,7 +819,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="corresponding-adjustment-declaration" />
@@ -789,23 +837,29 @@ const EditUnitsForm = ({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={correspondingAdjustmentDeclarationValues}
-                            onChange={value =>
+                            options={
+                              selectCorrespondingAdjustmentDeclarationOptions
+                            }
+                            onChange={selectedOptions =>
                               setSelectedCorrespondingAdjustmentDeclaration(
-                                value,
+                                selectedOptions[0].value,
                               )
                             }
-                            placeholder={`-- ${intl.formatMessage({
-                              id: 'select',
-                            })} --`}
-                            selected={[
-                              {
-                                label:
-                                  climatewarehouseUnits.correspondingAdjustmentDeclaration,
-                                value:
-                                  climatewarehouseUnits.correspondingAdjustmentDeclaration,
-                              },
-                            ]}
+                            placeholder={intl.formatMessage({
+                              id: 'corresponding-adjustment-declaration',
+                            })}
+                            selected={
+                              climatewarehouseUnits.correspondingAdjustmentDeclaration
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseUnits.correspondingAdjustmentDeclaration,
+                                      value:
+                                        climatewarehouseUnits.correspondingAdjustmentDeclaration,
+                                    },
+                                  ]
+                                : undefined
+                            }
                           />
                         </InputContainer>
                         {errorMessageAlert(
@@ -814,7 +868,7 @@ const EditUnitsForm = ({ onClose }) => {
                       </StyledFieldContainer>
                       <StyledFieldContainer>
                         <StyledLabelContainer>
-                          <Body color={'#262626'}>
+                          <Body>
                             *
                             <LabelContainer>
                               <FormattedMessage id="corresponding-adjustment-status" />
@@ -832,21 +886,27 @@ const EditUnitsForm = ({ onClose }) => {
                           <Select
                             size={SelectSizeEnum.large}
                             type={SelectTypeEnum.basic}
-                            options={correspondingAdjustmentStatusValues}
-                            onChange={value =>
-                              setSelectedCorrespondingAdjustmentStatus(value)
+                            options={selectCorrespondingAdjustmentStatusOptions}
+                            onChange={selectedOptions =>
+                              setSelectedCorrespondingAdjustmentStatus(
+                                selectedOptions[0].value,
+                              )
                             }
-                            placeholder={`-- ${intl.formatMessage({
-                              id: 'select',
-                            })} --`}
-                            selected={[
-                              {
-                                label:
-                                  climatewarehouseUnits.correspondingAdjustmentStatus,
-                                value:
-                                  climatewarehouseUnits.correspondingAdjustmentStatus,
-                              },
-                            ]}
+                            placeholder={intl.formatMessage({
+                              id: 'corresponding-adjustment-status',
+                            })}
+                            selected={
+                              climatewarehouseUnits.correspondingAdjustmentStatus
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseUnits.correspondingAdjustmentStatus,
+                                      value:
+                                        climatewarehouseUnits.correspondingAdjustmentStatus,
+                                    },
+                                  ]
+                                : undefined
+                            }
                           />
                         </InputContainer>
                         {errorMessageAlert('correspondingAdjustmentStatus')}

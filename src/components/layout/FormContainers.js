@@ -24,6 +24,26 @@ export const BodyContainer = styled('div')`
   flex-direction: column;
 `;
 
+export const StyledLabelContainer = styled('div')`
+  margin-bottom: 0.5rem;
+  body {
+    color: #262626;
+  }
+`;
+
+export const LabelContainer = styled('div')`
+  display: inline;
+  margin-right: 7px;
+`;
+
+export const StyledFieldContainer = styled('div')`
+  padding-bottom: 1.25rem;
+`;
+
+export const InputContainer = styled('div')`
+  width: 20rem;
+`;
+
 export const StyledFieldRequired = styled('div')`
   height: 35px;
 `;

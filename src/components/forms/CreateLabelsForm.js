@@ -1,6 +1,7 @@
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
@@ -16,8 +17,12 @@ import {
   DescriptionIcon,
   ToolTipContainer,
   DateSelect,
+  LabelContainer,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
 import { labelSchema } from './LabelsValidation';
 
 const StyledLabelContainer = styled('div')`
@@ -35,6 +40,16 @@ const InputContainer = styled('div')`
 const CreateLabelsForm = ({ value, onChange }) => {
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectLabelTypeOptions = useMemo(
+    () =>
+      pickLists.labelType.map(labelTypeItem => ({
+        value: labelTypeItem,
+        label: labelTypeItem,
+      })),
+    [pickLists],
+  );
 
   useEffect(() => {
     const errors = async () => {
@@ -67,14 +82,15 @@ const CreateLabelsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="label" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -97,46 +113,51 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="label-type" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                variant={
-                  labelErrorMessage('labelType') && InputVariantEnum.error
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
+              <Select
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectLabelTypeOptions}
+                state={SelectStateEnum.default}
+                placeholder={intl.formatMessage({
                   id: 'label-type',
                 })}
-                state={InputStateEnum.default}
-                value={value.labelType}
-                onChange={event => {
-                  onChange({ ...value, labelType: event });
-                }}
+                selected={
+                  value.labelType
+                    ? [{ value: value.labelType, label: value.labelType }]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  onChange({ ...value, labelType: selectedOptions[0].value })
+                }
               />
             </InputContainer>
             {labelErrorMessage('labelType')}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="crediting-period-start-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-crediting-period-start-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -154,14 +175,15 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="crediting-period-end-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-crediting-period-end-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -179,14 +201,15 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="validity-period-start-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-validity-period-start-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -206,14 +229,15 @@ const CreateLabelsForm = ({ value, onChange }) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="validity-period-end-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-validity-period-end-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -231,14 +255,15 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="unit-quantity" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-unit-quantity-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -264,14 +289,15 @@ const CreateLabelsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="label-link" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-link-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

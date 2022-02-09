@@ -13,10 +13,9 @@ import {
   BodyContainer,
   Body,
   ToolTipContainer,
-  DescriptionIcon
+  DescriptionIcon,
+  LabelContainer,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
-
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -42,14 +41,15 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="relationship-type" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-relationship-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -70,14 +70,15 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="registry" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-registry-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
