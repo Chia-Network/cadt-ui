@@ -11,10 +11,10 @@ function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30, issuanceR
         values={issuanceState}
         updateValues={newIssuanceState}
         initialValue={{
-          startDate: '1/11/2000',
-          endDate: '1/11/2000',
+          startDate: '',
+          endDate: '',
           verificationApproach: '',
-          verificationReportDate: '1/11/2000',
+          verificationReportDate: '',
           verificationBody: '',
         }}
         component={<CreateIssuanceForm issuanceRef={issuanceRef} />}

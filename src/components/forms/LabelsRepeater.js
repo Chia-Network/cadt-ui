@@ -18,10 +18,10 @@ function LabelsRepeater({
         initialValue={{
           label: '',
           labelType: '',
-          creditingPeriodStartDate: '12/12/2020',
-          creditingPeriodEndDate: '12/20/2020',
-          validityPeriodStartDate: '12/15/2020',
-          validityPeriodEndDate: '12/20/2020',
+          creditingPeriodStartDate: '',
+          creditingPeriodEndDate: '',
+          validityPeriodStartDate: '',
+          validityPeriodEndDate: '',
           unitQuantity: 0,
           labelLink: '',
         }}

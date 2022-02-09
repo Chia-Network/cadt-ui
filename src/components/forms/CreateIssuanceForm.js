@@ -59,20 +59,6 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
     issuanceRef.current = issuanceValidations;
   }, [value]);
 
-  // const issuanceErrorMessage = name => {
-  //   if (!_.isEmpty(errorIssuanceMessage)) {
-  //     for (let message of errorIssuanceMessage) {
-  //       if (message.includes(name)) {
-  //         return (
-  //           <Body size="Small" color="red">
-  //             {message}
-  //           </Body>
-  //         );
-  //       }
-  //     }
-  //   }
-  // };
-
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
