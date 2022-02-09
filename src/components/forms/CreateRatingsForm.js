@@ -43,9 +43,9 @@ const CreateRatingsForm = ({ value, onChange }) => {
 
   const selectRatingTypeOptions = useMemo(
     () =>
-      pickLists.ratingType.map(country => ({
-        value: country,
-        label: country,
+      pickLists.ratingType.map(ratingTypeItem => ({
+        value: ratingTypeItem,
+        label: ratingTypeItem,
       })),
     [pickLists],
   );

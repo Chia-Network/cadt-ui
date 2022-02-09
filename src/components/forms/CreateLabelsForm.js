@@ -44,9 +44,9 @@ const CreateLabelsForm = ({ value, onChange }) => {
 
   const selectLabelTypeOptions = useMemo(
     () =>
-      pickLists.labelType.map(country => ({
-        value: country,
-        label: country,
+      pickLists.labelType.map(labelTypeItem => ({
+        value: labelTypeItem,
+        label: labelTypeItem,
       })),
     [pickLists],
   );
