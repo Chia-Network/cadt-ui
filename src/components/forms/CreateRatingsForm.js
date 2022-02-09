@@ -102,9 +102,6 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 type={SelectTypeEnum.basic}
                 options={selectRatingTypeOptions}
                 state={SelectStateEnum.default}
-                placeholder={intl.formatMessage({
-                  id: 'rating-type',
-                })}
                 selected={
                   value.ratingType
                     ? [{ value: value.ratingType, label: value.ratingType }]

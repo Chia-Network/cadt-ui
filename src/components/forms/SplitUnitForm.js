@@ -302,9 +302,6 @@ const SplitUnitForm = ({ onClose, record }) => {
                             ? SelectStateEnum.default
                             : SelectStateEnum.disabled
                         }
-                        placeholder={intl.formatMessage({
-                          id: 'country-jurisdiction-of-owner',
-                        })}
                         onChange={selectedOptions =>
                           setData(prevData => {
                             const newData = [...prevData];

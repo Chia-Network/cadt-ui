@@ -400,9 +400,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                                 selectedOptions[0].value,
                             }))
                           }
-                          placeholder={intl.formatMessage({
-                            id: 'country-jurisdiction-of-owner',
-                          })}
                         />
                       </InputContainer>
                       {errorMessage?.countryJurisdictionOfOwner && (
@@ -582,9 +579,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           onChange={selectedOptions =>
                             setUnitType(selectedOptions[0].value)
                           }
-                          placeholder={intl.formatMessage({
-                            id: 'unit-type',
-                          })}
                         />
                       </InputContainer>
                       {errorMessage?.unitType && (
@@ -753,9 +747,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           onChange={selectedOptions =>
                             setUnitStatus(selectedOptions[0].value)
                           }
-                          placeholder={intl.formatMessage({
-                            id: 'unit-status',
-                          })}
                         />
                       </InputContainer>
                       {errorMessage?.unitStatus && (
@@ -863,9 +854,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                               selectedOptions[0].value,
                             )
                           }
-                          placeholder={intl.formatMessage({
-                            id: 'corresponding-adjustment-declaration',
-                          })}
                           selected={
                             selectedCorrespondingAdjustmentDeclaration
                               ? [
@@ -924,9 +912,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                                 ]
                               : undefined
                           }
-                          placeholder={intl.formatMessage({
-                            id: 'corresponding-adjustment-status',
-                          })}
                         />
                       </InputContainer>
                       {errorMessage?.correspondingAdjustmentStatus && (

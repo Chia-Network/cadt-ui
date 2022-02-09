@@ -82,10 +82,32 @@ const EditProjectsForm = ({ onClose }) => {
     [pickLists],
   );
 
-  //methodology
-  //projectSector
-  //projectStatusValues
-  //registries
+  const selectProjectSectorOptions = useMemo(
+    () =>
+      pickLists.projectSector.map(projectSectorItem => ({
+        value: projectSectorItem,
+        label: projectSectorItem,
+      })),
+    [pickLists],
+  );
+
+  const selectProjectStatusValuesOptions = useMemo(
+    () =>
+      pickLists.projectStatusValues.map(projectStatusValuesItem => ({
+        value: projectStatusValuesItem,
+        label: projectStatusValuesItem,
+      })),
+    [pickLists],
+  );
+
+  const selectRegistriesOptions = useMemo(
+    () =>
+      pickLists.registries.map(registriesItem => ({
+        value: registriesItem,
+        label: registriesItem,
+      })),
+    [pickLists],
+  );
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -310,17 +332,27 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'registry-of-origin',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.registryOfOrigin}
-                            onChange={value =>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectRegistriesOptions}
+                            state={SelectStateEnum.default}
+                            selected={
+                              climatewarehouseProjects.registryOfOrigin
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseProjects.registryOfOrigin,
+                                      value:
+                                        climatewarehouseProjects.registryOfOrigin,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                registryOfOrigin: value,
+                                registryOfOrigin: selectedOptions[0].value,
                               }))
                             }
                           />
@@ -471,17 +503,25 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'sector',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.sector}
-                            onChange={value =>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectProjectSectorOptions}
+                            state={SelectStateEnum.default}
+                            selected={
+                              climatewarehouseProjects.sector
+                                ? [
+                                    {
+                                      label: climatewarehouseProjects.sector,
+                                      value: climatewarehouseProjects.sector,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                sector: value,
+                                sector: selectedOptions[0].value,
                               }))
                             }
                           />
@@ -507,9 +547,6 @@ const EditProjectsForm = ({ onClose }) => {
                           type={SelectTypeEnum.basic}
                           options={selectProjectTypeOptions}
                           state={SelectStateEnum.default}
-                          placeholder={intl.formatMessage({
-                            id: 'project-type',
-                          })}
                           selected={
                             climatewarehouseProjects.projectType
                               ? [
@@ -584,9 +621,6 @@ const EditProjectsForm = ({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={selectCoveredByNDCOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'covered-by-ndc',
-                            })}
                             selected={
                               climatewarehouseProjects.coveredByNDC
                                 ? [
@@ -656,17 +690,27 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-status',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectStatus}
-                            onChange={value =>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectProjectStatusValuesOptions}
+                            state={SelectStateEnum.default}
+                            selected={
+                              climatewarehouseProjects.projectStatus
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseProjects.projectStatus,
+                                      value:
+                                        climatewarehouseProjects.projectStatus,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                projectStatus: value,
+                                projectStatus: selectedOptions[0].value,
                               }))
                             }
                           />
@@ -748,9 +792,6 @@ const EditProjectsForm = ({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={selectMethodologyOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'methodology',
-                            })}
                             selected={
                               climatewarehouseProjects.methodology
                                 ? [

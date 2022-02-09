@@ -132,9 +132,6 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 type={SelectTypeEnum.basic}
                 options={selectLabelTypeOptions}
                 state={SelectStateEnum.default}
-                placeholder={intl.formatMessage({
-                  id: 'label-type',
-                })}
                 selected={
                   value.labelType
                     ? [{ value: value.labelType, label: value.labelType }]

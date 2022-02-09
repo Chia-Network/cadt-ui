@@ -405,9 +405,6 @@ const EditUnitsForm = ({ onClose }) => {
                                   selectedOptions[0].value,
                               }))
                             }
-                            placeholder={intl.formatMessage({
-                              id: 'country-jurisdiction-of-owner',
-                            })}
                           />
                         </InputContainer>
                         {errorMessageAlert('countryJurisdictionOfOwner')}
@@ -565,9 +562,6 @@ const EditUnitsForm = ({ onClose }) => {
                             onChange={selectedOptions =>
                               setUnitType(selectedOptions[0].value)
                             }
-                            placeholder={intl.formatMessage({
-                              id: 'select',
-                            })}
                             selected={[
                               {
                                 label: climatewarehouseUnits.unitType,
@@ -733,9 +727,6 @@ const EditUnitsForm = ({ onClose }) => {
                             onChange={selectedOptions =>
                               setUnitStatus(selectedOptions[0].value)
                             }
-                            placeholder={intl.formatMessage({
-                              id: 'unit-status',
-                            })}
                             selected={
                               climatewarehouseUnits.unitStatus
                                 ? [
@@ -845,9 +836,6 @@ const EditUnitsForm = ({ onClose }) => {
                                 selectedOptions[0].value,
                               )
                             }
-                            placeholder={intl.formatMessage({
-                              id: 'corresponding-adjustment-declaration',
-                            })}
                             selected={
                               climatewarehouseUnits.correspondingAdjustmentDeclaration
                                 ? [
@@ -892,9 +880,6 @@ const EditUnitsForm = ({ onClose }) => {
                                 selectedOptions[0].value,
                               )
                             }
-                            placeholder={intl.formatMessage({
-                              id: 'corresponding-adjustment-status',
-                            })}
                             selected={
                               climatewarehouseUnits.correspondingAdjustmentStatus
                                 ? [

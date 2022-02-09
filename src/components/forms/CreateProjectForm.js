@@ -100,6 +100,42 @@ const CreateProjectForm = withRouter(
       [pickLists],
     );
 
+    const selectMethodologyOptions = useMemo(
+      () =>
+        pickLists.methodology.map(methodologyItem => ({
+          value: methodologyItem,
+          label: methodologyItem,
+        })),
+      [pickLists],
+    );
+
+    const selectProjectSectorOptions = useMemo(
+      () =>
+        pickLists.projectSector.map(projectSectorItem => ({
+          value: projectSectorItem,
+          label: projectSectorItem,
+        })),
+      [pickLists],
+    );
+
+    const selectProjectStatusValuesOptions = useMemo(
+      () =>
+        pickLists.projectStatusValues.map(projectStatusValuesItem => ({
+          value: projectStatusValuesItem,
+          label: projectStatusValuesItem,
+        })),
+      [pickLists],
+    );
+
+    const selectRegistriesOptions = useMemo(
+      () =>
+        pickLists.registries.map(registriesItem => ({
+          value: registriesItem,
+          label: registriesItem,
+        })),
+      [pickLists],
+    );
+
     const handleSubmit = () => {
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
@@ -224,17 +260,25 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'registry-of-origin',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.registryOfOrigin}
-                              onChange={value =>
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectRegistriesOptions}
+                              state={SelectStateEnum.default}
+                              selected={
+                                newProject.registryOfOrigin
+                                  ? [
+                                      {
+                                        label: newProject.registryOfOrigin,
+                                        value: newProject.registryOfOrigin,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  registryOfOrigin: value,
+                                  registryOfOrigin: selectedOptions[0].value,
                                 }))
                               }
                             />
@@ -446,17 +490,25 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'sector',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.sector}
-                              onChange={value =>
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectProjectSectorOptions}
+                              state={SelectStateEnum.default}
+                              selected={
+                                newProject.sector
+                                  ? [
+                                      {
+                                        label: newProject.sector,
+                                        value: newProject.sector,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  sector: value,
+                                  sector: selectedOptions[0].value,
                                 }))
                               }
                             />
@@ -482,9 +534,6 @@ const CreateProjectForm = withRouter(
                             type={SelectTypeEnum.basic}
                             options={selectProjectTypeOptions}
                             state={SelectStateEnum.default}
-                            placeholder={intl.formatMessage({
-                              id: 'project-type',
-                            })}
                             selected={
                               newProject.projectType
                                 ? [
@@ -524,9 +573,6 @@ const CreateProjectForm = withRouter(
                               type={SelectTypeEnum.basic}
                               options={selectCoveredByNDCOptions}
                               state={SelectStateEnum.default}
-                              placeholder={intl.formatMessage({
-                                id: 'covered-by-ndc',
-                              })}
                               selected={
                                 newProject.coveredByNDC
                                   ? [
@@ -597,17 +643,25 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'project-status',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.projectStatus}
-                              onChange={value =>
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectProjectStatusValuesOptions}
+                              state={SelectStateEnum.default}
+                              selected={
+                                newProject.projectStatus
+                                  ? [
+                                      {
+                                        label: newProject.projectStatus,
+                                        value: newProject.projectStatus,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  projectStatus: value,
+                                  projectStatus: selectedOptions[0].value,
                                 }))
                               }
                             />
@@ -684,17 +738,25 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'methodology',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.methodology}
-                              onChange={value =>
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectMethodologyOptions}
+                              state={SelectStateEnum.default}
+                              selected={
+                                newProject.methodology
+                                  ? [
+                                      {
+                                        label: newProject.methodology,
+                                        value: newProject.methodology,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  methodology: value,
+                                  methodology: selectedOptions[0].value,
                                 }))
                               }
                             />
