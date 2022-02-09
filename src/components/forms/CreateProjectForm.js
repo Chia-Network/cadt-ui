@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -48,9 +48,9 @@ const StyledFormContainer = styled('div')`
 
 const CreateProjectForm = withRouter(
   ({ onClose, left, top, width, height }) => {
-    const [newQualifications, setNewQualifications] = useState([]);
+    const [newLabels, setNewLabels] = useState([]);
     const [newRelatedProjects, setNewRelatedProjects] = useState([]);
-    const [newVintage, setNewVintage] = useState([]);
+    const [newIssuance, setNewIssuance] = useState([]);
     const [date, setDate] = useState();
     const [validationDate, setValidationDate] = useState();
     const [newProjectLocations, setNewProjectLocations] = useState([]);
@@ -60,6 +60,8 @@ const CreateProjectForm = withRouter(
     const intl = useIntl();
     const { notification } = useSelector(state => state.app);
     const { pickLists } = useSelector(store => store.climateWarehouse);
+    const labelRef = useRef();
+    const issuanceRef = useRef();
 
     const [newProject, setNewProject] = useState({
       registryOfOrigin: '',
@@ -140,16 +142,16 @@ const CreateProjectForm = withRouter(
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
 
-        if (!_.isEmpty(newVintage)) {
-          dataToSend.vintages = newVintage;
+        if (!_.isEmpty(newIssuance)) {
+          dataToSend.issuance = newIssuance;
         }
 
         if (!_.isEmpty(newCoBenefits)) {
           dataToSend.coBenefits = newCoBenefits;
         }
 
-        if (!_.isEmpty(newQualifications)) {
-          dataToSend.qualifications = newQualifications;
+        if (!_.isEmpty(newLabels)) {
+          dataToSend.labels = newLabels;
         }
 
         if (!_.isEmpty(date)) {
@@ -922,14 +924,16 @@ const CreateProjectForm = withRouter(
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
                   <LabelsRepeater
-                    labelsState={newQualifications}
-                    newLabelsState={setNewQualifications}
+                    labelsState={newLabels}
+                    newLabelsState={setNewLabels}
+                    labelRef={labelRef}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={2}>
                   <IssuanceRepeater
-                    issuanceState={newVintage}
-                    newIssuanceState={setNewVintage}
+                    issuanceState={newIssuance}
+                    newIssuanceState={setNewIssuance}
+                    issuanceRef={issuanceRef}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={3}>
