@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -26,6 +26,10 @@ import {
   StyledFieldContainer,
   InputContainer,
   LabelContainer,
+  Select,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -55,6 +59,7 @@ const CreateProjectForm = withRouter(
     const dispatch = useDispatch();
     const intl = useIntl();
     const { notification } = useSelector(state => state.app);
+    const { pickLists } = useSelector(store => store.climateWarehouse);
 
     const [newProject, setNewProject] = useState({
       registryOfOrigin: '',
@@ -76,6 +81,25 @@ const CreateProjectForm = withRouter(
       estimatedAnnualAverageEmissionReduction: 60,
       projectTag: '',
     });
+
+    const selectCoveredByNDCOptions = useMemo(
+      () =>
+        pickLists.coveredByNDC.map(coveredByNDCItem => ({
+          value: coveredByNDCItem,
+          label: coveredByNDCItem,
+        })),
+      [pickLists],
+    );
+
+    const selectProjectTypeOptions = useMemo(
+      () =>
+        pickLists.projectType.map(projectTypeItem => ({
+          value: projectTypeItem,
+          label: projectTypeItem,
+        })),
+      [pickLists],
+    );
+
     const handleSubmit = () => {
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
@@ -453,17 +477,28 @@ const CreateProjectForm = withRouter(
                               </ToolTipContainer>
                             </Body>
                           </StyledLabelContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectProjectTypeOptions}
+                            state={SelectStateEnum.default}
+                            placeholder={intl.formatMessage({
                               id: 'project-type',
                             })}
-                            state={InputStateEnum.default}
-                            value={newProject.projectType}
-                            onChange={value =>
+                            selected={
+                              newProject.projectType
+                                ? [
+                                    {
+                                      label: newProject.projectType,
+                                      value: newProject.projectType,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setNewProject(prev => ({
                                 ...prev,
-                                projectType: value,
+                                projectType: selectedOptions[0].value,
                               }))
                             }
                           />
@@ -484,17 +519,28 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectCoveredByNDCOptions}
+                              state={SelectStateEnum.default}
+                              placeholder={intl.formatMessage({
                                 id: 'covered-by-ndc',
                               })}
-                              state={InputStateEnum.default}
-                              value={newProject.coveredByNDC}
-                              onChange={value =>
+                              selected={
+                                newProject.coveredByNDC
+                                  ? [
+                                      {
+                                        label: newProject.coveredByNDC,
+                                        value: newProject.coveredByNDC,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  coveredByNDC: value,
+                                  coveredByNDC: selectedOptions[0].value,
                                 }))
                               }
                             />
