@@ -82,7 +82,6 @@ const EditProjectsForm = ({ onClose }) => {
     [pickLists],
   );
 
-  //methodology
   //projectSector
   //projectStatusValues
   //registries

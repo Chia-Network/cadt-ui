@@ -100,6 +100,15 @@ const CreateProjectForm = withRouter(
       [pickLists],
     );
 
+    const selectMethodologyOptions = useMemo(
+      () =>
+        pickLists.methodology.map(methodologyItem => ({
+          value: methodologyItem,
+          label: methodologyItem,
+        })),
+      [pickLists],
+    );
+
     const handleSubmit = () => {
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
@@ -684,17 +693,28 @@ const CreateProjectForm = withRouter(
                             </Body>
                           </StyledLabelContainer>
                           <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectMethodologyOptions}
+                              state={SelectStateEnum.default}
+                              placeholder={intl.formatMessage({
                                 id: 'methodology',
                               })}
-                              state={InputStateEnum.default}
-                              value={newProject.methodology}
-                              onChange={value =>
+                              selected={
+                                newProject.methodology
+                                  ? [
+                                      {
+                                        label: newProject.methodology,
+                                        value: newProject.methodology,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
                                 setNewProject(prev => ({
                                   ...prev,
-                                  methodology: value,
+                                  methodology: selectedOptions[0].value,
                                 }))
                               }
                             />
