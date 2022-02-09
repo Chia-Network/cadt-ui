@@ -36,23 +36,22 @@ import {
 } from '../../components';
 
 const headings = [
+  'projectLocationId',
+  'unitOwner',
   'countryJurisdictionOfOwner',
   'inCountryJurisdictionOfOwner',
   'serialNumberBlock',
-  'unitIdentifier',
-  'unitType',
-  'intendedBuyerOrgUid',
+  'serialNumberPattern',
   'marketplace',
-  'tags',
-  'unitStatus',
-  'unitTransactionType',
-  'unitStatusReason',
-  'tokenIssuanceHash',
+  'marketplaceLink',
   'marketplaceIdentifier',
-  'unitsIssuanceLocation',
+  'unitTags',
+  'unitStatusReason',
+  'vintageYear',
   'unitRegistryLink',
-  'unitMarketplaceLink',
-  'cooresponingAdjustmentDeclaration',
+  'unitType',
+  'unitStatus',
+  'correspondingAdjustmentDeclaration',
   'correspondingAdjustmentStatus',
 ];
 
