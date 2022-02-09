@@ -1,7 +1,8 @@
 import u from 'updeep';
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -14,8 +15,12 @@ import {
   Body,
   DescriptionIcon,
   ToolTipContainer,
+  LabelContainer,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
 } from '..';
-import { LabelContainer } from '../../utils/compUtils';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -34,6 +39,16 @@ const CreateRatingsForm = ({ value, onChange }) => {
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
+  const selectRatingTypeOptions = useMemo(
+    () =>
+      pickLists.ratingType.map(ratingTypeItem => ({
+        value: ratingTypeItem,
+        label: ratingTypeItem,
+      })),
+    [pickLists],
+  );
 
   return (
     <ModalFormContainerStyle>
@@ -41,7 +56,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
         <BodyContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="id" />
                 </LabelContainer>
@@ -68,7 +83,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="rating-type" />
                 </LabelContainer>
@@ -82,22 +97,28 @@ const CreateRatingsForm = ({ value, onChange }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
+              <Select
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectRatingTypeOptions}
+                state={SelectStateEnum.default}
+                placeholder={intl.formatMessage({
                   id: 'rating-type',
                 })}
-                state={InputStateEnum.default}
-                value={value.ratingType}
-                onChange={changeValue =>
-                  onInputChange('ratingType', changeValue)
+                selected={
+                  value.ratingType
+                    ? [{ value: value.ratingType, label: value.ratingType }]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  onInputChange('ratingType', selectedOptions[0].value)
                 }
               />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="rating-range-highest" />
                 </LabelContainer>
@@ -128,7 +149,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="rating-range-lowest" />
                 </LabelContainer>
@@ -157,7 +178,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="rating" />
                 </LabelContainer>
@@ -184,7 +205,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body>
                 <LabelContainer>
                   <FormattedMessage id="rating-link" />
                 </LabelContainer>

@@ -93,7 +93,7 @@ const ContentContainer = styled('div')`
       return `padding: 8px 32px 24px 72px; max-width: 296px;`;
     }
     if (props.modalType === modalTypeEnum.basic) {
-      return `padding: 16px 24px;`;
+      return `padding: 16px 24px 30px 24px;`;
     }
   }};
 `;
@@ -184,9 +184,7 @@ const Modal = withTheme(
                 <WarningIcon height="21" width="21" />
               </span>
             )}
-            <span>
-              <Body size="Bold">{title}</Body>
-            </span>
+            <Body size="Bold">{title}</Body>
             {modalType === modalTypeEnum.basic && (
               <div onClick={onClose} style={{ cursor: 'pointer' }}>
                 <CloseIcon height="12" width="12" />

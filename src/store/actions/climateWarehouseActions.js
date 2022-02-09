@@ -615,7 +615,6 @@ export const uploadCSVFile = (file, type) => {
 };
 
 export const postNewUnits = data => {
-  console.log(data);
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -648,7 +647,6 @@ export const postNewUnits = data => {
         );
       }
     } catch (err) {
-      console.log(err);
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -693,7 +691,6 @@ export const splitUnits = data => {
         );
       }
     } catch (err) {
-      console.log(err);
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,

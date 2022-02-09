@@ -232,9 +232,9 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
         {data &&
           headings &&
           data.map((changeGroup, index) => (
-            <>
+            <React.Fragment key={index}>
               {changeGroupIsValid(changeGroup) && (
-                <StyledChangeGroup key={index}>
+                <StyledChangeGroup>
                   {deleteStagingData && (
                     <StyledDeleteGroupIcon>
                       <div
@@ -338,7 +338,7 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
                   />
                 </StyledChangeGroup>
               )}
-            </>
+            </React.Fragment>
           ))}
         <TableDrawer
           drawerRecord={drawerRecord}
