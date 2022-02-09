@@ -51,7 +51,7 @@ export const StyledFieldRequired = styled('div')`
 export const FieldRequired = () => {
   return (
     <StyledFieldRequired>
-      <Body size="Small">
+      <Body size="Small" color="red">
         *<FormattedMessage id="required-field" />
       </Body>
     </StyledFieldRequired>
