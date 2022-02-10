@@ -145,6 +145,7 @@ const EditProjectsForm = ({ onClose }) => {
       warehouseProjectId: climatewarehouseProjects.warehouseProjectId,
       projectId: climatewarehouseProjects.projectId,
       registryOfOrigin: climatewarehouseProjects.registryOfOrigin,
+      originProjectId: climatewarehouseProjects.originProjectId,
       program: climatewarehouseProjects.program,
       projectName: climatewarehouseProjects.projectName,
       projectLink: climatewarehouseProjects.projectLink,
@@ -436,6 +437,38 @@ const EditProjectsForm = ({ onClose }) => {
                         <StyledLabelContainer>
                           <Body>
                             <LabelContainer>
+                              *<FormattedMessage id="origin-project-id" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-origin-project-id-description',
+                              })}
+                            >
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText={intl.formatMessage({
+                              id: 'origin-project-id',
+                            })}
+                            state={InputStateEnum.default}
+                            value={editedProjects.originProjectId}
+                            onChange={value =>
+                              setEditProjects(prev => ({
+                                ...prev,
+                                originProjectId: value,
+                              }))
+                            }
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body>
+                            <LabelContainer>
                               <FormattedMessage id="program" />
                             </LabelContainer>
                             <ToolTipContainer
@@ -638,38 +671,6 @@ const EditProjectsForm = ({ onClose }) => {
                             }))
                           }
                         />
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="project-tags" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'projects-project-tags-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-tags',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectTags}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                projectTags: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
                       </StyledFieldContainer>
                     </BodyContainer>
                     <BodyContainer>
@@ -961,6 +962,38 @@ const EditProjectsForm = ({ onClose }) => {
                             size="large"
                             dateValue={validationDate}
                             setDateValue={setValidationDate}
+                          />
+                        </InputContainer>
+                      </StyledFieldContainer>
+                      <StyledFieldContainer>
+                        <StyledLabelContainer>
+                          <Body>
+                            <LabelContainer>
+                              <FormattedMessage id="project-tags" />
+                            </LabelContainer>
+                            <ToolTipContainer
+                              tooltip={intl.formatMessage({
+                                id: 'projects-project-tags-description',
+                              })}
+                            >
+                              <DescriptionIcon height="14" width="14" />
+                            </ToolTipContainer>
+                          </Body>
+                        </StyledLabelContainer>
+                        <InputContainer>
+                          <StandardInput
+                            size={InputSizeEnum.large}
+                            placeholderText={intl.formatMessage({
+                              id: 'project-tags',
+                            })}
+                            state={InputStateEnum.default}
+                            value={editedProjects.projectTags}
+                            onChange={value =>
+                              setEditProjects(prev => ({
+                                ...prev,
+                                projectTags: value,
+                              }))
+                            }
                           />
                         </InputContainer>
                       </StyledFieldContainer>
