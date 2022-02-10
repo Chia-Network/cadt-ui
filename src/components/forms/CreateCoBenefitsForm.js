@@ -41,7 +41,7 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
           <StyledLabelContainer>
             <Body>
               <LabelContainer>
-                <FormattedMessage id="co-benefit" />
+                *<FormattedMessage id="co-benefit" />
               </LabelContainer>
               <ToolTipContainer
                 tooltip={intl.formatMessage({

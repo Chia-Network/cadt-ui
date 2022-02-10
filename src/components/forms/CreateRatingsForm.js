@@ -85,7 +85,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="rating-type" />
+                  *<FormattedMessage id="rating-type" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -117,7 +117,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="rating-range-highest" />
+                  *<FormattedMessage id="rating-range-highest" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -148,7 +148,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="rating-range-lowest" />
+                  *<FormattedMessage id="rating-range-lowest" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -177,7 +177,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="rating" />
+                  *<FormattedMessage id="rating" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -204,7 +204,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="rating-link" />
+                  *<FormattedMessage id="rating-link" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({

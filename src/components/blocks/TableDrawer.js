@@ -82,7 +82,8 @@ const TableDrawer = withTheme(({ drawerRecord, drawerUpdates, onClose }) => {
               unfilteredKeyValuePair =>
                 !Array.isArray(drawerRecord[unfilteredKeyValuePair[0]]) &&
                 unfilteredKeyValuePair[0] !== 'unitBlockEnd' &&
-                unfilteredKeyValuePair[0] !== 'unitBlockStart',
+                unfilteredKeyValuePair[0] !== 'unitBlockStart' &&
+                typeof unfilteredKeyValuePair[1] !== 'object',
             )
             .map(keyValuePair => {
               return (
