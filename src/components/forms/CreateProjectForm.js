@@ -557,6 +557,9 @@ const CreateProjectForm = withRouter(
                             />
                           </InputContainer>
                         </StyledFieldContainer>
+                      </BodyContainer>
+                      <BodyContainer>
+                        <StyledFieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
                             <Body>
@@ -635,9 +638,7 @@ const CreateProjectForm = withRouter(
                             />
                           </InputContainer>
                         </StyledFieldContainer>
-                      </BodyContainer>
-                      <BodyContainer>
-                        <StyledFieldRequired />
+
                         <StyledFieldContainer>
                           <StyledLabelContainer>
                             <Body>

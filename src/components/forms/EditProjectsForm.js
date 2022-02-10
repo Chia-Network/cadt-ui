@@ -109,6 +109,15 @@ const EditProjectsForm = ({ onClose }) => {
     [pickLists],
   );
 
+  const selectUnitMetricOptions = useMemo(
+    () =>
+      pickLists.unitMetric.map(unitMetricItem => ({
+        value: unitMetricItem,
+        label: unitMetricItem,
+      })),
+    [pickLists],
+  );
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -755,17 +764,27 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-metric',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.unitMetric}
-                            onChange={value =>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectUnitMetricOptions}
+                            state={SelectStateEnum.default}
+                            selected={
+                              climatewarehouseProjects.unitMetric
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseProjects.unitMetric,
+                                      value:
+                                        climatewarehouseProjects.unitMetric,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                unitMetric: value,
+                                unitMetric: selectedOptions[0].value,
                               }))
                             }
                           />
