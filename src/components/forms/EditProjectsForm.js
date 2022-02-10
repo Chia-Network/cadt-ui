@@ -28,6 +28,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectStateEnum,
+  EstimationsRepeater,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -47,6 +48,7 @@ const EditProjectsForm = ({ onClose }) => {
   const [issuance, setIssuance] = useState([]);
   const [locations, setLocations] = useState([]);
   const [relatedProjects, setRelatedProjects] = useState([]);
+  const [estimationsState, setEstimationsState] = useState([]);
   const [coBenefits, setCoBenefits] = useState([]);
   const [editedProjects, setEditProjects] = useState({});
   const [tabValue, setTabValue] = useState(0);
@@ -157,6 +159,7 @@ const EditProjectsForm = ({ onClose }) => {
       validationBody: climatewarehouseProjects.validationBody,
       validationDate: climatewarehouseProjects.validationDate,
     });
+
     setIssuance(
       climatewarehouseProjects.issuances.map(issuanceKey =>
         _.pick(
@@ -169,6 +172,7 @@ const EditProjectsForm = ({ onClose }) => {
         ),
       ),
     );
+
     setLocations(
       climatewarehouseProjects.projectLocations.map(projectLoc =>
         _.pick(
@@ -179,11 +183,13 @@ const EditProjectsForm = ({ onClose }) => {
         ),
       ),
     );
+
     setCoBenefits(
       climatewarehouseProjects.coBenefits.map(cobenefit =>
         _.pick(cobenefit, 'cobenefit'),
       ),
     );
+
     setLabelsRepeaterValues(
       climatewarehouseProjects.labels.map(label =>
         _.pick(
@@ -199,9 +205,21 @@ const EditProjectsForm = ({ onClose }) => {
         ),
       ),
     );
+
     setRelatedProjects(
       climatewarehouseProjects.relatedProjects.map(relatedProject =>
         _.pick(relatedProject, 'relationshipType', 'registry'),
+      ),
+    );
+
+    setEstimationsState(
+      climatewarehouseProjects.estimations.map(estimation =>
+        _.pick(
+          estimation,
+          'creditingPeriodStart',
+          'creditingPeriodEnd',
+          'unitCount',
+        ),
       ),
     );
   }, [climatewarehouseProjects]);
@@ -239,6 +257,10 @@ const EditProjectsForm = ({ onClose }) => {
 
     if (!_.isEmpty(relatedProjects)) {
       dataToSend.relatedProjects = relatedProjects;
+    }
+
+    if (!_.isEmpty(estimationsState)) {
+      dataToSend.estimations = estimationsState;
     }
 
     dispatch(updateProjectRecord(dataToSend));
@@ -295,6 +317,11 @@ const EditProjectsForm = ({ onClose }) => {
               <Tab
                 label={intl.formatMessage({
                   id: 'related-projects',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'estimations',
                 })}
               />
             </Tabs>
@@ -944,6 +971,12 @@ const EditProjectsForm = ({ onClose }) => {
                 <RelatedProjectsRepeater
                   relatedProjectsState={relatedProjects}
                   setRelatedProjectsState={setRelatedProjects}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={6}>
+                <EstimationsRepeater
+                  estimationsState={estimationsState}
+                  setEstimationsState={setEstimationsState}
                 />
               </TabPanel>
             </div>

@@ -173,10 +173,6 @@ const CreateProjectForm = withRouter(
           dataToSend.coBenefits = newCoBenefits;
         }
 
-        if (!_.isEmpty(estimationsState)) {
-          dataToSend.estimations = estimationsState;
-        }
-
         if (!_.isEmpty(newLabels)) {
           dataToSend.labels = newLabels;
         }
@@ -199,6 +195,10 @@ const CreateProjectForm = withRouter(
 
         if (!_.isEmpty(newRelatedProjects)) {
           dataToSend.relatedProjects = newRelatedProjects;
+        }
+
+        if (!_.isEmpty(estimationsState)) {
+          dataToSend.estimations = estimationsState;
         }
 
         dispatch(postNewProject(dataToSend));
