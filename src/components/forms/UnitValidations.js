@@ -13,6 +13,7 @@ export const unitsSchema = yup.object().shape({
   serialNumberPattern: yup.string().required('Required Field'),
   vintageYear: yup
     .number()
+    .typeError('Invalid Year')
     .integer()
     .min(1900)
     .max(3000)
