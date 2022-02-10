@@ -340,14 +340,16 @@ const StagingDataGroups = withTheme(({ headings, data, deleteStagingData }) => {
               )}
             </React.Fragment>
           ))}
-        <TableDrawer
-          drawerRecord={drawerRecord}
-          drawerUpdates={drawerUpdates}
-          onClose={() => {
-            setDrawerRecord(null);
-            setDrawerUpdates(null);
-          }}
-        />
+        {drawerRecord && (
+          <TableDrawer
+            drawerRecord={drawerRecord}
+            drawerUpdates={drawerUpdates}
+            onClose={() => {
+              setDrawerRecord(null);
+              setDrawerUpdates(null);
+            }}
+          />
+        )}
         {deleteFromStaging && (
           <Modal
             title={intl.formatMessage({

@@ -44,7 +44,7 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="crediting-period-start" />
+                  *<FormattedMessage id="crediting-period-start" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -69,7 +69,7 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="crediting-period-end" />
+                  *<FormattedMessage id="crediting-period-end" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -94,7 +94,7 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="unit-count" />
+                  *<FormattedMessage id="unit-count" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -121,62 +121,6 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             </InputContainer>
           </StyledFieldContainer>
         </BodyContainer>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  <FormattedMessage id="verification-date" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'ratings-verification-date-description',
-                  })}
-                >
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <DateSelect
-                size="large"
-                dateValue={value.verificationDate}
-                setDateValue={changeValue =>
-                  onInputChange('verificationDate', changeValue)
-                }
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  <FormattedMessage id="verification-body" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'ratings-verification-body-description',
-                  })}
-                >
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'verification-body',
-                })}
-                state={InputStateEnum.default}
-                value={value.verificationBody}
-                onChange={changeValue =>
-                  onInputChange('verificationBody', changeValue)
-                }
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-        </div>
       </FormContainerStyle>
       <Divider />
     </ModalFormContainerStyle>

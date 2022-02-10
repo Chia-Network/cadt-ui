@@ -17,8 +17,6 @@ function EstimationsRepeater({ estimationsState, setEstimationsState }) {
           creditingPeriodStart: '',
           creditingPeriodEnd: '',
           unitCount: 0,
-          verificationDate: '',
-          verificationBody: '',
         }}
         component={<CreateEstimationsForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
@@ -28,4 +26,4 @@ function EstimationsRepeater({ estimationsState, setEstimationsState }) {
   );
 }
 
-export default EstimationsRepeater;
+export { EstimationsRepeater };

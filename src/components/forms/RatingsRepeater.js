@@ -24,4 +24,4 @@ function RatingsRepeater({ ratingsState, setRatingsState }) {
   );
 }
 
-export default RatingsRepeater;
+export { RatingsRepeater };

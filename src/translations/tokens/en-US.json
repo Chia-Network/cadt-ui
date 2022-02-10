@@ -280,5 +280,7 @@
   "there-is-a-connection-error": "There is a connection error. The Climate Warehouse is inaccessible.",
   "staging-group-could-not-be-deleted": "The staging group could not be deleted.",
   "staging-group-deleted": "The staging group was successfully deleted.",
-  "project-locations": "Project Locations"
+  "project-locations": "Project Locations",
+  "estimations": "Estimations",
+  "ratings": "Ratings"
 }
