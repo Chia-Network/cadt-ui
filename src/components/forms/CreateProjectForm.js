@@ -287,7 +287,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="registry-of-origin" />
+                                *<FormattedMessage id="registry-of-origin" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -327,7 +327,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="origin-project-id" />
+                                *<FormattedMessage id="origin-project-id" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -391,7 +391,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="project-id" />
+                                *<FormattedMessage id="project-id" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -421,7 +421,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="project-name" />
+                                *<FormattedMessage id="project-name" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -453,7 +453,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="project-link" />
+                                *<FormattedMessage id="project-link" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -485,7 +485,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="project-developer" />
+                                *<FormattedMessage id="project-developer" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -517,7 +517,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="sector" />
+                                *<FormattedMessage id="sector" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -557,7 +557,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="project-type" />
+                                *<FormattedMessage id="project-type" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -598,7 +598,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="covered-by-ndc" />
+                                *<FormattedMessage id="covered-by-ndc" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -639,7 +639,7 @@ const CreateProjectForm = withRouter(
                             <StyledLabelContainer>
                               <Body>
                                 <LabelContainer>
-                                  <FormattedMessage id="ndc-information" />
+                                  *<FormattedMessage id="ndc-information" />
                                 </LabelContainer>
                                 <ToolTipContainer
                                   tooltip={intl.formatMessage({
@@ -672,7 +672,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="project-status" />
+                                *<FormattedMessage id="project-status" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -735,7 +735,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="unit-metric" />
+                                *<FormattedMessage id="unit-metric" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
@@ -775,7 +775,7 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="methodology" />
+                                *<FormattedMessage id="methodology" />
                               </LabelContainer>
                               <ToolTipContainer
                                 tooltip={intl.formatMessage({
