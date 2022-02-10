@@ -67,7 +67,7 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="start-date" />
+                  *<FormattedMessage id="start-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -97,7 +97,7 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="end-date" />
+                  *<FormattedMessage id="end-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -127,7 +127,7 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="verification-approach" />
+                  *<FormattedMessage id="verification-approach" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -167,7 +167,7 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="verification-report-date" />
+                  *<FormattedMessage id="verification-report-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -197,7 +197,7 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="verification-body" />
+                  *<FormattedMessage id="verification-body" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
