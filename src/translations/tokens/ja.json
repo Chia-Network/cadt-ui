@@ -250,5 +250,6 @@
   "project-could-not-be-deleted": "プロジェクトを削除できませんでした。",
   "staging-group-could-not-be-deleted": "ステージンググループを削除できませんでした。",
   "staging-group-deleted": "ステージンググループは正常に削除されました。",
-  "estimations": "見積もり"
+  "estimations": "見積もり",
+  "ratings": "評価"
 }

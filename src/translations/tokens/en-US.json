@@ -281,5 +281,6 @@
   "staging-group-could-not-be-deleted": "The staging group could not be deleted.",
   "staging-group-deleted": "The staging group was successfully deleted.",
   "project-locations": "Project Locations",
-  "estimations": "Estimations"
+  "estimations": "Estimations",
+  "ratings": "Ratings"
 }

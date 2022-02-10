@@ -40,6 +40,7 @@ import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
+import RatingsRepeater from './RatingsRepeater';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -58,6 +59,7 @@ const CreateProjectForm = withRouter(
     const [newProjectLocations, setNewProjectLocations] = useState([]);
     const [newCoBenefits, setNewCoBenefits] = useState([]);
     const [estimationsState, setEstimationsState] = useState([]);
+    const [ratingsState, setRatingsState] = useState([]);
     const [tabValue, setTabValue] = useState(0);
     const dispatch = useDispatch();
     const intl = useIntl();
@@ -201,6 +203,10 @@ const CreateProjectForm = withRouter(
           dataToSend.estimations = estimationsState;
         }
 
+        if (!_.isEmpty(ratingsState)) {
+          dataToSend.projectRatings = ratingsState;
+        }
+
         dispatch(postNewProject(dataToSend));
       } else {
         setTabValue(prev => prev + 1);
@@ -223,6 +229,7 @@ const CreateProjectForm = withRouter(
       'project-locations',
       'related-projects',
       'estimations',
+      'ratings',
     ];
 
     return (
@@ -939,6 +946,12 @@ const CreateProjectForm = withRouter(
                   <EstimationsRepeater
                     estimationsState={estimationsState}
                     setEstimationsState={setEstimationsState}
+                  />
+                </TabPanel>
+                <TabPanel value={tabValue} index={7}>
+                  <RatingsRepeater
+                    ratingsState={ratingsState}
+                    setRatingsState={setRatingsState}
                   />
                 </TabPanel>
               </div>
