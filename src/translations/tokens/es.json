@@ -256,5 +256,6 @@
   "project-deleted": "El proyecto se eliminó con éxito.",
   "project-could-not-be-deleted": "No se pudo eliminar el Proyecto.",
   "staging-group-could-not-be-deleted": "Impossibile eliminare il gruppo di staging.",
-  "staging-group-deleted": "Il gruppo di staging è stato eliminato con successo."
+  "staging-group-deleted": "Il gruppo di staging è stato eliminato con successo.",
+  "estimations": "Estimaciones"
 }

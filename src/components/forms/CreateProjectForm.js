@@ -31,6 +31,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectStateEnum,
+  EstimationsRepeater,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -56,6 +57,7 @@ const CreateProjectForm = withRouter(
     const [validationDate, setValidationDate] = useState();
     const [newProjectLocations, setNewProjectLocations] = useState([]);
     const [newCoBenefits, setNewCoBenefits] = useState([]);
+    const [estimationsState, setEstimationsState] = useState([]);
     const [tabValue, setTabValue] = useState(0);
     const dispatch = useDispatch();
     const intl = useIntl();
@@ -171,6 +173,10 @@ const CreateProjectForm = withRouter(
           dataToSend.coBenefits = newCoBenefits;
         }
 
+        if (!_.isEmpty(estimationsState)) {
+          dataToSend.estimations = estimationsState;
+        }
+
         if (!_.isEmpty(newLabels)) {
           dataToSend.labels = newLabels;
         }
@@ -216,6 +222,7 @@ const CreateProjectForm = withRouter(
       'co-benefits',
       'project-locations',
       'related-projects',
+      'estimations',
     ];
 
     return (
@@ -926,6 +933,12 @@ const CreateProjectForm = withRouter(
                   <RelatedProjectsRepeater
                     relatedProjectsState={newRelatedProjects}
                     setRelatedProjectsState={setNewRelatedProjects}
+                  />
+                </TabPanel>
+                <TabPanel value={tabValue} index={6}>
+                  <EstimationsRepeater
+                    estimationsState={estimationsState}
+                    setEstimationsState={setEstimationsState}
                   />
                 </TabPanel>
               </div>
