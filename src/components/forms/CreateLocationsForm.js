@@ -59,7 +59,7 @@ const CreateLocationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="host-country" />
+                  *<FormattedMessage id="host-country" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -120,7 +120,7 @@ const CreateLocationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="geographic-identifier" />
+                  *<FormattedMessage id="geographic-identifier" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
