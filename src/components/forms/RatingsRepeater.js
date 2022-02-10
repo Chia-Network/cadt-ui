@@ -11,9 +11,9 @@ function RatingsRepeater({ ratingsState, setRatingsState }) {
         initialValue={{
           id: '',
           ratingType: '',
-          ratingRangeHighest: 0,
-          ratingRangeLowest: 0,
-          rating: 0,
+          ratingRangeHighest: '',
+          ratingRangeLowest: '',
+          rating: '',
           ratingLink: '',
         }}
         component={<CreateRatingsForm />}

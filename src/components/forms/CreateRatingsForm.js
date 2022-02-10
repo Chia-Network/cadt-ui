@@ -137,7 +137,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 state={InputStateEnum.default}
                 value={value.ratingRangeHighest}
                 onChange={changeValue =>
-                  onInputChange('ratingRangeHighest', changeValue)
+                  onInputChange('ratingRangeHighest', changeValue.toString())
                 }
               />
             </InputContainer>
@@ -168,7 +168,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 state={InputStateEnum.default}
                 value={value.ratingRangeLowest}
                 onChange={changeValue =>
-                  onInputChange('ratingRangeLowest', changeValue)
+                  onInputChange('ratingRangeLowest', changeValue.toString())
                 }
               />
             </InputContainer>
@@ -196,7 +196,9 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 })}
                 state={InputStateEnum.default}
                 value={value.rating}
-                onChange={changeValue => onInputChange('rating', changeValue)}
+                onChange={changeValue =>
+                  onInputChange('rating', changeValue.toString())
+                }
               />
             </InputContainer>
           </StyledFieldContainer>
