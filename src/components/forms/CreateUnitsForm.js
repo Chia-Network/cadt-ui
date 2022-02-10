@@ -70,7 +70,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     marketplaceIdentifier: '',
     unitTags: '',
     unitStatusReason: '',
-    vintageYear: 2020,
+    vintageYear: '',
     unitRegistryLink: '',
     unitType: '',
     unitStatus: '',
@@ -152,7 +152,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     if (!_.isEmpty(newLabels) && tabValue === 1) {
       if (newLabels.length > 0) {
         setLabelFormsValid([]);
-        let labelFormValid = newLabels.map(async label => {
+        _.map(newLabels, async label => {
           const validLabel = await labelSchema.isValid(label);
           return setLabelFormsValid(prev => [...prev, validLabel]);
         });
@@ -164,7 +164,6 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
             return setTabValue(prev => prev + 1);
           }
         }
-        console.log(labelFormValid);
       }
 
       labelRef.current();
@@ -574,7 +573,12 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           options={selectUnitTypeOptions}
                           selected={
                             newUnits.unitType
-                              ? [{ value: newUnits.unitType, label: newUnits.unitType }]
+                              ? [
+                                  {
+                                    value: newUnits.unitType,
+                                    label: newUnits.unitType,
+                                  },
+                                ]
                               : undefined
                           }
                           onChange={selectedOptions =>
@@ -761,7 +765,12 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
                           options={selectUnitStatusOptions}
                           selected={
                             newUnits.unitStatus
-                              ? [{ label: newUnits.unitStatus, value: newUnits.unitStatus }]
+                              ? [
+                                  {
+                                    label: newUnits.unitStatus,
+                                    value: newUnits.unitStatus,
+                                  },
+                                ]
                               : undefined
                           }
                           onChange={selectedOptions =>
