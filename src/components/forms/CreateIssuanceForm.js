@@ -54,7 +54,7 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
 
   useEffect(() => {
     setErrorIssuanceMessage({});
-    if (issuanceRef && issuanceRef.current) {
+    if (issuanceRef) {
       issuanceRef.current = issuanceValidations;
     }
   }, [value]);

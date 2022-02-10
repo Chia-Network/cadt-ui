@@ -65,7 +65,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
 
   useEffect(() => {
     setErrorLabelMessage({});
-    if (labelRef && labelRef.current) {
+    if (labelRef) {
       labelRef.current = labelsValidations;
     }
   }, [value]);
