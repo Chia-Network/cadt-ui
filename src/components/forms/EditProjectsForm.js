@@ -118,6 +118,15 @@ const EditProjectsForm = ({ onClose }) => {
     [pickLists],
   );
 
+  const selectValidationBodyOptions = useMemo(
+    () =>
+      pickLists.validationBody.map(validationBodyItem => ({
+        value: validationBodyItem,
+        label: validationBodyItem,
+      })),
+    [pickLists],
+  );
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -199,6 +208,10 @@ const EditProjectsForm = ({ onClose }) => {
 
   const handleEditProjects = () => {
     const dataToSend = _.cloneDeep(editedProjects);
+
+    if (dataToSend.coveredByNDC !== 'Inside NDC') {
+      delete dataToSend.ndcInformation;
+    }
 
     if (!_.isEmpty(issuance)) {
       dataToSend.issuances = issuance;
@@ -651,38 +664,40 @@ const EditProjectsForm = ({ onClose }) => {
                           />
                         </InputContainer>
                       </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="ndc-information" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'projects-ndc-information-description',
+                      {editedProjects.coveredByNDC === 'Inside NDC' && (
+                        <StyledFieldContainer>
+                          <StyledLabelContainer>
+                            <Body>
+                              <LabelContainer>
+                                <FormattedMessage id="ndc-information" />
+                              </LabelContainer>
+                              <ToolTipContainer
+                                tooltip={intl.formatMessage({
+                                  id: 'projects-ndc-information-description',
+                                })}
+                              >
+                                <DescriptionIcon height="14" width="14" />
+                              </ToolTipContainer>
+                            </Body>
+                          </StyledLabelContainer>
+                          <InputContainer>
+                            <StandardInput
+                              size={InputSizeEnum.large}
+                              placeholderText={intl.formatMessage({
+                                id: 'ndc-information',
                               })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'ndc-information',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.ndcInformation}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                ndcInformation: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
+                              state={InputStateEnum.default}
+                              value={editedProjects.ndcInformation}
+                              onChange={value =>
+                                setEditProjects(prev => ({
+                                  ...prev,
+                                  ndcInformation: value,
+                                }))
+                              }
+                            />
+                          </InputContainer>
+                        </StyledFieldContainer>
+                      )}
                       <StyledFieldContainer>
                         <StyledLabelContainer>
                           <Body>
@@ -848,17 +863,27 @@ const EditProjectsForm = ({ onClose }) => {
                           </Body>
                         </StyledLabelContainer>
                         <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'validation-body',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.validationBody}
-                            onChange={value =>
+                          <Select
+                            size={SelectSizeEnum.large}
+                            type={SelectTypeEnum.basic}
+                            options={selectValidationBodyOptions}
+                            state={SelectStateEnum.default}
+                            selected={
+                              climatewarehouseProjects.validationBody
+                                ? [
+                                    {
+                                      label:
+                                        climatewarehouseProjects.validationBody,
+                                      value:
+                                        climatewarehouseProjects.validationBody,
+                                    },
+                                  ]
+                                : undefined
+                            }
+                            onChange={selectedOptions =>
                               setEditProjects(prev => ({
                                 ...prev,
-                                validationBody: value,
+                                validationBody: selectedOptions[0].value,
                               }))
                             }
                           />

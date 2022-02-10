@@ -75,11 +75,12 @@ const CreateProjectForm = withRouter(
       sector: '',
       projectType: '',
       coveredByNDC: 0,
+      ndcInformation: '',
       projectStatus: '',
       unitMetric: '',
-      ndcInformation: '',
       methodology: '',
       projectTags: '',
+      validationBody: '',
     });
 
     const selectCoveredByNDCOptions = useMemo(
@@ -145,9 +146,22 @@ const CreateProjectForm = withRouter(
       [pickLists],
     );
 
+    const selectValidationBodyOptions = useMemo(
+      () =>
+        pickLists.validationBody.map(validationBodyItem => ({
+          value: validationBodyItem,
+          label: validationBodyItem,
+        })),
+      [pickLists],
+    );
+
     const handleSubmit = () => {
       if (tabValue === 5) {
         const dataToSend = _.cloneDeep(newProject);
+
+        if (dataToSend.coveredByNDC !== 'Inside NDC') {
+          delete dataToSend.ndcInformation;
+        }
 
         if (!_.isEmpty(newIssuance)) {
           dataToSend.issuance = newIssuance;
@@ -393,38 +407,6 @@ const CreateProjectForm = withRouter(
                           <StyledLabelContainer>
                             <Body>
                               <LabelContainer>
-                                <FormattedMessage id="ndc-information" />
-                              </LabelContainer>
-                              <ToolTipContainer
-                                tooltip={intl.formatMessage({
-                                  id: 'ndc-information-description',
-                                })}
-                              >
-                                <DescriptionIcon height="14" width="14" />
-                              </ToolTipContainer>
-                            </Body>
-                          </StyledLabelContainer>
-                          <InputContainer>
-                            <StandardInput
-                              size={InputSizeEnum.large}
-                              placeholderText={intl.formatMessage({
-                                id: 'ndc-information',
-                              })}
-                              state={InputStateEnum.default}
-                              value={newProject.ndcInformation}
-                              onChange={value =>
-                                setNewProject(prev => ({
-                                  ...prev,
-                                  ndcInformation: value,
-                                }))
-                              }
-                            />
-                          </InputContainer>
-                        </StyledFieldContainer>
-                        <StyledFieldContainer>
-                          <StyledLabelContainer>
-                            <Body>
-                              <LabelContainer>
                                 <FormattedMessage id="project-name" />
                               </LabelContainer>
                               <ToolTipContainer
@@ -557,9 +539,6 @@ const CreateProjectForm = withRouter(
                             />
                           </InputContainer>
                         </StyledFieldContainer>
-                      </BodyContainer>
-                      <BodyContainer>
-                        <StyledFieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
                             <Body>
@@ -598,6 +577,9 @@ const CreateProjectForm = withRouter(
                             }
                           />
                         </StyledFieldContainer>
+                      </BodyContainer>
+                      <BodyContainer>
+                        <StyledFieldRequired />
                         <StyledFieldContainer>
                           <StyledLabelContainer>
                             <Body>
@@ -638,7 +620,40 @@ const CreateProjectForm = withRouter(
                             />
                           </InputContainer>
                         </StyledFieldContainer>
-
+                        {newProject.coveredByNDC === 'Inside NDC' && (
+                          <StyledFieldContainer>
+                            <StyledLabelContainer>
+                              <Body>
+                                <LabelContainer>
+                                  <FormattedMessage id="ndc-information" />
+                                </LabelContainer>
+                                <ToolTipContainer
+                                  tooltip={intl.formatMessage({
+                                    id: 'ndc-information-description',
+                                  })}
+                                >
+                                  <DescriptionIcon height="14" width="14" />
+                                </ToolTipContainer>
+                              </Body>
+                            </StyledLabelContainer>
+                            <InputContainer>
+                              <StandardInput
+                                size={InputSizeEnum.large}
+                                placeholderText={intl.formatMessage({
+                                  id: 'ndc-information',
+                                })}
+                                state={InputStateEnum.default}
+                                value={newProject.ndcInformation}
+                                onChange={value =>
+                                  setNewProject(prev => ({
+                                    ...prev,
+                                    ndcInformation: value,
+                                  }))
+                                }
+                              />
+                            </InputContainer>
+                          </StyledFieldContainer>
+                        )}
                         <StyledFieldContainer>
                           <StyledLabelContainer>
                             <Body>
@@ -802,6 +817,46 @@ const CreateProjectForm = withRouter(
                               size="large"
                               dateValue={validationDate}
                               setDateValue={setValidationDate}
+                            />
+                          </InputContainer>
+                        </StyledFieldContainer>
+                        <StyledFieldContainer>
+                          <StyledLabelContainer>
+                            <Body>
+                              <LabelContainer>
+                                <FormattedMessage id="validation-body" />
+                              </LabelContainer>
+                              <ToolTipContainer
+                                tooltip={intl.formatMessage({
+                                  id: 'projects-validation-body-description',
+                                })}
+                              >
+                                <DescriptionIcon height="14" width="14" />
+                              </ToolTipContainer>
+                            </Body>
+                          </StyledLabelContainer>
+                          <InputContainer>
+                            <Select
+                              size={SelectSizeEnum.large}
+                              type={SelectTypeEnum.basic}
+                              options={selectValidationBodyOptions}
+                              state={SelectStateEnum.default}
+                              selected={
+                                newProject.validationBody
+                                  ? [
+                                      {
+                                        label: newProject.validationBody,
+                                        value: newProject.validationBody,
+                                      },
+                                    ]
+                                  : undefined
+                              }
+                              onChange={selectedOptions =>
+                                setNewProject(prev => ({
+                                  ...prev,
+                                  validationBody: selectedOptions[0].value,
+                                }))
+                              }
                             />
                           </InputContainer>
                         </StyledFieldContainer>
