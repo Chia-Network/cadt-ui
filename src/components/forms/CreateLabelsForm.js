@@ -78,7 +78,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="label" />
+                  *<FormattedMessage id="label" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -113,7 +113,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="label-type" />
+                  *<FormattedMessage id="label-type" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -150,7 +150,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="crediting-period-start-date" />
+                  *<FormattedMessage id="crediting-period-start-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -180,7 +180,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="crediting-period-end-date" />
+                  *<FormattedMessage id="crediting-period-end-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -210,7 +210,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="validity-period-start-date" />
+                  *<FormattedMessage id="validity-period-start-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -242,7 +242,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="validity-period-end-date" />
+                  *<FormattedMessage id="validity-period-end-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -272,7 +272,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="unit-quantity" />
+                  *<FormattedMessage id="unit-quantity" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -310,7 +310,7 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="label-link" />
+                  *<FormattedMessage id="label-link" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
