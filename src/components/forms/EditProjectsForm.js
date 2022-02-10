@@ -29,6 +29,7 @@ import {
   SelectTypeEnum,
   SelectStateEnum,
   EstimationsRepeater,
+  RatingsRepeater,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -49,6 +50,7 @@ const EditProjectsForm = ({ onClose }) => {
   const [locations, setLocations] = useState([]);
   const [relatedProjects, setRelatedProjects] = useState([]);
   const [estimationsState, setEstimationsState] = useState([]);
+  const [ratingsState, setRatingsState] = useState([]);
   const [coBenefits, setCoBenefits] = useState([]);
   const [editedProjects, setEditProjects] = useState({});
   const [tabValue, setTabValue] = useState(0);
@@ -222,6 +224,20 @@ const EditProjectsForm = ({ onClose }) => {
         ),
       ),
     );
+
+    setRatingsState(
+      climatewarehouseProjects.projectRatings.map(rating =>
+        _.pick(
+          rating,
+          'id',
+          'ratingType',
+          'ratingRangeHighest',
+          'ratingRangeLowest',
+          'rating',
+          'ratingLink',
+        ),
+      ),
+    );
   }, [climatewarehouseProjects]);
 
   const handleEditProjects = () => {
@@ -261,6 +277,10 @@ const EditProjectsForm = ({ onClose }) => {
 
     if (!_.isEmpty(estimationsState)) {
       dataToSend.estimations = estimationsState;
+    }
+
+    if (!_.isEmpty(ratingsState)) {
+      dataToSend.projectRatings = ratingsState;
     }
 
     dispatch(updateProjectRecord(dataToSend));
@@ -322,6 +342,11 @@ const EditProjectsForm = ({ onClose }) => {
               <Tab
                 label={intl.formatMessage({
                   id: 'estimations',
+                })}
+              />
+              <Tab
+                label={intl.formatMessage({
+                  id: 'ratings',
                 })}
               />
             </Tabs>
@@ -977,6 +1002,12 @@ const EditProjectsForm = ({ onClose }) => {
                 <EstimationsRepeater
                   estimationsState={estimationsState}
                   setEstimationsState={setEstimationsState}
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={7}>
+                <RatingsRepeater
+                  ratingsState={ratingsState}
+                  setRatingsState={setRatingsState}
                 />
               </TabPanel>
             </div>

@@ -32,6 +32,7 @@ import {
   SelectTypeEnum,
   SelectStateEnum,
   EstimationsRepeater,
+  RatingsRepeater,
 } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
@@ -40,7 +41,6 @@ import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
-import RatingsRepeater from './RatingsRepeater';
 
 const StyledFormContainer = styled('div')`
   display: flex;
