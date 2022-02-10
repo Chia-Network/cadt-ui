@@ -44,7 +44,6 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
       await issuanceSchema.fields[key]
         ?.validate(value[key], { abortEarly: false })
         .catch(error => {
-          console.log(error);
           setErrorIssuanceMessage(prev => ({
             ...prev,
             [key]: error.errors[0],
@@ -52,11 +51,12 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
         });
     }
   };
-  console.log(errorIssuanceMessage);
 
   useEffect(() => {
     setErrorIssuanceMessage({});
-    issuanceRef.current = issuanceValidations;
+    if (issuanceRef && issuanceRef.current) {
+      issuanceRef.current = issuanceValidations;
+    }
   }, [value]);
 
   return (
