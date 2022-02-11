@@ -58,33 +58,6 @@ const CreateRatingsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="id" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'ratings-id-description',
-                  })}
-                >
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'id',
-                })}
-                state={InputStateEnum.default}
-                value={value.id}
-                onChange={changeValue => onInputChange('id', changeValue)}
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
                   *<FormattedMessage id="rating-type" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -142,8 +115,6 @@ const CreateRatingsForm = ({ value, onChange }) => {
               />
             </InputContainer>
           </StyledFieldContainer>
-        </BodyContainer>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -173,6 +144,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
               />
             </InputContainer>
           </StyledFieldContainer>
+        </BodyContainer>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>

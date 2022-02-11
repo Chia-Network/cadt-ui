@@ -9,7 +9,6 @@ function RatingsRepeater({ ratingsState, setRatingsState }) {
         values={ratingsState}
         updateValues={setRatingsState}
         initialValue={{
-          id: '',
           ratingType: '',
           ratingRangeHighest: '',
           ratingRangeLowest: '',
