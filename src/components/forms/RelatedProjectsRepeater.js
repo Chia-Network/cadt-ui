@@ -14,6 +14,7 @@ function RelatedProjectsRepeater({
         values={relatedProjectsState}
         updateValues={setRelatedProjectsState}
         initialValue={{
+          relatedProjectId: '',
           relationshipType: '',
           registry: '',
         }}
