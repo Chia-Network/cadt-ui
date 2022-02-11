@@ -276,6 +276,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           onClose={() => {
             setEditRecord(null);
           }}
+          record={editRecord}
         />
       )}
       {unitToBeSplit && (

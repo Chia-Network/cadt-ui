@@ -39,9 +39,12 @@ import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl, FormattedMessage } from 'react-intl';
 
-const EditProjectsForm = ({ onClose }) => {
-  const climatewarehouseProjects = useSelector(
-    state => state.climateWarehouse.projects[0],
+const EditProjectsForm = ({ onClose, record }) => {
+  const project = useSelector(
+    state =>
+      state.climateWarehouse.projects.filter(
+        project => project.warehouseProjectId === record.warehouseProjectId,
+      )[0],
   );
   const [validationDate, setValidationDate] = useState();
   const [date, setDate] = useState();
@@ -136,35 +139,35 @@ const EditProjectsForm = ({ onClose }) => {
   };
 
   useEffect(() => {
-    setDate(climatewarehouseProjects.projectStatusDate);
-    setValidationDate(climatewarehouseProjects.validationDate);
+    setDate(project.projectStatusDate);
+    setValidationDate(project.validationDate);
   }, [validationDate, date]);
 
   useEffect(() => {
     setEditProjects({
-      warehouseProjectId: climatewarehouseProjects.warehouseProjectId,
-      projectId: climatewarehouseProjects.projectId,
-      registryOfOrigin: climatewarehouseProjects.registryOfOrigin,
-      originProjectId: climatewarehouseProjects.originProjectId,
-      program: climatewarehouseProjects.program,
-      projectName: climatewarehouseProjects.projectName,
-      projectLink: climatewarehouseProjects.projectLink,
-      projectDeveloper: climatewarehouseProjects.projectDeveloper,
-      sector: climatewarehouseProjects.sector,
-      projectType: climatewarehouseProjects.projectType,
-      projectTags: climatewarehouseProjects.projectTags,
-      coveredByNDC: climatewarehouseProjects.coveredByNDC,
-      ndcInformation: climatewarehouseProjects.ndcInformation,
-      projectStatus: climatewarehouseProjects.projectStatus,
-      projectStatusDate: climatewarehouseProjects.projectStatusDate,
-      unitMetric: climatewarehouseProjects.unitMetric,
-      methodology: climatewarehouseProjects.methodology,
-      validationBody: climatewarehouseProjects.validationBody,
-      validationDate: climatewarehouseProjects.validationDate,
+      warehouseProjectId: project.warehouseProjectId,
+      projectId: project.projectId,
+      registryOfOrigin: project.registryOfOrigin,
+      originProjectId: project.originProjectId,
+      program: project.program,
+      projectName: project.projectName,
+      projectLink: project.projectLink,
+      projectDeveloper: project.projectDeveloper,
+      sector: project.sector,
+      projectType: project.projectType,
+      projectTags: project.projectTags,
+      coveredByNDC: project.coveredByNDC,
+      ndcInformation: project.ndcInformation,
+      projectStatus: project.projectStatus,
+      projectStatusDate: project.projectStatusDate,
+      unitMetric: project.unitMetric,
+      methodology: project.methodology,
+      validationBody: project.validationBody,
+      validationDate: project.validationDate,
     });
 
     setIssuance(
-      climatewarehouseProjects.issuances.map(issuanceKey =>
+      project.issuances.map(issuanceKey =>
         _.pick(
           issuanceKey,
           'startDate',
@@ -177,7 +180,7 @@ const EditProjectsForm = ({ onClose }) => {
     );
 
     setLocations(
-      climatewarehouseProjects.projectLocations.map(projectLoc =>
+      project.projectLocations.map(projectLoc =>
         _.pick(
           projectLoc,
           'country',
@@ -188,13 +191,11 @@ const EditProjectsForm = ({ onClose }) => {
     );
 
     setCoBenefits(
-      climatewarehouseProjects.coBenefits.map(cobenefit =>
-        _.pick(cobenefit, 'cobenefit'),
-      ),
+      project.coBenefits.map(cobenefit => _.pick(cobenefit, 'cobenefit')),
     );
 
     setLabelsRepeaterValues(
-      climatewarehouseProjects.labels.map(label =>
+      project.labels.map(label =>
         _.pick(
           label,
           'label',
@@ -210,13 +211,13 @@ const EditProjectsForm = ({ onClose }) => {
     );
 
     setRelatedProjects(
-      climatewarehouseProjects.relatedProjects.map(relatedProject =>
+      project.relatedProjects.map(relatedProject =>
         _.pick(relatedProject, 'relationshipType', 'registry'),
       ),
     );
 
     setEstimationsState(
-      climatewarehouseProjects.estimations.map(estimation =>
+      project.estimations.map(estimation =>
         _.pick(
           estimation,
           'creditingPeriodStart',
@@ -227,7 +228,7 @@ const EditProjectsForm = ({ onClose }) => {
     );
 
     setRatingsState(
-      climatewarehouseProjects.projectRatings.map(rating =>
+      project.projectRatings.map(rating =>
         _.pick(
           rating,
           'id',
@@ -239,7 +240,7 @@ const EditProjectsForm = ({ onClose }) => {
         ),
       ),
     );
-  }, [climatewarehouseProjects]);
+  }, [project]);
 
   const handleEditProjects = () => {
     const dataToSend = _.cloneDeep(editedProjects);
@@ -413,13 +414,11 @@ const EditProjectsForm = ({ onClose }) => {
                             options={selectRegistriesOptions}
                             state={SelectStateEnum.default}
                             selected={
-                              climatewarehouseProjects.registryOfOrigin
+                              project.registryOfOrigin
                                 ? [
                                     {
-                                      label:
-                                        climatewarehouseProjects.registryOfOrigin,
-                                      value:
-                                        climatewarehouseProjects.registryOfOrigin,
+                                      label: project.registryOfOrigin,
+                                      value: project.registryOfOrigin,
                                     },
                                   ]
                                 : undefined
@@ -616,11 +615,11 @@ const EditProjectsForm = ({ onClose }) => {
                             options={selectProjectSectorOptions}
                             state={SelectStateEnum.default}
                             selected={
-                              climatewarehouseProjects.sector
+                              project.sector
                                 ? [
                                     {
-                                      label: climatewarehouseProjects.sector,
-                                      value: climatewarehouseProjects.sector,
+                                      label: project.sector,
+                                      value: project.sector,
                                     },
                                   ]
                                 : undefined
@@ -655,11 +654,11 @@ const EditProjectsForm = ({ onClose }) => {
                           options={selectProjectTypeOptions}
                           state={SelectStateEnum.default}
                           selected={
-                            climatewarehouseProjects.projectType
+                            project.projectType
                               ? [
                                   {
-                                    label: climatewarehouseProjects.projectType,
-                                    value: climatewarehouseProjects.projectType,
+                                    label: project.projectType,
+                                    value: project.projectType,
                                   },
                                 ]
                               : undefined
@@ -697,13 +696,11 @@ const EditProjectsForm = ({ onClose }) => {
                             options={selectCoveredByNDCOptions}
                             state={SelectStateEnum.default}
                             selected={
-                              climatewarehouseProjects.coveredByNDC
+                              project.coveredByNDC
                                 ? [
                                     {
-                                      label:
-                                        climatewarehouseProjects.coveredByNDC,
-                                      value:
-                                        climatewarehouseProjects.coveredByNDC,
+                                      label: project.coveredByNDC,
+                                      value: project.coveredByNDC,
                                     },
                                   ]
                                 : undefined
@@ -773,13 +770,11 @@ const EditProjectsForm = ({ onClose }) => {
                             options={selectProjectStatusValuesOptions}
                             state={SelectStateEnum.default}
                             selected={
-                              climatewarehouseProjects.projectStatus
+                              project.projectStatus
                                 ? [
                                     {
-                                      label:
-                                        climatewarehouseProjects.projectStatus,
-                                      value:
-                                        climatewarehouseProjects.projectStatus,
+                                      label: project.projectStatus,
+                                      value: project.projectStatus,
                                     },
                                   ]
                                 : undefined
@@ -838,13 +833,11 @@ const EditProjectsForm = ({ onClose }) => {
                             options={selectUnitMetricOptions}
                             state={SelectStateEnum.default}
                             selected={
-                              climatewarehouseProjects.unitMetric
+                              project.unitMetric
                                 ? [
                                     {
-                                      label:
-                                        climatewarehouseProjects.unitMetric,
-                                      value:
-                                        climatewarehouseProjects.unitMetric,
+                                      label: project.unitMetric,
+                                      value: project.unitMetric,
                                     },
                                   ]
                                 : undefined
@@ -880,13 +873,11 @@ const EditProjectsForm = ({ onClose }) => {
                             options={selectMethodologyOptions}
                             state={SelectStateEnum.default}
                             selected={
-                              climatewarehouseProjects.methodology
+                              project.methodology
                                 ? [
                                     {
-                                      label:
-                                        climatewarehouseProjects.methodology,
-                                      value:
-                                        climatewarehouseProjects.methodology,
+                                      label: project.methodology,
+                                      value: project.methodology,
                                     },
                                   ]
                                 : undefined
@@ -922,13 +913,11 @@ const EditProjectsForm = ({ onClose }) => {
                             options={selectValidationBodyOptions}
                             state={SelectStateEnum.default}
                             selected={
-                              climatewarehouseProjects.validationBody
+                              project.validationBody
                                 ? [
                                     {
-                                      label:
-                                        climatewarehouseProjects.validationBody,
-                                      value:
-                                        climatewarehouseProjects.validationBody,
+                                      label: project.validationBody,
+                                      value: project.validationBody,
                                     },
                                   ]
                                 : undefined
