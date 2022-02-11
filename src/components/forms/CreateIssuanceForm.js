@@ -35,25 +35,28 @@ const InputContainer = styled('div')`
 const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
 
-  const issuanceValidations = async () => {
-    for (let key of Object.keys(value)) {
-      await issuanceSchema.fields[key]
-        ?.validate(value[key], { abortEarly: false })
-        .catch(error => {
-          setErrorIssuanceMessage(prev => ({
-            ...prev,
-            [key]: error.errors[0],
-          }));
+  const issuanceValidations = async () =>
+    await issuanceSchema
+      ?.validate(value, { abortEarly: false })
+      .then(() => setErrorIssuanceMessage({}))
+      .catch(errors => {
+        const formattedErrorsArray = {};
+        errors.inner.forEach(item => {
+          formattedErrorsArray[item.path] = item.errors[0];
         });
-    }
-  };
+        setErrorIssuanceMessage(formattedErrorsArray);
+      });
 
   useEffect(() => {
-    setErrorIssuanceMessage({});
+    if (Object.values(value).filter(Boolean).length) issuanceValidations();
+  }, [value]);
+
+  useEffect(() => {
     if (issuanceRef) {
       issuanceRef.current = issuanceValidations;
     }
