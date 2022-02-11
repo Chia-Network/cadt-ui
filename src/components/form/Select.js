@@ -336,6 +336,7 @@ const Select = withTheme(
         } else {
           setSelectedOptions([{ value, label }]);
         }
+        setSelectState(SelectStateEnum.default);
         setMenuIsVisible(false);
       }
     };
