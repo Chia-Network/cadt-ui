@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
 
+import { setValidationErrors } from '../../utils/validationUtils';
+import { issuanceSchema } from '../../store/validations';
+
 import {
   StandardInput,
   InputSizeEnum,
@@ -18,7 +21,6 @@ import {
   ToolTipContainer,
   LabelContainer,
 } from '..';
-import { issuanceSchema } from './IssuanceValidation';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -32,7 +34,7 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
+const CreateIssuanceForm = ({ value, onChange }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
 
@@ -40,26 +42,8 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
     onChange(u({ [field]: changeValue }, value));
   };
 
-  const issuanceValidations = async () =>
-    await issuanceSchema
-      ?.validate(value, { abortEarly: false })
-      .then(() => setErrorIssuanceMessage({}))
-      .catch(errors => {
-        const formattedErrorsArray = {};
-        errors.inner.forEach(item => {
-          formattedErrorsArray[item.path] = item.errors[0];
-        });
-        setErrorIssuanceMessage(formattedErrorsArray);
-      });
-
   useEffect(() => {
-    if (Object.values(value).filter(Boolean).length) issuanceValidations();
-  }, [value]);
-
-  useEffect(() => {
-    if (issuanceRef) {
-      issuanceRef.current = issuanceValidations;
-    }
+    setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
   }, [value]);
 
   return (

@@ -34,6 +34,7 @@ import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { issuancesSchema } from '../../store/validations';
 
 const EditUnitsForm = ({ onClose, record }) => {
   const { notification } = useSelector(state => state.app);
@@ -184,6 +185,9 @@ const EditUnitsForm = ({ onClose, record }) => {
     }
 
     if (!_.isEmpty(issuance)) {
+      const isValid = await issuancesSchema.isValid(issuance);
+      console.log(isValid);
+
       for (let key of Object.keys(issuance)) {
         if (issuance[key] === '') {
           delete issuance[key];
@@ -202,23 +206,29 @@ const EditUnitsForm = ({ onClose, record }) => {
       }
       dataToSend.labels = labels;
     }
+
     if (!_.isEmpty(unitType)) {
       dataToSend.unitType = unitType;
     }
+
     if (!_.isEmpty(unitStatus)) {
       dataToSend.unitStatus = unitStatus;
     }
+
     if (!_.isEmpty(year)) {
       dataToSend.vintageYear = year;
     }
+
     if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
       dataToSend.correspondingAdjustmentDeclaration =
         selectedCorrespondingAdjustmentDeclaration;
     }
+
     if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
       dataToSend.correspondingAdjustmentStatus =
         selectedCorrespondingAdjustmentStatus;
     }
+
     unitsSchema
       .validate(dataToSend, { abortEarly: false })
       .catch(error => setErrorMessage(error.errors));
