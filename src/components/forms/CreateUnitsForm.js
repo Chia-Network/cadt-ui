@@ -136,6 +136,15 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
     }
   };
 
+  useEffect(() => {
+    setLabelFormsValid([]);
+    _.map(newLabels, async label => {
+      const validLabel = await labelSchema.isValid(label);
+
+      return setLabelFormsValid(prev => [...prev, validLabel]);
+    });
+  }, [newLabels]);
+
   const handleEditUnits = async () => {
     const dataToSend = _.cloneDeep(newUnits);
     const isUnitValid = await unitsSchema.isValid(dataToSend);
@@ -150,22 +159,12 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
 
     //Page 1
     if (!_.isEmpty(newLabels) && tabValue === 1) {
-      if (newLabels.length > 0) {
-        setLabelFormsValid([]);
-        _.map(newLabels, async label => {
-          const validLabel = await labelSchema.isValid(label);
-          return setLabelFormsValid(prev => [...prev, validLabel]);
-        });
-
-        if (labelFormsValid.length > 0) {
-          let checkLabelForms = await _.every(labelFormsValid);
-
-          if (checkLabelForms) {
-            return setTabValue(prev => prev + 1);
-          }
+      if (labelFormsValid.length > 0) {
+        let checkLabelForms = await _.every(labelFormsValid);
+        if (checkLabelForms) {
+          return setTabValue(prev => prev + 1);
         }
       }
-
       labelRef.current();
     } else if (_.isEmpty(newLabels) && tabValue === 1) {
       return setTabValue(prev => prev + 1);
