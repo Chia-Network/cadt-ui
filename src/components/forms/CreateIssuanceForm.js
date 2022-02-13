@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
 
+import { setValidationErrors } from '../../utils/validationUtils';
+import { issuanceSchema } from '../../store/validations';
+
 import {
   StandardInput,
   InputSizeEnum,
@@ -18,7 +21,6 @@ import {
   ToolTipContainer,
   LabelContainer,
 } from '..';
-import { issuanceSchema } from './IssuanceValidation';
 
 const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
@@ -32,31 +34,16 @@ const InputContainer = styled('div')`
   width: 20rem;
 `;
 
-const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
+const CreateIssuanceForm = ({ value, onChange }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
 
-  const issuanceValidations = async () => {
-    for (let key of Object.keys(value)) {
-      await issuanceSchema.fields[key]
-        ?.validate(value[key], { abortEarly: false })
-        .catch(error => {
-          setErrorIssuanceMessage(prev => ({
-            ...prev,
-            [key]: error.errors[0],
-          }));
-        });
-    }
-  };
-
   useEffect(() => {
-    setErrorIssuanceMessage({});
-    if (issuanceRef) {
-      issuanceRef.current = issuanceValidations;
-    }
+    setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
   }, [value]);
 
   return (
@@ -127,6 +114,38 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
+                  *<FormattedMessage id="verification-report-date" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'issuances-verification-report-date-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <DateSelect
+                size="large"
+                dateValue={value.verificationReportDate}
+                setDateValue={changeValue =>
+                  onInputChange('verificationReportDate', changeValue)
+                }
+              />
+            </InputContainer>
+            {errorIssuanceMessage?.verificationReportDate && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.verificationReportDate}
+              </Body>
+            )}
+          </StyledFieldContainer>
+        </BodyContainer>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
                   *<FormattedMessage id="verification-approach" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -158,38 +177,6 @@ const CreateIssuanceForm = ({ value, onChange, issuanceRef }) => {
             {errorIssuanceMessage?.verificationApproach && (
               <Body size="Small" color="red">
                 {errorIssuanceMessage.verificationApproach}
-              </Body>
-            )}
-          </StyledFieldContainer>
-        </BodyContainer>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="verification-report-date" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'issuances-verification-report-date-description',
-                  })}
-                >
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <DateSelect
-                size="large"
-                dateValue={value.verificationReportDate}
-                setDateValue={changeValue =>
-                  onInputChange('verificationReportDate', changeValue)
-                }
-              />
-            </InputContainer>
-            {errorIssuanceMessage?.verificationReportDate && (
-              <Body size="Small" color="red">
-                {errorIssuanceMessage.verificationReportDate}
               </Body>
             )}
           </StyledFieldContainer>

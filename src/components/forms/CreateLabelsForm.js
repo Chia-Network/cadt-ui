@@ -206,6 +206,8 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
               </Body>
             )}
           </StyledFieldContainer>
+        </BodyContainer>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -236,8 +238,6 @@ const CreateLabelsForm = ({ value, onChange, labelRef }) => {
               </Body>
             )}
           </StyledFieldContainer>
-        </BodyContainer>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>

@@ -58,33 +58,6 @@ const CreateRatingsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="id" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'ratings-id-description',
-                  })}
-                >
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'id',
-                })}
-                state={InputStateEnum.default}
-                value={value.id}
-                onChange={changeValue => onInputChange('id', changeValue)}
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
                   *<FormattedMessage id="rating-type" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -137,13 +110,11 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 state={InputStateEnum.default}
                 value={value.ratingRangeHighest}
                 onChange={changeValue =>
-                  onInputChange('ratingRangeHighest', changeValue)
+                  onInputChange('ratingRangeHighest', changeValue.toString())
                 }
               />
             </InputContainer>
           </StyledFieldContainer>
-        </BodyContainer>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -168,11 +139,13 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 state={InputStateEnum.default}
                 value={value.ratingRangeLowest}
                 onChange={changeValue =>
-                  onInputChange('ratingRangeLowest', changeValue)
+                  onInputChange('ratingRangeLowest', changeValue.toString())
                 }
               />
             </InputContainer>
           </StyledFieldContainer>
+        </BodyContainer>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -196,7 +169,9 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 })}
                 state={InputStateEnum.default}
                 value={value.rating}
-                onChange={changeValue => onInputChange('rating', changeValue)}
+                onChange={changeValue =>
+                  onInputChange('rating', changeValue.toString())
+                }
               />
             </InputContainer>
           </StyledFieldContainer>

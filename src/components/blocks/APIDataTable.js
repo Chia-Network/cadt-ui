@@ -269,6 +269,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           onClose={() => {
             setEditRecord(null);
           }}
+          record={editRecord}
         />
       )}
       {actions === 'Projects' && editRecord && (
@@ -276,6 +277,7 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
           onClose={() => {
             setEditRecord(null);
           }}
+          record={editRecord}
         />
       )}
       {unitToBeSplit && (

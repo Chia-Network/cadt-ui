@@ -215,7 +215,7 @@ const Select = withTheme(
     options,
     selected = null,
     placeholder,
-    width = '200px',
+    width = '20rem',
     onChange,
   }) => {
     const [menuIsVisible, setMenuIsVisible] = useState(false);
@@ -336,6 +336,7 @@ const Select = withTheme(
         } else {
           setSelectedOptions([{ value, label }]);
         }
+        setSelectState(SelectStateEnum.default);
         setMenuIsVisible(false);
       }
     };

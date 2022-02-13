@@ -34,8 +34,9 @@ import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { issuancesSchema } from '../../store/validations';
 
-const EditUnitsForm = ({ onClose }) => {
+const EditUnitsForm = ({ onClose, record }) => {
   const { notification } = useSelector(state => state.app);
   const [labels, setLabelsRepeaterValues] = useState([]);
   const [year, setYear] = useState('');
@@ -56,8 +57,11 @@ const EditUnitsForm = ({ onClose }) => {
     setSelectedCorrespondingAdjustmentStatus,
   ] = useState(null);
 
-  const climatewarehouseUnits = useSelector(
-    state => state.climateWarehouse.units[0],
+  const unit = useSelector(
+    state =>
+      state.climateWarehouse.units.filter(
+        unit => unit.warehouseUnitId === record.warehouseUnitId,
+      )[0],
   );
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
@@ -130,25 +134,23 @@ const EditUnitsForm = ({ onClose }) => {
 
   useEffect(() => {
     setEditUnits({
-      warehouseUnitId: climatewarehouseUnits.warehouseUnitId,
-      projectLocationId: climatewarehouseUnits.projectLocationId,
-      unitOwner: climatewarehouseUnits.unitOwner,
-      countryJurisdictionOfOwner:
-        climatewarehouseUnits.countryJurisdictionOfOwner,
-      inCountryJurisdictionOfOwner:
-        climatewarehouseUnits.inCountryJurisdictionOfOwner,
-      serialNumberBlock: climatewarehouseUnits.serialNumberBlock,
-      serialNumberPattern: climatewarehouseUnits.serialNumberBlock,
-      marketplace: climatewarehouseUnits.marketplace,
-      marketplaceLink: climatewarehouseUnits.marketplaceLink,
-      marketplaceIdentifier: climatewarehouseUnits.marketplaceIdentifier,
-      unitTags: climatewarehouseUnits.unitTags,
-      unitStatusReason: climatewarehouseUnits.unitStatusReason,
-      unitRegistryLink: climatewarehouseUnits.unitRegistryLink,
+      warehouseUnitId: unit.warehouseUnitId,
+      projectLocationId: unit.projectLocationId,
+      unitOwner: unit.unitOwner,
+      countryJurisdictionOfOwner: unit.countryJurisdictionOfOwner,
+      inCountryJurisdictionOfOwner: unit.inCountryJurisdictionOfOwner,
+      serialNumberBlock: unit.serialNumberBlock,
+      serialNumberPattern: unit.serialNumberBlock,
+      marketplace: unit.marketplace,
+      marketplaceLink: unit.marketplaceLink,
+      marketplaceIdentifier: unit.marketplaceIdentifier,
+      unitTags: unit.unitTags,
+      unitStatusReason: unit.unitStatusReason,
+      unitRegistryLink: unit.unitRegistryLink,
     });
     setIssuance([
       _.pick(
-        climatewarehouseUnits.issuance,
+        unit.issuance,
         'startDate',
         'endDate',
         'verificationApproach',
@@ -156,9 +158,9 @@ const EditUnitsForm = ({ onClose }) => {
         'verificationBody',
       ),
     ]);
-    setYear(_.get(climatewarehouseUnits, 'vintageYear', ''));
+    setYear(_.get(unit, 'vintageYear', ''));
     setLabelsRepeaterValues(
-      climatewarehouseUnits.labels.map(label =>
+      unit.labels.map(label =>
         _.pick(
           label,
           'label',
@@ -172,7 +174,7 @@ const EditUnitsForm = ({ onClose }) => {
         ),
       ),
     );
-  }, [climatewarehouseUnits]);
+  }, [unit]);
 
   const handleEditUnits = async () => {
     const dataToSend = _.cloneDeep(editedUnits);
@@ -183,6 +185,9 @@ const EditUnitsForm = ({ onClose }) => {
     }
 
     if (!_.isEmpty(issuance)) {
+      const isValid = await issuancesSchema.isValid(issuance);
+      console.log(isValid);
+
       for (let key of Object.keys(issuance)) {
         if (issuance[key] === '') {
           delete issuance[key];
@@ -201,23 +206,29 @@ const EditUnitsForm = ({ onClose }) => {
       }
       dataToSend.labels = labels;
     }
+
     if (!_.isEmpty(unitType)) {
       dataToSend.unitType = unitType;
     }
+
     if (!_.isEmpty(unitStatus)) {
       dataToSend.unitStatus = unitStatus;
     }
+
     if (!_.isEmpty(year)) {
       dataToSend.vintageYear = year;
     }
+
     if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
       dataToSend.correspondingAdjustmentDeclaration =
         selectedCorrespondingAdjustmentDeclaration;
     }
+
     if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
       dataToSend.correspondingAdjustmentStatus =
         selectedCorrespondingAdjustmentStatus;
     }
+
     unitsSchema
       .validate(dataToSend, { abortEarly: false })
       .catch(error => setErrorMessage(error.errors));
@@ -387,13 +398,11 @@ const EditUnitsForm = ({ onClose }) => {
                             type={SelectTypeEnum.basic}
                             options={selectCountriesOptions}
                             selected={
-                              climatewarehouseUnits.countryJurisdictionOfOwner
+                              unit.countryJurisdictionOfOwner
                                 ? [
                                     {
-                                      label:
-                                        climatewarehouseUnits.countryJurisdictionOfOwner,
-                                      value:
-                                        climatewarehouseUnits.countryJurisdictionOfOwner,
+                                      label: unit.countryJurisdictionOfOwner,
+                                      value: unit.countryJurisdictionOfOwner,
                                     },
                                   ]
                                 : undefined
@@ -564,8 +573,8 @@ const EditUnitsForm = ({ onClose }) => {
                             }
                             selected={[
                               {
-                                label: climatewarehouseUnits.unitType,
-                                value: climatewarehouseUnits.unitType,
+                                label: unit.unitType,
+                                value: unit.unitType,
                               },
                             ]}
                           />
@@ -728,11 +737,11 @@ const EditUnitsForm = ({ onClose }) => {
                               setUnitStatus(selectedOptions[0].value)
                             }
                             selected={
-                              climatewarehouseUnits.unitStatus
+                              unit.unitStatus
                                 ? [
                                     {
-                                      label: climatewarehouseUnits.unitStatus,
-                                      value: climatewarehouseUnits.unitStatus,
+                                      label: unit.unitStatus,
+                                      value: unit.unitStatus,
                                     },
                                   ]
                                 : undefined
@@ -837,13 +846,13 @@ const EditUnitsForm = ({ onClose }) => {
                               )
                             }
                             selected={
-                              climatewarehouseUnits.correspondingAdjustmentDeclaration
+                              unit.correspondingAdjustmentDeclaration
                                 ? [
                                     {
                                       label:
-                                        climatewarehouseUnits.correspondingAdjustmentDeclaration,
+                                        unit.correspondingAdjustmentDeclaration,
                                       value:
-                                        climatewarehouseUnits.correspondingAdjustmentDeclaration,
+                                        unit.correspondingAdjustmentDeclaration,
                                     },
                                   ]
                                 : undefined
@@ -881,13 +890,11 @@ const EditUnitsForm = ({ onClose }) => {
                               )
                             }
                             selected={
-                              climatewarehouseUnits.correspondingAdjustmentStatus
+                              unit.correspondingAdjustmentStatus
                                 ? [
                                     {
-                                      label:
-                                        climatewarehouseUnits.correspondingAdjustmentStatus,
-                                      value:
-                                        climatewarehouseUnits.correspondingAdjustmentStatus,
+                                      label: unit.correspondingAdjustmentStatus,
+                                      value: unit.correspondingAdjustmentStatus,
                                     },
                                   ]
                                 : undefined

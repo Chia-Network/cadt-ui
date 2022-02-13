@@ -43,6 +43,35 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
+                  <FormattedMessage id="related-project-id" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'related-project-id',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'related-project-id',
+                })}
+                state={InputStateEnum.default}
+                value={value.relationshipType}
+                onChange={changeValue =>
+                  onInputChange('relatedProjectId', changeValue)
+                }
+              />
+            </InputContainer>
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
                   <FormattedMessage id="relationship-type" />
                 </LabelContainer>
                 <ToolTipContainer
