@@ -56,8 +56,6 @@ const EditProjectsForm = ({
   const intl = useIntl();
   const { notification } = useSelector(state => state.app);
 
-  console.log(projectToBeEdited);
-
   useEffect(() => {
     setProject({
       warehouseProjectId: projectToBeEdited.warehouseProjectId ?? '',

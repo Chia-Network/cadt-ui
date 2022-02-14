@@ -213,7 +213,7 @@ const Select = withTheme(
     type = SelectTypeEnum.basic,
     state = SelectStateEnum.default,
     options,
-    selected = null,
+    selected,
     placeholder,
     width = '20rem',
     onChange,
@@ -224,6 +224,7 @@ const Select = withTheme(
     const [selectedOptions, setSelectedOptions] = useState(selected || null);
     const [searchInputValue, setSearchInputValue] = useState('');
     const [menuTopPosition, setMenuTopPosition] = useState(0);
+    const selectedInitialized = useRef(null);
     const ref = useRef();
     const selectRef = useRef();
     const intl = useIntl();
@@ -232,6 +233,13 @@ const Select = withTheme(
       ` -- ${intl.formatMessage({
         id: 'Select',
       })} -- `;
+
+    useEffect(() => {
+      if (selected !== undefined && selectedInitialized.current === null) {
+        setSelectedOptions(selected);
+        selectedInitialized.current = true;
+      }
+    }, [selected]);
 
     useEffect(() => {
       const newHeight = selectRef.current.clientHeight;

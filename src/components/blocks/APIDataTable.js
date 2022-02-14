@@ -112,12 +112,7 @@ const StyledScalableContainer = styled('div')`
 `;
 
 const APIDataTable = withTheme(
-  ({
-    headings,
-    data,
-    actions,
-    modalSizeAndPosition = { modalSizeAndPosition },
-  }) => {
+  ({ headings, data, actions, modalSizeAndPosition }) => {
     const [getRecord, setRecord] = useState(null);
     const [editRecord, setEditRecord] = useState(null);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
