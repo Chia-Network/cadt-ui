@@ -144,10 +144,7 @@ const Modal = withTheme(
     modalType,
     informationType,
     label,
-    top,
-    left,
-    width,
-    height,
+    modalSizeAndPosition,
     extraButtonLabel,
     extraButtonOnClick,
   }) => {
@@ -157,10 +154,10 @@ const Modal = withTheme(
       <MaskContainer>
         <ModalContainer
           modalType={modalType}
-          top={top}
-          left={left}
-          width={width}
-          height={height}
+          top={modalSizeAndPosition?.top}
+          left={modalSizeAndPosition?.left}
+          width={modalSizeAndPosition?.width}
+          height={modalSizeAndPosition?.height}
         >
           <TitleContainer modalType={modalType}>
             {modalType === modalTypeEnum.information && (

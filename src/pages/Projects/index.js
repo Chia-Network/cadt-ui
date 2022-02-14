@@ -124,8 +124,7 @@ const Projects = withRouter(() => {
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   let searchParams = new URLSearchParams(history.location.search);
   const projectsContainerRef = useRef(null);
-  const [createProjectModalPosition, setCreateProjectModalPosition] =
-    useState(null);
+  const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
   const handleTabChange = (event, newValue) => {
@@ -146,7 +145,7 @@ const Projects = withRouter(() => {
 
   useEffect(() => {
     if (projectsContainerRef && projectsContainerRef.current) {
-      setCreateProjectModalPosition({
+      setModalSizeAndPosition({
         left: projectsContainerRef.current.getBoundingClientRect().x,
         top: projectsContainerRef.current.getBoundingClientRect().y,
         width: projectsContainerRef.current.getBoundingClientRect().width,
@@ -371,6 +370,7 @@ const Projects = withRouter(() => {
                   headings={Object.keys(filteredColumnsTableData[0])}
                   data={filteredColumnsTableData}
                   actions={pageIsMyRegistryPage ? 'Projects' : undefined}
+                  modalSizeAndPosition={modalSizeAndPosition}
                 />
               )}
           </TabPanel>
@@ -420,26 +420,7 @@ const Projects = withRouter(() => {
       {createFormIsDisplayed && (
         <CreateProjectForm
           onClose={() => setCreateFormIsDisplayed(false)}
-          left={
-            createProjectModalPosition
-              ? createProjectModalPosition.left
-              : undefined
-          }
-          top={
-            createProjectModalPosition
-              ? createProjectModalPosition.top
-              : undefined
-          }
-          height={
-            createProjectModalPosition
-              ? createProjectModalPosition.height
-              : undefined
-          }
-          width={
-            createProjectModalPosition
-              ? createProjectModalPosition.width
-              : undefined
-          }
+          modalSizeAndPosition={modalSizeAndPosition}
         />
       )}
       {notification && (
