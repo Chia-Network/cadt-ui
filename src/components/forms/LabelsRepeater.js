@@ -3,12 +3,7 @@ import { AddIcon, CloseIcon } from '..';
 import { CreateLabelsForm } from './CreateLabelsForm';
 import { ComponentRepeater } from '..';
 
-function LabelsRepeater({
-  labelsState,
-  newLabelsState,
-  labelRef,
-  labelValidRef,
-}) {
+function LabelsRepeater({ labelsState, newLabelsState, labelRef }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
@@ -25,9 +20,7 @@ function LabelsRepeater({
           unitQuantity: 0,
           labelLink: '',
         }}
-        component={
-          <CreateLabelsForm labelRef={labelRef} labelValidRef={labelValidRef} />
-        }
+        component={<CreateLabelsForm labelRef={labelRef} />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
         removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
       />
