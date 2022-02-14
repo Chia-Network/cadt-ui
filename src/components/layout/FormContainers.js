@@ -57,3 +57,10 @@ export const FieldRequired = () => {
     </StyledFieldRequired>
   );
 };
+
+export const StyledFormContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+`;
