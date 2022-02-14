@@ -1,7 +1,9 @@
 import u from 'updeep';
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+
+import { relatedProjectSchema } from '../../store/validations';
+import { setValidationErrors } from '../../utils/validationUtils';
 
 import {
   StandardInput,
@@ -15,25 +17,28 @@ import {
   ToolTipContainer,
   DescriptionIcon,
   LabelContainer,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
 } from '..';
 
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
-
 const CreateRelatedProjectsForm = ({ value, onChange }) => {
+  const [errorRelatedProjectMessage, setErrorRelatedProjectMessage] = useState(
+    {},
+  );
   const intl = useIntl();
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
+
+  useEffect(() => {
+    setValidationErrors(
+      relatedProjectSchema,
+      value,
+      setErrorRelatedProjectMessage,
+    );
+  }, [value]);
 
   return (
     <ModalFormContainerStyle>
@@ -61,11 +66,16 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                   id: 'related-project-id',
                 })}
                 state={InputStateEnum.default}
-                value={value.relationshipType}
+                value={value.relatedProjectId}
                 onChange={changeValue =>
                   onInputChange('relatedProjectId', changeValue)
                 }
               />
+              {errorRelatedProjectMessage?.relatedProjectId && (
+                <Body size="Small" color="red">
+                  {errorRelatedProjectMessage.relatedProjectId}
+                </Body>
+              )}
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
@@ -95,6 +105,11 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                   onInputChange('relationshipType', changeValue)
                 }
               />
+              {errorRelatedProjectMessage?.relationshipType && (
+                <Body size="Small" color="red">
+                  {errorRelatedProjectMessage.relationshipType}
+                </Body>
+              )}
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
@@ -120,6 +135,11 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                 value={value.registry}
                 onChange={changeValue => onInputChange('registry', changeValue)}
               />
+              {errorRelatedProjectMessage?.registry && (
+                <Body size="Small" color="red">
+                  {errorRelatedProjectMessage.registry}
+                </Body>
+              )}
             </InputContainer>
           </StyledFieldContainer>
         </BodyContainer>

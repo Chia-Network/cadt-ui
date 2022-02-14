@@ -1,6 +1,5 @@
 import u from 'updeep';
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -20,26 +19,22 @@ import {
   SelectTypeEnum,
   SelectStateEnum,
   Select,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
 } from '..';
 
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
+import { ratingSchema } from '../../store/validations';
+import { setValidationErrors } from '../../utils/validationUtils';
 
 const CreateRatingsForm = ({ value, onChange }) => {
+  const [errorRatingMessage, setErrorRatingMessage] = useState({});
   const intl = useIntl();
+  const { pickLists } = useSelector(store => store.climateWarehouse);
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
-  const { pickLists } = useSelector(store => store.climateWarehouse);
 
   const selectRatingTypeOptions = useMemo(
     () =>
@@ -49,6 +44,10 @@ const CreateRatingsForm = ({ value, onChange }) => {
       })),
     [pickLists],
   );
+
+  useEffect(() => {
+    setValidationErrors(ratingSchema, value, setErrorRatingMessage);
+  }, [value]);
 
   return (
     <ModalFormContainerStyle>
@@ -85,6 +84,11 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
+            {errorRatingMessage?.ratingType && (
+              <Body size="Small" color="red">
+                {errorRatingMessage.ratingType}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -114,6 +118,11 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
+            {errorRatingMessage?.ratingRangeHighest && (
+              <Body size="Small" color="red">
+                {errorRatingMessage.ratingRangeHighest}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -143,6 +152,11 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
+            {errorRatingMessage?.ratingRangeLowest && (
+              <Body size="Small" color="red">
+                {errorRatingMessage.ratingRangeLowest}
+              </Body>
+            )}
           </StyledFieldContainer>
         </BodyContainer>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -174,6 +188,11 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
+            {errorRatingMessage?.rating && (
+              <Body size="Small" color="red">
+                {errorRatingMessage.rating}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -199,10 +218,15 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 state={InputStateEnum.default}
                 value={value.ratingLink}
                 onChange={changeValue =>
-                  onInputChange('rating-link', changeValue)
+                  onInputChange('ratingLink', changeValue)
                 }
               />
             </InputContainer>
+            {errorRatingMessage?.ratingLink && (
+              <Body size="Small" color="red">
+                {errorRatingMessage.ratingLink}
+              </Body>
+            )}
           </StyledFieldContainer>
         </div>
       </FormContainerStyle>

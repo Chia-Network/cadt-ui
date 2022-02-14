@@ -25,3 +25,5 @@ export const labelSchema = yup.object().shape({
     .required('Required Field'),
   labelLink: yup.string().required('Required Field'),
 });
+
+export const labelsSchema = yup.array().of(labelSchema);
