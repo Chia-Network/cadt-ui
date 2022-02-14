@@ -1,6 +1,5 @@
 import u from 'updeep';
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
@@ -16,25 +15,25 @@ import {
   ToolTipContainer,
   DateSelect,
   LabelContainer,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
 } from '..';
 
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
+import { estimationSchema } from '../../store/validations';
+import { setValidationErrors } from '../../utils/validationUtils';
 
 const CreateEstimationsForm = ({ value, onChange }) => {
   const intl = useIntl();
+  const [errorEstimationMessage, setErrorEstimationMessage] = useState({});
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
+
+  useEffect(() => {
+    setValidationErrors(estimationSchema, value, setErrorEstimationMessage);
+  }, [value]);
 
   return (
     <ModalFormContainerStyle>
@@ -64,6 +63,11 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
+            {errorEstimationMessage?.creditingPeriodStart && (
+              <Body size="Small" color="red">
+                {errorEstimationMessage.creditingPeriodStart}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -89,6 +93,11 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
+            {errorEstimationMessage?.creditingPeriodEnd && (
+              <Body size="Small" color="red">
+                {errorEstimationMessage.creditingPeriodEnd}
+              </Body>
+            )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -119,6 +128,11 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 }
               />
             </InputContainer>
+            {errorEstimationMessage?.unitCount && (
+              <Body size="Small" color="red">
+                {errorEstimationMessage.unitCount}
+              </Body>
+            )}
           </StyledFieldContainer>
         </BodyContainer>
       </FormContainerStyle>

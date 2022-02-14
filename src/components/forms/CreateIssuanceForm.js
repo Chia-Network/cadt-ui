@@ -1,6 +1,5 @@
 import u from 'updeep';
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import { setValidationErrors } from '../../utils/validationUtils';
@@ -20,19 +19,10 @@ import {
   DescriptionIcon,
   ToolTipContainer,
   LabelContainer,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
 } from '..';
-
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
 
 const CreateIssuanceForm = ({ value, onChange }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});

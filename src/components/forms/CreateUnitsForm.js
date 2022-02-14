@@ -37,7 +37,7 @@ import IssuanceRepeater from './IssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { labelSchema } from '.';
+import { labelSchema } from '../../store/validations';
 
 const StyledFormContainer = styled('div')`
   display: flex;

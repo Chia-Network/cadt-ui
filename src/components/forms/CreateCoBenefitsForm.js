@@ -1,7 +1,9 @@
 import u from 'updeep';
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+
+import { coBenefitSchema } from '../../store/validations';
+import { setValidationErrors } from '../../utils/validationUtils';
 
 import {
   StandardInput,
@@ -14,25 +16,22 @@ import {
   ToolTipContainer,
   DescriptionIcon,
   LabelContainer,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
 } from '..';
 
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
-
 const CreateCoBenefitsForm = ({ value, onChange }) => {
+  const [errorCoBenefitsMessage, setErrorCoBenefitsMessage] = useState({});
   const intl = useIntl();
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
+
+  useEffect(() => {
+    setValidationErrors(coBenefitSchema, value, setErrorCoBenefitsMessage);
+  }, [value]);
 
   return (
     <ModalFormContainerStyle>
@@ -60,6 +59,11 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
               value={value.cobenefit}
               onChange={changeValue => onInputChange('cobenefit', changeValue)}
             />
+            {errorCoBenefitsMessage?.cobenefit && (
+              <Body size="Small" color="red">
+                {errorCoBenefitsMessage.cobenefit}
+              </Body>
+            )}
           </InputContainer>
         </StyledFieldContainer>
       </FormContainerStyle>

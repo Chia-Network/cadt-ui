@@ -1,7 +1,6 @@
 import u from 'updeep';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -20,27 +19,26 @@ import {
   SelectTypeEnum,
   SelectStateEnum,
   Select,
+  StyledLabelContainer,
+  StyledFieldContainer,
+  InputContainer,
 } from '..';
 
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
-
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
+import { setValidationErrors } from '../../utils/validationUtils';
+import { locationSchema } from '../../store/validations';
 
 const CreateLocationsForm = ({ value, onChange }) => {
+  const [errorLocationMessage, setErrorLocationMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
+
+  useEffect(() => {
+    setValidationErrors(locationSchema, value, setErrorLocationMessage);
+  }, [value]);
 
   const selectCountriesOptions = useMemo(
     () =>
@@ -85,13 +83,18 @@ const CreateLocationsForm = ({ value, onChange }) => {
                   onInputChange('country', selectedOptions[0].value)
                 }
               />
+              {errorLocationMessage?.country && (
+                <Body size="Small" color="red">
+                  {errorLocationMessage.country}
+                </Body>
+              )}
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="in-country-region" />
+                  *<FormattedMessage id="in-country-region" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -114,6 +117,11 @@ const CreateLocationsForm = ({ value, onChange }) => {
                   onInputChange('inCountryRegion', changeValue)
                 }
               />
+              {errorLocationMessage?.inCountryRegion && (
+                <Body size="Small" color="red">
+                  {errorLocationMessage.inCountryRegion}
+                </Body>
+              )}
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
@@ -143,6 +151,11 @@ const CreateLocationsForm = ({ value, onChange }) => {
                   onInputChange('geographicIdentifier', changeValue)
                 }
               />
+              {errorLocationMessage?.geographicIdentifier && (
+                <Body size="Small" color="red">
+                  {errorLocationMessage.geographicIdentifier}
+                </Body>
+              )}
             </InputContainer>
           </StyledFieldContainer>
         </BodyContainer>
