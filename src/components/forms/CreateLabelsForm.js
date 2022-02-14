@@ -59,8 +59,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -94,8 +93,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-type-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -131,8 +129,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-crediting-period-start-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -161,8 +158,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-crediting-period-end-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -193,8 +189,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-validity-period-start-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -223,8 +218,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-validity-period-end-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -253,8 +247,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-unit-quantity-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -291,8 +284,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-link-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
