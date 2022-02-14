@@ -171,8 +171,6 @@ const CreateProjectForm = withRouter(
 
       if (projectIsValid) {
         dispatch(postNewProject(dataToSend));
-      } else {
-        console.log('project is invalid');
       }
     };
 
