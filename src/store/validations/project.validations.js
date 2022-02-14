@@ -1,16 +1,11 @@
 import * as yup from 'yup';
-
-/*
-import {
-  labelSchema,
-  issuanceSchema,
-  coBenefitSchema,
-  locationSchema,
-  relatedProjectSchema,
-  estimationSchema,
-  ratingSchema,
-} from './';
-*/
+import { coBenefitSchema } from './co-benefits.validation';
+import { estimationSchema } from './estimations.validation';
+import { issuanceSchema } from './Issuances.validations';
+import { labelSchema } from './labels.validation';
+import { locationSchema } from './locations.validations';
+import { ratingSchema } from './ratings.validation';
+import { relatedProjectSchema } from './relatedProjects.validation';
 
 export const projectDetailsSchema = yup.object().shape({
   registryOfOrigin: yup.string().required('Required Field'),
@@ -37,7 +32,6 @@ export const projectDetailsSchema = yup.object().shape({
   validationDate: yup.date().optional(),
 });
 
-/*
 export const projectSchema = yup.object().shape({
   registryOfOrigin: yup.string().required('Required Field'),
   originProjectId: yup.string().required('Required Field'),
@@ -69,4 +63,3 @@ export const projectSchema = yup.object().shape({
   estimations: yup.array().of(estimationSchema).optional(),
   projectRatings: yup.array().of(ratingSchema).optional(),
 });
-*/

@@ -9,6 +9,7 @@ export const labelSchema = yup.object().shape({
     .required('Required Field'),
   creditingPeriodEndDate: yup
     .date()
+    .min(yup.ref('creditingPeriodStartDate'))
     .typeError('Invalid Date')
     .required('Required Field'),
   validityPeriodStartDate: yup
@@ -17,6 +18,7 @@ export const labelSchema = yup.object().shape({
     .required('Required Field'),
   validityPeriodEndDate: yup
     .date()
+    .min(yup.ref('validityPeriodStartDate'))
     .typeError('Invalid Date')
     .required('Required Field'),
   unitQuantity: yup

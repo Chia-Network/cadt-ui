@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -31,7 +31,7 @@ import {
   locationsSchema,
   estimationsSchema,
   ratingsSchema,
-  // projectSchema,
+  projectSchema,
 } from '../../store/validations';
 
 const StyledFormContainer = styled('div')`
@@ -54,8 +54,6 @@ const CreateProjectForm = withRouter(
     const dispatch = useDispatch();
     const intl = useIntl();
     const { notification } = useSelector(state => state.app);
-    const labelRef = useRef();
-    const issuanceRef = useRef();
 
     const [newProject, setNewProject] = useState({
       registryOfOrigin: '',
@@ -146,7 +144,7 @@ const CreateProjectForm = withRouter(
       }
 
       if (!_.isEmpty(newIssuance)) {
-        dataToSend.issuance = newIssuance;
+        dataToSend.issuances = newIssuance;
       }
 
       if (!_.isEmpty(newCoBenefits)) {
@@ -169,14 +167,13 @@ const CreateProjectForm = withRouter(
         dataToSend.projectRatings = ratingsState;
       }
 
-      // const projectIsValid = await projectSchema.isValid(dataToSend);
+      const projectIsValid = await projectSchema.isValid(dataToSend);
 
-      // if (projectIsValid) {
-      // console.log('project is valid');
-      dispatch(postNewProject(dataToSend));
-      // } else {
-      // console.log('project is invalid');
-      // }
+      if (projectIsValid) {
+        dispatch(postNewProject(dataToSend));
+      } else {
+        console.log('project is invalid');
+      }
     };
 
     const projectWasSuccessfullyCreated =
@@ -243,14 +240,12 @@ const CreateProjectForm = withRouter(
                   <LabelsRepeater
                     labelsState={newLabels}
                     newLabelsState={setNewLabels}
-                    labelRef={labelRef}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={2}>
                   <IssuanceRepeater
                     issuanceState={newIssuance}
                     newIssuanceState={setNewIssuance}
-                    issuanceRef={issuanceRef}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={3}>

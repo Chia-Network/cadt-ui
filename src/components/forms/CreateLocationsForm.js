@@ -94,7 +94,7 @@ const CreateLocationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="in-country-region" />
+                  *<FormattedMessage id="in-country-region" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
