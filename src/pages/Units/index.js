@@ -33,6 +33,9 @@ import {
   SelectOrganizations,
   Message,
   UploadCSV,
+  Modal,
+  modalTypeEnum,
+  Alert,
 } from '../../components';
 
 const headings = [
@@ -110,6 +113,13 @@ const StyledCSVOperationsContainer = styled('div')`
   gap: 20px;
 `;
 
+const PendingMessageContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+`;
+
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
@@ -118,6 +128,7 @@ const Units = withRouter(() => {
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
+  const [pendingError, setPendingError] = useState(false);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   let searchParams = new URLSearchParams(history.location.search);
@@ -298,7 +309,15 @@ const Units = withRouter(() => {
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-                onClick={() => setCreate(true)}
+                onClick={() => {
+                  if (
+                    _.isEmpty(climateWarehouseStore.stagingData.units.pending)
+                  ) {
+                    setCreate(true);
+                  } else {
+                    setPendingError(true);
+                  }
+                }}
               />
             )}
             {tabValue === 1 &&
@@ -311,6 +330,15 @@ const Units = withRouter(() => {
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
+        {pendingError && (
+          <Modal
+            title={intl.formatMessage({ id: 'create-pending-title' })}
+            body={intl.formatMessage({ id: 'create-pending-error' })}
+            onOk={() => setPendingError(false)}
+            modalType={modalTypeEnum.information}
+            informationType="error"
+          />
+        )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
@@ -352,8 +380,7 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-units-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}
-                        >
+                          onClick={() => setCreate(true)}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -417,10 +444,25 @@ const Units = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataGroups
-                    headings={headings}
-                    data={climateWarehouseStore.stagingData.units.pending}
-                  />
+                  <>
+                    <PendingMessageContainer>
+                      <Alert
+                        type="info"
+                        showIcon
+                        alertTitle={intl.formatMessage({ id: 'pending-info' })}
+                        alertBody={intl.formatMessage({
+                          id: 'pending-stuck-info',
+                        })}
+                      />
+                    </PendingMessageContainer>
+                    <StagingDataGroups
+                      headings={headings}
+                      data={climateWarehouseStore.stagingData.units.pending}
+                      deleteStagingData={uuid =>
+                        dispatch(deleteStagingData(uuid))
+                      }
+                    />
+                  </>
                 )}
               </TabPanel>
             </>
