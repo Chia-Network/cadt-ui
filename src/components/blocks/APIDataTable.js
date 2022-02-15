@@ -276,6 +276,7 @@ const APIDataTable = withTheme(
               setEditRecord(null);
             }}
             record={editRecord}
+            modalSizeAndPosition={modalSizeAndPosition}
           />
         )}
         {actions === 'Projects' && editRecord && (

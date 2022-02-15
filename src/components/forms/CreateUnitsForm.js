@@ -46,7 +46,7 @@ const StyledFormContainer = styled('div')`
   padding-top: 10px;
 `;
 
-const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
+const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   const { notification } = useSelector(state => state.app);
   const [newLabels, setNewLabels] = useState([]);
   const [labelFormsValid, setLabelFormsValid] = useState([]);
@@ -226,10 +226,7 @@ const CreateUnitsForm = withRouter(({ onClose, left, top, width, height }) => {
         <Message id={notification.id} type={notification.type} />
       )}
       <Modal
-        left={left}
-        top={top}
-        width={width}
-        height={height}
+        modalSizeAndPosition={modalSizeAndPosition}
         onOk={handleEditUnits}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
