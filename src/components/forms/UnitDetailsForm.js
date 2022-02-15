@@ -177,7 +177,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
                   <FormattedMessage id="country-jurisdiction-of-owner" />
                 </LabelContainer>

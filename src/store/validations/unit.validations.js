@@ -4,7 +4,7 @@ import { labelSchema } from '.';
 export const unitsSchema = yup.object().shape({
   projectLocationId: yup.string().required('Required Field'),
   unitOwner: yup.string().required('Required Field'),
-  countryJurisdictionOfOwner: yup.string().required('Required Field'),
+  countryJurisdictionOfOwner: yup.string().optional(),
   inCountryJurisdictionOfOwner: yup.string().required('Required Field'),
   serialNumberBlock: yup
     .string()
