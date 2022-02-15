@@ -333,7 +333,7 @@ const Units = withRouter(() => {
         {pendingError && (
           <Modal
             title={intl.formatMessage({ id: 'create-pending-title' })}
-            body={intl.formatMessage({ id: 'create-pending-error' })}
+            body={intl.formatMessage({ id: 'create-pending-unit-error' })}
             onOk={() => setPendingError(false)}
             modalType={modalTypeEnum.information}
             informationType="error"
@@ -380,7 +380,17 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-units-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}>
+                          onClick={() => {
+                            if (
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.units.pending,
+                              )
+                            ) {
+                              setCreate(true);
+                            } else {
+                              setPendingError(true);
+                            }
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
