@@ -27,7 +27,7 @@ import {
   StyledLabelContainer,
 } from '..';
 
-import { projectDetailsSchema } from '../../store/validations';
+import { projectSchema } from '../../store/validations';
 
 const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
@@ -107,11 +107,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
   );
 
   useEffect(() => {
-    setValidationErrors(
-      projectDetailsSchema,
-      projectDetails,
-      setErrorIssuanceMessage,
-    );
+    setValidationErrors(projectSchema, projectDetails, setErrorIssuanceMessage);
   }, [projectDetails]);
 
   return (

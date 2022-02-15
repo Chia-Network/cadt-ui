@@ -21,7 +21,6 @@ import { useIntl } from 'react-intl';
 import { ProjectDetailsForm } from '.';
 
 import {
-  projectDetailsSchema,
   labelsSchema,
   issuancesSchema,
   coBenefitsSchema,
@@ -182,7 +181,7 @@ const EditProjectsForm = ({
   const onNextButtonPress = async () => {
     switch (stepperStepsTranslationIds[tabValue]) {
       case 'project':
-        switchToNextTabIfDataIsValid(project, projectDetailsSchema);
+        switchToNextTabIfDataIsValid(project, projectSchema);
         break;
       case 'labels':
         switchToNextTabIfDataIsValid(labels, labelsSchema);
@@ -276,6 +275,16 @@ const EditProjectsForm = ({
         label={intl.formatMessage({
           id: tabValue < 7 ? 'next' : 'update-project',
         })}
+        extraButtonLabel={
+          tabValue > 0
+            ? intl.formatMessage({
+                id: 'back',
+              })
+            : undefined
+        }
+        extraButtonOnClick={() =>
+          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+        }
         body={
           <StyledFormContainer>
             <Stepper activeStep={tabValue} alternativeLabel>
