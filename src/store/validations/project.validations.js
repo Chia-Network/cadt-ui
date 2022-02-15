@@ -28,8 +28,8 @@ export const projectDetailsSchema = yup.object().shape({
   methodology: yup.string().required('Required Field'),
   projectTags: yup.string().optional(),
   validationBody: yup.string().optional(),
-  projectStatusDate: yup.date().optional(),
-  validationDate: yup.date().optional(),
+  projectStatusDate: yup.date().typeError('Invalid Date').optional(),
+  validationDate: yup.date().typeError('Invalid Date').optional(),
 });
 
 export const projectSchema = yup.object().shape({
@@ -53,8 +53,8 @@ export const projectSchema = yup.object().shape({
   methodology: yup.string().required('Required Field'),
   projectTags: yup.string().optional(),
   validationBody: yup.string().optional(),
-  projectStatusDate: yup.date().optional(),
-  validationDate: yup.date().optional(),
+  projectStatusDate: yup.date().typeError('Invalid Date').optional(),
+  validationDate: yup.date().typeError('Invalid Date').optional(),
   labels: yup.array().of(labelSchema).optional(),
   issuance: yup.array().of(issuanceSchema).optional(),
   coBenefits: yup.array().of(coBenefitSchema).optional(),
