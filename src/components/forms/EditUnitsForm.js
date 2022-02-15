@@ -1,61 +1,35 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  StandardInput,
-  InputSizeEnum,
-  InputStateEnum,
-  InputVariantEnum,
-  SelectTypeEnum,
-  SelectSizeEnum,
-  Select,
-  Modal,
-  Body,
-  Tabs,
-  Tab,
-  TabPanel,
-  ModalFormContainerStyle,
-  FormContainerStyle,
-  BodyContainer,
-  ToolTipContainer,
-  DescriptionIcon,
-  Message,
-  YearSelect,
-  unitsSchema,
-  modalTypeEnum,
-  FieldRequired,
-  StyledFieldRequired,
-  StyledLabelContainer,
-  StyledFieldContainer,
-  InputContainer,
-  LabelContainer,
-} from '..';
+import { Stepper, Step, StepLabel } from '@mui/material';
+import { Modal, TabPanel, Message, modalTypeEnum, UnitDetailsForm } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { issuancesSchema } from '../../store/validations';
+import { useIntl } from 'react-intl';
 
-const EditUnitsForm = ({ onClose, record }) => {
+import {
+  unitsSchema,
+  labelsSchema,
+  issuancesSchema,
+} from '../../store/validations';
+
+const StyledFormContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+`;
+
+const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   const { notification } = useSelector(state => state.app);
   const [labels, setLabelsRepeaterValues] = useState([]);
-  const [year, setYear] = useState('');
   const [issuance, setIssuance] = useState([{}]);
   const [editedUnits, setEditUnits] = useState([]);
-  const [errorMessage, setErrorMessage] = useState();
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const [unitType, setUnitType] = useState(null);
-  const [unitStatus, setUnitStatus] = useState(null);
-  const [
-    selectedCorrespondingAdjustmentDeclaration,
-    setSelectedCorrespondingAdjustmentDeclaration,
-  ] = useState(null);
-  const [
-    selectedCorrespondingAdjustmentStatus,
-    setSelectedCorrespondingAdjustmentStatus,
-  ] = useState(null);
 
   const unit = useSelector(
     state =>
@@ -63,91 +37,30 @@ const EditUnitsForm = ({ onClose, record }) => {
         unit => unit.warehouseUnitId === record.warehouseUnitId,
       )[0],
   );
-  const { pickLists } = useSelector(store => store.climateWarehouse);
-
-  const selectUnitStatusOptions = useMemo(
-    () =>
-      pickLists.unitStatus.map(unitStatusItem => ({
-        value: unitStatusItem,
-        label: unitStatusItem,
-      })),
-    [pickLists],
-  );
-
-  const selectUnitTypeOptions = useMemo(
-    () =>
-      pickLists.unitType.map(unitTypeItem => ({
-        value: unitTypeItem,
-        label: unitTypeItem,
-      })),
-    [pickLists],
-  );
-
-  const selectCorrespondingAdjustmentStatusOptions = useMemo(
-    () =>
-      pickLists.correspondingAdjustmentStatus.map(adjustmentStatusItem => ({
-        value: adjustmentStatusItem,
-        label: adjustmentStatusItem,
-      })),
-    [pickLists],
-  );
-
-  const selectCorrespondingAdjustmentDeclarationOptions = useMemo(
-    () =>
-      pickLists.correspondingAdjustmentDeclaration.map(
-        adjustmentDeclarationItem => ({
-          value: adjustmentDeclarationItem,
-          label: adjustmentDeclarationItem,
-        }),
-      ),
-    [pickLists],
-  );
-
-  const selectCountriesOptions = useMemo(
-    () =>
-      pickLists.countries.map(country => ({
-        value: country,
-        label: country,
-      })),
-    [pickLists],
-  );
-
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
-  const errorMessageAlert = useCallback(
-    name => {
-      return errorMessage?.map(err => {
-        if (_.includes(err, name)) {
-          return (
-            <Body size="Small" color="red">
-              {err}
-            </Body>
-          );
-        } else {
-          return null;
-        }
-      });
-    },
-    [errorMessage],
-  );
 
   useEffect(() => {
     setEditUnits({
-      warehouseUnitId: unit.warehouseUnitId,
-      projectLocationId: unit.projectLocationId,
-      unitOwner: unit.unitOwner,
-      countryJurisdictionOfOwner: unit.countryJurisdictionOfOwner,
-      inCountryJurisdictionOfOwner: unit.inCountryJurisdictionOfOwner,
-      serialNumberBlock: unit.serialNumberBlock,
-      serialNumberPattern: unit.serialNumberBlock,
-      marketplace: unit.marketplace,
-      marketplaceLink: unit.marketplaceLink,
-      marketplaceIdentifier: unit.marketplaceIdentifier,
-      unitTags: unit.unitTags,
-      unitStatusReason: unit.unitStatusReason,
-      unitRegistryLink: unit.unitRegistryLink,
+      warehouseUnitId: unit.warehouseUnitId ?? '',
+      projectLocationId: unit.projectLocationId ?? '',
+      unitOwner: unit.unitOwner ?? '',
+      unitStatus: unit.unitStatus ?? '',
+      unitType: unit.unitType ?? '',
+      vintageYear: unit.vintageYear ?? '',
+      unitStatusReason: unit.unitStatusReason ?? '',
+      countryJurisdictionOfOwner: unit.countryJurisdictionOfOwner ?? '',
+      inCountryJurisdictionOfOwner: unit.inCountryJurisdictionOfOwner ?? '',
+      serialNumberBlock: unit.serialNumberBlock ?? '',
+      serialNumberPattern: unit.serialNumberBlock ?? '',
+      marketplace: unit.marketplace ?? '',
+      marketplaceLink: unit.marketplaceLink ?? '',
+      marketplaceIdentifier: unit.marketplaceIdentifier ?? '',
+      unitTags: unit.unitTags ?? '',
+      unitRegistryLink: unit.unitRegistryLink ?? '',
+      correspondingAdjustmentDeclaration:
+        unit.correspondingAdjustmentDeclaration ?? '',
+      correspondingAdjustmentStatus: unit.correspondingAdjustmentStatus ?? '',
     });
+
     setIssuance([
       _.pick(
         unit.issuance,
@@ -158,7 +71,7 @@ const EditUnitsForm = ({ onClose, record }) => {
         'verificationBody',
       ),
     ]);
-    setYear(_.get(unit, 'vintageYear', ''));
+
     setLabelsRepeaterValues(
       unit.labels.map(label =>
         _.pick(
@@ -176,65 +89,53 @@ const EditUnitsForm = ({ onClose, record }) => {
     );
   }, [unit]);
 
-  const handleEditUnits = async () => {
-    const dataToSend = _.cloneDeep(editedUnits);
-    for (let key in dataToSend) {
-      if (dataToSend[key] === null || dataToSend[key] === '') {
-        delete dataToSend[key];
+  const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
+
+  const switchToNextTabIfDataIsValid = async (data, schema) => {
+    const isValid = await schema.isValid(data);
+    if (isValid) {
+      if (stepperStepsTranslationIds[tabValue] === 'issuances') {
+        handleUpdateUnit();
+      } else {
+        setTabValue(tabValue + 1);
       }
     }
+  };
+
+  const onNextButtonPress = async () => {
+    switch (stepperStepsTranslationIds[tabValue]) {
+      case 'unit':
+        switchToNextTabIfDataIsValid(editedUnits, unitsSchema);
+        break;
+      case 'labels':
+        switchToNextTabIfDataIsValid(labels, labelsSchema);
+        break;
+      case 'issuances':
+        switchToNextTabIfDataIsValid(issuance, issuancesSchema);
+        break;
+    }
+  };
+
+  const handleUpdateUnit = async () => {
+    const dataToSend = _.cloneDeep(editedUnits);
+
+    Object.keys(dataToSend).forEach(el => {
+      if (!dataToSend[el]) {
+        delete dataToSend[el];
+      }
+    });
 
     if (!_.isEmpty(issuance)) {
-      const isValid = await issuancesSchema.isValid(issuance);
-      console.log(isValid);
-
-      for (let key of Object.keys(issuance)) {
-        if (issuance[key] === '') {
-          delete issuance[key];
-        }
-      }
       dataToSend.issuance = _.head(issuance);
     }
 
     if (!_.isEmpty(labels)) {
-      for (let i = 0; i < labels.length; i++) {
-        for (let key of Object.keys(labels[i])) {
-          if (labels[i][key] === '') {
-            delete labels[i][key];
-          }
-        }
-      }
       dataToSend.labels = labels;
     }
 
-    if (!_.isEmpty(unitType)) {
-      dataToSend.unitType = unitType;
-    }
-
-    if (!_.isEmpty(unitStatus)) {
-      dataToSend.unitStatus = unitStatus;
-    }
-
-    if (!_.isEmpty(year)) {
-      dataToSend.vintageYear = year;
-    }
-
-    if (!_.isEmpty(selectedCorrespondingAdjustmentDeclaration)) {
-      dataToSend.correspondingAdjustmentDeclaration =
-        selectedCorrespondingAdjustmentDeclaration;
-    }
-
-    if (!_.isEmpty(selectedCorrespondingAdjustmentStatus)) {
-      dataToSend.correspondingAdjustmentStatus =
-        selectedCorrespondingAdjustmentStatus;
-    }
-
-    unitsSchema
-      .validate(dataToSend, { abortEarly: false })
-      .catch(error => setErrorMessage(error.errors));
     const isUnitValid = await unitsSchema.isValid(dataToSend);
+
     if (isUnitValid) {
-      setErrorMessage(null);
       dispatch(updateUnitsRecord(dataToSend));
     }
   };
@@ -247,681 +148,61 @@ const EditUnitsForm = ({ onClose, record }) => {
     }
   }, [notification]);
 
-  const errorInputVariant = name => {
-    const validSerialNumber = new RegExp(editedUnits['serialNumberPattern']);
-    if (editedUnits[name] !== '') {
-      if (name === 'serialNumberBlock') {
-        if (validSerialNumber.test(editedUnits[name])) {
-          return InputVariantEnum.success;
-        } else {
-          return InputVariantEnum.error;
-        }
-      } else {
-        return InputVariantEnum.success;
-      }
-    } else if (errorMessageAlert(name)) {
-      return InputVariantEnum.error;
-    }
-    return InputVariantEnum.default;
-  };
-
   return (
     <>
       {notification && !unitWasSuccessfullyEdited && (
         <Message id={notification.id} type={notification.type} />
       )}
       <Modal
-        onOk={handleEditUnits}
+        modalSizeAndPosition={modalSizeAndPosition}
+        onOk={onNextButtonPress}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'edit-unit',
         })}
         body={
-          <div>
-            <Tabs value={tabValue} onChange={handleTabChange}>
-              <Tab
-                label={intl.formatMessage({
-                  id: 'unit',
-                })}
+          <StyledFormContainer>
+            <Stepper activeStep={tabValue} alternativeLabel>
+              {stepperStepsTranslationIds &&
+                stepperStepsTranslationIds.map((step, index) => (
+                  <Step
+                    key={index}
+                    onClick={() => setTabValue(index)}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <StepLabel>
+                      {intl.formatMessage({
+                        id: step,
+                      })}
+                    </StepLabel>
+                  </Step>
+                ))}
+            </Stepper>
+            <TabPanel
+              style={{ paddingTop: '1.25rem' }}
+              value={tabValue}
+              index={0}
+            >
+              <UnitDetailsForm
+                unitDetails={editedUnits}
+                setUnitDetails={setEditUnits}
               />
-              <Tab
-                label={intl.formatMessage({
-                  id: 'labels',
-                })}
+            </TabPanel>
+            <TabPanel value={tabValue} index={1}>
+              <LabelsRepeater
+                labelsState={labels}
+                newLabelsState={setLabelsRepeaterValues}
               />
-              <Tab
-                label={intl.formatMessage({
-                  id: 'issuances',
-                })}
+            </TabPanel>
+            <TabPanel value={tabValue} index={2}>
+              <IssuanceRepeater
+                max={1}
+                issuanceState={issuance}
+                newIssuanceState={setIssuance}
               />
-            </Tabs>
-            <div>
-              <TabPanel
-                style={{ paddingTop: '1.25rem' }}
-                value={tabValue}
-                index={0}
-              >
-                <ModalFormContainerStyle>
-                  <FormContainerStyle>
-                    <BodyContainer>
-                      <FieldRequired />
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="project-location-id" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-project-location-id-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            variant={errorInputVariant('projectLocationId')}
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-location-id',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.projectLocationId}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                projectLocationId: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('projectLocationId')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="unit-owner" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-unit-owner-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            variant={errorInputVariant('unitOwner')}
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-owner',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitOwner}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitOwner: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('unitOwner')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="country-jurisdiction-of-owner" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-country-jurisdiction-of-owner-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <Select
-                            size={SelectSizeEnum.large}
-                            type={SelectTypeEnum.basic}
-                            options={selectCountriesOptions}
-                            selected={
-                              unit.countryJurisdictionOfOwner
-                                ? [
-                                    {
-                                      label: unit.countryJurisdictionOfOwner,
-                                      value: unit.countryJurisdictionOfOwner,
-                                    },
-                                  ]
-                                : undefined
-                            }
-                            onChange={selectedOptions =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                countryJurisdictionOfOwner:
-                                  selectedOptions[0].value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('countryJurisdictionOfOwner')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="in-country-jurisdiction-of-owner" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-in-country-jurisdiction-of-owner-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            variant={errorInputVariant(
-                              'inCountryJurisdictionOfOwner',
-                            )}
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'in-country-jurisdiction-of-owner',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.inCountryJurisdictionOfOwner}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                inCountryJurisdictionOfOwner: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('inCountryJurisdictionOfOwner')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="serial-number-block" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-serial-number-block-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            variant={errorInputVariant('serialNumberBlock')}
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'serial-number-block',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.serialNumberBlock}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                serialNumberBlock: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('serialNumberBlock')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="serial-number-pattern" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-serial-number-pattern-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            variant={errorInputVariant('serialNumberPattern')}
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'serial-number-pattern',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.serialNumberPattern}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                serialNumberPattern: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('serialNumberPattern')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="vintage-year" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-vintage-year-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <YearSelect
-                            size="large"
-                            yearValue={year}
-                            setYearValue={setYear}
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="unit-type" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-unit-type-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <Select
-                            size={SelectSizeEnum.large}
-                            type={SelectTypeEnum.basic}
-                            options={selectUnitTypeOptions}
-                            onChange={selectedOptions =>
-                              setUnitType(selectedOptions[0].value)
-                            }
-                            selected={[
-                              {
-                                label: unit.unitType,
-                                value: unit.unitType,
-                              },
-                            ]}
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('unitType')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="marketplace" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-marketplace-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'marketplace',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.marketplace}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                marketplace: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                    </BodyContainer>
-                    <BodyContainer>
-                      <StyledFieldRequired />
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="marketplace-link" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-marketplace-link-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'marketplace-link',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.marketplaceLink}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                marketplaceLink: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="marketplace-identifier" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-marketplace-identifier-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'marketplace-identifier',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.marketplaceIdentifier}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                marketplaceIdentifier: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="unit-tags" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-unit-tags-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-tags',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitTags}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitTags: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="unit-status" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-unit-status-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <Select
-                            size={SelectSizeEnum.large}
-                            type={SelectTypeEnum.basic}
-                            options={selectUnitStatusOptions}
-                            onChange={selectedOptions =>
-                              setUnitStatus(selectedOptions[0].value)
-                            }
-                            selected={
-                              unit.unitStatus
-                                ? [
-                                    {
-                                      label: unit.unitStatus,
-                                      value: unit.unitStatus,
-                                    },
-                                  ]
-                                : undefined
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('unitStatus')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            <LabelContainer>
-                              <FormattedMessage id="unit-status-reason" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-unit-status-reason-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-status-reason',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitStatusReason}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitStatusReason: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="unit-registry-link" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-unit-registry-link-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            variant={errorInputVariant('unitRegistryLink')}
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-registry-link',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedUnits.unitRegistryLink}
-                            onChange={value =>
-                              setEditUnits(prev => ({
-                                ...prev,
-                                unitRegistryLink: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('unitRegistryLink')}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="corresponding-adjustment-declaration" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-corresponding-adjustment-declaration-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <Select
-                            size={SelectSizeEnum.large}
-                            type={SelectTypeEnum.basic}
-                            options={
-                              selectCorrespondingAdjustmentDeclarationOptions
-                            }
-                            onChange={selectedOptions =>
-                              setSelectedCorrespondingAdjustmentDeclaration(
-                                selectedOptions[0].value,
-                              )
-                            }
-                            selected={
-                              unit.correspondingAdjustmentDeclaration
-                                ? [
-                                    {
-                                      label:
-                                        unit.correspondingAdjustmentDeclaration,
-                                      value:
-                                        unit.correspondingAdjustmentDeclaration,
-                                    },
-                                  ]
-                                : undefined
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert(
-                          'correspondingAdjustmentDeclaration',
-                        )}
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body>
-                            *
-                            <LabelContainer>
-                              <FormattedMessage id="corresponding-adjustment-status" />
-                            </LabelContainer>
-                            <ToolTipContainer
-                              tooltip={intl.formatMessage({
-                                id: 'units-corresponding-adjustment-status-description',
-                              })}
-                            >
-                              <DescriptionIcon height="14" width="14" />
-                            </ToolTipContainer>
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <Select
-                            size={SelectSizeEnum.large}
-                            type={SelectTypeEnum.basic}
-                            options={selectCorrespondingAdjustmentStatusOptions}
-                            onChange={selectedOptions =>
-                              setSelectedCorrespondingAdjustmentStatus(
-                                selectedOptions[0].value,
-                              )
-                            }
-                            selected={
-                              unit.correspondingAdjustmentStatus
-                                ? [
-                                    {
-                                      label: unit.correspondingAdjustmentStatus,
-                                      value: unit.correspondingAdjustmentStatus,
-                                    },
-                                  ]
-                                : undefined
-                            }
-                          />
-                        </InputContainer>
-                        {errorMessageAlert('correspondingAdjustmentStatus')}
-                      </StyledFieldContainer>
-                    </BodyContainer>
-                  </FormContainerStyle>
-                </ModalFormContainerStyle>
-              </TabPanel>
-              <TabPanel value={tabValue} index={1}>
-                <LabelsRepeater
-                  labelsState={labels}
-                  newLabelsState={setLabelsRepeaterValues}
-                />
-              </TabPanel>
-              <TabPanel value={tabValue} index={2}>
-                <IssuanceRepeater
-                  max={1}
-                  issuanceState={issuance}
-                  newIssuanceState={setIssuance}
-                />
-              </TabPanel>
-            </div>
-          </div>
+            </TabPanel>
+          </StyledFormContainer>
         }
       />
     </>

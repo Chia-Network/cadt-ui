@@ -122,7 +122,7 @@ const Units = withRouter(() => {
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   let searchParams = new URLSearchParams(history.location.search);
   const unitsContainerRef = useRef(null);
-  const [createUnitModalPosition, setCreateUnitModalPosition] = useState(null);
+  const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
   const handleTabChange = (event, newValue) => {
@@ -144,7 +144,7 @@ const Units = withRouter(() => {
 
   useEffect(() => {
     if (unitsContainerRef && unitsContainerRef.current) {
-      setCreateUnitModalPosition({
+      setModalSizeAndPosition({
         left: unitsContainerRef.current.getBoundingClientRect().x,
         top: unitsContainerRef.current.getBoundingClientRect().y,
         width: unitsContainerRef.current.getBoundingClientRect().width,
@@ -371,33 +371,16 @@ const Units = withRouter(() => {
                   <APIDataTable
                     headings={Object.keys(filteredColumnsTableData[0])}
                     data={filteredColumnsTableData}
-                    actions={pageIsMyRegistryPage ? 'Units' : undefined}
+                    actions={'Units'}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                    actionsAreDisplayed={pageIsMyRegistryPage}
                   />
                 </>
               )}
             {create && (
               <CreateUnitsForm
                 onClose={() => setCreate(false)}
-                left={
-                  createUnitModalPosition
-                    ? createUnitModalPosition.left
-                    : undefined
-                }
-                top={
-                  createUnitModalPosition
-                    ? createUnitModalPosition.top
-                    : undefined
-                }
-                height={
-                  createUnitModalPosition
-                    ? createUnitModalPosition.height
-                    : undefined
-                }
-                width={
-                  createUnitModalPosition
-                    ? createUnitModalPosition.width
-                    : undefined
-                }
+                modalSizeAndPosition={modalSizeAndPosition}
               />
             )}
           </TabPanel>

@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { labelSchema } from '../../store/validations';
+import { labelSchema } from '.';
 
 export const unitsSchema = yup.object().shape({
   projectLocationId: yup.string().required('Required Field'),
