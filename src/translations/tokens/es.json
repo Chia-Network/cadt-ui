@@ -66,6 +66,7 @@
   "cobenefits-warehouse-project-id-description": "Identificador único para proyectos dentro del Almacén Climático.",
   "cobenefits-cobenefit-id-description": "Identificador de un co-beneficio específico asociado a un proyecto.",
   "cobenefits-cobenefit-description": "Entra en el cobenefit conseguido con el proyecto.",
+  "units-project-location-id-description": "Introduzca la ubicación de la que deriva el bloque de unidades en particular. Esta podría ser la misma que la ubicación del proyecto o podría ser una ubicación más específica dentro del proyecto.",
   "units-warehouse-unit-id": "Identificador único para el conjunto específico de unidades emitidas.",
   "units-issuance-id": "Identificador para una emisión específica de unidades.",
   "units-label-id": "Identificador de una etiqueta aplicada a un conjunto específico de unidades.",

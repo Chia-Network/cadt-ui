@@ -66,6 +66,7 @@
   "cobenefits-warehouse-project-id-description": "気候倉庫内のプロジェクトの一意の識別子です。",
   "cobenefits-cobenefit-id-description": "プロジェクトに関連付けられた特定の共同利益の識別子。",
   "cobenefits-cobenefit-description": "プロジェクトで達成された共同利益を入力します。",
+  "units-project-location-id-description": "ユニットの特定のブロックが派生する場所を入力します。これは、プロジェクトの場所と同じである場合もあれば、プロジェクト内のより具体的な場所である場合もあります。",
   "units-warehouse-unit-id": "発行済みの単位の特定のセットを表す一意の識別子です。",
   "units-issuance-id": "ユニットの特定の発行の識別子。",
   "units-label-id": "特定の単位セットに適用されるラベルの識別子。",

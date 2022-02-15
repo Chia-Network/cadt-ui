@@ -67,6 +67,7 @@
   "cobenefits-warehouse-project-id-description": "Unique identifier for projects within the Climate Warehouse.",
   "cobenefits-cobenefit-id-description": "Identifier for a specific cobenefit associated with a project.",
   "cobenefits-cobenefit-description": "Enter the cobenefit achieved with the project.",
+  "units-project-location-id-description": "Enter the location from which the particular block of units derives. This could be the same as the project location or it might be a more specific location within the project.",
   "units-warehouse-unit-id": "Unique identifier for the specific set of issued units.",
   "units-issuance-id": "Identifier for a specific issuance of units.",
   "units-label-id": "Identifier for a label applied to a specific set of units.",
