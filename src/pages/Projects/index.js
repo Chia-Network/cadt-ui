@@ -369,7 +369,7 @@ const Projects = withRouter(({setPendingError}) => {
                           onClick={() => {
                             if (
                               _.isEmpty(
-                                climateWarehouseStore.stagingData.units.pending,
+                                climateWarehouseStore.stagingData.projects.pending,
                               )
                             ) {
                               setCreateFormIsDisplayed(true);
