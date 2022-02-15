@@ -178,7 +178,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="country-jurisdiction-of-owner" />
+                  *<FormattedMessage id="country-jurisdiction-of-owner" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -221,7 +221,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
                   <FormattedMessage id="in-country-jurisdiction-of-owner" />
                 </LabelContainer>
@@ -429,7 +428,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>
-                *
                 <LabelContainer>
                   <FormattedMessage id="marketplace" />
                 </LabelContainer>

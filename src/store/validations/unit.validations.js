@@ -4,8 +4,8 @@ import { labelSchema } from '.';
 export const unitsSchema = yup.object().shape({
   projectLocationId: yup.string().required('Required Field'),
   unitOwner: yup.string().required('Required Field'),
-  countryJurisdictionOfOwner: yup.string().optional(),
-  inCountryJurisdictionOfOwner: yup.string().required('Required Field'),
+  countryJurisdictionOfOwner: yup.string().required('Required Field'),
+  inCountryJurisdictionOfOwner: yup.string().optional(),
   serialNumberBlock: yup
     .string()
     .matches(/[.*\D]+[0-9]+[-][.*\D]+[0-9]+$/, 'Invalid Serial Number')
@@ -19,7 +19,7 @@ export const unitsSchema = yup.object().shape({
     .max(3000)
     .required('Required Field'),
   unitType: yup.string().required('Required Field'),
-  marketplace: yup.string().required('Required Field'),
+  marketplace: yup.string().optional(),
   marketplaceLink: yup.string().optional(),
   marketplaceIdentifier: yup.string().optional(),
   unitTags: yup.string().optional(),
