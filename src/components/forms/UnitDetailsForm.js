@@ -474,7 +474,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>
-                *
                 <LabelContainer>
                   <FormattedMessage id="marketplace-link" />
                 </LabelContainer>
@@ -517,7 +516,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>
-                *
                 <LabelContainer>
                   <FormattedMessage id="marketplace-identifier" />
                 </LabelContainer>
