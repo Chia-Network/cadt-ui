@@ -6,3 +6,4 @@ export * from './relatedProjects.validation';
 export * from './locations.validations';
 export * from './estimations.validation';
 export * from './ratings.validation';
+export * from './unit.validations';

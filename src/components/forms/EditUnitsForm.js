@@ -21,7 +21,6 @@ import {
   DescriptionIcon,
   Message,
   YearSelect,
-  unitsSchema,
   modalTypeEnum,
   FieldRequired,
   StyledFieldRequired,
@@ -34,7 +33,7 @@ import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { issuancesSchema } from '../../store/validations';
+import { issuancesSchema, unitsSchema } from '../../store/validations';
 
 const EditUnitsForm = ({ onClose, record }) => {
   const { notification } = useSelector(state => state.app);

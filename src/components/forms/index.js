@@ -17,7 +17,7 @@ export * from './EditUnitsForm';
 export * from './EditProjectsForm';
 export * from './SplitUnitForm';
 export * from './CreateOrgForm';
-export * from './UnitValidations';
 export * from './EstimationsRepeater';
 export * from './RatingsRepeater';
 export * from './ProjectDetailsForm';
+export * from './UnitDetailsForm';
