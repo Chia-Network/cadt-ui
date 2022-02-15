@@ -525,7 +525,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   </LabelContainer>
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
-                      id: 'ndc-information-description',
+                      id: 'projects-ndc-information-description',
                     })}
                   >
                     <DescriptionIcon height="14" width="14" />
