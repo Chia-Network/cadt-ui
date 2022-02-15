@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import {
@@ -155,6 +155,24 @@ const EditProjectsForm = ({
       ),
     );
   }, [projectToBeEdited]);
+
+  // needs to be removed after back end code bug is fixed so that the following fields are always returned strings from API
+  // https://github.com/Chia-Network/climate-warehouse-ui/issues/339
+  const codeRunOnce = useRef(null);
+  useEffect(() => {
+    if (ratingsState.length && codeRunOnce.current === null) {
+      setRatingsState(prevState =>
+        prevState.map(ratingItem => ({
+          ...ratingItem,
+          ratingRangeHighest: ratingItem.ratingRangeHighest.toString(),
+          ratingRangeLowest: ratingItem.ratingRangeLowest.toString(),
+          rating: ratingItem.ratingRangeLowest.toString(),
+        })),
+      );
+      codeRunOnce.current = true;
+    }
+  }, [ratingsState]);
+  // code that needs to be removed ends here
 
   const stepperStepsTranslationIds = [
     'project',
