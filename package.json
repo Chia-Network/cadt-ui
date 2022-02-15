@@ -17,7 +17,6 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "dayjs": "^1.10.7",
-    "electron": "^15.3.0",
     "http-proxy-middleware": "^0.19.1",
     "json2csv": "^5.0.6",
     "lodash": "^4.17.21",
@@ -52,7 +51,10 @@
     "requirements-check": "node check_node_version.js",
     "postinstall": "npm run requirements-check && install-app-deps",
     "release": "./node_modules/.bin/standard-version && git push --tags",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "electron:package:mac": "npm run build && electron-builder -m -c.extraMetadata.main=build/electron.js",
+    "electron:package:win": "npm run build && electron-builder -w -c.extraMetadata.main=build/electron.js",
+    "electron:package:linux": "npm run build && electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
   "eslintConfig": {
     "extends": [
@@ -61,14 +63,13 @@
   },
   "browserslist": {
     "production": [
+      "last 1 electron version",
       ">0.2%",
       "not dead",
       "not op_mini all"
     ],
     "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 electron version"
     ]
   },
   "devDependencies": {
@@ -81,7 +82,8 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "chai": "^4.3.4",
-    "electron-builder": "^22.13.1",
+    "electron": "^15.3.0",
+    "electron-builder": "^22.14.13",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.25.2",
@@ -97,12 +99,28 @@
     "standard-version": "^9.3.2"
   },
   "build": {
-    "appId": "com.chia.climate-warehouse",
-    "win": {
-      "iconUrl": "https://cdn2.iconfinder.com/data/icons/designer-skills/128/react-256.png"
-    },
+    "appId": "org.worldbank.climate-warehouse",
+    "productName": "Climate Warehouse",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
     "directories": {
       "buildResources": "public"
+    },
+    "mac": {
+      "target": {
+        "target": "dmg",
+        "arch": [
+          "universal"
+        ]
+      }
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "deb"
     }
   },
   "contributors": [
