@@ -27,8 +27,6 @@ import {
   Message,
   UploadCSV,
   Alert,
-  Modal,
-  modalTypeEnum,
 } from '../../components';
 
 import {
@@ -122,12 +120,11 @@ const PendingMessageContainer = styled('div')`
   gap: 20px;
 `;
 
-const Projects = withRouter(() => {
+const Projects = withRouter(({setPendingError}) => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const { notification } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
-  const [pendingError, setPendingError] = useState(false);
   const intl = useIntl();
   const dispatch = useDispatch();
   let history = useHistory();
@@ -308,24 +305,13 @@ const Projects = withRouter(() => {
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
                 onClick={() => {
                   if (
-                    _.isEmpty(climateWarehouseStore.stagingData.units.pending)
+                    _.isEmpty(climateWarehouseStore.stagingData.projects.pending)
                   ) {
                     setCreateFormIsDisplayed(true);
                   } else {
                     setPendingError(true);
                   }
                 }}
-              />
-            )}
-            {pendingError && (
-              <Modal
-                title={intl.formatMessage({ id: 'create-pending-title' })}
-                body={intl.formatMessage({
-                  id: 'create-pending-project-error',
-                })}
-                onOk={() => setPendingError(false)}
-                modalType={modalTypeEnum.information}
-                informationType="error"
               />
             )}
             {tabValue === 1 &&

@@ -33,8 +33,6 @@ import {
   SelectOrganizations,
   Message,
   UploadCSV,
-  Modal,
-  modalTypeEnum,
   Alert,
 } from '../../components';
 
@@ -120,7 +118,7 @@ const PendingMessageContainer = styled('div')`
   gap: 20px;
 `;
 
-const Units = withRouter(() => {
+const Units = withRouter(({setPendingError}) => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const { notification } = useSelector(store => store.app);
@@ -128,7 +126,6 @@ const Units = withRouter(() => {
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
-  const [pendingError, setPendingError] = useState(false);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   let searchParams = new URLSearchParams(history.location.search);
@@ -330,15 +327,6 @@ const Units = withRouter(() => {
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
-        {pendingError && (
-          <Modal
-            title={intl.formatMessage({ id: 'create-pending-title' })}
-            body={intl.formatMessage({ id: 'create-pending-unit-error' })}
-            onOk={() => setPendingError(false)}
-            modalType={modalTypeEnum.information}
-            informationType="error"
-          />
-        )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
