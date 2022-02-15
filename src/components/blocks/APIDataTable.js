@@ -112,7 +112,7 @@ const StyledScalableContainer = styled('div')`
 `;
 
 const APIDataTable = withTheme(
-  ({ headings, data, actions, modalSizeAndPosition }) => {
+  ({ headings, data, actions, modalSizeAndPosition, actionsAreDisplayed }) => {
     const [getRecord, setRecord] = useState(null);
     const [editRecord, setEditRecord] = useState(null);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
@@ -152,7 +152,7 @@ const APIDataTable = withTheme(
                       </TableCellHeaderText>
                     </Th>
                   ))}
-                  {actions && (
+                  {actionsAreDisplayed && actions && (
                     <Th
                       start={0}
                       end={1}
@@ -201,7 +201,7 @@ const APIDataTable = withTheme(
                       </Td>
                     ))}
 
-                    {actions === 'Units' && (
+                    {actionsAreDisplayed && actions === 'Units' && (
                       <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
                         <BasicMenu
                           options={[
@@ -233,7 +233,7 @@ const APIDataTable = withTheme(
                       </Td>
                     )}
 
-                    {actions === 'Projects' && (
+                    {actionsAreDisplayed && actions === 'Projects' && (
                       <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
                         <BasicMenu
                           options={[
@@ -262,11 +262,9 @@ const APIDataTable = withTheme(
                 ))}
               </tbody>
             </Table>
-            {(actions === 'Projects' || actions === 'Units') && (
-              <StyledPaginationContainer>
-                <APIPagination actions={actions} />
-              </StyledPaginationContainer>
-            )}
+            <StyledPaginationContainer>
+              <APIPagination actions={actions} />
+            </StyledPaginationContainer>
           </StyledScalableContainer>
         </StyledRefContainer>
         <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />

@@ -371,8 +371,9 @@ const Units = withRouter(() => {
                   <APIDataTable
                     headings={Object.keys(filteredColumnsTableData[0])}
                     data={filteredColumnsTableData}
-                    actions={pageIsMyRegistryPage ? 'Units' : undefined}
+                    actions={'Units'}
                     modalSizeAndPosition={modalSizeAndPosition}
+                    actionsAreDisplayed={pageIsMyRegistryPage}
                   />
                 </>
               )}

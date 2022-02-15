@@ -369,8 +369,9 @@ const Projects = withRouter(() => {
                 <APIDataTable
                   headings={Object.keys(filteredColumnsTableData[0])}
                   data={filteredColumnsTableData}
-                  actions={pageIsMyRegistryPage ? 'Projects' : undefined}
+                  actions={'Projects'}
                   modalSizeAndPosition={modalSizeAndPosition}
+                  actionsAreDisplayed={pageIsMyRegistryPage}
                 />
               )}
           </TabPanel>
