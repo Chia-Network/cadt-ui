@@ -632,8 +632,10 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body color={'#262626'}>
-                *
                 <LabelContainer>
+                  {['cancelled', 'retired'].includes(
+                    unitDetails.unitStatus.toLowerCase(),
+                  ) && '*'}
                   <FormattedMessage id="unit-status-reason" />
                 </LabelContainer>
                 <ToolTipContainer
