@@ -38,8 +38,6 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
       )[0],
   );
 
-  console.log(unit);
-
   useEffect(() => {
     setEditUnits({
       warehouseUnitId: unit.warehouseUnitId ?? '',
