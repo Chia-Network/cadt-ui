@@ -93,9 +93,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="project-location-id" />
+                  *<FormattedMessage id="project-location-id" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -136,9 +135,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="unit-owner" />
+                  *<FormattedMessage id="unit-owner" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -263,9 +261,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="serial-number-block" />
+                  *<FormattedMessage id="serial-number-block" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -306,9 +303,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="serial-number-pattern" />
+                  *<FormattedMessage id="serial-number-pattern" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -349,9 +345,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body style={{ color: '#262626' }}>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="vintage-year" />
+                  *<FormattedMessage id="vintage-year" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -383,9 +378,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="unit-type" />
+                  *<FormattedMessage id="unit-type" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -587,9 +581,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="unit-status" />
+                  *<FormattedMessage id="unit-status" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -677,9 +670,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="unit-registry-link" />
+                  *<FormattedMessage id="unit-registry-link" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -720,8 +712,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
+                  *
                   <FormattedMessage id="corresponding-adjustment-declaration" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -766,9 +758,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                *
                 <LabelContainer>
-                  <FormattedMessage id="corresponding-adjustment-status" />
+                  *<FormattedMessage id="corresponding-adjustment-status" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
