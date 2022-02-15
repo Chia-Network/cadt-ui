@@ -43,11 +43,11 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="crediting-period-start" />
+                  *<FormattedMessage id="crediting-period-start-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'estimations-crediting-period-start-description',
+                    id: 'estimation-period-start-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />
@@ -73,11 +73,11 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="crediting-period-end" />
+                  *<FormattedMessage id="crediting-period-end-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'estimations-crediting-period-end-description',
+                    id: 'estimation-period-end-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />
@@ -107,7 +107,7 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'ratings-unit-count-description',
+                    id: 'estimation-unit-count-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />
