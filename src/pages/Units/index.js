@@ -118,7 +118,7 @@ const PendingMessageContainer = styled('div')`
   gap: 20px;
 `;
 
-const Units = withRouter(({setPendingError}) => {
+const Units = withRouter(({ setPendingError }) => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const { notification } = useSelector(store => store.app);
@@ -308,7 +308,12 @@ const Units = withRouter(({setPendingError}) => {
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
                 onClick={() => {
                   if (
-                    _.isEmpty(climateWarehouseStore.stagingData.units.pending)
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.units.pending,
+                    ) &&
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.projects.pending,
+                    )
                   ) {
                     setCreate(true);
                   } else {
@@ -372,6 +377,10 @@ const Units = withRouter(({setPendingError}) => {
                             if (
                               _.isEmpty(
                                 climateWarehouseStore.stagingData.units.pending,
+                              ) &&
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.projects
+                                  .pending,
                               )
                             ) {
                               setCreate(true);

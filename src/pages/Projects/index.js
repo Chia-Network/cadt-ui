@@ -120,7 +120,7 @@ const PendingMessageContainer = styled('div')`
   gap: 20px;
 `;
 
-const Projects = withRouter(({setPendingError}) => {
+const Projects = withRouter(({ setPendingError }) => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const { notification } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -305,7 +305,12 @@ const Projects = withRouter(({setPendingError}) => {
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
                 onClick={() => {
                   if (
-                    _.isEmpty(climateWarehouseStore.stagingData.projects.pending)
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.units.pending,
+                    ) &&
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.projects.pending,
+                    )
                   ) {
                     setCreateFormIsDisplayed(true);
                   } else {
@@ -369,7 +374,11 @@ const Projects = withRouter(({setPendingError}) => {
                           onClick={() => {
                             if (
                               _.isEmpty(
-                                climateWarehouseStore.stagingData.projects.pending,
+                                climateWarehouseStore.stagingData.units.pending,
+                              ) &&
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.projects
+                                  .pending,
                               )
                             ) {
                               setCreateFormIsDisplayed(true);
