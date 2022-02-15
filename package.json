@@ -117,7 +117,7 @@
       }
     },
     "win": {
-      "target": "msi"
+      "target": "nsis"
     },
     "linux": {
       "target": "deb"
