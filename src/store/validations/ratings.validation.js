@@ -7,8 +7,8 @@ export const ratingSchema = yup.object({
   ratingRangeHighest: yup.string().required('Required Field'),
   rating: yup.string().required('Required Field'),
   ratingLink: yup.string().required('Required Field'),
-  updatedAt: yup.date().optional(),
-  createdAt: yup.date().optional(),
+  updatedAt: yup.date().typeError('Invalid Date').optional(),
+  createdAt: yup.date().typeError('Invalid Date').optional(),
 });
 
 export const ratingsSchema = yup.array().of(ratingSchema);

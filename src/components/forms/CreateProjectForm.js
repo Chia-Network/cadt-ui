@@ -23,7 +23,6 @@ import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
 import {
-  projectDetailsSchema,
   labelsSchema,
   issuancesSchema,
   coBenefitsSchema,
@@ -93,7 +92,7 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   const onNextButtonPress = async () => {
     switch (stepperStepsTranslationIds[tabValue]) {
       case 'project':
-        switchToNextTabIfDataIsValid(newProject, projectDetailsSchema);
+        switchToNextTabIfDataIsValid(newProject, projectSchema);
         break;
       case 'labels':
         switchToNextTabIfDataIsValid(newLabels, labelsSchema);

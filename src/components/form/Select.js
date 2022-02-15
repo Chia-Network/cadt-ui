@@ -231,7 +231,7 @@ const Select = withTheme(
     const placeHolderText =
       placeholder ||
       ` -- ${intl.formatMessage({
-        id: 'Select',
+        id: 'select',
       })} -- `;
 
     useEffect(() => {
