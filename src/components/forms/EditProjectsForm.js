@@ -126,7 +126,12 @@ const EditProjectsForm = ({
 
     setRelatedProjects(
       projectToBeEdited.relatedProjects.map(relatedProject =>
-        _.pick(relatedProject, 'relationshipType', 'registry'),
+        _.pick(
+          relatedProject,
+          'relationshipType',
+          'registry',
+          'relatedProjectId',
+        ),
       ),
     );
 
