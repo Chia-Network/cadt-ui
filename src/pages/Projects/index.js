@@ -29,6 +29,7 @@ import {
   Alert,
   Modal,
   modalTypeEnum,
+  Body,
 } from '../../components';
 
 import {
@@ -345,11 +346,14 @@ const Projects = withRouter(({ setPendingError }) => {
         {commit && (
           <Modal
             title={intl.formatMessage({ id: 'commit-message' })}
-            body={intl.formatMessage({
-              id: 'commit-projects-message-question',
-            })}
-            modalType={modalTypeEnum.confirmation}
-            informationType="info"
+            body={
+              <Body size="Large">
+                {intl.formatMessage({
+                  id: 'commit-projects-message-question',
+                })}
+              </Body>
+            }
+            modalType={modalTypeEnum.basic}
             extraButtonLabel={intl.formatMessage({ id: 'everything' })}
             extraButtonOnClick={() => dispatch(commitAll(true))}
             onClose={() => dispatch(setCommit(false))}

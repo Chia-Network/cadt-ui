@@ -36,6 +36,7 @@ import {
   Alert,
   Modal,
   modalTypeEnum,
+  Body,
 } from '../../components';
 import { setCommit, setCommitAll } from '../../store/actions/app';
 
@@ -345,11 +346,14 @@ const Units = withRouter(({ setPendingError }) => {
             {commit && (
               <Modal
                 title={intl.formatMessage({ id: 'commit-message' })}
-                body={intl.formatMessage({
-                  id: 'commit-units-message-question',
-                })}
-                modalType={modalTypeEnum.confirmation}
-                informationType="info"
+                body={
+                  <Body size="Large">
+                    {intl.formatMessage({
+                      id: 'commit-units-message-question',
+                    })}
+                  </Body>
+                }
+                modalType={modalTypeEnum.basic}
                 onOk={onCommit}
                 extraButtonLabel={intl.formatMessage({ id: 'everything' })}
                 extraButtonOnClick={() => dispatch(setCommitAll(true))}
