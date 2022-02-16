@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -15,6 +15,7 @@ import {
 } from '../components';
 
 const AppNavigator = () => {
+  const [pendingError, setPendingError] = useState(false);
   const intl = useIntl();
   const dispatch = useDispatch();
 
@@ -45,6 +46,15 @@ const AppNavigator = () => {
           body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
         />
       )}
+      {pendingError && (
+        <Modal
+          title={intl.formatMessage({ id: 'create-pending-title' })}
+          body={intl.formatMessage({ id: 'create-pending-error' })}
+          onOk={() => setPendingError(false)}
+          modalType={modalTypeEnum.information}
+          informationType="error"
+        />
+      )}
       <Router>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
@@ -52,10 +62,10 @@ const AppNavigator = () => {
               <Pages.Home />
             </Route>
             <Route exact path="/units">
-              <Pages.Units />
+              <Pages.Units setPendingError={setPendingError}/>
             </Route>
             <Route exact path="/projects">
-              <Pages.Projects />
+              <Pages.Projects setPendingError={setPendingError}/>
             </Route>
             <Route exact path="/projects/add">
               <Pages.AddProject />
