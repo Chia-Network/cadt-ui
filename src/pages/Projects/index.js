@@ -27,6 +27,8 @@ import {
   Message,
   UploadCSV,
   Alert,
+  Modal,
+  modalTypeEnum,
 } from '../../components';
 
 import {
@@ -35,6 +37,8 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+
+import { commit, commitAll } from '../../store/actions/app';
 
 const headings = [
   'currentRegistry',
@@ -122,7 +126,9 @@ const PendingMessageContainer = styled('div')`
 
 const Projects = withRouter(({ setPendingError }) => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { notification } = useSelector(store => store.app);
+  const { notification, commitItems, commitAllItems } = useSelector(
+    store => store.app,
+  );
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -211,6 +217,14 @@ const Projects = withRouter(({ setPendingError }) => {
   }, []);
 
   useEffect(() => {
+    if (commitAllItems) {
+      onCommit();
+      dispatch(commitAll(false));
+      dispatch(commit(false));
+    }
+  }, [commitAllItems]);
+
+  useEffect(() => {
     const options = {
       type: 'projects',
       page: 1,
@@ -271,6 +285,7 @@ const Projects = withRouter(({ setPendingError }) => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
+    dispatch(commit(false))
   };
 
   return (
@@ -324,11 +339,24 @@ const Projects = withRouter(({ setPendingError }) => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={onCommit}
+                  onClick={() => dispatch(commit(true))}
                 />
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
+        {commitItems && (
+          <Modal
+            title={intl.formatMessage({ id: 'commit-message' })}
+            body={intl.formatMessage({ id: 'commit-projects-message-question' })}
+            modalType={modalTypeEnum.confirmation}
+            informationType="info"
+            onOk={onCommit}
+            extraButtonLabel={intl.formatMessage({ id: 'everything' })}
+            extraButtonOnClick={() => dispatch(commitAll(true))}
+            onClose={() => dispatch(commit(false))}
+            label={intl.formatMessage({ id: 'only-projects' })}
+          />
+        )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />

@@ -34,7 +34,10 @@ import {
   Message,
   UploadCSV,
   Alert,
+  Modal,
+  modalTypeEnum,
 } from '../../components';
+import { commit, commitAll } from '../../store/actions/app';
 
 const headings = [
   'projectLocationId',
@@ -121,7 +124,7 @@ const PendingMessageContainer = styled('div')`
 const Units = withRouter(({ setPendingError }) => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification } = useSelector(store => store.app);
+  const { notification, commitItems, commitAllItems } = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -223,6 +226,14 @@ const Units = withRouter(({ setPendingError }) => {
     pageIsMyRegistryPage,
   ]);
 
+  useEffect(() => {
+    if(commitAllItems){
+      onCommit()
+      dispatch(commitAll(false))
+      dispatch(commit(false));
+    }
+  }, [commitAllItems])
+
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
       return null;
@@ -263,6 +274,7 @@ const Units = withRouter(({ setPendingError }) => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
+    dispatch(commit(false))
   };
 
   const onOrganizationSelect = selectedOption => {
@@ -327,9 +339,22 @@ const Units = withRouter(({ setPendingError }) => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={onCommit}
+                  onClick={() => dispatch(commit(true))}
                 />
               )}
+            {commitItems && (
+              <Modal
+                title={intl.formatMessage({ id: 'commit-message' })}
+                body={intl.formatMessage({ id: 'commit-units-message-question' })}
+                modalType={modalTypeEnum.confirmation}
+                informationType="info"
+                onOk={onCommit}
+                extraButtonLabel={intl.formatMessage({ id: 'everything' })}
+                extraButtonOnClick={() => dispatch(commitAll(true))}
+                onClose={() => dispatch(commit(false))}
+                label={intl.formatMessage({ id: 'only-units' })}
+              />
+            )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
         <StyledSubHeaderContainer>
