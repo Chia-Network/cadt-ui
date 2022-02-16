@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -59,16 +59,20 @@ const PagesContainer = styled(ControlsContainer)`
 
 const APIPagination = withTheme(({ showLast = false, actions }) => {
   const dispatch = useDispatch();
-
   const { location } = useHistory();
   let searchParams = new URLSearchParams(location.search);
-
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
-  const numberOfPages = climateWarehouseStore.pageCount || 1;
-
+  const [numberOfPages, setNumberOfPages] = useState(
+    climateWarehouseStore.pageCount || 1,
+  );
   const backButtonIsDisabled = currentPageNumber === 1;
   const nextButtonIsDisabled = currentPageNumber === numberOfPages;
+
+  useEffect(() => {
+    setCurrentPageNumber(1);
+    setNumberOfPages(climateWarehouseStore.pageCount || 1);
+  }, [climateWarehouseStore.pageCount]);
 
   const changeCurrentPageTo = newPage => {
     setCurrentPageNumber(newPage);
@@ -81,7 +85,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
     if (searchParams.has('search')) {
       options.searchQuery = searchParams.get('search');
     }
-    if (searchParams.has('search') && searchParams.get('orgUid') !== 'all') {
+    if (searchParams.get('orgUid') !== 'all') {
       options.orgUid = searchParams.get('orgUid');
     }
     dispatch(getPaginatedData(options));
@@ -111,7 +115,8 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
         isBackButton={true}
         onClick={() =>
           !backButtonIsDisabled && changeCurrentPageTo(currentPageNumber - 1)
-        }>
+        }
+      >
         <ArrowDownIcon height={12} width={12} />
       </ControlsContainer>
       {displayedPages &&
@@ -121,7 +126,8 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
             isActive={currentPageNumber === element}
             onClick={() =>
               currentPageNumber !== element && changeCurrentPageTo(element)
-            }>
+            }
+          >
             {element}
           </PagesContainer>
         ))}
@@ -138,7 +144,8 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
         isNextButton
         onClick={() =>
           !nextButtonIsDisabled && changeCurrentPageTo(currentPageNumber + 1)
-        }>
+        }
+      >
         <ArrowDownIcon height={12} width={12} />
       </ControlsContainer>
     </PaginationContainer>
