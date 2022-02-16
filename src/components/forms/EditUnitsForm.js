@@ -50,7 +50,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
       countryJurisdictionOfOwner: unit.countryJurisdictionOfOwner ?? '',
       inCountryJurisdictionOfOwner: unit.inCountryJurisdictionOfOwner ?? '',
       serialNumberBlock: unit.serialNumberBlock ?? '',
-      serialNumberPattern: unit.serialNumberBlock ?? '',
+      serialNumberPattern: unit.serialNumberPattern ?? '',
       marketplace: unit.marketplace ?? '',
       marketplaceLink: unit.marketplaceLink ?? '',
       marketplaceIdentifier: unit.marketplaceIdentifier ?? '',

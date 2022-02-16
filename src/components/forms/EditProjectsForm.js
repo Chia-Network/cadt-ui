@@ -30,6 +30,10 @@ import {
   ratingsSchema,
   projectSchema,
 } from '../../store/validations';
+import {
+  formatAPIData,
+  cleanObjectFromEmptyFieldsOrArrays,
+} from '../../utils/formatData';
 
 const EditProjectsForm = ({
   onClose,
@@ -42,13 +46,6 @@ const EditProjectsForm = ({
         project => project.warehouseProjectId === record.warehouseProjectId,
       )[0],
   );
-  const [labels, setLabelsRepeaterValues] = useState([]);
-  const [issuance, setIssuance] = useState([]);
-  const [locations, setLocations] = useState([]);
-  const [relatedProjects, setRelatedProjects] = useState([]);
-  const [estimationsState, setEstimationsState] = useState([]);
-  const [ratingsState, setRatingsState] = useState([]);
-  const [coBenefits, setCoBenefits] = useState([]);
   const [project, setProject] = useState({});
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
@@ -56,40 +53,8 @@ const EditProjectsForm = ({
   const { notification } = useSelector(state => state.app);
 
   useEffect(() => {
-    const formatProjectData = unformattedProject => {
-      const result = {};
-      const unformattedProjectKeys = Object.keys(unformattedProject);
-      unformattedProjectKeys.forEach(key => {
-        if (typeof unformattedProject[key] === 'object') {
-          result[key] = _.cloneDeep(unformattedProject[key]);
-        } else if (
-          ['ratingRangeHighest', 'ratingRangeLowest', 'rating'].includes(key)
-        ) {
-          result[key] = unformattedProject[key]?.toString() ?? '';
-        } else if (unformattedProject[key] === null) {
-          result[key] = '';
-        } else {
-          result[key] = unformattedProject[key];
-        }
-      });
-      return result;
-    };
-    const formattedProject = formatProjectData(projectToBeEdited);
-    setIssuance(formattedProject.issuances);
-    delete formattedProject.issuances;
-    setLocations(formattedProject.projectLocations);
-    delete formattedProject.projectLocations;
-    setCoBenefits(formattedProject.coBenefits);
-    delete formattedProject.coBenefits;
-    setLabelsRepeaterValues(formattedProject.labels);
-    delete formattedProject.labels;
-    setRelatedProjects(formattedProject.relatedProjects);
-    delete formattedProject.relatedProjects;
-    setEstimationsState(formattedProject.estimations);
-    delete formattedProject.estimations;
-    setRatingsState(formattedProject.projectRatings);
-    delete formattedProject.projectRatings;
-    setProject(formattedProject);
+    const formattedProjectData = formatAPIData(projectToBeEdited);
+    setProject(formattedProjectData);
   }, [projectToBeEdited]);
 
   const stepperStepsTranslationIds = [
@@ -120,25 +85,28 @@ const EditProjectsForm = ({
         switchToNextTabIfDataIsValid(project, projectSchema);
         break;
       case 'labels':
-        switchToNextTabIfDataIsValid(labels, labelsSchema);
+        switchToNextTabIfDataIsValid(project.labels, labelsSchema);
         break;
       case 'issuances':
-        switchToNextTabIfDataIsValid(issuance, issuancesSchema);
+        switchToNextTabIfDataIsValid(project.issuances, issuancesSchema);
         break;
       case 'co-benefits':
-        switchToNextTabIfDataIsValid(coBenefits, coBenefitsSchema);
+        switchToNextTabIfDataIsValid(project.coBenefits, coBenefitsSchema);
         break;
       case 'project-locations':
-        switchToNextTabIfDataIsValid(locations, locationsSchema);
+        switchToNextTabIfDataIsValid(project.projectLocations, locationsSchema);
         break;
       case 'related-projects':
-        switchToNextTabIfDataIsValid(relatedProjects, relatedProjectsSchema);
+        switchToNextTabIfDataIsValid(
+          project.relatedProjects,
+          relatedProjectsSchema,
+        );
         break;
       case 'estimations':
-        switchToNextTabIfDataIsValid(estimationsState, estimationsSchema);
+        switchToNextTabIfDataIsValid(project.estimations, estimationsSchema);
         break;
       case 'ratings':
-        switchToNextTabIfDataIsValid(ratingsState, ratingsSchema);
+        switchToNextTabIfDataIsValid(project.projectRatings, ratingsSchema);
         break;
     }
   };
@@ -146,39 +114,7 @@ const EditProjectsForm = ({
   const handleSubmitProject = async () => {
     const dataToSend = _.cloneDeep(project);
 
-    Object.keys(dataToSend).forEach(el => {
-      if (!dataToSend[el]) {
-        delete dataToSend[el];
-      }
-    });
-
-    if (!_.isEmpty(issuance)) {
-      dataToSend.issuances = issuance;
-    }
-
-    if (!_.isEmpty(labels)) {
-      dataToSend.labels = labels;
-    }
-
-    if (!_.isEmpty(coBenefits)) {
-      dataToSend.coBenefits = coBenefits;
-    }
-
-    if (!_.isEmpty(locations)) {
-      dataToSend.projectLocations = locations;
-    }
-
-    if (!_.isEmpty(relatedProjects)) {
-      dataToSend.relatedProjects = relatedProjects;
-    }
-
-    if (!_.isEmpty(estimationsState)) {
-      dataToSend.estimations = estimationsState;
-    }
-
-    if (!_.isEmpty(ratingsState)) {
-      dataToSend.projectRatings = ratingsState;
-    }
+    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
 
     const projectIsValid = await projectSchema.isValid(dataToSend);
 
@@ -252,44 +188,79 @@ const EditProjectsForm = ({
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <LabelsRepeater
-                  labelsState={labels}
-                  newLabelsState={setLabelsRepeaterValues}
+                  labelsState={project?.labels ?? []}
+                  newLabelsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      labels: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <IssuanceRepeater
-                  issuanceState={issuance}
-                  newIssuanceState={setIssuance}
+                  issuanceState={project?.issuances ?? []}
+                  newIssuanceState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      issuances: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
                 <CoBenefitsRepeater
-                  coBenefitsState={coBenefits}
-                  setNewCoBenefitsState={setCoBenefits}
+                  coBenefitsState={project?.coBenefits ?? []}
+                  setNewCoBenefitsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      coBenefits: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
                 <LocationsRepeater
-                  locationsState={locations}
-                  setLocationsState={setLocations}
+                  locationsState={project?.projectLocations ?? []}
+                  setLocationsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      projectLocations: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={5}>
                 <RelatedProjectsRepeater
-                  relatedProjectsState={relatedProjects}
-                  setRelatedProjectsState={setRelatedProjects}
+                  relatedProjectsState={project?.relatedProjects ?? []}
+                  setRelatedProjectsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      relatedProjects: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={6}>
                 <EstimationsRepeater
-                  estimationsState={estimationsState}
-                  setEstimationsState={setEstimationsState}
+                  estimationsState={project?.estimations ?? []}
+                  setEstimationsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      estimations: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={7}>
                 <RatingsRepeater
-                  ratingsState={ratingsState}
-                  setRatingsState={setRatingsState}
+                  ratingsState={project?.projectRatings ?? []}
+                  setRatingsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      projectRatings: value,
+                    }))
+                  }
                 />
               </TabPanel>
             </div>
