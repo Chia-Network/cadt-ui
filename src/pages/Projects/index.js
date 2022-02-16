@@ -28,6 +28,7 @@ import {
   UploadCSV,
   Alert,
 } from '../../components';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   getStagingData,
@@ -120,7 +121,7 @@ const PendingMessageContainer = styled('div')`
   gap: 20px;
 `;
 
-const Projects = withRouter(({ setPendingError }) => {
+const Projects = withRouter(() => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const { notification } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -314,7 +315,7 @@ const Projects = withRouter(({ setPendingError }) => {
                   ) {
                     setCreateFormIsDisplayed(true);
                   } else {
-                    setPendingError(true);
+                    dispatch(setPendingError(true));
                   }
                 }}
               />
@@ -383,7 +384,7 @@ const Projects = withRouter(({ setPendingError }) => {
                             ) {
                               setCreateFormIsDisplayed(true);
                             } else {
-                              setPendingError(true);
+                              dispatch(setPendingError(true));
                             }
                           }}>
                           <FormattedMessage id="create-one-now" />

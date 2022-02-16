@@ -13,6 +13,7 @@ const initialState = {
   connectionCheck: true,
   updateAvailablePleaseRefesh: false,
   notification: null,
+  pendingError: false,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -42,6 +43,9 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.SET_LOCALE:
       return u({ locale: action.payload }, state);
+
+    case appActions.PENDING_ERROR:
+      return u({ pendingError: action.payload }, state);
 
     case appActions.SET_THEME:
       if (
