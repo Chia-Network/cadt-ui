@@ -13,8 +13,8 @@ const initialState = {
   connectionCheck: true,
   updateAvailablePleaseRefesh: false,
   notification: null,
-  commitItems: false,
-  commitAllItems: false,
+  commit: false,
+  commitAll: false,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -37,10 +37,10 @@ const appReducer = (state = initialState, action) => {
       return u({ showProgressOverlay: false }, state);
 
     case appActions.COMMIT:
-      return u({ commitItems: action.payload }, state);
+      return u({ commit: action.payload }, state);
 
     case appActions.COMMIT_ALL:
-      return u({ commitAllItems: action.payload }, state);
+      return u({ commitAll: action.payload }, state);
 
     case appActions.SET_GLOBAL_ERROR_MESSAGE:
       return u({ errorMessage: action.payload }, state);

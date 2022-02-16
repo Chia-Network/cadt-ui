@@ -38,7 +38,7 @@ import {
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
 
-import { commit, commitAll } from '../../store/actions/app';
+import { setCommit, setCommitAll } from '../../store/actions/app';
 
 const headings = [
   'currentRegistry',
@@ -126,9 +126,7 @@ const PendingMessageContainer = styled('div')`
 
 const Projects = withRouter(({ setPendingError }) => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { notification, commitItems, commitAllItems } = useSelector(
-    store => store.app,
-  );
+  const { notification, commit, commitAll } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -217,12 +215,12 @@ const Projects = withRouter(({ setPendingError }) => {
   }, []);
 
   useEffect(() => {
-    if (commitAllItems) {
+    if (commitAll) {
       onCommit();
-      dispatch(commitAll(false));
-      dispatch(commit(false));
+      dispatch(setCommitAll(false));
+      dispatch(setCommit(false));
     }
-  }, [commitAllItems]);
+  }, [commitAll]);
 
   useEffect(() => {
     const options = {
@@ -285,7 +283,7 @@ const Projects = withRouter(({ setPendingError }) => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    dispatch(commit(false))
+    dispatch(setCommit(false));
   };
 
   return (
@@ -339,21 +337,23 @@ const Projects = withRouter(({ setPendingError }) => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={() => dispatch(commit(true))}
+                  onClick={() => dispatch(setCommit(true))}
                 />
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
-        {commitItems && (
+        {commit && (
           <Modal
             title={intl.formatMessage({ id: 'commit-message' })}
-            body={intl.formatMessage({ id: 'commit-projects-message-question' })}
+            body={intl.formatMessage({
+              id: 'commit-projects-message-question',
+            })}
             modalType={modalTypeEnum.confirmation}
             informationType="info"
-            onOk={onCommit}
             extraButtonLabel={intl.formatMessage({ id: 'everything' })}
             extraButtonOnClick={() => dispatch(commitAll(true))}
-            onClose={() => dispatch(commit(false))}
+            onClose={() => dispatch(setCommit(false))}
+            onOk={onCommit}
             label={intl.formatMessage({ id: 'only-projects' })}
           />
         )}

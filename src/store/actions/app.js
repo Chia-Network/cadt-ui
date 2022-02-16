@@ -52,12 +52,12 @@ export const setConnectionCheck = bool => ({
   payload: bool,
 });
 
-export const commitAll = bool => ({
+export const setCommitAll = bool => ({
   type: actions.COMMIT_ALL,
   payload: bool,
 });
 
-export const commit = bool => ({
+export const setCommit = bool => ({
   type: actions.COMMIT,
   payload: bool,
 });

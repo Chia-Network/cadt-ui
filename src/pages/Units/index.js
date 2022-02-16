@@ -37,7 +37,7 @@ import {
   Modal,
   modalTypeEnum,
 } from '../../components';
-import { commit, commitAll } from '../../store/actions/app';
+import { setCommit, setCommitAll } from '../../store/actions/app';
 
 const headings = [
   'projectLocationId',
@@ -124,7 +124,7 @@ const PendingMessageContainer = styled('div')`
 const Units = withRouter(({ setPendingError }) => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification, commitItems, commitAllItems } = useSelector(store => store.app);
+  const { notification, commit, commitAll } = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -227,12 +227,12 @@ const Units = withRouter(({ setPendingError }) => {
   ]);
 
   useEffect(() => {
-    if(commitAllItems){
-      onCommit()
-      dispatch(commitAll(false))
-      dispatch(commit(false));
+    if (commitAll) {
+      onCommit();
+      dispatch(setCommitAll(false));
+      dispatch(setCommit(false));
     }
-  }, [commitAllItems])
+  }, [commitAll]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
@@ -274,7 +274,7 @@ const Units = withRouter(({ setPendingError }) => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    dispatch(commit(false))
+    dispatch(setCommit(false));
   };
 
   const onOrganizationSelect = selectedOption => {
@@ -339,19 +339,21 @@ const Units = withRouter(({ setPendingError }) => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={() => dispatch(commit(true))}
+                  onClick={() => dispatch(setCommit(true))}
                 />
               )}
-            {commitItems && (
+            {commit && (
               <Modal
                 title={intl.formatMessage({ id: 'commit-message' })}
-                body={intl.formatMessage({ id: 'commit-units-message-question' })}
+                body={intl.formatMessage({
+                  id: 'commit-units-message-question',
+                })}
                 modalType={modalTypeEnum.confirmation}
                 informationType="info"
                 onOk={onCommit}
                 extraButtonLabel={intl.formatMessage({ id: 'everything' })}
-                extraButtonOnClick={() => dispatch(commitAll(true))}
-                onClose={() => dispatch(commit(false))}
+                extraButtonOnClick={() => dispatch(setCommitAll(true))}
+                onClose={() => dispatch(setCommit(false))}
                 label={intl.formatMessage({ id: 'only-units' })}
               />
             )}
