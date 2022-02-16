@@ -12,8 +12,12 @@ import { useIntl } from 'react-intl';
 import {
   unitsSchema,
   labelsSchema,
-  issuancesSchema,
+  issuanceSchema,
 } from '../../store/validations';
+import {
+  cleanObjectFromEmptyFieldsOrArrays,
+  formatAPIData,
+} from '../../utils/formatData';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -24,14 +28,11 @@ const StyledFormContainer = styled('div')`
 
 const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   const { notification } = useSelector(state => state.app);
-  const [labels, setLabelsRepeaterValues] = useState([]);
-  const [issuance, setIssuance] = useState([{}]);
-  const [editedUnits, setEditUnits] = useState([]);
+  const [unit, setUnit] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-
-  const unit = useSelector(
+  const unitToBeEdited = useSelector(
     state =>
       state.climateWarehouse.units.filter(
         unit => unit.warehouseUnitId === record.warehouseUnitId,
@@ -39,55 +40,9 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   );
 
   useEffect(() => {
-    setEditUnits({
-      warehouseUnitId: unit.warehouseUnitId ?? '',
-      projectLocationId: unit.projectLocationId ?? '',
-      unitOwner: unit.unitOwner ?? '',
-      unitStatus: unit.unitStatus ?? '',
-      unitType: unit.unitType ?? '',
-      vintageYear: unit.vintageYear ?? '',
-      unitStatusReason: unit.unitStatusReason ?? '',
-      countryJurisdictionOfOwner: unit.countryJurisdictionOfOwner ?? '',
-      inCountryJurisdictionOfOwner: unit.inCountryJurisdictionOfOwner ?? '',
-      serialNumberBlock: unit.serialNumberBlock ?? '',
-      serialNumberPattern: unit.serialNumberPattern ?? '',
-      marketplace: unit.marketplace ?? '',
-      marketplaceLink: unit.marketplaceLink ?? '',
-      marketplaceIdentifier: unit.marketplaceIdentifier ?? '',
-      unitTags: unit.unitTags ?? '',
-      unitRegistryLink: unit.unitRegistryLink ?? '',
-      correspondingAdjustmentDeclaration:
-        unit.correspondingAdjustmentDeclaration ?? '',
-      correspondingAdjustmentStatus: unit.correspondingAdjustmentStatus ?? '',
-    });
-
-    setIssuance([
-      _.pick(
-        unit.issuance,
-        'startDate',
-        'endDate',
-        'verificationApproach',
-        'verificationReportDate',
-        'verificationBody',
-      ),
-    ]);
-
-    setLabelsRepeaterValues(
-      unit.labels.map(label =>
-        _.pick(
-          label,
-          'label',
-          'labelType',
-          'creditingPeriodStartDate',
-          'creditingPeriodEndDate',
-          'validityPeriodStartDate',
-          'validityPeriodEndDate',
-          'unitQuantity',
-          'labelLink',
-        ),
-      ),
-    );
-  }, [unit]);
+    const formattedProjectData = formatAPIData(unitToBeEdited);
+    setUnit(formattedProjectData);
+  }, [unitToBeEdited]);
 
   const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
 
@@ -105,36 +60,21 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   const onNextButtonPress = async () => {
     switch (stepperStepsTranslationIds[tabValue]) {
       case 'unit':
-        switchToNextTabIfDataIsValid(editedUnits, unitsSchema);
+        switchToNextTabIfDataIsValid(unit, unitsSchema);
         break;
       case 'labels':
-        switchToNextTabIfDataIsValid(labels, labelsSchema);
+        switchToNextTabIfDataIsValid(unit.labels, labelsSchema);
         break;
       case 'issuances':
-        switchToNextTabIfDataIsValid(issuance, issuancesSchema);
+        switchToNextTabIfDataIsValid(unit.issuance, issuanceSchema);
         break;
     }
   };
 
   const handleUpdateUnit = async () => {
-    const dataToSend = _.cloneDeep(editedUnits);
-
-    Object.keys(dataToSend).forEach(el => {
-      if (!dataToSend[el]) {
-        delete dataToSend[el];
-      }
-    });
-
-    if (!_.isEmpty(issuance)) {
-      dataToSend.issuance = _.head(issuance);
-    }
-
-    if (!_.isEmpty(labels)) {
-      dataToSend.labels = labels;
-    }
-
+    const dataToSend = _.cloneDeep(unit);
+    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
     const isUnitValid = await unitsSchema.isValid(dataToSend);
-
     if (isUnitValid) {
       dispatch(updateUnitsRecord(dataToSend));
     }
@@ -160,6 +100,9 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'edit-unit',
+        })}
+        label={intl.formatMessage({
+          id: tabValue < 2 ? 'next' : 'update-unit',
         })}
         extraButtonLabel={
           tabValue > 0
@@ -194,22 +137,29 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
               value={tabValue}
               index={0}
             >
-              <UnitDetailsForm
-                unitDetails={editedUnits}
-                setUnitDetails={setEditUnits}
-              />
+              <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
               <LabelsRepeater
-                labelsState={labels}
-                newLabelsState={setLabelsRepeaterValues}
+                labelsState={unit.labels}
+                newLabelsState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    labels: value,
+                  }))
+                }
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <IssuanceRepeater
                 max={1}
-                issuanceState={issuance}
-                newIssuanceState={setIssuance}
+                issuanceState={unit.issuance !== '' ? [unit.issuance] : []}
+                newIssuanceState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    issuance: value[0],
+                  }))
+                }
               />
             </TabPanel>
           </StyledFormContainer>

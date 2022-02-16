@@ -146,7 +146,7 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
           id: 'create-project',
         })}
         label={intl.formatMessage({
-          id: tabValue < 7 ? 'next' : 'create',
+          id: tabValue < 7 ? 'next' : 'create-project',
         })}
         extraButtonLabel={tabValue > 0 ? 'Back' : undefined}
         extraButtonOnClick={() =>

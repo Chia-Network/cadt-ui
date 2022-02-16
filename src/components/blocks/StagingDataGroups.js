@@ -108,7 +108,7 @@ const ChangeCard = ({
             )
             .map(
               (heading, index) =>
-                !Array.isArray(data[heading]) && (
+                !(typeof data[heading] === 'object') && (
                   <StyledCardBodyItem key={index}>
                     <Body size="Small Bold">
                       {convertPascalCaseToSentenceCase(heading)}
