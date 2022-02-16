@@ -113,11 +113,8 @@ const EditProjectsForm = ({
 
   const handleSubmitProject = async () => {
     const dataToSend = _.cloneDeep(project);
-
     cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-
     const projectIsValid = await projectSchema.isValid(dataToSend);
-
     if (projectIsValid) {
       dispatch(updateProjectRecord(dataToSend));
     }
