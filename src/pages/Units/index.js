@@ -238,8 +238,6 @@ const Units = withRouter(({ setPendingError }) => {
         'serialNumberBlock',
         'serialNumberPattern',
         'vintageYear',
-        'issuance',
-        'labels',
         'marketplace',
         'marketplaceLink',
         'marketplaceIdentifier',
@@ -387,7 +385,8 @@ const Units = withRouter(({ setPendingError }) => {
                             } else {
                               setPendingError(true);
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
