@@ -56,117 +56,40 @@ const EditProjectsForm = ({
   const { notification } = useSelector(state => state.app);
 
   useEffect(() => {
-    setProject({
-      warehouseProjectId: projectToBeEdited.warehouseProjectId ?? '',
-      projectId: projectToBeEdited.projectId ?? '',
-      registryOfOrigin: projectToBeEdited.registryOfOrigin ?? '',
-      originProjectId: projectToBeEdited.originProjectId ?? '',
-      program: projectToBeEdited.program ?? '',
-      projectName: projectToBeEdited.projectName ?? '',
-      projectLink: projectToBeEdited.projectLink ?? '',
-      projectDeveloper: projectToBeEdited.projectDeveloper ?? '',
-      sector: projectToBeEdited.sector ?? '',
-      projectType: projectToBeEdited.projectType ?? '',
-      projectTags: projectToBeEdited.projectTags ?? '',
-      coveredByNDC: projectToBeEdited.coveredByNDC ?? '',
-      ndcInformation: projectToBeEdited.ndcInformation ?? '',
-      projectStatus: projectToBeEdited.projectStatus ?? '',
-      projectStatusDate: projectToBeEdited.projectStatusDate,
-      unitMetric: projectToBeEdited.unitMetric ?? '',
-      methodology: projectToBeEdited.methodology ?? '',
-      validationBody: projectToBeEdited.validationBody ?? '',
-      validationDate: projectToBeEdited.validationDate,
-    });
-
-    setIssuance(
-      projectToBeEdited.issuances.map(issuanceKey =>
-        _.pick(
-          issuanceKey,
-          'startDate',
-          'endDate',
-          'verificationApproach',
-          'verificationReportDate',
-          'verificationBody',
-        ),
-      ),
-    );
-
-    setLocations(
-      projectToBeEdited.projectLocations.map(projectLoc =>
-        _.pick(
-          projectLoc,
-          'country',
-          'inCountryRegion',
-          'geographicIdentifier',
-        ),
-      ),
-    );
-
-    setCoBenefits(
-      projectToBeEdited.coBenefits.map(cobenefit =>
-        _.pick(cobenefit, 'cobenefit'),
-      ),
-    );
-
-    setLabelsRepeaterValues(
-      projectToBeEdited.labels.map(label =>
-        _.pick(
-          label,
-          'label',
-          'labelType',
-          'creditingPeriodStartDate',
-          'creditingPeriodEndDate',
-          'validityPeriodStartDate',
-          'validityPeriodEndDate',
-          'unitQuantity',
-          'labelLink',
-        ),
-      ),
-    );
-
-    setRelatedProjects(
-      projectToBeEdited.relatedProjects.map(relatedProject =>
-        _.pick(
-          relatedProject,
-          'relationshipType',
-          'registry',
-          'relatedProjectId',
-        ),
-      ),
-    );
-
-    setEstimationsState(
-      projectToBeEdited.estimations.map(estimation =>
-        _.pick(
-          estimation,
-          'creditingPeriodStart',
-          'creditingPeriodEnd',
-          'unitCount',
-        ),
-      ),
-    );
-
-    const ratingsArray = projectToBeEdited.projectRatings.map(rating =>
-      _.pick(
-        rating,
-        'id',
-        'ratingType',
-        'ratingRangeHighest',
-        'ratingRangeLowest',
-        'rating',
-        'ratingLink',
-      ),
-    );
-    // needs to be removed after back end code bug is fixed so that the following fields are always returned strings from API
-    // https://github.com/Chia-Network/climate-warehouse-ui/issues/339
-    const formattedRatingsArray = ratingsArray.map(rating => ({
-      ...rating,
-      ratingRangeHighest: rating.ratingRangeHighest.toString(),
-      ratingRangeLowest: rating.ratingRangeLowest.toString(),
-      rating: rating.ratingRangeLowest.toString(),
-    }));
-    // code that needs to be removed ends here
-    setRatingsState(formattedRatingsArray);
+    const formatProjectData = unformattedProject => {
+      const result = {};
+      const unformattedProjectKeys = Object.keys(unformattedProject);
+      unformattedProjectKeys.forEach(key => {
+        if (typeof unformattedProject[key] === 'object') {
+          result[key] = _.cloneDeep(unformattedProject[key]);
+        } else if (
+          ['ratingRangeHighest', 'ratingRangeLowest', 'rating'].includes(key)
+        ) {
+          result[key] = unformattedProject[key]?.toString() ?? '';
+        } else if (unformattedProject[key] === null) {
+          result[key] = '';
+        } else {
+          result[key] = unformattedProject[key];
+        }
+      });
+      return result;
+    };
+    const formattedProject = formatProjectData(projectToBeEdited);
+    setIssuance(formattedProject.issuances);
+    delete formattedProject.issuances;
+    setLocations(formattedProject.projectLocations);
+    delete formattedProject.projectLocations;
+    setCoBenefits(formattedProject.coBenefits);
+    delete formattedProject.coBenefits;
+    setLabelsRepeaterValues(formattedProject.labels);
+    delete formattedProject.labels;
+    setRelatedProjects(formattedProject.relatedProjects);
+    delete formattedProject.relatedProjects;
+    setEstimationsState(formattedProject.estimations);
+    delete formattedProject.estimations;
+    setRatingsState(formattedProject.projectRatings);
+    delete formattedProject.projectRatings;
+    setProject(formattedProject);
   }, [projectToBeEdited]);
 
   const stepperStepsTranslationIds = [
