@@ -33,6 +33,7 @@ import {
   SelectOrganizations,
   Message,
   UploadCSV,
+  Alert,
 } from '../../components';
 
 const headings = [
@@ -110,7 +111,14 @@ const StyledCSVOperationsContainer = styled('div')`
   gap: 20px;
 `;
 
-const Units = withRouter(() => {
+const PendingMessageContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+`;
+
+const Units = withRouter(({ setPendingError }) => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const { notification } = useSelector(store => store.app);
@@ -298,7 +306,20 @@ const Units = withRouter(() => {
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-                onClick={() => setCreate(true)}
+                onClick={() => {
+                  if (
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.units.pending,
+                    ) &&
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.projects.pending,
+                    )
+                  ) {
+                    setCreate(true);
+                  } else {
+                    setPendingError(true);
+                  }
+                }}
               />
             )}
             {tabValue === 1 &&
@@ -352,8 +373,21 @@ const Units = withRouter(() => {
                       <>
                         <FormattedMessage id="no-units-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}
-                        >
+                          onClick={() => {
+                            if (
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.units.pending,
+                              ) &&
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.projects
+                                  .pending,
+                              )
+                            ) {
+                              setCreate(true);
+                            } else {
+                              setPendingError(true);
+                            }
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -417,10 +451,25 @@ const Units = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataGroups
-                    headings={headings}
-                    data={climateWarehouseStore.stagingData.units.pending}
-                  />
+                  <>
+                    <PendingMessageContainer>
+                      <Alert
+                        type="info"
+                        showIcon
+                        alertTitle={intl.formatMessage({ id: 'pending-info' })}
+                        alertBody={intl.formatMessage({
+                          id: 'pending-stuck-info',
+                        })}
+                      />
+                    </PendingMessageContainer>
+                    <StagingDataGroups
+                      headings={headings}
+                      data={climateWarehouseStore.stagingData.units.pending}
+                      deleteStagingData={uuid =>
+                        dispatch(deleteStagingData(uuid))
+                      }
+                    />
+                  </>
                 )}
               </TabPanel>
             </>

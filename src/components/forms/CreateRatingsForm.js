@@ -168,7 +168,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'ratings-rating-description',
+                    id: 'ratings-rating-value-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />
@@ -202,7 +202,7 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'ratings-rating-link-description',
+                    id: 'ratings-rating-report-link-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />

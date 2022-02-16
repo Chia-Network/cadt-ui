@@ -26,6 +26,7 @@ import {
   H3,
   Message,
   UploadCSV,
+  Alert,
 } from '../../components';
 
 import {
@@ -112,7 +113,14 @@ const StyledCSVOperationsContainer = styled('div')`
   gap: 20px;
 `;
 
-const Projects = withRouter(() => {
+const PendingMessageContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+`;
+
+const Projects = withRouter(({ setPendingError }) => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const { notification } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -295,7 +303,20 @@ const Projects = withRouter(() => {
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-                onClick={() => setCreateFormIsDisplayed(true)}
+                onClick={() => {
+                  if (
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.units.pending,
+                    ) &&
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.projects.pending,
+                    )
+                  ) {
+                    setCreateFormIsDisplayed(true);
+                  } else {
+                    setPendingError(true);
+                  }
+                }}
               />
             )}
             {tabValue === 1 &&
@@ -330,8 +351,7 @@ const Projects = withRouter(() => {
           </Tabs>
           <StyledCSVOperationsContainer>
             <span
-              onClick={() => downloadTxtFile(climateWarehouseStore.projects)}
-            >
+              onClick={() => downloadTxtFile(climateWarehouseStore.projects)}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (
@@ -351,8 +371,21 @@ const Projects = withRouter(() => {
                       <>
                         <FormattedMessage id="no-projects-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreateFormIsDisplayed(true)}
-                        >
+                          onClick={() => {
+                            if (
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.units.pending,
+                              ) &&
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.projects
+                                  .pending,
+                              )
+                            ) {
+                              setCreateFormIsDisplayed(true);
+                            } else {
+                              setPendingError(true);
+                            }
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -408,10 +441,25 @@ const Projects = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <StagingDataGroups
-                    headings={headings}
-                    data={climateWarehouseStore.stagingData.projects.pending}
-                  />
+                  <>
+                    <PendingMessageContainer>
+                      <Alert
+                        type="info"
+                        showIcon
+                        alertTitle={intl.formatMessage({ id: 'pending-info' })}
+                        alertBody={intl.formatMessage({
+                          id: 'pending-stuck-info',
+                        })}
+                      />
+                    </PendingMessageContainer>
+                    <StagingDataGroups
+                      headings={headings}
+                      data={climateWarehouseStore.stagingData.projects.pending}
+                      deleteStagingData={uuid =>
+                        dispatch(deleteStagingData(uuid))
+                      }
+                    />
+                  </>
                 )}
               </TabPanel>
             </>

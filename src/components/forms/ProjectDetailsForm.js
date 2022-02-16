@@ -27,7 +27,7 @@ import {
   StyledLabelContainer,
 } from '..';
 
-import { projectDetailsSchema } from '../../store/validations';
+import { projectSchema } from '../../store/validations';
 
 const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
@@ -107,11 +107,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
   );
 
   useEffect(() => {
-    setValidationErrors(
-      projectDetailsSchema,
-      projectDetails,
-      setErrorIssuanceMessage,
-    );
+    setValidationErrors(projectSchema, projectDetails, setErrorIssuanceMessage);
   }, [projectDetails]);
 
   return (
@@ -520,45 +516,44 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          {projectDetails.coveredByNDC === 'Inside NDC' && (
-            <StyledFieldContainer>
-              <StyledLabelContainer>
-                <Body>
-                  <LabelContainer>
-                    *<FormattedMessage id="ndc-information" />
-                  </LabelContainer>
-                  <ToolTipContainer
-                    tooltip={intl.formatMessage({
-                      id: 'ndc-information-description',
-                    })}
-                  >
-                    <DescriptionIcon height="14" width="14" />
-                  </ToolTipContainer>
-                </Body>
-              </StyledLabelContainer>
-              <InputContainer>
-                <StandardInput
-                  size={InputSizeEnum.large}
-                  placeholderText={intl.formatMessage({
-                    id: 'ndc-information',
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  {projectDetails.coveredByNDC === 'Inside NDC' && '*'}
+                  <FormattedMessage id="ndc-information" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'projects-ndc-information-description',
                   })}
-                  state={InputStateEnum.default}
-                  value={projectDetails.ndcInformation}
-                  onChange={value =>
-                    setProjectDetails(prev => ({
-                      ...prev,
-                      ndcInformation: value,
-                    }))
-                  }
-                />
-                {errorIssuanceMessage?.ndcInformation && (
-                  <Body size="Small" color="red">
-                    {errorIssuanceMessage.ndcInformation}
-                  </Body>
-                )}
-              </InputContainer>
-            </StyledFieldContainer>
-          )}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'ndc-information',
+                })}
+                state={InputStateEnum.default}
+                value={projectDetails.ndcInformation}
+                onChange={value =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    ndcInformation: value,
+                  }))
+                }
+              />
+              {errorIssuanceMessage?.ndcInformation && (
+                <Body size="Small" color="red">
+                  {errorIssuanceMessage.ndcInformation}
+                </Body>
+              )}
+            </InputContainer>
+          </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>

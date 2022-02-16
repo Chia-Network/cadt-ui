@@ -5,8 +5,8 @@ export const locationSchema = yup.object({
   country: yup.string().required('Required Field'),
   inCountryRegion: yup.string().required('Required Field'),
   geographicIdentifier: yup.string().required('Required Field'),
-  updatedAt: yup.date().optional(),
-  createdAt: yup.date().optional(),
+  updatedAt: yup.date().typeError('Invalid Date').optional(),
+  createdAt: yup.date().typeError('Invalid Date').optional(),
 });
 
 export const locationsSchema = yup.array().of(locationSchema);

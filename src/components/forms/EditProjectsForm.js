@@ -21,7 +21,6 @@ import { useIntl } from 'react-intl';
 import { ProjectDetailsForm } from '.';
 
 import {
-  projectDetailsSchema,
   labelsSchema,
   issuancesSchema,
   coBenefitsSchema,
@@ -142,19 +141,27 @@ const EditProjectsForm = ({
       ),
     );
 
-    setRatingsState(
-      projectToBeEdited.projectRatings.map(rating =>
-        _.pick(
-          rating,
-          'id',
-          'ratingType',
-          'ratingRangeHighest',
-          'ratingRangeLowest',
-          'rating',
-          'ratingLink',
-        ),
+    const ratingsArray = projectToBeEdited.projectRatings.map(rating =>
+      _.pick(
+        rating,
+        'id',
+        'ratingType',
+        'ratingRangeHighest',
+        'ratingRangeLowest',
+        'rating',
+        'ratingLink',
       ),
     );
+    // needs to be removed after back end code bug is fixed so that the following fields are always returned strings from API
+    // https://github.com/Chia-Network/climate-warehouse-ui/issues/339
+    const formattedRatingsArray = ratingsArray.map(rating => ({
+      ...rating,
+      ratingRangeHighest: rating.ratingRangeHighest.toString(),
+      ratingRangeLowest: rating.ratingRangeLowest.toString(),
+      rating: rating.ratingRangeLowest.toString(),
+    }));
+    // code that needs to be removed ends here
+    setRatingsState(formattedRatingsArray);
   }, [projectToBeEdited]);
 
   const stepperStepsTranslationIds = [
@@ -182,7 +189,7 @@ const EditProjectsForm = ({
   const onNextButtonPress = async () => {
     switch (stepperStepsTranslationIds[tabValue]) {
       case 'project':
-        switchToNextTabIfDataIsValid(project, projectDetailsSchema);
+        switchToNextTabIfDataIsValid(project, projectSchema);
         break;
       case 'labels':
         switchToNextTabIfDataIsValid(labels, labelsSchema);
@@ -276,6 +283,16 @@ const EditProjectsForm = ({
         label={intl.formatMessage({
           id: tabValue < 7 ? 'next' : 'update-project',
         })}
+        extraButtonLabel={
+          tabValue > 0
+            ? intl.formatMessage({
+                id: 'back',
+              })
+            : undefined
+        }
+        extraButtonOnClick={() =>
+          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+        }
         body={
           <StyledFormContainer>
             <Stepper activeStep={tabValue} alternativeLabel>

@@ -161,6 +161,16 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
         title={intl.formatMessage({
           id: 'edit-unit',
         })}
+        extraButtonLabel={
+          tabValue > 0
+            ? intl.formatMessage({
+                id: 'back',
+              })
+            : undefined
+        }
+        extraButtonOnClick={() =>
+          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+        }
         body={
           <StyledFormContainer>
             <Stepper activeStep={tabValue} alternativeLabel>
