@@ -50,8 +50,11 @@ const HomeOrgUidContainer = styled('div')`
 `;
 
 const Dashboard = withTheme(({ children }) => {
-  //const appStore = useSelector(state => state.app);
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
+  const homeOrgUid = Object.values(climateWarehouseStore.organizations).filter(
+    org => org.isHome != false,
+  )[0]?.orgUid;
+
   return (
     <Main>
       <LeftNav />
@@ -59,13 +62,9 @@ const Dashboard = withTheme(({ children }) => {
         <Headline>
           <StyledLocalContainer>
             <HomeOrgUidContainer>
-              <Body size="Small">
-                {
-                  Object.values(climateWarehouseStore.organizations).filter(
-                    org => org.isHome != false,
-                  )[0].orgUid
-                }
-              </Body>
+              {homeOrgUid ? (
+                <Body size="Small">{`Organization ID: ${homeOrgUid}`}</Body>
+              ) : null}
             </HomeOrgUidContainer>
             <LocaleSwitcher />
           </StyledLocalContainer>
