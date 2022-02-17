@@ -7,7 +7,7 @@ export const issuanceSchema = yup
     startDate: yup.date().typeError('Invalid Date').required('Required Field'),
     endDate: yup
       .date()
-      .min(yup.ref('startDate'), "End date can't be before start date")
+      .min(yup.ref('startDate'), 'End date should be greater than start date')
       .typeError('Invalid Date')
       .required('Required Field'),
     verificationApproach: yup.string().required('Required Field'),

@@ -9,7 +9,10 @@ export const estimationSchema = yup.object({
   creditingPeriodEnd: yup
     .date()
     .typeError('Invalid Date')
-    .min(yup.ref('creditingPeriodStart'))
+    .min(
+      yup.ref('creditingPeriodStart'),
+      'End date should be greater than start date',
+    )
     .required('Required Field'),
   unitCount: yup.number().integer().required('Required Field'),
   updatedAt: yup.date().typeError('Invalid Date').optional(),
