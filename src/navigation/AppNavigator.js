@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -13,9 +13,9 @@ import {
   UpdateRefreshContainer,
   modalTypeEnum,
 } from '../components';
+import { setPendingError } from '../store/actions/app';
 
 const AppNavigator = () => {
-  const [pendingError, setPendingError] = useState(false);
   const intl = useIntl();
   const dispatch = useDispatch();
 
@@ -24,7 +24,9 @@ const AppNavigator = () => {
     connectionCheck,
     socketStatus,
     updateAvailablePleaseRefesh,
+    pendingError,
   } = useSelector(store => store.app);
+
 
   return (
     <AppContainer>
@@ -50,7 +52,7 @@ const AppNavigator = () => {
         <Modal
           title={intl.formatMessage({ id: 'create-pending-title' })}
           body={intl.formatMessage({ id: 'create-pending-error' })}
-          onOk={() => setPendingError(false)}
+          onOk={() => dispatch(setPendingError(false))}
           modalType={modalTypeEnum.information}
           informationType="error"
         />
@@ -62,10 +64,10 @@ const AppNavigator = () => {
               <Pages.Home />
             </Route>
             <Route exact path="/units">
-              <Pages.Units setPendingError={setPendingError}/>
+              <Pages.Units />
             </Route>
             <Route exact path="/projects">
-              <Pages.Projects setPendingError={setPendingError}/>
+              <Pages.Projects />
             </Route>
             <Route exact path="/projects/add">
               <Pages.AddProject />
