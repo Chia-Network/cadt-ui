@@ -101,7 +101,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
             : undefined
         }
         extraButtonOnClick={() =>
-          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
         }
         body={
           <StyledFormContainer>

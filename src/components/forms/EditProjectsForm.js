@@ -20,16 +20,7 @@ import { updateProjectRecord } from '../../store/actions/climateWarehouseActions
 import { useIntl } from 'react-intl';
 import { ProjectDetailsForm } from '.';
 
-import {
-  labelsSchema,
-  issuancesSchema,
-  coBenefitsSchema,
-  relatedProjectsSchema,
-  locationsSchema,
-  estimationsSchema,
-  ratingsSchema,
-  projectSchema,
-} from '../../store/validations';
+import { projectSchema } from '../../store/validations';
 import {
   formatAPIData,
   cleanObjectFromEmptyFieldsOrArrays,
@@ -68,56 +59,21 @@ const EditProjectsForm = ({
     'ratings',
   ];
 
-  const switchToNextTabIfDataIsValid = async (data, schema) => {
-    const isValid = await schema.isValid(data);
+  const onChangeStep = async (desiredStep = null) => {
+    const isValid = await projectSchema.isValid(project);
     if (isValid) {
-      if (stepperStepsTranslationIds[tabValue] === 'ratings') {
+      if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitProject();
       } else {
-        setTabValue(tabValue + 1);
+        setTabValue(desiredStep);
       }
-    }
-  };
-
-  const onNextButtonPress = async () => {
-    switch (stepperStepsTranslationIds[tabValue]) {
-      case 'project':
-        switchToNextTabIfDataIsValid(project, projectSchema);
-        break;
-      case 'labels':
-        switchToNextTabIfDataIsValid(project.labels, labelsSchema);
-        break;
-      case 'issuances':
-        switchToNextTabIfDataIsValid(project.issuances, issuancesSchema);
-        break;
-      case 'co-benefits':
-        switchToNextTabIfDataIsValid(project.coBenefits, coBenefitsSchema);
-        break;
-      case 'project-locations':
-        switchToNextTabIfDataIsValid(project.projectLocations, locationsSchema);
-        break;
-      case 'related-projects':
-        switchToNextTabIfDataIsValid(
-          project.relatedProjects,
-          relatedProjectsSchema,
-        );
-        break;
-      case 'estimations':
-        switchToNextTabIfDataIsValid(project.estimations, estimationsSchema);
-        break;
-      case 'ratings':
-        switchToNextTabIfDataIsValid(project.projectRatings, ratingsSchema);
-        break;
     }
   };
 
   const handleSubmitProject = async () => {
     const dataToSend = _.cloneDeep(project);
     cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-    const projectIsValid = await projectSchema.isValid(dataToSend);
-    if (projectIsValid) {
-      dispatch(updateProjectRecord(dataToSend));
-    }
+    dispatch(updateProjectRecord(dataToSend));
   };
 
   const projectWasSuccessfullyEdited =
@@ -135,7 +91,7 @@ const EditProjectsForm = ({
       )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
-        onOk={onNextButtonPress}
+        onOk={() => onChangeStep(tabValue + 1)}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
@@ -152,7 +108,7 @@ const EditProjectsForm = ({
             : undefined
         }
         extraButtonOnClick={() =>
-          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
         }
         body={
           <StyledFormContainer>
@@ -161,7 +117,7 @@ const EditProjectsForm = ({
                 stepperStepsTranslationIds.map((stepTranslationId, index) => (
                   <Step
                     key={index}
-                    onClick={() => setTabValue(index)}
+                    onClick={() => onChangeStep(index)}
                     sx={{ cursor: 'pointer' }}
                   >
                     <StepLabel>
