@@ -32,6 +32,6 @@ export const unitsSchema = yup.object().shape({
   unitRegistryLink: yup.string().required('Required Field'),
   correspondingAdjustmentDeclaration: yup.string().required('Required Field'),
   correspondingAdjustmentStatus: yup.string().required('Required Field'),
-  issuance: yup.object().optional(),
+  issuance: yup.object().optional().nullable(),
   labels: yup.array().of(labelSchema).optional(),
 });

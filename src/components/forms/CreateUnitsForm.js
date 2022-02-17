@@ -13,9 +13,10 @@ import { useIntl } from 'react-intl';
 import {
   unitsSchema,
   labelsSchema,
-  issuancesSchema,
+  issuanceSchema,
 } from '../../store/validations';
 import { UnitDetailsForm } from '.';
+import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -26,13 +27,11 @@ const StyledFormContainer = styled('div')`
 
 const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   const { notification } = useSelector(state => state.app);
-  const [newLabels, setNewLabels] = useState([]);
-  const [newIssuance, setNewIssuance] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const [newUnits, setNewUnits] = useState({
+  const [unit, setUnit] = useState({
     projectLocationId: '',
     unitOwner: '',
     countryJurisdictionOfOwner: '',
@@ -50,6 +49,8 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     unitStatus: '',
     correspondingAdjustmentDeclaration: '',
     correspondingAdjustmentStatus: '',
+    labels: [],
+    issuance: null,
   });
 
   const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
@@ -68,36 +69,21 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   const onNextButtonPress = async () => {
     switch (stepperStepsTranslationIds[tabValue]) {
       case 'unit':
-        switchToNextTabIfDataIsValid(newUnits, unitsSchema);
+        switchToNextTabIfDataIsValid(unit, unitsSchema);
         break;
       case 'labels':
-        switchToNextTabIfDataIsValid(newLabels, labelsSchema);
+        switchToNextTabIfDataIsValid(unit.labels, labelsSchema);
         break;
       case 'issuances':
-        switchToNextTabIfDataIsValid(newIssuance, issuancesSchema);
+        switchToNextTabIfDataIsValid(unit.issuance, issuanceSchema);
         break;
     }
   };
 
   const handleSubmitUnit = async () => {
-    const dataToSend = _.cloneDeep(newUnits);
-
-    Object.keys(dataToSend).forEach(el => {
-      if (!dataToSend[el]) {
-        delete dataToSend[el];
-      }
-    });
-
-    if (!_.isEmpty(newLabels)) {
-      dataToSend.labels = newLabels;
-    }
-
-    if (!_.isEmpty(newIssuance)) {
-      dataToSend.issuance = _.head(newIssuance);
-    }
-
+    const dataToSend = _.cloneDeep(unit);
+    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
     const isUnitValid = await unitsSchema.isValid(dataToSend);
-
     if (isUnitValid) {
       dispatch(postNewUnits(dataToSend));
     }
@@ -161,24 +147,29 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
               value={tabValue}
               index={0}
             >
-              <UnitDetailsForm
-                unitDetails={newUnits}
-                setUnitDetails={setNewUnits}
-              />
+              <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
               <LabelsRepeater
-                labelsState={newLabels}
-                newLabelsState={setNewLabels}
+                labelsState={unit?.labels ?? []}
+                newLabelsState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    labels: value,
+                  }))
+                }
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <IssuanceRepeater
                 max={1}
-                issuanceState={
-                  Array.isArray(newIssuance) ? newIssuance : [newIssuance]
+                issuanceState={unit.issuance ? [unit.issuance] : []}
+                newIssuanceState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    issuance: value[0],
+                  }))
                 }
-                newIssuanceState={setNewIssuance}
               />
             </TabPanel>
           </StyledFormContainer>
