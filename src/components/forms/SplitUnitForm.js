@@ -73,11 +73,11 @@ const SplitUnitForm = ({ onClose, record }) => {
         unitOwnerOrgUid: yup.string().nullable(),
       }),
     )
-    .test(
-      'test array elements sum',
-      'units do not add up',
-      value => value[0].unitCount + value[1].unitCount === fullRecord.unitCount,
-    );
+    .test({
+      message: 'units do not add up',
+      test: value =>
+        value[0].unitCount + value[1].unitCount === fullRecord.unitCount,
+    });
 
   const onSubmit = () => {
     validationSchema

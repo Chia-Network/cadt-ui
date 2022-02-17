@@ -239,8 +239,6 @@ const Units = withRouter(() => {
         'serialNumberBlock',
         'serialNumberPattern',
         'vintageYear',
-        'issuance',
-        'labels',
         'marketplace',
         'marketplaceLink',
         'marketplaceIdentifier',
@@ -388,7 +386,8 @@ const Units = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

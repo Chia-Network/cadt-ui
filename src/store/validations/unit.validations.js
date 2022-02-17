@@ -8,7 +8,14 @@ export const unitsSchema = yup.object().shape({
   inCountryJurisdictionOfOwner: yup.string().optional(),
   serialNumberBlock: yup
     .string()
-    .matches(/[.*\D]+[0-9]+[-][.*\D]+[0-9]+$/, 'Invalid Serial Number')
+    .test({
+      message: 'Add serial number that corresponds to pattern',
+      test: function (value) {
+        const reg = new RegExp(this.options.parent.serialNumberPattern);
+        const isValid = reg.test(value);
+        return isValid;
+      },
+    })
     .required('Required Field'),
   serialNumberPattern: yup.string().required('Required Field'),
   vintageYear: yup
@@ -32,6 +39,6 @@ export const unitsSchema = yup.object().shape({
   unitRegistryLink: yup.string().required('Required Field'),
   correspondingAdjustmentDeclaration: yup.string().required('Required Field'),
   correspondingAdjustmentStatus: yup.string().required('Required Field'),
-  issuance: yup.object().optional(),
+  issuance: yup.object().optional().nullable(),
   labels: yup.array().of(labelSchema).optional(),
 });

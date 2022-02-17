@@ -3,7 +3,7 @@ import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import styled, { css } from 'styled-components';
-import { formatDate } from '../../utils/formatDate';
+import { formatDate } from '../../utils/formatData';
 
 const InputContainer = styled('div')`
   display: flex;

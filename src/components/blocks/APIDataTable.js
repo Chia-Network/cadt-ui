@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
@@ -175,10 +174,9 @@ const APIDataTable = withTheme(
                         <TableCellText
                           tooltip={
                             record[key] &&
-                            `${_.get(
-                              climateWarehouseStore,
-                              `organizations[${record[key]}].name`,
-                            )}: ${record[key].toString()}`
+                            `${convertPascalCaseToSentenceCase(key)}: ${record[
+                              key
+                            ].toString()}`
                           }
                         >
                           {key === 'orgUid' &&
@@ -196,6 +194,7 @@ const APIDataTable = withTheme(
 
                           {key !== 'orgUid' &&
                             record[key] &&
+                            record[key] !== 'null' &&
                             record[key].toString()}
                         </TableCellText>
                       </Td>
