@@ -15,6 +15,7 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   H3,
@@ -118,7 +119,7 @@ const PendingMessageContainer = styled('div')`
   gap: 20px;
 `;
 
-const Units = withRouter(({ setPendingError }) => {
+const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const { notification } = useSelector(store => store.app);
@@ -315,7 +316,7 @@ const Units = withRouter(({ setPendingError }) => {
                   ) {
                     setCreate(true);
                   } else {
-                    setPendingError(true);
+                    dispatch(setPendingError(true));
                   }
                 }}
               />
@@ -383,7 +384,7 @@ const Units = withRouter(({ setPendingError }) => {
                             ) {
                               setCreate(true);
                             } else {
-                              setPendingError(true);
+                              dispatch(setPendingError(true));
                             }
                           }}
                         >
