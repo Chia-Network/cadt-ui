@@ -51,9 +51,12 @@ const HomeOrgUidContainer = styled('div')`
 
 const Dashboard = withTheme(({ children }) => {
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
-  const homeOrgUid = Object.values(climateWarehouseStore.organizations).filter(
-    org => org.isHome != false,
-  )[0]?.orgUid;
+
+  const homeOrgUid =
+    climateWarehouseStore?.organizations &&
+    Object.values(climateWarehouseStore.organizations).filter(
+      org => org.isHome != false,
+    )[0]?.orgUid;
 
   return (
     <Main>
