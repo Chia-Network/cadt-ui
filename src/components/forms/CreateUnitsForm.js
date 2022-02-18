@@ -10,11 +10,7 @@ import IssuanceRepeater from './IssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
-import {
-  unitsSchema,
-  labelsSchema,
-  issuanceSchema,
-} from '../../store/validations';
+import { unitsSchema } from '../../store/validations';
 import { UnitDetailsForm } from '.';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
@@ -55,38 +51,21 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
 
   const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
 
-  const switchToNextTabIfDataIsValid = async (data, schema) => {
-    const isValid = await schema.isValid(data);
-    if (isValid) {
-      if (stepperStepsTranslationIds[tabValue] === 'issuances') {
+  const onChangeStep = async (desiredStep = null) => {
+    const isUnitValid = await unitsSchema.isValid(unit);
+    if (isUnitValid) {
+      if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitUnit();
       } else {
-        setTabValue(tabValue + 1);
+        setTabValue(desiredStep);
       }
-    }
-  };
-
-  const onNextButtonPress = async () => {
-    switch (stepperStepsTranslationIds[tabValue]) {
-      case 'unit':
-        switchToNextTabIfDataIsValid(unit, unitsSchema);
-        break;
-      case 'labels':
-        switchToNextTabIfDataIsValid(unit.labels, labelsSchema);
-        break;
-      case 'issuances':
-        switchToNextTabIfDataIsValid(unit.issuance, issuanceSchema);
-        break;
     }
   };
 
   const handleSubmitUnit = async () => {
     const dataToSend = _.cloneDeep(unit);
     cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-    const isUnitValid = await unitsSchema.isValid(dataToSend);
-    if (isUnitValid) {
-      dispatch(postNewUnits(dataToSend));
-    }
+    dispatch(postNewUnits(dataToSend));
   };
 
   const unitWasSuccessfullyCreated =
@@ -105,7 +84,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
       )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
-        onOk={onNextButtonPress}
+        onOk={() => onChangeStep(tabValue + 1)}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
@@ -122,7 +101,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
             : undefined
         }
         extraButtonOnClick={() =>
-          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
         }
         body={
           <StyledFormContainer>
@@ -131,7 +110,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                 stepperStepsTranslationIds.map((step, index) => (
                   <Step
                     key={index}
-                    onClick={() => setTabValue(index)}
+                    onClick={() => onChangeStep(index)}
                     sx={{ cursor: 'pointer' }}
                   >
                     <StepLabel>
@@ -167,7 +146,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                 newIssuanceState={value =>
                   setUnit(prev => ({
                     ...prev,
-                    issuance: value[0],
+                    issuance: value[0] ? value[0] : null,
                   }))
                 }
               />

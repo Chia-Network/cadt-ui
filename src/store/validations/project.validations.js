@@ -32,7 +32,7 @@ export const projectSchema = yup.object().shape({
   validationDate: yup.date().typeError('Invalid Date').optional(),
 
   labels: yup.array().of(labelSchema).optional(),
-  issuance: yup.array().of(issuanceSchema).optional(),
+  issuances: yup.array().of(issuanceSchema).optional(),
   coBenefits: yup.array().of(coBenefitSchema).optional(),
   projectLocations: yup.array().of(locationSchema).optional(),
   relatedProjects: yup.array().of(relatedProjectSchema).optional(),
