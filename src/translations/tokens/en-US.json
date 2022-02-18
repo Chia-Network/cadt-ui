@@ -292,5 +292,7 @@
   "staging-group-deleted": "The staging group was successfully deleted.",
   "project-locations": "Project Locations",
   "estimations": "Estimations",
-  "ratings": "Ratings"
+  "ratings": "Ratings",
+  "project-detailed-view": "Project Detailed View",
+  "unit-detailed-view": "Unit Detailed View"
 }

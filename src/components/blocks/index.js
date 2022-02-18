@@ -26,3 +26,5 @@ export * from './LocalMessage';
 export * from './UploadCSV';
 export * from './StagingDataGroups';
 export * from './ToolTipContainer';
+export * from './DetailedViewModal';
+export * from './DetailedViewTab';

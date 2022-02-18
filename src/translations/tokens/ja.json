@@ -261,5 +261,7 @@
   "staging-group-could-not-be-deleted": "ステージンググループを削除できませんでした。",
   "staging-group-deleted": "ステージンググループは正常に削除されました。",
   "estimations": "見積もり",
-  "ratings": "評価"
+  "ratings": "評価",
+  "project-detailed-view": "プロジェクトの詳細図",
+  "unit-detailed-view": "ユニット詳細図"
 }

@@ -5,7 +5,7 @@ import styled, { withTheme, css } from 'styled-components';
 
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { TableDrawer, APIPagination, Message } from '.';
+import { APIPagination, DetailedViewModal, Message } from '.';
 import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
@@ -266,7 +266,14 @@ const APIDataTable = withTheme(
             </StyledPaginationContainer>
           </StyledScalableContainer>
         </StyledRefContainer>
-        <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
+        {getRecord && (actions === 'Units' || actions === 'Projects') && (
+          <DetailedViewModal
+            onClose={() => setRecord(null)}
+            modalSizeAndPosition={modalSizeAndPosition}
+            type={actions.toLowerCase()}
+            record={getRecord}
+          />
+        )}
         {actions === 'Units' && editRecord && (
           <EditUnitsForm
             onClose={() => {
