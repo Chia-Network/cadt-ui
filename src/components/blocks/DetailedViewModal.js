@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, modalTypeEnum, Tab, Tabs, TabPanel } from '..';
 import { useIntl } from 'react-intl';
@@ -30,20 +30,28 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
             )[0],
         );
 
-  const recordTabsWithEntries = fullRecord
-    ? Object.keys(fullRecord).filter(
-        key => Array.isArray(fullRecord[key]) && fullRecord[key].length > 0,
-      )
-    : [];
+  const recordTabsWithEntries = useMemo(
+    () =>
+      fullRecord
+        ? Object.keys(fullRecord).filter(
+            key => Array.isArray(fullRecord[key]) && fullRecord[key].length > 0,
+          )
+        : [],
+    [fullRecord],
+  );
 
-  const recordDetails = fullRecord
-    ? Object.keys(fullRecord)
-        .filter(key => typeof fullRecord[key] !== 'object')
-        .reduce((acc, cur) => {
-          acc[cur] = fullRecord[cur];
-          return acc;
-        }, {})
-    : {};
+  const recordDetails = useMemo(
+    () =>
+      fullRecord
+        ? Object.keys(fullRecord)
+            .filter(key => typeof fullRecord[key] !== 'object')
+            .reduce((acc, cur) => {
+              acc[cur] = fullRecord[cur];
+              return acc;
+            }, {})
+        : {},
+    [fullRecord],
+  );
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
