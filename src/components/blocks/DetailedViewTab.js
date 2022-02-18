@@ -27,7 +27,13 @@ const DetailedViewTabItem = ({ entry }) => {
     <StyledDetailedViewTabItem>
       {Object.keys(entry).map(
         (entryProp, index) =>
-          !['orgUid', 'warehouseProjectId', 'id'].includes(entryProp) && (
+          ![
+            'orgUid',
+            'warehouseProjectId',
+            'id',
+            'createdAt',
+            'updatedAt',
+          ].includes(entryProp) && (
             <div key={index}>
               <Body size="Bold">
                 {convertPascalCaseToSentenceCase(entryProp)}
