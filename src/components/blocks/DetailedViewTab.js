@@ -33,6 +33,7 @@ const DetailedViewTabItem = ({ entry }) => {
             'id',
             'createdAt',
             'updatedAt',
+            'label_unit',
           ].includes(entryProp) && (
             <div key={index}>
               <Body size="Bold">
