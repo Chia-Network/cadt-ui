@@ -146,7 +146,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                 newIssuanceState={value =>
                   setUnit(prev => ({
                     ...prev,
-                    issuance: value[0],
+                    issuance: value[0] ? value[0] : null,
                   }))
                 }
               />
