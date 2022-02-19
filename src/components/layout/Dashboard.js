@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { LeftNav, LocaleSwitcher, Body } from '..';
@@ -52,11 +52,14 @@ const HomeOrgUidContainer = styled('div')`
 const Dashboard = withTheme(({ children }) => {
   const climateWarehouseStore = useSelector(state => state.climateWarehouse);
 
-  const homeOrgUid =
-    climateWarehouseStore?.organizations &&
-    Object.values(climateWarehouseStore.organizations).filter(
-      org => org.isHome != false,
-    )[0]?.orgUid;
+  const homeOrgUid = useMemo(
+    () =>
+      climateWarehouseStore?.organizations &&
+      Object.values(climateWarehouseStore.organizations).filter(
+        org => org.isHome != false,
+      )[0]?.orgUid,
+    [climateWarehouseStore.organizations],
+  );
 
   return (
     <Main>

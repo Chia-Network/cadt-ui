@@ -48,8 +48,8 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     methodology: '',
     projectTags: '',
     validationBody: '',
-    projectStatusDate: '',
-    validationDate: '',
+    projectStatusDate: null,
+    validationDate: null,
   });
 
   const stepperStepsTranslationIds = [
