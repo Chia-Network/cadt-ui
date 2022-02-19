@@ -10,10 +10,10 @@ export const actions = keyMirror(
   'SET_GLOBAL_ERROR_MESSAGE',
   'CLEAR_GLOBAL_ERROR_MESSAGE',
   'SET_LOCALE',
-  'TOGGLE_MODE',
   'CONNECTION_CHECK',
   'RESET_REFRESH_PROMPT',
   'SET_NOTIFICATION',
+  'PENDING_ERROR',
 );
 
 export const resetRefreshPrompt = {
@@ -37,10 +37,6 @@ export const toggleTheme = {
   type: actions.TOGGLE_THEME,
 };
 
-export const toggleMode = {
-  type: actions.TOGGLE_MODE,
-};
-
 export const setGlobalErrorMessage = message => ({
   type: actions.SET_GLOBAL_ERROR_MESSAGE,
   payload: message,
@@ -52,6 +48,11 @@ export const clearGlobalErrorMessage = {
 
 export const setConnectionCheck = bool => ({
   type: actions.CONNECTION_CHECK,
+  payload: bool,
+});
+
+export const setPendingError = bool => ({
+  type: actions.PENDING_ERROR,
   payload: bool,
 });
 
@@ -74,12 +75,12 @@ export const setNotificationMessage = (type, id) => {
           type,
         },
       });
-    } 
+    }
     if (type === null) {
       dispatch({
         type: actions.SET_NOTIFICATION,
-        payload: null
-      })
+        payload: null,
+      });
     }
   };
 };

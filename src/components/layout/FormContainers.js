@@ -1,5 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
-
+import { FormattedMessage } from 'react-intl';
+import { Body } from '../../components';
 
 export const ModalFormContainerStyle = styled('div')`
   width: 100%;
@@ -14,11 +16,51 @@ export const ModalFormContainerStyle = styled('div')`
 export const FormContainerStyle = styled('div')`
   display: flex;
   justify-content: flex-start;
-  width: 90%;
+  gap: 2.5rem;
 `;
 
 export const BodyContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  padding-right: 4.125rem;
+`;
+
+export const StyledLabelContainer = styled('div')`
+  margin-bottom: 0.5rem;
+  body {
+    color: #262626;
+  }
+`;
+
+export const LabelContainer = styled('div')`
+  display: inline;
+  margin-right: 7px;
+`;
+
+export const StyledFieldContainer = styled('div')`
+  padding-bottom: 1.25rem;
+`;
+
+export const InputContainer = styled('div')`
+  width: 20rem;
+`;
+
+export const StyledFieldRequired = styled('div')`
+  height: 35px;
+`;
+
+export const FieldRequired = () => {
+  return (
+    <StyledFieldRequired>
+      <Body size="Small" color="red">
+        *<FormattedMessage id="required-field" />
+      </Body>
+    </StyledFieldRequired>
+  );
+};
+
+export const StyledFormContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
 `;

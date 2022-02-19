@@ -25,3 +25,7 @@ export * from './MinusIcon';
 export * from './DownloadIcon';
 export * from './EllipsisMenuIcon';
 export * from './UploadIcon';
+export * from './WarehouseIcon';
+export * from './RegistryIcon';
+export * from './DescriptionIcon';
+export * from './AddIconCircle';

@@ -150,10 +150,11 @@ const DataTable = withTheme(({ headings, data, actions }) => {
               <tr>
                 {headings.map((heading, index) => (
                   <Th
-                    start={index === 0}
-                    end={!actions && index === headings.length - 1}
+                    start={index === 0 ? 1 : 0}
+                    end={!actions && index === headings.length - 1 ? 1 : 0}
                     selectedTheme={appStore.theme}
-                    key={index}>
+                    key={index}
+                  >
                     <TableCellHeaderText>
                       {convertPascalCaseToSentenceCase(heading)}
                     </TableCellHeaderText>
@@ -161,10 +162,11 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                 ))}
                 {actions && (
                   <Th
-                    start={false}
-                    end={true}
+                    start={0}
+                    end={1}
                     selectedTheme={appStore.theme}
-                    key={'action'}>
+                    key={'action'}
+                  >
                     <TableCellHeaderText>Action</TableCellHeaderText>
                   </Th>
                 )}
@@ -178,9 +180,11 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                       <Td
                         onClick={() => setRecord(record)}
                         selectedTheme={appStore.theme}
-                        key={index}>
+                        key={index}
+                      >
                         <TableCellText
-                          tooltip={record[key] && record[key].toString()}>
+                          tooltip={record[key] && record[key].toString()}
+                        >
                           {record[key] && record[key].toString()}
                         </TableCellText>
                       </Td>
@@ -193,7 +197,8 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                           setEditUnits(true);
                           setEditRecord(record);
                         }}
-                        selectedTheme={appStore.theme}>
+                        selectedTheme={appStore.theme}
+                      >
                         <BasicMenu />
                       </Td>
                     )}
@@ -204,7 +209,8 @@ const DataTable = withTheme(({ headings, data, actions }) => {
                           setEditProjects(true);
                           setEditRecord(record);
                         }}
-                        selectedTheme={appStore.theme}>
+                        selectedTheme={appStore.theme}
+                      >
                         <BasicMenu />
                       </Td>
                     )}
@@ -230,7 +236,6 @@ const DataTable = withTheme(({ headings, data, actions }) => {
             setEditUnits(false);
             setEditRecord(null);
           }}
-          data={editRecord}
         />
       )}
       {editProjects && (

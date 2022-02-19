@@ -1,11 +1,13 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/csvUtils';
 import constants from '../../constants';
+import { getUpdatedUrl } from '../../utils/urlUtils';
+import { useWindowSize } from '../../components/hooks/useWindowSize';
 
 import {
   getStagingData,
@@ -13,6 +15,7 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   H3,
@@ -27,30 +30,30 @@ import {
   Tab,
   Tabs,
   TabPanel,
-  StagingDataTable,
+  StagingDataGroups,
   SelectOrganizations,
   Message,
   UploadCSV,
+  Alert,
 } from '../../components';
 
 const headings = [
+  'projectLocationId',
+  'unitOwner',
   'countryJurisdictionOfOwner',
   'inCountryJurisdictionOfOwner',
   'serialNumberBlock',
-  'unitIdentifier',
-  'unitType',
-  'intendedBuyerOrgUid',
+  'serialNumberPattern',
   'marketplace',
-  'tags',
-  'unitStatus',
-  'unitTransactionType',
-  'unitStatusReason',
-  'tokenIssuanceHash',
+  'marketplaceLink',
   'marketplaceIdentifier',
-  'unitsIssuanceLocation',
+  'unitTags',
+  'unitStatusReason',
+  'vintageYear',
   'unitRegistryLink',
-  'unitMarketplaceLink',
-  'cooresponingAdjustmentDeclaration',
+  'unitType',
+  'unitStatus',
+  'correspondingAdjustmentDeclaration',
   'correspondingAdjustmentStatus',
 ];
 
@@ -109,28 +112,81 @@ const StyledCSVOperationsContainer = styled('div')`
   gap: 20px;
 `;
 
+const PendingMessageContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+`;
+
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification, mode } = useSelector(store => store.app);
+  const { notification } = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
+  let searchParams = new URLSearchParams(history.location.search);
+  const unitsContainerRef = useRef(null);
+  const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
+  const windowSize = useWindowSize();
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
+  useEffect(() => {
+    const switchTabBySuccessfulRequest = {
+      'unit-deleted': 1,
+      'unit-successfully-created': 1,
+      'unit-successfully-edited': 1,
+      'unit-successfully-split': 1,
+      'transactions-committed': 2,
+    };
+    if (switchTabBySuccessfulRequest[notification?.id]) {
+      setTabValue(switchTabBySuccessfulRequest[notification.id]);
+    }
+  }, [notification]);
+
+  useEffect(() => {
+    if (unitsContainerRef && unitsContainerRef.current) {
+      setModalSizeAndPosition({
+        left: unitsContainerRef.current.getBoundingClientRect().x,
+        top: unitsContainerRef.current.getBoundingClientRect().y,
+        width: unitsContainerRef.current.getBoundingClientRect().width,
+        height: unitsContainerRef.current.getBoundingClientRect().height,
+      });
+    }
+  }, [
+    unitsContainerRef,
+    unitsContainerRef.current,
+    windowSize.height,
+    windowSize.width,
+  ]);
+
+  const pageIsMyRegistryPage =
+    searchParams.has('myRegistry') && searchParams.get('myRegistry') === 'true';
+
   const onSearch = useMemo(
     () =>
       _.debounce(event => {
         if (event.target.value !== '') {
-          history.replace({ search: `search=${event.target.value}` });
+          history.replace({
+            search: getUpdatedUrl(window.location.search, {
+              param: 'search',
+              value: event.target.value,
+            }),
+          });
         } else {
-          history.replace({ search: null });
+          history.replace({
+            search: getUpdatedUrl(window.location.search, {
+              param: 'search',
+              value: null,
+            }),
+          });
         }
         setSearchQuery(event.target.value);
       }, 300),
@@ -155,40 +211,50 @@ const Units = withRouter(() => {
     if (selectedOrganization && selectedOrganization !== 'all') {
       options.orgUid = selectedOrganization;
     }
+    if (pageIsMyRegistryPage) {
+      options.orgUid = searchParams.get('orgUid');
+    }
     dispatch(getPaginatedData(options));
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, [dispatch, tabValue, searchQuery, selectedOrganization]);
+  }, [
+    dispatch,
+    tabValue,
+    searchQuery,
+    selectedOrganization,
+    pageIsMyRegistryPage,
+  ]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
       return null;
     }
 
-    return climateWarehouseStore.units.map(project =>
-      _.pick(project, [
+    return climateWarehouseStore.units.map(unit =>
+      _.pick(unit, [
         'warehouseUnitId',
+        'projectLocationId',
+        'unitOwner',
         'countryJurisdictionOfOwner',
         'inCountryJurisdictionOfOwner',
         'serialNumberBlock',
-        'unitIdentifier',
-        'unitType',
-        'intendedBuyerOrgUid',
+        'serialNumberPattern',
+        'vintageYear',
         'marketplace',
-        'tags',
-        'unitStatus',
-        'unitTransactionType',
-        'unitStatusReason',
-        'tokenIssuanceHash',
+        'marketplaceLink',
         'marketplaceIdentifier',
-        'unitsIssuanceLocation',
+        'unitTags',
+        'unitStatus',
+        'unitStatusReason',
+        'unitType',
         'unitRegistryLink',
         'unitMarketplaceLink',
-        'correspondingAdjustmentDeclaration',
         'correspondingAdjustmentStatus',
+        'correspondingAdjustmentDeclaration',
+        'electedCorrespondingAdjustmentStatus',
         'unitCount',
       ]),
     );
-  }, [climateWarehouseStore.units, mode]);
+  }, [climateWarehouseStore.units]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -196,18 +262,22 @@ const Units = withRouter(() => {
 
   const onCommit = () => {
     dispatch(commitStagingData());
-    setTabValue(2);
   };
 
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrganization(orgUid);
-    history.replace({ search: `orgUid=${orgUid}` });
+    history.replace({
+      search: getUpdatedUrl(window.location.search, {
+        param: 'orgUid',
+        value: orgUid,
+      }),
+    });
   };
 
   return (
     <>
-      <StyledSectionContainer>
+      <StyledSectionContainer ref={unitsContainerRef}>
         <StyledHeaderContainer>
           <StyledSearchContainer>
             <SearchInput
@@ -217,7 +287,7 @@ const Units = withRouter(() => {
               outline
             />
           </StyledSearchContainer>
-          {tabValue === 0 && (
+          {tabValue === 0 && !pageIsMyRegistryPage && (
             <StyledFiltersContainer>
               <SelectOrganizations
                 size={SelectSizeEnum.large}
@@ -230,12 +300,25 @@ const Units = withRouter(() => {
             </StyledFiltersContainer>
           )}
           <StyledButtonContainer>
-            {tabValue === 0 && (
+            {tabValue === 0 && pageIsMyRegistryPage && (
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
-                onClick={() => setCreate(true)}
+                onClick={() => {
+                  if (
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.units.pending,
+                    ) &&
+                    _.isEmpty(
+                      climateWarehouseStore.stagingData.projects.pending,
+                    )
+                  ) {
+                    setCreate(true);
+                  } else {
+                    dispatch(setPendingError(true));
+                  }
+                }}
               />
             )}
             {tabValue === 1 &&
@@ -251,26 +334,32 @@ const Units = withRouter(() => {
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
-            <Tab
-              label={`${intl.formatMessage({ id: 'staging' })} (${
-                climateWarehouseStore.stagingData &&
-                climateWarehouseStore.stagingData.units.staging.length
-              })`}
-            />
-            <Tab
-              label={`${intl.formatMessage({ id: 'pending' })} (${
-                climateWarehouseStore.stagingData &&
-                climateWarehouseStore.stagingData.units.pending.length
-              })`}
-            />
+            {pageIsMyRegistryPage && (
+              <Tab
+                label={`${intl.formatMessage({ id: 'staging' })} (${
+                  climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.staging.length
+                })`}
+              />
+            )}
+            {pageIsMyRegistryPage && (
+              <Tab
+                label={`${intl.formatMessage({ id: 'pending' })} (${
+                  climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.pending.length
+                })`}
+              />
+            )}
           </Tabs>
           <StyledCSVOperationsContainer>
             <span onClick={() => downloadTxtFile(climateWarehouseStore.units)}>
               <DownloadIcon />
             </span>
-            <span>
-              <UploadCSV type="units" />
-            </span>
+            {pageIsMyRegistryPage && (
+              <span>
+                <UploadCSV type="units" />
+              </span>
+            )}
           </StyledCSVOperationsContainer>
         </StyledSubHeaderContainer>
         <StyledBodyContainer>
@@ -279,14 +368,32 @@ const Units = withRouter(() => {
               climateWarehouseStore.units.length === 0 && (
                 <NoDataMessageContainer>
                   <H3>
-                    {!searchQuery && (
+                    {!searchQuery && pageIsMyRegistryPage && (
                       <>
-                        <FormattedMessage id="no-projects-created" />
+                        <FormattedMessage id="no-units-created" />
                         <StyledCreateOneNowContainer
-                          onClick={() => setCreate(true)}>
+                          onClick={() => {
+                            if (
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.units.pending,
+                              ) &&
+                              _.isEmpty(
+                                climateWarehouseStore.stagingData.projects
+                                  .pending,
+                              )
+                            ) {
+                              setCreate(true);
+                            } else {
+                              dispatch(setPendingError(true));
+                            }
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
+                    )}
+                    {!searchQuery && !pageIsMyRegistryPage && (
+                      <FormattedMessage id="no-search-results" />
                     )}
                     {searchQuery && <FormattedMessage id="no-search-results" />}
                   </H3>
@@ -298,45 +405,75 @@ const Units = withRouter(() => {
                   <APIDataTable
                     headings={Object.keys(filteredColumnsTableData[0])}
                     data={filteredColumnsTableData}
-                    actions="Units"
+                    actions={'Units'}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                    actionsAreDisplayed={pageIsMyRegistryPage}
                   />
                 </>
               )}
-            {create && <CreateUnitsForm onClose={() => setCreate(false)} />}
-          </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            {climateWarehouseStore.stagingData &&
-              climateWarehouseStore.stagingData.units.staging.length === 0 && (
-                <NoDataMessageContainer>
-                  <H3>
-                    <FormattedMessage id="no-staged" />
-                  </H3>
-                </NoDataMessageContainer>
-              )}
-            {climateWarehouseStore.stagingData && (
-              <StagingDataTable
-                headings={headings}
-                data={climateWarehouseStore.stagingData.units.staging}
-                deleteStagingData={uuid => dispatch(deleteStagingData(uuid))}
+            {create && (
+              <CreateUnitsForm
+                onClose={() => setCreate(false)}
+                modalSizeAndPosition={modalSizeAndPosition}
               />
             )}
           </TabPanel>
-          <TabPanel value={tabValue} index={2}>
-            {climateWarehouseStore.stagingData &&
-              climateWarehouseStore.stagingData.units.pending.length === 0 && (
-                <NoDataMessageContainer>
-                  <H3>
-                    <FormattedMessage id="no-pending" />
-                  </H3>
-                </NoDataMessageContainer>
-              )}
-            {climateWarehouseStore.stagingData && (
-              <StagingDataTable
-                headings={headings}
-                data={climateWarehouseStore.stagingData.units.pending}
-              />
-            )}
-          </TabPanel>
+          {pageIsMyRegistryPage && (
+            <>
+              <TabPanel value={tabValue} index={1}>
+                {climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.staging.length ===
+                    0 && (
+                    <NoDataMessageContainer>
+                      <H3>
+                        <FormattedMessage id="no-staged" />
+                      </H3>
+                    </NoDataMessageContainer>
+                  )}
+                {climateWarehouseStore.stagingData && (
+                  <StagingDataGroups
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.units.staging}
+                    deleteStagingData={uuid =>
+                      dispatch(deleteStagingData(uuid))
+                    }
+                  />
+                )}
+              </TabPanel>
+              <TabPanel value={tabValue} index={2}>
+                {climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.pending.length ===
+                    0 && (
+                    <NoDataMessageContainer>
+                      <H3>
+                        <FormattedMessage id="no-pending" />
+                      </H3>
+                    </NoDataMessageContainer>
+                  )}
+                {climateWarehouseStore.stagingData && (
+                  <>
+                    <PendingMessageContainer>
+                      <Alert
+                        type="info"
+                        showIcon
+                        alertTitle={intl.formatMessage({ id: 'pending-info' })}
+                        alertBody={intl.formatMessage({
+                          id: 'pending-stuck-info',
+                        })}
+                      />
+                    </PendingMessageContainer>
+                    <StagingDataGroups
+                      headings={headings}
+                      data={climateWarehouseStore.stagingData.units.pending}
+                      deleteStagingData={uuid =>
+                        dispatch(deleteStagingData(uuid))
+                      }
+                    />
+                  </>
+                )}
+              </TabPanel>
+            </>
+          )}
         </StyledBodyContainer>
       </StyledSectionContainer>
       {notification && (

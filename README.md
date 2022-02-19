@@ -7,6 +7,7 @@ Auxillery App for the Climate Warehouse
 ### Installation
 
 ```
+npm install -g react-scripts
 git clone git@github.com:Chia-Network/climate-warehouse-ui.git
 cd climate-warehouse-ui
 nvm install 16.0.0

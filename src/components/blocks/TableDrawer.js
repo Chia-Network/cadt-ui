@@ -1,30 +1,34 @@
 import { Drawer } from '@mui/material';
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
-import { CloseIconWithBorder, H4, Subtitle } from '..';
+import { CloseIconWithBorder, Body, SuccessIcon, ErrorIcon } from '..';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 
 const drawerStyles = {
   marginTop: '70px',
   width: '340px',
-  height: '806px',
+  height: '80%',
 };
 
 const IconContainer = styled('div')`
-  align-self: flex-end;
-  margin-top: 17px;
-  margin-right: 24px;
+  top: 17px;
+  right: 24px;
+  position: absolute;
+  background-color: white;
+  cursor: pointer;
 `;
 const TableContentContainer = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
-  width: 260px;
+  width: 100%;
+  padding: 20px 30px 20px 20px;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-self: center;
+  box-sizing: border-box;
 `;
 
 const TableContent = styled('div')`
@@ -32,31 +36,99 @@ const TableContent = styled('div')`
   flex-direction: column;
   justify-content: space-evenly;
   width: 100%;
+  padding: 7px 0px 7px 0px;
+  box-sizing: border-box;
+  body {
+    word-wrap: break-word;
+  }
 `;
 
-const TableDrawer = withTheme(({ getRecord, onClose }) => {
+const StyledDetails = styled('div')`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  ${props => props.isGreen && `body {color: #52C41A}`};
+  ${props => props.isRed && `body {color: #f5222d}`};
+`;
+
+const StyledValuesContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  body {
+    width: 90%;
+  }
+  gap: 4px;
+`;
+
+const TableDrawer = withTheme(({ drawerRecord, drawerUpdates, onClose }) => {
+  const updatesAreVisible = drawerUpdates && drawerUpdates.length > 0;
+  const splitIsVisible = drawerUpdates && drawerUpdates.length > 1;
+
   return (
     <Drawer
       PaperProps={{ sx: drawerStyles }}
       anchor="right"
-      open={getRecord ? true : false}
-      onClose={onClose}>
+      open={drawerRecord ? true : false}
+      onClose={onClose}
+    >
       <IconContainer onClick={onClose}>
         <CloseIconWithBorder height="21" width="21" />
       </IconContainer>
       <TableContentContainer>
-        {getRecord &&
-          Object.entries(getRecord)
-            .filter(value => !Array.isArray(getRecord[value[0]]))
-            .map((value) => {
+        {drawerRecord &&
+          Object.entries(drawerRecord)
+            .filter(
+              unfilteredKeyValuePair =>
+                !Array.isArray(drawerRecord[unfilteredKeyValuePair[0]]) &&
+                unfilteredKeyValuePair[0] !== 'unitBlockEnd' &&
+                unfilteredKeyValuePair[0] !== 'unitBlockStart' &&
+                typeof unfilteredKeyValuePair[1] !== 'object',
+            )
+            .map(keyValuePair => {
               return (
-                <>
-                  <TableContent key={value}>
-                    <H4>{convertPascalCaseToSentenceCase(value[0])}</H4>
+                <TableContent key={keyValuePair}>
+                  <Body size="Small Bold">
+                    {convertPascalCaseToSentenceCase(keyValuePair[0])}
+                  </Body>
+                  {updatesAreVisible &&
+                    keyValuePair[1] !== drawerUpdates[0][keyValuePair[0]] && (
+                      <StyledValuesContainer>
+                        <StyledDetails isRed>
+                          <ErrorIcon width="17" height="17" />
+                          <Body>
+                            {keyValuePair[1] ? keyValuePair[1] : '--'}
+                          </Body>
+                        </StyledDetails>
 
-                    <Subtitle>{JSON.stringify(value[1])}</Subtitle>
-                  </TableContent>
-                </>
+                        <StyledDetails isGreen>
+                          <SuccessIcon width="17" height="17" />
+                          <Body>
+                            {drawerUpdates[0][keyValuePair[0]]
+                              ? drawerUpdates[0][keyValuePair[0]]
+                              : '--'}
+                          </Body>
+                        </StyledDetails>
+
+                        {splitIsVisible && (
+                          <StyledDetails isGreen>
+                            <SuccessIcon width="17" height="17" />
+                            <Body>
+                              {drawerUpdates[1][keyValuePair[0]]
+                                ? drawerUpdates[1][keyValuePair[0]]
+                                : '--'}
+                            </Body>
+                          </StyledDetails>
+                        )}
+                      </StyledValuesContainer>
+                    )}
+                  {(!updatesAreVisible ||
+                    keyValuePair[1] === drawerUpdates[0][keyValuePair[0]]) && (
+                    <StyledDetails>
+                      <Body>{keyValuePair[1] ? keyValuePair[1] : '--'}</Body>
+                    </StyledDetails>
+                  )}
+                </TableContent>
               );
             })}
       </TableContentContainer>

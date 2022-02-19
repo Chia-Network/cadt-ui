@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import styled, { withTheme } from 'styled-components';
+import styled, { withTheme, css } from 'styled-components';
 import { CircularProgress } from '@mui/material';
 import { ButtonText } from '../typography';
 
@@ -27,10 +27,6 @@ const Button = styled('button')`
     background-color: ${props => (props.danger ? '#FF7875' : '#40A9FF')};
   }
 
-  &:focus {
-    background-color: ${props => (props.danger ? '#FF7875' : '#40A9FF')};
-  }
-
   &:active {
     background-color: ${props => (props.danger ? '#F5222D' : '#096DD9')};
   }
@@ -48,17 +44,55 @@ const Button = styled('button')`
     box-sizing: border-box;
     cursor: default;
   }
+
+  ${props => {
+    if (props.type === 'default') {
+      if (props.loading) {
+        return `
+          background-color: white;
+          :hover, :active {
+            background-color: white;
+          };
+          h4 { color: #BFBFBF };
+          border: 1px solid #e5e5e5;
+        `;
+      }
+      return css`
+        background-color: white;
+        :hover,
+        :active {
+          background-color: white;
+        }
+
+        border: 1px solid #e5e5e5;
+        :active {
+          border: 1px solid #096dd9;
+        }
+
+        h4 {
+          color: #262626;
+        }
+        h4:hover {
+          color: #40a9ff;
+        }
+        h4:active {
+          color: #096dd9;
+        }
+      `;
+    }
+  }};
 `;
 
 const PrimaryButton = withTheme(
   ({
     label,
-    loading = false,
+    loading,
     icon,
     size,
-    danger = false,
+    danger,
     disabled,
     onClick,
+    type = 'primary',
   }) => {
     const appStore = useSelector(state => state.app);
     return (
@@ -67,8 +101,10 @@ const PrimaryButton = withTheme(
         disabled={disabled}
         size={size}
         danger={danger}
+        type={type}
         selectedTheme={appStore.theme}
-        onClick={onClick}>
+        onClick={onClick}
+      >
         {loading && (
           <>
             <CircularProgress size={15} thickness={5} />

@@ -1,658 +1,223 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { Stepper, Step, StepLabel } from '@mui/material';
 import {
-  StandardInput,
-  InputSizeEnum,
-  InputStateEnum,
   Modal,
-  Body,
-  Tabs,
-  Tab,
   TabPanel,
-  ModalFormContainerStyle,
-  FormContainerStyle,
-  BodyContainer,
+  Message,
+  EstimationsRepeater,
+  RatingsRepeater,
+  modalTypeEnum,
+  StyledFormContainer,
 } from '..';
-import QualificationsRepeater from './QualificationsRepeater';
-import VintageRepeater from './VintageRepeater';
+import LabelsRepeater from './LabelsRepeater';
+import IssuanceRepeater from './IssuanceRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
-import ProjectLocationsRepeater from './ProjectLocationsRepeater';
+import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
-import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
+import { useIntl } from 'react-intl';
+import { ProjectDetailsForm } from '.';
 
-const StyledLabelContainer = styled('div')`
-  margin-bottom: 0.5rem;
-`;
+import { projectSchema } from '../../store/validations';
+import {
+  formatAPIData,
+  cleanObjectFromEmptyFieldsOrArrays,
+} from '../../utils/formatData';
 
-const StyledFieldContainer = styled('div')`
-  padding-bottom: 1.25rem;
-`;
-const InputContainer = styled('div')`
-  width: 20rem;
-`;
-
-const EditProjectsForm = ({ data, onClose }) => {
-  const [qualifications, setQualificationsRepeaterValues] = useState([]);
-  const [vintage, setVintage] = useState([]);
-  const [projectLocations, setProjectLocations] = useState([]);
-  const [relatedProjects, setRelatedProjects] = useState([]);
-  const [coBenefits, setCoBenefits] = useState([]);
-  const [editedProjects, setEditProjects] = useState({});
+const EditProjectsForm = ({
+  onClose,
+  record,
+  modalSizeAndPosition = { modalSizeAndPosition },
+}) => {
+  const projectToBeEdited = useSelector(
+    state =>
+      state.climateWarehouse.projects.filter(
+        project => project.warehouseProjectId === record.warehouseProjectId,
+      )[0],
+  );
+  const [project, setProject] = useState({});
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
+  const { notification } = useSelector(state => state.app);
 
   useEffect(() => {
-    setEditProjects({
-      registryOfOrigin: data.registryOfOrigin,
-      originProjectId: data.originProjectId,
-      program: data.program,
-      projectId: data.projectId,
-      projectName: data.projectName,
-      projectLink: data.projectLink,
-      projectDeveloper: data.projectDeveloper,
-      sector: data.sector,
-      projectType: data.projectType,
-      coveredByNDC: data.coveredByNDC,
-      NDCLinkage: data.NDCLinkage,
-      projectStatus: data.projectStatus,
-      projectStatusDate: data.projectStatusDate,
-      unitMetric: data.unitMetric,
-      methodology: data.methodology,
-      methodologyVersion: data.methodologyVersion,
-      validationApproach: data.validationApproach,
-      validationDate: data.validationDate,
-      estimatedAnnualAverageEmissionReduction:
-        data.estimatedAnnualAverageEmissionReduction,
-      projectTag: data.projectTag,
-    });
-    setVintage(_.get(data, 'vintages', []));
-    setProjectLocations(_.get(data, 'projectLocations', []));
-    setCoBenefits(_.get(data, 'coBenefits', []));
-    setQualificationsRepeaterValues(_.get(data, 'qualifications', []));
-    setRelatedProjects(_.get(data, 'relatedProjects', []));
-  }, [data]);
+    const formattedProjectData = formatAPIData(projectToBeEdited);
+    setProject(formattedProjectData);
+  }, [projectToBeEdited]);
 
-  const handleEditUnits = () => {
-    const dataToSend = _.cloneDeep(editedProjects);
+  const stepperStepsTranslationIds = [
+    'project',
+    'labels',
+    'issuances',
+    'co-benefits',
+    'project-locations',
+    'related-projects',
+    'estimations',
+    'ratings',
+  ];
 
-    if (!_.isEmpty(vintage)) {
-      dataToSend.vintages = vintage;
+  const onChangeStep = async (desiredStep = null) => {
+    const isValid = await projectSchema.isValid(project);
+    if (isValid) {
+      if (desiredStep >= stepperStepsTranslationIds.length) {
+        handleSubmitProject();
+      } else {
+        setTabValue(desiredStep);
+      }
     }
-
-    if (!_.isEmpty(qualifications)) {
-      dataToSend.qualifications = qualifications;
-    }
-
-    if (!_.isEmpty(coBenefits)) {
-      dataToSend.coBenefits = coBenefits;
-    }
-
-    if (!_.isEmpty(projectLocations)) {
-      dataToSend.projectLocations = projectLocations;
-    }
-
-    if (!_.isEmpty(relatedProjects)) {
-      dataToSend.relatedProjects = relatedProjects;
-    }
-    dispatch(updateUnitsRecord(dataToSend));
   };
+
+  const handleSubmitProject = async () => {
+    const dataToSend = _.cloneDeep(project);
+    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
+    dispatch(updateProjectRecord(dataToSend));
+  };
+
+  const projectWasSuccessfullyEdited =
+    notification?.id === 'project-successfully-edited';
+  useEffect(() => {
+    if (projectWasSuccessfullyEdited) {
+      onClose();
+    }
+  }, [notification]);
+
   return (
     <>
+      {notification && !projectWasSuccessfullyEdited && (
+        <Message id={notification.id} type={notification.type} />
+      )}
       <Modal
-        onOk={handleEditUnits}
+        modalSizeAndPosition={modalSizeAndPosition}
+        onOk={() => onChangeStep(tabValue + 1)}
         onClose={onClose}
-        basic
-        form
-        showButtons
+        modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'edit-project',
         })}
+        label={intl.formatMessage({
+          id: tabValue < 7 ? 'next' : 'update-project',
+        })}
+        extraButtonLabel={
+          tabValue > 0
+            ? intl.formatMessage({
+                id: 'back',
+              })
+            : undefined
+        }
+        extraButtonOnClick={() =>
+          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
+        }
         body={
-          <div>
-            <Tabs value={tabValue} onChange={handleTabChange}>
-              <Tab
-                label={intl.formatMessage({
-                  id: 'project',
-                })}
-              />
-              <Tab
-                label={intl.formatMessage({
-                  id: 'qualifications',
-                })}
-              />
-              <Tab
-                label={intl.formatMessage({
-                  id: 'vintages',
-                })}
-              />
-              <Tab
-                label={intl.formatMessage({
-                  id: 'co-benefits',
-                })}
-              />
-              <Tab
-                label={intl.formatMessage({
-                  id: 'project-locations',
-                })}
-              />
-              <Tab
-                label={intl.formatMessage({
-                  id: 'related-projects',
-                })}
-              />
-            </Tabs>
+          <StyledFormContainer>
+            <Stepper activeStep={tabValue} alternativeLabel>
+              {stepperStepsTranslationIds &&
+                stepperStepsTranslationIds.map((stepTranslationId, index) => (
+                  <Step
+                    key={index}
+                    onClick={() => onChangeStep(index)}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <StepLabel>
+                      {intl.formatMessage({
+                        id: stepTranslationId,
+                      })}
+                    </StepLabel>
+                  </Step>
+                ))}
+            </Stepper>
             <div>
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
-                <ModalFormContainerStyle>
-                  <FormContainerStyle>
-                    <BodyContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="registry-of-origin" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'registry-of-origin',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.registryOfOrigin}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                registryOfOrigin: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="origin-project-id" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'origin-project-id',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.originProjectId}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                originProjectId: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="program" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'program',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.program}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                program: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="project-id" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <StandardInput
-                          size={InputSizeEnum.large}
-                          placeholderText={intl.formatMessage({
-                            id: 'project-id',
-                          })}
-                          state={InputStateEnum.default}
-                          value={editedProjects.projectId}
-                          onChange={value =>
-                            setEditProjects(prev => ({
-                              ...prev,
-                              projectId: value,
-                            }))
-                          }
-                        />
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="project-name" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-name',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectName}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                projectName: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="project-link" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-link',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectLink}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                projectLink: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="project-developer" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-developer',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectDeveloper}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                projectDeveloper: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="sector" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'sector',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.sector}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                sector: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="project-type" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <StandardInput
-                          size={InputSizeEnum.large}
-                          placeholderText={intl.formatMessage({
-                            id: 'project-type',
-                          })}
-                          state={InputStateEnum.default}
-                          value={editedProjects.projectType}
-                          onChange={value =>
-                            setEditProjects(prev => ({
-                              ...prev,
-                              projectType: value,
-                            }))
-                          }
-                        />
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="covered-by-ndc" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'covered-by-ndc',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.coveredByNDC}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                coveredByNDC: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                    </BodyContainer>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="ndc-linkage" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'ndc-linkage',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.NDCLinkage}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                NDCLinkage: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="project-status" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-status',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectStatus}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                projectStatus: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="project-status-date" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-status-date',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectStatusDate}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                projectStatusDate: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="unit-metric" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'unit-metric',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.unitMetric}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                unitMetric: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="methodology" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'methodology',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.methodology}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                methodology: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="methodology-version" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'methodology-version',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.methodologyVersion}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                methodologyVersion: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="validation-approach" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'validation-approach',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.validationApproach}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                validationApproach: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="validation-date" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'validation-date',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.validationDate}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                validationDate: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="estimated-annual-average-emission-reduction" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'estimated-annual-average-emission-reduction',
-                            })}
-                            state={InputStateEnum.default}
-                            value={
-                              editedProjects.estimatedAnnualAverageEmissionReduction
-                            }
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                estimatedAnnualAverageEmissionReduction: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                      <StyledFieldContainer>
-                        <StyledLabelContainer>
-                          <Body color={'#262626'}>
-                            <FormattedMessage id="project-tag" />
-                          </Body>
-                        </StyledLabelContainer>
-                        <InputContainer>
-                          <StandardInput
-                            size={InputSizeEnum.large}
-                            placeholderText={intl.formatMessage({
-                              id: 'project-tag',
-                            })}
-                            state={InputStateEnum.default}
-                            value={editedProjects.projectTag}
-                            onChange={value =>
-                              setEditProjects(prev => ({
-                                ...prev,
-                                projectTag: value,
-                              }))
-                            }
-                          />
-                        </InputContainer>
-                      </StyledFieldContainer>
-                    </div>
-                  </FormContainerStyle>
-                </ModalFormContainerStyle>
+                index={0}
+              >
+                <ProjectDetailsForm
+                  projectDetails={project}
+                  setProjectDetails={setProject}
+                />
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
-                <QualificationsRepeater
-                  qualificationsState={qualifications}
-                  newQualificationsState={setQualificationsRepeaterValues}
+                <LabelsRepeater
+                  labelsState={project?.labels ?? []}
+                  newLabelsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      labels: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <VintageRepeater
-                  vintageState={vintage}
-                  newVintageState={setVintage}
+                <IssuanceRepeater
+                  issuanceState={project?.issuances ?? []}
+                  newIssuanceState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      issuances: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
                 <CoBenefitsRepeater
-                  coBenefitsState={coBenefits}
-                  setNewCoBenefitsState={setCoBenefits}
+                  coBenefitsState={project?.coBenefits ?? []}
+                  setNewCoBenefitsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      coBenefits: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
-                <ProjectLocationsRepeater
-                  projectLocationsState={projectLocations}
-                  setProjectLocationsState={setProjectLocations}
+                <LocationsRepeater
+                  locationsState={project?.projectLocations ?? []}
+                  setLocationsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      projectLocations: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={5}>
                 <RelatedProjectsRepeater
-                  relatedProjectsState={relatedProjects}
-                  setRelatedProjectsState={setRelatedProjects}
+                  relatedProjectsState={project?.relatedProjects ?? []}
+                  setRelatedProjectsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      relatedProjects: value,
+                    }))
+                  }
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={6}>
+                <EstimationsRepeater
+                  estimationsState={project?.estimations ?? []}
+                  setEstimationsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      estimations: value,
+                    }))
+                  }
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={7}>
+                <RatingsRepeater
+                  ratingsState={project?.projectRatings ?? []}
+                  setRatingsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      projectRatings: value,
+                    }))
+                  }
                 />
               </TabPanel>
             </div>
-          </div>
+          </StyledFormContainer>
         }
       />
     </>

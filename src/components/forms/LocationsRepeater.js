@@ -1,23 +1,24 @@
 import React from 'react';
 import { AddIcon, CloseIcon } from '..';
-import { CreateProjectLocationsForm } from './CreateProjectLocationsForm';
+import { CreateLocationsForm } from './CreateLocationsForm';
 import { ComponentRepeater } from '..';
 
-function ProjectLocationsRepeater({
-  projectLocationsState,
-  setProjectLocationsState,
+function LocationsRepeater({
+  locationsState,
+  setLocationsState,
 }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
         maxRepetitions={100}
-        values={projectLocationsState}
-        updateValues={setProjectLocationsState}
+        values={locationsState}
+        updateValues={setLocationsState}
         initialValue={{
-            countryRegion: '',
-            country: '',
+          country: '',
+          inCountryRegion: '',
+          geographicIdentifier: '',
         }}
-        component={<CreateProjectLocationsForm />}
+        component={<CreateLocationsForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
         removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
       />
@@ -25,4 +26,4 @@ function ProjectLocationsRepeater({
   );
 }
 
-export default ProjectLocationsRepeater;
+export default LocationsRepeater;

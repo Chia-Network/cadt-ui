@@ -10,6 +10,7 @@ const StyledRepeatedComponentContainer = styled('div')`
   align-items: center;
   gap: 10px;
   margin: 20px 0;
+  ${props => !props.disabled && `cursor: pointer;`};
 `;
 
 const ComponentRepeater = ({
@@ -23,9 +24,9 @@ const ComponentRepeater = ({
 }) => {
   const addNewInstance = useCallback(() => {
     if (values.length < maxRepetitions) {
-      updateValues(prevValues =>
-        prevValues && prevValues.length
-          ? [...prevValues, _.cloneDeep(initialValue)]
+      updateValues(
+        values && values.length
+          ? [..._.cloneDeep(values), _.cloneDeep(initialValue)]
           : [_.cloneDeep(initialValue)],
       );
     }
@@ -34,18 +35,14 @@ const ComponentRepeater = ({
   const allInstances = useMemo(() => {
     return values.map((value, index) => {
       const onChange = value => {
-        updateValues(prevValues => {
-          const newValues = [...prevValues];
-          newValues[index] = _.cloneDeep(value);
-          return newValues;
-        });
+        const newValues = [...values];
+        newValues[index] = _.cloneDeep(value);
+        updateValues(newValues);
       };
       const onRemove = () => {
-        updateValues(prevValues => {
-          const newValues = [...prevValues];
-          newValues.splice(index, 1);
-          return newValues;
-        });
+        const newValues = [...values];
+        newValues.splice(index, 1);
+        updateValues(newValues);
       };
       const key = index;
       return (

@@ -10,10 +10,10 @@ const initialState = {
   theme: constants.THEME.DEFAULT,
   errorMessage: null,
   locale: null,
-  mode: constants.MODE.WAREHOUSE,
   connectionCheck: true,
   updateAvailablePleaseRefesh: false,
-  notification: null
+  notification: null,
+  pendingError: false,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -23,6 +23,7 @@ const appReducer = (state = initialState, action) => {
 
     case socketActions.SOCKET_UNITS_UPDATE:
     case socketActions.SOCKET_PROJECTS_UPDATE:
+    case socketActions.SOCKET_STAGING_UPDATE:
       return u({ updateAvailablePleaseRefesh: true }, state);
 
     case appActions.RESET_REFRESH_PROMPT:
@@ -43,6 +44,9 @@ const appReducer = (state = initialState, action) => {
     case appActions.SET_LOCALE:
       return u({ locale: action.payload }, state);
 
+    case appActions.PENDING_ERROR:
+      return u({ pendingError: action.payload }, state);
+
     case appActions.SET_THEME:
       if (
         action.payload === constants.THEME.LIGHT ||
@@ -60,15 +64,6 @@ const appReducer = (state = initialState, action) => {
           : constants.THEME.DARK;
       localStorage.setItem('theme', theme);
       return u({ theme }, state);
-
-    case appActions.TOGGLE_MODE:
-      // eslint-disable-next-line
-      const mode =
-        state.mode === constants.MODE.WAREHOUSE
-          ? constants.MODE.REGISTRY
-          : constants.MODE.WAREHOUSE;
-
-      return u({ mode }, state);
 
     case appActions.CONNECTION_CHECK:
       return u({ connectionCheck: action.payload }, state);

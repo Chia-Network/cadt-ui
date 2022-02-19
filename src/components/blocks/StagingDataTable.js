@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useIntl } from 'react-intl';
 import styled, { withTheme } from 'styled-components';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { Modal, MinusIcon } from '..';
+import { Modal, MinusIcon, modalTypeEnum } from '..';
 import { TableDrawer } from './';
 import { useWindowSize } from '../hooks/useWindowSize';
 
@@ -121,7 +122,8 @@ const ChangeGroupItem = ({
               style={{
                 textAlign: 'right',
                 paddingRight: '10px',
-              }}>
+              }}
+            >
               <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
                 <MinusIcon width={16} height={16} />
               </span>
@@ -153,7 +155,8 @@ const InvalidChangeGroup = ({ onDeleteStaging, appStore, headings }) => {
               style={{
                 textAlign: 'right',
                 paddingRight: '10px',
-              }}>
+              }}
+            >
               <span onClick={onDeleteStaging} style={{ cursor: 'pointer' }}>
                 <MinusIcon width={16} height={16} />
               </span>
@@ -173,6 +176,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
   const ref = useRef(null);
   const [height, setHeight] = useState(0);
   const windowSize = useWindowSize();
+  const intl = useIntl();
 
   const changeGroupIsValid = changeGroup => {
     if (!changeGroup.diff) {
@@ -235,7 +239,7 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
                       headings={headings}
                       appStore={appStore}
                       color={'red'}
-                      onClick={setRecord(changeGroup.diff.original)}
+                      onClick={() => setRecord(changeGroup.diff.original)}
                       onDeleteStaging={() => {
                         setDeleteUUID(changeGroup.uuid);
                         setDeleteFromStaging(true);
@@ -288,10 +292,13 @@ const StagingDataTable = withTheme(({ headings, data, deleteStagingData }) => {
         <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
         {deleteFromStaging && (
           <Modal
-            title="Notification"
-            body="Are you sure you want to delete"
-            showButtons
-            confirmation
+            title={intl.formatMessage({
+              id: 'notification',
+            })}
+            body={intl.formatMessage({
+              id: 'confirm-deletion',
+            })}
+            modalType={modalTypeEnum.confirmation}
             onClose={() => setDeleteFromStaging(false)}
             onOk={onDeleteStaging(deleteUUID)}
           />

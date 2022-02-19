@@ -36,6 +36,7 @@ export const actions = keyMirror(
   'GET_VINTAGES',
   'GET_STAGING_DATA',
   'GET_ORGANIZATIONS',
+  'GET_PICKLISTS',
 );
 
 const getClimateWarehouseTable = (
@@ -124,6 +125,47 @@ export const getOrganizationData = () => {
       }
     } catch {
       dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getPickLists = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    const tryToGetPickListsFromStorage = () => {
+      const fromStorage = localStorage.getItem('pickLists');
+      if (fromStorage) {
+        dispatch({
+          type: actions.GET_PICKLISTS,
+          payload: JSON.parse(fromStorage),
+        });
+      } else {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+      }
+    };
+
+    try {
+      const response = await fetch(
+        `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
+      );
+
+      if (response.ok) {
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_PICKLISTS,
+          payload: results,
+        });
+
+        localStorage.setItem('pickLists', JSON.stringify(results));
+      } else {
+        tryToGetPickListsFromStorage();
+      }
+    } catch {
+      tryToGetPickListsFromStorage();
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -273,14 +315,118 @@ export const deleteStagingData = uuid => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
-        console.log('yay!');
-        dispatch(setGlobalErrorMessage(null));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'staging-group-deleted',
+          ),
+        );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(setGlobalErrorMessage('Staging group could not be deleted'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'staging-group-could-not-be-deleted',
+          ),
+        );
       }
     } catch {
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'staging-group-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteUnit = warehouseUnitId => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/units`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ warehouseUnitId }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-deleted',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-could-not-be-deleted',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteProject = warehouseProjectId => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/projects`;
+      const payload = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ warehouseProjectId }),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'project-deleted',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'project-could-not-be-deleted',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'project-could-not-be-deleted',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -332,6 +478,142 @@ export const postNewProject = data => {
   };
 };
 
+export const updateProjectRecord = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/projects`;
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'project-successfully-edited',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'project-could-not-be-edited',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'project-could-not-be-edited',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const postNewOrg = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, payload);
+
+      if (response.ok) {
+        dispatch(getOrganizationData());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-created',
+          ),
+        );
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'organization-not-created',
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'organization-not-created',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const uploadCSVFile = (file, type) => {
+  return async dispatch => {
+    if (type === 'projects' || type === 'units') {
+      try {
+        dispatch(activateProgressIndicator);
+
+        const formData = new FormData();
+        formData.append('csv', file);
+        const url = `${constants.API_HOST}/${type}/batch`;
+        const payload = {
+          method: 'POST',
+          body: formData,
+        };
+
+        const response = await fetch(url, payload);
+
+        if (response.ok) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.success,
+              'upload-successful',
+            ),
+          );
+          dispatch(getStagingData({ useMockedResponse: false }));
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'file-could-not-be-uploaded',
+            ),
+          );
+        }
+      } catch {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'file-could-not-be-uploaded',
+          ),
+        );
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
+    }
+  };
+};
+
 export const postNewUnits = data => {
   return async dispatch => {
     try {
@@ -365,7 +647,6 @@ export const postNewUnits = data => {
         );
       }
     } catch (err) {
-      console.log(err);
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -401,7 +682,6 @@ export const splitUnits = data => {
           ),
         );
         dispatch(getStagingData({ useMockedResponse: false }));
-        console.log('yay!');
       } else {
         dispatch(
           setNotificationMessage(
@@ -411,7 +691,6 @@ export const splitUnits = data => {
         );
       }
     } catch (err) {
-      console.log(err);
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -441,13 +720,28 @@ export const updateUnitsRecord = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
-        console.log('yay!');
-        dispatch(setGlobalErrorMessage(null));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'unit-successfully-edited',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(setGlobalErrorMessage('Unit could not be created'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'unit-could-not-be-edited',
+          ),
+        );
       }
     } catch {
-      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'unit-could-not-be-edited',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }

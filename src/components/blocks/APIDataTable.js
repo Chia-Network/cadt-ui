@@ -1,19 +1,18 @@
-import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
 
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { TableDrawer, APIPagination, Message } from '.';
-import { EllipsisMenuIcon, BasicMenu } from '..';
+import { APIPagination, DetailedViewModal, Message } from '.';
+import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
+import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
 import {
-  EditUnitsForm,
-  EditProjectsForm,
-  SplitUnitForm,
-} from '..';
+  deleteProject,
+  deleteUnit,
+} from '../../store/actions/climateWarehouseActions';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -111,68 +110,75 @@ const StyledScalableContainer = styled('div')`
     `}
 `;
 
-const APIDataTable = withTheme(({ headings, data, actions }) => {
-  const [getRecord, setRecord] = useState(null);
-  const [editRecord, setEditRecord] = useState(null);
-  const [unitToBeSplit, setUnitToBeSplit] = useState(null);
-  const { theme, notification} = useSelector(state => state.app);
-  const climateWarehouseStore = useSelector(state => state.climateWarehouse);
-  const ref = React.useRef(null);
-  const [height, setHeight] = React.useState(0);
-  const windowSize = useWindowSize();
-  const intl = useIntl();
+const APIDataTable = withTheme(
+  ({ headings, data, actions, modalSizeAndPosition, actionsAreDisplayed }) => {
+    const [getRecord, setRecord] = useState(null);
+    const [editRecord, setEditRecord] = useState(null);
+    const [unitToBeSplit, setUnitToBeSplit] = useState(null);
+    const { theme, notification } = useSelector(state => state.app);
+    const climateWarehouseStore = useSelector(state => state.climateWarehouse);
+    const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
+    const ref = React.useRef(null);
+    const [height, setHeight] = React.useState(0);
+    const windowSize = useWindowSize();
+    const intl = useIntl();
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    setHeight(windowSize.height - ref.current.getBoundingClientRect().top - 20);
-  }, [ref.current, windowSize.height]);
+    useEffect(() => {
+      setHeight(
+        windowSize.height - ref.current.getBoundingClientRect().top - 20,
+      );
+    }, [ref.current, windowSize.height]);
 
-  return (
-    <>
-      <StyledRefContainer ref={ref}>
-        <StyledScalableContainer height={`${height}px`}>
-          <Table selectedTheme={theme}>
-            <THead selectedTheme={theme}>
-              <tr>
-                {headings.map((heading, index) => (
-                  <Th
-                    start={index === 0}
-                    end={!actions && index === headings.length - 1}
-                    selectedTheme={theme}
-                    key={index}>
-                    <TableCellHeaderText>
-                      {heading === 'orgUid' && 'Organization'}
-                      {heading !== 'orgUid' &&
-                        convertPascalCaseToSentenceCase(heading)}
-                    </TableCellHeaderText>
-                  </Th>
-                ))}
-                {actions && (
-                  <Th
-                    start={false}
-                    end={true}
-                    selectedTheme={theme}
-                    key={'action'}></Th>
-                )}
-              </tr>
-            </THead>
-            <tbody style={{ position: 'relative' }}>
-              {data.map((record, index) => (
-                <>
+    return (
+      <>
+        <StyledRefContainer ref={ref}>
+          <StyledScalableContainer height={`${height}px`}>
+            <Table selectedTheme={theme}>
+              <THead selectedTheme={theme}>
+                <tr>
+                  {headings.map((heading, index) => (
+                    <Th
+                      start={index === 0 ? 1 : 0}
+                      end={!actions && index === headings.length - 1 ? 1 : 0}
+                      selectedTheme={theme}
+                      key={index}
+                    >
+                      <TableCellHeaderText>
+                        {heading === 'orgUid' && 'Organization'}
+                        {heading !== 'orgUid' &&
+                          convertPascalCaseToSentenceCase(heading)}
+                      </TableCellHeaderText>
+                    </Th>
+                  ))}
+                  {actionsAreDisplayed && actions && (
+                    <Th
+                      start={0}
+                      end={1}
+                      selectedTheme={theme}
+                      key={'action'}
+                    ></Th>
+                  )}
+                </tr>
+              </THead>
+              <tbody style={{ position: 'relative' }}>
+                {data.map((record, index) => (
                   <Tr index={index} selectedTheme={theme} key={index}>
                     {Object.keys(record).map((key, index) => (
                       <Td
                         onClick={() => setRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
-                        key={index}>
+                        key={index}
+                      >
                         <TableCellText
                           tooltip={
                             record[key] &&
-                            `${_.get(
-                              climateWarehouseStore,
-                              `organizations[${record[key]}].name`,
-                            )}: ${record[key].toString()}`
-                          }>
+                            `${convertPascalCaseToSentenceCase(key)}: ${record[
+                              key
+                            ].toString()}`
+                          }
+                        >
                           {key === 'orgUid' &&
                             climateWarehouseStore.organizations[
                               record[key]
@@ -188,14 +194,14 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
 
                           {key !== 'orgUid' &&
                             record[key] &&
+                            record[key] !== 'null' &&
                             record[key].toString()}
                         </TableCellText>
                       </Td>
                     ))}
-                    {actions === 'Units' && (
-                      <Td
-                        style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}>
+
+                    {actionsAreDisplayed && actions === 'Units' && (
+                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
@@ -212,61 +218,115 @@ const APIDataTable = withTheme(({ headings, data, actions }) => {
                               }),
                               action: () => setUnitToBeSplit(record),
                             },
+                            {
+                              label: intl.formatMessage({
+                                id: 'delete-unit',
+                              }),
+                              action: () =>
+                                setConfirmDeletionModal({
+                                  warehouseUnitId: record.warehouseUnitId,
+                                }),
+                            },
                           ]}
                         />
                       </Td>
                     )}
-                    {actions === 'Projects' && (
-                      <Td
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          setEditRecord(record);
-                        }}
-                        selectedTheme={theme}>
-                        <EllipsisMenuIcon />
+
+                    {actionsAreDisplayed && actions === 'Projects' && (
+                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
+                        <BasicMenu
+                          options={[
+                            {
+                              label: intl.formatMessage({
+                                id: 'edit-project',
+                              }),
+                              action: () => {
+                                setEditRecord(record);
+                              },
+                            },
+                            {
+                              label: intl.formatMessage({
+                                id: 'delete-project',
+                              }),
+                              action: () =>
+                                setConfirmDeletionModal({
+                                  warehouseProjectId: record.warehouseProjectId,
+                                }),
+                            },
+                          ]}
+                        />
                       </Td>
                     )}
                   </Tr>
-                </>
-              ))}
-            </tbody>
-          </Table>
-          {(actions === 'Projects' || actions === 'Units') && (
+                ))}
+              </tbody>
+            </Table>
             <StyledPaginationContainer>
               <APIPagination actions={actions} />
             </StyledPaginationContainer>
-          )}
-        </StyledScalableContainer>
-      </StyledRefContainer>
-      <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
-      {actions === 'Units' && editRecord && (
-        <EditUnitsForm
-          onClose={() => {
-            setEditRecord(null);
-          }}
-          data={editRecord}
-        />
-      )}
-      {actions === 'Projects' && editRecord && (
-        <EditProjectsForm
-          onClose={() => {
-            setEditRecord(null);
-          }}
-          data={editRecord}
-        />
-      )}
-      {unitToBeSplit && (
-        <SplitUnitForm
-          organizations={climateWarehouseStore.organizations}
-          onClose={() => setUnitToBeSplit(null)}
-          record={unitToBeSplit}
-        />
-      )}
-      {
-        notification && <Message type={notification.type} id={notification.id} />
-      }
-    </>
-  );
-});
+          </StyledScalableContainer>
+        </StyledRefContainer>
+        {getRecord && (actions === 'Units' || actions === 'Projects') && (
+          <DetailedViewModal
+            onClose={() => setRecord(null)}
+            modalSizeAndPosition={modalSizeAndPosition}
+            type={actions.toLowerCase()}
+            record={getRecord}
+          />
+        )}
+        {actions === 'Units' && editRecord && (
+          <EditUnitsForm
+            onClose={() => {
+              setEditRecord(null);
+            }}
+            record={editRecord}
+            modalSizeAndPosition={modalSizeAndPosition}
+          />
+        )}
+        {actions === 'Projects' && editRecord && (
+          <EditProjectsForm
+            onClose={() => {
+              setEditRecord(null);
+            }}
+            record={editRecord}
+            modalSizeAndPosition={modalSizeAndPosition}
+          />
+        )}
+        {unitToBeSplit && (
+          <SplitUnitForm
+            organizations={climateWarehouseStore.organizations}
+            onClose={() => setUnitToBeSplit(null)}
+            record={unitToBeSplit}
+          />
+        )}
+        {confirmDeletionModal && (
+          <Modal
+            title={intl.formatMessage({
+              id: 'notification',
+            })}
+            body={intl.formatMessage({
+              id: 'confirm-deletion',
+            })}
+            modalType={modalTypeEnum.confirmation}
+            onClose={() => setConfirmDeletionModal(null)}
+            onOk={() => {
+              if (confirmDeletionModal.warehouseProjectId) {
+                dispatch(
+                  deleteProject(confirmDeletionModal.warehouseProjectId),
+                );
+              } else if (confirmDeletionModal.warehouseUnitId) {
+                dispatch(deleteUnit(confirmDeletionModal.warehouseUnitId));
+              }
+              setConfirmDeletionModal(null);
+            }}
+          />
+        )}
+        {notification && (
+          <Message type={notification.type} id={notification.id} />
+        )}
+      </>
+    );
+  },
+);
 
 export { APIDataTable };

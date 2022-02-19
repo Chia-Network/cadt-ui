@@ -3,6 +3,7 @@ import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import styled, { css } from 'styled-components';
+import { formatDate } from '../../utils/formatData';
 
 const InputContainer = styled('div')`
   display: flex;
@@ -71,7 +72,13 @@ const DateSelect = ({
         label="Select time"
         value={dateValue}
         onChange={newValue => {
-          setDateValue(newValue);
+          if (newValue) {
+            setDateValue(
+              formatDate(`${newValue.$M + 1}/${newValue.$D}/${newValue.$y}`),
+            );
+          } else {
+            setDateValue(null);
+          }
         }}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
@@ -79,7 +86,8 @@ const DateSelect = ({
               size={size}
               ref={divElement}
               disabled={disabled}
-              tabIndex={0}>
+              tabIndex={0}
+            >
               <Input
                 ref={inputRef}
                 {...inputProps}
