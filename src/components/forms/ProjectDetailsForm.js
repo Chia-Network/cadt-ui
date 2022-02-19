@@ -108,6 +108,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
 
   useEffect(() => {
     setValidationErrors(projectSchema, projectDetails, setErrorIssuanceMessage);
+    console.log(projectDetails);
   }, [projectDetails]);
 
   return (
@@ -603,7 +604,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="project-status-date" />
+                  *<FormattedMessage id="project-status-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({

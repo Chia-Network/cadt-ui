@@ -28,8 +28,8 @@ export const projectSchema = yup.object().shape({
   methodology: yup.string().required('Required Field'),
   projectTags: yup.string().optional(),
   validationBody: yup.string().optional(),
-  projectStatusDate: yup.date().typeError('Invalid Date').optional(),
-  validationDate: yup.date().typeError('Invalid Date').optional(),
+  projectStatusDate: yup.date().typeError('Invalid Date'),
+  validationDate: yup.date().typeError('Invalid Date').optional().nullable(),
 
   labels: yup.array().of(labelSchema).optional(),
   issuances: yup.array().of(issuanceSchema).optional(),

@@ -76,6 +76,8 @@ const DateSelect = ({
             setDateValue(
               formatDate(`${newValue.$M + 1}/${newValue.$D}/${newValue.$y}`),
             );
+          } else {
+            setDateValue(null);
           }
         }}
         renderInput={({ inputRef, inputProps, InputProps }) => {
