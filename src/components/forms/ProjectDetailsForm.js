@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -17,14 +17,14 @@ import {
   ToolTipContainer,
   LabelContainer,
   FieldRequired,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  SelectStateEnum,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
   StyledFieldRequired,
-  Select,
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
+  SimpleSelect,
 } from '..';
 
 import { projectSchema } from '../../store/validations';
@@ -33,78 +33,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
-
-  const selectCoveredByNDCOptions = useMemo(
-    () =>
-      pickLists.coveredByNDC.map(coveredByNDCItem => ({
-        value: coveredByNDCItem,
-        label: coveredByNDCItem,
-      })),
-    [pickLists],
-  );
-
-  const selectUnitMetricOptions = useMemo(
-    () =>
-      pickLists.unitMetric.map(unitMetricItem => ({
-        value: unitMetricItem,
-        label: unitMetricItem,
-      })),
-    [pickLists],
-  );
-
-  const selectProjectTypeOptions = useMemo(
-    () =>
-      pickLists.projectType.map(projectTypeItem => ({
-        value: projectTypeItem,
-        label: projectTypeItem,
-      })),
-    [pickLists],
-  );
-
-  const selectMethodologyOptions = useMemo(
-    () =>
-      pickLists.methodology.map(methodologyItem => ({
-        value: methodologyItem,
-        label: methodologyItem,
-      })),
-    [pickLists],
-  );
-
-  const selectProjectSectorOptions = useMemo(
-    () =>
-      pickLists.projectSector.map(projectSectorItem => ({
-        value: projectSectorItem,
-        label: projectSectorItem,
-      })),
-    [pickLists],
-  );
-
-  const selectProjectStatusValuesOptions = useMemo(
-    () =>
-      pickLists.projectStatusValues.map(projectStatusValuesItem => ({
-        value: projectStatusValuesItem,
-        label: projectStatusValuesItem,
-      })),
-    [pickLists],
-  );
-
-  const selectRegistriesOptions = useMemo(
-    () =>
-      pickLists.registries.map(registriesItem => ({
-        value: registriesItem,
-        label: registriesItem,
-      })),
-    [pickLists],
-  );
-
-  const selectValidationBodyOptions = useMemo(
-    () =>
-      pickLists.validationBody.map(validationBodyItem => ({
-        value: validationBodyItem,
-        label: validationBodyItem,
-      })),
-    [pickLists],
-  );
 
   useEffect(() => {
     setValidationErrors(projectSchema, projectDetails, setErrorIssuanceMessage);
@@ -132,25 +60,20 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectRegistriesOptions}
-                state={SelectStateEnum.default}
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.registries}
+                state={SimpleSelectStateEnum.default}
                 selected={
                   projectDetails.registryOfOrigin
-                    ? [
-                        {
-                          label: projectDetails.registryOfOrigin,
-                          value: projectDetails.registryOfOrigin,
-                        },
-                      ]
+                    ? [projectDetails.registryOfOrigin]
                     : undefined
                 }
                 onChange={selectedOptions =>
                   setProjectDetails(prev => ({
                     ...prev,
-                    registryOfOrigin: selectedOptions[0].value,
+                    registryOfOrigin: selectedOptions[0],
                   }))
                 }
               />
@@ -397,25 +320,18 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectProjectSectorOptions}
-                state={SelectStateEnum.default}
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.projectSector}
+                state={SimpleSelectStateEnum.default}
                 selected={
-                  projectDetails.sector
-                    ? [
-                        {
-                          label: projectDetails.sector,
-                          value: projectDetails.sector,
-                        },
-                      ]
-                    : undefined
+                  projectDetails.sector ? [projectDetails.sector] : undefined
                 }
                 onChange={selectedOptions =>
                   setProjectDetails(prev => ({
                     ...prev,
-                    sector: selectedOptions[0].value,
+                    sector: selectedOptions[0],
                   }))
                 }
               />
@@ -441,25 +357,20 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
-            <Select
-              size={SelectSizeEnum.large}
-              type={SelectTypeEnum.basic}
-              options={selectProjectTypeOptions}
-              state={SelectStateEnum.default}
+            <SimpleSelect
+              size={SimpleSelectSizeEnum.large}
+              type={SimpleSelectTypeEnum.basic}
+              options={pickLists.projectType}
+              state={SimpleSelectStateEnum.default}
               selected={
                 projectDetails.projectType
-                  ? [
-                      {
-                        label: projectDetails.projectType,
-                        value: projectDetails.projectType,
-                      },
-                    ]
+                  ? [projectDetails.projectType]
                   : undefined
               }
               onChange={selectedOptions =>
                 setProjectDetails(prev => ({
                   ...prev,
-                  projectType: selectedOptions[0].value,
+                  projectType: selectedOptions[0],
                 }))
               }
             />
@@ -488,25 +399,20 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectCoveredByNDCOptions}
-                state={SelectStateEnum.default}
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.coveredByNDC}
+                state={SimpleSelectStateEnum.default}
                 selected={
                   projectDetails.coveredByNDC
-                    ? [
-                        {
-                          label: projectDetails.coveredByNDC,
-                          value: projectDetails.coveredByNDC,
-                        },
-                      ]
+                    ? [projectDetails.coveredByNDC]
                     : undefined
                 }
                 onChange={selectedOptions =>
                   setProjectDetails(prev => ({
                     ...prev,
-                    coveredByNDC: selectedOptions[0].value,
+                    coveredByNDC: selectedOptions[0],
                   }))
                 }
               />
@@ -571,25 +477,20 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectProjectStatusValuesOptions}
-                state={SelectStateEnum.default}
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.projectStatusValues}
+                state={SimpleSelectStateEnum.default}
                 selected={
                   projectDetails.projectStatus
-                    ? [
-                        {
-                          label: projectDetails.projectStatus,
-                          value: projectDetails.projectStatus,
-                        },
-                      ]
+                    ? [projectDetails.projectStatus]
                     : undefined
                 }
                 onChange={selectedOptions =>
                   setProjectDetails(prev => ({
                     ...prev,
-                    projectStatus: selectedOptions[0].value,
+                    projectStatus: selectedOptions[0],
                   }))
                 }
               />
@@ -649,25 +550,20 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectUnitMetricOptions}
-                state={SelectStateEnum.default}
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.unitMetric}
+                state={SimpleSelectStateEnum.default}
                 selected={
                   projectDetails.unitMetric
-                    ? [
-                        {
-                          label: projectDetails.unitMetric,
-                          value: projectDetails.unitMetric,
-                        },
-                      ]
+                    ? [projectDetails.unitMetric]
                     : undefined
                 }
                 onChange={selectedOptions =>
                   setProjectDetails(prev => ({
                     ...prev,
-                    unitMetric: selectedOptions[0].value,
+                    unitMetric: selectedOptions[0],
                   }))
                 }
               />
@@ -694,25 +590,20 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectMethodologyOptions}
-                state={SelectStateEnum.default}
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.methodology}
+                state={SimpleSelectStateEnum.default}
                 selected={
                   projectDetails.methodology
-                    ? [
-                        {
-                          label: projectDetails.methodology,
-                          value: projectDetails.methodology,
-                        },
-                      ]
+                    ? [projectDetails.methodology]
                     : undefined
                 }
                 onChange={selectedOptions =>
                   setProjectDetails(prev => ({
                     ...prev,
-                    methodology: selectedOptions[0].value,
+                    methodology: selectedOptions[0],
                   }))
                 }
               />
@@ -772,25 +663,20 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectValidationBodyOptions}
-                state={SelectStateEnum.default}
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.validationBody}
+                state={SimpleSelectStateEnum.default}
                 selected={
                   projectDetails.validationBody
-                    ? [
-                        {
-                          label: projectDetails.validationBody,
-                          value: projectDetails.validationBody,
-                        },
-                      ]
+                    ? [projectDetails.validationBody]
                     : undefined
                 }
                 onChange={selectedOptions =>
                   setProjectDetails(prev => ({
                     ...prev,
-                    validationBody: selectedOptions[0].value,
+                    validationBody: selectedOptions[0],
                   }))
                 }
               />
