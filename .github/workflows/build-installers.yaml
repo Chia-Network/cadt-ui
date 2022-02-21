@@ -81,7 +81,7 @@ jobs:
         env:
           CSC_LINK: ${{ secrets.WIN_CODE_SIGN_CERT }}
           CSC_KEY_PASSWORD: ${{ secrets.WIN_CODE_SIGN_PASSWORD }}
-        run: npm run electron:package:windows
+        run: npm run electron:package:win
 
       - name: Upload Windows Installer
         uses: actions/upload-artifact@v2
