@@ -265,5 +265,6 @@
   "project-detailed-view": "プロジェクトの詳細図",
   "unit-detailed-view": "ユニット詳細図",
   "select-existing-issuance": "既存の問題を選択します",
-  "select-existing-issuance-description": "既存の問題を選択するか、新しい問題を作成します。"
+  "select-existing-issuance-description": "既存の問題を選択するか、新しい問題を作成します。",
+  "all-issuance-units": "この発行に属するユニット"
 }

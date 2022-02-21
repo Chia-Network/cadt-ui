@@ -892,7 +892,7 @@ export const mockUnitsResponse = {
 };
 
 export const getUnits = options => {
-  const url = options.searchQuery
+  const url = options?.searchQuery
     ? `${constants.API_HOST}/units?search=${options.searchQuery}`
     : `${constants.API_HOST}/units`;
 

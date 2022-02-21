@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
+
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { Body } from '../../components';
+import { getUnits } from '../../store/actions/climateWarehouseActions';
 
 const StyledDetailedViewTabItem = styled('div')`
   background: #fafafa;
@@ -23,6 +27,26 @@ const StyledDetailedViewTab = styled('div')`
 `;
 
 const DetailedViewTabItem = ({ entry }) => {
+  const { units } = useSelector(store => store.climateWarehouse);
+  const dispatch = useDispatch();
+
+  const isIssuance =
+    entry?.verificationApproach && entry?.verificationBody && entry?.id;
+
+  useEffect(() => {
+    if (isIssuance) {
+      dispatch(getUnits({ useMockedResponse: false, useApiMock: false }));
+    }
+  }, []);
+
+  const allUnitsWithThisIssuance = useMemo(
+    () =>
+      isIssuance && units
+        ? units.filter(unit => unit.issuance.id === entry.id)
+        : null,
+    [units],
+  );
+
   return (
     <StyledDetailedViewTabItem>
       {Object.keys(entry).map(
@@ -44,6 +68,19 @@ const DetailedViewTabItem = ({ entry }) => {
               </Body>
             </div>
           ),
+      )}
+      {isIssuance && (
+        <div>
+          <Body size="Bold">
+            <FormattedMessage id="all-issuance-units" />
+          </Body>
+          {allUnitsWithThisIssuance &&
+            allUnitsWithThisIssuance.map((unit, index) => (
+              <Body key={index}>{`${index + 1} : ${
+                unit.warehouseUnitId
+              }`}</Body>
+            ))}
+        </div>
       )}
     </StyledDetailedViewTabItem>
   );

@@ -272,5 +272,6 @@
   "project-detailed-view": "Vista detallada del proyecto",
   "unit-detailed-view": "Vista detallada de la unidad",
   "select-existing-issuance": "Seleccione una emisión existente",
-  "select-existing-issuance-description": "Seleccione una emisión existente o cree una nueva."
+  "select-existing-issuance-description": "Seleccione una emisión existente o cree una nueva.",
+  "all-issuance-units": "Unidades pertenecientes a esta emisión"
 }
