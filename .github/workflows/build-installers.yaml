@@ -59,3 +59,32 @@ jobs:
         with:
           name: mac-installer
           path: ${{ github.workspace }}/dist/*.dmg
+
+  build_windows:
+    name: Build Windows Installer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '16.x'
+
+      - name: npm install
+        run: |
+          node --version
+          npm install
+
+      - name: Build electron app
+        env:
+          CSC_LINK: ${{ secrets.WIN_CODE_SIGN_CERT }}
+          CSC_KEY_PASSWORD: ${{ secrets.WIN_CODE_SIGN_PASSWORD }}
+        run: npm run electron:package:windows
+
+      - name: Upload Windows Installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-installer
+          path: ${{ github.workspace }}/dist/*.exe
