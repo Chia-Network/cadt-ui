@@ -1,16 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import { LeftNav, LocaleSwitcher, Body } from '..';
-
-const Container = styled('div')`
-  width: 100%;
-  display: flex;
-  background-color: #e5e5e5;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-`;
+import { LeftNav, LocaleSwitcher, Body, ClimateWarehouseLogo } from '..';
 
 const Headline = styled('div')`
   width: 100%;
@@ -22,12 +13,12 @@ const Main = styled('div')`
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
 `;
 
 const BodyText = styled('div')`
   max-width: calc(100% - 3rem);
   width: calc(100% - 3rem);
-  height: 100%;
   margin: 1.5rem;
   background-color: #ffffff;
   overflow: hidden;
@@ -35,17 +26,25 @@ const BodyText = styled('div')`
   padding: 0;
 `;
 
+const InnerContainer = styled('div')`
+  display: flex;
+  height: 100%;
+`;
+
+const LogoContainer = styled('div')`
+  align-self: center;
+`;
+
 const StyledLocalContainer = styled('div')`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0rem 1.5rem 0rem 1.5rem;
   box-sizing: border-box;
 `;
 
 const HomeOrgUidContainer = styled('div')`
-  width: 100%;
   align-self: center;
 `;
 
@@ -63,20 +62,25 @@ const Dashboard = withTheme(({ children }) => {
 
   return (
     <Main>
-      <LeftNav />
-      <Container>
-        <Headline>
-          <StyledLocalContainer>
-            <HomeOrgUidContainer>
-              {homeOrgUid ? (
+      <Headline>
+        <StyledLocalContainer>
+          <LogoContainer>
+            <ClimateWarehouseLogo />
+          </LogoContainer>
+          <HomeOrgUidContainer>
+            {homeOrgUid ? (
+              <div>
                 <Body size="Small">{`Organization ID: ${homeOrgUid}`}</Body>
-              ) : null}
-            </HomeOrgUidContainer>
-            <LocaleSwitcher />
-          </StyledLocalContainer>
-        </Headline>
+              </div>
+            ) : null}
+          </HomeOrgUidContainer>
+          <LocaleSwitcher />
+        </StyledLocalContainer>
+      </Headline>
+      <InnerContainer>
+        <LeftNav />
         <BodyText>{children}</BodyText>
-      </Container>
+      </InnerContainer>
     </Main>
   );
 });
