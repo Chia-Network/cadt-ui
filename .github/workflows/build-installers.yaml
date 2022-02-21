@@ -44,6 +44,15 @@ jobs:
       - name: Build electron app
         run: npm run electron:package:mac
 
+      - name: Notarize
+        run: |
+          npm install -g notarize-cli
+          notarize-cli \
+            --file=${{ github.workspace }}/dist/*.dmg \
+            --bundle-id net.chia.climate-warehouse-ui \
+            --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
+            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
+
       - name: Upload Mac Installer
         uses: actions/upload-artifact@v2
         with:
