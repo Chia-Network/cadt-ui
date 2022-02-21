@@ -132,8 +132,8 @@ jobs:
       - name: Download MacOS artifacts
         uses: actions/download-artifact@v2
         with:
-          name: macos-installer
-          path: macos-installer
+          name: mac-installer
+          path: mac-installer
 
       - name: Download Linux artifacts
         uses: actions/download-artifact@v2
@@ -143,7 +143,7 @@ jobs:
 
       - name: Get Filenames
         run: |
-          DMG_FILE=$(find ${{ github.workspace }}/macos-installer/ -type f -name '*.dmg')
+          DMG_FILE=$(find ${{ github.workspace }}/mac-installer/ -type f -name '*.dmg')
           DEB_FILE=$(find ${{ github.workspace }}/linux-installer/ -type f -name '*.deb')
           EXE_FILE=$(find ${{ github.workspace }}/windows-installer/ -type f -name '*.exe')
 
