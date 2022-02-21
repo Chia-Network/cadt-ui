@@ -2,9 +2,9 @@ import React from 'react';
 import styled, {withTheme} from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
 import {Select, MenuItem} from '@mui/material';
-import {LocaleIcon} from '../../components';
 import {LANGUAGE_CODES} from '../../translations';
 import {setLocale} from '../../store/actions/app';
+import { SelectSizeEnum, SelectTypeEnum } from '..';
 
 const Container = styled('div')`
   display: flex;
@@ -27,10 +27,10 @@ const LocaleSwitcher = withTheme(() => {
 
   return (
     <Container selectedTheme={appStore.theme}>
-      <LocaleIcon style={{marginRight: '10px'}} />
       <Select
         disableUnderline
-        variant="standard"
+        size={SelectSizeEnum.small}
+        type={SelectTypeEnum.basic}
         value={appStore.locale}
         onChange={handleLocaleChange}>
         {Object.keys(LANGUAGE_CODES).map(key => (
