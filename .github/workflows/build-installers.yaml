@@ -46,9 +46,10 @@ jobs:
 
       - name: Notarize
         run: |
+          DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
           npm install -g notarize-cli
           notarize-cli \
-            --file=${{ github.workspace }}/dist/*.dmg \
+            --file=$DMG_FILE \
             --bundle-id net.chia.climate-warehouse-ui \
             --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
             --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
