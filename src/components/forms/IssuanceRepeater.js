@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { AddIcon, CloseIcon } from '..';
 import { CreateIssuanceForm } from './CreateIssuanceForm';
 import { ComponentRepeater } from '..';
+import { getIssuances } from '../../store/actions/climateWarehouseActions';
 
 function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getIssuances());
+  }, []);
+
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
@@ -11,6 +19,7 @@ function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
         values={issuanceState}
         updateValues={newIssuanceState}
         initialValue={{
+          id: '',
           startDate: '',
           endDate: '',
           verificationApproach: '',

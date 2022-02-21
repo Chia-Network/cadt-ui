@@ -37,6 +37,7 @@ export const actions = keyMirror(
   'GET_STAGING_DATA',
   'GET_ORGANIZATIONS',
   'GET_PICKLISTS',
+  'GET_ISSUANCES',
 );
 
 const getClimateWarehouseTable = (
@@ -191,6 +192,31 @@ export const getStagingData = ({ useMockedResponse = false }) => {
             payload: formatStagingData(results),
           });
         }
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getIssuances = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetch(`${constants.API_HOST}/issuances`);
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_ISSUANCES,
+          payload: results,
+        });
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));

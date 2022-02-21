@@ -294,5 +294,7 @@
   "estimations": "Estimations",
   "ratings": "Ratings",
   "project-detailed-view": "Project Detailed View",
-  "unit-detailed-view": "Unit Detailed View"
+  "unit-detailed-view": "Unit Detailed View",
+  "select-existing-issuance": "Select an existing issuance",
+  "select-existing-issuance-description": "Either select an existing issuance or create a new one."
 }
