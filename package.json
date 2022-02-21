@@ -115,13 +115,16 @@
         "arch": [
           "universal"
         ]
-      }
+      },
+      "publish": null
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "publish": null
     },
     "linux": {
-      "target": "deb"
+      "target": "deb",
+      "publish": null
     }
   },
   "contributors": [
