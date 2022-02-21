@@ -36,7 +36,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
 
   useEffect(() => {
     setValidationErrors(projectSchema, projectDetails, setErrorIssuanceMessage);
-    console.log(projectDetails);
   }, [projectDetails]);
 
   return (
