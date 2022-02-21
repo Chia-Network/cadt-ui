@@ -19,7 +19,6 @@ function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
         values={issuanceState}
         updateValues={newIssuanceState}
         initialValue={{
-          id: '',
           startDate: '',
           endDate: '',
           verificationApproach: '',
