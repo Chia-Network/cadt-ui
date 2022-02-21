@@ -2,6 +2,7 @@
   "name": "climate-warehouse",
   "version": "0.1.3",
   "private": true,
+  "email": "hello@chia.net",
   "homepage": "./",
   "main": "src/start.js",
   "engineStrict": true,
