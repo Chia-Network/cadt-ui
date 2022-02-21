@@ -43,11 +43,17 @@ const CreateIssuanceForm = ({ value, onChange }) => {
     setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
   }, [value]);
 
+  const getIssuanceLabel = issuance => {
+    const start = `${new Date(issuance.startDate).toDateString()}`;
+    const end = `${new Date(issuance.endDate).toDateString()}`;
+    return `${start} - ${end}`;
+  };
+
   const issuancesSelectOptions = useMemo(() => {
     if (climateWarehouseStore.issuances) {
       return climateWarehouseStore.issuances.map(issuance => ({
         value: issuance.id,
-        label: issuance.startDate,
+        label: getIssuanceLabel(issuance),
       }));
     } else {
       return null;
@@ -119,7 +125,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                       ? [
                           {
                             value: selectedIssuance.id,
-                            label: selectedIssuance.startDate,
+                            label: getIssuanceLabel(selectedIssuance),
                           },
                         ]
                       : undefined
