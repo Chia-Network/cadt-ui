@@ -52,6 +52,7 @@ const MenuItem = styled(Link)`
   text-decoration: none;
   width: calc(100% - 1.625rem);
   margin: auto;
+  font-size: 1.1rem;
   box-sizing: border-box;
   border-radius: 0.625rem;
   margin-bottom: 0.625rem;
