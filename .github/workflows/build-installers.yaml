@@ -48,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: mac-installer
-          path: ${{ github.workspace }}/dist/mac-universal/*.dmg
+          path: ${{ github.workspace }}/dist/*.dmg
