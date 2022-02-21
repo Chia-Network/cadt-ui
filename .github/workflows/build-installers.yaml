@@ -1,0 +1,160 @@
+name: Build & Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  # SHA is added to the end if on `main` to let all main workflows run
+  group: ${{ github.ref }}-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref == 'refs/heads/main' && github.sha || '' }}
+  cancel-in-progress: true
+
+jobs:
+  build_mac:
+    name: Build Mac Installer
+    runs-on: macos-latest
+    steps:
+      - uses: Chia-Network/actions/clean-workspace@main
+
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '16.x'
+
+      - name: npm install
+        run: |
+          node --version
+          npm install
+
+      - name: Import Apple installer signing certificate
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.APPLE_DEV_ID_APP }}
+          p12-password: ${{ secrets.APPLE_DEV_ID_APP_PASS }}
+
+      - name: Build electron app
+        run: npm run electron:package:mac
+
+      - name: Notarize
+        run: |
+          DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
+          npm install -g notarize-cli
+          notarize-cli \
+            --file="$DMG_FILE" \
+            --bundle-id net.chia.climate-warehouse-ui \
+            --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
+            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
+
+      - name: Upload Mac Installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: mac-installer
+          path: ${{ github.workspace }}/dist/*.dmg
+
+  build_windows:
+    name: Build Windows Installer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '16.x'
+
+      - name: npm install
+        run: |
+          node --version
+          npm install
+
+      - name: Build electron app
+        env:
+          CSC_LINK: ${{ secrets.WIN_CODE_SIGN_CERT }}
+          CSC_KEY_PASSWORD: ${{ secrets.WIN_CODE_SIGN_PASSWORD }}
+        run: npm run electron:package:win
+
+      - name: Upload Windows Installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-installer
+          path: ${{ github.workspace }}/dist/*.exe
+
+  build_linux:
+    name: Build Linux Installer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '16.x'
+
+      - name: npm install
+        run: |
+          node --version
+          npm install
+
+      - name: Build electron app
+        run: npm run electron:package:linux
+
+      - name: Upload Linux Installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-installer
+          path: ${{ github.workspace }}/dist/*.deb
+
+  release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs:
+      - build_mac
+      - build_windows
+      - build_linux
+    steps:
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: windows-installer
+          path: windows-installer
+
+      - name: Download MacOS artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: mac-installer
+          path: mac-installer
+
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: linux-installer
+          path: linux-installer
+
+      - name: Get Filenames
+        run: |
+          DMG_FILE=$(find ${{ github.workspace }}/mac-installer/ -type f -name '*.dmg')
+          DEB_FILE=$(find ${{ github.workspace }}/linux-installer/ -type f -name '*.deb')
+          EXE_FILE=$(find ${{ github.workspace }}/windows-installer/ -type f -name '*.exe')
+
+          echo "DMG_FILE=$DMG_FILE" >>$GITHUB_ENV
+          echo "DEB_FILE=$DEB_FILE" >>$GITHUB_ENV
+          echo "EXE_FILE=$EXE_FILE" >>$GITHUB_ENV
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ${{ env.DMG_FILE }}
+            ${{ env.DEB_FILE }}
+            ${{ env.EXE_FILE }}
