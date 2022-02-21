@@ -88,3 +88,29 @@ jobs:
         with:
           name: windows-installer
           path: ${{ github.workspace }}/dist/*.exe
+
+  build_linux:
+    name: Build Linux Installer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '16.x'
+
+      - name: npm install
+        run: |
+          node --version
+          npm install
+
+      - name: Build electron app
+        run: npm run electron:package:linux
+
+      - name: Upload Linux Installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-installer
+          path: ${{ github.workspace }}/dist/*.deb
