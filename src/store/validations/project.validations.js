@@ -29,7 +29,18 @@ export const projectSchema = yup.object().shape({
   projectTags: yup.string().optional(),
   validationBody: yup.string().optional(),
   projectStatusDate: yup.date().typeError('Invalid Date'),
-  validationDate: yup.date().typeError('Invalid Date').optional().nullable(),
+  validationDate: yup.lazy(value => {
+    if (value === null) {
+      return yup.object().nullable();
+    } else if (typeof value === 'object' && !isNaN(value.getTime())) {
+      return yup
+        .date()
+        .required('Required field')
+        .typeError('Enter valid date');
+    } else {
+      return yup.string().optional();
+    }
+  }),
 
   labels: yup.array().of(labelSchema).optional(),
   issuances: yup.array().of(issuanceSchema).optional(),
