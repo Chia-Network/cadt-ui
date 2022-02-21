@@ -33,6 +33,7 @@ const InnerContainer = styled('div')`
 
 const LogoContainer = styled('div')`
   align-self: center;
+  height: 100%;
 `;
 
 const StyledLocalContainer = styled('div')`
@@ -40,7 +41,7 @@ const StyledLocalContainer = styled('div')`
   height: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0rem 1.5rem 0rem 1.5rem;
+  padding: 0rem 1.5rem;
   box-sizing: border-box;
 `;
 
@@ -65,7 +66,7 @@ const Dashboard = withTheme(({ children }) => {
       <Headline>
         <StyledLocalContainer>
           <LogoContainer>
-            <ClimateWarehouseLogo />
+            <ClimateWarehouseLogo width="100%" height="100%" />
           </LogoContainer>
           <HomeOrgUidContainer>
             {homeOrgUid ? (
