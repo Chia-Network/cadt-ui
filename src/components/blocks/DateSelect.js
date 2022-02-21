@@ -24,8 +24,8 @@ const InputContainer = styled('div')`
   :focus-within,
   ::selection {
     outline: none;
-    box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
-    border: 1px solid #40a9ff;
+    box-shadow: ${props => props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
+    border: '1px solid #40a9ff';
   }
 
   ${props =>
@@ -80,6 +80,7 @@ const DateSelect = ({
             setDateValue(null);
           }
         }}
+        disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
             <InputContainer
