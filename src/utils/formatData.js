@@ -67,11 +67,25 @@ export const formatAPIData = unformattedData => {
 
 export const cleanObjectFromEmptyFieldsOrArrays = dataToSend => {
   Object.keys(dataToSend).forEach(el => {
+    // clean empty fields
     if (!dataToSend[el]) {
       delete dataToSend[el];
     }
+
+    // clean empty arrays
     if (typeof dataToSend[el] === 'object' && dataToSend[el].length === 0) {
       delete dataToSend[el];
+    }
+
+    // clean empty strings within arrays
+    if (Array.isArray(dataToSend[el])) {
+      dataToSend[el].forEach(individualArrayItem =>
+        Object.keys(individualArrayItem).forEach(key => {
+          if (individualArrayItem[key] === '') {
+            delete individualArrayItem[key];
+          }
+        }),
+      );
     }
   });
 };
