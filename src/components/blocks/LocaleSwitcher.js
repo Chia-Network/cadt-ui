@@ -28,7 +28,6 @@ const LocaleSwitcher = withTheme(() => {
   return (
     <Container selectedTheme={appStore.theme}>
       <Select
-        disableUnderline
         size={SelectSizeEnum.small}
         type={SelectTypeEnum.basic}
         value={appStore.locale}
