@@ -130,6 +130,11 @@ const Projects = withRouter(() => {
   const dispatch = useDispatch();
   let history = useHistory();
   const [searchQuery, setSearchQuery] = useState(null);
+  const orgUid =
+    climateWarehouseStore?.organizations &&
+    Object.values(climateWarehouseStore.organizations).filter(
+      org => org.isHome != false,
+    )[0]?.orgUid;
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   let searchParams = new URLSearchParams(history.location.search);
   const projectsContainerRef = useRef(null);
@@ -352,7 +357,9 @@ const Projects = withRouter(() => {
           </Tabs>
           <StyledCSVOperationsContainer>
             <span
-              onClick={() => downloadTxtFile(climateWarehouseStore.projects)}>
+              onClick={() => downloadTxtFile(climateWarehouseStore.projects, 'projects',
+                  searchQuery,
+                  orgUid)}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (

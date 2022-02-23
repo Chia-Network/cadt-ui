@@ -1,17 +1,15 @@
-const { Parser } = require('json2csv');
-
-export const jsonToCsv = json => {
-  const json2csvParser = new Parser();
-  return json2csvParser.parse(json);
-};
-
-export const downloadTxtFile = data => {
-  const element = document.createElement('a');
-  const file = new Blob([jsonToCsv(data)], {
-    type: 'text/plain',
-  });
-  element.href = URL.createObjectURL(file);
-  element.download = 'climateWarehouse.csv';
-  document.body.appendChild(element); // Required for this to work in FireFox
-  element.click();
+export const downloadTxtFile = async (type, search, orgUid) => {
+  await fetch(
+    `http://localhost:3030/v1/${type}?${
+      search === null || search === '' ? '' : `search=${search}&`
+    }orgUid=${orgUid}&xls=true`,
+  )
+    .then(result => result.blob())
+    .then(blob => {
+      const element = document.createElement('a');
+      element.href = URL.createObjectURL(new Blob([blob]));
+      element.download = 'cl.xlsx'
+      document.body.appendChild(element); // Required for this to work in FireFox
+      element.click();
+    });
 };

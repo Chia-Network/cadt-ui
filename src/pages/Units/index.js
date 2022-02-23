@@ -133,7 +133,6 @@ const Units = withRouter(() => {
   const unitsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
-
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -352,7 +351,15 @@ const Units = withRouter(() => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span onClick={() => downloadTxtFile(climateWarehouseStore.units)}>
+            <span
+              onClick={() =>
+                downloadTxtFile(
+                  'units',
+                  searchQuery,
+                  searchParams.get('orgUid'),
+                )
+              }>
+              {console.log(selectedOrganization)}
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (
@@ -386,8 +393,7 @@ const Units = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
