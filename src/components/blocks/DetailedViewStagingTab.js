@@ -40,17 +40,19 @@ const DetailedViewTabItem = ({ entry }) => {
               <Body size="Bold">
                 {convertPascalCaseToSentenceCase(entryProp)}
               </Body>
-              <Body
-                color={
-                  entry[entryProp].changes &&
-                  entry[entryProp].changes.length > 0 &&
-                  entry[entryProp].changes.some(x => x !== null)
-                    ? '#f5222d'
-                    : '#000000'
-                }
-              >
-                {entry[entryProp].original ? entry[entryProp].original : '--'}
-              </Body>
+              {entry[entryProp].original && (
+                <Body
+                  color={
+                    entry[entryProp].changes &&
+                    entry[entryProp].changes.length > 0 &&
+                    entry[entryProp].changes.some(x => x !== null)
+                      ? '#f5222d'
+                      : '#000000'
+                  }
+                >
+                  {entry[entryProp].original}
+                </Body>
+              )}
               {entry[entryProp].changes &&
                 entry[entryProp].changes.length > 0 &&
                 entry[entryProp].changes.some(x => x !== null) &&

@@ -1,11 +1,10 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { resetRefreshPrompt } from '../store/actions/app';
 import * as Pages from '../pages';
-import history from './history';
 
 import {
   AppContainer,
@@ -28,23 +27,11 @@ const AppNavigator = () => {
     pendingError,
   } = useSelector(store => store.app);
 
-  // FINISH SETTING UP BUG FIX
-  useEffect(() => {
-    window.setTimeout(() => {
-      console.log('history reload', history.location);
-
-      const reloadToUrl = history.location.pathname
-        ? `${history.location.pathname}${history.location.search}`
-        : '/';
-      history.push(reloadToUrl);
-    }, 2000);
-  }, []);
-
   return (
     <AppContainer>
       {updateAvailablePleaseRefesh && (
         <UpdateRefreshContainer
-          onRefresh={() => history.push(`${history.path}${history.search}`)}
+          onRefresh={() => window.location.reload()}
           onClose={() => dispatch(resetRefreshPrompt)}
         />
       )}
