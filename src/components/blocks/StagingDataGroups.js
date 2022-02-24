@@ -259,7 +259,10 @@ const StagingDataGroups = withTheme(
                         data={changeGroup.diff.original}
                         headings={headings}
                         onClick={() =>
-                          setDetailedViewData(changeGroup.diff.original)
+                          setDetailedViewData({
+                            record: changeGroup.diff.original,
+                            title: getTranslatedCardTitle(changeGroup),
+                          })
                         }
                         title={getTranslatedCardTitle(changeGroup)}
                         displayInRed
