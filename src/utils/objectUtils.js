@@ -37,7 +37,18 @@ export const getDiffObject = (original, ...changes) => {
         diffObject[uniqueKey] = null;
       }
     }
-    // handles key is obj case
+    // handles key is obj but not null or array case
+    else if (
+      original &&
+      original[uniqueKey] &&
+      typeof original[uniqueKey] === 'object'
+    ) {
+      diffObject[uniqueKey] = getDiffObject(
+        original[uniqueKey],
+        ...changes.map(change => change[uniqueKey]),
+      );
+    }
+    // handle key is primitive case
     else {
       diffObject[uniqueKey] = {};
 

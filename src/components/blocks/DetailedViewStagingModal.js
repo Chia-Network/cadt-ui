@@ -57,10 +57,6 @@ const DetailedViewStagingModal = ({
     return detailsObj;
   }, [recordDiffs]);
 
-  console.log(recordDiffs);
-
-  // console.log(recordDetails);
-
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -82,6 +78,7 @@ const DetailedViewStagingModal = ({
             {recordTabsWithEntries.map(tab => (
               <Tab label={convertPascalCaseToSentenceCase(tab)} key={tab} />
             ))}
+            {record?.issuance && <Tab label="Issuance" />}
           </Tabs>
           <TabPanel value={tabValue} index={0}>
             <DetailedViewStagingTab data={[recordDetails]} />
@@ -91,6 +88,11 @@ const DetailedViewStagingModal = ({
               <DetailedViewStagingTab data={recordDiffs[tabKey]} />
             </TabPanel>
           ))}
+          {record?.issuance && (
+            <TabPanel value={tabValue} index={recordTabsWithEntries.length + 1}>
+              <DetailedViewStagingTab data={[recordDiffs.issuance]} />
+            </TabPanel>
+          )}
         </div>
       }
       hideButtons
