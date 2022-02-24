@@ -27,7 +27,6 @@ const AppNavigator = () => {
     pendingError,
   } = useSelector(store => store.app);
 
-
   return (
     <AppContainer>
       {updateAvailablePleaseRefesh && (
