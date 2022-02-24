@@ -269,6 +269,11 @@ const Units = withRouter(() => {
     dispatch(setCommit(false));
   };
 
+  const onCommitAll = () => {
+    dispatch(commitStagingData('all'));
+    dispatch(setCommit(false));
+  };
+
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrganization(orgUid);
@@ -347,7 +352,7 @@ const Units = withRouter(() => {
                 modalType={modalTypeEnum.basic}
                 onOk={onCommit}
                 extraButtonLabel={intl.formatMessage({ id: 'everything' })}
-                extraButtonOnClick={dispatch(setCommit(true))}
+                extraButtonOnClick={onCommitAll}
                 onClose={() => dispatch(setCommit(false))}
                 label={intl.formatMessage({ id: 'only-units' })}
               />

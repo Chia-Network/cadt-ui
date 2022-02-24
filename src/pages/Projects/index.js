@@ -280,6 +280,11 @@ const Projects = withRouter(() => {
     dispatch(setCommit(false));
   };
 
+  const onCommitAll = () => {
+    dispatch(commitStagingData('all'));
+    dispatch(setCommit(false));
+  };
+
   return (
     <>
       <StyledSectionContainer ref={projectsContainerRef}>
@@ -348,7 +353,7 @@ const Projects = withRouter(() => {
             }
             modalType={modalTypeEnum.basic}
             extraButtonLabel={intl.formatMessage({ id: 'everything' })}
-            extraButtonOnClick={() => dispatch(setCommit(true))}
+            extraButtonOnClick={onCommitAll}
             onClose={() => dispatch(setCommit(false))}
             onOk={onCommit}
             label={intl.formatMessage({ id: 'only-projects' })}

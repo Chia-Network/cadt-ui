@@ -285,7 +285,7 @@ export const commitStagingData = (data) => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/staging/commit?table=${data}`;
+      const url = `${constants.API_HOST}/staging/commit${data === 'all' ? '':`?table=${data}`}`;
       const payload = {
         method: 'POST',
         headers: {
