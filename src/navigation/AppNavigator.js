@@ -27,7 +27,6 @@ const AppNavigator = () => {
     pendingError,
   } = useSelector(store => store.app);
 
-
   return (
     <AppContainer>
       {updateAvailablePleaseRefesh && (
@@ -57,7 +56,7 @@ const AppNavigator = () => {
           informationType="error"
         />
       )}
-      <Router>
+      <Router history={history}>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
             <Route exact path="/">
