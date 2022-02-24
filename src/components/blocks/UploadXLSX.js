@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { UploadIcon } from '../../components';
-import { uploadCSVFile } from '../../store/actions/climateWarehouseActions';
+import { UploadIcon } from '..';
+import { uploadXLSXFile } from '../../store/actions/climateWarehouseActions';
 
 const StyledInput = styled('input')`
   visibility: hidden;
@@ -10,27 +10,27 @@ const StyledInput = styled('input')`
   height: 0px;
 `;
 
-const UploadCSV = ({ type }) => {
+const UploadXLSX = ({ type, orgUid }) => {
   const dispatch = useDispatch();
 
   const onChange = e => {
     if (e.target.value && e.target.value !== '' && type) {
-      const fileNameIsValid = /\.csv$/.test(e.target.value);
+      const fileNameIsValid = /\.xlsx$/.test(e.target.value);
       if (fileNameIsValid) {
         const file = e.target.files[0];
-        dispatch(uploadCSVFile(file, type));
+        dispatch(uploadXLSXFile(file, type, orgUid));
       }
     }
   };
 
   return (
     <>
-      <label htmlFor="csv">
+      <label htmlFor="xlsx">
         <UploadIcon width="16" height="16" />
       </label>
-      <StyledInput type="file" id="csv" accept=".csv" onChange={onChange} />
+      <StyledInput type="file" id="xlsx" accept=".xlsx" onChange={onChange} />
     </>
   );
 };
 
-export { UploadCSV };
+export { UploadXLSX };

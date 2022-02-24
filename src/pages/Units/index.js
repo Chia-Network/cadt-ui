@@ -33,7 +33,7 @@ import {
   StagingDataGroups,
   SelectOrganizations,
   Message,
-  UploadCSV,
+  UploadXLSX,
   Alert,
 } from '../../components';
 
@@ -359,12 +359,11 @@ const Units = withRouter(() => {
                   searchParams.get('orgUid'),
                 )
               }>
-              {console.log(selectedOrganization)}
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (
               <span>
-                <UploadCSV type="units" />
+                <UploadXLSX type="units" orgUid={searchParams.get('orgUid')} />
               </span>
             )}
           </StyledCSVOperationsContainer>

@@ -3,8 +3,9 @@ export const downloadTxtFile = async (type, search, orgUid) => {
     `http://localhost:3030/v1/${type}?${
       search === null || search === '' ? '' : `search=${search}&`
     }orgUid=${orgUid}&xls=true`,
-  ).then(async response => {
-    const filename = await response.text();
+  ).then(async result => await result.blob())
+  .then(async response => {
+    const filename = await response;
     const link = document.createElement('a');
     const url = window.URL.createObjectURL(new Blob([filename]));
     link.href = url;

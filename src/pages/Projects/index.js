@@ -25,7 +25,7 @@ import {
   CreateProjectForm,
   H3,
   Message,
-  UploadCSV,
+  UploadXLSX,
   Alert,
 } from '../../components';
 import { setPendingError } from '../../store/actions/app';
@@ -363,7 +363,10 @@ const Projects = withRouter(() => {
             </span>
             {pageIsMyRegistryPage && (
               <span>
-                <UploadCSV type="projects" />
+                <UploadXLSX
+                  type="projects"
+                  orgUid={searchParams.get('orgUid')}
+                />
               </span>
             )}
           </StyledCSVOperationsContainer>
