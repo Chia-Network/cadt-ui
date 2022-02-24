@@ -601,7 +601,7 @@ export const uploadXLSXFile = (file, type) => {
       try {
         dispatch(activateProgressIndicator);
         const formData = new FormData();
-        formData.append('xlsx', file);
+        formData.append('xlsx',file);
         const url = `${constants.API_HOST}/${type}/xlsx`;
         const payload = {
           method: 'PUT',

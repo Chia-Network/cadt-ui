@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { downloadTxtFile } from '../../utils/csvUtils';
+import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
@@ -363,7 +363,7 @@ const Units = withRouter(() => {
             </span>
             {pageIsMyRegistryPage && (
               <span>
-                <UploadXLSX type="units" orgUid={searchParams.get('orgUid')} />
+                <UploadXLSX type="units" />
               </span>
             )}
           </StyledCSVOperationsContainer>

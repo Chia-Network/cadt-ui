@@ -10,7 +10,7 @@ const StyledInput = styled('input')`
   height: 0px;
 `;
 
-const UploadXLSX = ({ type, orgUid }) => {
+const UploadXLSX = ({ type }) => {
   const dispatch = useDispatch();
 
   const onChange = e => {
@@ -18,7 +18,7 @@ const UploadXLSX = ({ type, orgUid }) => {
       const fileNameIsValid = /\.xlsx$/.test(e.target.value);
       if (fileNameIsValid) {
         const file = e.target.files[0];
-        dispatch(uploadXLSXFile(file, type, orgUid));
+        dispatch(uploadXLSXFile(file, type));
       }
     }
   };
