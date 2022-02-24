@@ -14,7 +14,7 @@ export const actions = keyMirror(
   'RESET_REFRESH_PROMPT',
   'SET_NOTIFICATION',
   'COMMIT',
-  'COMMIT_ALL',
+  'PENDING_ERROR',
 );
 
 export const resetRefreshPrompt = {
@@ -52,16 +52,15 @@ export const setConnectionCheck = bool => ({
   payload: bool,
 });
 
-export const setCommitAll = bool => ({
-  type: actions.COMMIT_ALL,
-  payload: bool,
-});
-
 export const setCommit = bool => ({
   type: actions.COMMIT,
   payload: bool,
 });
 
+export const setPendingError = bool => ({
+  type: actions.PENDING_ERROR,
+  payload: bool,
+});
 
 export const NotificationMessageTypeEnum = {
   error: 'error',

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import {
-  ClimateWarehouseLogo,
   ButtonText,
   WarehouseIcon,
   RegistryIcon,
@@ -30,12 +29,6 @@ const NavContainer = styled('div')`
   background-color: #3b8ee0;
 `;
 
-const LogoContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  margin: 20.46px auto 3.5344rem auto;
-`;
-
 const StyledCreateOrgButtonContainer = styled('div')`
   h4 {
     color: white;
@@ -59,6 +52,7 @@ const MenuItem = styled(Link)`
   text-decoration: none;
   width: calc(100% - 1.625rem);
   margin: auto;
+  font-size: 1.2rem;
   box-sizing: border-box;
   border-radius: 0.625rem;
   margin-bottom: 0.625rem;
@@ -94,9 +88,6 @@ const LeftNav = withTheme(({ children }) => {
   return (
     <Container>
       <NavContainer>
-        <LogoContainer>
-          <ClimateWarehouseLogo />
-        </LogoContainer>
         <StyledTitleContainer>
           <WarehouseIcon height={24} width={24} />
           <ButtonText>
@@ -109,8 +100,7 @@ const LeftNav = withTheme(({ children }) => {
           onClick={() => {
             dispatch(resetRefreshPrompt);
             setLocation('projects');
-          }}
-        >
+          }}>
           <FormattedMessage id="projects-list" />
         </MenuItem>
         <div></div>
@@ -120,8 +110,7 @@ const LeftNav = withTheme(({ children }) => {
           onClick={() => {
             dispatch(resetRefreshPrompt);
             setLocation('units');
-          }}
-        >
+          }}>
           <FormattedMessage id="units-list" />
         </MenuItem>
         <StyledTitleContainer disabled={myOrgIsNotCreated}>
@@ -138,8 +127,7 @@ const LeftNav = withTheme(({ children }) => {
               onClick={() => {
                 dispatch(resetRefreshPrompt);
                 setLocation('my-projects');
-              }}
-            >
+              }}>
               <FormattedMessage id="my-projects" />
             </MenuItem>
             <div></div>
@@ -149,8 +137,7 @@ const LeftNav = withTheme(({ children }) => {
               onClick={() => {
                 dispatch(resetRefreshPrompt);
                 setLocation('my-units');
-              }}
-            >
+              }}>
               <FormattedMessage id="my-units" />
             </MenuItem>
           </>
@@ -160,21 +147,18 @@ const LeftNav = withTheme(({ children }) => {
             <MenuItem
               to={window.location}
               onClick={() => setConfirmCreateOrgIsVisible(true)}
-              disabled
-            >
+              disabled>
               <FormattedMessage id="my-projects" />
             </MenuItem>
             <div></div>
             <MenuItem
               to={window.location}
               onClick={() => setConfirmCreateOrgIsVisible(true)}
-              disabled
-            >
+              disabled>
               <FormattedMessage id="my-units" />
             </MenuItem>
             <StyledCreateOrgButtonContainer
-              onClick={() => setCreateOrgIsVisible(true)}
-            >
+              onClick={() => setCreateOrgIsVisible(true)}>
               <AddIconCircle width="20" height="20" />
               <ButtonText>
                 <FormattedMessage id="create-organization" />

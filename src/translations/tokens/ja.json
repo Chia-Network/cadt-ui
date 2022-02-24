@@ -267,5 +267,10 @@
   "staging-group-could-not-be-deleted": "ステージンググループを削除できませんでした。",
   "staging-group-deleted": "ステージンググループは正常に削除されました。",
   "estimations": "見積もり",
-  "ratings": "評価"
+  "ratings": "評価",
+  "project-detailed-view": "プロジェクトの詳細図",
+  "unit-detailed-view": "ユニット詳細図",
+  "select-existing-issuance": "既存の問題を選択します",
+  "select-existing-issuance-description": "既存の問題を選択するか、新しい問題を作成します。",
+  "all-issuance-units": "この発行に属するユニット"
 }

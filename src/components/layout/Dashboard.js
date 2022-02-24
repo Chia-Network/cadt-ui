@@ -1,16 +1,7 @@
-import React from 'react';
-//import { useSelector } from 'react-redux';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import { LeftNav, LocaleSwitcher } from '..';
-
-const Container = styled('div')`
-  width: 100%;
-  display: flex;
-  background-color: #e5e5e5;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-`;
+import { LeftNav, LocaleSwitcher, Body, ClimateWarehouseLogo } from '..';
 
 const Headline = styled('div')`
   width: 100%;
@@ -22,12 +13,12 @@ const Main = styled('div')`
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
 `;
 
-const Body = styled('div')`
+const BodyText = styled('div')`
   max-width: calc(100% - 3rem);
   width: calc(100% - 3rem);
-  height: 100%;
   margin: 1.5rem;
   background-color: #ffffff;
   overflow: hidden;
@@ -35,28 +26,62 @@ const Body = styled('div')`
   padding: 0;
 `;
 
+const InnerContainer = styled('div')`
+  display: flex;
+  height: 100%;
+`;
+
+const LogoContainer = styled('div')`
+  align-self: center;
+  height: 100%;
+`;
+
 const StyledLocalContainer = styled('div')`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: flex-end;
-  padding: 0rem 1.5rem 0rem 1.5rem;
+  justify-content: space-between;
+  padding: 0rem 1.5rem;
   box-sizing: border-box;
 `;
 
+const HomeOrgUidContainer = styled('div')`
+  align-self: center;
+`;
+
 const Dashboard = withTheme(({ children }) => {
-  //const appStore = useSelector(state => state.app);
+  const climateWarehouseStore = useSelector(state => state.climateWarehouse);
+
+  const homeOrgUid = useMemo(
+    () =>
+      climateWarehouseStore?.organizations &&
+      Object.values(climateWarehouseStore.organizations).filter(
+        org => org.isHome != false,
+      )[0]?.orgUid,
+    [climateWarehouseStore.organizations],
+  );
+
   return (
     <Main>
-      <LeftNav />
-      <Container>
-        <Headline>
-          <StyledLocalContainer>
-            <LocaleSwitcher />
-          </StyledLocalContainer>
-        </Headline>
-        <Body>{children}</Body>
-      </Container>
+      <Headline>
+        <StyledLocalContainer>
+          <LogoContainer>
+            <ClimateWarehouseLogo width="100%" height="100%" />
+          </LogoContainer>
+          <HomeOrgUidContainer>
+            {homeOrgUid ? (
+              <div>
+                <Body size="Small">{`Organization ID: ${homeOrgUid}`}</Body>
+              </div>
+            ) : null}
+          </HomeOrgUidContainer>
+          <LocaleSwitcher />
+        </StyledLocalContainer>
+      </Headline>
+      <InnerContainer>
+        <LeftNav />
+        <BodyText>{children}</BodyText>
+      </InnerContainer>
     </Main>
   );
 });

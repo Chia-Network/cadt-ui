@@ -1,6 +1,7 @@
 import u from 'updeep';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import { setValidationErrors } from '../../utils/validationUtils';
 import { issuanceSchema } from '../../store/validations';
@@ -22,10 +23,16 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
 } from '..';
 
 const CreateIssuanceForm = ({ value, onChange }) => {
+  const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
+  const [selectedIssuance, setSelectedIssuance] = useState(null);
   const intl = useIntl();
 
   const onInputChange = (field, changeValue) => {
@@ -36,10 +43,102 @@ const CreateIssuanceForm = ({ value, onChange }) => {
     setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
   }, [value]);
 
+  const getIssuanceLabel = issuance => {
+    const start = `${new Date(issuance.startDate).toDateString()}`;
+    const end = `${new Date(issuance.endDate).toDateString()}`;
+    return `${start} - ${end}`;
+  };
+
+  const issuancesSelectOptions = useMemo(() => {
+    if (climateWarehouseStore.issuances) {
+      return climateWarehouseStore.issuances.map(issuance => ({
+        value: issuance.id,
+        label: getIssuanceLabel(issuance),
+      }));
+    } else {
+      return null;
+    }
+  }, [climateWarehouseStore.issuances]);
+
+  const getIssuanceById = id => {
+    if (id) {
+      const foundIssuance = climateWarehouseStore.issuances.filter(
+        issuance => issuance.id === id,
+      );
+      if (foundIssuance.length) {
+        return foundIssuance[0];
+      } else {
+        return null;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (selectedIssuance) {
+      const {
+        endDate,
+        startDate,
+        verificationApproach,
+        verificationBody,
+        verificationReportDate,
+        id,
+      } = selectedIssuance;
+      onChange({
+        endDate,
+        startDate,
+        verificationApproach,
+        verificationBody,
+        verificationReportDate,
+        id,
+      });
+    }
+  }, [selectedIssuance]);
+
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
+          {issuancesSelectOptions && (
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    <FormattedMessage id="select-existing-issuance" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'select-existing-issuance-description',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <Select
+                  size={SelectSizeEnum.large}
+                  type={SelectTypeEnum.basic}
+                  options={issuancesSelectOptions}
+                  state={SelectStateEnum.default}
+                  selected={
+                    selectedIssuance
+                      ? [
+                          {
+                            value: selectedIssuance.id,
+                            label: getIssuanceLabel(selectedIssuance),
+                          },
+                        ]
+                      : undefined
+                  }
+                  onChange={selectedOptions =>
+                    setSelectedIssuance({
+                      ...getIssuanceById(selectedOptions[0].value),
+                    })
+                  }
+                />
+              </InputContainer>
+            </StyledFieldContainer>
+          )}
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -62,6 +161,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 setDateValue={changeValue =>
                   onInputChange('startDate', changeValue)
                 }
+                disabled={selectedIssuance ? true : undefined}
               />
             </InputContainer>
             {errorIssuanceMessage?.startDate && (
@@ -92,6 +192,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 setDateValue={changeValue =>
                   onInputChange('endDate', changeValue)
                 }
+                disabled={selectedIssuance ? true : undefined}
               />
             </InputContainer>
             {errorIssuanceMessage?.endDate && (
@@ -122,6 +223,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 setDateValue={changeValue =>
                   onInputChange('verificationReportDate', changeValue)
                 }
+                disabled={selectedIssuance ? true : undefined}
               />
             </InputContainer>
             {errorIssuanceMessage?.verificationReportDate && (
@@ -132,6 +234,34 @@ const CreateIssuanceForm = ({ value, onChange }) => {
           </StyledFieldContainer>
         </BodyContainer>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {selectedIssuance && (
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="id" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'id',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <StandardInput
+                  size={InputSizeEnum.large}
+                  placeholderText={intl.formatMessage({
+                    id: 'id',
+                  })}
+                  state={InputStateEnum.disabled}
+                  value={value.id}
+                />
+              </InputContainer>
+            </StyledFieldContainer>
+          )}
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -157,7 +287,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 placeholderText={intl.formatMessage({
                   id: 'verification-approach',
                 })}
-                state={InputStateEnum.default}
+                state={
+                  selectedIssuance
+                    ? InputStateEnum.disabled
+                    : InputStateEnum.default
+                }
                 value={value.verificationApproach}
                 onChange={changeValue =>
                   onInputChange('verificationApproach', changeValue)
@@ -195,7 +329,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 placeholderText={intl.formatMessage({
                   id: 'verification-body',
                 })}
-                state={InputStateEnum.default}
+                state={
+                  selectedIssuance
+                    ? InputStateEnum.disabled
+                    : InputStateEnum.default
+                }
                 value={value.verificationBody}
                 onChange={changeValue =>
                   onInputChange('verificationBody', changeValue)

@@ -23,7 +23,8 @@ const InputContainer = styled('div')`
   :focus-within,
   ::selection {
     outline: none;
-    box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
+    box-shadow: ${props =>
+      props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
     border: 1px solid #40a9ff;
   }
 
@@ -57,7 +58,7 @@ const Input = styled('input')`
   }
 `;
 
-const YearSelect = ({ size, yearValue, onChange }) => {
+const YearSelect = ({ size, yearValue, onChange, disabled }) => {
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
@@ -65,10 +66,16 @@ const YearSelect = ({ size, yearValue, onChange }) => {
         label="Year"
         value={yearValue ? `${yearValue}` : yearValue}
         onChange={onChange}
+        disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
-            <InputContainer size={size}>
-              <Input ref={inputRef} {...inputProps} helperText={null} />
+            <InputContainer size={size} disabled={disabled}>
+              <Input
+                ref={inputRef}
+                {...inputProps}
+                helperText={null}
+                disabled={disabled}
+              />
               {InputProps?.endAdornment}
             </InputContainer>
           );

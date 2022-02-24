@@ -15,6 +15,7 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   H3,
@@ -38,7 +39,7 @@ import {
   modalTypeEnum,
   Body,
 } from '../../components';
-import { setCommit, setCommitAll } from '../../store/actions/app';
+import { setCommit } from '../../store/actions/app';
 
 const headings = [
   'projectLocationId',
@@ -122,10 +123,10 @@ const PendingMessageContainer = styled('div')`
   gap: 20px;
 `;
 
-const Units = withRouter(({ setPendingError }) => {
+const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification, commit, commitAll } = useSelector(store => store.app);
+  const { notification, commit } = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -227,14 +228,6 @@ const Units = withRouter(({ setPendingError }) => {
     pageIsMyRegistryPage,
   ]);
 
-  useEffect(() => {
-    if (commitAll) {
-      onCommit();
-      dispatch(setCommitAll(false));
-      dispatch(setCommit(false));
-    }
-  }, [commitAll]);
-
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
       return null;
@@ -250,8 +243,6 @@ const Units = withRouter(({ setPendingError }) => {
         'serialNumberBlock',
         'serialNumberPattern',
         'vintageYear',
-        'issuance',
-        'labels',
         'marketplace',
         'marketplaceLink',
         'marketplaceIdentifier',
@@ -274,7 +265,7 @@ const Units = withRouter(({ setPendingError }) => {
   }
 
   const onCommit = () => {
-    dispatch(commitStagingData());
+    dispatch(commitStagingData('units'));
     dispatch(setCommit(false));
   };
 
@@ -330,7 +321,7 @@ const Units = withRouter(({ setPendingError }) => {
                   ) {
                     setCreate(true);
                   } else {
-                    setPendingError(true);
+                    dispatch(setPendingError(true));
                   }
                 }}
               />
@@ -356,7 +347,7 @@ const Units = withRouter(({ setPendingError }) => {
                 modalType={modalTypeEnum.basic}
                 onOk={onCommit}
                 extraButtonLabel={intl.formatMessage({ id: 'everything' })}
-                extraButtonOnClick={() => dispatch(setCommitAll(true))}
+                extraButtonOnClick={dispatch(setCommit(true))}
                 onClose={() => dispatch(setCommit(false))}
                 label={intl.formatMessage({ id: 'only-units' })}
               />
@@ -416,7 +407,7 @@ const Units = withRouter(({ setPendingError }) => {
                             ) {
                               setCreate(true);
                             } else {
-                              setPendingError(true);
+                              dispatch(setPendingError(true));
                             }
                           }}>
                           <FormattedMessage id="create-one-now" />

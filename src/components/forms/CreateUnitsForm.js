@@ -10,12 +10,9 @@ import IssuanceRepeater from './IssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
-import {
-  unitsSchema,
-  labelsSchema,
-  issuancesSchema,
-} from '../../store/validations';
+import { unitsSchema } from '../../store/validations';
 import { UnitDetailsForm } from '.';
+import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -26,13 +23,11 @@ const StyledFormContainer = styled('div')`
 
 const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   const { notification } = useSelector(state => state.app);
-  const [newLabels, setNewLabels] = useState([]);
-  const [newIssuance, setNewIssuance] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const [newUnits, setNewUnits] = useState({
+  const [unit, setUnit] = useState({
     projectLocationId: '',
     unitOwner: '',
     countryJurisdictionOfOwner: '',
@@ -50,57 +45,27 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     unitStatus: '',
     correspondingAdjustmentDeclaration: '',
     correspondingAdjustmentStatus: '',
+    labels: [],
+    issuance: null,
   });
 
   const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
 
-  const switchToNextTabIfDataIsValid = async (data, schema) => {
-    const isValid = await schema.isValid(data);
-    if (isValid) {
-      if (stepperStepsTranslationIds[tabValue] === 'issuances') {
+  const onChangeStep = async (desiredStep = null) => {
+    const isUnitValid = await unitsSchema.isValid(unit);
+    if (isUnitValid) {
+      if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitUnit();
       } else {
-        setTabValue(tabValue + 1);
+        setTabValue(desiredStep);
       }
-    }
-  };
-
-  const onNextButtonPress = async () => {
-    switch (stepperStepsTranslationIds[tabValue]) {
-      case 'unit':
-        switchToNextTabIfDataIsValid(newUnits, unitsSchema);
-        break;
-      case 'labels':
-        switchToNextTabIfDataIsValid(newLabels, labelsSchema);
-        break;
-      case 'issuances':
-        switchToNextTabIfDataIsValid(newIssuance, issuancesSchema);
-        break;
     }
   };
 
   const handleSubmitUnit = async () => {
-    const dataToSend = _.cloneDeep(newUnits);
-
-    Object.keys(dataToSend).forEach(el => {
-      if (!dataToSend[el]) {
-        delete dataToSend[el];
-      }
-    });
-
-    if (!_.isEmpty(newLabels)) {
-      dataToSend.labels = newLabels;
-    }
-
-    if (!_.isEmpty(newIssuance)) {
-      dataToSend.issuance = _.head(newIssuance);
-    }
-
-    const isUnitValid = await unitsSchema.isValid(dataToSend);
-
-    if (isUnitValid) {
-      dispatch(postNewUnits(dataToSend));
-    }
+    const dataToSend = _.cloneDeep(unit);
+    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
+    dispatch(postNewUnits(dataToSend));
   };
 
   const unitWasSuccessfullyCreated =
@@ -119,7 +84,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
       )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
-        onOk={onNextButtonPress}
+        onOk={() => onChangeStep(tabValue + 1)}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
@@ -136,7 +101,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
             : undefined
         }
         extraButtonOnClick={() =>
-          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
         }
         body={
           <StyledFormContainer>
@@ -145,7 +110,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                 stepperStepsTranslationIds.map((step, index) => (
                   <Step
                     key={index}
-                    onClick={() => setTabValue(index)}
+                    onClick={() => onChangeStep(index)}
                     sx={{ cursor: 'pointer' }}
                   >
                     <StepLabel>
@@ -161,24 +126,29 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
               value={tabValue}
               index={0}
             >
-              <UnitDetailsForm
-                unitDetails={newUnits}
-                setUnitDetails={setNewUnits}
-              />
+              <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
               <LabelsRepeater
-                labelsState={newLabels}
-                newLabelsState={setNewLabels}
+                labelsState={unit?.labels ?? []}
+                newLabelsState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    labels: value,
+                  }))
+                }
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <IssuanceRepeater
                 max={1}
-                issuanceState={
-                  Array.isArray(newIssuance) ? newIssuance : [newIssuance]
+                issuanceState={unit.issuance ? [unit.issuance] : []}
+                newIssuanceState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    issuance: value[0] ? value[0] : null,
+                  }))
                 }
-                newIssuanceState={setNewIssuance}
               />
             </TabPanel>
           </StyledFormContainer>

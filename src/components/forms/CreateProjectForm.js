@@ -22,31 +22,16 @@ import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
-import {
-  labelsSchema,
-  issuancesSchema,
-  coBenefitsSchema,
-  relatedProjectsSchema,
-  locationsSchema,
-  estimationsSchema,
-  ratingsSchema,
-  projectSchema,
-} from '../../store/validations';
+import { projectSchema } from '../../store/validations';
+import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
 const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
-  const [newLabels, setNewLabels] = useState([]);
-  const [newRelatedProjects, setNewRelatedProjects] = useState([]);
-  const [newIssuance, setNewIssuance] = useState([]);
-  const [newProjectLocations, setNewProjectLocations] = useState([]);
-  const [newCoBenefits, setNewCoBenefits] = useState([]);
-  const [estimationsState, setEstimationsState] = useState([]);
-  const [ratingsState, setRatingsState] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
   const { notification } = useSelector(state => state.app);
 
-  const [newProject, setNewProject] = useState({
+  const [project, setProject] = useState({
     registryOfOrigin: '',
     originProjectId: '',
     program: '',
@@ -63,8 +48,8 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     methodology: '',
     projectTags: '',
     validationBody: '',
-    projectStatusDate: '',
-    validationDate: '',
+    projectStatusDate: null,
+    validationDate: null,
   });
 
   const stepperStepsTranslationIds = [
@@ -78,88 +63,21 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     'ratings',
   ];
 
-  const switchToNextTabIfDataIsValid = async (data, schema) => {
-    const isValid = await schema.isValid(data);
+  const onChangeStep = async (desiredStep = null) => {
+    const isValid = await projectSchema.isValid(project);
     if (isValid) {
-      if (stepperStepsTranslationIds[tabValue] === 'ratings') {
-        handleSubmit();
+      if (desiredStep >= stepperStepsTranslationIds.length) {
+        handleSubmitProject();
       } else {
-        setTabValue(tabValue + 1);
+        setTabValue(desiredStep);
       }
     }
   };
 
-  const onNextButtonPress = async () => {
-    switch (stepperStepsTranslationIds[tabValue]) {
-      case 'project':
-        switchToNextTabIfDataIsValid(newProject, projectSchema);
-        break;
-      case 'labels':
-        switchToNextTabIfDataIsValid(newLabels, labelsSchema);
-        break;
-      case 'issuances':
-        switchToNextTabIfDataIsValid(newIssuance, issuancesSchema);
-        break;
-      case 'co-benefits':
-        switchToNextTabIfDataIsValid(newCoBenefits, coBenefitsSchema);
-        break;
-      case 'project-locations':
-        switchToNextTabIfDataIsValid(newProjectLocations, locationsSchema);
-        break;
-      case 'related-projects':
-        switchToNextTabIfDataIsValid(newRelatedProjects, relatedProjectsSchema);
-        break;
-      case 'estimations':
-        switchToNextTabIfDataIsValid(estimationsState, estimationsSchema);
-        break;
-      case 'ratings':
-        switchToNextTabIfDataIsValid(ratingsState, ratingsSchema);
-        break;
-    }
-  };
-
-  const handleSubmit = async () => {
-    const dataToSend = _.cloneDeep(newProject);
-
-    Object.keys(dataToSend).forEach(el => {
-      if (!dataToSend[el]) {
-        delete dataToSend[el];
-      }
-    });
-
-    if (!_.isEmpty(newLabels)) {
-      dataToSend.labels = newLabels;
-    }
-
-    if (!_.isEmpty(newIssuance)) {
-      dataToSend.issuances = newIssuance;
-    }
-
-    if (!_.isEmpty(newCoBenefits)) {
-      dataToSend.coBenefits = newCoBenefits;
-    }
-
-    if (!_.isEmpty(newProjectLocations)) {
-      dataToSend.projectLocations = newProjectLocations;
-    }
-
-    if (!_.isEmpty(newRelatedProjects)) {
-      dataToSend.relatedProjects = newRelatedProjects;
-    }
-
-    if (!_.isEmpty(estimationsState)) {
-      dataToSend.estimations = estimationsState;
-    }
-
-    if (!_.isEmpty(ratingsState)) {
-      dataToSend.projectRatings = ratingsState;
-    }
-
-    const projectIsValid = await projectSchema.isValid(dataToSend);
-
-    if (projectIsValid) {
-      dispatch(postNewProject(dataToSend));
-    }
+  const handleSubmitProject = async () => {
+    const dataToSend = _.cloneDeep(project);
+    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
+    dispatch(postNewProject(dataToSend));
   };
 
   const projectWasSuccessfullyCreated =
@@ -177,18 +95,18 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
       )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
-        onOk={onNextButtonPress}
+        onOk={() => onChangeStep(tabValue + 1)}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'create-project',
         })}
         label={intl.formatMessage({
-          id: tabValue < 7 ? 'next' : 'create',
+          id: tabValue < 7 ? 'next' : 'create-project',
         })}
         extraButtonLabel={tabValue > 0 ? 'Back' : undefined}
         extraButtonOnClick={() =>
-          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
         }
         body={
           <StyledFormContainer>
@@ -197,7 +115,7 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                 stepperStepsTranslationIds.map((stepTranslationId, index) => (
                   <Step
                     key={index}
-                    onClick={() => setTabValue(index)}
+                    onClick={() => onChangeStep(index)}
                     sx={{ cursor: 'pointer' }}
                   >
                     <StepLabel>
@@ -215,50 +133,85 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                 index={0}
               >
                 <ProjectDetailsForm
-                  projectDetails={newProject}
-                  setProjectDetails={setNewProject}
+                  projectDetails={project}
+                  setProjectDetails={setProject}
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <LabelsRepeater
-                  labelsState={newLabels}
-                  newLabelsState={setNewLabels}
+                  labelsState={project?.labels ?? []}
+                  newLabelsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      labels: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <IssuanceRepeater
-                  issuanceState={newIssuance}
-                  newIssuanceState={setNewIssuance}
+                  issuanceState={project?.issuances ?? []}
+                  newIssuanceState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      issuances: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
                 <CoBenefitsRepeater
-                  coBenefitsState={newCoBenefits}
-                  setNewCoBenefitsState={setNewCoBenefits}
+                  coBenefitsState={project?.coBenefits ?? []}
+                  setNewCoBenefitsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      coBenefits: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
                 <LocationsRepeater
-                  locationsState={newProjectLocations}
-                  setLocationsState={setNewProjectLocations}
+                  locationsState={project?.projectLocations ?? []}
+                  setLocationsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      projectLocations: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={5}>
                 <RelatedProjectsRepeater
-                  relatedProjectsState={newRelatedProjects}
-                  setRelatedProjectsState={setNewRelatedProjects}
+                  relatedProjectsState={project?.relatedProjects ?? []}
+                  setRelatedProjectsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      relatedProjects: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={6}>
                 <EstimationsRepeater
-                  estimationsState={estimationsState}
-                  setEstimationsState={setEstimationsState}
+                  estimationsState={project?.estimations ?? []}
+                  setEstimationsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      estimations: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={7}>
                 <RatingsRepeater
-                  ratingsState={ratingsState}
-                  setRatingsState={setRatingsState}
+                  ratingsState={project?.projectRatings ?? []}
+                  setRatingsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      projectRatings: value,
+                    }))
+                  }
                 />
               </TabPanel>
             </div>

@@ -9,11 +9,11 @@ import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
+import { unitsSchema } from '../../store/validations';
 import {
-  unitsSchema,
-  labelsSchema,
-  issuancesSchema,
-} from '../../store/validations';
+  cleanObjectFromEmptyFieldsOrArrays,
+  formatAPIData,
+} from '../../utils/formatData';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -24,14 +24,11 @@ const StyledFormContainer = styled('div')`
 
 const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   const { notification } = useSelector(state => state.app);
-  const [labels, setLabelsRepeaterValues] = useState([]);
-  const [issuance, setIssuance] = useState([{}]);
-  const [editedUnits, setEditUnits] = useState([]);
+  const [unit, setUnit] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-
-  const unit = useSelector(
+  const unitToBeEdited = useSelector(
     state =>
       state.climateWarehouse.units.filter(
         unit => unit.warehouseUnitId === record.warehouseUnitId,
@@ -39,105 +36,27 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   );
 
   useEffect(() => {
-    setEditUnits({
-      warehouseUnitId: unit.warehouseUnitId ?? '',
-      projectLocationId: unit.projectLocationId ?? '',
-      unitOwner: unit.unitOwner ?? '',
-      unitStatus: unit.unitStatus ?? '',
-      unitType: unit.unitType ?? '',
-      vintageYear: unit.vintageYear ?? '',
-      unitStatusReason: unit.unitStatusReason ?? '',
-      countryJurisdictionOfOwner: unit.countryJurisdictionOfOwner ?? '',
-      inCountryJurisdictionOfOwner: unit.inCountryJurisdictionOfOwner ?? '',
-      serialNumberBlock: unit.serialNumberBlock ?? '',
-      serialNumberPattern: unit.serialNumberBlock ?? '',
-      marketplace: unit.marketplace ?? '',
-      marketplaceLink: unit.marketplaceLink ?? '',
-      marketplaceIdentifier: unit.marketplaceIdentifier ?? '',
-      unitTags: unit.unitTags ?? '',
-      unitRegistryLink: unit.unitRegistryLink ?? '',
-      correspondingAdjustmentDeclaration:
-        unit.correspondingAdjustmentDeclaration ?? '',
-      correspondingAdjustmentStatus: unit.correspondingAdjustmentStatus ?? '',
-    });
-
-    setIssuance([
-      _.pick(
-        unit.issuance,
-        'startDate',
-        'endDate',
-        'verificationApproach',
-        'verificationReportDate',
-        'verificationBody',
-      ),
-    ]);
-
-    setLabelsRepeaterValues(
-      unit.labels.map(label =>
-        _.pick(
-          label,
-          'label',
-          'labelType',
-          'creditingPeriodStartDate',
-          'creditingPeriodEndDate',
-          'validityPeriodStartDate',
-          'validityPeriodEndDate',
-          'unitQuantity',
-          'labelLink',
-        ),
-      ),
-    );
-  }, [unit]);
+    const formattedProjectData = formatAPIData(unitToBeEdited);
+    setUnit(formattedProjectData);
+  }, [unitToBeEdited]);
 
   const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
 
-  const switchToNextTabIfDataIsValid = async (data, schema) => {
-    const isValid = await schema.isValid(data);
-    if (isValid) {
-      if (stepperStepsTranslationIds[tabValue] === 'issuances') {
+  const onChangeStep = async (desiredStep = null) => {
+    const isUnitValid = await unitsSchema.isValid(unit);
+    if (isUnitValid) {
+      if (desiredStep >= stepperStepsTranslationIds.length) {
         handleUpdateUnit();
       } else {
-        setTabValue(tabValue + 1);
+        setTabValue(desiredStep);
       }
-    }
-  };
-
-  const onNextButtonPress = async () => {
-    switch (stepperStepsTranslationIds[tabValue]) {
-      case 'unit':
-        switchToNextTabIfDataIsValid(editedUnits, unitsSchema);
-        break;
-      case 'labels':
-        switchToNextTabIfDataIsValid(labels, labelsSchema);
-        break;
-      case 'issuances':
-        switchToNextTabIfDataIsValid(issuance, issuancesSchema);
-        break;
     }
   };
 
   const handleUpdateUnit = async () => {
-    const dataToSend = _.cloneDeep(editedUnits);
-
-    Object.keys(dataToSend).forEach(el => {
-      if (!dataToSend[el]) {
-        delete dataToSend[el];
-      }
-    });
-
-    if (!_.isEmpty(issuance)) {
-      dataToSend.issuance = _.head(issuance);
-    }
-
-    if (!_.isEmpty(labels)) {
-      dataToSend.labels = labels;
-    }
-
-    const isUnitValid = await unitsSchema.isValid(dataToSend);
-
-    if (isUnitValid) {
-      dispatch(updateUnitsRecord(dataToSend));
-    }
+    const dataToSend = _.cloneDeep(unit);
+    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
+    dispatch(updateUnitsRecord(dataToSend));
   };
 
   const unitWasSuccessfullyEdited =
@@ -155,11 +74,14 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
       )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
-        onOk={onNextButtonPress}
+        onOk={() => onChangeStep(tabValue + 1)}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
           id: 'edit-unit',
+        })}
+        label={intl.formatMessage({
+          id: tabValue < 2 ? 'next' : 'update-unit',
         })}
         extraButtonLabel={
           tabValue > 0
@@ -169,7 +91,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
             : undefined
         }
         extraButtonOnClick={() =>
-          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
         }
         body={
           <StyledFormContainer>
@@ -178,7 +100,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
                 stepperStepsTranslationIds.map((step, index) => (
                   <Step
                     key={index}
-                    onClick={() => setTabValue(index)}
+                    onClick={() => onChangeStep(index)}
                     sx={{ cursor: 'pointer' }}
                   >
                     <StepLabel>
@@ -194,22 +116,29 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
               value={tabValue}
               index={0}
             >
-              <UnitDetailsForm
-                unitDetails={editedUnits}
-                setUnitDetails={setEditUnits}
-              />
+              <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
               <LabelsRepeater
-                labelsState={labels}
-                newLabelsState={setLabelsRepeaterValues}
+                labelsState={unit.labels}
+                newLabelsState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    labels: value,
+                  }))
+                }
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <IssuanceRepeater
                 max={1}
-                issuanceState={issuance}
-                newIssuanceState={setIssuance}
+                issuanceState={unit.issuance !== '' ? [unit.issuance] : []}
+                newIssuanceState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    issuance: value[0] ? value[0] : '',
+                  }))
+                }
               />
             </TabPanel>
           </StyledFormContainer>

@@ -31,6 +31,7 @@ import {
   modalTypeEnum,
   Body,
 } from '../../components';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   getStagingData,
@@ -39,7 +40,7 @@ import {
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
 
-import { setCommit, setCommitAll } from '../../store/actions/app';
+import { setCommit } from '../../store/actions/app';
 
 const headings = [
   'currentRegistry',
@@ -125,9 +126,9 @@ const PendingMessageContainer = styled('div')`
   gap: 20px;
 `;
 
-const Projects = withRouter(({ setPendingError }) => {
+const Projects = withRouter(() => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { notification, commit, commitAll } = useSelector(store => store.app);
+  const { notification, commit } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -216,14 +217,6 @@ const Projects = withRouter(({ setPendingError }) => {
   }, []);
 
   useEffect(() => {
-    if (commitAll) {
-      onCommit();
-      dispatch(setCommitAll(false));
-      dispatch(setCommit(false));
-    }
-  }, [commitAll]);
-
-  useEffect(() => {
     const options = {
       type: 'projects',
       page: 1,
@@ -283,7 +276,7 @@ const Projects = withRouter(({ setPendingError }) => {
   }
 
   const onCommit = () => {
-    dispatch(commitStagingData());
+    dispatch(commitStagingData('projects'));
     dispatch(setCommit(false));
   };
 
@@ -328,7 +321,7 @@ const Projects = withRouter(({ setPendingError }) => {
                   ) {
                     setCreateFormIsDisplayed(true);
                   } else {
-                    setPendingError(true);
+                    dispatch(setPendingError(true));
                   }
                 }}
               />
@@ -355,7 +348,7 @@ const Projects = withRouter(({ setPendingError }) => {
             }
             modalType={modalTypeEnum.basic}
             extraButtonLabel={intl.formatMessage({ id: 'everything' })}
-            extraButtonOnClick={() => dispatch(commitAll(true))}
+            extraButtonOnClick={() => dispatch(setCommit(true))}
             onClose={() => dispatch(setCommit(false))}
             onOk={onCommit}
             label={intl.formatMessage({ id: 'only-projects' })}
@@ -415,7 +408,7 @@ const Projects = withRouter(({ setPendingError }) => {
                             ) {
                               setCreateFormIsDisplayed(true);
                             } else {
-                              setPendingError(true);
+                              dispatch(setPendingError(true));
                             }
                           }}>
                           <FormattedMessage id="create-one-now" />

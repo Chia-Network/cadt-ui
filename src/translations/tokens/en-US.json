@@ -298,5 +298,10 @@
   "staging-group-deleted": "The staging group was successfully deleted.",
   "project-locations": "Project Locations",
   "estimations": "Estimations",
-  "ratings": "Ratings"
+  "ratings": "Ratings",
+  "project-detailed-view": "Project Detailed View",
+  "unit-detailed-view": "Unit Detailed View",
+  "select-existing-issuance": "Select an existing issuance",
+  "select-existing-issuance-description": "Either select an existing issuance or create a new one.",
+  "all-issuance-units": "Units belonging to this issuance"
 }

@@ -37,6 +37,7 @@ export const actions = keyMirror(
   'GET_STAGING_DATA',
   'GET_ORGANIZATIONS',
   'GET_PICKLISTS',
+  'GET_ISSUANCES',
 );
 
 const getClimateWarehouseTable = (
@@ -200,6 +201,31 @@ export const getStagingData = ({ useMockedResponse = false }) => {
   };
 };
 
+export const getIssuances = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetch(`${constants.API_HOST}/issuances`);
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_ISSUANCES,
+          payload: results,
+        });
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const getPaginatedData = ({
   type,
   page,
@@ -254,12 +280,12 @@ export const getPaginatedData = ({
   };
 };
 
-export const commitStagingData = () => {
+export const commitStagingData = (data) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/staging/commit`;
+      const url = `${constants.API_HOST}/staging/commit?table=${data}`;
       const payload = {
         method: 'POST',
         headers: {
@@ -866,7 +892,7 @@ export const mockUnitsResponse = {
 };
 
 export const getUnits = options => {
-  const url = options.searchQuery
+  const url = options?.searchQuery
     ? `${constants.API_HOST}/units?search=${options.searchQuery}`
     : `${constants.API_HOST}/units`;
 

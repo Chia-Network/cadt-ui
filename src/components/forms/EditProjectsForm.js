@@ -20,16 +20,11 @@ import { updateProjectRecord } from '../../store/actions/climateWarehouseActions
 import { useIntl } from 'react-intl';
 import { ProjectDetailsForm } from '.';
 
+import { projectSchema } from '../../store/validations';
 import {
-  labelsSchema,
-  issuancesSchema,
-  coBenefitsSchema,
-  relatedProjectsSchema,
-  locationsSchema,
-  estimationsSchema,
-  ratingsSchema,
-  projectSchema,
-} from '../../store/validations';
+  formatAPIData,
+  cleanObjectFromEmptyFieldsOrArrays,
+} from '../../utils/formatData';
 
 const EditProjectsForm = ({
   onClose,
@@ -42,13 +37,6 @@ const EditProjectsForm = ({
         project => project.warehouseProjectId === record.warehouseProjectId,
       )[0],
   );
-  const [labels, setLabelsRepeaterValues] = useState([]);
-  const [issuance, setIssuance] = useState([]);
-  const [locations, setLocations] = useState([]);
-  const [relatedProjects, setRelatedProjects] = useState([]);
-  const [estimationsState, setEstimationsState] = useState([]);
-  const [ratingsState, setRatingsState] = useState([]);
-  const [coBenefits, setCoBenefits] = useState([]);
   const [project, setProject] = useState({});
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
@@ -56,112 +44,8 @@ const EditProjectsForm = ({
   const { notification } = useSelector(state => state.app);
 
   useEffect(() => {
-    setProject({
-      warehouseProjectId: projectToBeEdited.warehouseProjectId ?? '',
-      projectId: projectToBeEdited.projectId ?? '',
-      registryOfOrigin: projectToBeEdited.registryOfOrigin ?? '',
-      originProjectId: projectToBeEdited.originProjectId ?? '',
-      program: projectToBeEdited.program ?? '',
-      projectName: projectToBeEdited.projectName ?? '',
-      projectLink: projectToBeEdited.projectLink ?? '',
-      projectDeveloper: projectToBeEdited.projectDeveloper ?? '',
-      sector: projectToBeEdited.sector ?? '',
-      projectType: projectToBeEdited.projectType ?? '',
-      projectTags: projectToBeEdited.projectTags ?? '',
-      coveredByNDC: projectToBeEdited.coveredByNDC ?? '',
-      ndcInformation: projectToBeEdited.ndcInformation ?? '',
-      projectStatus: projectToBeEdited.projectStatus ?? '',
-      projectStatusDate: projectToBeEdited.projectStatusDate,
-      unitMetric: projectToBeEdited.unitMetric ?? '',
-      methodology: projectToBeEdited.methodology ?? '',
-      validationBody: projectToBeEdited.validationBody ?? '',
-      validationDate: projectToBeEdited.validationDate,
-    });
-
-    setIssuance(
-      projectToBeEdited.issuances.map(issuanceKey =>
-        _.pick(
-          issuanceKey,
-          'startDate',
-          'endDate',
-          'verificationApproach',
-          'verificationReportDate',
-          'verificationBody',
-        ),
-      ),
-    );
-
-    setLocations(
-      projectToBeEdited.projectLocations.map(projectLoc =>
-        _.pick(
-          projectLoc,
-          'country',
-          'inCountryRegion',
-          'geographicIdentifier',
-        ),
-      ),
-    );
-
-    setCoBenefits(
-      projectToBeEdited.coBenefits.map(cobenefit =>
-        _.pick(cobenefit, 'cobenefit'),
-      ),
-    );
-
-    setLabelsRepeaterValues(
-      projectToBeEdited.labels.map(label =>
-        _.pick(
-          label,
-          'label',
-          'labelType',
-          'creditingPeriodStartDate',
-          'creditingPeriodEndDate',
-          'validityPeriodStartDate',
-          'validityPeriodEndDate',
-          'unitQuantity',
-          'labelLink',
-        ),
-      ),
-    );
-
-    setRelatedProjects(
-      projectToBeEdited.relatedProjects.map(relatedProject =>
-        _.pick(relatedProject, 'relationshipType', 'registry'),
-      ),
-    );
-
-    setEstimationsState(
-      projectToBeEdited.estimations.map(estimation =>
-        _.pick(
-          estimation,
-          'creditingPeriodStart',
-          'creditingPeriodEnd',
-          'unitCount',
-        ),
-      ),
-    );
-
-    const ratingsArray = projectToBeEdited.projectRatings.map(rating =>
-      _.pick(
-        rating,
-        'id',
-        'ratingType',
-        'ratingRangeHighest',
-        'ratingRangeLowest',
-        'rating',
-        'ratingLink',
-      ),
-    );
-    // needs to be removed after back end code bug is fixed so that the following fields are always returned strings from API
-    // https://github.com/Chia-Network/climate-warehouse-ui/issues/339
-    const formattedRatingsArray = ratingsArray.map(rating => ({
-      ...rating,
-      ratingRangeHighest: rating.ratingRangeHighest.toString(),
-      ratingRangeLowest: rating.ratingRangeLowest.toString(),
-      rating: rating.ratingRangeLowest.toString(),
-    }));
-    // code that needs to be removed ends here
-    setRatingsState(formattedRatingsArray);
+    const formattedProjectData = formatAPIData(projectToBeEdited);
+    setProject(formattedProjectData);
   }, [projectToBeEdited]);
 
   const stepperStepsTranslationIds = [
@@ -175,88 +59,21 @@ const EditProjectsForm = ({
     'ratings',
   ];
 
-  const switchToNextTabIfDataIsValid = async (data, schema) => {
-    const isValid = await schema.isValid(data);
+  const onChangeStep = async (desiredStep = null) => {
+    const isValid = await projectSchema.isValid(project);
     if (isValid) {
-      if (stepperStepsTranslationIds[tabValue] === 'ratings') {
+      if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitProject();
       } else {
-        setTabValue(tabValue + 1);
+        setTabValue(desiredStep);
       }
-    }
-  };
-
-  const onNextButtonPress = async () => {
-    switch (stepperStepsTranslationIds[tabValue]) {
-      case 'project':
-        switchToNextTabIfDataIsValid(project, projectSchema);
-        break;
-      case 'labels':
-        switchToNextTabIfDataIsValid(labels, labelsSchema);
-        break;
-      case 'issuances':
-        switchToNextTabIfDataIsValid(issuance, issuancesSchema);
-        break;
-      case 'co-benefits':
-        switchToNextTabIfDataIsValid(coBenefits, coBenefitsSchema);
-        break;
-      case 'project-locations':
-        switchToNextTabIfDataIsValid(locations, locationsSchema);
-        break;
-      case 'related-projects':
-        switchToNextTabIfDataIsValid(relatedProjects, relatedProjectsSchema);
-        break;
-      case 'estimations':
-        switchToNextTabIfDataIsValid(estimationsState, estimationsSchema);
-        break;
-      case 'ratings':
-        switchToNextTabIfDataIsValid(ratingsState, ratingsSchema);
-        break;
     }
   };
 
   const handleSubmitProject = async () => {
     const dataToSend = _.cloneDeep(project);
-
-    Object.keys(dataToSend).forEach(el => {
-      if (!dataToSend[el]) {
-        delete dataToSend[el];
-      }
-    });
-
-    if (!_.isEmpty(issuance)) {
-      dataToSend.issuances = issuance;
-    }
-
-    if (!_.isEmpty(labels)) {
-      dataToSend.labels = labels;
-    }
-
-    if (!_.isEmpty(coBenefits)) {
-      dataToSend.coBenefits = coBenefits;
-    }
-
-    if (!_.isEmpty(locations)) {
-      dataToSend.projectLocations = locations;
-    }
-
-    if (!_.isEmpty(relatedProjects)) {
-      dataToSend.relatedProjects = relatedProjects;
-    }
-
-    if (!_.isEmpty(estimationsState)) {
-      dataToSend.estimations = estimationsState;
-    }
-
-    if (!_.isEmpty(ratingsState)) {
-      dataToSend.projectRatings = ratingsState;
-    }
-
-    const projectIsValid = await projectSchema.isValid(dataToSend);
-
-    if (projectIsValid) {
-      dispatch(updateProjectRecord(dataToSend));
-    }
+    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
+    dispatch(updateProjectRecord(dataToSend));
   };
 
   const projectWasSuccessfullyEdited =
@@ -274,7 +91,7 @@ const EditProjectsForm = ({
       )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
-        onOk={onNextButtonPress}
+        onOk={() => onChangeStep(tabValue + 1)}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
@@ -291,7 +108,7 @@ const EditProjectsForm = ({
             : undefined
         }
         extraButtonOnClick={() =>
-          setTabValue(prev => (prev > 0 ? prev - 1 : prev))
+          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
         }
         body={
           <StyledFormContainer>
@@ -300,7 +117,7 @@ const EditProjectsForm = ({
                 stepperStepsTranslationIds.map((stepTranslationId, index) => (
                   <Step
                     key={index}
-                    onClick={() => setTabValue(index)}
+                    onClick={() => onChangeStep(index)}
                     sx={{ cursor: 'pointer' }}
                   >
                     <StepLabel>
@@ -324,44 +141,79 @@ const EditProjectsForm = ({
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <LabelsRepeater
-                  labelsState={labels}
-                  newLabelsState={setLabelsRepeaterValues}
+                  labelsState={project?.labels ?? []}
+                  newLabelsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      labels: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <IssuanceRepeater
-                  issuanceState={issuance}
-                  newIssuanceState={setIssuance}
+                  issuanceState={project?.issuances ?? []}
+                  newIssuanceState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      issuances: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
                 <CoBenefitsRepeater
-                  coBenefitsState={coBenefits}
-                  setNewCoBenefitsState={setCoBenefits}
+                  coBenefitsState={project?.coBenefits ?? []}
+                  setNewCoBenefitsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      coBenefits: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
                 <LocationsRepeater
-                  locationsState={locations}
-                  setLocationsState={setLocations}
+                  locationsState={project?.projectLocations ?? []}
+                  setLocationsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      projectLocations: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={5}>
                 <RelatedProjectsRepeater
-                  relatedProjectsState={relatedProjects}
-                  setRelatedProjectsState={setRelatedProjects}
+                  relatedProjectsState={project?.relatedProjects ?? []}
+                  setRelatedProjectsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      relatedProjects: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={6}>
                 <EstimationsRepeater
-                  estimationsState={estimationsState}
-                  setEstimationsState={setEstimationsState}
+                  estimationsState={project?.estimations ?? []}
+                  setEstimationsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      estimations: value,
+                    }))
+                  }
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={7}>
                 <RatingsRepeater
-                  ratingsState={ratingsState}
-                  setRatingsState={setRatingsState}
+                  ratingsState={project?.projectRatings ?? []}
+                  setRatingsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      projectRatings: value,
+                    }))
+                  }
                 />
               </TabPanel>
             </div>
