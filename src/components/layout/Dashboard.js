@@ -29,6 +29,7 @@ const BodyText = styled('div')`
 const InnerContainer = styled('div')`
   display: flex;
   height: 100%;
+  overflow: hidden;
 `;
 
 const LogoContainer = styled('div')`

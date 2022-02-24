@@ -442,6 +442,7 @@ const Units = withRouter(() => {
                     deleteStagingData={uuid =>
                       dispatch(deleteStagingData(uuid))
                     }
+                    modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
               </TabPanel>
@@ -473,6 +474,7 @@ const Units = withRouter(() => {
                       deleteStagingData={uuid =>
                         dispatch(deleteStagingData(uuid))
                       }
+                      modalSizeAndPosition={modalSizeAndPosition}
                     />
                   </>
                 )}

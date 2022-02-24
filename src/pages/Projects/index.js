@@ -392,7 +392,8 @@ const Projects = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -434,6 +435,7 @@ const Projects = withRouter(() => {
                     deleteStagingData={uuid =>
                       dispatch(deleteStagingData(uuid))
                     }
+                    modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
               </TabPanel>
@@ -465,6 +467,7 @@ const Projects = withRouter(() => {
                       deleteStagingData={uuid =>
                         dispatch(deleteStagingData(uuid))
                       }
+                      modalSizeAndPosition={modalSizeAndPosition}
                     />
                   </>
                 )}
