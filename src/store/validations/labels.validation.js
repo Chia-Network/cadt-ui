@@ -28,8 +28,13 @@ export const labelSchema = yup.object().shape({
     .typeError('Invalid Date')
     .required('Required Field'),
   unitQuantity: yup
-    .number('Invalid Number')
+    .number()
     .integer()
+    .typeError('Add a positive quantity')
+    .test({
+      message: 'Add a positive quantity',
+      test: val => val >= 0,
+    })
     .required('Required Field'),
   labelLink: yup.string().required('Required Field'),
 });
