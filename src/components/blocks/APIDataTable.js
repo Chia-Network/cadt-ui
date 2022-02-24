@@ -196,6 +196,12 @@ const APIDataTable = withTheme(
                             record[key] &&
                             record[key] !== 'null' &&
                             record[key].toString()}
+
+                          {key !== 'orgUid' &&
+                            (record[key] === 'null' ||
+                              record[key] === '' ||
+                              record[key] === null) &&
+                            '--'}
                         </TableCellText>
                       </Td>
                     ))}

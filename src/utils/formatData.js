@@ -81,7 +81,10 @@ export const cleanObjectFromEmptyFieldsOrArrays = dataToSend => {
     if (Array.isArray(dataToSend[el])) {
       dataToSend[el].forEach(individualArrayItem =>
         Object.keys(individualArrayItem).forEach(key => {
-          if (individualArrayItem[key] === '') {
+          if (
+            individualArrayItem[key] === '' ||
+            individualArrayItem[key] === null
+          ) {
             delete individualArrayItem[key];
           }
         }),

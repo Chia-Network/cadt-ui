@@ -28,3 +28,5 @@ export * from './StagingDataGroups';
 export * from './ToolTipContainer';
 export * from './DetailedViewModal';
 export * from './DetailedViewTab';
+export * from './DetailedViewStagingModal';
+export * from './DetailedViewStagingTab';
