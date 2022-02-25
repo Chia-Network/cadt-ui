@@ -39,6 +39,7 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+import { getUrlParams } from '../../utils/urlUtils';
 
 import { setCommit } from '../../store/actions/app';
 
@@ -140,10 +141,11 @@ const Projects = withRouter(() => {
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
-
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+
 
   useEffect(() => {
     const switchTabBySuccessfulRequest = {
@@ -381,13 +383,9 @@ const Projects = withRouter(() => {
           </Tabs>
           <StyledCSVOperationsContainer>
             <span
-              onClick={() =>
-                downloadTxtFile(
-                  'projects',
-                  searchQuery,
-                  searchParams.get('orgUid'),
-                )
-              }>
+              onClick={() => {
+                downloadTxtFile('projects', getUrlParams);
+              }}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (
@@ -421,8 +419,7 @@ const Projects = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

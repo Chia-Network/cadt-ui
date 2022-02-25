@@ -40,6 +40,7 @@ import {
   Body,
 } from '../../components';
 import { setCommit } from '../../store/actions/app';
+import { getUrlParams } from '../../utils/urlUtils';
 
 const headings = [
   'projectLocationId',
@@ -141,6 +142,7 @@ const Units = withRouter(() => {
     setTabValue(newValue);
   };
 
+console.log(getUrlParams())
   useEffect(() => {
     const switchTabBySuccessfulRequest = {
       'unit-deleted': 1,
@@ -379,14 +381,7 @@ const Units = withRouter(() => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span
-              onClick={() =>
-                downloadTxtFile(
-                  'units',
-                  searchQuery,
-                  searchParams.get('orgUid'),
-                )
-              }>
+            <span onClick={() => downloadTxtFile('units', getUrlParams)}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (

@@ -1,8 +1,12 @@
-export const downloadTxtFile = async (type, search, orgUid) => {
+export const downloadTxtFile = async (type, getUrlParams) => {
   await fetch(
     `http://localhost:3030/v1/${type}?${
-      search === null || search === '' ? '' : `search=${search}&`
-    }${orgUid === 'all' ? '' : `orgUid=${orgUid}&`}xls=true`,
+      getUrlParams()['search'] ? `${getUrlParams()['search']}&` : ''
+    }${
+      getUrlParams()['orgUid'] === 'orgUid=all'
+        ? ''
+        : `${getUrlParams()['orgUid']}&`
+    }xls=true`,
   )
     .then(async result => await result.blob())
     .then(async response => {

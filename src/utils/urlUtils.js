@@ -15,3 +15,16 @@ export const validateUrl = url => {
     /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
   return expression.test(url);
 };
+
+export function getUrlParams() {
+  let paramList = {};
+  let urlSplit = window.location.href
+    .slice(window.location.href.indexOf('?') + 1)
+    .split('&');
+
+  for (let param of urlSplit) {
+    let splitParams = param.split('=');
+    paramList = { ...paramList, [splitParams[0]]: param };
+  }
+  return paramList;
+}
