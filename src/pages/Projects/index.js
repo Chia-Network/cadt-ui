@@ -27,6 +27,9 @@ import {
   Message,
   UploadCSV,
   Alert,
+  Modal,
+  modalTypeEnum,
+  Body,
 } from '../../components';
 import { setPendingError } from '../../store/actions/app';
 
@@ -36,6 +39,8 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+
+import { setCommit } from '../../store/actions/app';
 
 const headings = [
   'currentRegistry',
@@ -123,7 +128,7 @@ const PendingMessageContainer = styled('div')`
 
 const Projects = withRouter(() => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { notification } = useSelector(store => store.app);
+  const { notification, commit } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -271,7 +276,13 @@ const Projects = withRouter(() => {
   }
 
   const onCommit = () => {
-    dispatch(commitStagingData());
+    dispatch(commitStagingData('projects'));
+    dispatch(setCommit(false));
+  };
+
+  const onCommitAll = () => {
+    dispatch(commitStagingData('all'));
+    dispatch(setCommit(false));
   };
 
   return (
@@ -325,11 +336,29 @@ const Projects = withRouter(() => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={onCommit}
+                  onClick={() => dispatch(setCommit(true))}
                 />
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
+        {commit && (
+          <Modal
+            title={intl.formatMessage({ id: 'commit-message' })}
+            body={
+              <Body size="Large">
+                {intl.formatMessage({
+                  id: 'commit-projects-message-question',
+                })}
+              </Body>
+            }
+            modalType={modalTypeEnum.basic}
+            extraButtonLabel={intl.formatMessage({ id: 'everything' })}
+            extraButtonOnClick={onCommitAll}
+            onClose={() => dispatch(setCommit(false))}
+            onOk={onCommit}
+            label={intl.formatMessage({ id: 'only-projects' })}
+          />
+        )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />

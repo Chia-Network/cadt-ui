@@ -35,7 +35,11 @@ import {
   Message,
   UploadCSV,
   Alert,
+  Modal,
+  modalTypeEnum,
+  Body,
 } from '../../components';
+import { setCommit } from '../../store/actions/app';
 
 const headings = [
   'projectLocationId',
@@ -122,7 +126,7 @@ const PendingMessageContainer = styled('div')`
 const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification } = useSelector(store => store.app);
+  const { notification, commit } = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -261,7 +265,13 @@ const Units = withRouter(() => {
   }
 
   const onCommit = () => {
-    dispatch(commitStagingData());
+    dispatch(commitStagingData('units'));
+    dispatch(setCommit(false));
+  };
+
+  const onCommitAll = () => {
+    dispatch(commitStagingData('all'));
+    dispatch(setCommit(false));
   };
 
   const onOrganizationSelect = selectedOption => {
@@ -326,9 +336,27 @@ const Units = withRouter(() => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={onCommit}
+                  onClick={() => dispatch(setCommit(true))}
                 />
               )}
+            {commit && (
+              <Modal
+                title={intl.formatMessage({ id: 'commit-message' })}
+                body={
+                  <Body size="Large">
+                    {intl.formatMessage({
+                      id: 'commit-units-message-question',
+                    })}
+                  </Body>
+                }
+                modalType={modalTypeEnum.basic}
+                onOk={onCommit}
+                extraButtonLabel={intl.formatMessage({ id: 'everything' })}
+                extraButtonOnClick={onCommitAll}
+                onClose={() => dispatch(setCommit(false))}
+                label={intl.formatMessage({ id: 'only-units' })}
+              />
+            )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
         <StyledSubHeaderContainer>
@@ -386,8 +414,7 @@ const Units = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

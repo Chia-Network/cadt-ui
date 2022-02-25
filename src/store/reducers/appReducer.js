@@ -13,6 +13,7 @@ const initialState = {
   connectionCheck: true,
   updateAvailablePleaseRefesh: false,
   notification: null,
+  commit: false,
   pendingError: false,
 };
 
@@ -34,6 +35,12 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.DEACTIVATE_PROGRESS_INDICATOR:
       return u({ showProgressOverlay: false }, state);
+
+    case appActions.COMMIT:
+      return u({ commit: action.payload }, state);
+
+    case appActions.COMMIT_ALL:
+      return u({ commitAll: action.payload }, state);
 
     case appActions.SET_GLOBAL_ERROR_MESSAGE:
       return u({ errorMessage: action.payload }, state);

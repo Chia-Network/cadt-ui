@@ -280,12 +280,12 @@ export const getPaginatedData = ({
   };
 };
 
-export const commitStagingData = () => {
+export const commitStagingData = (data) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/staging/commit`;
+      const url = `${constants.API_HOST}/staging/commit${data === 'all' ? '':`?table=${data}`}`;
       const payload = {
         method: 'POST',
         headers: {
