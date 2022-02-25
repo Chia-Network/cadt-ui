@@ -142,7 +142,6 @@ const Units = withRouter(() => {
     setTabValue(newValue);
   };
 
-console.log(getUrlParams())
   useEffect(() => {
     const switchTabBySuccessfulRequest = {
       'unit-deleted': 1,

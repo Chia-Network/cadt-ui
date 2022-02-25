@@ -145,8 +145,6 @@ const Projects = withRouter(() => {
     setTabValue(newValue);
   };
 
-
-
   useEffect(() => {
     const switchTabBySuccessfulRequest = {
       'project-deleted': 1,
