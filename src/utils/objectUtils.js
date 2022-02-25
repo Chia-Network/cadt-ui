@@ -13,7 +13,9 @@ export const getDiff = (a, b) => {
 export const getDiffObject = (original, ...changes) => {
   let keys = original ? Object.keys(original) : [];
 
-  changes.forEach(object => (keys = [...keys, ...Object.keys(object)]));
+  changes.forEach(
+    object => object != null && keys.push(...Object.keys(object)),
+  );
 
   const uniqueKeys = [...new window.Set(keys)];
 
