@@ -16,15 +16,4 @@ export const validateUrl = url => {
   return expression.test(url);
 };
 
-export function getUrlParams() {
-  let paramList = {};
-  let urlSplit = window.location.href
-    .slice(window.location.href.indexOf('?') + 1)
-    .split('&');
 
-  for (let param of urlSplit) {
-    let splitParams = param.split('=');
-    paramList = { ...paramList, [splitParams[0]]: param };
-  }
-  return paramList;
-}

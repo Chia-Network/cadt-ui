@@ -39,7 +39,6 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
-import { getUrlParams } from '../../utils/urlUtils';
 
 import { setCommit } from '../../store/actions/app';
 
@@ -380,10 +379,7 @@ const Projects = withRouter(() => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span
-              onClick={() => {
-                downloadTxtFile('projects', getUrlParams);
-              }}>
+            <span onClick={() => downloadTxtFile('projects', searchParams)}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (

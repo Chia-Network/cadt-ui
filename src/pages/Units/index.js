@@ -40,7 +40,6 @@ import {
   Body,
 } from '../../components';
 import { setCommit } from '../../store/actions/app';
-import { getUrlParams } from '../../utils/urlUtils';
 
 const headings = [
   'projectLocationId',
@@ -380,7 +379,7 @@ const Units = withRouter(() => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span onClick={() => downloadTxtFile('units', getUrlParams)}>
+            <span onClick={() => downloadTxtFile('units', searchParams)}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (
