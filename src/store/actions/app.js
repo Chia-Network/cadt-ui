@@ -13,6 +13,7 @@ export const actions = keyMirror(
   'CONNECTION_CHECK',
   'RESET_REFRESH_PROMPT',
   'SET_NOTIFICATION',
+  'COMMIT',
   'PENDING_ERROR',
 );
 
@@ -48,6 +49,11 @@ export const clearGlobalErrorMessage = {
 
 export const setConnectionCheck = bool => ({
   type: actions.CONNECTION_CHECK,
+  payload: bool,
+});
+
+export const setCommit = bool => ({
+  type: actions.COMMIT,
   payload: bool,
 });
 
