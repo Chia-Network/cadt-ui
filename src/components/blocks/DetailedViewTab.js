@@ -42,7 +42,7 @@ const DetailedViewTabItem = ({ entry }) => {
   const allUnitsWithThisIssuance = useMemo(
     () =>
       isIssuance && units
-        ? units.filter(unit => unit.issuance.id === entry.id)
+        ? units.filter(unit => unit?.issuance?.id === entry.id)
         : null,
     [units],
   );
