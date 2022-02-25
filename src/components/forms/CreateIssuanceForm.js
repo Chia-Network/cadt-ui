@@ -71,7 +71,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
       const foundIssuance = climateWarehouseStore?.issuances?.filter(
         issuance => issuance?.id === id,
       );
-      if (foundIssuance && foundIssuance.length) {
+      if (foundIssuance?.length) {
         return foundIssuance[0];
       } else {
         return null;
