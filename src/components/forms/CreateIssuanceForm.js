@@ -35,6 +35,12 @@ const CreateIssuanceForm = ({ value, onChange }) => {
   const [selectedIssuance, setSelectedIssuance] = useState(null);
   const intl = useIntl();
 
+  useEffect(() => {
+    if (value?.id) {
+      setSelectedIssuance(getIssuanceById(value.id));
+    }
+  }, [value]);
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
