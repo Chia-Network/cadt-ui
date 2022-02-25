@@ -262,6 +262,7 @@ const StagingDataGroups = withTheme(
                           setDetailedViewData({
                             record: changeGroup.diff.original,
                             title: getTranslatedCardTitle(changeGroup),
+                            action: changeGroup.action,
                           })
                         }
                         title={getTranslatedCardTitle(changeGroup)}
@@ -277,6 +278,7 @@ const StagingDataGroups = withTheme(
                           setDetailedViewData({
                             record: changeGroup.diff.change[0],
                             title: getTranslatedCardTitle(changeGroup),
+                            action: changeGroup.action,
                           })
                         }
                       />
@@ -293,6 +295,7 @@ const StagingDataGroups = withTheme(
                             record: changeGroup.diff.original,
                             changes: changeGroup.diff.change,
                             title: getTranslatedCardTitle(changeGroup),
+                            action: changeGroup.action,
                           })
                         }
                         title={getTranslatedCardTitle(changeGroup)}
@@ -312,6 +315,7 @@ const StagingDataGroups = withTheme(
                               record: changeGroup.diff.original,
                               changes: changeGroup.diff.change,
                               title: getTranslatedCardTitle(changeGroup),
+                              action: changeGroup.action,
                             })
                           }
                           addedIsVisible
@@ -357,6 +361,9 @@ const StagingDataGroups = withTheme(
               }
               title={
                 detailedViewData?.title ? detailedViewData.title : undefined
+              }
+              action={
+                detailedViewData?.action ? detailedViewData.action : undefined
               }
             />
           )}

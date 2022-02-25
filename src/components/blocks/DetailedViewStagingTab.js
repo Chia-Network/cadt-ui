@@ -23,7 +23,7 @@ const StyledDetailedViewTab = styled('div')`
   gap: 20px;
 `;
 
-const DetailedViewTabItem = ({ entry }) => {
+const DetailedViewTabItem = ({ entry, action }) => {
   const hasEntryKeyData = key =>
     (entry[key].original !== null && entry[key].original !== 'null') ||
     (entry[key].changes &&
@@ -39,10 +39,23 @@ const DetailedViewTabItem = ({ entry }) => {
       'label_unit',
     ].includes(key);
 
-  const isOriginalDataToBeDisplayedInRed = key =>
+  const areThereAnyChangesForThisOriginal = key =>
     entry[key].changes &&
     entry[key].changes.length > 0 &&
     entry[key].changes.some(x => x !== null);
+
+  const getOriginalColorForKey = entryProp => {
+    if (areThereAnyChangesForThisOriginal(entryProp)) {
+      return '#f5222d';
+    }
+    if (action === 'DELETE') {
+      return '#f5222d';
+    }
+    if (action === 'INSERT') {
+      return '#52C41A';
+    }
+    return '#000000';
+  };
 
   return (
     <StyledDetailedViewTabItem>
@@ -56,13 +69,7 @@ const DetailedViewTabItem = ({ entry }) => {
               </Body>
               {entry[entryProp].original &&
                 entry[entryProp].original !== 'null' && (
-                  <Body
-                    color={
-                      isOriginalDataToBeDisplayedInRed(entryProp)
-                        ? '#f5222d'
-                        : '#000000'
-                    }
-                  >
+                  <Body color={getOriginalColorForKey(entryProp)}>
                     {entry[entryProp].original}
                   </Body>
                 )}
@@ -81,11 +88,11 @@ const DetailedViewTabItem = ({ entry }) => {
   );
 };
 
-const DetailedViewStagingTab = ({ data }) => {
+const DetailedViewStagingTab = ({ data, action }) => {
   return (
     <StyledDetailedViewTab>
       {data.map((entry, index) => (
-        <DetailedViewTabItem key={index} entry={entry} />
+        <DetailedViewTabItem key={index} entry={entry} action={action} />
       ))}
     </StyledDetailedViewTab>
   );
