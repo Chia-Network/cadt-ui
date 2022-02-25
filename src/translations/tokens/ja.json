@@ -85,7 +85,7 @@
   "units-country-jurisdiction-of-owner-description": "発行されたユニットのセットを管轄する国を選択します。",
   "units-in-country-jurisdiction-of-owner-description": "該当する場合は、上記で選択した国内の地域を入力します。",
   "units-serial-number-block-description": "シリアル番号ブロックを入力します",
-  "units-serial-number-pattern-description": "シリアル番号の形式が組織で使用する通常の形式と異なる場合は、ここに形式を入力してください。",
+  "units-serial-number-pattern-description": "シリアル番号の形式が組織で通常使用する形式と異なる場合は、ここに正規表現パターンを入力します。",
   "units-unit-block-start-description": "ユニット ブロックの開始を示します。",
   "units-unit-block-end-description": "ユニットブロックの終わりを示します。",
   "units-unit-count-description": "特定のシリアル番号ブロックで発行された単位の合計量を表示します。",

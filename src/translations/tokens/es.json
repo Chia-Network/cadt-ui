@@ -85,7 +85,7 @@
   "units-country-jurisdiction-of-owner-description": "Seleccione el país que tiene jurisdicción sobre el conjunto de unidades emitidas.",
   "units-in-country-jurisdiction-of-owner-description": "Si corresponde, ingrese la región dentro del país seleccionado anteriormente.",
   "units-serial-number-block-description": "Introduzca el bloque del número de serie.",
-  "units-serial-number-pattern-description": "Si el formato del número de serie es diferente del que normalmente utiliza su organización, introduzca el formato aquí.",
+  "units-serial-number-pattern-description": "Introduzca el patrón regex aquí, si el formato del número de serie es diferente del que suele utilizar su organización.",
   "units-unit-block-start-description": "Denota el inicio del bloque unitario.",
   "units-unit-block-end-description": "Denota el final del bloque de unidades.",
   "units-unit-count-description": "Muestra la cantidad total de unidades emitidas en el bloque de número de serie específico.",
