@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { downloadTxtFile } from '../../utils/csvUtils';
+import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
@@ -25,7 +25,7 @@ import {
   CreateProjectForm,
   H3,
   Message,
-  UploadCSV,
+  UploadXLSX,
   Alert,
   Modal,
   modalTypeEnum,
@@ -140,7 +140,6 @@ const Projects = withRouter(() => {
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
-
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -380,14 +379,12 @@ const Projects = withRouter(() => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span
-              onClick={() => downloadTxtFile(climateWarehouseStore.projects)}
-            >
+            <span onClick={() => downloadTxtFile('projects', searchParams)}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (
               <span>
-                <UploadCSV type="projects" />
+                <UploadXLSX type="projects" />
               </span>
             )}
           </StyledCSVOperationsContainer>
@@ -416,8 +413,7 @@ const Projects = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

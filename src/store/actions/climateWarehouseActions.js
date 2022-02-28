@@ -594,17 +594,17 @@ export const postNewOrg = data => {
   };
 };
 
-export const uploadCSVFile = (file, type) => {
+export const uploadXLSXFile = (file, type) => {
+
   return async dispatch => {
     if (type === 'projects' || type === 'units') {
       try {
         dispatch(activateProgressIndicator);
-
         const formData = new FormData();
-        formData.append('csv', file);
-        const url = `${constants.API_HOST}/${type}/batch`;
+        formData.append('xlsx',file);
+        const url = `${constants.API_HOST}/${type}/xlsx`;
         const payload = {
-          method: 'POST',
+          method: 'PUT',
           body: formData,
         };
 

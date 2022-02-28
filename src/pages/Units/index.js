@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { downloadTxtFile } from '../../utils/csvUtils';
+import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
@@ -33,7 +33,7 @@ import {
   StagingDataGroups,
   SelectOrganizations,
   Message,
-  UploadCSV,
+  UploadXLSX,
   Alert,
   Modal,
   modalTypeEnum,
@@ -137,7 +137,6 @@ const Units = withRouter(() => {
   const unitsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
-
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -380,12 +379,12 @@ const Units = withRouter(() => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span onClick={() => downloadTxtFile(climateWarehouseStore.units)}>
+            <span onClick={() => downloadTxtFile('units', searchParams)}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (
               <span>
-                <UploadCSV type="units" />
+                <UploadXLSX type="units" />
               </span>
             )}
           </StyledCSVOperationsContainer>
