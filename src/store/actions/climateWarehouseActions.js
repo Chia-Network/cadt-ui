@@ -16,7 +16,6 @@ import {
 
 import {
   activateProgressIndicator,
-  apiErrorMessage,
   deactivateProgressIndicator,
   NotificationMessageTypeEnum,
   setConnectionCheck,
@@ -477,6 +476,7 @@ export const postNewProject = data => {
       };
 
       const response = await fetch(url, payload);
+      const responseErrors = await response.json();
 
       if (response.ok) {
         dispatch(
@@ -487,12 +487,21 @@ export const postNewProject = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'project-not-created',
-          ),
-        );
+           if (!_.isEmpty(responseErrors.errors)) {
+             dispatch(
+               setNotificationMessage(
+                 NotificationMessageTypeEnum.error,
+                 responseErrors.message,
+               ),
+             );
+           } else {
+             dispatch(
+               setNotificationMessage(
+                 NotificationMessageTypeEnum.error,
+                 'project-not-created',
+               ),
+             );
+           }
       }
     } catch {
       dispatch(
@@ -522,6 +531,7 @@ export const updateProjectRecord = data => {
       };
 
       const response = await fetch(url, payload);
+      const responseErrors = await response.json();
 
       if (response.ok) {
         dispatch(
@@ -532,12 +542,21 @@ export const updateProjectRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'project-could-not-be-edited',
-          ),
-        );
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'project-could-not-be-edited',
+            ),
+          );
+        }
       }
     } catch {
       dispatch(
@@ -670,11 +689,10 @@ export const postNewUnits = data => {
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
         if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(apiErrorMessage(responseErrors.errors[0]));
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.error,
-              responseErrors.errors[0],
+              responseErrors.message,
             ),
           );
         } else {
@@ -758,6 +776,7 @@ export const updateUnitsRecord = data => {
       };
 
       const response = await fetch(url, payload);
+      const responseErrors = await response.json();
 
       if (response.ok) {
         dispatch(
@@ -768,12 +787,21 @@ export const updateUnitsRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'unit-could-not-be-edited',
-          ),
-        );
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'unit-not-created',
+            ),
+          );
+        }
       }
     } catch {
       dispatch(
