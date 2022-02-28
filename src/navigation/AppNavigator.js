@@ -1,9 +1,11 @@
 import React, { Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Router } from 'react-router';
+import { Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { resetRefreshPrompt } from '../store/actions/app';
+import { history, reloadApp } from './';
 import * as Pages from '../pages';
 
 import {
@@ -26,7 +28,6 @@ const AppNavigator = () => {
     updateAvailablePleaseRefesh,
     pendingError,
   } = useSelector(store => store.app);
-
   return (
     <AppContainer>
       {updateAvailablePleaseRefesh && (
@@ -42,7 +43,7 @@ const AppNavigator = () => {
           informationType="error"
           modalType={modalTypeEnum.information}
           label="Try Again"
-          onOk={() => window.location.reload()}
+          onOk={reloadApp}
           title={intl.formatMessage({ id: 'network-error' })}
           body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
         />
