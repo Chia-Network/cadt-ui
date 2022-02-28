@@ -669,7 +669,7 @@ export const postNewUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        if (responseErrors.errors) {
+        if (!_.isEmpty(responseErrors.errors)) {
           dispatch(apiErrorMessage(responseErrors.errors[0]));
           dispatch(
             setNotificationMessage(
