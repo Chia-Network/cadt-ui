@@ -595,7 +595,7 @@ export const postNewOrg = data => {
 };
 
 export const uploadXLSXFile = (file, type) => {
-  console.log(file);
+
   return async dispatch => {
     if (type === 'projects' || type === 'units') {
       try {
