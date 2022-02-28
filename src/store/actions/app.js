@@ -15,6 +15,7 @@ export const actions = keyMirror(
   'SET_NOTIFICATION',
   'COMMIT',
   'PENDING_ERROR',
+  'API_ERROR_MESSAGE',
 );
 
 export const resetRefreshPrompt = {
@@ -46,6 +47,11 @@ export const setGlobalErrorMessage = message => ({
 export const clearGlobalErrorMessage = {
   type: actions.CLEAR_GLOBAL_ERROR_MESSAGE,
 };
+
+export const apiErrorMessage = error => ({
+  type: actions.API_ERROR_MESSAGE,
+  payload: error,
+});
 
 export const setConnectionCheck = bool => ({
   type: actions.CONNECTION_CHECK,

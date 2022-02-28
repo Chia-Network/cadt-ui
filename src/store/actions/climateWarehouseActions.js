@@ -16,6 +16,7 @@ import {
 
 import {
   activateProgressIndicator,
+  apiErrorMessage,
   deactivateProgressIndicator,
   NotificationMessageTypeEnum,
   setConnectionCheck,
@@ -280,12 +281,14 @@ export const getPaginatedData = ({
   };
 };
 
-export const commitStagingData = (data) => {
+export const commitStagingData = data => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/staging/commit${data === 'all' ? '':`?table=${data}`}`;
+      const url = `${constants.API_HOST}/staging/commit${
+        data === 'all' ? '' : `?table=${data}`
+      }`;
       const payload = {
         method: 'POST',
         headers: {
@@ -655,6 +658,7 @@ export const postNewUnits = data => {
       };
 
       const response = await fetch(url, payload);
+      const responseErrors = await response.json();
 
       if (response.ok) {
         dispatch(
@@ -665,12 +669,22 @@ export const postNewUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'unit-not-created',
-          ),
-        );
+        if (responseErrors.errors) {
+          dispatch(apiErrorMessage(responseErrors.errors[0]));
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.errors[0],
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'unit-not-created',
+            ),
+          );
+        }
       }
     } catch (err) {
       dispatch(

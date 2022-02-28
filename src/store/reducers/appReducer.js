@@ -15,6 +15,7 @@ const initialState = {
   notification: null,
   commit: false,
   pendingError: false,
+  apiErrors: [],
 };
 
 const appReducer = (state = initialState, action) => {
@@ -41,6 +42,9 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.COMMIT_ALL:
       return u({ commitAll: action.payload }, state);
+
+    case appActions.API_ERROR_MESSAGE:
+      return u({ apiErrors: [action.payload] }, state);
 
     case appActions.SET_GLOBAL_ERROR_MESSAGE:
       return u({ errorMessage: action.payload }, state);

@@ -31,10 +31,12 @@ import { unitsSchema } from '../../store/validations';
 
 const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
   const [errorMessage, setErrorMessage] = useState({});
+  
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
+
     setValidationErrors(unitsSchema, unitDetails, setErrorMessage);
   }, [unitDetails]);
 
@@ -341,6 +343,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 {errorMessage.serialNumberPattern}
               </Body>
             )}
+            {}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>

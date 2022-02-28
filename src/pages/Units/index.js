@@ -127,6 +127,7 @@ const Units = withRouter(() => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const { notification, commit } = useSelector(store => store.app);
+  const storeApp = useSelector(store => store.app);
   const intl = useIntl();
   let history = useHistory();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
@@ -141,7 +142,7 @@ const Units = withRouter(() => {
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-
+console.log(storeApp.apiErrors)
   useEffect(() => {
     const switchTabBySuccessfulRequest = {
       'unit-deleted': 1,
