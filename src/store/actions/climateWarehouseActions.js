@@ -154,8 +154,9 @@ export const getPickLists = () => {
       );
 
       if (response.ok) {
-        const results = await response.json();
+        dispatch(setConnectionCheck(true));
 
+        const results = await response.json();
         dispatch({
           type: actions.GET_PICKLISTS,
           payload: results,
@@ -166,6 +167,7 @@ export const getPickLists = () => {
         tryToGetPickListsFromStorage();
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       tryToGetPickListsFromStorage();
     } finally {
       dispatch(deactivateProgressIndicator);
@@ -184,6 +186,7 @@ export const getStagingData = ({ useMockedResponse = false }) => {
         const response = await fetch(`${constants.API_HOST}/staging`);
 
         if (response.ok) {
+          dispatch(setConnectionCheck(true));
           dispatch(setGlobalErrorMessage(null));
           const results = await response.json();
 
@@ -195,6 +198,7 @@ export const getStagingData = ({ useMockedResponse = false }) => {
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -210,7 +214,7 @@ export const getIssuances = () => {
 
       if (response.ok) {
         dispatch(setGlobalErrorMessage(null));
-
+        dispatch(setConnectionCheck(true));
         const results = await response.json();
 
         dispatch({
@@ -220,6 +224,7 @@ export const getIssuances = () => {
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -252,6 +257,7 @@ export const getPaginatedData = ({
 
         if (response.ok) {
           dispatch(setGlobalErrorMessage(null));
+          dispatch(setConnectionCheck(true));
           const results = await response.json();
 
           let action = actions.GET_PROJECTS;
@@ -273,6 +279,7 @@ export const getPaginatedData = ({
         }
       } catch {
         dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(setConnectionCheck(false));
       } finally {
         dispatch(deactivateProgressIndicator);
       }
@@ -280,12 +287,14 @@ export const getPaginatedData = ({
   };
 };
 
-export const commitStagingData = (data) => {
+export const commitStagingData = data => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/staging/commit${data === 'all' ? '':`?table=${data}`}`;
+      const url = `${constants.API_HOST}/staging/commit${
+        data === 'all' ? '' : `?table=${data}`
+      }`;
       const payload = {
         method: 'POST',
         headers: {
@@ -296,6 +305,7 @@ export const commitStagingData = (data) => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -318,6 +328,7 @@ export const commitStagingData = (data) => {
           'transactions-not-committed',
         ),
       );
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -341,6 +352,7 @@ export const deleteStagingData = uuid => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -357,6 +369,7 @@ export const deleteStagingData = uuid => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -386,6 +399,7 @@ export const deleteUnit = warehouseUnitId => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -402,6 +416,7 @@ export const deleteUnit = warehouseUnitId => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -431,6 +446,7 @@ export const deleteProject = warehouseProjectId => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -447,6 +463,7 @@ export const deleteProject = warehouseProjectId => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -476,6 +493,7 @@ export const postNewProject = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -492,6 +510,7 @@ export const postNewProject = data => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -521,6 +540,7 @@ export const updateProjectRecord = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -537,6 +557,7 @@ export const updateProjectRecord = data => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -566,6 +587,7 @@ export const postNewOrg = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(getOrganizationData());
         dispatch(
           setNotificationMessage(
@@ -582,6 +604,7 @@ export const postNewOrg = data => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -611,6 +634,7 @@ export const uploadCSVFile = (file, type) => {
         const response = await fetch(url, payload);
 
         if (response.ok) {
+          dispatch(setConnectionCheck(true));
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.success,
@@ -627,6 +651,7 @@ export const uploadCSVFile = (file, type) => {
           );
         }
       } catch {
+        dispatch(setConnectionCheck(false));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
@@ -657,6 +682,7 @@ export const postNewUnits = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -673,6 +699,7 @@ export const postNewUnits = data => {
         );
       }
     } catch (err) {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -701,6 +728,7 @@ export const splitUnits = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -717,6 +745,7 @@ export const splitUnits = data => {
         );
       }
     } catch (err) {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -746,6 +775,7 @@ export const updateUnitsRecord = data => {
       const response = await fetch(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -762,6 +792,7 @@ export const updateUnitsRecord = data => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
