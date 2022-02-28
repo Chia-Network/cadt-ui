@@ -16,17 +16,30 @@ const DetailedViewStagingModal = ({
   record,
   changes,
   title,
+  action,
 }) => {
   const [tabValue, setTabValue] = useState(0);
 
   const recordTabsWithEntries = useMemo(() => {
-    const allTabs = record
+    let allTabs = record
       ? Object.keys(record).filter(key => Array.isArray(record[key]))
       : [];
 
+    if (changes && changes.length > 0) {
+      changes.forEach(changeItem => {
+        Object.keys(changeItem).forEach(key => {
+          if (Array.isArray(changeItem[key])) {
+            allTabs.push(key);
+          }
+        });
+      });
+    }
+
+    allTabs = [...new window.Set(allTabs)];
+
     const allTabsWithData = [];
     allTabs.forEach(tabName => {
-      let hasRecordData = record[tabName].length > 0;
+      let hasRecordData = record[tabName]?.length > 0 ?? false;
 
       let hasChanges =
         changes?.some(
@@ -48,11 +61,13 @@ const DetailedViewStagingModal = ({
 
   const recordDetails = useMemo(() => {
     const detailsObj = {};
+
     Object.keys(record).forEach(key => {
       if (typeof record[key] !== 'object') {
         detailsObj[key] = recordDiffs[key];
       }
     });
+
     return detailsObj;
   }, [recordDiffs]);
 
@@ -60,7 +75,7 @@ const DetailedViewStagingModal = ({
     setTabValue(newValue);
   };
 
-  if (!modalSizeAndPosition || !record || !title || !onClose) {
+  if (!modalSizeAndPosition || !record || !title || !onClose || !action) {
     return <></>;
   }
 
@@ -80,16 +95,22 @@ const DetailedViewStagingModal = ({
             {record?.issuance && <Tab label="Issuance" />}
           </Tabs>
           <TabPanel value={tabValue} index={0}>
-            <DetailedViewStagingTab data={[recordDetails]} />
+            <DetailedViewStagingTab data={[recordDetails]} action={action} />
           </TabPanel>
           {recordTabsWithEntries.map((tabKey, index) => (
             <TabPanel value={tabValue} index={index + 1} key={tabKey}>
-              <DetailedViewStagingTab data={recordDiffs[tabKey]} />
+              <DetailedViewStagingTab
+                data={recordDiffs[tabKey]}
+                action={action}
+              />
             </TabPanel>
           ))}
           {record?.issuance && (
             <TabPanel value={tabValue} index={recordTabsWithEntries.length + 1}>
-              <DetailedViewStagingTab data={[recordDiffs.issuance]} />
+              <DetailedViewStagingTab
+                data={[recordDiffs.issuance]}
+                action={action}
+              />
             </TabPanel>
           )}
         </div>
