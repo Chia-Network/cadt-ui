@@ -798,7 +798,7 @@ export const updateUnitsRecord = data => {
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.error,
-              'unit-not-created',
+              'unit-could-not-be-edited',
             ),
           );
         }
