@@ -303,5 +303,6 @@
   "unit-detailed-view": "Unit Detailed View",
   "select-existing-issuance": "Select an existing issuance",
   "select-existing-issuance-description": "Either select an existing issuance or create a new one.",
-  "all-issuance-units": "Units belonging to this issuance"
+  "all-issuance-units": "Units belonging to this issuance",
+  "click-for-details": "Click here to view details."
 }

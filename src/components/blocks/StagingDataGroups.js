@@ -136,6 +136,11 @@ const ChangeCard = ({
                     </Body>
                     <StyledCardBodySubItem>
                       <span>
+                        <Body>
+                          <FormattedMessage id="click-for-details" />
+                        </Body>
+                      </span>
+                      <span>
                         {deletedIsVsible && (
                           <ErrorIcon width="17" height="17" />
                         )}
