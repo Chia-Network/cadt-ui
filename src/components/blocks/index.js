@@ -23,7 +23,7 @@ export * from './Message';
 export * from './DateSelect';
 export * from './YearSelect';
 export * from './LocalMessage';
-export * from './UploadCSV';
+export * from './UploadXLSX';
 export * from './StagingDataGroups';
 export * from './ToolTipContainer';
 export * from './DetailedViewModal';

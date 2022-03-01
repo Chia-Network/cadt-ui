@@ -11,12 +11,13 @@ export const unitsSchema = yup.object().shape({
     .test({
       message: 'Add serial number that corresponds to pattern',
       test: function (value) {
-        if (value.endsWith('\\')) {
+        try {
+          const reg = new RegExp(this.options.parent.serialNumberPattern);
+          const isValid = reg.test(value);
+          return isValid;
+        } catch {
           return false;
         }
-        const reg = new RegExp(this.options.parent.serialNumberPattern);
-        const isValid = reg.test(value);
-        return isValid;
       },
     })
     .required('Required Field'),

@@ -35,6 +35,12 @@ const CreateIssuanceForm = ({ value, onChange }) => {
   const [selectedIssuance, setSelectedIssuance] = useState(null);
   const intl = useIntl();
 
+  useEffect(() => {
+    if (value?.id) {
+      setSelectedIssuance(getIssuanceById(value.id));
+    }
+  }, [value, climateWarehouseStore.issuances]);
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
@@ -62,10 +68,10 @@ const CreateIssuanceForm = ({ value, onChange }) => {
 
   const getIssuanceById = id => {
     if (id) {
-      const foundIssuance = climateWarehouseStore.issuances.filter(
-        issuance => issuance.id === id,
+      const foundIssuance = climateWarehouseStore?.issuances?.filter(
+        issuance => issuance?.id === id,
       );
-      if (foundIssuance.length) {
+      if (foundIssuance?.length) {
         return foundIssuance[0];
       } else {
         return null;
