@@ -2,10 +2,10 @@ import u from 'updeep';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { setValidationErrors } from '../../utils/validationUtils';
 import { issuanceSchema } from '../../store/validations';
-
 import {
   StandardInput,
   InputSizeEnum,
@@ -34,6 +34,21 @@ const CreateIssuanceForm = ({ value, onChange }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const [selectedIssuance, setSelectedIssuance] = useState(null);
   const intl = useIntl();
+  const { location } = useHistory();
+
+  const isUserOnUnitsPage = location.pathname.includes('units') ? true : false;
+
+  const areFieldsDisabled = (() => {
+    if (!isUserOnUnitsPage) {
+      if (value.id || selectedIssuance) {
+        return true;
+      }
+      return false;
+    }
+    if (isUserOnUnitsPage) {
+      return true;
+    }
+  })();
 
   useEffect(() => {
     if (value?.id) {
@@ -167,7 +182,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 setDateValue={changeValue =>
                   onInputChange('startDate', changeValue)
                 }
-                disabled={selectedIssuance ? true : undefined}
+                disabled={areFieldsDisabled ? true : undefined}
               />
             </InputContainer>
             {errorIssuanceMessage?.startDate && (
@@ -198,7 +213,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 setDateValue={changeValue =>
                   onInputChange('endDate', changeValue)
                 }
-                disabled={selectedIssuance ? true : undefined}
+                disabled={areFieldsDisabled ? true : undefined}
               />
             </InputContainer>
             {errorIssuanceMessage?.endDate && (
@@ -229,7 +244,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 setDateValue={changeValue =>
                   onInputChange('verificationReportDate', changeValue)
                 }
-                disabled={selectedIssuance ? true : undefined}
+                disabled={areFieldsDisabled ? true : undefined}
               />
             </InputContainer>
             {errorIssuanceMessage?.verificationReportDate && (
@@ -294,7 +309,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                   id: 'verification-approach',
                 })}
                 state={
-                  selectedIssuance
+                  areFieldsDisabled
                     ? InputStateEnum.disabled
                     : InputStateEnum.default
                 }
@@ -336,7 +351,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                   id: 'verification-body',
                 })}
                 state={
-                  selectedIssuance
+                  areFieldsDisabled
                     ? InputStateEnum.disabled
                     : InputStateEnum.default
                 }
