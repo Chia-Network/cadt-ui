@@ -15,10 +15,14 @@ const initialState = {
   notification: null,
   commit: false,
   pendingError: false,
+  readOnlyMode: true,
 };
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
+    case appActions.SET_READ_ONLY:
+      return u({ readOnlyMode: action.payload }, state);
+
     case socketActions.SOCKET_STATUS:
       return u({ socketStatus: action.payload }, state);
 

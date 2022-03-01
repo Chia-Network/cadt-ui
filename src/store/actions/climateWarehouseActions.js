@@ -21,6 +21,7 @@ import {
   setConnectionCheck,
   setGlobalErrorMessage,
   setNotificationMessage,
+  setReadOnly,
 } from './app';
 
 export const actions = keyMirror(
@@ -48,7 +49,6 @@ const getClimateWarehouseTable = (
 ) => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
-
     try {
       if (useMockedResponse) {
         dispatch(mockAction);
@@ -70,7 +70,7 @@ const getClimateWarehouseTable = (
           });
         }
       }
-    } catch {
+    } catch (error) {
       dispatch(setConnectionCheck(false));
       dispatch(setGlobalErrorMessage('Something went wrong...'));
     } finally {
@@ -256,6 +256,10 @@ export const getPaginatedData = ({
         const response = await fetch(url);
 
         if (response.ok) {
+          dispatch(
+            setReadOnly(response.headers.get('cw-read-only') === 'true'),
+          );
+
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
           const results = await response.json();
@@ -618,13 +622,12 @@ export const postNewOrg = data => {
 };
 
 export const uploadXLSXFile = (file, type) => {
-
   return async dispatch => {
     if (type === 'projects' || type === 'units') {
       try {
         dispatch(activateProgressIndicator);
         const formData = new FormData();
-        formData.append('xlsx',file);
+        formData.append('xlsx', file);
         const url = `${constants.API_HOST}/${type}/xlsx`;
         const payload = {
           method: 'PUT',

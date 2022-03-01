@@ -15,11 +15,17 @@ export const actions = keyMirror(
   'SET_NOTIFICATION',
   'COMMIT',
   'PENDING_ERROR',
+  'SET_READ_ONLY',
 );
 
 export const resetRefreshPrompt = {
   type: actions.RESET_REFRESH_PROMPT,
 };
+
+export const setReadOnly = isReadOnly => ({
+  type: actions.SET_READ_ONLY,
+  payload: isReadOnly,
+});
 
 export const activateProgressIndicator = {
   type: actions.ACTIVATE_PROGRESS_INDICATOR,
