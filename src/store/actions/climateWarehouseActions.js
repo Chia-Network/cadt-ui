@@ -491,7 +491,6 @@ export const postNewProject = data => {
       };
 
       const response = await fetch(url, payload);
-      const responseErrors = await response.json();
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -503,21 +502,22 @@ export const postNewProject = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-           if (!_.isEmpty(responseErrors.errors)) {
-             dispatch(
-               setNotificationMessage(
-                 NotificationMessageTypeEnum.error,
-                 responseErrors.message,
-               ),
-             );
-           } else {
-             dispatch(
-               setNotificationMessage(
-                 NotificationMessageTypeEnum.error,
-                 'project-not-created',
-               ),
-             );
-           }
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'project-not-created',
+            ),
+          );
+        }
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -548,7 +548,6 @@ export const updateProjectRecord = data => {
       };
 
       const response = await fetch(url, payload);
-      const responseErrors = await response.json();
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -560,6 +559,7 @@ export const updateProjectRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const responseErrors = await response.json();
         if (!_.isEmpty(responseErrors.errors)) {
           dispatch(
             setNotificationMessage(
@@ -638,13 +638,12 @@ export const postNewOrg = data => {
 };
 
 export const uploadXLSXFile = (file, type) => {
-
   return async dispatch => {
     if (type === 'projects' || type === 'units') {
       try {
         dispatch(activateProgressIndicator);
         const formData = new FormData();
-        formData.append('xlsx',file);
+        formData.append('xlsx', file);
         const url = `${constants.API_HOST}/${type}/xlsx`;
         const payload = {
           method: 'PUT',
@@ -700,7 +699,6 @@ export const postNewUnits = data => {
       };
 
       const response = await fetch(url, payload);
-      const responseErrors = await response.json();
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -712,6 +710,7 @@ export const postNewUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const responseErrors = await response.json();
         if (!_.isEmpty(responseErrors.errors)) {
           dispatch(
             setNotificationMessage(
@@ -803,7 +802,6 @@ export const updateUnitsRecord = data => {
       };
 
       const response = await fetch(url, payload);
-      const responseErrors = await response.json();
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -815,6 +813,7 @@ export const updateUnitsRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const responseErrors = await response.json();
         if (!_.isEmpty(responseErrors.errors)) {
           dispatch(
             setNotificationMessage(
