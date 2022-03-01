@@ -39,7 +39,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
     if (value?.id) {
       setSelectedIssuance(getIssuanceById(value.id));
     }
-  }, [value]);
+  }, [value, climateWarehouseStore.issuances]);
 
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
