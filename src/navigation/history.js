@@ -6,10 +6,24 @@ const reloadApp = () => {
   history.push('/');
 };
 
-const reloadCurrentUrl = () => {
+const saveCurrentUrlToStorage = () => {
   if (history?.location?.pathname) {
-    history.push(`${history.location.pathname}${history.location.search}`);
+    const currentUrl = `${history.location.pathname}${history.location.search}&reload=true`;
+    localStorage.setItem('currentUrl', currentUrl);
   }
 };
 
-export { history, reloadApp, reloadCurrentUrl };
+const reloadCurrentUrlFromStorage = () => {
+  const currentUrl = localStorage.getItem('currentUrl');
+  if (currentUrl) {
+    history.push(currentUrl);
+    localStorage.removeItem('currentUrl');
+  }
+};
+
+export {
+  history,
+  reloadApp,
+  saveCurrentUrlToStorage,
+  reloadCurrentUrlFromStorage,
+};
