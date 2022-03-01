@@ -7,7 +7,7 @@ const reloadApp = () => {
 };
 
 const saveCurrentUrlToStorage = () => {
-  if (history?.location?.pathname) {
+  if (history.location?.pathname) {
     const currentUrl = `${history.location.pathname}${history.location.search}&reload=true`;
     localStorage.setItem('currentUrl', currentUrl);
   }
