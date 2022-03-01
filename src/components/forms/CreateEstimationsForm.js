@@ -5,6 +5,7 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import {
   StandardInput,
   InputSizeEnum,
+  InputVariantEnum,
   InputStateEnum,
   Divider,
   ModalFormContainerStyle,
@@ -48,8 +49,7 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'estimation-period-start-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -78,8 +78,7 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'estimation-period-end-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -108,14 +107,18 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'estimation-unit-count-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorEstimationMessage?.unitCount
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 type="number"
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({

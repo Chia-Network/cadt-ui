@@ -8,6 +8,7 @@ import { setValidationErrors } from '../../utils/validationUtils';
 import {
   StandardInput,
   InputSizeEnum,
+  InputVariantEnum,
   InputStateEnum,
   Divider,
   ModalFormContainerStyle,
@@ -45,14 +46,18 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
               <ToolTipContainer
                 tooltip={intl.formatMessage({
                   id: 'cobenefits-cobenefit-description',
-                })}
-              >
+                })}>
                 <DescriptionIcon height="14" width="14" />
               </ToolTipContainer>
             </Body>
           </StyledLabelContainer>
           <InputContainer>
             <StandardInput
+              variant={
+                errorCoBenefitsMessage?.cobenefit
+                  ? InputVariantEnum.error
+                  : undefined
+              }
               size={InputSizeEnum.large}
               placeholderText={intl.formatMessage({ id: 'co-benefit' })}
               state={InputStateEnum.default}
