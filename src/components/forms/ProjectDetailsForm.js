@@ -8,6 +8,7 @@ import {
   StandardInput,
   InputSizeEnum,
   InputStateEnum,
+  InputVariantEnum,
   ModalFormContainerStyle,
   FormContainerStyle,
   BodyContainer,
@@ -52,8 +53,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-registry-of-origin-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -92,14 +92,18 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-origin-project-id-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorIssuanceMessage?.originProjectId
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'origin-project-id',
@@ -129,8 +133,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-program-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -166,13 +169,17 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-id-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <StandardInput
+              variant={
+                errorIssuanceMessage?.projectId
+                  ? InputVariantEnum.error
+                  : undefined
+              }
               size={InputSizeEnum.large}
               placeholderText={intl.formatMessage({
                 id: 'project-id',
@@ -201,14 +208,18 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-name-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorIssuanceMessage?.projectName
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'project-name',
@@ -238,14 +249,18 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-link-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorIssuanceMessage?.projectLink
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'project-link',
@@ -275,14 +290,18 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-developer-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorIssuanceMessage?.projectDeveloper
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'project-developer',
@@ -312,8 +331,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-sector-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -350,8 +368,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-type-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -391,8 +408,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-covered-by-ndc-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -432,14 +448,18 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-ndc-information-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorIssuanceMessage?.ndcInformation
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'ndc-information',
@@ -469,8 +489,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-status-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -509,8 +528,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-status-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -542,8 +560,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-unit-metric-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -582,8 +599,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-methodology-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -622,8 +638,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-validation-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -655,8 +670,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-validation-body-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -695,8 +709,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-tags-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
