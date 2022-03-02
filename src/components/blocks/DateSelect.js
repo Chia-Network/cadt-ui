@@ -24,7 +24,8 @@ const InputContainer = styled('div')`
   :focus-within,
   ::selection {
     outline: none;
-    box-shadow: ${props => props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
+    box-shadow: ${props =>
+      props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
     border: '1px solid #40a9ff';
   }
 
@@ -45,7 +46,7 @@ const InputContainer = styled('div')`
   ${props =>
     props.disabled &&
     css`
-      background-color: rgba(239, 239, 239, 0.3);
+      background-color: #f5f5f5;
     `};
 `;
 
@@ -56,6 +57,12 @@ const Input = styled('input')`
   :focus-visible {
     outline: none;
   }
+  ${props =>
+    props.disabled &&
+    css`
+      background-color: #f5f5f5;
+      color: #000000;
+    `};
 `;
 
 const DateSelect = ({
