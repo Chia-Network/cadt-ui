@@ -37,7 +37,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
 
   const isUserOnUnitsPage = location.pathname.includes('units') ? true : false;
 
-  const areFieldsDisabled = (() => {
+  const areFieldsDisabled = useMemo(() => {
     if (!isUserOnUnitsPage) {
       if (value.id) {
         return true;
@@ -47,7 +47,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
     if (isUserOnUnitsPage) {
       return true;
     }
-  })();
+  }, [isUserOnUnitsPage, value, value.id]);
 
   const getIssuanceLabel = issuance => {
     if (issuance) {

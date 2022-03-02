@@ -38,7 +38,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
 
   const isUserOnUnitsPage = location.pathname.includes('units') ? true : false;
 
-  const areFieldsDisabled = (() => {
+  const areFieldsDisabled = useMemo(() => {
     if (!isUserOnUnitsPage) {
       if (value.id) {
         return true;
@@ -48,7 +48,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
     if (isUserOnUnitsPage) {
       return true;
     }
-  })();
+  }, [isUserOnUnitsPage, value, value.id]);
 
   const getLabelById = id => {
     if (id) {
