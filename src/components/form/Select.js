@@ -81,10 +81,11 @@ const StyledSelect = styled('div')`
         box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
       `;
     } else if (props.state === SelectStateEnum.disabled) {
-      return `
-        background: #F5F5F5;
-        color: #BFBFBF;
-        cursor: default;`;
+      return css`
+        background: #f5f5f5;
+        color: #000000;
+        cursor: default;
+      `;
     }
   }};
   ${props => props.type === SelectTypeEnum.multiple && `height: 100%;`};
@@ -365,8 +366,7 @@ const Select = withTheme(
             state={selectState}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0].label
@@ -389,8 +389,7 @@ const Select = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -403,8 +402,7 @@ const Select = withTheme(
                             value: option.value,
                             label: option.label,
                           })
-                        }
-                      >
+                        }>
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -429,8 +427,7 @@ const Select = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             {selectState !== SelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -487,8 +484,7 @@ const Select = withTheme(
                       value: option.value,
                       label: option.label,
                     })
-                  }
-                >
+                  }>
                   {option.label}
                   {isSelected && type === SelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
@@ -520,8 +516,7 @@ const Select = withTheme(
                         value: option.value,
                         label: option.label,
                       })
-                    }
-                  >
+                    }>
                     {option.label}
                   </StyledBasicMenuItem>
                 ),
