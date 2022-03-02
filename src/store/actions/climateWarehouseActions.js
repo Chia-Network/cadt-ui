@@ -506,12 +506,22 @@ export const postNewProject = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'project-not-created',
-          ),
-        );
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'project-not-created',
+            ),
+          );
+        }
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -553,12 +563,22 @@ export const updateProjectRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'project-could-not-be-edited',
-          ),
-        );
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'project-could-not-be-edited',
+            ),
+          );
+        }
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -694,12 +714,22 @@ export const postNewUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'unit-not-created',
-          ),
-        );
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'unit-not-created',
+            ),
+          );
+        }
       }
     } catch (err) {
       dispatch(setConnectionCheck(false));
@@ -787,12 +817,22 @@ export const updateUnitsRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'unit-could-not-be-edited',
-          ),
-        );
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'unit-could-not-be-edited',
+            ),
+          );
+        }
       }
     } catch {
       dispatch(setConnectionCheck(false));

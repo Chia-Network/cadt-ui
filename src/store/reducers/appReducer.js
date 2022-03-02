@@ -43,9 +43,6 @@ const appReducer = (state = initialState, action) => {
     case appActions.COMMIT:
       return u({ commit: action.payload }, state);
 
-    case appActions.COMMIT_ALL:
-      return u({ commitAll: action.payload }, state);
-
     case appActions.SET_GLOBAL_ERROR_MESSAGE:
       return u({ errorMessage: action.payload }, state);
 
