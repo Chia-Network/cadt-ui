@@ -304,5 +304,7 @@
   "select-existing-issuance": "Select an existing issuance",
   "select-existing-issuance-description": "Either select an existing issuance or create a new one.",
   "all-issuance-units": "Units belonging to this issuance",
-  "click-for-details": "Click here to view details."
+  "click-for-details": "Click here to view details.",
+  "issuance-not-found": "Current issuance not found",
+  "add-project-with-issuance": "Add a project with issuance first"
 }

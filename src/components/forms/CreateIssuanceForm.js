@@ -32,7 +32,6 @@ import {
 const CreateIssuanceForm = ({ value, onChange }) => {
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
-  const [selectedIssuance, setSelectedIssuance] = useState(null);
   const intl = useIntl();
   const { location } = useHistory();
 
@@ -40,7 +39,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
 
   const areFieldsDisabled = (() => {
     if (!isUserOnUnitsPage) {
-      if (value.id || selectedIssuance) {
+      if (value.id) {
         return true;
       }
       return false;
@@ -50,28 +49,16 @@ const CreateIssuanceForm = ({ value, onChange }) => {
     }
   })();
 
-  useEffect(() => {
-    if (value?.id) {
-      setSelectedIssuance(getIssuanceById(value.id));
-    }
-  }, [value, climateWarehouseStore.issuances]);
-
-  const onInputChange = (field, changeValue) => {
-    onChange(u({ [field]: changeValue }, value));
-  };
-
-  useEffect(() => {
-    setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
-  }, [value]);
-
   const getIssuanceLabel = issuance => {
-    const start = `${new Date(issuance.startDate).toDateString()}`;
-    const end = `${new Date(issuance.endDate).toDateString()}`;
-    return `${start} - ${end}`;
+    if (issuance) {
+      const start = `${new Date(issuance.startDate).toDateString()}`;
+      const end = `${new Date(issuance.endDate).toDateString()}`;
+      return `${start} - ${end}`;
+    }
   };
 
   const issuancesSelectOptions = useMemo(() => {
-    if (climateWarehouseStore.issuances) {
+    if (climateWarehouseStore.issuances?.length > 0) {
       return climateWarehouseStore.issuances.map(issuance => ({
         value: issuance.id,
         label: getIssuanceLabel(issuance),
@@ -94,7 +81,8 @@ const CreateIssuanceForm = ({ value, onChange }) => {
     }
   };
 
-  useEffect(() => {
+  const updateIssuanceById = id => {
+    const selectedIssuance = getIssuanceById(id);
     if (selectedIssuance) {
       const {
         endDate,
@@ -113,53 +101,68 @@ const CreateIssuanceForm = ({ value, onChange }) => {
         id,
       });
     }
-  }, [selectedIssuance]);
+  };
+
+  const onInputChange = (field, changeValue) => {
+    onChange(u({ [field]: changeValue }, value));
+  };
+
+  useEffect(() => {
+    setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
+  }, [value]);
 
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
-          {issuancesSelectOptions && (
-            <StyledFieldContainer>
-              <StyledLabelContainer>
-                <Body>
-                  <LabelContainer>
-                    <FormattedMessage id="select-existing-issuance" />
-                  </LabelContainer>
-                  <ToolTipContainer
-                    tooltip={intl.formatMessage({
-                      id: 'select-existing-issuance-description',
-                    })}
-                  >
-                    <DescriptionIcon height="14" width="14" />
-                  </ToolTipContainer>
-                </Body>
-              </StyledLabelContainer>
-              <InputContainer>
-                <Select
-                  size={SelectSizeEnum.large}
-                  type={SelectTypeEnum.basic}
-                  options={issuancesSelectOptions}
-                  state={SelectStateEnum.default}
-                  selected={
-                    selectedIssuance
-                      ? [
-                          {
-                            value: selectedIssuance.id,
-                            label: getIssuanceLabel(selectedIssuance),
-                          },
-                        ]
-                      : undefined
-                  }
-                  onChange={selectedOptions =>
-                    setSelectedIssuance({
-                      ...getIssuanceById(selectedOptions[0].value),
-                    })
-                  }
-                />
-              </InputContainer>
-            </StyledFieldContainer>
-          )}
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  <FormattedMessage id="select-existing-issuance" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'select-existing-issuance-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <Select
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={issuancesSelectOptions ? issuancesSelectOptions : []}
+                state={SelectStateEnum.default}
+                selected={
+                  value.id
+                    ? [
+                        {
+                          value: value.id,
+                          label: getIssuanceById(value.id)
+                            ? getIssuanceLabel(getIssuanceById(value.id))
+                            : intl.formatMessage({
+                                id: 'issuance-not-found',
+                              }),
+                        },
+                      ]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  updateIssuanceById(selectedOptions[0].value)
+                }
+              />
+            </InputContainer>
+            {isUserOnUnitsPage && issuancesSelectOptions === null && (
+              <Body size="Small" color="red">
+                {intl.formatMessage({
+                  id: 'add-project-with-issuance',
+                })}
+              </Body>
+            )}
+          </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -255,7 +258,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
           </StyledFieldContainer>
         </BodyContainer>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {selectedIssuance && (
+          {value.id && (
             <StyledFieldContainer>
               <StyledLabelContainer>
                 <Body>

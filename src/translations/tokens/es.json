@@ -280,5 +280,7 @@
   "select-existing-issuance": "Seleccione una emisión existente",
   "select-existing-issuance-description": "Seleccione una emisión existente o cree una nueva.",
   "all-issuance-units": "Unidades pertenecientes a esta emisión",
-  "click-for-details": "Haga clic aquí para ver los detalles."
+  "click-for-details": "Haga clic aquí para ver los detalles.",
+  "issuance-not-found": "Emisión actual no encontrada",
+  "add-project-with-issuance": "Agregar un proyecto con emisión primero"
 }
