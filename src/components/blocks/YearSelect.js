@@ -4,6 +4,10 @@ import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import styled, { css } from 'styled-components';
 
+const DateVariantEnum = {
+  error: 'error',
+};
+
 const InputContainer = styled('div')`
   display: flex;
   align-items: center;
@@ -47,6 +51,20 @@ const InputContainer = styled('div')`
     css`
       background-color: rgba(239, 239, 239, 0.3);
     `};
+  ${props => {
+    if (props.variant === DateVariantEnum.error) {
+      return css`
+        border: 1px solid #f5222d;
+        :focus-within {
+          border: 1px solid #f5222d;
+          box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
+        }
+        :hover {
+          border: 1px solid #f5222d;
+        }
+      `;
+    }
+  }}
 `;
 
 const Input = styled('input')`
@@ -58,7 +76,14 @@ const Input = styled('input')`
   }
 `;
 
-const YearSelect = ({ size, yearValue, onChange, disabled }) => {
+const YearSelect = ({
+  size,
+  yearValue,
+  onChange,
+  disabled,
+  variant,
+  state,
+}) => {
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
@@ -69,7 +94,11 @@ const YearSelect = ({ size, yearValue, onChange, disabled }) => {
         disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
-            <InputContainer size={size} disabled={disabled}>
+            <InputContainer
+              size={size}
+              disabled={disabled}
+              variant={variant}
+              state={state}>
               <Input
                 ref={inputRef}
                 {...inputProps}
@@ -85,4 +114,4 @@ const YearSelect = ({ size, yearValue, onChange, disabled }) => {
   );
 };
 
-export { YearSelect };
+export { YearSelect, DateVariantEnum };

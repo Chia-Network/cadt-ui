@@ -26,6 +26,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectStateEnum,
+  DateVariantEnum,
   Select,
 } from '..';
 
@@ -114,8 +115,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'select-existing-issuance-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -154,14 +154,16 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-start-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorIssuanceMessage?.startDate && DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.startDate}
                 setDateValue={changeValue =>
@@ -185,14 +187,16 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-end-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorIssuanceMessage?.endDate && DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.endDate}
                 setDateValue={changeValue =>
@@ -216,14 +220,16 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-report-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorIssuanceMessage?.verificationReportDate && DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.verificationReportDate}
                 setDateValue={changeValue =>
@@ -250,8 +256,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'id',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -277,8 +282,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-approach-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -319,8 +323,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'issuances-verification-body-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

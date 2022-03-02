@@ -19,6 +19,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectStateEnum,
+  SelectVariantEnum,
   Select,
   StyledLabelContainer,
   StyledFieldContainer,
@@ -70,6 +71,9 @@ const CreateLocationsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorLocationMessage?.country && SelectVariantEnum.error
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectCountriesOptions}

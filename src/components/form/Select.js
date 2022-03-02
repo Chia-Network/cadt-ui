@@ -29,6 +29,10 @@ const SelectStateEnum = {
   disabled: 'disabled',
 };
 
+const SelectVariantEnum = {
+  error: 'error',
+};
+
 const StyledSelect = styled('div')`
   min-width: ${props => props.width};
   max-width: ${props => props.width};
@@ -87,6 +91,19 @@ const StyledSelect = styled('div')`
         cursor: default;`;
     }
   }};
+  ${props => {
+    if (props.variant === SelectVariantEnum.error) {
+      if (props.state === SelectStateEnum.focused) {
+        return css`
+          border: 1px solid #f5222d;
+          box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
+        `;
+      } else if (props.state === SelectStateEnum.hover) {
+        return `border: 1px solid #f5222d;`;
+      }
+      return `border: 1px solid #f5222d;`;
+    }
+  }}
   ${props => props.type === SelectTypeEnum.multiple && `height: 100%;`};
 `;
 
@@ -217,6 +234,7 @@ const Select = withTheme(
     placeholder,
     width = '20rem',
     onChange,
+    variant,
   }) => {
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
@@ -358,6 +376,7 @@ const Select = withTheme(
         {/* Select for Basic type */}
         {type === SelectTypeEnum.basic && (
           <StyledSelect
+            variant={variant}
             ref={selectRef}
             size={size}
             width={width}
@@ -365,8 +384,7 @@ const Select = withTheme(
             state={selectState}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0].label
@@ -389,8 +407,7 @@ const Select = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -403,8 +420,7 @@ const Select = withTheme(
                             value: option.value,
                             label: option.label,
                           })
-                        }
-                      >
+                        }>
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -429,8 +445,7 @@ const Select = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             {selectState !== SelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -487,8 +502,7 @@ const Select = withTheme(
                       value: option.value,
                       label: option.label,
                     })
-                  }
-                >
+                  }>
                   {option.label}
                   {isSelected && type === SelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
@@ -520,8 +534,7 @@ const Select = withTheme(
                         value: option.value,
                         label: option.label,
                       })
-                    }
-                  >
+                    }>
                     {option.label}
                   </StyledBasicMenuItem>
                 ),
@@ -533,4 +546,4 @@ const Select = withTheme(
   },
 );
 
-export { Select, SelectSizeEnum, SelectTypeEnum, SelectStateEnum };
+export { Select, SelectSizeEnum, SelectTypeEnum, SelectStateEnum, SelectVariantEnum };

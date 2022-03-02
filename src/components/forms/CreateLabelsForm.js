@@ -23,6 +23,8 @@ import {
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
+  SelectVariantEnum,
+  DateVariantEnum,
 } from '..';
 
 import { labelSchema } from '../../store/validations';
@@ -59,8 +61,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -94,14 +95,16 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-type-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorLabelMessage?.labelType && SelectVariantEnum.error
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectLabelTypeOptions}
@@ -131,14 +134,17 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-crediting-period-start-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorLabelMessage?.creditingPeriodStartDate &&
+                  DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.creditingPeriodStartDate}
                 setDateValue={event =>
@@ -161,14 +167,17 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-crediting-period-end-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorLabelMessage?.creditingPeriodEndDate &&
+                  DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.creditingPeriodEndDate}
                 setDateValue={event =>
@@ -193,14 +202,17 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-validity-period-start-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorLabelMessage?.validityPeriodStartDate &&
+                  DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.validityPeriodStartDate}
                 setDateValue={event =>
@@ -223,14 +235,17 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-validity-period-end-date-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorLabelMessage?.validityPeriodEndDate &&
+                  DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.validityPeriodEndDate}
                 setDateValue={event =>
@@ -253,8 +268,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-unit-quantity-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -291,8 +305,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-link-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
