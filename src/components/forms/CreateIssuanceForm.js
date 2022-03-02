@@ -30,7 +30,7 @@ import {
 } from '..';
 
 const CreateIssuanceForm = ({ value, onChange }) => {
-  const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+  const { issuances } = useSelector(store => store.climateWarehouse);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
   const { location } = useHistory();
@@ -58,21 +58,19 @@ const CreateIssuanceForm = ({ value, onChange }) => {
   };
 
   const issuancesSelectOptions = useMemo(() => {
-    if (climateWarehouseStore.issuances?.length > 0) {
-      return climateWarehouseStore.issuances.map(issuance => ({
+    if (issuances?.length > 0) {
+      return issuances.map(issuance => ({
         value: issuance.id,
         label: getIssuanceLabel(issuance),
       }));
     } else {
       return null;
     }
-  }, [climateWarehouseStore.issuances]);
+  }, [issuances]);
 
   const getIssuanceById = id => {
     if (id) {
-      const foundIssuance = climateWarehouseStore?.issuances?.filter(
-        issuance => issuance?.id === id,
-      );
+      const foundIssuance = issuances?.filter(issuance => issuance?.id === id);
       if (foundIssuance?.length) {
         return foundIssuance[0];
       } else {
@@ -123,7 +121,9 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'select-existing-issuance-description',
+                    id: isUserOnUnitsPage
+                      ? 'select-existing-issuance'
+                      : 'select-existing-issuance-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />

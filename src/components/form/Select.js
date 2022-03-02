@@ -235,6 +235,12 @@ const Select = withTheme(
       })} -- `;
 
     useEffect(() => {
+      if (state) {
+        setSelectState(state);
+      }
+    }, [state]);
+
+    useEffect(() => {
       if (options) {
         setOptionsList(options);
       }
