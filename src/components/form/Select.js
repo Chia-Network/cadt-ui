@@ -221,7 +221,7 @@ const Select = withTheme(
   }) => {
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
-    const [optionsList] = useState(options);
+    const [optionsList, setOptionsList] = useState(options);
     const [selectedOptions, setSelectedOptions] = useState(selected || null);
     const [searchInputValue, setSearchInputValue] = useState('');
     const [menuTopPosition, setMenuTopPosition] = useState(0);
@@ -234,6 +234,18 @@ const Select = withTheme(
       ` -- ${intl.formatMessage({
         id: 'select',
       })} -- `;
+
+    useEffect(() => {
+      if (state) {
+        setSelectState(state);
+      }
+    }, [state]);
+
+    useEffect(() => {
+      if (options) {
+        setOptionsList(options);
+      }
+    }, [options]);
 
     useEffect(() => {
       if (selected !== undefined && selectedInitialized.current === null) {

@@ -273,5 +273,10 @@
   "select-existing-issuance": "既存の問題を選択します",
   "select-existing-issuance-description": "既存の問題を選択するか、新しい問題を作成します。",
   "all-issuance-units": "この発行に属するユニット",
-  "click-for-details": "詳細を表示するには、ここをクリックしてください。"
+  "click-for-details": "詳細を表示するには、ここをクリックしてください。",
+  "issuance-not-found": "発行が見つかりません",
+  "add-project-with-issuance": "最初に発行されたプロジェクトを追加します",
+  "select-existing-label": "既存のラベルを選択します",
+  "select-existing-label-description": "既存のラベルを選択するか、新しいラベルを作成します.",
+  "add-project-with-label": "最初にラベル付きのプロジェクトを追加します"
 }
