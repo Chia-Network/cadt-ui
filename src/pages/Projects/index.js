@@ -26,7 +26,6 @@ import {
   H3,
   Message,
   UploadXLSX,
-  Alert,
   Modal,
   modalTypeEnum,
   Body,
@@ -116,13 +115,6 @@ const NoDataMessageContainer = styled('div')`
 const StyledCSVOperationsContainer = styled('div')`
   display: flex;
   justify-content: flex-end;
-  gap: 20px;
-`;
-
-const PendingMessageContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  width: 100%;
   gap: 20px;
 `;
 
@@ -470,26 +462,11 @@ const Projects = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <>
-                    <PendingMessageContainer>
-                      <Alert
-                        type="info"
-                        showIcon
-                        alertTitle={intl.formatMessage({ id: 'pending-info' })}
-                        alertBody={intl.formatMessage({
-                          id: 'pending-stuck-info',
-                        })}
-                      />
-                    </PendingMessageContainer>
-                    <StagingDataGroups
-                      headings={headings}
-                      data={climateWarehouseStore.stagingData.projects.pending}
-                      deleteStagingData={uuid =>
-                        dispatch(deleteStagingData(uuid))
-                      }
-                      modalSizeAndPosition={modalSizeAndPosition}
-                    />
-                  </>
+                  <StagingDataGroups
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.projects.pending}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                  />
                 )}
               </TabPanel>
             </>
