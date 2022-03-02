@@ -68,19 +68,14 @@ const CreateIssuanceForm = ({ value, onChange }) => {
     }
   }, [issuances]);
 
-  const getIssuanceById = id => {
-    if (id) {
-      const foundIssuance = issuances?.filter(issuance => issuance?.id === id);
-      if (foundIssuance?.length) {
-        return foundIssuance[0];
-      } else {
-        return null;
-      }
-    }
-  };
-
   const updateIssuanceById = id => {
-    const selectedIssuance = getIssuanceById(id);
+    const issuanceIsAvailable = issuances?.some(
+      issuance => issuance?.id === id,
+    );
+    const selectedIssuance =
+      issuanceIsAvailable &&
+      issuances.filter(issuance => issuance?.id === id)[0];
+
     if (selectedIssuance) {
       const {
         endDate,
@@ -138,16 +133,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                 state={SelectStateEnum.default}
                 selected={
                   value.id
-                    ? [
-                        {
-                          value: value.id,
-                          label: getIssuanceById(value.id)
-                            ? getIssuanceLabel(getIssuanceById(value.id))
-                            : intl.formatMessage({
-                                id: 'issuance-not-found',
-                              }),
-                        },
-                      ]
+                    ? [{ value: value.id, label: getIssuanceLabel(value) }]
                     : undefined
                 }
                 onChange={selectedOptions =>

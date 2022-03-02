@@ -50,17 +50,6 @@ const CreateLabelsForm = ({ value, onChange }) => {
     }
   }, [isUserOnUnitsPage, value, value.id]);
 
-  const getLabelById = id => {
-    if (id) {
-      const foundLabel = labels?.filter(label => label?.id === id);
-      if (foundLabel?.length) {
-        return foundLabel[0];
-      } else {
-        return null;
-      }
-    }
-  };
-
   const labelsSelectOptions = useMemo(() => {
     if (labels?.length > 0) {
       return labels.map(label => ({
@@ -73,7 +62,10 @@ const CreateLabelsForm = ({ value, onChange }) => {
   }, [labels]);
 
   const updateLabelById = id => {
-    const selectedLabel = getLabelById(id);
+    const labelIsAvailable = labels?.some(label => label?.id === id);
+    const selectedLabel =
+      labelIsAvailable && labels.filter(label => label?.id === id)[0];
+
     if (selectedLabel) {
       const {
         creditingPeriodEndDate,
