@@ -27,7 +27,8 @@ const InputContainer = styled('div')`
     outline: none;
     box-shadow: ${props =>
       props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
-    border: 1px solid #40a9ff;
+    border: ${props =>
+      props.disabled ? '1px solid #d9d9d9;' : '1px solid #40a9ff'};
   }
 
   ${props =>
@@ -94,6 +95,7 @@ const DateSelect = ({
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
+        disableOpenPicker={disabled}
         label="Select time"
         value={dateValue}
         onChange={newValue => {
