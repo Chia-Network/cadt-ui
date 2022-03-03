@@ -85,10 +85,11 @@ const StyledSelect = styled('div')`
         box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
       `;
     } else if (props.state === SelectStateEnum.disabled) {
-      return `
-        background: #F5F5F5;
-        color: #BFBFBF;
-        cursor: default;`;
+      return css`
+        background: #f5f5f5;
+        color: #000000;
+        cursor: default;
+      `;
     }
   }};
   ${props => {
@@ -238,7 +239,7 @@ const Select = withTheme(
   }) => {
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
-    const [optionsList] = useState(options);
+    const [optionsList, setOptionsList] = useState(options);
     const [selectedOptions, setSelectedOptions] = useState(selected || null);
     const [searchInputValue, setSearchInputValue] = useState('');
     const [menuTopPosition, setMenuTopPosition] = useState(0);
@@ -251,6 +252,18 @@ const Select = withTheme(
       ` -- ${intl.formatMessage({
         id: 'select',
       })} -- `;
+
+    useEffect(() => {
+      if (state) {
+        setSelectState(state);
+      }
+    }, [state]);
+
+    useEffect(() => {
+      if (options) {
+        setOptionsList(options);
+      }
+    }, [options]);
 
     useEffect(() => {
       if (selected !== undefined && selectedInitialized.current === null) {

@@ -39,6 +39,7 @@ export const actions = keyMirror(
   'GET_ORGANIZATIONS',
   'GET_PICKLISTS',
   'GET_ISSUANCES',
+  'GET_LABELS',
 );
 
 const getClimateWarehouseTable = (
@@ -219,6 +220,32 @@ export const getIssuances = () => {
 
         dispatch({
           type: actions.GET_ISSUANCES,
+          payload: results,
+        });
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getLabels = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetch(`${constants.API_HOST}/labels`);
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_LABELS,
           payload: results,
         });
       }

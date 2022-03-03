@@ -47,7 +47,7 @@ const InputContainer = styled('div')`
   ${props =>
     props.disabled &&
     css`
-      background-color: rgba(239, 239, 239, 0.3);
+      background-color: #f5f5f5;
     `};
 
   ${props => {
@@ -73,6 +73,13 @@ const Input = styled('input')`
   :focus-visible {
     outline: none;
   }
+  ${props =>
+    props.disabled &&
+    css`
+      background-color: #f5f5f5;
+      color: #000000;
+      cursor: default;
+    `};
 `;
 
 const DateSelect = ({

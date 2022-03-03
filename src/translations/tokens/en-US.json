@@ -303,6 +303,11 @@
   "unit-detailed-view": "Unit Detailed View",
   "select-existing-issuance": "Select an existing issuance",
   "select-existing-issuance-description": "Either select an existing issuance or create a new one.",
+  "select-existing-label": "Select an existing label",
+  "select-existing-label-description": "Either select an existing label or create a new one.",
   "all-issuance-units": "Units belonging to this issuance",
-  "click-for-details": "Click here to view details."
+  "click-for-details": "Click here to view details.",
+  "issuance-not-found": "Current issuance not found",
+  "add-project-with-issuance": "Add a project with an issuance first",
+  "add-project-with-label": "Add a project with a label first"
 }

@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { AddIcon, CloseIcon } from '..';
 import { CreateLabelsForm } from './CreateLabelsForm';
 import { ComponentRepeater } from '..';
+import { getLabels } from '../../store/actions/climateWarehouseActions';
 
 function LabelsRepeater({ labelsState, newLabelsState }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getLabels());
+  }, []);
+
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
