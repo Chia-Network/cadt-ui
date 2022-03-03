@@ -29,6 +29,10 @@ const SimpleSelectStateEnum = {
   disabled: 'disabled',
 };
 
+const SimpleSelectVariantEnum = {
+  error: 'error',
+};
+
 const StyledSelect = styled('div')`
   min-width: ${props => props.width};
   max-width: ${props => props.width};
@@ -87,6 +91,23 @@ const StyledSelect = styled('div')`
         cursor: default;`;
     }
   }};
+  ${props => {
+    if (props.variant === SimpleSelectVariantEnum.error) {
+      if (props.state === SimpleSelectStateEnum.focused) {
+        return css`
+          border: 1px solid #f5222d;
+          box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
+        `;
+      } else if (props.state === SimpleSelectStateEnum.hover) {
+        return css`
+          border: 1px solid #f5222d;
+        `;
+      }
+      return css`
+        border: 1px solid #f5222d;
+      `;
+    }
+  }}
   ${props => props.type === SimpleSelectTypeEnum.multiple && `height: 100%;`};
 `;
 
@@ -212,6 +233,7 @@ const SimpleSelect = withTheme(
     size = SimpleSelectSizeEnum.default,
     type = SimpleSelectTypeEnum.basic,
     state = SimpleSelectStateEnum.default,
+    variant,
     options,
     selected,
     placeholder,
@@ -366,7 +388,7 @@ const SimpleSelect = withTheme(
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-          >
+            variant={variant}>
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0]
@@ -389,8 +411,7 @@ const SimpleSelect = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -398,8 +419,7 @@ const SimpleSelect = withTheme(
                       {option}
                       <div
                         style={{ marginLeft: '5px' }}
-                        onClick={() => toggleOptionSelection(option)}
-                      >
+                        onClick={() => toggleOptionSelection(option)}>
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -424,8 +444,7 @@ const SimpleSelect = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             {selectState !== SimpleSelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -475,8 +494,7 @@ const SimpleSelect = withTheme(
                 <StyledBasicMenuItem
                   key={option}
                   isSelected={isSelected}
-                  onClick={() => toggleOptionSelection(option)}
-                >
+                  onClick={() => toggleOptionSelection(option)}>
                   {option}
                   {isSelected && type === SimpleSelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
@@ -501,8 +519,7 @@ const SimpleSelect = withTheme(
                       selectedOptions.length > 0 &&
                       selectedOptions.find(selected => selected === option)
                     }
-                    onClick={() => toggleOptionSelection(option)}
-                  >
+                    onClick={() => toggleOptionSelection(option)}>
                     {option}
                   </StyledBasicMenuItem>
                 ),
@@ -519,4 +536,5 @@ export {
   SimpleSelectSizeEnum,
   SimpleSelectTypeEnum,
   SimpleSelectStateEnum,
+  SimpleSelectVariantEnum,
 };

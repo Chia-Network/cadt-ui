@@ -19,6 +19,7 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
+  DateVariantEnum,
 } from '..';
 
 import { estimationSchema } from '../../store/validations';
@@ -56,6 +57,10 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorEstimationMessage?.creditingPeriodStart &&
+                  DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.creditingPeriodStart}
                 setDateValue={changeValue =>
@@ -85,6 +90,10 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorEstimationMessage?.creditingPeriodEnd &&
+                  DateVariantEnum.error
+                }
                 size="large"
                 dateValue={value.creditingPeriodEnd}
                 setDateValue={changeValue =>

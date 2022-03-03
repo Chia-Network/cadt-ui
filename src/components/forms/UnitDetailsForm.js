@@ -18,6 +18,7 @@ import {
   FieldRequired,
   SelectSizeEnum,
   SelectTypeEnum,
+  SelectVariantEnum,
   StyledFieldRequired,
   Select,
   InputContainer,
@@ -25,6 +26,7 @@ import {
   StyledLabelContainer,
   InputVariantEnum,
   YearSelect,
+  DateVariantEnum,
 } from '..';
 
 import { unitsSchema } from '../../store/validations';
@@ -186,6 +188,11 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorMessage?.countryJurisdictionOfOwner
+                    ? SelectVariantEnum.error
+                    : undefined
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectCountriesOptions}
@@ -352,6 +359,9 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <YearSelect
+                variant={
+                  errorMessage?.vintageYear ? DateVariantEnum.error : undefined
+                }
                 size="large"
                 yearValue={unitDetails.vintageYear}
                 onChange={value => {
@@ -386,6 +396,9 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorMessage?.unitType ? SelectVariantEnum.error : undefined
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectUnitTypeOptions}
@@ -584,6 +597,9 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorMessage?.unitStatus ? SelectVariantEnum.error : undefined
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectUnitStatusOptions}
@@ -713,6 +729,11 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorMessage?.correspondingAdjustmentDeclaration
+                    ? SelectVariantEnum.error
+                    : undefined
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectCorrespondingAdjustmentDeclarationOptions}
@@ -757,6 +778,11 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorMessage?.correspondingAdjustmentStatus
+                    ? SelectVariantEnum.error
+                    : undefined
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectCorrespondingAdjustmentStatusOptions}

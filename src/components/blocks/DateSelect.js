@@ -4,6 +4,7 @@ import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import styled, { css } from 'styled-components';
 import { formatDate } from '../../utils/formatData';
+import { DateVariantEnum } from '.';
 
 const InputContainer = styled('div')`
   display: flex;
@@ -26,7 +27,7 @@ const InputContainer = styled('div')`
     outline: none;
     box-shadow: ${props =>
       props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
-    border: '1px solid #40a9ff';
+    border: 1px solid #40a9ff;
   }
 
   ${props =>
@@ -48,6 +49,21 @@ const InputContainer = styled('div')`
     css`
       background-color: #f5f5f5;
     `};
+
+  ${props => {
+    if (props.variant === DateVariantEnum.error) {
+      return css`
+        border: 1px solid #f5222d;
+        :focus-within {
+          border: 1px solid #f5222d;
+          box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
+        }
+        :hover {
+          border: 1px solid #f5222d;
+        }
+      `;
+    }
+  }}
 `;
 
 const Input = styled('input')`
@@ -71,6 +87,7 @@ const DateSelect = ({
   disabled,
   dateValue,
   setDateValue,
+  variant,
 }) => {
   const divElement = useRef(null);
 
@@ -96,7 +113,7 @@ const DateSelect = ({
               ref={divElement}
               disabled={disabled}
               tabIndex={0}
-            >
+              variant={variant}>
               <Input
                 ref={inputRef}
                 {...inputProps}

@@ -14,6 +14,7 @@ import {
   BodyContainer,
   Body,
   DateSelect,
+  DateVariantEnum,
   DescriptionIcon,
   ToolTipContainer,
   LabelContainer,
@@ -21,6 +22,7 @@ import {
   SimpleSelectSizeEnum,
   SimpleSelectTypeEnum,
   SimpleSelectStateEnum,
+  SimpleSelectVariantEnum,
   StyledFieldRequired,
   InputContainer,
   StyledFieldContainer,
@@ -31,12 +33,12 @@ import {
 import { projectSchema } from '../../store/validations';
 
 const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
-  const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
+  const [errorProjectMessage, setErrorProjectMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
-    setValidationErrors(projectSchema, projectDetails, setErrorIssuanceMessage);
+    setValidationErrors(projectSchema, projectDetails, setErrorProjectMessage);
   }, [projectDetails]);
 
   return (
@@ -60,6 +62,10 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <SimpleSelect
+                variant={
+                  errorProjectMessage?.registryOfOrigin &&
+                  SimpleSelectVariantEnum.error
+                }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.registries}
@@ -77,9 +83,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
               />
             </InputContainer>
-            {errorIssuanceMessage?.registryOfOrigin && (
+            {errorProjectMessage?.registryOfOrigin && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.registryOfOrigin}
+                {errorProjectMessage.registryOfOrigin}
               </Body>
             )}
           </StyledFieldContainer>
@@ -100,7 +106,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorIssuanceMessage?.originProjectId
+                  errorProjectMessage?.originProjectId
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -118,9 +124,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
               />
             </InputContainer>
-            {errorIssuanceMessage?.originProjectId && (
+            {errorProjectMessage?.originProjectId && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.originProjectId}
+                {errorProjectMessage.originProjectId}
               </Body>
             )}
           </StyledFieldContainer>
@@ -154,9 +160,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
               />
             </InputContainer>
-            {errorIssuanceMessage?.program && (
+            {errorProjectMessage?.program && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.program}
+                {errorProjectMessage.program}
               </Body>
             )}
           </StyledFieldContainer>
@@ -176,7 +182,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <StandardInput
               variant={
-                errorIssuanceMessage?.projectId
+                errorProjectMessage?.projectId
                   ? InputVariantEnum.error
                   : undefined
               }
@@ -193,9 +199,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }))
               }
             />
-            {errorIssuanceMessage?.projectId && (
+            {errorProjectMessage?.projectId && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.projectId}
+                {errorProjectMessage.projectId}
               </Body>
             )}
           </StyledFieldContainer>
@@ -216,7 +222,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorIssuanceMessage?.projectName
+                  errorProjectMessage?.projectName
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -234,9 +240,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
               />
             </InputContainer>
-            {errorIssuanceMessage?.projectName && (
+            {errorProjectMessage?.projectName && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.projectName}
+                {errorProjectMessage.projectName}
               </Body>
             )}
           </StyledFieldContainer>
@@ -257,7 +263,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorIssuanceMessage?.projectLink
+                  errorProjectMessage?.projectLink
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -275,9 +281,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
               />
             </InputContainer>
-            {errorIssuanceMessage?.projectLink && (
+            {errorProjectMessage?.projectLink && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.projectLink}
+                {errorProjectMessage.projectLink}
               </Body>
             )}
           </StyledFieldContainer>
@@ -298,7 +304,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorIssuanceMessage?.projectDeveloper
+                  errorProjectMessage?.projectDeveloper
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -316,9 +322,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
               />
             </InputContainer>
-            {errorIssuanceMessage?.projectDeveloper && (
+            {errorProjectMessage?.projectDeveloper && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.projectDeveloper}
+                {errorProjectMessage.projectDeveloper}
               </Body>
             )}
           </StyledFieldContainer>
@@ -338,6 +344,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <SimpleSelect
+                variant={
+                  errorProjectMessage?.sector && SimpleSelectVariantEnum.error
+                }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.projectSector}
@@ -353,9 +362,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
               />
             </InputContainer>
-            {errorIssuanceMessage?.sector && (
+            {errorProjectMessage?.sector && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.sector}
+                {errorProjectMessage.sector}
               </Body>
             )}
           </StyledFieldContainer>
@@ -374,6 +383,10 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <SimpleSelect
+              variant={
+                errorProjectMessage?.projectType &&
+                SimpleSelectVariantEnum.error
+              }
               size={SimpleSelectSizeEnum.large}
               type={SimpleSelectTypeEnum.basic}
               options={pickLists.projectType}
@@ -390,9 +403,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }))
               }
             />
-            {errorIssuanceMessage?.projectType && (
+            {errorProjectMessage?.projectType && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.projectType}
+                {errorProjectMessage.projectType}
               </Body>
             )}
           </StyledFieldContainer>
@@ -415,6 +428,10 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <SimpleSelect
+                variant={
+                  errorProjectMessage?.coveredByNDC &&
+                  SimpleSelectVariantEnum.error
+                }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.coveredByNDC}
@@ -432,9 +449,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
               />
             </InputContainer>
-            {errorIssuanceMessage?.coveredByNDC && (
+            {errorProjectMessage?.coveredByNDC && (
               <Body size="Small" color="red">
-                {errorIssuanceMessage.coveredByNDC}
+                {errorProjectMessage.coveredByNDC}
               </Body>
             )}
           </StyledFieldContainer>
@@ -456,7 +473,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorIssuanceMessage?.ndcInformation
+                  errorProjectMessage?.ndcInformation
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -473,9 +490,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   }))
                 }
               />
-              {errorIssuanceMessage?.ndcInformation && (
+              {errorProjectMessage?.ndcInformation && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.ndcInformation}
+                  {errorProjectMessage.ndcInformation}
                 </Body>
               )}
             </InputContainer>
@@ -496,6 +513,10 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <SimpleSelect
+                variant={
+                  errorProjectMessage?.projectStatus &&
+                  SimpleSelectVariantEnum.error
+                }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.projectStatusValues}
@@ -512,9 +533,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   }))
                 }
               />
-              {errorIssuanceMessage?.projectStatus && (
+              {errorProjectMessage?.projectStatus && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.projectStatus}
+                  {errorProjectMessage.projectStatus}
                 </Body>
               )}
             </InputContainer>
@@ -535,6 +556,10 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                variant={
+                  errorProjectMessage?.projectStatusDate &&
+                  DateVariantEnum.error
+                }
                 size="large"
                 dateValue={projectDetails.projectStatusDate}
                 setDateValue={date =>
@@ -544,9 +569,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   }))
                 }
               />
-              {errorIssuanceMessage?.projectStatusDate && (
+              {errorProjectMessage?.projectStatusDate && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.projectStatusDate}
+                  {errorProjectMessage.projectStatusDate}
                 </Body>
               )}
             </InputContainer>
@@ -567,6 +592,10 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <SimpleSelect
+                variant={
+                  errorProjectMessage?.unitMetric &&
+                  SimpleSelectVariantEnum.error
+                }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.unitMetric}
@@ -583,9 +612,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   }))
                 }
               />
-              {errorIssuanceMessage?.unitMetric && (
+              {errorProjectMessage?.unitMetric && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.unitMetric}
+                  {errorProjectMessage.unitMetric}
                 </Body>
               )}
             </InputContainer>
@@ -606,6 +635,10 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <SimpleSelect
+                variant={
+                  errorProjectMessage?.methodology &&
+                  SimpleSelectVariantEnum.error
+                }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.methodology}
@@ -622,9 +655,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   }))
                 }
               />
-              {errorIssuanceMessage?.methodology && (
+              {errorProjectMessage?.methodology && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.methodology}
+                  {errorProjectMessage.methodology}
                 </Body>
               )}
             </InputContainer>
@@ -654,9 +687,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   }))
                 }
               />
-              {errorIssuanceMessage?.validationDate && (
+              {errorProjectMessage?.validationDate && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.validationDate}
+                  {errorProjectMessage.validationDate}
                 </Body>
               )}
             </InputContainer>
@@ -693,9 +726,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   }))
                 }
               />
-              {errorIssuanceMessage?.validationBody && (
+              {errorProjectMessage?.validationBody && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.validationBody}
+                  {errorProjectMessage.validationBody}
                 </Body>
               )}
             </InputContainer>
@@ -729,9 +762,9 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   }))
                 }
               />
-              {errorIssuanceMessage?.projectTags && (
+              {errorProjectMessage?.projectTags && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.projectTags}
+                  {errorProjectMessage.projectTags}
                 </Body>
               )}
             </InputContainer>
