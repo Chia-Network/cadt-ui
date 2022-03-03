@@ -149,6 +149,10 @@ const Projects = withRouter(() => {
   }, [notification]);
 
   useEffect(() => {
+    setTabValue(0);
+  }, [searchParams.get('orgUid')]);
+
+  useEffect(() => {
     if (projectsContainerRef && projectsContainerRef.current) {
       setModalSizeAndPosition({
         left: projectsContainerRef.current.getBoundingClientRect().x,
