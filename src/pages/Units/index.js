@@ -147,8 +147,8 @@ const Units = withRouter(() => {
   }, [notification]);
 
   useEffect(() => {
-    setTabValue(0)
-  },[searchParams.get('orgUid')])
+    setTabValue(0);
+  }, [searchParams.get('orgUid')]);
 
   useEffect(() => {
     if (unitsContainerRef && unitsContainerRef.current) {
@@ -230,27 +230,20 @@ const Units = withRouter(() => {
 
     return climateWarehouseStore.units.map(unit =>
       _.pick(unit, [
-        'warehouseUnitId',
-        'projectLocationId',
+        'issuanceId',
         'unitOwner',
         'countryJurisdictionOfOwner',
-        'inCountryJurisdictionOfOwner',
         'serialNumberBlock',
-        'serialNumberPattern',
+        'unitBlockStart',
+        'unitBlockEnd',
+        'unitCount',
         'vintageYear',
+        'unitType',
         'marketplace',
-        'marketplaceLink',
-        'marketplaceIdentifier',
         'unitTags',
         'unitStatus',
-        'unitStatusReason',
-        'unitType',
-        'unitRegistryLink',
-        'unitMarketplaceLink',
-        'correspondingAdjustmentStatus',
         'correspondingAdjustmentDeclaration',
-        'electedCorrespondingAdjustmentStatus',
-        'unitCount',
+        'correspondingAdjustmentStatus',
       ]),
     );
   }, [climateWarehouseStore.units]);
