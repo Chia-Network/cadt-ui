@@ -76,14 +76,7 @@ const Input = styled('input')`
   }
 `;
 
-const YearSelect = ({
-  size,
-  yearValue,
-  onChange,
-  disabled,
-  variant,
-  state,
-}) => {
+const YearSelect = ({ size, yearValue, onChange, disabled, variant }) => {
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
@@ -94,11 +87,7 @@ const YearSelect = ({
         disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
-            <InputContainer
-              size={size}
-              disabled={disabled}
-              variant={variant}
-              state={state}>
+            <InputContainer size={size} disabled={disabled} variant={variant}>
               <Input
                 ref={inputRef}
                 {...inputProps}
