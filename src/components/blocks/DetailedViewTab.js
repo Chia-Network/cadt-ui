@@ -64,7 +64,9 @@ const DetailedViewTabItem = ({ entry }) => {
                 {convertPascalCaseToSentenceCase(entryProp)}
               </Body>
               <Body>
-                {entry[entryProp] !== 'null' ? entry[entryProp] : '--'}
+                {entry[entryProp] !== null && entry[entryProp] !== 'null'
+                  ? entry[entryProp]
+                  : '--'}
               </Body>
             </div>
           ),

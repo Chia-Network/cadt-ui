@@ -44,7 +44,9 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
     () =>
       fullRecord
         ? Object.keys(fullRecord)
-            .filter(key => typeof fullRecord[key] !== 'object')
+            .filter(
+              key => key !== 'issuance' && !Array.isArray(fullRecord[key]),
+            )
             .reduce((acc, cur) => {
               acc[cur] = fullRecord[cur];
               return acc;
