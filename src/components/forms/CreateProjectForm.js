@@ -32,6 +32,7 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   const { notification } = useSelector(state => state.app);
 
   const [project, setProject] = useState({
+    currentRegistry: '',
     registryOfOrigin: '',
     originProjectId: '',
     program: '',
