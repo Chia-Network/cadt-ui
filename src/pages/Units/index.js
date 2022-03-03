@@ -147,6 +147,10 @@ const Units = withRouter(() => {
   }, [notification]);
 
   useEffect(() => {
+    setTabValue(0)
+  },[searchParams.get('orgUid')])
+
+  useEffect(() => {
     if (unitsContainerRef && unitsContainerRef.current) {
       setModalSizeAndPosition({
         left: unitsContainerRef.current.getBoundingClientRect().x,
