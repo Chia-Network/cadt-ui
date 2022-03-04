@@ -16,6 +16,8 @@ const initialState = {
   commit: false,
   pendingError: false,
   readOnlyMode: true,
+  apiKey: null,
+  serverAddress: null,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -25,6 +27,15 @@ const appReducer = (state = initialState, action) => {
 
     case socketActions.SOCKET_STATUS:
       return u({ socketStatus: action.payload }, state);
+
+    case socketActions.SIGN_USER_IN:
+      return u(
+        {
+          apiKey: action.payload.apiKey,
+          serverAddress: action.payload.serverAddress,
+        },
+        state,
+      );
 
     case socketActions.SOCKET_UNITS_UPDATE:
     case socketActions.SOCKET_PROJECTS_UPDATE:

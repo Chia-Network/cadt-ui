@@ -309,5 +309,12 @@
   "click-for-details": "Click here to view details.",
   "issuance-not-found": "Current issuance not found",
   "add-project-with-issuance": "Add a project with an issuance first",
-  "add-project-with-label": "Add a project with a label first"
+  "add-project-with-label": "Add a project with a label first",
+  "sign-out": "Sign out",
+  "sign-in": "Sign in",
+  "api-key": "Api key",
+  "server-address": "Server address",
+  "log-in-to-remote-node": "Log in to remote node",
+  "add-valid-server-address": "Add a valid server address",
+  "add-valid-api-key": "Add a valid Api key"
 }
