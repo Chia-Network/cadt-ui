@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import styled, { withTheme, css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
@@ -225,11 +225,15 @@ const SelectOrganizations = withTheme(
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
 
-    const organizationsList = Object.keys(organizations).map(orgUid => ({
-      orgUid: orgUid,
-      name: organizations[orgUid].name,
-      icon: organizations[orgUid].icon,
-    }));
+    const organizationsList = useMemo(
+      () =>
+        Object.keys(organizations).map(orgUid => ({
+          orgUid: orgUid,
+          name: organizations[orgUid].name,
+          icon: organizations[orgUid].icon,
+        })),
+      [organizations],
+    );
 
     const allOrganizationsItem = {
       orgUid: 'all',
