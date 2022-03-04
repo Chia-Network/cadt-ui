@@ -7,7 +7,6 @@ import { Stepper, Step, StepLabel } from '@mui/material';
 import {
   TabPanel,
   Modal,
-  Message,
   modalTypeEnum,
   EstimationsRepeater,
   RatingsRepeater,
@@ -90,9 +89,6 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
 
   return (
     <>
-      {notification && !projectWasSuccessfullyCreated && (
-        <Message id={notification.id} type={notification.type} />
-      )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
         onOk={() => onChangeStep(tabValue + 1)}

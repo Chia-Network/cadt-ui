@@ -5,7 +5,6 @@ import { Stepper, Step, StepLabel } from '@mui/material';
 import {
   Modal,
   TabPanel,
-  Message,
   EstimationsRepeater,
   RatingsRepeater,
   modalTypeEnum,
@@ -86,9 +85,6 @@ const EditProjectsForm = ({
 
   return (
     <>
-      {notification && !projectWasSuccessfullyEdited && (
-        <Message id={notification.id} type={notification.type} />
-      )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
         onOk={() => onChangeStep(tabValue + 1)}

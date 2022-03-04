@@ -4,23 +4,20 @@ import { useIntl } from 'react-intl';
 import { Router } from 'react-router';
 import { Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
-import { resetRefreshPrompt } from '../store/actions/app';
-import {
-  history,
-  reloadApp,
-  saveCurrentUrlToStorage,
-  reloadCurrentUrlFromStorage,
-} from './';
+import { NotificationContainer } from 'react-notifications';
+
+import { history, reloadApp, reloadCurrentUrlFromStorage } from './';
 import * as Pages from '../pages';
+
+import { createNotification } from '../utils/notificationUtils';
 
 import {
   AppContainer,
   Modal,
   SocketStatusContainer,
-  UpdateRefreshContainer,
   modalTypeEnum,
 } from '../components';
-import { setPendingError } from '../store/actions/app';
+import { setPendingError, setNotificationMessage } from '../store/actions/app';
 
 const AppNavigator = () => {
   const intl = useIntl();
@@ -34,21 +31,22 @@ const AppNavigator = () => {
     showProgressOverlay,
     connectionCheck,
     socketStatus,
-    updateAvailablePleaseRefesh,
     pendingError,
+    notification,
   } = useSelector(store => store.app);
+
+  useEffect(() => {
+    if (notification) {
+      createNotification(
+        notification.type,
+        intl.formatMessage({ id: notification.id }),
+      );
+      dispatch(setNotificationMessage(null));
+    }
+  }, [notification]);
 
   return (
     <AppContainer>
-      {updateAvailablePleaseRefesh && (
-        <UpdateRefreshContainer
-          onRefresh={() => {
-            saveCurrentUrlToStorage();
-            reloadApp();
-          }}
-          onClose={() => dispatch(resetRefreshPrompt)}
-        />
-      )}
       <SocketStatusContainer socketStatus={socketStatus} />
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
@@ -70,6 +68,7 @@ const AppNavigator = () => {
           informationType="error"
         />
       )}
+      <NotificationContainer />
       <Router history={history}>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>

@@ -24,7 +24,6 @@ import {
   SelectTypeEnum,
   CreateProjectForm,
   H3,
-  Message,
   UploadXLSX,
   Modal,
   modalTypeEnum,
@@ -409,7 +408,8 @@ const Projects = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -482,9 +482,6 @@ const Projects = withRouter(() => {
           onClose={() => setCreateFormIsDisplayed(false)}
           modalSizeAndPosition={modalSizeAndPosition}
         />
-      )}
-      {notification && (
-        <Message id={notification.id} type={notification.type} />
       )}
     </>
   );
