@@ -101,7 +101,6 @@ export const setNotificationMessage = (type, id) => {
 
 export const signIn = ({ apiKey, serverAddress }) => {
   return async dispatch => {
-    console.log('store sign in passed', apiKey, serverAddress);
     if (apiKey && serverAddress) {
       localStorage.setItem('apiKey', apiKey);
       localStorage.setItem('serverAddress', serverAddress);
@@ -121,12 +120,28 @@ export const signOut = () => {
     localStorage.removeItem('apiKey');
     localStorage.removeItem('serverAddress');
     dispatch({
-      type: actions.SIGN_USER_IN,
+      type: actions.SIGN_USER_OUT,
       payload: {
         apiKey: null,
         serverAddress: null,
       },
     });
+  };
+};
+
+export const signInFromLocalStorage = () => {
+  return async dispatch => {
+    const apiKey = localStorage.getItem('apiKey');
+    const serverAddress = localStorage.getItem('serverAddress');
+    if (apiKey && serverAddress) {
+      dispatch({
+        type: actions.SIGN_USER_IN,
+        payload: {
+          apiKey,
+          serverAddress,
+        },
+      });
+    }
   };
 };
 

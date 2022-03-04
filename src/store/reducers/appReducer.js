@@ -28,15 +28,6 @@ const appReducer = (state = initialState, action) => {
     case socketActions.SOCKET_STATUS:
       return u({ socketStatus: action.payload }, state);
 
-    case socketActions.SIGN_USER_IN:
-      return u(
-        {
-          apiKey: action.payload.apiKey,
-          serverAddress: action.payload.serverAddress,
-        },
-        state,
-      );
-
     case socketActions.SOCKET_UNITS_UPDATE:
     case socketActions.SOCKET_PROJECTS_UPDATE:
     case socketActions.SOCKET_STAGING_UPDATE:
@@ -89,6 +80,24 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.SET_NOTIFICATION:
       return u({ notification: action.payload }, state);
+
+    case appActions.SIGN_USER_IN:
+      return u(
+        {
+          apiKey: action.payload.apiKey,
+          serverAddress: action.payload.serverAddress,
+        },
+        state,
+      );
+
+    case appActions.SIGN_USER_OUT:
+      return u(
+        {
+          apiKey: null,
+          serverAddress: null,
+        },
+        state,
+      );
 
     default:
       return state;

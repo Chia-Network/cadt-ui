@@ -22,7 +22,11 @@ import {
   StyledLabelContainer,
   ModalFormContainerStyle,
 } from '../../components';
-import { signIn } from '../../store/actions/app';
+import {
+  signIn,
+  signInFromLocalStorage,
+  signOut,
+} from '../../store/actions/app';
 import { validateUrl } from '../../utils/urlUtils';
 
 const MyAccount = () => {
@@ -30,34 +34,30 @@ const MyAccount = () => {
   const [serverAddress, setServerAddress] = useState(null);
   const [isLogInModalOpen, setIsLogInModalOpen] = useState(false);
   const appStore = useSelector(state => state.app);
-  const isUserLoggedIn = appStore.apiKey && appStore.serverAddress;
+  const isUserLoggedIn =
+    appStore.apiKey !== null && appStore.serverAddress !== null;
   const intl = useIntl();
   const dispatch = useDispatch();
 
   const signUserIn = () => {
-    console.log('sign in user in component');
-    if (
-      serverAddress &&
-      apiKey &&
-      validateUrl(serverAddress) &&
-      serverAddress[serverAddress?.length - 1] === '/'
-    ) {
+    if (serverAddress && apiKey && validateUrl(serverAddress)) {
       dispatch(signIn({ apiKey, serverAddress }));
+      setServerAddress(null);
+      setApiKey(null);
+      setIsLogInModalOpen(false);
     }
   };
 
   useEffect(() => {
-    console.log('appStore:', appStore);
-  }, [appStore]);
-
-  const signUserOut = () => {
-    console.log('signUserOut');
-  };
+    if (isUserLoggedIn === false) {
+      dispatch(signInFromLocalStorage());
+    }
+  }, []);
 
   return (
     <StyledMyAccountContainer>
       {isUserLoggedIn && (
-        <div onClick={signUserOut}>
+        <div onClick={() => dispatch(signOut())}>
           <Body color="#1890ff">
             <FormattedMessage id="sign-out" />
           </Body>
@@ -98,8 +98,7 @@ const MyAccount = () => {
                   />
                 </InputContainer>
                 {(serverAddress === null ||
-                  validateUrl(serverAddress) === false ||
-                  serverAddress[serverAddress?.length - 1] !== '/') && (
+                  validateUrl(serverAddress) === false) && (
                   <Body size="Small" color="red">
                     {intl.formatMessage({
                       id: 'add-valid-server-address',
