@@ -148,7 +148,7 @@ const Projects = withRouter(() => {
     }
   }, [notification]);
 
-  useEffect(() => {
+  useMemo(() => {
     setTabValue(0);
   }, [searchParams.get('orgUid')]);
 

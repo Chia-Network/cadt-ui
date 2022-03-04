@@ -146,9 +146,10 @@ const Units = withRouter(() => {
     }
   }, [notification]);
 
-  useEffect(() => {
+  useMemo(() => {
     setTabValue(0);
   }, [searchParams.get('orgUid')]);
+  
 
   useEffect(() => {
     if (unitsContainerRef && unitsContainerRef.current) {
