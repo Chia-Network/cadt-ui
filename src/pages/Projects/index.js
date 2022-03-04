@@ -243,6 +243,7 @@ const Projects = withRouter(() => {
 
     return climateWarehouseStore.projects.map(project =>
       _.pick(project, [
+        'warehouseProjectId',
         'currentRegistry',
         'projectId',
         'projectName',

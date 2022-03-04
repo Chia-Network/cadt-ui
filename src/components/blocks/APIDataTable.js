@@ -35,9 +35,11 @@ const Th = styled('th')`
   display: table-cell;
   text-align: left;
   border-bottom: 1px solid rgba(224, 224, 224, 1);
-
   letter-spacing: 0.01071em;
   vertical-align: inherit;
+  :nth-child(1) {
+    display: none;
+  }
 
   ${props =>
     props.start &&
@@ -75,6 +77,9 @@ const Td = styled('td')`
   letter-spacing: 0.01071em;
   vertical-align: inherit;
   max-width: 100px;
+  :nth-child(1) {
+    display: none;
+  }
 
   ${props =>
     props.columnId === 'orgUid' &&
@@ -142,8 +147,7 @@ const APIDataTable = withTheme(
                       start={index === 0 ? 1 : 0}
                       end={!actions && index === headings.length - 1 ? 1 : 0}
                       selectedTheme={theme}
-                      key={index}
-                    >
+                      key={index}>
                       <TableCellHeaderText>
                         {heading === 'orgUid' && 'Organization'}
                         {heading !== 'orgUid' &&
@@ -156,8 +160,7 @@ const APIDataTable = withTheme(
                       start={0}
                       end={1}
                       selectedTheme={theme}
-                      key={'action'}
-                    ></Th>
+                      key={'action'}></Th>
                   )}
                 </tr>
               </THead>
@@ -169,16 +172,14 @@ const APIDataTable = withTheme(
                         onClick={() => setRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
-                        key={index}
-                      >
+                        key={index}>
                         <TableCellText
                           tooltip={
                             record[key] &&
                             `${convertPascalCaseToSentenceCase(key)}: ${record[
                               key
                             ].toString()}`
-                          }
-                        >
+                          }>
                           {key === 'orgUid' &&
                             climateWarehouseStore.organizations[
                               record[key]

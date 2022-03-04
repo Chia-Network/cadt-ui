@@ -60,8 +60,9 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
   };
 
   if (
-    type !== detailedViewModalTypeEnum.project &&
-    type !== detailedViewModalTypeEnum.units
+    (type !== detailedViewModalTypeEnum.project &&
+      type !== detailedViewModalTypeEnum.units) ||
+    (record?.warehouseProjectId != null && record?.warehouseUnitId != null)
   ) {
     return <></>;
   }
@@ -89,7 +90,7 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
               <Tab label={convertPascalCaseToSentenceCase(tab)} key={tab} />
             ))}
             {type === detailedViewModalTypeEnum.units &&
-              fullRecord.issuance && <Tab label="Issuance" />}
+              fullRecord?.issuance && <Tab label="Issuance" />}
           </Tabs>
           <TabPanel value={tabValue} index={0}>
             <DetailedViewTab data={[recordDetails]} />
@@ -99,9 +100,9 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
               <DetailedViewTab data={fullRecord[tabKey]} />
             </TabPanel>
           ))}
-          {type === detailedViewModalTypeEnum.units && fullRecord.issuance && (
+          {type === detailedViewModalTypeEnum.units && fullRecord?.issuance && (
             <TabPanel value={tabValue} index={recordTabsWithEntries.length + 1}>
-              <DetailedViewTab data={[fullRecord.issuance]} />
+              <DetailedViewTab data={[fullRecord?.issuance]} />
             </TabPanel>
           )}
         </div>
