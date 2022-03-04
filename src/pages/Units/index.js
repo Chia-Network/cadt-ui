@@ -146,7 +146,7 @@ const Units = withRouter(() => {
     }
   }, [notification]);
 
-  useMemo(() => {
+  useEffect(() => {
     setTabValue(0);
   }, [searchParams.get('orgUid')]);
   
