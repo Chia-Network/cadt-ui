@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { Router } from 'react-router';
 import { Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
-import { resetRefreshPrompt } from '../store/actions/app';
+import { resetRefreshPrompt, signOut } from '../store/actions/app';
 import {
   history,
   reloadApp,
@@ -36,6 +36,7 @@ const AppNavigator = () => {
     socketStatus,
     updateAvailablePleaseRefesh,
     pendingError,
+    apiKey,
   } = useSelector(store => store.app);
 
   return (
@@ -59,6 +60,10 @@ const AppNavigator = () => {
           onOk={reloadApp}
           title={intl.formatMessage({ id: 'network-error' })}
           body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
+          extraButtonLabel={
+            apiKey != null ? intl.formatMessage({ id: 'sign-out' }) : undefined
+          }
+          extraButtonOnClick={apiKey ? () => dispatch(signOut()) : undefined}
         />
       )}
       {pendingError && (
