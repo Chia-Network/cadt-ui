@@ -7,7 +7,6 @@ import {
   InputSizeEnum,
   StandardInput,
   InputVariantEnum,
-  Message,
   modalTypeEnum,
   InputContainer,
   StyledFieldContainer,
@@ -49,9 +48,6 @@ const CreateOrgForm = ({ onClose }) => {
 
   return (
     <>
-      {notification && !orgWasSuccessfullyCreated && (
-        <Message id={notification.id} type={notification.type} />
-      )}
       <Modal
         onOk={onSubmit}
         onClose={onClose}

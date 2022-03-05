@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
-import { TabPanel, Modal, Message, modalTypeEnum } from '..';
+import { TabPanel, Modal, modalTypeEnum } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
@@ -79,9 +79,6 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
 
   return (
     <>
-      {notification && !unitWasSuccessfullyCreated && (
-        <Message id={notification.id} type={notification.type} />
-      )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
         onOk={() => onChangeStep(tabValue + 1)}
