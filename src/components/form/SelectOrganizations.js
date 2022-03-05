@@ -225,16 +225,6 @@ const SelectOrganizations = withTheme(
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
 
-    const organizationsList = useMemo(
-      () =>
-        Object.keys(organizations).map(orgUid => ({
-          orgUid: orgUid,
-          name: organizations[orgUid].name,
-          icon: organizations[orgUid].icon,
-        })),
-      [organizations],
-    );
-
     const allOrganizationsItem = {
       orgUid: 'all',
       name: intl.formatMessage({
@@ -242,9 +232,20 @@ const SelectOrganizations = withTheme(
       }),
       icon: '',
     };
-    if (displayAllOrganizations) {
-      organizationsList.unshift(allOrganizationsItem);
-    }
+
+    const organizationsList = useMemo(() => {
+      const list = Object.keys(organizations).map(orgUid => ({
+        orgUid: orgUid,
+        name: organizations[orgUid].name,
+        icon: organizations[orgUid].icon,
+      }));
+
+      if (displayAllOrganizations) {
+        list.unshift(allOrganizationsItem);
+      }
+
+      return list;
+    }, [organizations]);
 
     const noChangeOrganization = {
       orgUid: 'none',
