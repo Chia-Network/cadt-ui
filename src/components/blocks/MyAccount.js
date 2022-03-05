@@ -95,7 +95,7 @@ const MyAccount = () => {
               <StyledFieldContainer>
                 <StyledLabelContainer>
                   <Body>
-                    *<FormattedMessage id="server-address" />
+                    *<FormattedMessage id="server-address" />{' '}
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
@@ -104,6 +104,7 @@ const MyAccount = () => {
                     variant={InputVariantEnum.default}
                     value={serverAddress}
                     onChange={value => setServerAddress(value)}
+                    placeholderText="http://0.0.0.0:3030"
                   />
                 </InputContainer>
                 {(serverAddress === null ||
@@ -127,6 +128,7 @@ const MyAccount = () => {
                     variant={InputVariantEnum.default}
                     value={apiKey}
                     onChange={value => setApiKey(value)}
+                    placeholderText="xxxxxxx-xxxxxx-xxxxxx"
                   />
                 </InputContainer>
                 {apiKey === null && (
