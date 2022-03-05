@@ -16,6 +16,8 @@ export const actions = keyMirror(
   'COMMIT',
   'PENDING_ERROR',
   'SET_READ_ONLY',
+  'SIGN_USER_IN',
+  'SIGN_USER_OUT',
 );
 
 export const resetRefreshPrompt = {
@@ -92,6 +94,52 @@ export const setNotificationMessage = (type, id) => {
       dispatch({
         type: actions.SET_NOTIFICATION,
         payload: null,
+      });
+    }
+  };
+};
+
+export const signIn = ({ apiKey, serverAddress }) => {
+  return async dispatch => {
+    if (apiKey && serverAddress) {
+      localStorage.setItem('apiKey', apiKey);
+      localStorage.setItem('serverAddress', serverAddress);
+      dispatch({
+        type: actions.SIGN_USER_IN,
+        payload: {
+          apiKey,
+          serverAddress,
+        },
+      });
+    }
+  };
+};
+
+export const signOut = () => {
+  return async dispatch => {
+    localStorage.removeItem('apiKey');
+    localStorage.removeItem('serverAddress');
+    dispatch({
+      type: actions.SIGN_USER_OUT,
+      payload: {
+        apiKey: null,
+        serverAddress: null,
+      },
+    });
+  };
+};
+
+export const signInFromLocalStorage = () => {
+  return async dispatch => {
+    const apiKey = localStorage.getItem('apiKey');
+    const serverAddress = localStorage.getItem('serverAddress');
+    if (apiKey && serverAddress) {
+      dispatch({
+        type: actions.SIGN_USER_IN,
+        payload: {
+          apiKey,
+          serverAddress,
+        },
       });
     }
   };

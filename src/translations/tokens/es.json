@@ -285,5 +285,12 @@
   "add-project-with-issuance": "Agregar un proyecto con una emisión primero",
   "select-existing-label": "Seleccione una etiqueta existente",
   "select-existing-label-description": "Seleccione una etiqueta existente o cree una nueva.",
-  "add-project-with-label": "Agregar un proyecto con una etiqueta primero"
+  "add-project-with-label": "Agregar un proyecto con una etiqueta primero",
+  "sign-out": "Desconectar",
+  "sign-in": "Registrarse",
+  "api-key": "Clave API",
+  "server-address": "Dirección del servidor",
+  "log-in-to-remote-node": "Iniciar sesión en el nodo remoto",
+  "add-valid-server-address": "Agregar una dirección de servidor válida",
+  "add-valid-api-key": "Agregar una clave Api válida"
 }

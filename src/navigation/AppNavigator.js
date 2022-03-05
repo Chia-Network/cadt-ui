@@ -7,6 +7,8 @@ import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
 import { history, reloadApp, reloadCurrentUrlFromStorage } from './';
+import { signOut } from '../store/actions/app';
+
 import * as Pages from '../pages';
 
 import { createNotification } from '../utils/notificationUtils';
@@ -33,6 +35,7 @@ const AppNavigator = () => {
     socketStatus,
     pendingError,
     notification,
+    apiKey,
   } = useSelector(store => store.app);
 
   useEffect(() => {
@@ -57,6 +60,10 @@ const AppNavigator = () => {
           onOk={reloadApp}
           title={intl.formatMessage({ id: 'network-error' })}
           body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
+          extraButtonLabel={
+            apiKey != null ? intl.formatMessage({ id: 'sign-out' }) : undefined
+          }
+          extraButtonOnClick={apiKey ? () => dispatch(signOut()) : undefined}
         />
       )}
       {pendingError && (

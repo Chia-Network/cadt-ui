@@ -278,5 +278,12 @@
   "add-project-with-issuance": "最初に発行されたプロジェクトを追加します",
   "select-existing-label": "既存のラベルを選択します",
   "select-existing-label-description": "既存のラベルを選択するか、新しいラベルを作成します.",
-  "add-project-with-label": "最初にラベル付きのプロジェクトを追加します"
+  "add-project-with-label": "最初にラベル付きのプロジェクトを追加します",
+  "sign-out": "サインアウト",
+  "sign-in": "サインイン",
+  "api-key": "APIキー",
+  "server-address": "サーバーアドレス",
+  "log-in-to-remote-node": "リモートノードにログインします",
+  "add-valid-server-address": "有効なサーバーアドレスを追加します",
+  "Add a valid Api key": "有効なAPIキーを追加します"
 }
