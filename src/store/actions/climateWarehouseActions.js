@@ -1075,7 +1075,9 @@ const fetchWrapper = async (url, payload) => {
         ? `${serverAddress}/`
         : serverAddressUrl;
 
-    return fetch(serverAddressUrl, payloadWithApiKey);
+    const newUrl = url.replace(/(http:|)(^|\/\/)(.*?\/)/g, serverAddressUrl);
+
+    return fetch(newUrl, payloadWithApiKey);
   }
 
   return fetch(url, payload);

@@ -3,12 +3,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const StyledMyAccountContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
+import { validateUrl } from '../../utils/urlUtils';
+import { reloadApp } from '../../navigation/history';
 
 import {
   Modal,
@@ -22,12 +18,19 @@ import {
   StyledLabelContainer,
   ModalFormContainerStyle,
 } from '../../components';
+
 import {
   signIn,
   signInFromLocalStorage,
   signOut,
 } from '../../store/actions/app';
-import { validateUrl } from '../../utils/urlUtils';
+
+const StyledMyAccountContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
 
 const MyAccount = () => {
   const [apiKey, setApiKey] = useState(null);
@@ -45,6 +48,7 @@ const MyAccount = () => {
       setServerAddress(null);
       setApiKey(null);
       setIsLogInModalOpen(false);
+      reloadApp();
     }
   };
 
@@ -57,7 +61,12 @@ const MyAccount = () => {
   return (
     <StyledMyAccountContainer>
       {isUserLoggedIn && (
-        <div onClick={() => dispatch(signOut())}>
+        <div
+          onClick={() => {
+            dispatch(signOut());
+            reloadApp();
+          }}
+        >
           <Body color="#1890ff">
             <FormattedMessage id="sign-out" />
           </Body>
