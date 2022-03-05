@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import { LeftNav, LocaleSwitcher, Body, ClimateWarehouseLogo } from '..';
+import {
+  LeftNav,
+  LocaleSwitcher,
+  Body,
+  ClimateWarehouseLogo,
+  MyAccount,
+} from '..';
 
 const Headline = styled('div')`
   width: 100%;
@@ -41,12 +47,14 @@ const StyledLocalContainer = styled('div')`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
+  gap: 20px;
   padding: 0rem 1.5rem;
   box-sizing: border-box;
 `;
 
 const HomeOrgUidContainer = styled('div')`
+  margin-left: auto;
   align-self: center;
 `;
 
@@ -76,6 +84,7 @@ const Dashboard = withTheme(({ children }) => {
               </div>
             ) : null}
           </HomeOrgUidContainer>
+          <MyAccount />
           <LocaleSwitcher />
         </StyledLocalContainer>
       </Headline>

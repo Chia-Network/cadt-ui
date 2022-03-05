@@ -16,6 +16,8 @@ const initialState = {
   commit: false,
   pendingError: false,
   readOnlyMode: true,
+  apiKey: null,
+  serverAddress: null,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -78,6 +80,24 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.SET_NOTIFICATION:
       return u({ notification: action.payload }, state);
+
+    case appActions.SIGN_USER_IN:
+      return u(
+        {
+          apiKey: action.payload.apiKey,
+          serverAddress: action.payload.serverAddress,
+        },
+        state,
+      );
+
+    case appActions.SIGN_USER_OUT:
+      return u(
+        {
+          apiKey: null,
+          serverAddress: null,
+        },
+        state,
+      );
 
     default:
       return state;
