@@ -58,7 +58,7 @@ const getClimateWarehouseTable = (
           url = `${url}?useMock=true`;
         }
 
-        const response = await fetch(url);
+        const response = await fetchWrapper(url);
 
         if (response.ok) {
           dispatch(setGlobalErrorMessage(null));
@@ -112,7 +112,9 @@ export const getOrganizationData = () => {
     dispatch(activateProgressIndicator);
 
     try {
-      const response = await fetch(`${constants.API_HOST}/organizations`);
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/organizations`,
+      );
 
       if (response.ok) {
         dispatch(setGlobalErrorMessage(null));
@@ -150,7 +152,7 @@ export const getPickLists = () => {
     };
 
     try {
-      const response = await fetch(
+      const response = await fetchWrapper(
         `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
       );
 
@@ -184,7 +186,7 @@ export const getStagingData = ({ useMockedResponse = false }) => {
       if (useMockedResponse) {
         dispatch(mockGetStagingDataResponse);
       } else {
-        const response = await fetch(`${constants.API_HOST}/staging`);
+        const response = await fetchWrapper(`${constants.API_HOST}/staging`);
 
         if (response.ok) {
           dispatch(setConnectionCheck(true));
@@ -211,7 +213,7 @@ export const getIssuances = () => {
     dispatch(activateProgressIndicator);
 
     try {
-      const response = await fetch(`${constants.API_HOST}/issuances`);
+      const response = await fetchWrapper(`${constants.API_HOST}/issuances`);
 
       if (response.ok) {
         dispatch(setGlobalErrorMessage(null));
@@ -237,7 +239,7 @@ export const getLabels = () => {
     dispatch(activateProgressIndicator);
 
     try {
-      const response = await fetch(`${constants.API_HOST}/labels`);
+      const response = await fetchWrapper(`${constants.API_HOST}/labels`);
 
       if (response.ok) {
         dispatch(setGlobalErrorMessage(null));
@@ -280,7 +282,7 @@ export const getPaginatedData = ({
         if (orgUid && typeof orgUid === 'string') {
           url += `&orgUid=${orgUid}`;
         }
-        const response = await fetch(url);
+        const response = await fetchWrapper(url);
 
         if (response.ok) {
           dispatch(
@@ -333,7 +335,7 @@ export const commitStagingData = data => {
         },
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -380,7 +382,7 @@ export const deleteStagingData = uuid => {
         body: JSON.stringify({ uuid }),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -427,7 +429,7 @@ export const deleteUnit = warehouseUnitId => {
         body: JSON.stringify({ warehouseUnitId }),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -474,7 +476,7 @@ export const deleteProject = warehouseProjectId => {
         body: JSON.stringify({ warehouseProjectId }),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -521,7 +523,7 @@ export const postNewProject = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -578,7 +580,7 @@ export const updateProjectRecord = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -635,7 +637,7 @@ export const postNewOrg = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -681,7 +683,7 @@ export const uploadXLSXFile = (file, type) => {
           body: formData,
         };
 
-        const response = await fetch(url, payload);
+        const response = await fetchWrapper(url, payload);
 
         if (response.ok) {
           dispatch(setConnectionCheck(true));
@@ -729,7 +731,7 @@ export const postNewUnits = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -785,7 +787,7 @@ export const splitUnits = data => {
         },
         body: JSON.stringify(data),
       };
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -832,7 +834,7 @@ export const updateUnitsRecord = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
@@ -1049,4 +1051,34 @@ export const getVintages = options => {
       ),
     );
   };
+};
+
+// TODO to replace with an extended wrapper that also adds try catch finally and also handles network connection and progress indicator dispatches
+const fetchWrapper = async (url, payload) => {
+  const apiKey = localStorage.getItem('apiKey');
+  const serverAddress = localStorage.getItem('serverAddress');
+  const doesSignInDataExist = apiKey != null && serverAddress != null;
+
+  if (doesSignInDataExist) {
+    const payloadWithApiKey = { ...payload };
+    if (payloadWithApiKey?.headers) {
+      payloadWithApiKey.headers = {
+        ...payloadWithApiKey.headers,
+        'x-api-key': apiKey,
+      };
+    } else {
+      payloadWithApiKey.headers = { 'x-api-key': apiKey };
+    }
+
+    const serverAddressUrl =
+      serverAddress[serverAddress.length - 1] !== '/'
+        ? `${serverAddress}/`
+        : serverAddressUrl;
+
+    const newUrl = url.replace(/(http:|)(^|\/\/)(.*?\/)/g, serverAddressUrl);
+
+    return fetch(newUrl, payloadWithApiKey);
+  }
+
+  return fetch(url, payload);
 };

@@ -32,7 +32,6 @@ import {
   TabPanel,
   StagingDataGroups,
   SelectOrganizations,
-  Message,
   UploadXLSX,
   Modal,
   modalTypeEnum,
@@ -149,7 +148,6 @@ const Units = withRouter(() => {
   useEffect(() => {
     setTabValue(0);
   }, [searchParams.get('orgUid')]);
-  
 
   useEffect(() => {
     if (unitsContainerRef && unitsContainerRef.current) {
@@ -404,7 +402,8 @@ const Units = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -480,9 +479,6 @@ const Units = withRouter(() => {
           )}
         </StyledBodyContainer>
       </StyledSectionContainer>
-      {notification && (
-        <Message id={notification.id} type={notification.type} />
-      )}
     </>
   );
 });

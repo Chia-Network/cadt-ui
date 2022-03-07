@@ -30,3 +30,4 @@ export * from './DetailedViewModal';
 export * from './DetailedViewTab';
 export * from './DetailedViewStagingModal';
 export * from './DetailedViewStagingTab';
+export * from './MyAccount';

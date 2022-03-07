@@ -6,7 +6,6 @@ import {
   RegistryIcon,
   Modal,
   AddIconCircle,
-  Message,
 } from '../../components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -75,7 +74,7 @@ const LeftNav = withTheme(({ children }) => {
     useState(false);
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
   const intl = useIntl();
-  const { notification, readOnlyMode } = useSelector(state => state.app);
+  const { readOnlyMode } = useSelector(state => state.app);
   const dispatch = useDispatch();
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
@@ -181,9 +180,6 @@ const LeftNav = withTheme(({ children }) => {
       {children}
       {createOrgIsVisible && (
         <CreateOrgForm onClose={() => setCreateOrgIsVisible(false)} />
-      )}
-      {notification && notification.id === 'organization-created' && (
-        <Message id={notification.id} type={notification.type} />
       )}
       {myOrgIsNotCreated && confirmCreateOrgIsVisible && (
         <Modal

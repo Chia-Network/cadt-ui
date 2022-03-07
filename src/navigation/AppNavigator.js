@@ -4,23 +4,22 @@ import { useIntl } from 'react-intl';
 import { Router } from 'react-router';
 import { Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
-import { resetRefreshPrompt } from '../store/actions/app';
-import {
-  history,
-  reloadApp,
-  saveCurrentUrlToStorage,
-  reloadCurrentUrlFromStorage,
-} from './';
+import { NotificationContainer } from 'react-notifications';
+
+import { history, reloadApp, reloadCurrentUrlFromStorage } from './';
+import { signOut } from '../store/actions/app';
+
 import * as Pages from '../pages';
+
+import { createNotification } from '../utils/notificationUtils';
 
 import {
   AppContainer,
   Modal,
   SocketStatusContainer,
-  UpdateRefreshContainer,
   modalTypeEnum,
 } from '../components';
-import { setPendingError } from '../store/actions/app';
+import { setPendingError, setNotificationMessage } from '../store/actions/app';
 
 const AppNavigator = () => {
   const intl = useIntl();
@@ -34,21 +33,23 @@ const AppNavigator = () => {
     showProgressOverlay,
     connectionCheck,
     socketStatus,
-    updateAvailablePleaseRefesh,
     pendingError,
+    notification,
+    apiKey,
   } = useSelector(store => store.app);
+
+  useEffect(() => {
+    if (notification) {
+      createNotification(
+        notification.type,
+        intl.formatMessage({ id: notification.id }),
+      );
+      dispatch(setNotificationMessage(null));
+    }
+  }, [notification]);
 
   return (
     <AppContainer>
-      {updateAvailablePleaseRefesh && (
-        <UpdateRefreshContainer
-          onRefresh={() => {
-            saveCurrentUrlToStorage();
-            reloadApp();
-          }}
-          onClose={() => dispatch(resetRefreshPrompt)}
-        />
-      )}
       <SocketStatusContainer socketStatus={socketStatus} />
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
@@ -59,6 +60,10 @@ const AppNavigator = () => {
           onOk={reloadApp}
           title={intl.formatMessage({ id: 'network-error' })}
           body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
+          extraButtonLabel={
+            apiKey != null ? intl.formatMessage({ id: 'sign-out' }) : undefined
+          }
+          extraButtonOnClick={apiKey ? () => dispatch(signOut()) : undefined}
         />
       )}
       {pendingError && (
@@ -70,6 +75,7 @@ const AppNavigator = () => {
           informationType="error"
         />
       )}
+      <NotificationContainer />
       <Router history={history}>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
