@@ -20,8 +20,22 @@ export const FormContainerStyle = styled('div')`
 `;
 
 export const BodyContainer = styled('div')`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 320px 320px;
+  column-gap: 30px;
+`;
+
+export const SpanTwoColumnsContainer = styled('div')`
+  grid-column: 1 / span 2;
+`;
+
+export const HrSpanTwoColumnsContainer = styled('div')`
+  grid-column: 1 / span 2;
+  margin: 10px 0;
+`;
+
+export const RequiredContainer = styled('div')`
+  width: 43%;
 `;
 
 export const StyledLabelContainer = styled('div')`

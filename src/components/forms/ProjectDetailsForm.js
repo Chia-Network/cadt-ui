@@ -23,11 +23,13 @@ import {
   SimpleSelectTypeEnum,
   SimpleSelectStateEnum,
   SimpleSelectVariantEnum,
-  StyledFieldRequired,
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
   SimpleSelect,
+  SpanTwoColumnsContainer,
+  HrSpanTwoColumnsContainer,
+  RequiredContainer,
 } from '..';
 
 import { projectSchema } from '../../store/validations';
@@ -43,104 +45,20 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
 
   return (
     <ModalFormContainerStyle>
+      <RequiredContainer>
+        <FieldRequired />
+      </RequiredContainer>
       <FormContainerStyle>
         <BodyContainer>
-          <FieldRequired />
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="current-registry" />
+                  *<FormattedMessage id="project-name" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'projects-current-registry-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <SimpleSelect
-                variant={
-                  errorProjectMessage?.currentRegistry &&
-                  SimpleSelectVariantEnum.error
-                }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={pickLists.registries}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  projectDetails.currentRegistry
-                    ? [projectDetails.currentRegistry]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    currentRegistry: selectedOptions[0],
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorProjectMessage?.currentRegistry && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.currentRegistry}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="registry-of-origin" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-registry-of-origin-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <SimpleSelect
-                variant={
-                  errorProjectMessage?.registryOfOrigin &&
-                  SimpleSelectVariantEnum.error
-                }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={pickLists.registries}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  projectDetails.registryOfOrigin
-                    ? [projectDetails.registryOfOrigin]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    registryOfOrigin: selectedOptions[0],
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorProjectMessage?.registryOfOrigin && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.registryOfOrigin}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="origin-project-id" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-origin-project-id-description',
+                    id: 'projects-project-name-description',
                   })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
@@ -149,63 +67,27 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorProjectMessage?.originProjectId
+                  errorProjectMessage?.projectName
                     ? InputVariantEnum.error
                     : undefined
                 }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'origin-project-id',
+                  id: 'project-name',
                 })}
                 state={InputStateEnum.default}
-                value={projectDetails.originProjectId}
+                value={projectDetails.projectName}
                 onChange={value =>
                   setProjectDetails(prev => ({
                     ...prev,
-                    originProjectId: value,
+                    projectName: value,
                   }))
                 }
               />
             </InputContainer>
-            {errorProjectMessage?.originProjectId && (
+            {errorProjectMessage?.projectName && (
               <Body size="Small" color="red">
-                {errorProjectMessage.originProjectId}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  <FormattedMessage id="program" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-program-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'program',
-                })}
-                state={InputStateEnum.default}
-                value={projectDetails.program}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    program: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorProjectMessage?.program && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.program}
+                {errorProjectMessage.projectName}
               </Body>
             )}
           </StyledFieldContainer>
@@ -252,88 +134,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="project-name" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-project-name-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorProjectMessage?.projectName
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'project-name',
-                })}
-                state={InputStateEnum.default}
-                value={projectDetails.projectName}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    projectName: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorProjectMessage?.projectName && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.projectName}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="project-link" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-project-link-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorProjectMessage?.projectLink
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'project-link',
-                })}
-                state={InputStateEnum.default}
-                value={projectDetails.projectLink}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    projectLink: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorProjectMessage?.projectLink && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.projectLink}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
                   *<FormattedMessage id="project-developer" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -371,6 +171,83 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  <FormattedMessage id="program" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'projects-program-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'program',
+                })}
+                state={InputStateEnum.default}
+                value={projectDetails.program}
+                onChange={value =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    program: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorProjectMessage?.program && (
+              <Body size="Small" color="red">
+                {errorProjectMessage.program}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="project-link" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-project-link-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <StandardInput
+                variant={
+                  errorProjectMessage?.projectLink
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'project-link',
+                })}
+                state={InputStateEnum.default}
+                value={projectDetails.projectLink}
+                onChange={value =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    projectLink: value,
+                  }))
+                }
+              />
+              {errorProjectMessage?.projectLink && (
+                <Body size="Small" color="red">
+                  {errorProjectMessage.projectLink}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -452,94 +329,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-        </BodyContainer>
-        <BodyContainer>
-          <StyledFieldRequired />
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="covered-by-ndc" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-covered-by-ndc-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <SimpleSelect
-                variant={
-                  errorProjectMessage?.coveredByNDC &&
-                  SimpleSelectVariantEnum.error
-                }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={pickLists.coveredByNDC}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  projectDetails.coveredByNDC
-                    ? [projectDetails.coveredByNDC]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    coveredByNDC: selectedOptions[0],
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorProjectMessage?.coveredByNDC && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.coveredByNDC}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  {projectDetails.coveredByNDC === 'Inside NDC' && '*'}
-                  <FormattedMessage id="ndc-information" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-ndc-information-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorProjectMessage?.ndcInformation
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'ndc-information',
-                })}
-                state={InputStateEnum.default}
-                value={projectDetails.ndcInformation}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    ndcInformation: value,
-                  }))
-                }
-              />
-              {errorProjectMessage?.ndcInformation && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.ndcInformation}
-                </Body>
-              )}
-            </InputContainer>
-          </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -619,6 +408,229 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               )}
             </InputContainer>
           </StyledFieldContainer>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="covered-by-ndc" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'projects-covered-by-ndc-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                variant={
+                  errorProjectMessage?.coveredByNDC &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.coveredByNDC}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  projectDetails.coveredByNDC
+                    ? [projectDetails.coveredByNDC]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    coveredByNDC: selectedOptions[0],
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorProjectMessage?.coveredByNDC && (
+              <Body size="Small" color="red">
+                {errorProjectMessage.coveredByNDC}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <div></div>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    {projectDetails.coveredByNDC === 'Inside NDC' && '*'}
+                    <FormattedMessage id="ndc-information" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-ndc-information-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+
+              <StandardInput
+                variant={
+                  errorProjectMessage?.ndcInformation
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'ndc-information',
+                })}
+                state={InputStateEnum.default}
+                value={projectDetails.ndcInformation}
+                onChange={value =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    ndcInformation: value,
+                  }))
+                }
+              />
+              {errorProjectMessage?.ndcInformation && (
+                <Body size="Small" color="red">
+                  {errorProjectMessage.ndcInformation}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="current-registry" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'projects-current-registry-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                variant={
+                  errorProjectMessage?.currentRegistry &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.registries}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  projectDetails.currentRegistry
+                    ? [projectDetails.currentRegistry]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    currentRegistry: selectedOptions[0],
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorProjectMessage?.currentRegistry && (
+              <Body size="Small" color="red">
+                {errorProjectMessage.currentRegistry}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <div></div>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="registry-of-origin" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'projects-registry-of-origin-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                variant={
+                  errorProjectMessage?.registryOfOrigin &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.registries}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  projectDetails.registryOfOrigin
+                    ? [projectDetails.registryOfOrigin]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    registryOfOrigin: selectedOptions[0],
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorProjectMessage?.registryOfOrigin && (
+              <Body size="Small" color="red">
+                {errorProjectMessage.registryOfOrigin}
+              </Body>
+            )}
+          </StyledFieldContainer>
+
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="origin-project-id" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'projects-origin-project-id-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorProjectMessage?.originProjectId
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'origin-project-id',
+                })}
+                state={InputStateEnum.default}
+                value={projectDetails.originProjectId}
+                onChange={value =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    originProjectId: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorProjectMessage?.originProjectId && (
+              <Body size="Small" color="red">
+                {errorProjectMessage.originProjectId}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
+
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -709,38 +721,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="validation-date" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-validation-date-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <DateSelect
-                size="large"
-                dateValue={projectDetails.validationDate}
-                setDateValue={date =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    validationDate: date,
-                  }))
-                }
-              />
-              {errorProjectMessage?.validationDate && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.validationDate}
-                </Body>
-              )}
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
                   <FormattedMessage id="validation-body" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -780,17 +760,53 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  <FormattedMessage id="project-tags" />
+                  <FormattedMessage id="validation-date" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'projects-project-tags-description',
+                    id: 'projects-validation-date-description',
                   })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
+              <DateSelect
+                size="large"
+                dateValue={projectDetails.validationDate}
+                setDateValue={date =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    validationDate: date,
+                  }))
+                }
+              />
+              {errorProjectMessage?.validationDate && (
+                <Body size="Small" color="red">
+                  {errorProjectMessage.validationDate}
+                </Body>
+              )}
+            </InputContainer>
+          </StyledFieldContainer>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    <FormattedMessage id="project-tags" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-project-tags-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+
               <StandardInput
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
@@ -810,8 +826,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   {errorProjectMessage.projectTags}
                 </Body>
               )}
-            </InputContainer>
-          </StyledFieldContainer>
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
         </BodyContainer>
       </FormContainerStyle>
     </ModalFormContainerStyle>
