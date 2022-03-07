@@ -253,7 +253,7 @@ const Units = withRouter(() => {
   }
 
   const onCommit = () => {
-    dispatch(commitStagingData('units'));
+    dispatch(commitStagingData('Units'));
     dispatch(setCommit(false));
   };
 
