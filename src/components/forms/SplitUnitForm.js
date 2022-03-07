@@ -10,7 +10,6 @@ import {
   InputStateEnum,
   StandardInput,
   InputVariantEnum,
-  Message,
   LocalMessageTypeEnum,
   LocalMessage,
   ModalFormContainerStyle,
@@ -156,9 +155,6 @@ const SplitUnitForm = ({ onClose, record }) => {
 
   return (
     <>
-      {notification && !unitWasSuccessfullySplit && (
-        <Message id={notification.id} type={notification.type} />
-      )}
       {validationErrors.length > 0 && (
         <LocalMessage
           msg={getValidationLocalMessage()}

@@ -21,6 +21,7 @@ import {
   setConnectionCheck,
   setGlobalErrorMessage,
   setNotificationMessage,
+  setReadOnly,
 } from './app';
 
 export const actions = keyMirror(
@@ -37,6 +38,8 @@ export const actions = keyMirror(
   'GET_STAGING_DATA',
   'GET_ORGANIZATIONS',
   'GET_PICKLISTS',
+  'GET_ISSUANCES',
+  'GET_LABELS',
 );
 
 const getClimateWarehouseTable = (
@@ -47,7 +50,6 @@ const getClimateWarehouseTable = (
 ) => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
-
     try {
       if (useMockedResponse) {
         dispatch(mockAction);
@@ -56,7 +58,7 @@ const getClimateWarehouseTable = (
           url = `${url}?useMock=true`;
         }
 
-        const response = await fetch(url);
+        const response = await fetchWrapper(url);
 
         if (response.ok) {
           dispatch(setGlobalErrorMessage(null));
@@ -69,7 +71,7 @@ const getClimateWarehouseTable = (
           });
         }
       }
-    } catch {
+    } catch (error) {
       dispatch(setConnectionCheck(false));
       dispatch(setGlobalErrorMessage('Something went wrong...'));
     } finally {
@@ -110,7 +112,9 @@ export const getOrganizationData = () => {
     dispatch(activateProgressIndicator);
 
     try {
-      const response = await fetch(`${constants.API_HOST}/organizations`);
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/organizations`,
+      );
 
       if (response.ok) {
         dispatch(setGlobalErrorMessage(null));
@@ -148,13 +152,14 @@ export const getPickLists = () => {
     };
 
     try {
-      const response = await fetch(
+      const response = await fetchWrapper(
         `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
       );
 
       if (response.ok) {
-        const results = await response.json();
+        dispatch(setConnectionCheck(true));
 
+        const results = await response.json();
         dispatch({
           type: actions.GET_PICKLISTS,
           payload: results,
@@ -165,6 +170,7 @@ export const getPickLists = () => {
         tryToGetPickListsFromStorage();
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       tryToGetPickListsFromStorage();
     } finally {
       dispatch(deactivateProgressIndicator);
@@ -180,9 +186,10 @@ export const getStagingData = ({ useMockedResponse = false }) => {
       if (useMockedResponse) {
         dispatch(mockGetStagingDataResponse);
       } else {
-        const response = await fetch(`${constants.API_HOST}/staging`);
+        const response = await fetchWrapper(`${constants.API_HOST}/staging`);
 
         if (response.ok) {
+          dispatch(setConnectionCheck(true));
           dispatch(setGlobalErrorMessage(null));
           const results = await response.json();
 
@@ -194,6 +201,59 @@ export const getStagingData = ({ useMockedResponse = false }) => {
       }
     } catch {
       dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getIssuances = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(`${constants.API_HOST}/issuances`);
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_ISSUANCES,
+          payload: results,
+        });
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getLabels = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(`${constants.API_HOST}/labels`);
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_LABELS,
+          payload: results,
+        });
+      }
+    } catch {
+      dispatch(setGlobalErrorMessage('Something went wrong...'));
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -222,10 +282,15 @@ export const getPaginatedData = ({
         if (orgUid && typeof orgUid === 'string') {
           url += `&orgUid=${orgUid}`;
         }
-        const response = await fetch(url);
+        const response = await fetchWrapper(url);
 
         if (response.ok) {
+          dispatch(
+            setReadOnly(response.headers.get('cw-read-only') === 'true'),
+          );
+
           dispatch(setGlobalErrorMessage(null));
+          dispatch(setConnectionCheck(true));
           const results = await response.json();
 
           let action = actions.GET_PROJECTS;
@@ -247,6 +312,7 @@ export const getPaginatedData = ({
         }
       } catch {
         dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(setConnectionCheck(false));
       } finally {
         dispatch(deactivateProgressIndicator);
       }
@@ -254,12 +320,14 @@ export const getPaginatedData = ({
   };
 };
 
-export const commitStagingData = () => {
+export const commitStagingData = data => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/staging/commit`;
+      const url = `${constants.API_HOST}/staging/commit${
+        data === 'all' ? '' : `?table=${data}`
+      }`;
       const payload = {
         method: 'POST',
         headers: {
@@ -267,9 +335,10 @@ export const commitStagingData = () => {
         },
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -292,6 +361,7 @@ export const commitStagingData = () => {
           'transactions-not-committed',
         ),
       );
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -312,9 +382,10 @@ export const deleteStagingData = uuid => {
         body: JSON.stringify({ uuid }),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -331,6 +402,7 @@ export const deleteStagingData = uuid => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -357,9 +429,10 @@ export const deleteUnit = warehouseUnitId => {
         body: JSON.stringify({ warehouseUnitId }),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -376,6 +449,7 @@ export const deleteUnit = warehouseUnitId => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -402,9 +476,10 @@ export const deleteProject = warehouseProjectId => {
         body: JSON.stringify({ warehouseProjectId }),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -421,6 +496,7 @@ export const deleteProject = warehouseProjectId => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -447,9 +523,10 @@ export const postNewProject = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -458,14 +535,25 @@ export const postNewProject = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'project-not-created',
-          ),
-        );
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'project-not-created',
+            ),
+          );
+        }
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -492,9 +580,10 @@ export const updateProjectRecord = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -503,14 +592,25 @@ export const updateProjectRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'project-could-not-be-edited',
-          ),
-        );
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'project-could-not-be-edited',
+            ),
+          );
+        }
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -537,9 +637,10 @@ export const postNewOrg = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(getOrganizationData());
         dispatch(
           setNotificationMessage(
@@ -556,6 +657,7 @@ export const postNewOrg = data => {
         );
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -568,23 +670,23 @@ export const postNewOrg = data => {
   };
 };
 
-export const uploadCSVFile = (file, type) => {
+export const uploadXLSXFile = (file, type) => {
   return async dispatch => {
     if (type === 'projects' || type === 'units') {
       try {
         dispatch(activateProgressIndicator);
-
         const formData = new FormData();
-        formData.append('csv', file);
-        const url = `${constants.API_HOST}/${type}/batch`;
+        formData.append('xlsx', file);
+        const url = `${constants.API_HOST}/${type}/xlsx`;
         const payload = {
-          method: 'POST',
+          method: 'PUT',
           body: formData,
         };
 
-        const response = await fetch(url, payload);
+        const response = await fetchWrapper(url, payload);
 
         if (response.ok) {
+          dispatch(setConnectionCheck(true));
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.success,
@@ -601,6 +703,7 @@ export const uploadCSVFile = (file, type) => {
           );
         }
       } catch {
+        dispatch(setConnectionCheck(false));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
@@ -628,9 +731,10 @@ export const postNewUnits = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -639,14 +743,25 @@ export const postNewUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'unit-not-created',
-          ),
-        );
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'unit-not-created',
+            ),
+          );
+        }
       }
     } catch (err) {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -672,9 +787,10 @@ export const splitUnits = data => {
         },
         body: JSON.stringify(data),
       };
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -691,6 +807,7 @@ export const splitUnits = data => {
         );
       }
     } catch (err) {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -717,9 +834,10 @@ export const updateUnitsRecord = data => {
         body: JSON.stringify(data),
       };
 
-      const response = await fetch(url, payload);
+      const response = await fetchWrapper(url, payload);
 
       if (response.ok) {
+        dispatch(setConnectionCheck(true));
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
@@ -728,14 +846,25 @@ export const updateUnitsRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            'unit-could-not-be-edited',
-          ),
-        );
+        const responseErrors = await response.json();
+        if (!_.isEmpty(responseErrors.errors)) {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              responseErrors.message,
+            ),
+          );
+        } else {
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              'unit-could-not-be-edited',
+            ),
+          );
+        }
       }
     } catch {
+      dispatch(setConnectionCheck(false));
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
@@ -866,7 +995,7 @@ export const mockUnitsResponse = {
 };
 
 export const getUnits = options => {
-  const url = options.searchQuery
+  const url = options?.searchQuery
     ? `${constants.API_HOST}/units?search=${options.searchQuery}`
     : `${constants.API_HOST}/units`;
 
@@ -922,4 +1051,34 @@ export const getVintages = options => {
       ),
     );
   };
+};
+
+// TODO to replace with an extended wrapper that also adds try catch finally and also handles network connection and progress indicator dispatches
+const fetchWrapper = async (url, payload) => {
+  const apiKey = localStorage.getItem('apiKey');
+  const serverAddress = localStorage.getItem('serverAddress');
+  const doesSignInDataExist = apiKey != null && serverAddress != null;
+
+  if (doesSignInDataExist) {
+    const payloadWithApiKey = { ...payload };
+    if (payloadWithApiKey?.headers) {
+      payloadWithApiKey.headers = {
+        ...payloadWithApiKey.headers,
+        'x-api-key': apiKey,
+      };
+    } else {
+      payloadWithApiKey.headers = { 'x-api-key': apiKey };
+    }
+
+    const serverAddressUrl =
+      serverAddress[serverAddress.length - 1] !== '/'
+        ? `${serverAddress}/`
+        : serverAddressUrl;
+
+    const newUrl = url.replace(/(http:|)(^|\/\/)(.*?\/)/g, serverAddressUrl);
+
+    return fetch(newUrl, payloadWithApiKey);
+  }
+
+  return fetch(url, payload);
 };

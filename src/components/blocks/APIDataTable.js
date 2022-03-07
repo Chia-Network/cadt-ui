@@ -5,7 +5,7 @@ import styled, { withTheme, css } from 'styled-components';
 
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { APIPagination, DetailedViewModal, Message } from '.';
+import { APIPagination, DetailedViewModal } from '.';
 import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
@@ -115,7 +115,7 @@ const APIDataTable = withTheme(
     const [getRecord, setRecord] = useState(null);
     const [editRecord, setEditRecord] = useState(null);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
-    const { theme, notification } = useSelector(state => state.app);
+    const { theme } = useSelector(state => state.app);
     const climateWarehouseStore = useSelector(state => state.climateWarehouse);
     const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
     const ref = React.useRef(null);
@@ -196,6 +196,12 @@ const APIDataTable = withTheme(
                             record[key] &&
                             record[key] !== 'null' &&
                             record[key].toString()}
+
+                          {key !== 'orgUid' &&
+                            (record[key] === 'null' ||
+                              record[key] === '' ||
+                              record[key] === null) &&
+                            '--'}
                         </TableCellText>
                       </Td>
                     ))}
@@ -320,9 +326,6 @@ const APIDataTable = withTheme(
               setConfirmDeletionModal(null);
             }}
           />
-        )}
-        {notification && (
-          <Message type={notification.type} id={notification.id} />
         )}
       </>
     );

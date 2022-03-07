@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { downloadTxtFile } from '../../utils/csvUtils';
+import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
@@ -24,9 +24,10 @@ import {
   SelectTypeEnum,
   CreateProjectForm,
   H3,
-  Message,
-  UploadCSV,
-  Alert,
+  UploadXLSX,
+  Modal,
+  modalTypeEnum,
+  Body,
 } from '../../components';
 import { setPendingError } from '../../store/actions/app';
 
@@ -36,6 +37,8 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
+
+import { setCommit } from '../../store/actions/app';
 
 const headings = [
   'currentRegistry',
@@ -114,16 +117,9 @@ const StyledCSVOperationsContainer = styled('div')`
   gap: 20px;
 `;
 
-const PendingMessageContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  gap: 20px;
-`;
-
 const Projects = withRouter(() => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { notification } = useSelector(store => store.app);
+  const { notification, commit } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -135,7 +131,6 @@ const Projects = withRouter(() => {
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
-
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -151,6 +146,10 @@ const Projects = withRouter(() => {
       setTabValue(switchTabBySuccessfulRequest[notification.id]);
     }
   }, [notification]);
+
+  useEffect(() => {
+    setTabValue(0);
+  }, [searchParams.get('orgUid')]);
 
   useEffect(() => {
     if (projectsContainerRef && projectsContainerRef.current) {
@@ -271,7 +270,13 @@ const Projects = withRouter(() => {
   }
 
   const onCommit = () => {
-    dispatch(commitStagingData());
+    dispatch(commitStagingData('projects'));
+    dispatch(setCommit(false));
+  };
+
+  const onCommitAll = () => {
+    dispatch(commitStagingData('all'));
+    dispatch(setCommit(false));
   };
 
   return (
@@ -325,11 +330,29 @@ const Projects = withRouter(() => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={onCommit}
+                  onClick={() => dispatch(setCommit(true))}
                 />
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
+        {commit && (
+          <Modal
+            title={intl.formatMessage({ id: 'commit-message' })}
+            body={
+              <Body size="Large">
+                {intl.formatMessage({
+                  id: 'commit-projects-message-question',
+                })}
+              </Body>
+            }
+            modalType={modalTypeEnum.basic}
+            extraButtonLabel={intl.formatMessage({ id: 'everything' })}
+            extraButtonOnClick={onCommitAll}
+            onClose={() => dispatch(setCommit(false))}
+            onOk={onCommit}
+            label={intl.formatMessage({ id: 'only-projects' })}
+          />
+        )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label={intl.formatMessage({ id: 'committed' })} />
@@ -351,13 +374,12 @@ const Projects = withRouter(() => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
-            <span
-              onClick={() => downloadTxtFile(climateWarehouseStore.projects)}>
+            <span onClick={() => downloadTxtFile('projects', searchParams)}>
               <DownloadIcon />
             </span>
             {pageIsMyRegistryPage && (
               <span>
-                <UploadCSV type="projects" />
+                <UploadXLSX type="projects" />
               </span>
             )}
           </StyledCSVOperationsContainer>
@@ -386,7 +408,8 @@ const Projects = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -428,6 +451,7 @@ const Projects = withRouter(() => {
                     deleteStagingData={uuid =>
                       dispatch(deleteStagingData(uuid))
                     }
+                    modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
               </TabPanel>
@@ -442,25 +466,11 @@ const Projects = withRouter(() => {
                     </NoDataMessageContainer>
                   )}
                 {climateWarehouseStore.stagingData && (
-                  <>
-                    <PendingMessageContainer>
-                      <Alert
-                        type="info"
-                        showIcon
-                        alertTitle={intl.formatMessage({ id: 'pending-info' })}
-                        alertBody={intl.formatMessage({
-                          id: 'pending-stuck-info',
-                        })}
-                      />
-                    </PendingMessageContainer>
-                    <StagingDataGroups
-                      headings={headings}
-                      data={climateWarehouseStore.stagingData.projects.pending}
-                      deleteStagingData={uuid =>
-                        dispatch(deleteStagingData(uuid))
-                      }
-                    />
-                  </>
+                  <StagingDataGroups
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.projects.pending}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                  />
                 )}
               </TabPanel>
             </>
@@ -472,9 +482,6 @@ const Projects = withRouter(() => {
           onClose={() => setCreateFormIsDisplayed(false)}
           modalSizeAndPosition={modalSizeAndPosition}
         />
-      )}
-      {notification && (
-        <Message id={notification.id} type={notification.type} />
       )}
     </>
   );

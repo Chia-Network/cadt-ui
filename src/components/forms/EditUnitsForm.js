@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
-import { Modal, TabPanel, Message, modalTypeEnum, UnitDetailsForm } from '..';
+import { Modal, TabPanel, modalTypeEnum, UnitDetailsForm } from '..';
 import LabelsRepeater from './LabelsRepeater';
 import IssuanceRepeater from './IssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
@@ -69,9 +69,6 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   return (
     <>
-      {notification && !unitWasSuccessfullyEdited && (
-        <Message id={notification.id} type={notification.type} />
-      )}
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
         onOk={() => onChangeStep(tabValue + 1)}

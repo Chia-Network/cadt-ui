@@ -1,41 +1,55 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Router } from 'react-router';
+import { Route } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
-import { resetRefreshPrompt } from '../store/actions/app';
+import { NotificationContainer } from 'react-notifications';
+
+import { history, reloadApp, reloadCurrentUrlFromStorage } from './';
+import { signOut } from '../store/actions/app';
+
 import * as Pages from '../pages';
+
+import { createNotification } from '../utils/notificationUtils';
 
 import {
   AppContainer,
   Modal,
   SocketStatusContainer,
-  UpdateRefreshContainer,
   modalTypeEnum,
 } from '../components';
-import { setPendingError } from '../store/actions/app';
+import { setPendingError, setNotificationMessage } from '../store/actions/app';
 
 const AppNavigator = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    reloadCurrentUrlFromStorage();
+  }, []);
+
   const {
     showProgressOverlay,
     connectionCheck,
     socketStatus,
-    updateAvailablePleaseRefesh,
     pendingError,
+    notification,
+    apiKey,
   } = useSelector(store => store.app);
 
+  useEffect(() => {
+    if (notification) {
+      createNotification(
+        notification.type,
+        intl.formatMessage({ id: notification.id }),
+      );
+      dispatch(setNotificationMessage(null));
+    }
+  }, [notification]);
 
   return (
     <AppContainer>
-      {updateAvailablePleaseRefesh && (
-        <UpdateRefreshContainer
-          onRefresh={() => window.location.reload()}
-          onClose={() => dispatch(resetRefreshPrompt)}
-        />
-      )}
       <SocketStatusContainer socketStatus={socketStatus} />
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
@@ -43,9 +57,13 @@ const AppNavigator = () => {
           informationType="error"
           modalType={modalTypeEnum.information}
           label="Try Again"
-          onOk={() => window.location.reload()}
+          onOk={reloadApp}
           title={intl.formatMessage({ id: 'network-error' })}
           body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
+          extraButtonLabel={
+            apiKey != null ? intl.formatMessage({ id: 'sign-out' }) : undefined
+          }
+          extraButtonOnClick={apiKey ? () => dispatch(signOut()) : undefined}
         />
       )}
       {pendingError && (
@@ -57,7 +75,8 @@ const AppNavigator = () => {
           informationType="error"
         />
       )}
-      <Router>
+      <NotificationContainer />
+      <Router history={history}>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
             <Route exact path="/">

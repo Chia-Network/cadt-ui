@@ -1,17 +1,26 @@
 import React from 'react';
 import styled, { css, withTheme } from 'styled-components';
+import { useSelector } from 'react-redux';
 import socketIO from 'socket.io-client';
-import { EllipseIcon } from '..';
+import { EllipseIcon, TableCellHeaderText } from '..';
 
-const SocketStatusCard = styled('div')`
+const Container = styled('div')`
   position: absolute;
-  display: flex;
+  display: block;
   justify-content: space-evenly;
   align-items: center;
   margin: 1.25rem;
   width: 8.125rem;
   bottom: 0;
   left: 0;
+`;
+
+const SocketStatusCard = styled('div')`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 1.25rem;
+  width: 8.125rem;
 `;
 
 const StatusColor = styled('div')`
@@ -45,21 +54,32 @@ let socket = socketIO(WS_HOST, {
 });
 
 const SocketStatusContainer = withTheme(({ socketStatus }) => {
+  const { serverAddress } = useSelector(state => state.app);
   return (
-    <SocketStatusCard>
-      <StatusColor socketStatus={socketStatus}>
-        {socket.id ? socket.id : 'Retrieving socket ID'}
-      </StatusColor>
-      {(socketStatus === 'CONNECTED' || socketStatus === 'AUTHENTICATED') && (
-        <EllipseIcon height={'5'} width={'5'} fill={'green'} />
+    <Container>
+      {serverAddress && (
+        <>
+          <TableCellHeaderText color="white">Connected to:</TableCellHeaderText>
+          <TableCellHeaderText color="white">
+            {serverAddress}
+          </TableCellHeaderText>
+        </>
       )}
-      {socketStatus === 'Waiting for status' && (
-        <EllipseIcon height={'5'} width={'5'} fill={'yellow'} />
-      )}
-      {(socketStatus === 'OFFLINE' || socketStatus === 'UNAUTHORIZED') && (
-        <EllipseIcon height={'5'} width={'5'} fill={'red'} />
-      )}
-    </SocketStatusCard>
+      <SocketStatusCard>
+        <StatusColor socketStatus={socketStatus}>
+          {socket.id ? socket.id : 'Retrieving socket ID'}
+        </StatusColor>
+        {(socketStatus === 'CONNECTED' || socketStatus === 'AUTHENTICATED') && (
+          <EllipseIcon height={'5'} width={'5'} fill={'green'} />
+        )}
+        {socketStatus === 'Waiting for status' && (
+          <EllipseIcon height={'5'} width={'5'} fill={'yellow'} />
+        )}
+        {(socketStatus === 'OFFLINE' || socketStatus === 'UNAUTHORIZED') && (
+          <EllipseIcon height={'5'} width={'5'} fill={'red'} />
+        )}
+      </SocketStatusCard>
+    </Container>
   );
 });
 

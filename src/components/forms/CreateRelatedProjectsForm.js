@@ -8,6 +8,7 @@ import { setValidationErrors } from '../../utils/validationUtils';
 import {
   StandardInput,
   InputSizeEnum,
+  InputVariantEnum,
   InputStateEnum,
   Divider,
   ModalFormContainerStyle,
@@ -53,14 +54,18 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-project-id',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorRelatedProjectMessage?.relatedProjectId
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'related-project-id',
@@ -82,13 +87,12 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="relationship-type" />
+                  <FormattedMessage id="relationship-type" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-relationship-type-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -116,13 +120,12 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="registry" />
+                  <FormattedMessage id="registry" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'related-projects-registry-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

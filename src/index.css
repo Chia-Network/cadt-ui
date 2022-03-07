@@ -41,3 +41,7 @@
 body {
   margin: 0;
 }
+
+.notification {
+  font-family: 'NunitoSans' !important;
+}

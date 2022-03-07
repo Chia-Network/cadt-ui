@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import {
-  ClimateWarehouseLogo,
   ButtonText,
   WarehouseIcon,
   RegistryIcon,
   Modal,
   AddIconCircle,
-  Message,
 } from '../../components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,12 +26,6 @@ const NavContainer = styled('div')`
   min-width: 16rem;
   height: 100%;
   background-color: #3b8ee0;
-`;
-
-const LogoContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  margin: 20.46px auto 3.5344rem auto;
 `;
 
 const StyledCreateOrgButtonContainer = styled('div')`
@@ -59,6 +51,7 @@ const MenuItem = styled(Link)`
   text-decoration: none;
   width: calc(100% - 1.625rem);
   margin: auto;
+  font-size: 1.2rem;
   box-sizing: border-box;
   border-radius: 0.625rem;
   margin-bottom: 0.625rem;
@@ -81,7 +74,7 @@ const LeftNav = withTheme(({ children }) => {
     useState(false);
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
   const intl = useIntl();
-  const { notification } = useSelector(state => state.app);
+  const { readOnlyMode } = useSelector(state => state.app);
   const dispatch = useDispatch();
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
@@ -94,9 +87,6 @@ const LeftNav = withTheme(({ children }) => {
   return (
     <Container>
       <NavContainer>
-        <LogoContainer>
-          <ClimateWarehouseLogo />
-        </LogoContainer>
         <StyledTitleContainer>
           <WarehouseIcon height={24} width={24} />
           <ButtonText>
@@ -124,71 +114,72 @@ const LeftNav = withTheme(({ children }) => {
         >
           <FormattedMessage id="units-list" />
         </MenuItem>
-        <StyledTitleContainer disabled={myOrgIsNotCreated}>
-          <RegistryIcon height={20} width={20} />
-          <ButtonText>
-            <FormattedMessage id="registry" />
-          </ButtonText>
-        </StyledTitleContainer>
-        {!myOrgIsNotCreated && (
+        {!readOnlyMode && (
           <>
-            <MenuItem
-              selected={location === 'my-projects'}
-              to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
-              onClick={() => {
-                dispatch(resetRefreshPrompt);
-                setLocation('my-projects');
-              }}
-            >
-              <FormattedMessage id="my-projects" />
-            </MenuItem>
-            <div></div>
-            <MenuItem
-              selected={location === 'my-units'}
-              to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
-              onClick={() => {
-                dispatch(resetRefreshPrompt);
-                setLocation('my-units');
-              }}
-            >
-              <FormattedMessage id="my-units" />
-            </MenuItem>
-          </>
-        )}
-        {myOrgIsNotCreated && (
-          <>
-            <MenuItem
-              to={window.location}
-              onClick={() => setConfirmCreateOrgIsVisible(true)}
-              disabled
-            >
-              <FormattedMessage id="my-projects" />
-            </MenuItem>
-            <div></div>
-            <MenuItem
-              to={window.location}
-              onClick={() => setConfirmCreateOrgIsVisible(true)}
-              disabled
-            >
-              <FormattedMessage id="my-units" />
-            </MenuItem>
-            <StyledCreateOrgButtonContainer
-              onClick={() => setCreateOrgIsVisible(true)}
-            >
-              <AddIconCircle width="20" height="20" />
+            <StyledTitleContainer disabled={myOrgIsNotCreated}>
+              <RegistryIcon height={20} width={20} />
               <ButtonText>
-                <FormattedMessage id="create-organization" />
+                <FormattedMessage id="registry" />
               </ButtonText>
-            </StyledCreateOrgButtonContainer>
+            </StyledTitleContainer>
+            {!myOrgIsNotCreated && (
+              <>
+                <MenuItem
+                  selected={location === 'my-projects'}
+                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
+                  onClick={() => {
+                    dispatch(resetRefreshPrompt);
+                    setLocation('my-projects');
+                  }}
+                >
+                  <FormattedMessage id="my-projects" />
+                </MenuItem>
+                <div></div>
+                <MenuItem
+                  selected={location === 'my-units'}
+                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
+                  onClick={() => {
+                    dispatch(resetRefreshPrompt);
+                    setLocation('my-units');
+                  }}
+                >
+                  <FormattedMessage id="my-units" />
+                </MenuItem>
+              </>
+            )}
+            {myOrgIsNotCreated && (
+              <>
+                <MenuItem
+                  to={window.location}
+                  onClick={() => setConfirmCreateOrgIsVisible(true)}
+                  disabled
+                >
+                  <FormattedMessage id="my-projects" />
+                </MenuItem>
+                <div></div>
+                <MenuItem
+                  to={window.location}
+                  onClick={() => setConfirmCreateOrgIsVisible(true)}
+                  disabled
+                >
+                  <FormattedMessage id="my-units" />
+                </MenuItem>
+                <StyledCreateOrgButtonContainer
+                  onClick={() => setCreateOrgIsVisible(true)}
+                >
+                  <AddIconCircle width="20" height="20" />
+                  <ButtonText>
+                    <FormattedMessage id="create-organization" />
+                  </ButtonText>
+                </StyledCreateOrgButtonContainer>
+              </>
+            )}
           </>
         )}
       </NavContainer>
       {children}
       {createOrgIsVisible && (
         <CreateOrgForm onClose={() => setCreateOrgIsVisible(false)} />
-      )}
-      {notification && notification.id === 'organization-created' && (
-        <Message id={notification.id} type={notification.type} />
       )}
       {myOrgIsNotCreated && confirmCreateOrgIsVisible && (
         <Modal

@@ -4,6 +4,10 @@ import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import styled, { css } from 'styled-components';
 
+const DateVariantEnum = {
+  error: 'error',
+};
+
 const InputContainer = styled('div')`
   display: flex;
   align-items: center;
@@ -23,7 +27,8 @@ const InputContainer = styled('div')`
   :focus-within,
   ::selection {
     outline: none;
-    box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
+    box-shadow: ${props =>
+      props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
     border: 1px solid #40a9ff;
   }
 
@@ -44,8 +49,22 @@ const InputContainer = styled('div')`
   ${props =>
     props.disabled &&
     css`
-      background-color: rgba(239, 239, 239, 0.3);
+      background-color: #f5f5f5;
     `};
+  ${props => {
+    if (props.variant === DateVariantEnum.error) {
+      return css`
+        border: 1px solid #f5222d;
+        :focus-within {
+          border: 1px solid #f5222d;
+          box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
+        }
+        :hover {
+          border: 1px solid #f5222d;
+        }
+      `;
+    }
+  }}
 `;
 
 const Input = styled('input')`
@@ -55,9 +74,16 @@ const Input = styled('input')`
   :focus-visible {
     outline: none;
   }
+  ${props =>
+    props.disabled &&
+    css`
+      background-color: #f5f5f5;
+      color: #000000;
+      cursor: default;
+    `};
 `;
 
-const YearSelect = ({ size, yearValue, onChange }) => {
+const YearSelect = ({ size, yearValue, onChange, disabled, variant }) => {
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
@@ -65,10 +91,16 @@ const YearSelect = ({ size, yearValue, onChange }) => {
         label="Year"
         value={yearValue ? `${yearValue}` : yearValue}
         onChange={onChange}
+        disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
-            <InputContainer size={size}>
-              <Input ref={inputRef} {...inputProps} helperText={null} />
+            <InputContainer size={size} disabled={disabled} variant={variant}>
+              <Input
+                ref={inputRef}
+                {...inputProps}
+                helperText={null}
+                disabled={disabled}
+              />
               {InputProps?.endAdornment}
             </InputContainer>
           );
@@ -78,4 +110,4 @@ const YearSelect = ({ size, yearValue, onChange }) => {
   );
 };
 
-export { YearSelect };
+export { YearSelect, DateVariantEnum };

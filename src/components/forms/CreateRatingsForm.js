@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import {
   StandardInput,
   InputSizeEnum,
+  InputVariantEnum,
   InputStateEnum,
   Divider,
   ModalFormContainerStyle,
@@ -18,6 +19,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectStateEnum,
+  SelectVariantEnum,
   Select,
   StyledLabelContainer,
   StyledFieldContainer,
@@ -62,14 +64,16 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-type-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorRatingMessage?.ratingType && SelectVariantEnum.error
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectRatingTypeOptions}
@@ -99,14 +103,18 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-range-highest-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorRatingMessage?.ratingRangeHighest
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'rating-range-highest',
@@ -133,14 +141,18 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-range-lowest-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorRatingMessage?.ratingRangeLowest
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'rating-range-lowest',
@@ -169,14 +181,18 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-value-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorRatingMessage?.rating
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'rating',
@@ -203,14 +219,18 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-report-link-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorRatingMessage?.ratingLink
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'rating-link',

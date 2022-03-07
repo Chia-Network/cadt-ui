@@ -1,8 +1,7 @@
 import React from 'react';
 import { Alert, NotificationCard } from '..';
 
-const UpdateRefreshContainer = ({onRefresh, onClose}) => {
-  
+const UpdateRefreshContainer = ({ onRefresh, onClose }) => {
   return (
     <NotificationCard>
       <Alert

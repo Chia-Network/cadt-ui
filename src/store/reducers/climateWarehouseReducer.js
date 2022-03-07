@@ -15,6 +15,8 @@ const initialState = {
   stagingData: null,
   organizations: null,
   pickLists: null,
+  issuances: null,
+  labels: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -33,6 +35,12 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_QUALIFICATIONS:
       return u({ qualifications: action.payload }, state);
+
+    case climateWarehouseActions.GET_ISSUANCES:
+      return u({ issuances: action.payload }, state);
+
+    case climateWarehouseActions.GET_LABELS:
+      return u({ labels: action.payload }, state);
 
     case climateWarehouseActions.GET_PROJECT_LOCATIONS:
       return u({ projectLocations: action.payload || [] }, state);

@@ -13,11 +13,18 @@ const initialState = {
   connectionCheck: true,
   updateAvailablePleaseRefesh: false,
   notification: null,
+  commit: false,
   pendingError: false,
+  readOnlyMode: true,
+  apiKey: null,
+  serverAddress: null,
 };
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
+    case appActions.SET_READ_ONLY:
+      return u({ readOnlyMode: action.payload }, state);
+
     case socketActions.SOCKET_STATUS:
       return u({ socketStatus: action.payload }, state);
 
@@ -34,6 +41,9 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.DEACTIVATE_PROGRESS_INDICATOR:
       return u({ showProgressOverlay: false }, state);
+
+    case appActions.COMMIT:
+      return u({ commit: action.payload }, state);
 
     case appActions.SET_GLOBAL_ERROR_MESSAGE:
       return u({ errorMessage: action.payload }, state);
@@ -70,6 +80,24 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.SET_NOTIFICATION:
       return u({ notification: action.payload }, state);
+
+    case appActions.SIGN_USER_IN:
+      return u(
+        {
+          apiKey: action.payload.apiKey,
+          serverAddress: action.payload.serverAddress,
+        },
+        state,
+      );
+
+    case appActions.SIGN_USER_OUT:
+      return u(
+        {
+          apiKey: null,
+          serverAddress: null,
+        },
+        state,
+      );
 
     default:
       return state;

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import styled, { css, withTheme } from 'styled-components';
 import {
   WarningIconSmall,
@@ -180,6 +180,10 @@ const StandardInput = withTheme(
   }) => {
     const [inputState, setInputState] = useState(state);
 
+    useEffect(() => {
+      setInputState(state);
+    }, [state]);
+
     const onMouseEnter = useCallback(() => {
       inputState !== InputStateEnum.focused &&
         inputState !== InputStateEnum.disabled &&
@@ -203,7 +207,7 @@ const StandardInput = withTheme(
     const onFocus = useCallback(() => {
       inputState !== InputStateEnum.disabled &&
         setInputState(InputStateEnum.focused);
-    }, []);
+    }, [inputState]);
 
     return (
       <StyledInputContainer
@@ -213,7 +217,8 @@ const StandardInput = withTheme(
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onBlur={onBlur}
-        onFocus={onFocus}>
+        onFocus={onFocus}
+      >
         {prefix && (
           <StyledSuffixPrefixContainer>{prefix}</StyledSuffixPrefixContainer>
         )}

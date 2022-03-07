@@ -4,6 +4,7 @@ import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import styled, { css } from 'styled-components';
 import { formatDate } from '../../utils/formatData';
+import { DateVariantEnum } from '.';
 
 const InputContainer = styled('div')`
   display: flex;
@@ -24,8 +25,10 @@ const InputContainer = styled('div')`
   :focus-within,
   ::selection {
     outline: none;
-    box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
-    border: 1px solid #40a9ff;
+    box-shadow: ${props =>
+      props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
+    border: ${props =>
+      props.disabled ? '1px solid #d9d9d9;' : '1px solid #40a9ff'};
   }
 
   ${props =>
@@ -45,8 +48,23 @@ const InputContainer = styled('div')`
   ${props =>
     props.disabled &&
     css`
-      background-color: rgba(239, 239, 239, 0.3);
+      background-color: #f5f5f5;
     `};
+
+  ${props => {
+    if (props.variant === DateVariantEnum.error) {
+      return css`
+        border: 1px solid #f5222d;
+        :focus-within {
+          border: 1px solid #f5222d;
+          box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
+        }
+        :hover {
+          border: 1px solid #f5222d;
+        }
+      `;
+    }
+  }}
 `;
 
 const Input = styled('input')`
@@ -56,6 +74,13 @@ const Input = styled('input')`
   :focus-visible {
     outline: none;
   }
+  ${props =>
+    props.disabled &&
+    css`
+      background-color: #f5f5f5;
+      color: #000000;
+      cursor: default;
+    `};
 `;
 
 const DateSelect = ({
@@ -63,12 +88,14 @@ const DateSelect = ({
   disabled,
   dateValue,
   setDateValue,
+  variant,
 }) => {
   const divElement = useRef(null);
 
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
+        disableOpenPicker={disabled}
         label="Select time"
         value={dateValue}
         onChange={newValue => {
@@ -80,6 +107,7 @@ const DateSelect = ({
             setDateValue(null);
           }
         }}
+        disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
             <InputContainer
@@ -87,7 +115,7 @@ const DateSelect = ({
               ref={divElement}
               disabled={disabled}
               tabIndex={0}
-            >
+              variant={variant}>
               <Input
                 ref={inputRef}
                 {...inputProps}

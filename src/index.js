@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
+import 'react-notifications/lib/notifications.css';
 import './index.css';
 
 import App from './App';

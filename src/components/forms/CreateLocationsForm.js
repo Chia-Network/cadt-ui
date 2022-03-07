@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import {
   StandardInput,
   InputSizeEnum,
+  InputVariantEnum,
   InputStateEnum,
   Divider,
   ModalFormContainerStyle,
@@ -18,6 +19,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectStateEnum,
+  SelectVariantEnum,
   Select,
   StyledLabelContainer,
   StyledFieldContainer,
@@ -62,14 +64,16 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-country-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <Select
+                variant={
+                  errorLocationMessage?.country && SelectVariantEnum.error
+                }
                 size={SelectSizeEnum.large}
                 type={SelectTypeEnum.basic}
                 options={selectCountriesOptions}
@@ -94,13 +98,12 @@ const CreateLocationsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="in-country-region" />
+                  <FormattedMessage id="in-country-region" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-in-country-region-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -133,14 +136,18 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-geographic-identifier-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <StandardInput
+                variant={
+                  errorLocationMessage?.geographicIdentifier
+                    ? InputVariantEnum.error
+                    : undefined
+                }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'geographic-identifier',

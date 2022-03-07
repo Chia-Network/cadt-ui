@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import styled, { withTheme, css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
@@ -224,11 +224,6 @@ const SelectOrganizations = withTheme(
     const { organizations } = useSelector(store => store.climateWarehouse);
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
-    const organizationsList = Object.keys(organizations).map(orgUid => ({
-      orgUid: orgUid,
-      name: organizations[orgUid].name,
-      icon: organizations[orgUid].icon,
-    }));
 
     const allOrganizationsItem = {
       orgUid: 'all',
@@ -237,9 +232,20 @@ const SelectOrganizations = withTheme(
       }),
       icon: '',
     };
-    if (displayAllOrganizations) {
-      organizationsList.unshift(allOrganizationsItem);
-    }
+
+    const organizationsList = useMemo(() => {
+      const list = Object.keys(organizations).map(orgUid => ({
+        orgUid: orgUid,
+        name: organizations[orgUid].name,
+        icon: organizations[orgUid].icon,
+      }));
+
+      if (displayAllOrganizations) {
+        list.unshift(allOrganizationsItem);
+      }
+
+      return list;
+    }, [organizations]);
 
     const noChangeOrganization = {
       orgUid: 'none',
@@ -252,7 +258,7 @@ const SelectOrganizations = withTheme(
       organizationsList.unshift(noChangeOrganization);
     }
 
-    const [optionsList] = useState(organizationsList);
+    const [optionsList, setOptionsList] = useState(organizationsList);
     const [selectedOptions, setSelectedOptions] = useState(
       selected ||
         (displayAllOrganizations && [allOrganizationsItem]) ||
@@ -263,6 +269,10 @@ const SelectOrganizations = withTheme(
     const [menuTopPosition, setMenuTopPosition] = useState(0);
     const ref = useRef();
     const selectRef = useRef();
+
+    useEffect(() => {
+      setOptionsList(organizationsList);
+    }, [organizationsList]);
 
     useEffect(() => {
       const newHeight = selectRef.current.clientHeight;
@@ -387,7 +397,8 @@ const SelectOrganizations = withTheme(
             state={selectState}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>
+            onMouseLeave={onMouseLeave}
+          >
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0].name
@@ -410,7 +421,8 @@ const SelectOrganizations = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>
+            onMouseLeave={onMouseLeave}
+          >
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -424,7 +436,8 @@ const SelectOrganizations = withTheme(
                             name: option.name,
                             icon: option.icon,
                           })
-                        }>
+                        }
+                      >
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -449,7 +462,8 @@ const SelectOrganizations = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>
+            onMouseLeave={onMouseLeave}
+          >
             {selectState !== SelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -507,7 +521,8 @@ const SelectOrganizations = withTheme(
                       name: option.name,
                       icon: option.icon,
                     })
-                  }>
+                  }
+                >
                   {option.name}
                   {option.icon && (
                     <StyledIconContainer>
@@ -542,7 +557,8 @@ const SelectOrganizations = withTheme(
                         name: option.name,
                         icon: option.icon,
                       })
-                    }>
+                    }
+                  >
                     {option.name}
                   </StyledBasicMenuItem>
                 ),

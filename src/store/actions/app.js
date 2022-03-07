@@ -13,12 +13,21 @@ export const actions = keyMirror(
   'CONNECTION_CHECK',
   'RESET_REFRESH_PROMPT',
   'SET_NOTIFICATION',
+  'COMMIT',
   'PENDING_ERROR',
+  'SET_READ_ONLY',
+  'SIGN_USER_IN',
+  'SIGN_USER_OUT',
 );
 
 export const resetRefreshPrompt = {
   type: actions.RESET_REFRESH_PROMPT,
 };
+
+export const setReadOnly = isReadOnly => ({
+  type: actions.SET_READ_ONLY,
+  payload: isReadOnly,
+});
 
 export const activateProgressIndicator = {
   type: actions.ACTIVATE_PROGRESS_INDICATOR,
@@ -51,6 +60,11 @@ export const setConnectionCheck = bool => ({
   payload: bool,
 });
 
+export const setCommit = bool => ({
+  type: actions.COMMIT,
+  payload: bool,
+});
+
 export const setPendingError = bool => ({
   type: actions.PENDING_ERROR,
   payload: bool,
@@ -80,6 +94,52 @@ export const setNotificationMessage = (type, id) => {
       dispatch({
         type: actions.SET_NOTIFICATION,
         payload: null,
+      });
+    }
+  };
+};
+
+export const signIn = ({ apiKey, serverAddress }) => {
+  return async dispatch => {
+    if (apiKey && serverAddress) {
+      localStorage.setItem('apiKey', apiKey);
+      localStorage.setItem('serverAddress', serverAddress);
+      dispatch({
+        type: actions.SIGN_USER_IN,
+        payload: {
+          apiKey,
+          serverAddress,
+        },
+      });
+    }
+  };
+};
+
+export const signOut = () => {
+  return async dispatch => {
+    localStorage.removeItem('apiKey');
+    localStorage.removeItem('serverAddress');
+    dispatch({
+      type: actions.SIGN_USER_OUT,
+      payload: {
+        apiKey: null,
+        serverAddress: null,
+      },
+    });
+  };
+};
+
+export const signInFromLocalStorage = () => {
+  return async dispatch => {
+    const apiKey = localStorage.getItem('apiKey');
+    const serverAddress = localStorage.getItem('serverAddress');
+    if (apiKey && serverAddress) {
+      dispatch({
+        type: actions.SIGN_USER_IN,
+        payload: {
+          apiKey,
+          serverAddress,
+        },
       });
     }
   };
