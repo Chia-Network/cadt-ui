@@ -242,25 +242,18 @@ const Projects = withRouter(() => {
 
     return climateWarehouseStore.projects.map(project =>
       _.pick(project, [
-        'currentRegistry',
         'warehouseProjectId',
+        'currentRegistry',
         'projectId',
-        'registryOfOrigin',
-        'program',
         'projectName',
-        'projectLink',
         'projectDeveloper',
         'sector',
         'projectType',
         'projectTags',
         'coveredByNDC',
-        'ndcInformation',
         'projectStatus',
-        'projectStatusDate',
         'unitMetric',
-        'methodology',
         'validationBody',
-        'validationDate',
       ]),
     );
   }, [climateWarehouseStore.projects, climateWarehouseStore.stagingData]);

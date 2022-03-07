@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, modalTypeEnum, Tab, Tabs, TabPanel } from '..';
@@ -55,6 +56,25 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
     [fullRecord],
   );
 
+  const filteredData = () => {
+    const filteredDetails = _.omit(recordDetails, ['timeStaged']);
+    return filteredDetails;
+  };
+
+  const filteredTabData = tabKey => {
+    const filteredTab = _.map(fullRecord[tabKey], tab =>
+      _.omit(tab, ['timeStaged']),
+    );
+    return filteredTab;
+  };
+
+  const filteredIssuance = () => {
+    const filteredIssuanceDetails = _.omit(fullRecord?.issuance, [
+      'timeStaged',
+    ]);
+    return filteredIssuanceDetails;
+  };
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -93,16 +113,16 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
               fullRecord?.issuance && <Tab label="Issuance" />}
           </Tabs>
           <TabPanel value={tabValue} index={0}>
-            <DetailedViewTab data={[recordDetails]} />
+            <DetailedViewTab data={[filteredData()]} />
           </TabPanel>
           {recordTabsWithEntries.map((tabKey, index) => (
             <TabPanel value={tabValue} index={index + 1} key={tabKey}>
-              <DetailedViewTab data={fullRecord[tabKey]} />
+              <DetailedViewTab data={filteredTabData(tabKey)} />
             </TabPanel>
           ))}
           {type === detailedViewModalTypeEnum.units && fullRecord?.issuance && (
             <TabPanel value={tabValue} index={recordTabsWithEntries.length + 1}>
-              <DetailedViewTab data={[fullRecord.issuance]} />
+              <DetailedViewTab data={[filteredIssuance()]} />
             </TabPanel>
           )}
         </div>
