@@ -3,6 +3,7 @@ import styled, { css, withTheme } from 'styled-components';
 import { useSelector } from 'react-redux';
 import socketIO from 'socket.io-client';
 import { EllipseIcon, TableCellHeaderText } from '..';
+import constants from '../../constants';
 
 const Container = styled('div')`
   position: absolute;
@@ -45,7 +46,7 @@ const StatusColor = styled('div')`
     `};
 `;
 
-const WS_HOST = `http://localhost:31310/v1/ws`;
+const WS_HOST = `${constants.API_HOST}/ws`;
 const transports = ['websocket', 'polling'];
 
 let socket = socketIO(WS_HOST, {
