@@ -45,7 +45,7 @@ const StatusColor = styled('div')`
     `};
 `;
 
-const WS_HOST = `http://localhost:3030/v1/ws`;
+const WS_HOST = `http://localhost:31310/v1/ws`;
 const transports = ['websocket', 'polling'];
 
 let socket = socketIO(WS_HOST, {

@@ -8,7 +8,7 @@
   "engines": {
     "node": ">=15.0.1"
   },
-  "proxy": "http://localhost:3030",
+  "proxy": "http://localhost:31310",
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",

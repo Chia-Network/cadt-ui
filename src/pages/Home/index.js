@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { IndeterminateProgressOverlay } from '../../components';
 
 const Home = () => {
+  const history = useHistory();
   useEffect(() => {
-    window.location.href = './projects';
+    history.push('/projects');
   });
   return <IndeterminateProgressOverlay />;
 };

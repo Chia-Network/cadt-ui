@@ -1,7 +1,7 @@
 export const downloadTxtFile = async (type, searchParams) => {
   searchParams.delete('myRegistry');
   await fetch(
-    `http://localhost:3030/v1/${`${type}?`}${`${searchParams.toString()}&`}xls=true`,
+    `http://localhost:31310/v1/${`${type}?`}${`${searchParams.toString()}&`}xls=true`,
   )
     .then(async result => await result.blob())
     .then(async response => {
