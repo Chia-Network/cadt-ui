@@ -127,7 +127,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
-              <UnitIssuancesRepeater
+              <UnitIssuanceRepeater
                 max={1}
                 issuanceState={unit.issuance !== '' ? [unit.issuance] : []}
                 newIssuanceState={value =>
