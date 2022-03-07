@@ -5,6 +5,7 @@ import { keyMirror } from '../store-functions';
 import { getStagingData } from './climateWarehouseActions';
 import { reloadApp, saveCurrentUrlToStorage } from '../../navigation/history';
 import { NotificationManager } from 'react-notifications';
+import constants from '../../constants';
 
 export const actions = keyMirror(
   'SOCKET_PROJECTS_UPDATE',
@@ -98,7 +99,7 @@ const reconnectSocket = dispatch => {
 export const initiateSocket = () => {
   disconnectSocket();
 
-  const WS_HOST = `http://localhost:31310/v1/ws`;
+  const WS_HOST = `${constants.API_HOST}/ws`;
   const transports = ['websocket', 'polling'];
 
   socket = socketIO(WS_HOST, {
