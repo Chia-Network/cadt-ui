@@ -19,7 +19,6 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectVariantEnum,
-  StyledFieldRequired,
   Select,
   InputContainer,
   StyledFieldContainer,
@@ -27,6 +26,9 @@ import {
   InputVariantEnum,
   YearSelect,
   DateVariantEnum,
+  RequiredContainer,
+  SpanTwoColumnsContainer,
+  HrSpanTwoColumnsContainer,
 } from '..';
 
 import { unitsSchema } from '../../store/validations';
@@ -49,14 +51,14 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
     [pickLists],
   );
 
-  const selectUnitTypeOptions = useMemo(
-    () =>
-      pickLists.unitType.map(unitTypeItem => ({
-        value: unitTypeItem,
-        label: unitTypeItem,
-      })),
-    [pickLists],
-  );
+  // const selectUnitTypeOptions = useMemo(
+  //   () =>
+  //     pickLists.unitType.map(unitTypeItem => ({
+  //       value: unitTypeItem,
+  //       label: unitTypeItem,
+  //     })),
+  //   [pickLists],
+  // );
 
   const selectCorrespondingAdjustmentStatusOptions = useMemo(
     () =>
@@ -89,53 +91,55 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
 
   return (
     <ModalFormContainerStyle>
+      <RequiredContainer>
+        <FieldRequired />
+      </RequiredContainer>
       <FormContainerStyle>
         <BodyContainer>
-          <FieldRequired />
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="project-location-id" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-project-location-id-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.projectLocationId
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'project-location-id',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.projectLocationId}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    projectLocationId: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.projectLocationId && (
-              <Body size="Small" color="red">
-                {errorMessage.projectLocationId}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
+                {/* <StyledFieldContainer>
+                  <StyledLabelContainer>
+                    <Body>
+                      <LabelContainer>
+                        *<FormattedMessage id="project-location-id" />
+                      </LabelContainer>
+                      <ToolTipContainer
+                        tooltip={intl.formatMessage({
+                          id: 'units-project-location-id-description',
+                        })}>
+                        <DescriptionIcon height="14" width="14" />
+                      </ToolTipContainer>
+                    </Body>
+                  </StyledLabelContainer>
+                  <InputContainer>
+                    <StandardInput
+                      variant={
+                        errorMessage?.projectLocationId
+                          ? InputVariantEnum.error
+                          : undefined
+                      }
+                      size={InputSizeEnum.large}
+                      placeholderText={intl.formatMessage({
+                        id: 'project-location-id',
+                      })}
+                      state={InputStateEnum.default}
+                      value={unitDetails.projectLocationId}
+                      onChange={value =>
+                        setUnitDetails(prev => ({
+                          ...prev,
+                          projectLocationId: value,
+                        }))
+                      }
+                    />
+                  </InputContainer>
+                  {errorMessage?.projectLocationId && (
+                    <Body size="Small" color="red">
+                      {errorMessage.projectLocationId}
+                    </Body>
+                  )}
+                </StyledFieldContainer> */}
                 <LabelContainer>
                   *<FormattedMessage id="unit-owner" />
                 </LabelContainer>
@@ -169,6 +173,47 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             {errorMessage?.unitOwner && (
               <Body size="Small" color="red">
                 {errorMessage.unitOwner}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="serial-number-block" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-serial-number-block-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.serialNumberBlock
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'serial-number-block',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.serialNumberBlock}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    serialNumberBlock: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.serialNumberBlock && (
+              <Body size="Small" color="red">
+                {errorMessage.serialNumberBlock}
               </Body>
             )}
           </StyledFieldContainer>
@@ -265,326 +310,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="serial-number-block" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-serial-number-block-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.serialNumberBlock
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'serial-number-block',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.serialNumberBlock}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    serialNumberBlock: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.serialNumberBlock && (
-              <Body size="Small" color="red">
-                {errorMessage.serialNumberBlock}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="serial-number-pattern" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-serial-number-pattern-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.serialNumberPattern
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'serial-number-pattern',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.serialNumberPattern}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    serialNumberPattern: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.serialNumberPattern && (
-              <Body size="Small" color="red">
-                {errorMessage.serialNumberPattern}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
-                <LabelContainer>
-                  *<FormattedMessage id="vintage-year" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-vintage-year-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <YearSelect
-                variant={
-                  errorMessage?.vintageYear ? DateVariantEnum.error : undefined
-                }
-                size="large"
-                yearValue={unitDetails.vintageYear}
-                onChange={value => {
-                  if (value) {
-                    setUnitDetails(prev => ({
-                      ...prev,
-                      vintageYear: value.$y,
-                    }));
-                  }
-                }}
-              />
-            </InputContainer>
-            {errorMessage?.vintageYear && (
-              <Body size="Small" color="red">
-                {errorMessage.vintageYear}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="unit-type" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-unit-type-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <Select
-                variant={
-                  errorMessage?.unitType ? SelectVariantEnum.error : undefined
-                }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectUnitTypeOptions}
-                selected={
-                  unitDetails.unitType
-                    ? [
-                        {
-                          value: unitDetails.unitType,
-                          label: unitDetails.unitType,
-                        },
-                      ]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitType: selectedOptions[0].value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.unitType && (
-              <Body size="Small" color="red">
-                {errorMessage.unitType}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body color={'#262626'}>
-                <LabelContainer>
-                  <FormattedMessage id="marketplace" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-marketplace-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.marketplace ? InputVariantEnum.error : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'marketplace',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.marketplace}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    marketplace: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.marketplace && (
-              <Body size="Small" color="red">
-                {errorMessage.marketplace}
-              </Body>
-            )}
-          </StyledFieldContainer>
-        </BodyContainer>
-        <BodyContainer>
-          <StyledFieldRequired />
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body color={'#262626'}>
-                <LabelContainer>
-                  <FormattedMessage id="marketplace-link" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-marketplace-link-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.marketplaceLink
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'marketplace-link',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.marketplaceLink}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    marketplaceLink: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.marketplaceLink && (
-              <Body size="Small" color="red">
-                {errorMessage.marketplaceLink}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body color={'#262626'}>
-                <LabelContainer>
-                  <FormattedMessage id="marketplace-identifier" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-marketplace-identifier-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.marketplaceIdentifier
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'marketplace-identifier',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.marketplaceIdentifier}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    marketplaceIdentifier: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.marketplaceIdentifier && (
-              <Body size="Small" color="red">
-                {errorMessage.marketplaceIdentifier}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  <FormattedMessage id="unit-tags" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-unit-tags-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'unit-tags',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.unitTags}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitTags: value,
-                  }))
-                }
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
                   *<FormattedMessage id="unit-status" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -671,21 +396,21 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="unit-registry-link" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-unit-registry-link-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="unit-registry-link" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'units-unit-registry-link-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
               <StandardInput
                 variant={
                   errorMessage?.unitRegistryLink
@@ -705,13 +430,175 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   }))
                 }
               />
+              {errorMessage.unitRegistryLink && (
+                <Body size="Small" color="red">
+                  {errorMessage.unitRegistryLink}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  *<FormattedMessage id="vintage-year" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-vintage-year-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <YearSelect
+                variant={
+                  errorMessage?.vintageYear ? DateVariantEnum.error : undefined
+                }
+                size="large"
+                yearValue={unitDetails.vintageYear}
+                onChange={value => {
+                  if (value) {
+                    setUnitDetails(prev => ({
+                      ...prev,
+                      vintageYear: value.$y,
+                    }));
+                  }
+                }}
+              />
             </InputContainer>
-            {errorMessage.unitRegistryLink && (
+            {errorMessage?.vintageYear && (
               <Body size="Small" color="red">
-                {errorMessage.unitRegistryLink}
+                {errorMessage.vintageYear}
               </Body>
             )}
           </StyledFieldContainer>
+          <div></div>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body color={'#262626'}>
+                <LabelContainer>
+                  <FormattedMessage id="marketplace" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-marketplace-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.marketplace ? InputVariantEnum.error : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'marketplace',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.marketplace}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    marketplace: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.marketplace && (
+              <Body size="Small" color="red">
+                {errorMessage.marketplace}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body color={'#262626'}>
+                <LabelContainer>
+                  <FormattedMessage id="marketplace-identifier" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-marketplace-identifier-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.marketplaceIdentifier
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'marketplace-identifier',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.marketplaceIdentifier}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    marketplaceIdentifier: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.marketplaceIdentifier && (
+              <Body size="Small" color="red">
+                {errorMessage.marketplaceIdentifier}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body color={'#262626'}>
+                  <LabelContainer>
+                    <FormattedMessage id="marketplace-link" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'units-marketplace-link-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.marketplaceLink
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'marketplace-link',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.marketplaceLink}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    marketplaceLink: value,
+                  }))
+                }
+              />
+              {errorMessage?.marketplaceLink && (
+                <Body size="Small" color="red">
+                  {errorMessage.marketplaceLink}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -810,6 +697,128 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    <FormattedMessage id="unit-tags" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'units-unit-tags-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-tags',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.unitTags}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    unitTags: value,
+                  }))
+                }
+              />
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+          {/* <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="serial-number-pattern" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-serial-number-pattern-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.serialNumberPattern
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'serial-number-pattern',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.serialNumberPattern}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    serialNumberPattern: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.serialNumberPattern && (
+              <Body size="Small" color="red">
+                {errorMessage.serialNumberPattern}
+              </Body>
+            )}
+          </StyledFieldContainer>
+
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-type" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-type-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <Select
+                variant={
+                  errorMessage?.unitType ? SelectVariantEnum.error : undefined
+                }
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectUnitTypeOptions}
+                selected={
+                  unitDetails.unitType
+                    ? [
+                        {
+                          value: unitDetails.unitType,
+                          label: unitDetails.unitType,
+                        },
+                      ]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    unitType: selectedOptions[0].value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.unitType && (
+              <Body size="Small" color="red">
+                {errorMessage.unitType}
+              </Body>
+            )}
+          </StyledFieldContainer> */}
         </BodyContainer>
       </FormContainerStyle>
     </ModalFormContainerStyle>
