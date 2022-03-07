@@ -2,6 +2,7 @@
   "name": "climate-warehouse",
   "version": "0.1.7",
   "private": true,
+  "author": "Chia Network Inc. <hello@chia.net>",
   "homepage": "./",
   "main": "src/start.js",
   "engineStrict": true,
@@ -116,13 +117,16 @@
         "arch": [
           "universal"
         ]
-      }
+      },
+      "publish": null
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "publish": null
     },
     "linux": {
-      "target": "deb"
+      "target": "deb",
+      "publish": null
     }
   },
   "contributors": [
