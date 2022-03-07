@@ -309,6 +309,9 @@ export const getPaginatedData = ({
             type: paginationAction,
             payload: results.pageCount,
           });
+        } else {
+          const error = await response.json();
+          dispatch(setNotificationMessage('error', error.error));
         }
       } catch {
         dispatch(setGlobalErrorMessage('Something went wrong...'));

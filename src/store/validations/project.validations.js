@@ -8,6 +8,7 @@ import { ratingSchema } from './ratings.validation';
 import { relatedProjectSchema } from './relatedProjects.validation';
 
 export const projectSchema = yup.object().shape({
+  currentRegistry: yup.string().required('Required Field'),
   registryOfOrigin: yup.string().required('Required Field'),
   originProjectId: yup.string().required('Required Field'),
   program: yup.string().optional(),
