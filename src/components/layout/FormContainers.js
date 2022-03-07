@@ -15,8 +15,8 @@ export const ModalFormContainerStyle = styled('div')`
 
 export const FormContainerStyle = styled('div')`
   display: flex;
-  justify-content: flex-start;
-  gap: 2.5rem;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 export const BodyContainer = styled('div')`

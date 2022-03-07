@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import { Modal, TabPanel, modalTypeEnum, UnitDetailsForm } from '..';
-import LabelsRepeater from './LabelsRepeater';
-import IssuanceRepeater from './IssuanceRepeater';
+import UnitLabelsRepeater from './UnitLabelsRepeater';
+import UnitIssuanceRepeater from './UnitIssuanceRepeater';
 import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
@@ -116,7 +116,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <LabelsRepeater
+              <UnitLabelsRepeater
                 labelsState={unit.labels}
                 newLabelsState={value =>
                   setUnit(prev => ({
@@ -127,7 +127,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
-              <IssuanceRepeater
+              <UnitIssuancesRepeater
                 max={1}
                 issuanceState={unit.issuance !== '' ? [unit.issuance] : []}
                 newIssuanceState={value =>

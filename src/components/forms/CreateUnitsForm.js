@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import { TabPanel, Modal, modalTypeEnum } from '..';
-import LabelsRepeater from './LabelsRepeater';
-import IssuanceRepeater from './IssuanceRepeater';
+import UnitLabelsRepeater from './UnitLabelsRepeater';
+import UnitIssuanceRepeater from './UnitIssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
@@ -28,12 +28,12 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   const intl = useIntl();
 
   const [unit, setUnit] = useState({
-    projectLocationId: '',
+    projectLocationId: 'test',
     unitOwner: '',
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
     serialNumberBlock: '',
-    serialNumberPattern: '',
+    serialNumberPattern: 'test',
     marketplace: '',
     marketplaceLink: '',
     marketplaceIdentifier: '',
@@ -41,7 +41,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     unitStatusReason: '',
     vintageYear: '',
     unitRegistryLink: '',
-    unitType: '',
+    unitType: 'Held',
     unitStatus: '',
     correspondingAdjustmentDeclaration: '',
     correspondingAdjustmentStatus: '',
@@ -126,7 +126,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <LabelsRepeater
+              <UnitLabelsRepeater
                 labelsState={unit?.labels ?? []}
                 newLabelsState={value =>
                   setUnit(prev => ({
@@ -137,7 +137,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
               />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
-              <IssuanceRepeater
+              <UnitIssuanceRepeater
                 max={1}
                 issuanceState={unit.issuance ? [unit.issuance] : []}
                 newIssuanceState={value =>

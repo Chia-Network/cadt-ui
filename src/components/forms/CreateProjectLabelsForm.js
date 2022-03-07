@@ -33,7 +33,7 @@ import {
 import { labelSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
 
-const CreateLabelsForm = ({ value, onChange }) => {
+const CreateProjectLabelsForm = ({ value, onChange }) => {
   const { labels } = useSelector(store => store.climateWarehouse);
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
@@ -468,4 +468,4 @@ const CreateLabelsForm = ({ value, onChange }) => {
   );
 };
 
-export { CreateLabelsForm };
+export { CreateProjectLabelsForm };

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AddIcon, CloseIcon } from '..';
-import { CreateIssuanceForm } from './CreateIssuanceForm';
+import { CreateUnitIssuanceForm } from './CreateUnitIssuanceForm';
 import { ComponentRepeater } from '..';
 import { getIssuances } from '../../store/actions/climateWarehouseActions';
 
-function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
+function UnitIssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
           verificationReportDate: '',
           verificationBody: '',
         }}
-        component={<CreateIssuanceForm />}
+        component={<CreateUnitIssuanceForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
         removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
       />
@@ -33,4 +33,4 @@ function IssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
   );
 }
 
-export default IssuanceRepeater;
+export default UnitIssuanceRepeater;
