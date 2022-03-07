@@ -1,6 +1,6 @@
 # Compares the version in package.json to tags on the repo. If the tag doesn't exist, a new tag is created, which
 # then triggers the normal "on tag" release automation in the build job
-name: Build & Release
+name: Auto Tag
 
 on:
   push:
