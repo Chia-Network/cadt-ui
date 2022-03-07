@@ -32,6 +32,9 @@ jobs:
             echo "Tag exists, nothing to do"
           else
             echo "Tag does not exist. Creating and pushing tag"
-            git tag "$version"
-            git push origin "$version"
+            npx standard-version
+            git add CHANGELOG.md
+            git commit -m "Updating changelog for $version"
+            git tag $version
+            git push origin main --tags
           fi
