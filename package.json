@@ -1,6 +1,6 @@
 {
   "name": "climate-warehouse",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
   "homepage": "./",
@@ -127,6 +127,13 @@
     "linux": {
       "target": "deb",
       "publish": null
+    }
+  },
+  "standard-version": {
+    "skip": {
+      "bump": true,
+      "commit": true,
+      "tag": true
     }
   },
   "contributors": [
