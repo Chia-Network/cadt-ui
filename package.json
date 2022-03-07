@@ -129,6 +129,13 @@
       "publish": null
     }
   },
+  "standard-version": {
+    "skip": {
+      "bump": true,
+      "commit": true,
+      "tag": true
+    }
+  },
   "contributors": [
     "Daniel <daniel.stefan@equilobe.com>",
     "Stanley Pageot <stanley@rxdu.io>",
