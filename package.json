@@ -1,6 +1,6 @@
 {
   "name": "climate-warehouse",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "homepage": "./",
   "main": "src/start.js",
