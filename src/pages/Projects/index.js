@@ -263,7 +263,7 @@ const Projects = withRouter(() => {
   }
 
   const onCommit = () => {
-    dispatch(commitStagingData('projects'));
+    dispatch(commitStagingData('Projects'));
     dispatch(setCommit(false));
   };
 
