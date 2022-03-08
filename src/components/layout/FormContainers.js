@@ -35,7 +35,7 @@ export const HrSpanTwoColumnsContainer = styled('div')`
 `;
 
 export const RequiredContainer = styled('div')`
-  width: 43%;
+  width: 42.5rem;
 `;
 
 export const StyledLabelContainer = styled('div')`

@@ -439,24 +439,24 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body color={'#262626'}>
-                <LabelContainer>
-                  {['cancelled', 'retired'].includes(
-                    unitDetails?.unitStatus?.toLowerCase(),
-                  ) && '*'}
-                  <FormattedMessage id="unit-status-reason" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-unit-status-reason-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body color={'#262626'}>
+                  <LabelContainer>
+                    {['cancelled', 'retired'].includes(
+                      unitDetails?.unitStatus?.toLowerCase(),
+                    ) && '*'}
+                    <FormattedMessage id="unit-status-reason" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'units-unit-status-reason-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
               <StandardInput
                 variant={
                   errorMessage?.unitStatusReason
@@ -476,13 +476,13 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   }))
                 }
               />
-            </InputContainer>
-            {errorMessage?.unitStatusReason && (
-              <Body size="Small" color="red">
-                {errorMessage.unitStatusReason}
-              </Body>
-            )}
-          </StyledFieldContainer>
+              {errorMessage?.unitStatusReason && (
+                <Body size="Small" color="red">
+                  {errorMessage.unitStatusReason}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
