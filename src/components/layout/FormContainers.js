@@ -15,13 +15,27 @@ export const ModalFormContainerStyle = styled('div')`
 
 export const FormContainerStyle = styled('div')`
   display: flex;
-  justify-content: flex-start;
-  gap: 2.5rem;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 export const BodyContainer = styled('div')`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 320px 320px;
+  column-gap: 30px;
+`;
+
+export const SpanTwoColumnsContainer = styled('div')`
+  grid-column: 1 / span 2;
+`;
+
+export const HrSpanTwoColumnsContainer = styled('div')`
+  grid-column: 1 / span 2;
+  margin: 10px 0;
+`;
+
+export const RequiredContainer = styled('div')`
+  width: 42.5rem;
 `;
 
 export const StyledLabelContainer = styled('div')`

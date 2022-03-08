@@ -10,8 +10,8 @@ import {
   modalTypeEnum,
   StyledFormContainer,
 } from '..';
-import LabelsRepeater from './LabelsRepeater';
-import IssuanceRepeater from './IssuanceRepeater';
+import ProjectLabelsRepeater from './ProjectLabelsRepeater';
+import ProjectIssuancesRepeater from './ProjectIssuancesRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
 import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
@@ -136,7 +136,7 @@ const EditProjectsForm = ({
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
-                <LabelsRepeater
+                <ProjectLabelsRepeater
                   labelsState={project?.labels ?? []}
                   newLabelsState={value =>
                     setProject(prev => ({
@@ -147,7 +147,7 @@ const EditProjectsForm = ({
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <IssuanceRepeater
+                <ProjectIssuancesRepeater
                   issuanceState={project?.issuances ?? []}
                   newIssuanceState={value =>
                     setProject(prev => ({

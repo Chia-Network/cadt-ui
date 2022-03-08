@@ -26,12 +26,14 @@ import {
   StyledLabelContainer,
   SelectVariantEnum,
   DateVariantEnum,
+  SpanTwoColumnsContainer,
+  HrSpanTwoColumnsContainer,
 } from '..';
 
 import { labelSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
 
-const CreateLabelsForm = ({ value, onChange }) => {
+const CreateProjectLabelsForm = ({ value, onChange }) => {
   const { labels } = useSelector(store => store.climateWarehouse);
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
@@ -122,8 +124,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
                     id: isUserOnUnitsPage
                       ? 'select-existing-label'
                       : 'select-existing-label-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -157,6 +158,7 @@ const CreateLabelsForm = ({ value, onChange }) => {
               </Body>
             )}
           </StyledFieldContainer>
+          <div></div>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -238,76 +240,47 @@ const CreateLabelsForm = ({ value, onChange }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="crediting-period-start-date" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'labels-crediting-period-start-date-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <DateSelect
-                variant={
-                  errorLabelMessage?.creditingPeriodStartDate &&
-                  DateVariantEnum.error
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="label-link" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'labels-label-link-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <StandardInput
+                variant={errorLabelMessage.labelLink && InputVariantEnum.error}
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'label-link',
+                })}
+                state={
+                  areFieldsDisabled
+                    ? InputStateEnum.disabled
+                    : InputStateEnum.default
                 }
-                size="large"
-                dateValue={value.creditingPeriodStartDate}
-                setDateValue={event =>
-                  onChange({ ...value, creditingPeriodStartDate: event })
-                }
-                disabled={areFieldsDisabled ? true : undefined}
+                value={value.labelLink}
+                onChange={event => {
+                  onChange({ ...value, labelLink: event });
+                }}
               />
-            </InputContainer>
-            {errorLabelMessage?.creditingPeriodStartDate && (
-              <Body size="Small" color="red">
-                {errorLabelMessage.creditingPeriodStartDate}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="crediting-period-end-date" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'labels-crediting-period-end-date-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <DateSelect
-                variant={
-                  errorLabelMessage?.creditingPeriodEndDate &&
-                  DateVariantEnum.error
-                }
-                size="large"
-                dateValue={value.creditingPeriodEndDate}
-                setDateValue={event =>
-                  onChange({ ...value, creditingPeriodEndDate: event })
-                }
-                disabled={areFieldsDisabled ? true : undefined}
-              />
-            </InputContainer>
-            {errorLabelMessage?.creditingPeriodEndDate && (
-              <Body size="Small" color="red">
-                {errorLabelMessage.creditingPeriodEndDate}
-              </Body>
-            )}
-          </StyledFieldContainer>
-        </BodyContainer>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {errorLabelMessage?.labelLink && (
+                <Body size="Small" color="red">
+                  {errorLabelMessage.labelLink}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -380,6 +353,77 @@ const CreateLabelsForm = ({ value, onChange }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
+                  *<FormattedMessage id="crediting-period-start-date" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'labels-crediting-period-start-date-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <DateSelect
+                variant={
+                  errorLabelMessage?.creditingPeriodStartDate &&
+                  DateVariantEnum.error
+                }
+                size="large"
+                dateValue={value.creditingPeriodStartDate}
+                setDateValue={event =>
+                  onChange({ ...value, creditingPeriodStartDate: event })
+                }
+                disabled={areFieldsDisabled ? true : undefined}
+              />
+            </InputContainer>
+            {errorLabelMessage?.creditingPeriodStartDate && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.creditingPeriodStartDate}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="crediting-period-end-date" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'labels-crediting-period-end-date-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <DateSelect
+                variant={
+                  errorLabelMessage?.creditingPeriodEndDate &&
+                  DateVariantEnum.error
+                }
+                size="large"
+                dateValue={value.creditingPeriodEndDate}
+                setDateValue={event =>
+                  onChange({ ...value, creditingPeriodEndDate: event })
+                }
+                disabled={areFieldsDisabled ? true : undefined}
+              />
+            </InputContainer>
+            {errorLabelMessage?.creditingPeriodEndDate && (
+              <Body size="Small" color="red">
+                {errorLabelMessage.creditingPeriodEndDate}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
                   *<FormattedMessage id="unit-quantity" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -417,49 +461,11 @@ const CreateLabelsForm = ({ value, onChange }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="label-link" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'labels-label-link-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={errorLabelMessage.labelLink && InputVariantEnum.error}
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'label-link',
-                })}
-                state={
-                  areFieldsDisabled
-                    ? InputStateEnum.disabled
-                    : InputStateEnum.default
-                }
-                value={value.labelLink}
-                onChange={event => {
-                  onChange({ ...value, labelLink: event });
-                }}
-              />
-            </InputContainer>
-            {errorLabelMessage?.labelLink && (
-              <Body size="Small" color="red">
-                {errorLabelMessage.labelLink}
-              </Body>
-            )}
-          </StyledFieldContainer>
-        </div>
+        </BodyContainer>
       </FormContainerStyle>
       <Divider />
     </ModalFormContainerStyle>
   );
 };
 
-export { CreateLabelsForm };
+export { CreateProjectLabelsForm };

@@ -24,6 +24,7 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
+  SpanTwoColumnsContainer,
 } from '..';
 
 import { ratingSchema } from '../../store/validations';
@@ -91,6 +92,44 @@ const CreateRatingsForm = ({ value, onChange }) => {
             {errorRatingMessage?.ratingType && (
               <Body size="Small" color="red">
                 {errorRatingMessage.ratingType}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="rating" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'ratings-rating-value-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorRatingMessage?.rating
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'rating',
+                })}
+                state={InputStateEnum.default}
+                value={value.rating}
+                onChange={changeValue =>
+                  onInputChange('rating', changeValue.toString())
+                }
+              />
+            </InputContainer>
+            {errorRatingMessage?.rating && (
+              <Body size="Small" color="red">
+                {errorRatingMessage.rating}
               </Body>
             )}
           </StyledFieldContainer>
@@ -170,61 +209,21 @@ const CreateRatingsForm = ({ value, onChange }) => {
               </Body>
             )}
           </StyledFieldContainer>
-        </BodyContainer>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="rating" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'ratings-rating-value-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorRatingMessage?.rating
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'rating',
-                })}
-                state={InputStateEnum.default}
-                value={value.rating}
-                onChange={changeValue =>
-                  onInputChange('rating', changeValue.toString())
-                }
-              />
-            </InputContainer>
-            {errorRatingMessage?.rating && (
-              <Body size="Small" color="red">
-                {errorRatingMessage.rating}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="rating-link" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'ratings-rating-report-link-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="rating-link" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'ratings-rating-report-link-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
               <StandardInput
                 variant={
                   errorRatingMessage?.ratingLink
@@ -241,14 +240,14 @@ const CreateRatingsForm = ({ value, onChange }) => {
                   onInputChange('ratingLink', changeValue)
                 }
               />
-            </InputContainer>
-            {errorRatingMessage?.ratingLink && (
-              <Body size="Small" color="red">
-                {errorRatingMessage.ratingLink}
-              </Body>
-            )}
-          </StyledFieldContainer>
-        </div>
+              {errorRatingMessage?.ratingLink && (
+                <Body size="Small" color="red">
+                  {errorRatingMessage.ratingLink}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+        </BodyContainer>
       </FormContainerStyle>
       <Divider />
     </ModalFormContainerStyle>

@@ -30,7 +30,7 @@ import {
   Select,
 } from '..';
 
-const CreateIssuanceForm = ({ value, onChange }) => {
+const CreateProjectIssuancesForm = ({ value, onChange }) => {
   const { issuances } = useSelector(store => store.climateWarehouse);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
@@ -120,8 +120,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
                     id: isUserOnUnitsPage
                       ? 'select-existing-issuance'
                       : 'select-existing-issuance-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -150,6 +149,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
               </Body>
             )}
           </StyledFieldContainer>
+          <div></div>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -199,9 +199,7 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                variant={
-                  errorIssuanceMessage?.endDate && DateVariantEnum.error
-                }
+                variant={errorIssuanceMessage?.endDate && DateVariantEnum.error}
                 size="large"
                 dateValue={value.endDate}
                 setDateValue={changeValue =>
@@ -213,6 +211,47 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             {errorIssuanceMessage?.endDate && (
               <Body size="Small" color="red">
                 {errorIssuanceMessage.endDate}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="verification-body" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'issuances-verification-body-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorIssuanceMessage?.verificationBody &&
+                  InputVariantEnum.error
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'verification-body',
+                })}
+                state={
+                  areFieldsDisabled
+                    ? InputStateEnum.disabled
+                    : InputStateEnum.default
+                }
+                value={value.verificationBody}
+                onChange={changeValue =>
+                  onInputChange('verificationBody', changeValue)
+                }
+              />
+            </InputContainer>
+            {errorIssuanceMessage?.verificationBody && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.verificationBody}
               </Body>
             )}
           </StyledFieldContainer>
@@ -233,7 +272,8 @@ const CreateIssuanceForm = ({ value, onChange }) => {
             <InputContainer>
               <DateSelect
                 variant={
-                  errorIssuanceMessage?.verificationReportDate && DateVariantEnum.error
+                  errorIssuanceMessage?.verificationReportDate &&
+                  DateVariantEnum.error
                 }
                 size="large"
                 dateValue={value.verificationReportDate}
@@ -249,8 +289,6 @@ const CreateIssuanceForm = ({ value, onChange }) => {
               </Body>
             )}
           </StyledFieldContainer>
-        </BodyContainer>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
           {value.id && (
             <StyledFieldContainer>
               <StyledLabelContainer>
@@ -319,52 +357,11 @@ const CreateIssuanceForm = ({ value, onChange }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="verification-body" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'issuances-verification-body-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorIssuanceMessage?.verificationBody &&
-                  InputVariantEnum.error
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'verification-body',
-                })}
-                state={
-                  areFieldsDisabled
-                    ? InputStateEnum.disabled
-                    : InputStateEnum.default
-                }
-                value={value.verificationBody}
-                onChange={changeValue =>
-                  onInputChange('verificationBody', changeValue)
-                }
-              />
-            </InputContainer>
-            {errorIssuanceMessage?.verificationBody && (
-              <Body size="Small" color="red">
-                {errorIssuanceMessage.verificationBody}
-              </Body>
-            )}
-          </StyledFieldContainer>
-        </div>
+        </BodyContainer>
       </FormContainerStyle>
       <Divider />
     </ModalFormContainerStyle>
   );
 };
 
-export { CreateIssuanceForm };
+export { CreateProjectIssuancesForm };

@@ -13,8 +13,8 @@ import {
   ProjectDetailsForm,
   StyledFormContainer,
 } from '..';
-import LabelsRepeater from './LabelsRepeater';
-import IssuanceRepeater from './IssuanceRepeater';
+import ProjectLabelsRepeater from './ProjectLabelsRepeater';
+import ProjectIssuancesRepeater from './ProjectIssuancesRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
 import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
@@ -54,13 +54,13 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
 
   const stepperStepsTranslationIds = [
     'project',
-    'labels',
     'issuances',
-    'co-benefits',
     'project-locations',
-    'related-projects',
     'estimations',
+    'labels',
     'ratings',
+    'co-benefits',
+    'related-projects',
   ];
 
   const onChangeStep = async (desiredStep = null) => {
@@ -113,8 +113,7 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
+                    sx={{ cursor: 'pointer' }}>
                     <StepLabel>
                       {intl.formatMessage({
                         id: stepTranslationId,
@@ -127,26 +126,14 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}
-              >
+                index={0}>
                 <ProjectDetailsForm
                   projectDetails={project}
                   setProjectDetails={setProject}
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
-                <LabelsRepeater
-                  labelsState={project?.labels ?? []}
-                  newLabelsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      labels: value,
-                    }))
-                  }
-                />
-              </TabPanel>
-              <TabPanel value={tabValue} index={2}>
-                <IssuanceRepeater
+                <ProjectIssuancesRepeater
                   issuanceState={project?.issuances ?? []}
                   newIssuanceState={value =>
                     setProject(prev => ({
@@ -156,18 +143,7 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   }
                 />
               </TabPanel>
-              <TabPanel value={tabValue} index={3}>
-                <CoBenefitsRepeater
-                  coBenefitsState={project?.coBenefits ?? []}
-                  setNewCoBenefitsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      coBenefits: value,
-                    }))
-                  }
-                />
-              </TabPanel>
-              <TabPanel value={tabValue} index={4}>
+              <TabPanel value={tabValue} index={2}>
                 <LocationsRepeater
                   locationsState={project?.projectLocations ?? []}
                   setLocationsState={value =>
@@ -178,18 +154,7 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   }
                 />
               </TabPanel>
-              <TabPanel value={tabValue} index={5}>
-                <RelatedProjectsRepeater
-                  relatedProjectsState={project?.relatedProjects ?? []}
-                  setRelatedProjectsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      relatedProjects: value,
-                    }))
-                  }
-                />
-              </TabPanel>
-              <TabPanel value={tabValue} index={6}>
+              <TabPanel value={tabValue} index={3}>
                 <EstimationsRepeater
                   estimationsState={project?.estimations ?? []}
                   setEstimationsState={value =>
@@ -200,13 +165,46 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   }
                 />
               </TabPanel>
-              <TabPanel value={tabValue} index={7}>
+              <TabPanel value={tabValue} index={4}>
+                <ProjectLabelsRepeater
+                  labelsState={project?.labels ?? []}
+                  newLabelsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      labels: value,
+                    }))
+                  }
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={5}>
                 <RatingsRepeater
                   ratingsState={project?.projectRatings ?? []}
                   setRatingsState={value =>
                     setProject(prev => ({
                       ...prev,
                       projectRatings: value,
+                    }))
+                  }
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={6}>
+                <CoBenefitsRepeater
+                  coBenefitsState={project?.coBenefits ?? []}
+                  setNewCoBenefitsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      coBenefits: value,
+                    }))
+                  }
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={7}>
+                <RelatedProjectsRepeater
+                  relatedProjectsState={project?.relatedProjects ?? []}
+                  setRelatedProjectsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      relatedProjects: value,
                     }))
                   }
                 />
