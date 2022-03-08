@@ -6,7 +6,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
-import { history, reloadCurrentUrlFromStorage } from './';
+import { history, reloadApp, reloadCurrentUrlFromStorage } from './';
 import { signOut } from '../store/actions/app';
 
 import * as Pages from '../pages';
@@ -20,7 +20,6 @@ import {
   modalTypeEnum,
 } from '../components';
 import { setPendingError, setNotificationMessage } from '../store/actions/app';
-import { getOrganizationData } from '../store/actions/climateWarehouseActions';
 
 const AppNavigator = () => {
   const intl = useIntl();
@@ -58,7 +57,7 @@ const AppNavigator = () => {
           informationType="error"
           modalType={modalTypeEnum.information}
           label="Try Again"
-          onOk={() => dispatch(getOrganizationData())}
+          onOk={reloadApp}
           title={intl.formatMessage({ id: 'network-error' })}
           body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
           extraButtonLabel={
