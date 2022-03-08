@@ -1,7 +1,11 @@
+import constants from '../constants';
+
 export const downloadTxtFile = async (type, searchParams) => {
   searchParams.delete('myRegistry');
   await fetch(
-    `http://localhost:3030/v1/${`${type}?`}${`${searchParams.toString()}&`}xls=true`,
+    `${
+      constants.API_HOST
+    }/${`${type}?`}${`${searchParams.toString()}&`}xls=true`,
   )
     .then(async result => await result.blob())
     .then(async response => {

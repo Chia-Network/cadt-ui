@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { Router } from 'react-router';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
@@ -79,8 +79,8 @@ const AppNavigator = () => {
       <Router history={history}>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
-            <Route exact path="/">
-              <Pages.Home />
+            <Route exact path="/" render={() => <Redirect to="/projects" />}>
+              <Pages.Projects />
             </Route>
             <Route exact path="/units">
               <Pages.Units />
@@ -97,6 +97,7 @@ const AppNavigator = () => {
             <Route exact path="/storybook">
               <Pages.StoryBook />
             </Route>
+            <Route path="*" render={() => <Redirect to="/" />} />
           </Suspense>
         </Dashboard>
       </Router>

@@ -1,14 +1,15 @@
 {
   "name": "climate-warehouse",
-  "version": "0.1.4",
+  "version": "0.1.8",
   "private": true,
+  "author": "Chia Network Inc. <hello@chia.net>",
   "homepage": "./",
   "main": "src/start.js",
   "engineStrict": true,
   "engines": {
     "node": ">=15.0.1"
   },
-  "proxy": "http://localhost:3030",
+  "proxy": "http://localhost:31310",
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
@@ -116,13 +117,23 @@
         "arch": [
           "universal"
         ]
-      }
+      },
+      "publish": null
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "publish": null
     },
     "linux": {
-      "target": "deb"
+      "target": "deb",
+      "publish": null
+    }
+  },
+  "standard-version": {
+    "skip": {
+      "bump": true,
+      "commit": true,
+      "tag": true
     }
   },
   "contributors": [

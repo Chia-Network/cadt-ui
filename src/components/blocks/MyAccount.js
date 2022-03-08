@@ -104,7 +104,7 @@ const MyAccount = () => {
                     variant={InputVariantEnum.default}
                     value={serverAddress}
                     onChange={value => setServerAddress(value)}
-                    placeholderText="http://0.0.0.0:3030"
+                    placeholderText="http://0.0.0.0:31310"
                   />
                 </InputContainer>
                 {(serverAddress === null ||
