@@ -33,7 +33,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
     serialNumberBlock: '',
-    serialNumberPattern: '',
+    serialNumberPattern: '[.*\\D]+([0-9]+)+[-][.*\\D]+([0-9]+)$',
     marketplace: '',
     marketplaceLink: '',
     marketplaceIdentifier: '',
