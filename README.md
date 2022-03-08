@@ -1,6 +1,6 @@
-# Climate Warehouse Auxillery App
+# Climate Warehouse Auxiliary App
 
-Auxillery App for the Climate Warehouse
+Auxiliary App for the Climate Warehouse
 
 ## Quickstart
 
@@ -40,7 +40,7 @@ You'll need:
 
 Upon your first commit, you will automatically be added to the package.json file as a contributor.
 
-## Commiting
+## Committing
 
 This repo uses a commit convention. A typical commit message might read:
 
