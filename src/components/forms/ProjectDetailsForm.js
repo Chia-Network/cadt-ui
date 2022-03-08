@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
@@ -39,23 +38,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
   const [errorProjectMessage, setErrorProjectMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
-  const { organizations } = useSelector(store => store.climateWarehouse);
-
-  const subscribedOrgList = () => {
-    const subscribedOrg = _.filter(
-      organizations,
-      org => org.subscribed === true,
-    );
-    const subscribedList = subscribedOrg.map(orgName => orgName.name);
-    return subscribedList;
-  };
-  const selectedSubscribedOrgList = () => {
-    const selectedSubscribedOrg = _.filter(
-      organizations,
-      org => org.subscribed && org.isHome,
-    );
-    return [selectedSubscribedOrg[0].name];
-  };
 
   useEffect(() => {
     setValidationErrors(projectSchema, projectDetails, setErrorProjectMessage);
@@ -582,12 +564,12 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
-                options={subscribedOrgList()}
+                options={pickLists.registries}
                 state={SimpleSelectStateEnum.default}
                 selected={
                   projectDetails.registryOfOrigin
                     ? [projectDetails.registryOfOrigin]
-                    : selectedSubscribedOrgList()
+                    : undefined
                 }
                 onChange={selectedOptions =>
                   setProjectDetails(prev => ({

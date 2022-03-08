@@ -99,47 +99,47 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
-                {/* <StyledFieldContainer>
-                  <StyledLabelContainer>
-                    <Body>
-                      <LabelContainer>
-                        *<FormattedMessage id="project-location-id" />
-                      </LabelContainer>
-                      <ToolTipContainer
-                        tooltip={intl.formatMessage({
-                          id: 'units-project-location-id-description',
-                        })}>
-                        <DescriptionIcon height="14" width="14" />
-                      </ToolTipContainer>
-                    </Body>
-                  </StyledLabelContainer>
-                  <InputContainer>
-                    <StandardInput
-                      variant={
-                        errorMessage?.projectLocationId
-                          ? InputVariantEnum.error
-                          : undefined
-                      }
-                      size={InputSizeEnum.large}
-                      placeholderText={intl.formatMessage({
-                        id: 'project-location-id',
-                      })}
-                      state={InputStateEnum.default}
-                      value={unitDetails.projectLocationId}
-                      onChange={value =>
-                        setUnitDetails(prev => ({
-                          ...prev,
-                          projectLocationId: value,
-                        }))
-                      }
-                    />
-                  </InputContainer>
-                  {errorMessage?.projectLocationId && (
-                    <Body size="Small" color="red">
-                      {errorMessage.projectLocationId}
-                    </Body>
-                  )}
-                </StyledFieldContainer> */}
+                <LabelContainer>
+                  *<FormattedMessage id="project-location-id" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-project-location-id-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.projectLocationId
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'project-location-id',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.projectLocationId}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    projectLocationId: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.projectLocationId && (
+              <Body size="Small" color="red">
+                {errorMessage.projectLocationId}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
                 <LabelContainer>
                   *<FormattedMessage id="unit-owner" />
                 </LabelContainer>
@@ -176,54 +176,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="country-jurisdiction-of-owner" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-country-jurisdiction-of-owner-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <Select
-                variant={
-                  errorMessage?.countryJurisdictionOfOwner
-                    ? SelectVariantEnum.error
-                    : undefined
-                }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectCountriesOptions}
-                selected={
-                  unitDetails.countryJurisdictionOfOwner
-                    ? [
-                        {
-                          label: unitDetails.countryJurisdictionOfOwner,
-                          value: unitDetails.countryJurisdictionOfOwner,
-                        },
-                      ]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    countryJurisdictionOfOwner: selectedOptions[0].value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.countryJurisdictionOfOwner && (
-              <Body size="Small" color="red">
-                {errorMessage.countryJurisdictionOfOwner}
-              </Body>
-            )}
-          </StyledFieldContainer>
+
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -306,7 +259,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -345,6 +297,100 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             {errorMessage?.inCountryJurisdictionOfOwner && (
               <Body size="Small" color="red">
                 {errorMessage.inCountryJurisdictionOfOwner}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="country-jurisdiction-of-owner" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-country-jurisdiction-of-owner-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <Select
+                variant={
+                  errorMessage?.countryJurisdictionOfOwner
+                    ? SelectVariantEnum.error
+                    : undefined
+                }
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectCountriesOptions}
+                selected={
+                  unitDetails.countryJurisdictionOfOwner
+                    ? [
+                        {
+                          label: unitDetails.countryJurisdictionOfOwner,
+                          value: unitDetails.countryJurisdictionOfOwner,
+                        },
+                      ]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    countryJurisdictionOfOwner: selectedOptions[0].value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.countryJurisdictionOfOwner && (
+              <Body size="Small" color="red">
+                {errorMessage.countryJurisdictionOfOwner}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-type" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-type-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <Select
+                variant={
+                  errorMessage?.unitType ? SelectVariantEnum.error : undefined
+                }
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectUnitTypeOptions}
+                selected={
+                  unitDetails.unitType
+                    ? [
+                        {
+                          value: unitDetails.unitType,
+                          label: unitDetails.unitType,
+                        },
+                      ]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    unitType: selectedOptions[0].value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.unitType && (
+              <Body size="Small" color="red">
+                {errorMessage.unitType}
               </Body>
             )}
           </StyledFieldContainer>
@@ -435,52 +481,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             {errorMessage?.unitStatusReason && (
               <Body size="Small" color="red">
                 {errorMessage.unitStatusReason}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="unit-type" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-unit-type-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <Select
-                variant={
-                  errorMessage?.unitType ? SelectVariantEnum.error : undefined
-                }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectUnitTypeOptions}
-                selected={
-                  unitDetails.unitType
-                    ? [
-                        {
-                          value: unitDetails.unitType,
-                          label: unitDetails.unitType,
-                        },
-                      ]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitType: selectedOptions[0].value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.unitType && (
-              <Body size="Small" color="red">
-                {errorMessage.unitType}
               </Body>
             )}
           </StyledFieldContainer>
