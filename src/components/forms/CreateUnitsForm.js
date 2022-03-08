@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import { TabPanel, Modal, modalTypeEnum } from '..';
-import LabelsRepeater from './LabelsRepeater';
-import IssuanceRepeater from './IssuanceRepeater';
+import UnitLabelsRepeater from './UnitLabelsRepeater';
+import UnitIssuanceRepeater from './UnitIssuanceRepeater';
 import { postNewUnits } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
@@ -33,7 +33,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
     serialNumberBlock: '',
-    serialNumberPattern: '',
+    serialNumberPattern: '[.*\\D]+([0-9]+)+[-][.*\\D]+([0-9]+)$',
     marketplace: '',
     marketplaceLink: '',
     marketplaceIdentifier: '',
@@ -49,7 +49,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     issuance: null,
   });
 
-  const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
+  const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
@@ -108,8 +108,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
+                    sx={{ cursor: 'pointer' }}>
                     <StepLabel>
                       {intl.formatMessage({
                         id: step,
@@ -121,29 +120,28 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}
-            >
+              index={0}>
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <LabelsRepeater
-                labelsState={unit?.labels ?? []}
-                newLabelsState={value =>
-                  setUnit(prev => ({
-                    ...prev,
-                    labels: value,
-                  }))
-                }
-              />
-            </TabPanel>
-            <TabPanel value={tabValue} index={2}>
-              <IssuanceRepeater
+              <UnitIssuanceRepeater
                 max={1}
                 issuanceState={unit.issuance ? [unit.issuance] : []}
                 newIssuanceState={value =>
                   setUnit(prev => ({
                     ...prev,
                     issuance: value[0] ? value[0] : null,
+                  }))
+                }
+              />
+            </TabPanel>
+            <TabPanel value={tabValue} index={2}>
+              <UnitLabelsRepeater
+                labelsState={unit?.labels ?? []}
+                newLabelsState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    labels: value,
                   }))
                 }
               />

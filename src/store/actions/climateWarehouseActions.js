@@ -118,6 +118,7 @@ export const getOrganizationData = () => {
 
       if (response.ok) {
         dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
         const results = await response.json();
 
         dispatch({

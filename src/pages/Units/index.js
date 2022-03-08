@@ -230,7 +230,6 @@ const Units = withRouter(() => {
     return climateWarehouseStore.units.map(unit =>
       _.pick(unit, [
         'warehouseUnitId',
-        'issuanceId',
         'unitOwner',
         'countryJurisdictionOfOwner',
         'serialNumberBlock',

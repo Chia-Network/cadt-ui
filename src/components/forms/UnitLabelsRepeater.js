@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AddIcon, CloseIcon } from '..';
-import { CreateLabelsForm } from './CreateLabelsForm';
+import { CreateUnitLabelsForm } from '.';
 import { ComponentRepeater } from '..';
 import { getLabels } from '../../store/actions/climateWarehouseActions';
 
-function LabelsRepeater({ labelsState, newLabelsState }) {
+function UnitLabelsRepeater({ labelsState, newLabelsState }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function LabelsRepeater({ labelsState, newLabelsState }) {
           unitQuantity: 0,
           labelLink: '',
         }}
-        component={<CreateLabelsForm />}
+        component={<CreateUnitLabelsForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}
         removeIcon={<CloseIcon height={12} width={12} fill={'#1890FF'} />}
       />
@@ -36,4 +36,4 @@ function LabelsRepeater({ labelsState, newLabelsState }) {
   );
 }
 
-export default LabelsRepeater;
+export default UnitLabelsRepeater;
