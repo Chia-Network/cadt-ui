@@ -39,7 +39,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
   const { pickLists } = useSelector(store => store.climateWarehouse);
   const { location } = useHistory();
 
-  const isUserOnUnitsPage = location.pathname.includes('units') ? true : false;
+  const isUserOnUnitsPage = location.pathname.includes('projects') ? true : false;
 
   const areFieldsDisabled = useMemo(() => {
     if (!isUserOnUnitsPage) {

@@ -36,7 +36,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
   const intl = useIntl();
   const { location } = useHistory();
 
-  const isUserOnUnitsPage = location.pathname.includes('units') ? true : false;
+  const isUserOnUnitsPage = location.pathname.includes('projects') ? true : false;
 
   const areFieldsDisabled = useMemo(() => {
     if (!isUserOnUnitsPage) {

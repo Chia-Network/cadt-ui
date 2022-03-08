@@ -28,7 +28,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   const intl = useIntl();
 
   const [unit, setUnit] = useState({
-    projectLocationId: 'test',
+    projectLocationId: '',
     unitOwner: '',
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
