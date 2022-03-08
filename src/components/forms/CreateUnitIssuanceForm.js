@@ -45,6 +45,9 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
       }
       return false;
     }
+      if (isUserOnUnitsPage) {
+        return true;
+      }
   }, [isUserOnUnitsPage, value, value.id]);
 
   const getIssuanceLabel = issuance => {

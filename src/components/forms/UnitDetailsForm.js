@@ -51,14 +51,14 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
     [pickLists],
   );
 
-  // const selectUnitTypeOptions = useMemo(
-  //   () =>
-  //     pickLists.unitType.map(unitTypeItem => ({
-  //       value: unitTypeItem,
-  //       label: unitTypeItem,
-  //     })),
-  //   [pickLists],
-  // );
+  const selectUnitTypeOptions = useMemo(
+    () =>
+      pickLists.unitType.map(unitTypeItem => ({
+        value: unitTypeItem,
+        label: unitTypeItem,
+      })),
+    [pickLists],
+  );
 
   const selectCorrespondingAdjustmentStatusOptions = useMemo(
     () =>
@@ -180,47 +180,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="serial-number-block" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-serial-number-block-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.serialNumberBlock
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'serial-number-block',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.serialNumberBlock}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    serialNumberBlock: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.serialNumberBlock && (
-              <Body size="Small" color="red">
-                {errorMessage.serialNumberBlock}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
                   *<FormattedMessage id="country-jurisdiction-of-owner" />
                 </LabelContainer>
                 <ToolTipContainer
@@ -265,6 +224,89 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="serial-number-block" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-serial-number-block-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.serialNumberBlock
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'serial-number-block',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.serialNumberBlock}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    serialNumberBlock: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.serialNumberBlock && (
+              <Body size="Small" color="red">
+                {errorMessage.serialNumberBlock}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="serial-number-pattern" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-serial-number-pattern-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.serialNumberPattern
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'serial-number-pattern',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.serialNumberPattern}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    serialNumberPattern: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.serialNumberPattern && (
+              <Body size="Small" color="red">
+                {errorMessage.serialNumberPattern}
+              </Body>
+            )}
+          </StyledFieldContainer>
+
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -393,6 +435,52 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             {errorMessage?.unitStatusReason && (
               <Body size="Small" color="red">
                 {errorMessage.unitStatusReason}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-type" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-type-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <Select
+                variant={
+                  errorMessage?.unitType ? SelectVariantEnum.error : undefined
+                }
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={selectUnitTypeOptions}
+                selected={
+                  unitDetails.unitType
+                    ? [
+                        {
+                          value: unitDetails.unitType,
+                          label: unitDetails.unitType,
+                        },
+                      ]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    unitType: selectedOptions[0].value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.unitType && (
+              <Body size="Small" color="red">
+                {errorMessage.unitType}
               </Body>
             )}
           </StyledFieldContainer>
@@ -731,94 +819,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
-          {/* <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="serial-number-pattern" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-serial-number-pattern-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.serialNumberPattern
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'serial-number-pattern',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.serialNumberPattern}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    serialNumberPattern: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.serialNumberPattern && (
-              <Body size="Small" color="red">
-                {errorMessage.serialNumberPattern}
-              </Body>
-            )}
-          </StyledFieldContainer>
-
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="unit-type" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-unit-type-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <Select
-                variant={
-                  errorMessage?.unitType ? SelectVariantEnum.error : undefined
-                }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectUnitTypeOptions}
-                selected={
-                  unitDetails.unitType
-                    ? [
-                        {
-                          value: unitDetails.unitType,
-                          label: unitDetails.unitType,
-                        },
-                      ]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitType: selectedOptions[0].value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.unitType && (
-              <Body size="Small" color="red">
-                {errorMessage.unitType}
-              </Body>
-            )}
-          </StyledFieldContainer> */}
         </BodyContainer>
       </FormContainerStyle>
     </ModalFormContainerStyle>

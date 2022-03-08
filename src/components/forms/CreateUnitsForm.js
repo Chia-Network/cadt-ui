@@ -33,7 +33,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
     serialNumberBlock: '',
-    serialNumberPattern: 'test',
+    serialNumberPattern: '',
     marketplace: '',
     marketplaceLink: '',
     marketplaceIdentifier: '',
@@ -41,7 +41,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     unitStatusReason: '',
     vintageYear: '',
     unitRegistryLink: '',
-    unitType: 'Held',
+    unitType: '',
     unitStatus: '',
     correspondingAdjustmentDeclaration: '',
     correspondingAdjustmentStatus: '',
@@ -49,7 +49,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     issuance: null,
   });
 
-  const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
+  const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
@@ -108,8 +108,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
+                    sx={{ cursor: 'pointer' }}>
                     <StepLabel>
                       {intl.formatMessage({
                         id: step,
@@ -121,22 +120,10 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}
-            >
+              index={0}>
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <UnitLabelsRepeater
-                labelsState={unit?.labels ?? []}
-                newLabelsState={value =>
-                  setUnit(prev => ({
-                    ...prev,
-                    labels: value,
-                  }))
-                }
-              />
-            </TabPanel>
-            <TabPanel value={tabValue} index={2}>
               <UnitIssuanceRepeater
                 max={1}
                 issuanceState={unit.issuance ? [unit.issuance] : []}
@@ -144,6 +131,17 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   setUnit(prev => ({
                     ...prev,
                     issuance: value[0] ? value[0] : null,
+                  }))
+                }
+              />
+            </TabPanel>
+            <TabPanel value={tabValue} index={2}>
+              <UnitLabelsRepeater
+                labelsState={unit?.labels ?? []}
+                newLabelsState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    labels: value,
                   }))
                 }
               />

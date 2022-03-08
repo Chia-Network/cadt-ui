@@ -1,6 +1,7 @@
 import u from 'updeep';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { setValidationErrors } from '../../utils/validationUtils';
@@ -22,10 +23,15 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
   DateVariantEnum,
+  Select,
 } from '..';
 
 const CreateProjectIssuancesForm = ({ value, onChange }) => {
+  const { issuances } = useSelector(store => store.climateWarehouse);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
   const { location } = useHistory();
@@ -44,6 +50,53 @@ const CreateProjectIssuancesForm = ({ value, onChange }) => {
     }
   }, [isUserOnUnitsPage, value, value.id]);
 
+  const getIssuanceLabel = issuance => {
+    if (issuance) {
+      const start = `${new Date(issuance.startDate).toDateString()}`;
+      const end = `${new Date(issuance.endDate).toDateString()}`;
+      return `${start} - ${end}`;
+    }
+  };
+
+  const issuancesSelectOptions = useMemo(() => {
+    if (issuances?.length > 0) {
+      return issuances.map(issuance => ({
+        value: issuance.id,
+        label: getIssuanceLabel(issuance),
+      }));
+    } else {
+      return null;
+    }
+  }, [issuances]);
+
+  const updateIssuanceById = id => {
+    const issuanceIsAvailable = issuances?.some(
+      issuance => issuance?.id === id,
+    );
+    const selectedIssuance =
+      issuanceIsAvailable &&
+      issuances.filter(issuance => issuance?.id === id)[0];
+
+    if (selectedIssuance) {
+      const {
+        endDate,
+        startDate,
+        verificationApproach,
+        verificationBody,
+        verificationReportDate,
+        id,
+      } = selectedIssuance;
+      onChange({
+        endDate,
+        startDate,
+        verificationApproach,
+        verificationBody,
+        verificationReportDate,
+        id,
+      });
+    }
+  };
+
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
@@ -56,6 +109,47 @@ const CreateProjectIssuancesForm = ({ value, onChange }) => {
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  <FormattedMessage id="select-existing-issuance" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: isUserOnUnitsPage
+                      ? 'select-existing-issuance'
+                      : 'select-existing-issuance-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <Select
+                size={SelectSizeEnum.large}
+                type={SelectTypeEnum.basic}
+                options={issuancesSelectOptions ? issuancesSelectOptions : []}
+                state={SelectStateEnum.default}
+                selected={
+                  value.id
+                    ? [{ value: value.id, label: getIssuanceLabel(value) }]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  updateIssuanceById(selectedOptions[0].value)
+                }
+              />
+            </InputContainer>
+            {isUserOnUnitsPage && issuancesSelectOptions === null && (
+              <Body size="Small" color="red">
+                {intl.formatMessage({
+                  id: 'add-project-with-issuance',
+                })}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <div></div>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
