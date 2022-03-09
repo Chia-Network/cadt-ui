@@ -680,22 +680,23 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               )}
             </InputContainer>
           </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="methodology" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-methodology-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="methodology" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-methodology-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
               <SimpleSelect
+                width="100%"
                 variant={
                   errorProjectMessage?.methodology &&
                   SimpleSelectVariantEnum.error
@@ -721,8 +722,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   {errorProjectMessage.methodology}
                 </Body>
               )}
-            </InputContainer>
-          </StyledFieldContainer>
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
