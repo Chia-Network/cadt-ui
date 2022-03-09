@@ -318,5 +318,6 @@
   "add-valid-server-address": "Add a valid server address",
   "add-valid-api-key": "Add a valid Api key",
   "add-valid-organization-name": "Add a valid organization name",
-  "add-valid-organization-icon": "Load a valid SVG icon"
+  "add-valid-organization-icon": "Load a valid SVG icon",
+  "creating-organization": "Creating Organization"
 }
