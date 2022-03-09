@@ -461,7 +461,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <div></div>
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
@@ -505,50 +504,51 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               )}
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="current-registry" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-current-registry-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <SimpleSelect
-                variant={
-                  errorProjectMessage?.currentRegistry &&
-                  SimpleSelectVariantEnum.error
-                }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={pickLists.registries}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  projectDetails.currentRegistry
-                    ? [projectDetails.currentRegistry]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    currentRegistry: selectedOptions[0],
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorProjectMessage?.currentRegistry && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.currentRegistry}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <div></div>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="current-registry" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-current-registry-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <SimpleSelect
+                  variant={
+                    errorProjectMessage?.currentRegistry &&
+                    SimpleSelectVariantEnum.error
+                  }
+                  size={SimpleSelectSizeEnum.large}
+                  type={SimpleSelectTypeEnum.basic}
+                  options={pickLists.registries}
+                  state={SimpleSelectStateEnum.default}
+                  selected={
+                    projectDetails.currentRegistry
+                      ? [projectDetails.currentRegistry]
+                      : undefined
+                  }
+                  onChange={selectedOptions =>
+                    setProjectDetails(prev => ({
+                      ...prev,
+                      currentRegistry: selectedOptions[0],
+                    }))
+                  }
+                />
+              </InputContainer>
+              {errorProjectMessage?.currentRegistry && (
+                <Body size="Small" color="red">
+                  {errorProjectMessage.currentRegistry}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>

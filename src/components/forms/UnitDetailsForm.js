@@ -564,7 +564,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <div></div>
           <HrSpanTwoColumnsContainer>
             <hr />
           </HrSpanTwoColumnsContainer>
