@@ -292,5 +292,8 @@
   "server-address": "Dirección del servidor",
   "log-in-to-remote-node": "Iniciar sesión en el nodo remoto",
   "add-valid-server-address": "Agregar una dirección de servidor válida",
-  "add-valid-api-key": "Agregar una clave Api válida"
+  "add-valid-api-key": "Agregar una clave Api válida",
+  "add-valid-organization-name": "Agregar un nombre de organización válido",
+  "add-valid-organization-icon": "Agregar un icono SVG válido",
+  "creating-organization": "Creación de Organización"
 }

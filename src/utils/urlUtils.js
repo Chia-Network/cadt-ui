@@ -11,9 +11,6 @@ export const getUpdatedUrl = (currentUrlQuery, ...newParamsAndValues) => {
 };
 
 export const validateUrl = url => {
-  const expression =
-    /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
+  const expression = /^(http|https):\/\/[^ "]+$/;
   return expression.test(url);
 };
-
-
