@@ -28,6 +28,7 @@ import {
   SelectStateEnum,
   DateVariantEnum,
   Select,
+  SpanTwoColumnsContainer,
 } from '..';
 
 const CreateUnitIssuanceForm = ({ value, onChange }) => {
@@ -105,8 +106,8 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
   };
 
   useEffect(() => {
-    if(validateForm && formType === 'issuances'){
-    setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
+    if (validateForm && formType === 'issuances') {
+      setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
     }
   }, [value, validateForm, formType]);
 
@@ -114,47 +115,60 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  <FormattedMessage id="select-existing-issuance" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: isUserOnUnitsPage
-                      ? 'select-existing-issuance'
-                      : 'select-existing-issuance-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={issuancesSelectOptions ? issuancesSelectOptions : []}
-                state={SelectStateEnum.default}
-                selected={
-                  value.id
-                    ? [{ value: value.id, label: getIssuanceLabel(value) }]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  updateIssuanceById(selectedOptions[0].value)
-                }
-              />
-            </InputContainer>
-            {isUserOnUnitsPage && issuancesSelectOptions === null && (
-              <Body size="Small" color="red">
-                {intl.formatMessage({
-                  id: 'add-project-with-issuance',
-                })}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <div></div>
+          {issuancesSelectOptions && (
+            <>
+              <SpanTwoColumnsContainer>
+                <StyledFieldContainer>
+                  <StyledLabelContainer>
+                    <Body>
+                      <LabelContainer>
+                        <FormattedMessage id="select-existing-issuance" />
+                      </LabelContainer>
+                      <ToolTipContainer
+                        tooltip={intl.formatMessage({
+                          id: isUserOnUnitsPage
+                            ? 'select-existing-issuance'
+                            : 'select-existing-issuance-description',
+                        })}>
+                        <DescriptionIcon height="14" width="14" />
+                      </ToolTipContainer>
+                    </Body>
+                  </StyledLabelContainer>
+                  <InputContainer>
+                    <Select
+                      size={SelectSizeEnum.large}
+                      type={SelectTypeEnum.basic}
+                      options={
+                        issuancesSelectOptions ? issuancesSelectOptions : []
+                      }
+                      state={SelectStateEnum.default}
+                      selected={
+                        value.id
+                          ? [
+                              {
+                                value: value.id,
+                                label: getIssuanceLabel(value),
+                              },
+                            ]
+                          : undefined
+                      }
+                      onChange={selectedOptions =>
+                        updateIssuanceById(selectedOptions[0].value)
+                      }
+                    />
+                  </InputContainer>
+                  {isUserOnUnitsPage && issuancesSelectOptions === null && (
+                    <Body size="Small" color="red">
+                      {intl.formatMessage({
+                        id: 'add-project-with-issuance',
+                      })}
+                    </Body>
+                  )}
+                </StyledFieldContainer>
+              </SpanTwoColumnsContainer>
+            </>
+          )}
+
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -285,6 +299,40 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
             {errorIssuanceMessage?.verificationBody && (
               <Body size="Small" color="red">
                 {errorIssuanceMessage.verificationBody}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="verification-report-date" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'issuances-verification-report-date-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <DateSelect
+                variant={
+                  errorIssuanceMessage?.verificationReportDate &&
+                  DateVariantEnum.error
+                }
+                size="large"
+                dateValue={value.verificationReportDate}
+                setDateValue={changeValue =>
+                  onInputChange('verificationReportDate', changeValue)
+                }
+                disabled={areFieldsDisabled ? true : undefined}
+              />
+            </InputContainer>
+            {errorIssuanceMessage?.verificationReportDate && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.verificationReportDate}
               </Body>
             )}
           </StyledFieldContainer>

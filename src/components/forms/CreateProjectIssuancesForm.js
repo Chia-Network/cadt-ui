@@ -28,6 +28,7 @@ import {
   SelectStateEnum,
   DateVariantEnum,
   Select,
+  SpanTwoColumnsContainer,
 } from '..';
 
 const CreateProjectIssuancesForm = ({ value, onChange }) => {
@@ -112,47 +113,59 @@ const CreateProjectIssuancesForm = ({ value, onChange }) => {
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  <FormattedMessage id="select-existing-issuance" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: isUserOnUnitsPage
-                      ? 'select-existing-issuance'
-                      : 'select-existing-issuance-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={issuancesSelectOptions ? issuancesSelectOptions : []}
-                state={SelectStateEnum.default}
-                selected={
-                  value.id
-                    ? [{ value: value.id, label: getIssuanceLabel(value) }]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  updateIssuanceById(selectedOptions[0].value)
-                }
-              />
-            </InputContainer>
-            {isUserOnUnitsPage && issuancesSelectOptions === null && (
-              <Body size="Small" color="red">
-                {intl.formatMessage({
-                  id: 'add-project-with-issuance',
-                })}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <div></div>
+          {issuancesSelectOptions && (
+            <>
+              <SpanTwoColumnsContainer>
+                <StyledFieldContainer>
+                  <StyledLabelContainer>
+                    <Body>
+                      <LabelContainer>
+                        <FormattedMessage id="select-existing-issuance" />
+                      </LabelContainer>
+                      <ToolTipContainer
+                        tooltip={intl.formatMessage({
+                          id: isUserOnUnitsPage
+                            ? 'select-existing-issuance'
+                            : 'select-existing-issuance-description',
+                        })}>
+                        <DescriptionIcon height="14" width="14" />
+                      </ToolTipContainer>
+                    </Body>
+                  </StyledLabelContainer>
+                  <InputContainer>
+                    <Select
+                      size={SelectSizeEnum.large}
+                      type={SelectTypeEnum.basic}
+                      options={
+                        issuancesSelectOptions ? issuancesSelectOptions : []
+                      }
+                      state={SelectStateEnum.default}
+                      selected={
+                        value.id
+                          ? [
+                              {
+                                value: value.id,
+                                label: getIssuanceLabel(value),
+                              },
+                            ]
+                          : undefined
+                      }
+                      onChange={selectedOptions =>
+                        updateIssuanceById(selectedOptions[0].value)
+                      }
+                    />
+                  </InputContainer>
+                  {isUserOnUnitsPage && issuancesSelectOptions === null && (
+                    <Body size="Small" color="red">
+                      {intl.formatMessage({
+                        id: 'add-project-with-issuance',
+                      })}
+                    </Body>
+                  )}
+                </StyledFieldContainer>
+              </SpanTwoColumnsContainer>
+            </>
+          )}
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
