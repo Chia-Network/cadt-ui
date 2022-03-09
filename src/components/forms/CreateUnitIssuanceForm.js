@@ -108,7 +108,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
     if(validateForm && formType === 'issuances'){
     setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
     }
-  }, [value, validateForm]);
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>

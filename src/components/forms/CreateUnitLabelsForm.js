@@ -108,7 +108,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
     if (validateForm && formType === 'labels') {
       setValidationErrors(labelSchema, value, setErrorLabelMessage);
     }
-  }, [value, validateForm]);
+  }, [value, validateForm,formType]);
 
   return (
     <ModalFormContainerStyle>
