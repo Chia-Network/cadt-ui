@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import {
   Modal,
   Body,
@@ -12,31 +13,59 @@ import {
   StyledFieldContainer,
   StyledLabelContainer,
   ModalFormContainerStyle,
+  UploadIcon,
+  SuccessIcon,
 } from '..';
 import { postNewOrg } from '../../store/actions/climateWarehouseActions';
-import { organizationSchema } from '../../store/validations/organization.validation';
-import { setValidationErrors } from '../../utils/validationUtils';
+
+const StyledInput = styled('input')`
+  visibility: hidden;
+  width: 0px;
+  height: 0px;
+`;
+
+const StyledDiv = styled('div')`
+  border: 1px dotted #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3.5rem;
+  & label {
+    cursor: pointer;
+  }
+`;
 
 const CreateOrgForm = ({ onClose }) => {
-  const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: '',
-    icon: '',
+    svg: null,
   });
   const intl = useIntl();
   const { notification } = useSelector(state => state.app);
 
+  const nameIsValid = formData?.name?.length > 0;
+
+  const svgIsValid = formData?.svg != null;
+
   const onSubmit = async () => {
-    const orgIsValid = await organizationSchema.isValid(formData);
-    if (orgIsValid) {
+    if (nameIsValid && svgIsValid) {
       dispatch(postNewOrg(formData));
     }
   };
 
-  useEffect(() => {
-    setValidationErrors(organizationSchema, formData, setErrorIssuanceMessage);
-  }, [formData]);
+  const onSvgInputChange = e => {
+    if (e.target.value && e.target.value !== '') {
+      const fileNameIsValid = /\.svg$/.test(e.target.value);
+      if (fileNameIsValid) {
+        const file = e.target.files[0];
+        setFormData(prevState => ({
+          ...prevState,
+          svg: file,
+        }));
+      }
+    }
+  };
 
   const orgWasSuccessfullyCreated =
     notification && notification.id === 'organization-created';
@@ -79,9 +108,11 @@ const CreateOrgForm = ({ onClose }) => {
                   }
                 />
               </InputContainer>
-              {errorIssuanceMessage?.name && (
+              {!nameIsValid && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.name}
+                  {intl.formatMessage({
+                    id: 'add-valid-organization-name',
+                  })}
                 </Body>
               )}
             </StyledFieldContainer>
@@ -92,38 +123,26 @@ const CreateOrgForm = ({ onClose }) => {
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                <StandardInput
-                  size={InputSizeEnum.large}
-                  variant={InputVariantEnum.default}
-                  value={formData.icon}
-                  onChange={value =>
-                    setFormData(prevState => ({
-                      ...prevState,
-                      icon: value,
-                    }))
-                  }
-                />
+                <StyledDiv>
+                  <label htmlFor="svg">
+                    {!svgIsValid && <UploadIcon width="20" height="20" />}
+                    {svgIsValid && <SuccessIcon width="20" height="20" />}
+                  </label>
+                  <StyledInput
+                    type="file"
+                    id="svg"
+                    accept=".svg"
+                    onChange={onSvgInputChange}
+                  />
+                </StyledDiv>
               </InputContainer>
-              {errorIssuanceMessage?.icon && (
+              {!svgIsValid && (
                 <Body size="Small" color="red">
-                  {errorIssuanceMessage.icon}
+                  {intl.formatMessage({
+                    id: 'add-valid-organization-icon',
+                  })}
                 </Body>
               )}
-            </StyledFieldContainer>
-            {/* Organization website field is not implemented on the back-end yet, after implementation please validate and connect the following field to the form */}
-            <StyledFieldContainer>
-              <StyledLabelContainer>
-                <Body>
-                  <FormattedMessage id="organization-website" />
-                </Body>
-              </StyledLabelContainer>
-              <InputContainer>
-                <StandardInput
-                  size={InputSizeEnum.large}
-                  variant={InputVariantEnum.default}
-                  onChange={value => console.log(value)}
-                />
-              </InputContainer>
             </StyledFieldContainer>
           </ModalFormContainerStyle>
         }

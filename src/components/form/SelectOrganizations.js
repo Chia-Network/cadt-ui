@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import styled, { withTheme, css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
-import { ArrowDownIcon, MagnifyGlassIcon, CloseIcon } from '../icons';
 import ScrollContainer from 'react-indiana-drag-scroll';
+
+import { ArrowDownIcon, MagnifyGlassIcon, CloseIcon } from '../icons';
+import { validateUrl } from '../../utils/urlUtils';
 
 const SelectSizeEnum = {
   large: 'large',
@@ -208,6 +210,18 @@ const StyledIconContainer = styled('div')`
   padding-left: 2px;
 `;
 
+const StyledSvgContainer = styled('div')`
+  width: 17px;
+  height: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & svg {
+    width: 17px;
+    height: 17px;
+  }
+`;
+
 const SelectOrganizations = withTheme(
   ({
     size = SelectSizeEnum.default,
@@ -385,6 +399,10 @@ const SelectOrganizations = withTheme(
       setSearchInputValue(e.target.value);
     };
 
+    const createMarkup = icon => {
+      return { __html: icon };
+    };
+
     return (
       <div style={{ position: 'relative' }} ref={ref}>
         {/* Select for Basic type */}
@@ -526,7 +544,14 @@ const SelectOrganizations = withTheme(
                   {option.name}
                   {option.icon && (
                     <StyledIconContainer>
-                      <img src={option.icon} width={17} height={17} />
+                      {validateUrl(option.icon) && (
+                        <img src={option.icon} width={17} height={17} />
+                      )}
+                      {!validateUrl(option.icon) && (
+                        <StyledSvgContainer
+                          dangerouslySetInnerHTML={createMarkup(option.icon)}
+                        />
+                      )}
                     </StyledIconContainer>
                   )}
                 </StyledBasicMenuItem>
