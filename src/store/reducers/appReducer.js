@@ -18,6 +18,7 @@ const initialState = {
   readOnlyMode: true,
   apiKey: null,
   serverAddress: null,
+  validateForm: false,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -56,6 +57,9 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.PENDING_ERROR:
       return u({ pendingError: action.payload }, state);
+
+    case appActions.SET_VALIDATION:
+      return u({ validateForm: action.payload }, state);
 
     case appActions.SET_THEME:
       if (

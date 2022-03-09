@@ -18,6 +18,7 @@ export const actions = keyMirror(
   'SET_READ_ONLY',
   'SIGN_USER_IN',
   'SIGN_USER_OUT',
+  'SET_VALIDATION'
 );
 
 export const resetRefreshPrompt = {
@@ -49,6 +50,11 @@ export const toggleTheme = {
 export const setGlobalErrorMessage = message => ({
   type: actions.SET_GLOBAL_ERROR_MESSAGE,
   payload: message,
+});
+
+export const setValidateForm = bool => ({
+  type: actions.SET_VALIDATION,
+  payload: bool,
 });
 
 export const clearGlobalErrorMessage = {

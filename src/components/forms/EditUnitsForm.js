@@ -10,6 +10,7 @@ import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
 import { unitsSchema } from '../../store/validations';
+import { setValidateForm } from '../../store/actions/app';
 import {
   cleanObjectFromEmptyFieldsOrArrays,
   formatAPIData,
@@ -44,10 +45,13 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
+    dispatch(setValidateForm(true));
     if (isUnitValid) {
+      dispatch(setValidateForm(false));
       if (desiredStep >= stepperStepsTranslationIds.length) {
         handleUpdateUnit();
       } else {
+        dispatch(setValidateForm(false));
         setTabValue(desiredStep);
       }
     }

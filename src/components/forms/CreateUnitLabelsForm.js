@@ -34,12 +34,15 @@ import { setValidationErrors } from '../../utils/validationUtils';
 
 const CreateUnitLabelsForm = ({ value, onChange }) => {
   const { labels } = useSelector(store => store.climateWarehouse);
+  const { validateForm } = useSelector(state => state.app);
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
   const { location } = useHistory();
 
-  const isUserOnUnitsPage = location.pathname.includes('projects') ? true : false;
+  const isUserOnUnitsPage = location.pathname.includes('projects')
+    ? true
+    : false;
 
   const areFieldsDisabled = useMemo(() => {
     if (!isUserOnUnitsPage) {
@@ -102,8 +105,10 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
   );
 
   useEffect(() => {
-    setValidationErrors(labelSchema, value, setErrorLabelMessage);
-  }, [value]);
+    if (validateForm) {
+      setValidationErrors(labelSchema, value, setErrorLabelMessage);
+    }
+  }, [value, validateForm]);
 
   return (
     <ModalFormContainerStyle>

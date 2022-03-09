@@ -13,6 +13,7 @@ import { useIntl } from 'react-intl';
 import { unitsSchema } from '../../store/validations';
 import { UnitDetailsForm } from '.';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
+import { setValidateForm } from '../../store/actions/app';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -53,10 +54,13 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
+    dispatch(setValidateForm(true));
     if (isUnitValid) {
+      dispatch(setValidateForm(false));
       if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitUnit();
       } else {
+        dispatch(setValidateForm(false));
         setTabValue(desiredStep);
       }
     }
