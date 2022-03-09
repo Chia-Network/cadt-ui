@@ -87,7 +87,10 @@ const LeftNav = withTheme(({ children }) => {
   useEffect(() => {
     let intervalId;
     if (!createOrgIsVisible && myOrgIsCreatedButNotSubscribed) {
-      intervalId = setTimeout(() => dispatch(getOrganizationData()), 30 * 1000);
+      intervalId = setInterval(
+        () => dispatch(getOrganizationData()),
+        30 * 1000,
+      );
     }
     return () => clearTimeout(intervalId);
   }, [myOrgIsNotCreated, myOrgIsCreatedButNotSubscribed, createOrgIsVisible]);
@@ -134,7 +137,7 @@ const LeftNav = withTheme(({ children }) => {
                 <FormattedMessage id="registry" />
               </ButtonText>
             </StyledTitleContainer>
-            {!myOrgIsNotCreated && (
+            {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (
               <>
                 <MenuItem
                   selected={location === 'my-projects'}
