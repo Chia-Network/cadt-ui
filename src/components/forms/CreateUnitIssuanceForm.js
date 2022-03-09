@@ -32,11 +32,14 @@ import {
 
 const CreateUnitIssuanceForm = ({ value, onChange }) => {
   const { issuances } = useSelector(store => store.climateWarehouse);
+  const { validateForm, formType } = useSelector(state => state.app);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
   const { location } = useHistory();
 
-  const isUserOnUnitsPage = location.pathname.includes('projects') ? true : false;
+  const isUserOnUnitsPage = location.pathname.includes('projects')
+    ? true
+    : false;
 
   const areFieldsDisabled = useMemo(() => {
     if (!isUserOnUnitsPage) {
@@ -45,9 +48,9 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
       }
       return false;
     }
-      if (isUserOnUnitsPage) {
-        return true;
-      }
+    if (isUserOnUnitsPage) {
+      return true;
+    }
   }, [isUserOnUnitsPage, value, value.id]);
 
   const getIssuanceLabel = issuance => {
@@ -102,8 +105,10 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
   };
 
   useEffect(() => {
+    if(validateForm && formType === 'issuances'){
     setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
-  }, [value]);
+    }
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>

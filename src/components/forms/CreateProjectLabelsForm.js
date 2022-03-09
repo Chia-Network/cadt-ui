@@ -35,6 +35,7 @@ import { setValidationErrors } from '../../utils/validationUtils';
 
 const CreateProjectLabelsForm = ({ value, onChange }) => {
   const { labels } = useSelector(store => store.climateWarehouse);
+  const { validateForm, formType } = useSelector(state => state.app);
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
@@ -106,8 +107,10 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
   );
 
   useEffect(() => {
+    if(validateForm && formType === 'labels'){
     setValidationErrors(labelSchema, value, setErrorLabelMessage);
-  }, [value]);
+    }
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>

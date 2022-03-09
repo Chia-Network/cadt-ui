@@ -35,12 +35,15 @@ import { unitsSchema } from '../../store/validations';
 
 const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
   const [errorMessage, setErrorMessage] = useState({});
+  const { validateForm, formType } = useSelector(state => state.app);
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
-    setValidationErrors(unitsSchema, unitDetails, setErrorMessage);
-  }, [unitDetails]);
+    if (validateForm && formType === 'unit') {
+      setValidationErrors(unitsSchema, unitDetails, setErrorMessage);
+    }
+  }, [unitDetails, validateForm, formType]);
 
   const selectUnitStatusOptions = useMemo(
     () =>

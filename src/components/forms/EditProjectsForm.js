@@ -20,6 +20,7 @@ import { useIntl } from 'react-intl';
 import { ProjectDetailsForm } from '.';
 
 import { projectSchema } from '../../store/validations';
+import { setValidateForm, setForm } from '../../store/actions/app';
 import {
   formatAPIData,
   cleanObjectFromEmptyFieldsOrArrays,
@@ -49,22 +50,29 @@ const EditProjectsForm = ({
 
   const stepperStepsTranslationIds = [
     'project',
-    'labels',
     'issuances',
-    'co-benefits',
     'project-locations',
-    'related-projects',
     'estimations',
+    'labels',
     'ratings',
+    'co-benefits',
+    'related-projects',
   ];
+
+  useEffect(() => {
+    dispatch(setForm(stepperStepsTranslationIds[tabValue]));
+  }, [tabValue]);
 
   const onChangeStep = async (desiredStep = null) => {
     const isValid = await projectSchema.isValid(project);
+    dispatch(setValidateForm(true));
     if (isValid) {
+      dispatch(setValidateForm(false));
       if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitProject();
       } else {
         setTabValue(desiredStep);
+        dispatch(setValidateForm(false));
       }
     }
   };
@@ -114,8 +122,7 @@ const EditProjectsForm = ({
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
+                    sx={{ cursor: 'pointer' }}>
                     <StepLabel>
                       {intl.formatMessage({
                         id: stepTranslationId,
@@ -128,25 +135,13 @@ const EditProjectsForm = ({
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}
-              >
+                index={0}>
                 <ProjectDetailsForm
                   projectDetails={project}
                   setProjectDetails={setProject}
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
-                <ProjectLabelsRepeater
-                  labelsState={project?.labels ?? []}
-                  newLabelsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      labels: value,
-                    }))
-                  }
-                />
-              </TabPanel>
-              <TabPanel value={tabValue} index={2}>
                 <ProjectIssuancesRepeater
                   issuanceState={project?.issuances ?? []}
                   newIssuanceState={value =>
@@ -157,18 +152,7 @@ const EditProjectsForm = ({
                   }
                 />
               </TabPanel>
-              <TabPanel value={tabValue} index={3}>
-                <CoBenefitsRepeater
-                  coBenefitsState={project?.coBenefits ?? []}
-                  setNewCoBenefitsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      coBenefits: value,
-                    }))
-                  }
-                />
-              </TabPanel>
-              <TabPanel value={tabValue} index={4}>
+              <TabPanel value={tabValue} index={2}>
                 <LocationsRepeater
                   locationsState={project?.projectLocations ?? []}
                   setLocationsState={value =>
@@ -179,18 +163,7 @@ const EditProjectsForm = ({
                   }
                 />
               </TabPanel>
-              <TabPanel value={tabValue} index={5}>
-                <RelatedProjectsRepeater
-                  relatedProjectsState={project?.relatedProjects ?? []}
-                  setRelatedProjectsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      relatedProjects: value,
-                    }))
-                  }
-                />
-              </TabPanel>
-              <TabPanel value={tabValue} index={6}>
+              <TabPanel value={tabValue} index={3}>
                 <EstimationsRepeater
                   estimationsState={project?.estimations ?? []}
                   setEstimationsState={value =>
@@ -201,13 +174,48 @@ const EditProjectsForm = ({
                   }
                 />
               </TabPanel>
-              <TabPanel value={tabValue} index={7}>
+              <TabPanel value={tabValue} index={4}>
+                <ProjectLabelsRepeater
+                  labelsState={project?.labels ?? []}
+                  newLabelsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      labels: value,
+                    }))
+                  }
+                />
+              </TabPanel>
+              <TabPanel value={tabValue} index={5}>
                 <RatingsRepeater
                   ratingsState={project?.projectRatings ?? []}
                   setRatingsState={value =>
                     setProject(prev => ({
                       ...prev,
                       projectRatings: value,
+                    }))
+                  }
+                />
+              </TabPanel>
+
+              <TabPanel value={tabValue} index={6}>
+                <CoBenefitsRepeater
+                  coBenefitsState={project?.coBenefits ?? []}
+                  setNewCoBenefitsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      coBenefits: value,
+                    }))
+                  }
+                />
+              </TabPanel>
+
+              <TabPanel value={tabValue} index={7}>
+                <RelatedProjectsRepeater
+                  relatedProjectsState={project?.relatedProjects ?? []}
+                  setRelatedProjectsState={value =>
+                    setProject(prev => ({
+                      ...prev,
+                      relatedProjects: value,
                     }))
                   }
                 />

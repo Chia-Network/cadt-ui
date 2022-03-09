@@ -32,6 +32,7 @@ import {
 
 const CreateProjectIssuancesForm = ({ value, onChange }) => {
   const { issuances } = useSelector(store => store.climateWarehouse);
+  const { validateForm, formType } = useSelector(state => state.app);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
   const { location } = useHistory();
@@ -102,8 +103,10 @@ const CreateProjectIssuancesForm = ({ value, onChange }) => {
   };
 
   useEffect(() => {
-    setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
-  }, [value]);
+    if (validateForm && formType === 'issuances') {
+      setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
+    }
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>
