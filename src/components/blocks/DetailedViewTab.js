@@ -13,7 +13,8 @@ const StyledDetailedViewTabItem = styled('div')`
   border-radius: 10px;
   padding: 16px 21px;
   display: grid;
-  grid-template-columns: 30% 30% 30%;
+  grid-template-columns: 1fr 1fr;
+  justify-items: flex-start;
   gap: 20px;
 `;
 
