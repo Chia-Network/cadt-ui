@@ -13,7 +13,7 @@ import { useIntl } from 'react-intl';
 import { unitsSchema } from '../../store/validations';
 import { UnitDetailsForm } from '.';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
-import { setValidateForm } from '../../store/actions/app';
+import { setValidateForm, setForm } from '../../store/actions/app';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -51,7 +51,6 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
   });
 
   const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
-
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
     dispatch(setValidateForm(true));
@@ -62,6 +61,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
       } else {
         dispatch(setValidateForm(false));
         setTabValue(desiredStep);
+        dispatch(setForm(stepperStepsTranslationIds[desiredStep]))
       }
     }
   };

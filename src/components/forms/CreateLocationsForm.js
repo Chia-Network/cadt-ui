@@ -33,14 +33,17 @@ const CreateLocationsForm = ({ value, onChange }) => {
   const [errorLocationMessage, setErrorLocationMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
+  const { validateForm, formType } = useSelector(state => state.app);
 
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
   };
 
   useEffect(() => {
-    setValidationErrors(locationSchema, value, setErrorLocationMessage);
-  }, [value]);
+    if (validateForm && formType === 'project-locations') {
+      setValidationErrors(locationSchema, value, setErrorLocationMessage);
+    }
+  }, [value, validateForm, formType]);
 
   const selectCountriesOptions = useMemo(
     () =>

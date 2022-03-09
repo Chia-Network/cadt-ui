@@ -38,10 +38,17 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
   const [errorProjectMessage, setErrorProjectMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
+  const { validateForm, formType } = useSelector(state => state.app);
 
   useEffect(() => {
-    setValidationErrors(projectSchema, projectDetails, setErrorProjectMessage);
-  }, [projectDetails]);
+    if (validateForm && formType === 'project') {
+      setValidationErrors(
+        projectSchema,
+        projectDetails,
+        setErrorProjectMessage,
+      );
+    }
+  }, [projectDetails, validateForm]);
 
   return (
     <ModalFormContainerStyle>

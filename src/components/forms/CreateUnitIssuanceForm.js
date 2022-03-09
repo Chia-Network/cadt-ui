@@ -32,7 +32,7 @@ import {
 
 const CreateUnitIssuanceForm = ({ value, onChange }) => {
   const { issuances } = useSelector(store => store.climateWarehouse);
-  const { validateForm } = useSelector(state => state.app);
+  const { validateForm, formType } = useSelector(state => state.app);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
   const { location } = useHistory();
@@ -105,7 +105,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
   };
 
   useEffect(() => {
-    if(validateForm){
+    if(validateForm && formType === 'issuances'){
     setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
     }
   }, [value, validateForm]);

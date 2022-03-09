@@ -32,6 +32,7 @@ import { setValidationErrors } from '../../utils/validationUtils';
 
 const CreateRatingsForm = ({ value, onChange }) => {
   const [errorRatingMessage, setErrorRatingMessage] = useState({});
+  const { validateForm, formType } = useSelector(state => state.app);
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
@@ -49,8 +50,10 @@ const CreateRatingsForm = ({ value, onChange }) => {
   );
 
   useEffect(() => {
+    if(validateForm && formType === 'ratings'){
     setValidationErrors(ratingSchema, value, setErrorRatingMessage);
-  }, [value]);
+    }
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>
