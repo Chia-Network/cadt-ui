@@ -132,7 +132,7 @@
   "label-link": "Label Link",
   "label-type": "Label Type",
   "relationship-type": "Relationship Type",
-  "project-location-id": "External Project Location ID",
+  "project-location-id": "Project Location ID",
   "unit-owner": "Unit Owner",
   "serial-number-pattern": "Serial Number Pattern",
   "vintage-year": "Vintage Year",
@@ -189,7 +189,7 @@
   "origin-project-id": "Origin Project ID",
   "program": "Program",
   "project-id": "Project ID",
-  "project-name": "Project Name",
+  "project-name": "External Project Name",
   "project-link": "Project Link",
   "project-developer": "Project Developer",
   "sector": "Sector",
@@ -316,5 +316,8 @@
   "server-address": "Server address",
   "log-in-to-remote-node": "Log in to remote node",
   "add-valid-server-address": "Add a valid server address",
-  "add-valid-api-key": "Add a valid Api key"
+  "add-valid-api-key": "Add a valid Api key",
+  "add-valid-organization-name": "Add a valid organization name",
+  "add-valid-organization-icon": "Load a valid SVG icon",
+  "creating-organization": "Creating Organization"
 }

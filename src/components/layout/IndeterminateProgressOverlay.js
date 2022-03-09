@@ -1,5 +1,5 @@
 import React from 'react';
-import {CircularProgress} from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import styled from 'styled-components';
 
 const Container = styled('div')`
@@ -13,11 +13,11 @@ const Container = styled('div')`
 `;
 
 const IndeterminateProgressOverlay = () => (
-  <div className="progess">
+  <div>
     <Container>
       <CircularProgress size={80} thickness={5} />
     </Container>
   </div>
 );
 
-export {IndeterminateProgressOverlay};
+export { IndeterminateProgressOverlay };

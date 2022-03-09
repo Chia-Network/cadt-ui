@@ -632,13 +632,14 @@ export const postNewOrg = data => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/organizations`;
+      const formData = new FormData();
+      formData.append('svg', data.svg);
+      formData.append('name', data.name);
+
+      const url = `${constants.API_HOST}/organizations/create`;
       const payload = {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: formData,
       };
 
       const response = await fetchWrapper(url, payload);
