@@ -55,7 +55,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
     }
   }, [isUserOnUnitsPage, value, value.id]);
 
-  const getIssuanceLabel = (issuance) => {
+  const getIssuanceLabel = issuance => {
     const projectName = _.find(
       projects,
       project => project.warehouseProjectId === issuance.warehouseProjectId,
@@ -63,7 +63,6 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
     if (issuance) {
       const start = `${new Date(issuance.startDate).toDateString()}`;
       const end = `${new Date(issuance.endDate).toDateString()}`;
-
       return `${projectName?.projectName}: ${start} - ${end}`;
     }
   };
@@ -148,8 +147,8 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                         issuancesSelectOptions ? issuancesSelectOptions : []
                       }
                       state={SelectStateEnum.default}
-                      selected={_.isEmpty(projects) &&
-                        value.id
+                      selected={
+                        _.isEmpty(projects) && value.id
                           ? [
                               {
                                 value: value.id,
