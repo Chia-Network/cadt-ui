@@ -1,6 +1,7 @@
 import u from 'updeep';
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -27,6 +28,7 @@ import { setValidationErrors } from '../../utils/validationUtils';
 
 const CreateEstimationsForm = ({ value, onChange }) => {
   const intl = useIntl();
+  const { validateForm, formType } = useSelector(state => state.app);
   const [errorEstimationMessage, setErrorEstimationMessage] = useState({});
 
   const onInputChange = (field, changeValue) => {
@@ -34,8 +36,10 @@ const CreateEstimationsForm = ({ value, onChange }) => {
   };
 
   useEffect(() => {
-    setValidationErrors(estimationSchema, value, setErrorEstimationMessage);
-  }, [value]);
+    if (validateForm && formType === 'estimations') {
+      setValidationErrors(estimationSchema, value, setErrorEstimationMessage);
+    }
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>

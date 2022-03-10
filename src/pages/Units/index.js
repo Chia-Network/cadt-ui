@@ -15,7 +15,11 @@ import {
   commitStagingData,
   getPaginatedData,
 } from '../../store/actions/climateWarehouseActions';
-import { setPendingError } from '../../store/actions/app';
+import {
+  setPendingError,
+  setForm,
+  setValidateForm,
+} from '../../store/actions/app';
 
 import {
   H3,
@@ -312,6 +316,8 @@ const Units = withRouter(() => {
                     )
                   ) {
                     setCreate(true);
+                    dispatch(setForm('unit'));
+                    dispatch(setValidateForm(false));
                   } else {
                     dispatch(setPendingError(true));
                   }
@@ -398,11 +404,12 @@ const Units = withRouter(() => {
                               )
                             ) {
                               setCreate(true);
+                              dispatch(setForm('unit'));
+                              dispatch(setValidateForm(false));
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -428,7 +435,11 @@ const Units = withRouter(() => {
               )}
             {create && (
               <CreateUnitsForm
-                onClose={() => setCreate(false)}
+                onClose={() => {
+                  setCreate(false);
+                  dispatch(setForm(null));
+                  dispatch(setValidateForm(false));
+                }}
                 modalSizeAndPosition={modalSizeAndPosition}
               />
             )}

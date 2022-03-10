@@ -29,7 +29,11 @@ import {
   modalTypeEnum,
   Body,
 } from '../../components';
-import { setPendingError } from '../../store/actions/app';
+import {
+  setPendingError,
+  setValidateForm,
+  setForm,
+} from '../../store/actions/app';
 
 import {
   getStagingData,
@@ -312,6 +316,8 @@ const Projects = withRouter(() => {
                     )
                   ) {
                     setCreateFormIsDisplayed(true);
+                    dispatch(setForm('project'));
+                    dispatch(setValidateForm(false));
                   } else {
                     dispatch(setPendingError(true));
                   }
@@ -398,11 +404,12 @@ const Projects = withRouter(() => {
                               )
                             ) {
                               setCreateFormIsDisplayed(true);
+                              dispatch(setForm('project'));
+                              dispatch(setValidateForm(false));
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -472,7 +479,11 @@ const Projects = withRouter(() => {
       </StyledSectionContainer>
       {createFormIsDisplayed && (
         <CreateProjectForm
-          onClose={() => setCreateFormIsDisplayed(false)}
+          onClose={() => {
+            setCreateFormIsDisplayed(false);
+            dispatch(setForm(null));
+            dispatch(setValidateForm(false));
+          }}
           modalSizeAndPosition={modalSizeAndPosition}
         />
       )}
