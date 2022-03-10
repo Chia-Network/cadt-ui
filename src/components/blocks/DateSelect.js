@@ -101,7 +101,7 @@ const DateSelect = ({
         onChange={newValue => {
           if (newValue) {
             setDateValue(
-              formatDate(`${newValue.$M + 1}/${newValue.$D + 1}/${newValue.$y}`),
+              formatDate(`${newValue.$M + 1}/${newValue.$D}/${newValue.$y}`),
             );
           } else {
             setDateValue(null);
@@ -115,7 +115,8 @@ const DateSelect = ({
               ref={divElement}
               disabled={disabled}
               tabIndex={0}
-              variant={variant}>
+              variant={variant}
+            >
               <Input
                 ref={inputRef}
                 {...inputProps}
