@@ -100,9 +100,7 @@ const DateSelect = ({
         value={dateValue}
         onChange={newValue => {
           if (newValue) {
-            setDateValue(
-              formatDate(`${newValue.$M + 1}/${newValue.$D}/${newValue.$y}`),
-            );
+            setDateValue(formatDate(newValue));
           } else {
             setDateValue(null);
           }
