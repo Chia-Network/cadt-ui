@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import u from 'updeep';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -32,7 +33,7 @@ import {
 } from '..';
 
 const CreateUnitIssuanceForm = ({ value, onChange }) => {
-  const { issuances } = useSelector(store => store.climateWarehouse);
+  const { issuances, projects } = useSelector(store => store.climateWarehouse);
   const { validateForm, formType } = useSelector(state => state.app);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
@@ -54,11 +55,16 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
     }
   }, [isUserOnUnitsPage, value, value.id]);
 
-  const getIssuanceLabel = issuance => {
+  const getIssuanceLabel = (issuance) => {
+    const projectName = _.find(
+      projects,
+      project => project.warehouseProjectId === issuance.warehouseProjectId,
+    );
     if (issuance) {
       const start = `${new Date(issuance.startDate).toDateString()}`;
       const end = `${new Date(issuance.endDate).toDateString()}`;
-      return `${start} - ${end}`;
+
+      return `${projectName?.projectName}: ${start} - ${end}`;
     }
   };
 
@@ -142,7 +148,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                         issuancesSelectOptions ? issuancesSelectOptions : []
                       }
                       state={SelectStateEnum.default}
-                      selected={
+                      selected={_.isEmpty(projects) &&
                         value.id
                           ? [
                               {
