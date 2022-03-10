@@ -275,6 +275,41 @@ const SplitUnitForm = ({ onClose, record }) => {
                       <StyledLabelContainer>
                         <Body>
                           <LabelContainer>
+                            <FormattedMessage id="country-jurisdiction-of-owner" />
+                          </LabelContainer>
+                          <ToolTipContainer
+                            tooltip={intl.formatMessage({
+                              id: 'units-country-jurisdiction-of-owner-description',
+                            })}>
+                            <DescriptionIcon height="14" width="14" />
+                          </ToolTipContainer>
+                        </Body>
+                      </StyledLabelContainer>
+                      <InputContainer>
+                        <Select
+                          size={SelectSizeEnum.large}
+                          type={SelectTypeEnum.basic}
+                          options={selectCountriesOptions}
+                          state={
+                            unitIsSplitable
+                              ? SelectStateEnum.default
+                              : SelectStateEnum.disabled
+                          }
+                          onChange={selectedOptions =>
+                            setData(prevData => {
+                              const newData = [...prevData];
+                              newData[index].countryJurisdictionOfOwner =
+                                selectedOptions[0].value;
+                              return newData;
+                            })
+                          }
+                        />
+                      </InputContainer>
+                    </StyledFieldContainer>
+                    <StyledFieldContainer>
+                      <StyledLabelContainer>
+                        <Body>
+                          <LabelContainer>
                             <FormattedMessage id="in-country-jurisdiction-of-owner" />
                           </LabelContainer>
                           <ToolTipContainer
@@ -302,41 +337,6 @@ const SplitUnitForm = ({ onClose, record }) => {
                               const newData = [...prevData];
                               newData[index].inCountryJurisdictionOfOwner =
                                 value;
-                              return newData;
-                            })
-                          }
-                        />
-                      </InputContainer>
-                    </StyledFieldContainer>
-                    <StyledFieldContainer>
-                      <StyledLabelContainer>
-                        <Body>
-                          <LabelContainer>
-                            <FormattedMessage id="country-jurisdiction-of-owner" />
-                          </LabelContainer>
-                          <ToolTipContainer
-                            tooltip={intl.formatMessage({
-                              id: 'units-country-jurisdiction-of-owner-description',
-                            })}>
-                            <DescriptionIcon height="14" width="14" />
-                          </ToolTipContainer>
-                        </Body>
-                      </StyledLabelContainer>
-                      <InputContainer>
-                        <Select
-                          size={SelectSizeEnum.large}
-                          type={SelectTypeEnum.basic}
-                          options={selectCountriesOptions}
-                          state={
-                            unitIsSplitable
-                              ? SelectStateEnum.default
-                              : SelectStateEnum.disabled
-                          }
-                          onChange={selectedOptions =>
-                            setData(prevData => {
-                              const newData = [...prevData];
-                              newData[index].countryJurisdictionOfOwner =
-                                selectedOptions[0].value;
                               return newData;
                             })
                           }
