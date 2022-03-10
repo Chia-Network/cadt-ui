@@ -56,7 +56,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
               </LabelContainer>
               <ToolTipContainer
                 tooltip={intl.formatMessage({
-                  id: 'related-project-id',
+                  id: 'related-projects-related-project-id-description',
                 })}>
                 <DescriptionIcon height="14" width="14" />
               </ToolTipContainer>
