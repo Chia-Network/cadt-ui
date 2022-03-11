@@ -71,7 +71,6 @@ const StyledTitleContainer = styled('div')`
 `;
 
 const LeftNav = withTheme(({ children }) => {
-  const [location, setLocation] = useState(false);
   const [confirmCreateOrgIsVisible, setConfirmCreateOrgIsVisible] =
     useState(false);
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
@@ -95,9 +94,9 @@ const LeftNav = withTheme(({ children }) => {
     return () => clearTimeout(intervalId);
   }, [myOrgIsNotCreated, myOrgIsCreatedButNotSubscribed, createOrgIsVisible]);
 
-  useEffect(() => {
-    setLocation(window.location.pathname.split(/_(.+)/)[1]);
-  }, [window.location]);
+  const isUnitsPage = window.location.pathname.includes('/units');
+  const isProjectsPage = window.location.pathname.includes('/projects');
+  const isMyRegistryPage = window.location.search.includes('myRegistry=true');
 
   return (
     <Container>
@@ -109,23 +108,17 @@ const LeftNav = withTheme(({ children }) => {
           </ButtonText>
         </StyledTitleContainer>
         <MenuItem
-          selected={location === 'projects'}
+          selected={isProjectsPage && !isMyRegistryPage}
           to="/projects"
-          onClick={() => {
-            dispatch(resetRefreshPrompt);
-            setLocation('projects');
-          }}
+          onClick={() => dispatch(resetRefreshPrompt)}
         >
           <FormattedMessage id="projects-list" />
         </MenuItem>
         <div></div>
         <MenuItem
-          selected={location === 'units'}
+          selected={isUnitsPage && !isMyRegistryPage}
           to="/units"
-          onClick={() => {
-            dispatch(resetRefreshPrompt);
-            setLocation('units');
-          }}
+          onClick={() => dispatch(resetRefreshPrompt)}
         >
           <FormattedMessage id="units-list" />
         </MenuItem>
@@ -140,23 +133,17 @@ const LeftNav = withTheme(({ children }) => {
             {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (
               <>
                 <MenuItem
-                  selected={location === 'my-projects'}
+                  selected={isProjectsPage && isMyRegistryPage}
                   to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
-                  onClick={() => {
-                    dispatch(resetRefreshPrompt);
-                    setLocation('my-projects');
-                  }}
+                  onClick={() => dispatch(resetRefreshPrompt)}
                 >
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
-                  selected={location === 'my-units'}
+                  selected={isUnitsPage && isMyRegistryPage}
                   to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
-                  onClick={() => {
-                    dispatch(resetRefreshPrompt);
-                    setLocation('my-units');
-                  }}
+                  onClick={() => dispatch(resetRefreshPrompt)}
                 >
                   <FormattedMessage id="my-units" />
                 </MenuItem>

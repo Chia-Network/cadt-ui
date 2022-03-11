@@ -6,4 +6,3 @@ export * from './TabPanel';
 export * from './Tabs';
 export * from './FormContainers';
 export * from './SocketStatusContainer';
-export * from './UpdateRefreshContainer';

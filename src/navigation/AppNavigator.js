@@ -6,9 +6,8 @@ import { Route, Redirect } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
-import { history, reloadCurrentUrlFromStorage } from './';
 import { signOut } from '../store/actions/app';
-
+import { history } from './';
 import * as Pages from '../pages';
 
 import { createNotification } from '../utils/notificationUtils';
@@ -21,6 +20,7 @@ import {
 } from '../components';
 import { setPendingError, setNotificationMessage } from '../store/actions/app';
 import { getOrganizationData } from '../store/actions/climateWarehouseActions';
+import { reloadCurrentUrlFromStorage } from './history';
 
 const AppNavigator = () => {
   const intl = useIntl();
