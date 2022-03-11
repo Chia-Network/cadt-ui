@@ -153,7 +153,7 @@ export const getPickLists = () => {
     };
 
     try {
-      const response = await fetchWrapper(
+      const response = await fetch(
         `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
       );
 
@@ -1068,7 +1068,10 @@ const fetchWrapper = async (url, payload) => {
         ? `${serverAddress}/`
         : serverAddressUrl;
 
-    const newUrl = url.replace(/(http:|)(^|\/\/)(.*?\/)/g, serverAddressUrl);
+    const newUrl = url.replace(
+      /(https:|http:|)(^|\/\/)(.*?\/)/g,
+      serverAddressUrl,
+    );
 
     return fetch(newUrl, payloadWithApiKey);
   }
