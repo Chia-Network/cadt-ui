@@ -3,7 +3,8 @@ import socketIO from 'socket.io-client';
 import { messageTypes } from '../../utils/message-types';
 import { keyMirror } from '../store-functions';
 import { getStagingData } from './climateWarehouseActions';
-import { reloadApp, saveCurrentUrlToStorage } from '../../navigation/history';
+import { saveCurrentUrlToStorage } from '../../navigation/history';
+import { refreshApp } from './app';
 import { NotificationManager } from 'react-notifications';
 import constants from '../../constants';
 
@@ -24,7 +25,7 @@ export const SOCKET_STATUS = keyMirror(
 let socket;
 let interval;
 
-const notifyRefresh = _.debounce(() => {
+const notifyRefresh = _.debounce(dispatch => {
   NotificationManager.info(
     'Click Here To Refresh.',
     'The data that is viewed may be out of date, and a refresh is recommended',
@@ -32,7 +33,7 @@ const notifyRefresh = _.debounce(() => {
     () => {
       alert('refresh started');
       saveCurrentUrlToStorage();
-      reloadApp();
+      dispatch(refreshApp());
     },
     true,
   );
@@ -190,7 +191,7 @@ export const setSocketStatus = status => {
 export const projectsHaveBeenUpdated = data => {
   return dispatch => {
     if (window.location.href.includes('/projects')) {
-      notifyRefresh();
+      notifyRefresh(dispatch);
       dispatch({
         type: actions.SOCKET_PROJECTS_UPDATE,
         key: 'change:projects',
@@ -205,7 +206,7 @@ export const projectsHaveBeenUpdated = data => {
 export const unitsHaveBeenUpdated = data => {
   return dispatch => {
     if (window.location.href.includes('/units')) {
-      notifyRefresh();
+      notifyRefresh(dispatch);
       dispatch({
         type: actions.SOCKET_UNITS_UPDATE,
         key: 'change:units',
