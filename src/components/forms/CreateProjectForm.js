@@ -22,6 +22,7 @@ import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
 import { projectSchema } from '../../store/validations';
+import { setValidateForm, setForm } from '../../store/actions/app';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
 const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
@@ -63,13 +64,20 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     'related-projects',
   ];
 
+  useEffect(() => {
+    dispatch(setForm(stepperStepsTranslationIds[tabValue]));
+  }, [tabValue]);
+
   const onChangeStep = async (desiredStep = null) => {
     const isValid = await projectSchema.isValid(project);
+     dispatch(setValidateForm(true));
     if (isValid) {
+      dispatch(setValidateForm(false));
       if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitProject();
       } else {
         setTabValue(desiredStep);
+        dispatch(setValidateForm(false));
       }
     }
   };

@@ -18,10 +18,16 @@ const initialState = {
   readOnlyMode: true,
   apiKey: null,
   serverAddress: null,
+  validateForm: false,
+  formType: null,
+  refresh: false,
 };
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
+    case appActions.REFRESH_APP:
+      return u({ refresh: action.payload }, state);
+
     case appActions.SET_READ_ONLY:
       return u({ readOnlyMode: action.payload }, state);
 
@@ -56,6 +62,12 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.PENDING_ERROR:
       return u({ pendingError: action.payload }, state);
+
+    case appActions.SET_VALIDATION:
+      return u({ validateForm: action.payload }, state);
+
+    case appActions.SET_FORM:
+      return u({ formType: action.payload }, state);
 
     case appActions.SET_THEME:
       if (

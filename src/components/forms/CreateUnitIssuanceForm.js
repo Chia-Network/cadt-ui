@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import u from 'updeep';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -28,15 +29,19 @@ import {
   SelectStateEnum,
   DateVariantEnum,
   Select,
+  SpanTwoColumnsContainer,
 } from '..';
 
 const CreateUnitIssuanceForm = ({ value, onChange }) => {
-  const { issuances } = useSelector(store => store.climateWarehouse);
+  const { issuances, projects } = useSelector(store => store.climateWarehouse);
+  const { validateForm, formType } = useSelector(state => state.app);
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
   const { location } = useHistory();
 
-  const isUserOnUnitsPage = location.pathname.includes('projects') ? true : false;
+  const isUserOnUnitsPage = location.pathname.includes('projects')
+    ? true
+    : false;
 
   const areFieldsDisabled = useMemo(() => {
     if (!isUserOnUnitsPage) {
@@ -45,16 +50,20 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
       }
       return false;
     }
-      if (isUserOnUnitsPage) {
-        return true;
-      }
+    if (isUserOnUnitsPage) {
+      return true;
+    }
   }, [isUserOnUnitsPage, value, value.id]);
 
   const getIssuanceLabel = issuance => {
+    const projectName = _.find(
+      projects,
+      project => project.warehouseProjectId === issuance.warehouseProjectId,
+    );
     if (issuance) {
       const start = `${new Date(issuance.startDate).toDateString()}`;
       const end = `${new Date(issuance.endDate).toDateString()}`;
-      return `${start} - ${end}`;
+      return `${projectName?.projectName}: ${start} - ${end}`;
     }
   };
 
@@ -102,54 +111,69 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
   };
 
   useEffect(() => {
-    setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
-  }, [value]);
+    if (validateForm && formType === 'issuances') {
+      setValidationErrors(issuanceSchema, value, setErrorIssuanceMessage);
+    }
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  <FormattedMessage id="select-existing-issuance" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: isUserOnUnitsPage
-                      ? 'select-existing-issuance'
-                      : 'select-existing-issuance-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={issuancesSelectOptions ? issuancesSelectOptions : []}
-                state={SelectStateEnum.default}
-                selected={
-                  value.id
-                    ? [{ value: value.id, label: getIssuanceLabel(value) }]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  updateIssuanceById(selectedOptions[0].value)
-                }
-              />
-            </InputContainer>
-            {isUserOnUnitsPage && issuancesSelectOptions === null && (
-              <Body size="Small" color="red">
-                {intl.formatMessage({
-                  id: 'add-project-with-issuance',
-                })}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <div></div>
+          {issuancesSelectOptions && (
+            <>
+              <SpanTwoColumnsContainer>
+                <StyledFieldContainer>
+                  <StyledLabelContainer>
+                    <Body>
+                      <LabelContainer>
+                        <FormattedMessage id="select-existing-issuance" />
+                      </LabelContainer>
+                      <ToolTipContainer
+                        tooltip={intl.formatMessage({
+                          id: isUserOnUnitsPage
+                            ? 'select-existing-issuance'
+                            : 'select-existing-issuance-description',
+                        })}>
+                        <DescriptionIcon height="14" width="14" />
+                      </ToolTipContainer>
+                    </Body>
+                  </StyledLabelContainer>
+                  <InputContainer>
+                    <Select
+                      size={SelectSizeEnum.large}
+                      type={SelectTypeEnum.basic}
+                      options={
+                        issuancesSelectOptions ? issuancesSelectOptions : []
+                      }
+                      state={SelectStateEnum.default}
+                      selected={
+                        _.isEmpty(projects) && value.id
+                          ? [
+                              {
+                                value: value.id,
+                                label: getIssuanceLabel(value),
+                              },
+                            ]
+                          : undefined
+                      }
+                      onChange={selectedOptions =>
+                        updateIssuanceById(selectedOptions[0].value)
+                      }
+                    />
+                  </InputContainer>
+                  {isUserOnUnitsPage && issuancesSelectOptions === null && (
+                    <Body size="Small" color="red">
+                      {intl.formatMessage({
+                        id: 'add-project-with-issuance',
+                      })}
+                    </Body>
+                  )}
+                </StyledFieldContainer>
+              </SpanTwoColumnsContainer>
+            </>
+          )}
+
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -280,6 +304,40 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
             {errorIssuanceMessage?.verificationBody && (
               <Body size="Small" color="red">
                 {errorIssuanceMessage.verificationBody}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="verification-report-date" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'issuances-verification-report-date-description',
+                  })}>
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <DateSelect
+                variant={
+                  errorIssuanceMessage?.verificationReportDate &&
+                  DateVariantEnum.error
+                }
+                size="large"
+                dateValue={value.verificationReportDate}
+                setDateValue={changeValue =>
+                  onInputChange('verificationReportDate', changeValue)
+                }
+                disabled={areFieldsDisabled ? true : undefined}
+              />
+            </InputContainer>
+            {errorIssuanceMessage?.verificationReportDate && (
+              <Body size="Small" color="red">
+                {errorIssuanceMessage.verificationReportDate}
               </Body>
             )}
           </StyledFieldContainer>

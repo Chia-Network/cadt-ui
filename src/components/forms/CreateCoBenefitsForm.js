@@ -1,6 +1,7 @@
 import u from 'updeep';
 import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import { coBenefitSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
@@ -24,6 +25,7 @@ import {
 
 const CreateCoBenefitsForm = ({ value, onChange }) => {
   const [errorCoBenefitsMessage, setErrorCoBenefitsMessage] = useState({});
+  const { validateForm, formType } = useSelector(state => state.app);
   const intl = useIntl();
 
   const onInputChange = (field, changeValue) => {
@@ -31,8 +33,10 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
   };
 
   useEffect(() => {
-    setValidationErrors(coBenefitSchema, value, setErrorCoBenefitsMessage);
-  }, [value]);
+    if (validateForm && formType === 'co-benefits') {
+      setValidationErrors(coBenefitSchema, value, setErrorCoBenefitsMessage);
+    }
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>

@@ -1,6 +1,7 @@
 import u from 'updeep';
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
 
 import { relatedProjectSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
@@ -27,6 +28,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
   const [errorRelatedProjectMessage, setErrorRelatedProjectMessage] = useState(
     {},
   );
+  const { validateForm, formType } = useSelector(state => state.app);
   const intl = useIntl();
 
   const onInputChange = (field, changeValue) => {
@@ -34,12 +36,14 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
   };
 
   useEffect(() => {
-    setValidationErrors(
-      relatedProjectSchema,
-      value,
-      setErrorRelatedProjectMessage,
-    );
-  }, [value]);
+    if (validateForm && formType === 'related-projects') {
+      setValidationErrors(
+        relatedProjectSchema,
+        value,
+        setErrorRelatedProjectMessage,
+      );
+    }
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>
@@ -52,7 +56,7 @@ const CreateRelatedProjectsForm = ({ value, onChange }) => {
               </LabelContainer>
               <ToolTipContainer
                 tooltip={intl.formatMessage({
-                  id: 'related-project-id',
+                  id: 'related-projects-related-project-id-description',
                 })}>
                 <DescriptionIcon height="14" width="14" />
               </ToolTipContainer>

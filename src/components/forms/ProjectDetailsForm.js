@@ -38,10 +38,17 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
   const [errorProjectMessage, setErrorProjectMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
+  const { validateForm, formType } = useSelector(state => state.app);
 
   useEffect(() => {
-    setValidationErrors(projectSchema, projectDetails, setErrorProjectMessage);
-  }, [projectDetails]);
+    if (validateForm && formType === 'project') {
+      setValidationErrors(
+        projectSchema,
+        projectDetails,
+        setErrorProjectMessage,
+      );
+    }
+  }, [projectDetails, validateForm]);
 
   return (
     <ModalFormContainerStyle>
@@ -454,7 +461,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
-          <div></div>
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
@@ -498,50 +504,51 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               )}
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="current-registry" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-current-registry-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <SimpleSelect
-                variant={
-                  errorProjectMessage?.currentRegistry &&
-                  SimpleSelectVariantEnum.error
-                }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={pickLists.registries}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  projectDetails.currentRegistry
-                    ? [projectDetails.currentRegistry]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    currentRegistry: selectedOptions[0],
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorProjectMessage?.currentRegistry && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.currentRegistry}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <div></div>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="current-registry" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-current-registry-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <SimpleSelect
+                  variant={
+                    errorProjectMessage?.currentRegistry &&
+                    SimpleSelectVariantEnum.error
+                  }
+                  size={SimpleSelectSizeEnum.large}
+                  type={SimpleSelectTypeEnum.basic}
+                  options={pickLists.registries}
+                  state={SimpleSelectStateEnum.default}
+                  selected={
+                    projectDetails.currentRegistry
+                      ? [projectDetails.currentRegistry]
+                      : undefined
+                  }
+                  onChange={selectedOptions =>
+                    setProjectDetails(prev => ({
+                      ...prev,
+                      currentRegistry: selectedOptions[0],
+                    }))
+                  }
+                />
+              </InputContainer>
+              {errorProjectMessage?.currentRegistry && (
+                <Body size="Small" color="red">
+                  {errorProjectMessage.currentRegistry}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -673,22 +680,23 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               )}
             </InputContainer>
           </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  *<FormattedMessage id="methodology" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'projects-methodology-description',
-                  })}>
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="methodology" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-methodology-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
               <SimpleSelect
+                width="100%"
                 variant={
                   errorProjectMessage?.methodology &&
                   SimpleSelectVariantEnum.error
@@ -714,8 +722,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   {errorProjectMessage.methodology}
                 </Body>
               )}
-            </InputContainer>
-          </StyledFieldContainer>
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>

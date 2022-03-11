@@ -153,7 +153,7 @@ export const getPickLists = () => {
     };
 
     try {
-      const response = await fetchWrapper(
+      const response = await fetch(
         `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
       );
 
@@ -311,8 +311,13 @@ export const getPaginatedData = ({
             payload: results.pageCount,
           });
         } else {
-          const error = await response.json();
-          dispatch(setNotificationMessage('error', error.error));
+          const errorResponse = await response.json();
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              formatApiErrorResponse(errorResponse, 'something-went-wrong'),
+            ),
+          );
         }
       } catch {
         dispatch(setGlobalErrorMessage('Something went wrong...'));
@@ -351,10 +356,11 @@ export const commitStagingData = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'transactions-not-committed',
+            formatApiErrorResponse(errorResponse, 'transactions-not-committed'),
           ),
         );
       }
@@ -398,10 +404,14 @@ export const deleteStagingData = uuid => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'staging-group-could-not-be-deleted',
+            formatApiErrorResponse(
+              errorResponse,
+              'staging-group-could-not-be-deleted',
+            ),
           ),
         );
       }
@@ -445,10 +455,11 @@ export const deleteUnit = warehouseUnitId => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'unit-could-not-be-deleted',
+            formatApiErrorResponse(errorResponse, 'unit-could-not-be-deleted'),
           ),
         );
       }
@@ -492,10 +503,14 @@ export const deleteProject = warehouseProjectId => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'project-could-not-be-deleted',
+            formatApiErrorResponse(
+              errorResponse,
+              'project-could-not-be-deleted',
+            ),
           ),
         );
       }
@@ -539,22 +554,13 @@ export const postNewProject = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        const responseErrors = await response.json();
-        if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              responseErrors.message,
-            ),
-          );
-        } else {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              'project-not-created',
-            ),
-          );
-        }
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'project-not-created'),
+          ),
+        );
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -596,22 +602,16 @@ export const updateProjectRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        const responseErrors = await response.json();
-        if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              responseErrors.message,
-            ),
-          );
-        } else {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
               'project-could-not-be-edited',
             ),
-          );
-        }
+          ),
+        );
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -654,10 +654,11 @@ export const postNewOrg = data => {
           ),
         );
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'organization-not-created',
+            formatApiErrorResponse(errorResponse, 'organization-not-created'),
           ),
         );
       }
@@ -700,10 +701,14 @@ export const uploadXLSXFile = (file, type) => {
           );
           dispatch(getStagingData({ useMockedResponse: false }));
         } else {
+          const errorResponse = await response.json();
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.error,
-              'file-could-not-be-uploaded',
+              formatApiErrorResponse(
+                errorResponse,
+                'file-could-not-be-uploaded',
+              ),
             ),
           );
         }
@@ -748,22 +753,13 @@ export const postNewUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        const responseErrors = await response.json();
-        if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              responseErrors.message,
-            ),
-          );
-        } else {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              'unit-not-created',
-            ),
-          );
-        }
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'unit-not-created'),
+          ),
+        );
       }
     } catch (err) {
       dispatch(setConnectionCheck(false));
@@ -804,10 +800,11 @@ export const splitUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'unit-could-not-be-split',
+            formatApiErrorResponse(errorResponse, 'unit-could-not-be-split'),
           ),
         );
       }
@@ -851,22 +848,13 @@ export const updateUnitsRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        const responseErrors = await response.json();
-        if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              responseErrors.message,
-            ),
-          );
-        } else {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              'unit-could-not-be-edited',
-            ),
-          );
-        }
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'unit-could-not-be-edited'),
+          ),
+        );
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -1080,10 +1068,24 @@ const fetchWrapper = async (url, payload) => {
         ? `${serverAddress}/`
         : serverAddressUrl;
 
-    const newUrl = url.replace(/(http:|)(^|\/\/)(.*?\/)/g, serverAddressUrl);
+    const newUrl = url.replace(
+      /(https:|http:|)(^|\/\/)(.*?\/)/g,
+      serverAddressUrl,
+    );
 
     return fetch(newUrl, payloadWithApiKey);
   }
 
   return fetch(url, payload);
+};
+
+const formatApiErrorResponse = ({ errors, message }, alternativeResponseId) => {
+  if (!_.isEmpty(errors) && !_.isEmpty(message)) {
+    let notificationToDisplay = message + ': ';
+    errors.forEach(item => {
+      notificationToDisplay = notificationToDisplay.concat(item, ' ; ');
+    });
+    return notificationToDisplay;
+  }
+  return alternativeResponseId;
 };

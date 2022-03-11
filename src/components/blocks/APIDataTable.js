@@ -13,6 +13,7 @@ import {
   deleteProject,
   deleteUnit,
 } from '../../store/actions/climateWarehouseActions';
+import { setForm, setValidateForm } from '../../store/actions/app';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -249,6 +250,8 @@ const APIDataTable = withTheme(
                               }),
                               action: () => {
                                 setEditRecord(record);
+                                dispatch(setForm('project'));
+                                dispatch(setValidateForm(false));
                               },
                             },
                             {
@@ -285,6 +288,8 @@ const APIDataTable = withTheme(
           <EditUnitsForm
             onClose={() => {
               setEditRecord(null);
+              dispatch(setForm(null));
+              dispatch(setValidateForm(false));
             }}
             record={editRecord}
             modalSizeAndPosition={modalSizeAndPosition}
@@ -294,6 +299,8 @@ const APIDataTable = withTheme(
           <EditProjectsForm
             onClose={() => {
               setEditRecord(null);
+              dispatch(setForm(null));
+              dispatch(setValidateForm(false));
             }}
             record={editRecord}
             modalSizeAndPosition={modalSizeAndPosition}
