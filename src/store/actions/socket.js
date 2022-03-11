@@ -29,7 +29,7 @@ const notifyRefresh = _.debounce(dispatch => {
     'Click Here To Refresh.',
     'The data that is viewed may be out of date, and a refresh is recommended',
     20000,
-    () => dispatch(refreshApp()),
+    () => dispatch(refreshApp(true)),
     true,
   );
 }, 5000);
