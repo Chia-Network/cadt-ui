@@ -27,9 +27,10 @@ let interval;
 const notifyRefresh = _.debounce(() => {
   NotificationManager.info(
     'Click Here To Refresh.',
-    'The data that is viewed may be out of date, and a refresh is reccomended',
+    'The data that is viewed may be out of date, and a refresh is recommended',
     20000,
     () => {
+      alert('refresh started');
       saveCurrentUrlToStorage();
       reloadApp();
     },
