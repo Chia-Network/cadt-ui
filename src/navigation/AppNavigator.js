@@ -5,8 +5,9 @@ import { Router } from 'react-router';
 import { Route, Redirect } from 'react-router-dom';
 import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { NotificationContainer } from 'react-notifications';
+import { createBrowserHistory } from 'history';
+let history = createBrowserHistory();
 
-import { history, reloadCurrentUrlFromStorage } from './';
 import { signOut } from '../store/actions/app';
 
 import * as Pages from '../pages';
@@ -25,10 +26,6 @@ import { getOrganizationData } from '../store/actions/climateWarehouseActions';
 const AppNavigator = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    reloadCurrentUrlFromStorage();
-  }, []);
 
   const {
     showProgressOverlay,

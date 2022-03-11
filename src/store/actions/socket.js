@@ -3,7 +3,6 @@ import socketIO from 'socket.io-client';
 import { messageTypes } from '../../utils/message-types';
 import { keyMirror } from '../store-functions';
 import { getStagingData } from './climateWarehouseActions';
-import { saveCurrentUrlToStorage } from '../../navigation/history';
 import { refreshApp } from './app';
 import { NotificationManager } from 'react-notifications';
 import constants from '../../constants';
@@ -30,11 +29,7 @@ const notifyRefresh = _.debounce(dispatch => {
     'Click Here To Refresh.',
     'The data that is viewed may be out of date, and a refresh is recommended',
     20000,
-    () => {
-      alert('refresh started');
-      saveCurrentUrlToStorage();
-      dispatch(refreshApp());
-    },
+    () => dispatch(refreshApp()),
     true,
   );
 }, 5000);
