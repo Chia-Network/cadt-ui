@@ -2,10 +2,6 @@ import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
 
-const reloadApp = () => {
-  history.push('/');
-};
-
 const saveCurrentUrlToStorage = () => {
   if (history.location?.pathname) {
     const currentUrl = `${history.location.pathname}${history.location.search}&reload=true`;
@@ -21,9 +17,4 @@ const reloadCurrentUrlFromStorage = () => {
   }
 };
 
-export {
-  history,
-  reloadApp,
-  saveCurrentUrlToStorage,
-  reloadCurrentUrlFromStorage,
-};
+export { history, saveCurrentUrlToStorage, reloadCurrentUrlFromStorage };
