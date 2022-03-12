@@ -303,7 +303,9 @@ export const getPaginatedData = ({
 
           dispatch({
             type: action,
-            payload: results.data,
+            payload: results.data.map(result =>
+              _.omit(result, 'timeStaged', 'createdAt', 'updatedAt'),
+            ),
           });
 
           dispatch({
