@@ -23,6 +23,11 @@ const StyledDetailedViewTab = styled('div')`
   gap: 20px;
 `;
 
+const StyledWordWrap = styled('div')`
+  word-break: break-word;
+  display: inline-block;
+`;
+
 const DetailedViewTabItem = ({ entry, action }) => {
   const hasEntryKeyData = key =>
     (entry[key].original !== null && entry[key].original !== 'null') ||
@@ -70,7 +75,7 @@ const DetailedViewTabItem = ({ entry, action }) => {
               {entry[entryProp].original &&
                 entry[entryProp].original !== 'null' && (
                   <Body color={getOriginalColorForKey(entryProp)}>
-                    {entry[entryProp].original}
+                    <StyledWordWrap>{entry[entryProp].original}</StyledWordWrap>
                   </Body>
                 )}
               {entry[entryProp].changes &&
@@ -78,7 +83,9 @@ const DetailedViewTabItem = ({ entry, action }) => {
                 entry[entryProp].changes.some(x => x !== null) &&
                 entry[entryProp].changes.map((changeItem, index) => (
                   <Body key={index} color="#52C41A">
-                    {changeItem ? changeItem : '--'}
+                    <StyledWordWrap>
+                      {changeItem ? changeItem : '--'}
+                    </StyledWordWrap>
                   </Body>
                 ))}
             </div>
