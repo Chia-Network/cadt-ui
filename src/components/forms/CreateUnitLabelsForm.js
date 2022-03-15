@@ -24,9 +24,13 @@ import {
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
-  SelectVariantEnum,
   DateVariantEnum,
   SpanTwoColumnsContainer,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
+  SimpleSelectVariantEnum,
+  SimpleSelect,
 } from '..';
 
 import { labelSchema } from '../../store/validations';
@@ -95,20 +99,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
     }
   };
 
-  const selectLabelTypeOptions = useMemo(
-    () =>
-      pickLists.labelType.map(labelTypeItem => ({
-        value: labelTypeItem,
-        label: labelTypeItem,
-      })),
-    [pickLists],
-  );
-
   useEffect(() => {
     if (validateForm && formType === 'labels') {
       setValidationErrors(labelSchema, value, setErrorLabelMessage);
     }
-  }, [value, validateForm,formType]);
+  }, [value, validateForm, formType]);
 
   return (
     <ModalFormContainerStyle>
@@ -125,7 +120,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     id: isUserOnUnitsPage
                       ? 'select-existing-label'
                       : 'select-existing-label-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -169,7 +165,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -207,31 +204,28 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-label-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
+              <SimpleSelect
                 variant={
-                  errorLabelMessage?.labelType && SelectVariantEnum.error
+                  errorLabelMessage?.labelType && SimpleSelectVariantEnum.error
                 }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectLabelTypeOptions}
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.labelType}
                 state={
                   areFieldsDisabled
-                    ? SelectStateEnum.disabled
-                    : SelectStateEnum.default
+                    ? SimpleSelectStateEnum.disabled
+                    : SimpleSelectStateEnum.default
                 }
-                selected={
-                  value.labelType
-                    ? [{ value: value.labelType, label: value.labelType }]
-                    : undefined
-                }
+                selected={value.labelType ? [value.labelType] : undefined}
                 onChange={selectedOptions =>
-                  onChange({ ...value, labelType: selectedOptions[0].value })
+                  onChange({ ...value, labelType: selectedOptions[0] })
                 }
               />
             </InputContainer>
@@ -251,7 +245,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'labels-label-link-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -288,7 +283,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-validity-period-start-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -322,7 +318,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-validity-period-end-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -356,7 +353,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-crediting-period-start-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -390,7 +388,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-crediting-period-end-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -424,7 +423,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'labels-unit-quantity-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

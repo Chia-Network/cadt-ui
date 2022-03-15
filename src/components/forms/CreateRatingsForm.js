@@ -1,5 +1,5 @@
 import u from 'updeep';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -16,15 +16,15 @@ import {
   DescriptionIcon,
   ToolTipContainer,
   LabelContainer,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  SelectStateEnum,
-  SelectVariantEnum,
-  Select,
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
   SpanTwoColumnsContainer,
+  SimpleSelectVariantEnum,
+  SimpleSelect,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
 } from '..';
 
 import { ratingSchema } from '../../store/validations';
@@ -40,18 +40,9 @@ const CreateRatingsForm = ({ value, onChange }) => {
     onChange(u({ [field]: changeValue }, value));
   };
 
-  const selectRatingTypeOptions = useMemo(
-    () =>
-      pickLists.ratingType.map(ratingTypeItem => ({
-        value: ratingTypeItem,
-        label: ratingTypeItem,
-      })),
-    [pickLists],
-  );
-
   useEffect(() => {
-    if(validateForm && formType === 'ratings'){
-    setValidationErrors(ratingSchema, value, setErrorRatingMessage);
+    if (validateForm && formType === 'ratings') {
+      setValidationErrors(ratingSchema, value, setErrorRatingMessage);
     }
   }, [value, validateForm, formType]);
 
@@ -68,27 +59,25 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
+              <SimpleSelect
                 variant={
-                  errorRatingMessage?.ratingType && SelectVariantEnum.error
+                  errorRatingMessage?.ratingType &&
+                  SimpleSelectVariantEnum.error
                 }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectRatingTypeOptions}
-                state={SelectStateEnum.default}
-                selected={
-                  value.ratingType
-                    ? [{ value: value.ratingType, label: value.ratingType }]
-                    : undefined
-                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.ratingType}
+                state={SimpleSelectStateEnum.default}
+                selected={value.ratingType ? [value.ratingType] : undefined}
                 onChange={selectedOptions =>
-                  onInputChange('ratingType', selectedOptions[0].value)
+                  onInputChange('ratingType', selectedOptions[0])
                 }
               />
             </InputContainer>
@@ -107,7 +96,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-value-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -145,7 +135,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-range-highest-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -183,7 +174,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'ratings-rating-range-lowest-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -222,7 +214,8 @@ const CreateRatingsForm = ({ value, onChange }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'ratings-rating-report-link-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>

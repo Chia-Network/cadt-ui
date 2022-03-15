@@ -1,5 +1,5 @@
 import u from 'updeep';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -16,14 +16,14 @@ import {
   ToolTipContainer,
   DescriptionIcon,
   LabelContainer,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  SelectStateEnum,
-  SelectVariantEnum,
-  Select,
+  SimpleSelectVariantEnum,
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
+  SimpleSelect,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
 } from '..';
 
 import { setValidationErrors } from '../../utils/validationUtils';
@@ -45,15 +45,6 @@ const CreateLocationsForm = ({ value, onChange }) => {
     }
   }, [value, validateForm, formType]);
 
-  const selectCountriesOptions = useMemo(
-    () =>
-      pickLists.countries.map(country => ({
-        value: country,
-        label: country,
-      })),
-    [pickLists],
-  );
-
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
@@ -67,29 +58,27 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-country-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
+              <SimpleSelect
                 variant={
-                  errorLocationMessage?.country && SelectVariantEnum.error
+                  errorLocationMessage?.country && SimpleSelectVariantEnum.error
                 }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectCountriesOptions}
-                selected={
-                  value.country
-                    ? [{ value: value.country, label: value.country }]
-                    : undefined
-                }
-                state={SelectStateEnum.default}
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.countries}
+                state={SimpleSelectStateEnum.default}
+                selected={value.country ? [value.country] : undefined}
                 onChange={selectedOptions =>
-                  onInputChange('country', selectedOptions[0].value)
+                  onInputChange('country', selectedOptions[0])
                 }
               />
+
               {errorLocationMessage?.country && (
                 <Body size="Small" color="red">
                   {errorLocationMessage.country}
@@ -106,7 +95,8 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-in-country-region-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -139,7 +129,8 @@ const CreateLocationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'locations-geographic-identifier-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
@@ -24,10 +24,10 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  SelectStateEnum,
-  Select,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
+  SimpleSelect,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
 
@@ -56,13 +56,7 @@ const SplitUnitForm = ({ onClose, record }) => {
     unit => unit.warehouseUnitId === record.warehouseUnitId,
   )[0];
 
-  const selectCountriesOptions = useMemo(
-    () =>
-      pickLists.countries.map(country => ({ value: country, label: country })),
-    [pickLists],
-  );
-
-  const unitIsSplitable = fullRecord.unitCount !== 1;
+  const unitIsSplittable = fullRecord.unitCount !== 1;
 
   const validationSchema = yup
     .array()
@@ -162,7 +156,7 @@ const SplitUnitForm = ({ onClose, record }) => {
           onClose={() => setValidationErrors([])}
         />
       )}
-      {unitIsSplitable === false && (
+      {unitIsSplittable === false && (
         <LocalMessage
           msg={intl.formatMessage({
             id: 'unit-cannot-be-split',
@@ -174,7 +168,7 @@ const SplitUnitForm = ({ onClose, record }) => {
         onOk={onSubmit}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
-        hideButtons={!unitIsSplitable}
+        hideButtons={!unitIsSplittable}
         title={intl.formatMessage({
           id: 'split',
         })}
@@ -207,7 +201,8 @@ const SplitUnitForm = ({ onClose, record }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'unit-count',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -219,7 +214,7 @@ const SplitUnitForm = ({ onClose, record }) => {
                             id: 'nr-of-units',
                           })}
                           state={
-                            unitIsSplitable
+                            unitIsSplittable
                               ? InputStateEnum.default
                               : InputStateEnum.disabled
                           }
@@ -244,7 +239,8 @@ const SplitUnitForm = ({ onClose, record }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-unit-owner-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -256,7 +252,7 @@ const SplitUnitForm = ({ onClose, record }) => {
                             id: 'unit-owner',
                           })}
                           state={
-                            unitIsSplitable
+                            unitIsSplittable
                               ? InputStateEnum.default
                               : InputStateEnum.disabled
                           }
@@ -280,26 +276,27 @@ const SplitUnitForm = ({ onClose, record }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-country-jurisdiction-of-owner-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
                       </StyledLabelContainer>
                       <InputContainer>
-                        <Select
-                          size={SelectSizeEnum.large}
-                          type={SelectTypeEnum.basic}
-                          options={selectCountriesOptions}
+                        <SimpleSelect
+                          size={SimpleSelectSizeEnum.large}
+                          type={SimpleSelectTypeEnum.basic}
+                          options={pickLists.countries}
                           state={
-                            unitIsSplitable
-                              ? SelectStateEnum.default
-                              : SelectStateEnum.disabled
+                            unitIsSplittable
+                              ? SimpleSelectStateEnum.default
+                              : SimpleSelectStateEnum.disabled
                           }
                           onChange={selectedOptions =>
                             setData(prevData => {
                               const newData = [...prevData];
                               newData[index].countryJurisdictionOfOwner =
-                                selectedOptions[0].value;
+                                selectedOptions[0];
                               return newData;
                             })
                           }
@@ -315,7 +312,8 @@ const SplitUnitForm = ({ onClose, record }) => {
                           <ToolTipContainer
                             tooltip={intl.formatMessage({
                               id: 'units-in-country-jurisdiction-of-owner-description',
-                            })}>
+                            })}
+                          >
                             <DescriptionIcon height="14" width="14" />
                           </ToolTipContainer>
                         </Body>
@@ -327,7 +325,7 @@ const SplitUnitForm = ({ onClose, record }) => {
                             id: 'in-country-jurisdiction-of-owner',
                           })}
                           state={
-                            unitIsSplitable
+                            unitIsSplittable
                               ? InputStateEnum.default
                               : InputStateEnum.disabled
                           }
