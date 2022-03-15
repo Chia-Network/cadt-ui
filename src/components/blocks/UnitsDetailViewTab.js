@@ -22,7 +22,6 @@ const StyledDetailedViewTab = styled('div')`
 const StyledItem = styled('div')`
   display: flex;
   flex-direction: column;
-
   padding: 10px 0;
 `;
 
@@ -35,17 +34,17 @@ const UnitsDetailedViewTab = ({ entry }) => {
     [_.isEmpty(entry), _.isEmpty(entry.labels), _.isEmpty(entry.issuance)],
     item => item,
   );
-  
+
   return (
     <>
       <Tabs value={tabValue} onChange={handleTabChange}>
         <Tab label="Units" />
-        {!_.isEmpty(entry.labels) && <Tab label={'Labels'} />}
         {!_.isEmpty(entry.issuance) && <Tab label={'Issuance'} />}
+        {!_.isEmpty(entry.labels) && <Tab label={'Labels'} />}
       </Tabs>
       <TabPanel value={tabValue} index={0}>
         <StyledDetailedViewTabItem>
-          <div style={{ width: '70%' }}>
+          <div style={{ width: '60%' }}>
             <StyledDetailedViewTab>
               <StyledItem>
                 <Body size="Bold" width="100%">
@@ -206,11 +205,61 @@ const UnitsDetailedViewTab = ({ entry }) => {
           </div>
         </StyledDetailedViewTabItem>
       </TabPanel>
+      {!_.isEmpty(entry.issuance) && (
+        <TabPanel value={tabValue} index={1}>
+          <StyledDetailedViewTabItem>
+            <div style={{ width: '60%' }}>
+              <StyledDetailedViewTab>
+                <StyledItem>
+                  <Body size="Bold" width="100%">
+                    <FormattedMessage id="start-date" />
+                  </Body>
+                  <Body>
+                    {entry.issuance.startDate
+                      ? entry.issuance.startDate
+                      : '---'}
+                  </Body>
+                </StyledItem>
+                <StyledItem>
+                  <Body size="Bold" width="100%">
+                    <FormattedMessage id="end-date" />
+                  </Body>
+                  <Body>
+                    {entry.issuance.endDate ? entry.issuance.endDate : '---'}
+                  </Body>
+                </StyledItem>
+                <StyledItem>
+                  <Body size="Bold" width="100%">
+                    <FormattedMessage id="verification-body" />
+                  </Body>
+                  <Body>
+                    {entry.issuance.verificationBody
+                      ? entry.issuance.verificationBody
+                      : '---'}
+                  </Body>
+                </StyledItem>
+                <StyledItem>
+                  <Body size="Bold" width="100%">
+                    <FormattedMessage id="verification-approach" />
+                  </Body>
+                  <Body>
+                    {entry.issuance.verificationApproach
+                      ? entry.issuance.verificationApproach
+                      : '---'}
+                  </Body>
+                </StyledItem>
+              </StyledDetailedViewTab>
+            </div>
+          </StyledDetailedViewTabItem>
+        </TabPanel>
+      )}
       {!_.isEmpty(entry.labels) &&
         _.map(entry.labels, labelValue => (
-          <TabPanel value={tabValue} index={1}>
+          <TabPanel
+            value={tabValue}
+            index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
             <StyledDetailedViewTabItem>
-              <div style={{ width: '70%' }}>
+              <div style={{ width: '60%' }}>
                 <StyledDetailedViewTab>
                   <StyledItem>
                     <Body size="Bold" width="100%">
@@ -296,54 +345,6 @@ const UnitsDetailedViewTab = ({ entry }) => {
             </StyledDetailedViewTabItem>
           </TabPanel>
         ))}
-      {!_.isEmpty(entry.issuance) && (
-        <TabPanel
-          value={tabValue}
-          index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
-          <StyledDetailedViewTabItem>
-            <div style={{ width: '70%' }}>
-              <StyledDetailedViewTab>
-                <StyledItem>
-                  <Body size="Bold" width="100%">
-                    <FormattedMessage id="start-date" />
-                  </Body>
-                  <Body>
-                    {entry.issuance.startDate
-                      ? entry.issuance.startDate
-                      : '---'}
-                  </Body>
-                </StyledItem>
-                <StyledItem>
-                  <Body size="Bold" width="100%">
-                    <FormattedMessage id="end-date" />
-                  </Body>
-                  <Body>
-                    {entry.issuance.endDate ? entry.issuance.endDate : '---'}
-                  </Body>
-                </StyledItem>
-                <StyledItem>
-                  <Body size="Bold" width="100%">
-                    <FormattedMessage id="verification-body" />
-                  </Body>
-                  <Body>
-                    {entry.issuance.verificationBody
-                      ? entry.issuance.verificationBody
-                      : '---'}
-                  </Body>
-                </StyledItem>
-                <StyledItem>
-                  <Body size="Bold" width="100%">
-                    <FormattedMessage id="verification-approach" />
-                  </Body>
-                  {entry.issuance.verificationApproach
-                    ? entry.issuance.verificationApproach
-                    : '---'}
-                </StyledItem>
-              </StyledDetailedViewTab>
-            </div>
-          </StyledDetailedViewTabItem>
-        </TabPanel>
-      )}
     </>
   );
 };
