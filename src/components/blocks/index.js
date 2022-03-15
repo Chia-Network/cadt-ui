@@ -41,3 +41,6 @@ export * from './ProjectLabelsDetails';
 export * from './ProjectRatingsDetails';
 export * from './CoBenefitsDetails';
 export * from './RelatedProjectsDetails';
+export * from './UnitsDetails';
+export * from './UnitsIssuanceDetails';
+export * from './UnitsLabelsDetails';
