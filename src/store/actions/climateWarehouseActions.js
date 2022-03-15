@@ -81,20 +81,42 @@ const getClimateWarehouseTable = (
 };
 
 const formatStagingData = dataArray => {
+  // TO BE DELETED BEFORE COMMIT
+  dataArray[0].failedCommit = true;
+
   const splittedByTable = _.groupBy(dataArray, 'table');
 
   splittedByTable.Projects = _.groupBy(splittedByTable.Projects, 'commited');
 
   splittedByTable.Units = _.groupBy(splittedByTable.Units, 'commited');
 
+  const isNotFailedCommit = item => !item.failedCommit;
+  const isFailedCommit = item => item.failedCommit;
+
   const splittedAndFormatted = {
     projects: {
-      pending: [...(splittedByTable.Projects.true || [])],
-      staging: [...(splittedByTable.Projects.false || [])],
+      pending: [...(splittedByTable.Projects.true || [])].filter(
+        isNotFailedCommit,
+      ),
+      staging: [...(splittedByTable.Projects.false || [])].filter(
+        isNotFailedCommit,
+      ),
+      failed: [
+        ...(splittedByTable.Projects.true || []),
+        ...(splittedByTable.Projects.false || []),
+      ].filter(isFailedCommit),
     },
     units: {
-      pending: [...(splittedByTable.Units.true || [])],
-      staging: [...(splittedByTable.Units.false || [])],
+      pending: [...(splittedByTable.Units.true || [])].filter(
+        isNotFailedCommit,
+      ),
+      staging: [...(splittedByTable.Units.false || [])].filter(
+        isNotFailedCommit,
+      ),
+      failed: [
+        ...(splittedByTable.Units.true || []),
+        ...(splittedByTable.Units.false || []),
+      ].filter(isFailedCommit),
     },
   };
   return splittedAndFormatted;
@@ -423,6 +445,54 @@ export const deleteStagingData = uuid => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'staging-group-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const retryStagingData = uuid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/retry`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uuid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transactions-staged',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'transactions-not-staged'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transactions-not-staged',
         ),
       );
     } finally {

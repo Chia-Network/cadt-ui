@@ -3,7 +3,7 @@ import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { getDiff } from '../../utils/objectUtils';
-import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon } from '..';
+import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon, ReloadIcon } from '..';
 import { modalTypeEnum } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { DetailedViewStagingModal } from './DetailedViewStagingModal';
@@ -68,8 +68,15 @@ const StyledCardBodyItem = styled('div')`
 
 const StyledDeleteGroupIcon = styled('div')`
   position: absolute;
-  top: 20px;
+  top: 16px;
   right: 20px;
+  cursor: pointer;
+`;
+
+const StyledRetryGroupIcon = styled('div')`
+  position: absolute;
+  top: 16px;
+  right: 50px;
   cursor: pointer;
 `;
 
@@ -181,7 +188,13 @@ const InvalidChangeCard = ({ onDeleteChangeGroup, title }) => {
 };
 
 const StagingDataGroups = withTheme(
-  ({ headings, data, deleteStagingData, modalSizeAndPosition }) => {
+  ({
+    headings,
+    data,
+    deleteStagingData,
+    modalSizeAndPosition,
+    retryStagingData,
+  }) => {
     const [detailedViewData, setDetailedViewData] = useState(null);
     const [deleteFromStaging, setDeleteFromStaging] = useState(false);
     const [deleteUUID, setDeleteUUID] = useState();
@@ -281,6 +294,13 @@ const StagingDataGroups = withTheme(
                           <MinusIcon width={20} height={20} />
                         </div>
                       </StyledDeleteGroupIcon>
+                    )}
+                    {retryStagingData && (
+                      <StyledRetryGroupIcon>
+                        <div onClick={() => retryStagingData(changeGroup.uuid)}>
+                          <ReloadIcon width={18} height={18} />
+                        </div>
+                      </StyledRetryGroupIcon>
                     )}
                     {changeGroup.action === 'DELETE' && (
                       <ChangeCard

@@ -14,6 +14,7 @@ import {
   deleteStagingData,
   commitStagingData,
   getPaginatedData,
+  retryStagingData,
 } from '../../store/actions/climateWarehouseActions';
 import {
   setPendingError,
@@ -143,6 +144,7 @@ const Units = withRouter(() => {
       'unit-successfully-edited': 1,
       'unit-successfully-split': 1,
       'transactions-committed': 2,
+      'transactions-staged': 1,
     };
     if (switchTabBySuccessfulRequest[notification?.id]) {
       setTabValue(switchTabBySuccessfulRequest[notification.id]);
@@ -371,6 +373,14 @@ const Units = withRouter(() => {
                 })`}
               />
             )}
+            {pageIsMyRegistryPage && (
+              <Tab
+                label={`${intl.formatMessage({ id: 'failed' })} (${
+                  climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.failed.length
+                })`}
+              />
+            )}
           </Tabs>
           <StyledCSVOperationsContainer>
             <span onClick={() => downloadTxtFile('units', searchParams)}>
@@ -409,7 +419,8 @@ const Units = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -481,6 +492,28 @@ const Units = withRouter(() => {
                   <StagingDataGroups
                     headings={headings}
                     data={climateWarehouseStore.stagingData.units.pending}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                  />
+                )}
+              </TabPanel>
+              <TabPanel value={tabValue} index={3}>
+                {climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.units.failed.length ===
+                    0 && (
+                    <NoDataMessageContainer>
+                      <H3>
+                        <FormattedMessage id="no-failed" />
+                      </H3>
+                    </NoDataMessageContainer>
+                  )}
+                {climateWarehouseStore.stagingData && (
+                  <StagingDataGroups
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.units.failed}
+                    deleteStagingData={uuid =>
+                      dispatch(deleteStagingData(uuid))
+                    }
+                    retryStagingData={uuid => dispatch(retryStagingData(uuid))}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
