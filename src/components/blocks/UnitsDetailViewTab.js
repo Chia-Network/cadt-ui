@@ -47,25 +47,33 @@ const UnitsDetailedViewTab = ({ entry }) => {
                 <Body size="Bold" width="100%">
                   <FormattedMessage id="project-location-id" />
                 </Body>
-                <Body>{entry.projectLocationId}</Body>
+                <Body>
+                  {entry.projectLocationId ? entry.projectLocationId : '---'}
+                </Body>
               </StyledItem>
               <StyledItem>
                 <Body width="100%">
                   <FormattedMessage id="unit-owner" />
                 </Body>
-                <Body>{entry.unitOwner}</Body>
+                <Body>{entry.unitOwner ? entry.unitOwner : '---'}</Body>
               </StyledItem>
               <StyledItem>
                 <Body size="Bold" width="100%">
                   <FormattedMessage id="serial-number-pattern" />
                 </Body>
-                <Body>{entry.serialNumberPattern}</Body>
+                <Body>
+                  {entry.serialNumberPattern
+                    ? entry.serialNumberPattern
+                    : '---'}
+                </Body>
               </StyledItem>
               <StyledItem>
                 <Body size="Bold" width="100%">
                   <FormattedMessage id="serial-number-block" />
                 </Body>
-                <Body>{entry.serialNumberBlock}</Body>
+                <Body>
+                  {entry.serialNumberBlock ? entry.serialNumberBlock : '---'}
+                </Body>
               </StyledItem>
               <StyledItem>
                 <Body size="Bold" width="100%">
