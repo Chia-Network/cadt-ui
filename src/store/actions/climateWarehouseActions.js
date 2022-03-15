@@ -81,9 +81,6 @@ const getClimateWarehouseTable = (
 };
 
 const formatStagingData = dataArray => {
-  // TO BE DELETED BEFORE COMMIT
-  dataArray[0].failedCommit = true;
-
   const splittedByTable = _.groupBy(dataArray, 'table');
 
   splittedByTable.Projects = _.groupBy(splittedByTable.Projects, 'commited');
