@@ -31,7 +31,11 @@ const UnitsDetailedViewTab = ({ entry }) => {
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-  console.log(entry.issuance);
+  const unitsTabs = _.remove(
+    [_.isEmpty(entry), _.isEmpty(entry.labels), _.isEmpty(entry.issuance)],
+    item => item,
+  );
+  
   return (
     <>
       <Tabs value={tabValue} onChange={handleTabChange}>
@@ -293,7 +297,9 @@ const UnitsDetailedViewTab = ({ entry }) => {
           </TabPanel>
         ))}
       {!_.isEmpty(entry.issuance) && (
-        <TabPanel value={tabValue} index={!_.isEmpty(entry.labels) ? 2 : 1}>
+        <TabPanel
+          value={tabValue}
+          index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
           <StyledDetailedViewTabItem>
             <div style={{ width: '70%' }}>
               <StyledDetailedViewTab>
