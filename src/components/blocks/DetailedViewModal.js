@@ -1,10 +1,8 @@
-import _ from 'lodash';
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { Modal, modalTypeEnum, Tab, Tabs, TabPanel } from '..';
+import { Modal, modalTypeEnum } from '..';
 import { useIntl } from 'react-intl';
-import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { DetailedViewTab } from '.';
+import { UnitsDetailedViewTab, ProjectDetailedViewTab } from '.';
 
 const detailedViewModalTypeEnum = {
   project: 'projects',
@@ -13,7 +11,6 @@ const detailedViewModalTypeEnum = {
 
 const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
   const intl = useIntl();
-  const [tabValue, setTabValue] = useState(0);
 
   const fullRecord =
     type === detailedViewModalTypeEnum.project
@@ -30,54 +27,6 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
               unit => unit.warehouseUnitId === record.warehouseUnitId,
             )[0],
         );
-
-  const recordTabsWithEntries = useMemo(
-    () =>
-      fullRecord
-        ? Object.keys(fullRecord).filter(
-            key => Array.isArray(fullRecord[key]) && fullRecord[key].length > 0,
-          )
-        : [],
-    [fullRecord],
-  );
-
-  const recordDetails = useMemo(
-    () =>
-      fullRecord
-        ? Object.keys(fullRecord)
-            .filter(
-              key => key !== 'issuance' && !Array.isArray(fullRecord[key]),
-            )
-            .reduce((acc, cur) => {
-              acc[cur] = fullRecord[cur];
-              return acc;
-            }, {})
-        : {},
-    [fullRecord],
-  );
-
-  const filteredData = () => {
-    const filteredDetails = _.omit(recordDetails, ['timeStaged']);
-    return filteredDetails;
-  };
-
-  const filteredTabData = tabKey => {
-    const filteredTab = _.map(fullRecord[tabKey], tab =>
-      _.omit(tab, ['timeStaged']),
-    );
-    return filteredTab;
-  };
-
-  const filteredIssuance = () => {
-    const filteredIssuanceDetails = _.omit(fullRecord?.issuance, [
-      'timeStaged',
-    ]);
-    return filteredIssuanceDetails;
-  };
-
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
 
   if (
     (type !== detailedViewModalTypeEnum.project &&
@@ -99,33 +48,11 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
             : 'unit-detailed-view',
       })}
       body={
-        <div>
-          <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab
-              label={
-                type === detailedViewModalTypeEnum.project ? 'Project' : 'Unit'
-              }
-            />
-            {recordTabsWithEntries.map(tab => (
-              <Tab label={convertPascalCaseToSentenceCase(tab)} key={tab} />
-            ))}
-            {type === detailedViewModalTypeEnum.units &&
-              fullRecord?.issuance && <Tab label="Issuance" />}
-          </Tabs>
-          <TabPanel value={tabValue} index={0}>
-            <DetailedViewTab data={[filteredData()]} />
-          </TabPanel>
-          {recordTabsWithEntries.map((tabKey, index) => (
-            <TabPanel value={tabValue} index={index + 1} key={tabKey}>
-              <DetailedViewTab data={filteredTabData(tabKey)} />
-            </TabPanel>
-          ))}
-          {type === detailedViewModalTypeEnum.units && fullRecord?.issuance && (
-            <TabPanel value={tabValue} index={recordTabsWithEntries.length + 1}>
-              <DetailedViewTab data={[filteredIssuance()]} />
-            </TabPanel>
-          )}
-        </div>
+        type === detailedViewModalTypeEnum.units ? (
+          <UnitsDetailedViewTab entry={fullRecord} />
+        ) : (
+          <ProjectDetailedViewTab entry={fullRecord} />
+        )
       }
       hideButtons
     />
