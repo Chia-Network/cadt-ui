@@ -82,7 +82,7 @@ const UnitsLabelsDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-quantity" />
             </Body>
-            <Body>{data.unitQuantity ? data.unitQuantity : '---'}</Body>
+            <Body>{data.unitQuantity && data.unitQuantity}</Body>
           </StyledItem>
         </StyledDetailedViewTab>
       </div>
