@@ -181,6 +181,7 @@
   "max-number-added": "Max number added",
   "no-staged": "No staged data at this time",
   "no-pending": "No pending data at this time",
+  "no-failed": "No failed data at this time",
   "projects": "Projects",
   "warehouse": "Warehouse",
   "units": "Units",
@@ -320,5 +321,8 @@
   "add-valid-api-key": "Add a valid Api key",
   "add-valid-organization-name": "Add a valid organization name",
   "add-valid-organization-icon": "Load a valid SVG icon",
-  "creating-organization": "Creating Organization"
+  "creating-organization": "Creating Organization",
+  "failed": "Failed",
+  "transactions-staged": "Your transactions have been staged.",
+  "transactions-not-staged": "Your transactions could not be staged."
 }
