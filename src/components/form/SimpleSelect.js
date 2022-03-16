@@ -127,13 +127,14 @@ const StyledBasicMenu = styled(ScrollContainer)`
 
 const StyledBasicMenuItem = styled('div')`
   padding: 0.3125rem 0.75rem 0.3125rem 0.75rem;
-  max-width: 18.5rem;
+  ${props =>
+    props.width ? `max-width: ${props.width}px;` : 'max-width: 18.5rem;'};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   white-space: nowrap;
-  overflow: hidden;
+
   text-overflow: clip;
   font-family: ${props => props.theme.typography.primary.regular};
   cursor: pointer;
@@ -151,6 +152,20 @@ const StyledBasicMenuItem = styled('div')`
       return `font-weight: normal;`;
     }
   }};
+  box-sizing: border-box;
+  transform: translateX(0);
+  transition: 8s;
+  ${props => {
+    if (props.width && props.scrollWidth && props.scrollWidth > props.width) {
+      return `  
+          &:hover {
+            transform: translateX(calc(${props.width}px - ${
+        props.scrollWidth + 10
+      }px));
+          }
+        `;
+    }
+  }}
 `;
 
 const StyledArrowDownContainer = styled('div')`
@@ -228,6 +243,29 @@ const StyledSelectLabel = styled('div')`
   text-overflow: clip;
 `;
 
+const BasicMenuItem = ({ children, isSelected, onClick, width }) => {
+  const [scrollWidth, setScrollWidth] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref?.current?.scrollWidth) {
+      setScrollWidth(ref.current.scrollWidth);
+    }
+  }, [ref, ref.current]);
+
+  return (
+    <StyledBasicMenuItem
+      ref={ref}
+      isSelected={isSelected}
+      onClick={onClick}
+      width={width}
+      scrollWidth={scrollWidth}
+    >
+      {children}
+    </StyledBasicMenuItem>
+  );
+};
+
 const SimpleSelect = withTheme(
   ({
     size = SimpleSelectSizeEnum.default,
@@ -249,12 +287,19 @@ const SimpleSelect = withTheme(
     const selectedInitialized = useRef(null);
     const ref = useRef();
     const selectRef = useRef();
+    const [dropdownWidth, setDropdownWidth] = useState(0);
     const intl = useIntl();
     const placeHolderText =
       placeholder ||
       ` -- ${intl.formatMessage({
         id: 'select',
       })} -- `;
+
+    useEffect(() => {
+      if (ref && ref.current) {
+        setDropdownWidth(ref.current.getBoundingClientRect().width);
+      }
+    }, [ref, ref.current]);
 
     useEffect(() => {
       if (selected !== undefined && selectedInitialized.current === null) {
@@ -388,7 +433,8 @@ const SimpleSelect = withTheme(
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            variant={variant}>
+            variant={variant}
+          >
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0]
@@ -411,7 +457,8 @@ const SimpleSelect = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>
+            onMouseLeave={onMouseLeave}
+          >
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -419,7 +466,8 @@ const SimpleSelect = withTheme(
                       {option}
                       <div
                         style={{ marginLeft: '5px' }}
-                        onClick={() => toggleOptionSelection(option)}>
+                        onClick={() => toggleOptionSelection(option)}
+                      >
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -444,7 +492,8 @@ const SimpleSelect = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>
+            onMouseLeave={onMouseLeave}
+          >
             {selectState !== SimpleSelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -491,15 +540,17 @@ const SimpleSelect = withTheme(
                 selectedOptions.find(selected => selected === option);
 
               return (
-                <StyledBasicMenuItem
+                <BasicMenuItem
                   key={option}
                   isSelected={isSelected}
-                  onClick={() => toggleOptionSelection(option)}>
+                  onClick={() => toggleOptionSelection(option)}
+                  width={dropdownWidth}
+                >
                   {option}
                   {isSelected && type === SimpleSelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
                   )}
-                </StyledBasicMenuItem>
+                </BasicMenuItem>
               );
             })}
           </StyledBasicMenu>
@@ -512,16 +563,18 @@ const SimpleSelect = withTheme(
                 option
                   .toLowerCase()
                   .includes(searchInputValue.toLowerCase()) && (
-                  <StyledBasicMenuItem
+                  <BasicMenuItem
                     key={option}
                     isSelected={
                       selectedOptions != null &&
                       selectedOptions.length > 0 &&
                       selectedOptions.find(selected => selected === option)
                     }
-                    onClick={() => toggleOptionSelection(option)}>
+                    onClick={() => toggleOptionSelection(option)}
+                    width={dropdownWidth}
+                  >
                     {option}
-                  </StyledBasicMenuItem>
+                  </BasicMenuItem>
                 ),
             )}
           </StyledBasicMenu>

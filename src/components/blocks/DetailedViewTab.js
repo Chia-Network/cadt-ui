@@ -26,6 +26,11 @@ const StyledDetailedViewTab = styled('div')`
   gap: 20px;
 `;
 
+const StyledWordWrap = styled('div')`
+  word-break: break-word;
+  display: inline-block;
+`;
+
 const DetailedViewTabItem = ({ entry }) => {
   const { units } = useSelector(store => store.climateWarehouse);
   const dispatch = useDispatch();
@@ -64,9 +69,11 @@ const DetailedViewTabItem = ({ entry }) => {
                 {convertPascalCaseToSentenceCase(entryProp)}
               </Body>
               <Body>
-                {entry[entryProp] !== null && entry[entryProp] !== 'null'
-                  ? entry[entryProp]
-                  : '--'}
+                {entry[entryProp] !== null && entry[entryProp] !== 'null' ? (
+                  <StyledWordWrap>{entry[entryProp]}</StyledWordWrap>
+                ) : (
+                  '--'
+                )}
               </Body>
             </div>
           ),

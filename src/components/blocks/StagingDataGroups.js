@@ -86,6 +86,11 @@ const StyledCardBodySubItem = styled('div')`
   word-wrap: break-word;
 `;
 
+const StyledWordWrap = styled('div')`
+  word-break: break-word;
+  display: inline-block;
+`;
+
 const ChangeCard = ({
   headings,
   data,
@@ -115,9 +120,9 @@ const ChangeCard = ({
                       {convertPascalCaseToSentenceCase(heading)}
                     </Body>
                     <StyledCardBodySubItem>
-                      <span>
+                      <StyledWordWrap>
                         <Body>{data[heading] ? data[heading] : '--'}</Body>
-                      </span>
+                      </StyledWordWrap>
                       <span>
                         {deletedIsVsible && (
                           <ErrorIcon width="17" height="17" />
