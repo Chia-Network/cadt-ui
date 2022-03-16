@@ -80,8 +80,8 @@ const AppNavigator = () => {
       <Router history={history}>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
-            <Route exact path="/" render={() => <Redirect to="/projects" />}>
-              <Pages.Projects />
+            <Route exact path="/">
+              <Redirect to="/projects" />
             </Route>
             <Route path="/units">
               <Pages.Units />
@@ -89,10 +89,10 @@ const AppNavigator = () => {
             <Route path="/projects">
               <Pages.Projects />
             </Route>
-            <Route exact path="/storybook">
+            <Route path="/storybook">
               <Pages.StoryBook />
             </Route>
-            <Route path="*" render={() => <Redirect to="/" />} />
+            <Redirect to="/" />
           </Suspense>
         </Dashboard>
       </Router>
