@@ -92,7 +92,7 @@ const ProjectDetailedViewTab = ({ entry }) => {
           <Tab label={intl.formatMessage({ id: 'labels' })} />
         )}
         {!_.isEmpty(entry?.projectRatings) && (
-          <Tab label={intl.formatMessage({ id: 'project-ratings' })} />
+          <Tab label={intl.formatMessage({ id: 'ratings' })} />
         )}
         {!_.isEmpty(entry?.coBenefits) && (
           <Tab label={intl.formatMessage({ id: 'co-benefits' })} />
