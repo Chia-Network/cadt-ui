@@ -160,6 +160,7 @@
   "max-number-added": "Número máximo agregado",
   "no-staged": "No hay datos preparados en este momento",
   "no-pending": "No hay datos pendientes en este momento",
+  "no-failed": "No hay datos fallidos en este momento",
   "projects": "Proyectos",
   "warehouse": "El almacén",
   "units": "Unidades",
@@ -302,5 +303,8 @@
   "add-valid-api-key": "Agregar una clave Api válida",
   "add-valid-organization-name": "Agregar un nombre de organización válido",
   "add-valid-organization-icon": "Agregar un icono SVG válido",
-  "creating-organization": "Creación de Organización"
+  "creating-organization": "Creación de Organización",
+  "failed": "Ha fallado",
+  "transactions-staged": "Sus transacciones han sido puestas en escena.",
+  "transactions-not-staged": "Sus transacciones no se pudieron organizar."
 }

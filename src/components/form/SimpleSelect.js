@@ -134,7 +134,7 @@ const StyledBasicMenuItem = styled('div')`
   justify-content: space-between;
   align-items: center;
   white-space: nowrap;
-  overflow: hidden;
+
   text-overflow: clip;
   font-family: ${props => props.theme.typography.primary.regular};
   cursor: pointer;
@@ -153,6 +153,19 @@ const StyledBasicMenuItem = styled('div')`
     }
   }};
   box-sizing: border-box;
+  transform: translateX(0);
+  transition: 8s;
+  ${props => {
+    if (props.width && props.scrollWidth && props.scrollWidth > props.width) {
+      return `  
+          &:hover {
+            transform: translateX(calc(${props.width}px - ${
+        props.scrollWidth + 10
+      }px));
+          }
+        `;
+    }
+  }}
 `;
 
 const StyledArrowDownContainer = styled('div')`
@@ -229,6 +242,29 @@ const StyledSelectLabel = styled('div')`
   overflow: hidden;
   text-overflow: clip;
 `;
+
+const BasicMenuItem = ({ children, isSelected, onClick, width }) => {
+  const [scrollWidth, setScrollWidth] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref?.current?.scrollWidth) {
+      setScrollWidth(ref.current.scrollWidth);
+    }
+  }, [ref, ref.current]);
+
+  return (
+    <StyledBasicMenuItem
+      ref={ref}
+      isSelected={isSelected}
+      onClick={onClick}
+      width={width}
+      scrollWidth={scrollWidth}
+    >
+      {children}
+    </StyledBasicMenuItem>
+  );
+};
 
 const SimpleSelect = withTheme(
   ({
@@ -504,7 +540,7 @@ const SimpleSelect = withTheme(
                 selectedOptions.find(selected => selected === option);
 
               return (
-                <StyledBasicMenuItem
+                <BasicMenuItem
                   key={option}
                   isSelected={isSelected}
                   onClick={() => toggleOptionSelection(option)}
@@ -514,7 +550,7 @@ const SimpleSelect = withTheme(
                   {isSelected && type === SimpleSelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
                   )}
-                </StyledBasicMenuItem>
+                </BasicMenuItem>
               );
             })}
           </StyledBasicMenu>
@@ -527,7 +563,7 @@ const SimpleSelect = withTheme(
                 option
                   .toLowerCase()
                   .includes(searchInputValue.toLowerCase()) && (
-                  <StyledBasicMenuItem
+                  <BasicMenuItem
                     key={option}
                     isSelected={
                       selectedOptions != null &&
@@ -538,7 +574,7 @@ const SimpleSelect = withTheme(
                     width={dropdownWidth}
                   >
                     {option}
-                  </StyledBasicMenuItem>
+                  </BasicMenuItem>
                 ),
             )}
           </StyledBasicMenu>

@@ -164,6 +164,7 @@
   "max-number-added": "追加された最大数",
   "no-staged": "現在、段階的なデータはありません",
   "no-pending": "現在保留中のデータはありません",
+  "no-failed": "現時点で失敗したデータはありません",
   "projects": "プロジェクト",
   "warehouse": "倉庫",
   "units": "単位",
@@ -302,5 +303,8 @@
   "Add a valid Api key": "有効なAPIキーを追加します",
   "add-valid-organization-name": "有効な組織名を追加してください",
   "add-valid-organization-icon": "有効なSVGアイコンを追加する",
-  "creating-organization": "組織の作成"
+  "creating-organization": "組織の作成",
+  "failed": "失敗した",
+  "transactions-staged": "トランザクションはステージングされました。",
+  "transactions-not-staged": "トランザクションをステージングできませんでした。"
 }
