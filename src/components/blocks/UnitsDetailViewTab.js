@@ -1,10 +1,8 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Tab, Tabs, TabPanel } from '..';
 import styled from 'styled-components';
 import { UnitsDetails, UnitsIssuanceDetails, UnitsLabelsDetails } from '.';
-import { getUnits } from '../../store/actions/climateWarehouseActions';
-import { useDispatch } from 'react-redux';
 
 export const StyledDetailedViewTabItem = styled('div')`
   display: flex;
@@ -30,14 +28,9 @@ export const StyledItem = styled('div')`
 
 const UnitsDetailedViewTab = ({ entry }) => {
   const [tabValue, setTabValue] = useState(0);
-  const dispatch = useDispatch();
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-
-  useEffect(() => {
-    dispatch(getUnits({ useMockedResponse: false, useApiMock: false }));
-  }, []);
 
   const unitsTabs = _.remove(
     [_.isEmpty(entry), _.isEmpty(entry.labels), _.isEmpty(entry.issuance)],
