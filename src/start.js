@@ -14,7 +14,7 @@ function createWindow() {
       nodeIntegration: true,
     },
     icon: path.join(__dirname, '/../public/favicon.ico'),
-    title: "Climate Warehouse"
+    title: 'Climate Warehouse',
   });
 
   mainWindow.loadURL(
@@ -28,6 +28,11 @@ function createWindow() {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  mainWindow.webContents.on('new-window', (e, url) => {
+    e.preventDefault();
+    require('electron').shell.openExternal(url);
   });
 }
 
