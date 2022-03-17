@@ -35,6 +35,22 @@ const DetailedViewTabItem = ({ entry }) => {
   const { units } = useSelector(store => store.climateWarehouse);
   const dispatch = useDispatch();
 
+
+  const formDetailedView = (entryProp, index) => {
+    return (
+      <div key={index}>
+        <Body size="Bold">{convertPascalCaseToSentenceCase(entryProp)}</Body>
+        <Body>
+          {entry[entryProp] !== null && entry[entryProp] !== 'null' ? (
+            <StyledWordWrap>{entry[entryProp]}</StyledWordWrap>
+          ) : (
+            '--'
+          )}
+        </Body>
+      </div>
+    );
+  };
+
   const isIssuance =
     entry?.verificationApproach && entry?.verificationBody && entry?.id;
 
@@ -63,20 +79,7 @@ const DetailedViewTabItem = ({ entry }) => {
             'createdAt',
             'updatedAt',
             'label_unit',
-          ].includes(entryProp) && (
-            <div key={index}>
-              <Body size="Bold">
-                {convertPascalCaseToSentenceCase(entryProp)}
-              </Body>
-              <Body>
-                {entry[entryProp] !== null && entry[entryProp] !== 'null' ? (
-                  <StyledWordWrap>{entry[entryProp]}</StyledWordWrap>
-                ) : (
-                  '--'
-                )}
-              </Body>
-            </div>
-          ),
+          ].includes(entryProp) && formDetailedView(entryProp, index),
       )}
       {isIssuance && (
         <div>
@@ -85,9 +88,9 @@ const DetailedViewTabItem = ({ entry }) => {
           </Body>
           {allUnitsWithThisIssuance &&
             allUnitsWithThisIssuance.map((unit, index) => (
-              <Body key={index}>{`${index + 1} : ${
-                unit.warehouseUnitId
-              }`}</Body>
+              <Body key={index}>
+                {`${index + 1} : ${unit.warehouseUnitId}`}
+              </Body>
             ))}
         </div>
       )}
