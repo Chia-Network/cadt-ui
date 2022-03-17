@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body } from '..';
+import { Body, LinkIcon } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
@@ -8,7 +8,12 @@ import {
 } from '.';
 import { SpanTwoColumnsContainer } from '..';
 
+
 const ProjectLabelsDetails = ({ data }) => {
+  // const externalLink = event => {
+  //     event.preventDefault();
+  //     shell.openExternal(event.target.href);
+  // };
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -36,6 +41,7 @@ const ProjectLabelsDetails = ({ data }) => {
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.labelLink ? data.labelLink : '---'}
+                  {data.labelLink && <LinkIcon height="15" width="30"/>}
                 </a>
               </Body>
             </StyledItem>

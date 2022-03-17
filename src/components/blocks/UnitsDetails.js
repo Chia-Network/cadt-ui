@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body } from '..';
+import { Body, LinkIcon } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
@@ -96,6 +96,7 @@ const UnitsDetails = ({ data }) => {
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.unitRegistryLink ? data.unitRegistryLink : '---'}
+                  {data.unitRegistryLink && <LinkIcon height="15" width="30" />}
                 </a>
               </Body>
             </StyledItem>
@@ -120,9 +121,7 @@ const UnitsDetails = ({ data }) => {
               <FormattedMessage id="marketplace-identifier" />
             </Body>
             <Body>
-              {data.marketplaceIdentifier
-                ? data.marketplaceIdentifier
-                : '---'}
+              {data.marketplaceIdentifier ? data.marketplaceIdentifier : '---'}
             </Body>
           </StyledItem>
           <SpanTwoColumnsContainer>
@@ -131,7 +130,13 @@ const UnitsDetails = ({ data }) => {
                 <FormattedMessage id="marketplace-link" />
               </Body>
               <Body>
-                {data.marketplaceLink ? data.marketplaceLink : '---'}
+                <a
+                  href={data.marketplaceLink}
+                  target="_blank"
+                  rel="noreferrer noopener">
+                  {data.marketplaceLink ? data.marketplaceLink : '---'}
+                  {data.marketplaceLink && <LinkIcon height="15" width="30" />}
+                </a>
               </Body>
             </StyledItem>
           </SpanTwoColumnsContainer>

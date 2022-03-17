@@ -6,7 +6,7 @@ import {
   StyledDetailedViewTabItem,
   StyledItem,
 } from '.';
-import { SpanTwoColumnsContainer } from '..';
+import { SpanTwoColumnsContainer, LinkIcon } from '..';
 
 const UnitsLabelsDetails = ({ data }) => {
   return (
@@ -36,6 +36,7 @@ const UnitsLabelsDetails = ({ data }) => {
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.labelLink ? data.labelLink : '---'}
+                  {data.labelLink && <LinkIcon height="15" width="30" />}
                 </a>
               </Body>
             </StyledItem>

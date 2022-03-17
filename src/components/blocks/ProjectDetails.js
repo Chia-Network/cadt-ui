@@ -6,7 +6,7 @@ import {
   StyledDetailedViewTabItem,
   StyledItem,
 } from '.';
-import { SpanTwoColumnsContainer } from '..';
+import { SpanTwoColumnsContainer,LinkIcon } from '..';
 
 const ProjectDetails = ({ data }) => {
   return (
@@ -42,7 +42,15 @@ const ProjectDetails = ({ data }) => {
               <Body size="Bold" width="100%">
                 <FormattedMessage id="project-link" />
               </Body>
-              <Body>{data.projectLink ? data.projectLink : '---'}</Body>
+              <Body>
+                <a
+                  href={data.projectLink && data.projectLink}
+                  target="_blank"
+                  rel="noreferrer noopener">
+                  {data.projectLink ? data.projectLink : '---'}
+                  {data.projectLink && <LinkIcon height="15" width="30" />}
+                </a>
+              </Body>
             </StyledItem>
           </SpanTwoColumnsContainer>
           <StyledItem>
