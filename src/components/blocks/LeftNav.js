@@ -222,7 +222,7 @@ const LeftNav = withTheme(({ children }) => {
       <StyledAppVersion>
         <Body size="X-Small" color="white">
           {process?.env?.REACT_APP_VERSION &&
-            `version: ${process.env.REACT_APP_VERSION}`}
+            `v${process.env.REACT_APP_VERSION}`}
         </Body>
       </StyledAppVersion>
     </Container>
