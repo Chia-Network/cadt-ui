@@ -99,7 +99,7 @@ export const initiateSocket = remoteHost => {
   disconnectSocket();
 
   const WS_HOST = `${remoteHost || constants.API_HOST}/ws`;
-  const transports = ['websocket', 'polling'];
+  const transports = ['websocket'];
 
   socket = socketIO(WS_HOST, {
     path: '/socket.io',

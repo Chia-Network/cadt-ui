@@ -5,30 +5,11 @@ import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
+  handleClickLink,
 } from '.';
 import { SpanTwoColumnsContainer } from '..';
 
 const ProjectLabelsDetails = ({ data }) => {
-  // const createBrowserWindow = url => {
-  //   console.log(require('electron'));
-  //   const remote = require('electron').remote;
-  //   const BrowserWindow = remote.BrowserWindow;
-  //   const win = new BrowserWindow({
-  //     height: 600,
-  //     width: 800,
-  //   });
-
-  //   win.loadURL(url);
-  // };
-
-  const handleClick = event => {
-    console.log(event);
-  };
-
-  // const externalLink = event => {
-  //     event.preventDefault();
-  //     shell.openExternal(event.target.href);
-  // };
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -52,8 +33,7 @@ const ProjectLabelsDetails = ({ data }) => {
               </Body>
               <Body>
                 <a
-                  onClick={handleClick}
-                  href={data.labelLink && data.labelLink}
+                  href={handleClickLink(data.labelLink)}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.labelLink ? data.labelLink : '---'}
