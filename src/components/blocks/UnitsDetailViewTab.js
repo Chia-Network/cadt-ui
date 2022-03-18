@@ -26,14 +26,34 @@ export const StyledItem = styled('div')`
   padding: 10px 0;
 `;
 
-const UnitsDetailedViewTab = ({ entry }) => {
+const UnitsDetailViewTab = ({ entry, action }) => {
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
+  console.log(entry)
+
+  const areThereAnyChangesForThisOriginal = key =>
+    entry[key].changes &&
+    entry[key].changes.length > 0 &&
+    entry[key].changes.some(x => x !== null);
+
+  const getOriginalColorForKey = entryProp => {
+    if (areThereAnyChangesForThisOriginal(entryProp)) {
+      return '#f5222d';
+    }
+    if (action === 'DELETE') {
+      return '#f5222d';
+    }
+    if (action === 'INSERT') {
+      return '#52C41A';
+    }
+    return '#000000';
+  };
+
   const unitsTabs = _.remove(
-    [_.isEmpty(entry), _.isEmpty(entry.labels), _.isEmpty(entry.issuance)],
+    [_.isEmpty(entry), _.isEmpty(entry?.labels), _.isEmpty(entry?.issuance)],
     item => item,
   );
 
@@ -45,22 +65,28 @@ const UnitsDetailedViewTab = ({ entry }) => {
         {!_.isEmpty(entry?.labels) && <Tab label={'Labels'} />}
       </Tabs>
       <TabPanel value={tabValue} index={0}>
-        <UnitsDetails data={entry} />
+        <UnitsDetails data={entry} changeColor={getOriginalColorForKey} />
       </TabPanel>
-      {!_.isEmpty(entry.issuance) && (
+      {!_.isEmpty(entry?.issuance) && (
         <TabPanel value={tabValue} index={1}>
-          <UnitsIssuanceDetails data={entry?.issuance} />
+          <UnitsIssuanceDetails
+            data={entry?.issuance}
+            changeColor={getOriginalColorForKey}
+          />
         </TabPanel>
       )}
-      {!_.isEmpty(entry.labels) &&
-        _.map(entry.labels, labelValue => (
+      {!_.isEmpty(entry?.labels) &&
+        _.map(entry?.labels, labelValue => (
           <TabPanel
             value={tabValue}
             index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
-            <UnitsLabelsDetails data={labelValue} />
+            <UnitsLabelsDetails
+              data={labelValue}
+              changeColor={getOriginalColorForKey}
+            />
           </TabPanel>
         ))}
     </>
   );
 };
-export { UnitsDetailedViewTab };
+export { UnitsDetailViewTab };

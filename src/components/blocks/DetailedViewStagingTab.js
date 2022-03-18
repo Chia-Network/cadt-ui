@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
-import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { Body } from '..';
+import { UnitsDetailViewTab } from '.';
 
 const StyledDetailedViewTabItem = styled('div')`
   background: #fafafa;
@@ -23,48 +21,48 @@ const StyledDetailedViewTab = styled('div')`
   gap: 20px;
 `;
 
-const StyledWordWrap = styled('div')`
+export const StyledWordWrap = styled('div')`
   word-break: break-word;
   display: inline-block;
 `;
 
 const DetailedViewTabItem = ({ entry, action }) => {
-  const hasEntryKeyData = key =>
-    (entry[key].original !== null && entry[key].original !== 'null') ||
-    (entry[key].changes &&
-      entry[key].changes.some(change => change !== null && change !== 'null'));
+  // const hasEntryKeyData = key =>
+  //   (entry[key].original !== null && entry[key].original !== 'null') ||
+  //   (entry[key].changes &&
+  //     entry[key].changes.some(change => change !== null && change !== 'null'));
 
-  const isKeyAllowedToBeDisplayed = key =>
-    ![
-      'orgUid',
-      'warehouseProjectId',
-      'id',
-      'createdAt',
-      'updatedAt',
-      'label_unit',
-    ].includes(key);
+  // const isKeyAllowedToBeDisplayed = key =>
+  //   ![
+  //     'orgUid',
+  //     'warehouseProjectId',
+  //     'id',
+  //     'createdAt',
+  //     'updatedAt',
+  //     'label_unit',
+  //   ].includes(key);
 
-  const areThereAnyChangesForThisOriginal = key =>
-    entry[key].changes &&
-    entry[key].changes.length > 0 &&
-    entry[key].changes.some(x => x !== null);
+  // const areThereAnyChangesForThisOriginal = key =>
+  //   entry[key].changes &&
+  //   entry[key].changes.length > 0 &&
+  //   entry[key].changes.some(x => x !== null);
 
-  const getOriginalColorForKey = entryProp => {
-    if (areThereAnyChangesForThisOriginal(entryProp)) {
-      return '#f5222d';
-    }
-    if (action === 'DELETE') {
-      return '#f5222d';
-    }
-    if (action === 'INSERT') {
-      return '#52C41A';
-    }
-    return '#000000';
-  };
-
+  // const getOriginalColorForKey = entryProp => {
+  //   if (areThereAnyChangesForThisOriginal(entryProp)) {
+  //     return '#f5222d';
+  //   }
+  //   if (action === 'DELETE') {
+  //     return '#f5222d';
+  //   }
+  //   if (action === 'INSERT') {
+  //     return '#52C41A';
+  //   }
+  //   return '#000000';
+  // };
   return (
     <StyledDetailedViewTabItem>
-      {Object.keys(entry).map(
+      <UnitsDetailViewTab entry={entry} action={action} />
+      {/* {Object.keys(entry).map(
         (entryProp, index) =>
           isKeyAllowedToBeDisplayed(entryProp) &&
           hasEntryKeyData(entryProp) && (
@@ -78,6 +76,7 @@ const DetailedViewTabItem = ({ entry, action }) => {
                     <StyledWordWrap>{entry[entryProp].original}</StyledWordWrap>
                   </Body>
                 )}
+                
               {entry[entryProp].changes &&
                 entry[entryProp].changes.length > 0 &&
                 entry[entryProp].changes.some(x => x !== null) &&
@@ -90,7 +89,7 @@ const DetailedViewTabItem = ({ entry, action }) => {
                 ))}
             </div>
           ),
-      )}
+      )} */}
     </StyledDetailedViewTabItem>
   );
 };

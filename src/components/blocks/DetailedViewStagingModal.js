@@ -1,13 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   Modal,
   modalTypeEnum,
-  Tab,
-  Tabs,
-  TabPanel,
-  DetailedViewStagingTab,
+  //DetailedViewStagingTab,
+  UnitsDetailViewTab,
 } from '..';
-import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
+
 import { getDiffObject } from '../../utils/objectUtils';
 
 const DetailedViewStagingModal = ({
@@ -18,8 +16,6 @@ const DetailedViewStagingModal = ({
   title,
   action,
 }) => {
-  const [tabValue, setTabValue] = useState(0);
-
   const recordTabsWithEntries = useMemo(() => {
     let allTabs = record
       ? Object.keys(record).filter(key => Array.isArray(record[key]))
@@ -53,7 +49,7 @@ const DetailedViewStagingModal = ({
 
     return allTabsWithData;
   }, [record]);
-
+  console.log(recordTabsWithEntries);
   const recordDiffs = useMemo(() => {
     const changesArray = changes ?? [];
     return getDiffObject(record, ...changesArray);
@@ -71,10 +67,6 @@ const DetailedViewStagingModal = ({
     return detailsObj;
   }, [recordDiffs]);
 
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
-
   if (!modalSizeAndPosition || !record || !title || !onClose || !action) {
     return <></>;
   }
@@ -87,32 +79,34 @@ const DetailedViewStagingModal = ({
       title={title}
       body={
         <div>
-          <Tabs value={tabValue} onChange={handleTabChange}>
+          {/* <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="Details" />
             {recordTabsWithEntries.map(tab => (
               <Tab label={convertPascalCaseToSentenceCase(tab)} key={tab} />
             ))}
             {record?.issuance && <Tab label="Issuance" />}
           </Tabs>
-          <TabPanel value={tabValue} index={0}>
-            <DetailedViewStagingTab data={[recordDetails]} action={action} />
-          </TabPanel>
-          {recordTabsWithEntries.map((tabKey, index) => (
-            <TabPanel value={tabValue} index={index + 1} key={tabKey}>
-              <DetailedViewStagingTab
-                data={recordDiffs[tabKey]}
-                action={action}
-              />
-            </TabPanel>
+          <TabPanel value={tabValue} index={0}> */}
+          {[recordDetails].map((detail, id) => (
+            <UnitsDetailViewTab entry={detail} key={id} action={action} />
           ))}
-          {record?.issuance && (
+          {/* </TabPanel> */}
+          {/* {recordTabsWithEntries.map((tabKey, index) => ( */}
+          {/* <TabPanel value={tabValue} index={index + 1} key={tabKey}>
+          <DetailedViewStagingTab */}
+          {/* //     key={index}
+          //     data={recordDiffs[tabKey]}
+          //     action={action}
+          //   />
+          // ))} */}
+          {/* {record?.issuance && (
             <TabPanel value={tabValue} index={recordTabsWithEntries.length + 1}>
               <DetailedViewStagingTab
                 data={[recordDiffs.issuance]}
                 action={action}
               />
             </TabPanel>
-          )}
+          )} */}
         </div>
       }
       hideButtons
