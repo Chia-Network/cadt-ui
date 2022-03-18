@@ -83,6 +83,9 @@ const AppNavigator = () => {
             <Route exact path="/">
               <Redirect to="/projects" />
             </Route>
+            <Route exact path="">
+              <Redirect to="/projects" />
+            </Route>
             <Route path="/units">
               <Pages.Units />
             </Route>
@@ -91,6 +94,9 @@ const AppNavigator = () => {
             </Route>
             <Route path="/storybook">
               <Pages.StoryBook />
+            </Route>
+            <Route path="/organization">
+              <Pages.Organization />
             </Route>
             <Route path="*">
               <Redirect to="/projects" />
