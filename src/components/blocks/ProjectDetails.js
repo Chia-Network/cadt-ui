@@ -21,7 +21,7 @@ const ProjectDetails = ({ data }) => {
             <Body>{data.projectName ? data.projectName : '---'}</Body>
           </StyledItem>
           <StyledItem>
-            <Body width="100%">
+            <Body size="Bold" width="100%">
               <FormattedMessage id="project-id" />
             </Body>
             <Body>{data.projectId ? data.projectId : '---'}</Body>

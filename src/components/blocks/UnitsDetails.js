@@ -32,7 +32,7 @@ const UnitsDetails = ({ data }) => {
             </Body>
           </StyledItem>
           <StyledItem>
-            <Body width="100%">
+            <Body size="Bold" width="100%">
               <FormattedMessage id="unit-owner" />
             </Body>
             <Body>{data.unitOwner ? data.unitOwner : '---'}</Body>
