@@ -307,7 +307,7 @@
   "public-address": "Direccion publica",
   "address-qr-code": "Dirección Código QR",
   "my-organization": "Mi organización",
-  "organization": "Organización"
+  "organization": "Organización",
   "failed": "Ha fallado",
   "transactions-staged": "Sus transacciones han sido puestas en escena.",
   "transactions-not-staged": "Sus transacciones no se pudieron organizar."

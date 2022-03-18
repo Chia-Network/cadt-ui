@@ -325,7 +325,7 @@
   "public-address": "Public Address",
   "address-qr-code": "Address QR Code",
   "my-organization": "My Organization",
-  "organization": "Organization"
+  "organization": "Organization",
   "failed": "Failed",
   "transactions-staged": "Your transactions have been staged.",
   "transactions-not-staged": "Your transactions could not be staged."
