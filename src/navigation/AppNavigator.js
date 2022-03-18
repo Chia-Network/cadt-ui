@@ -92,7 +92,9 @@ const AppNavigator = () => {
             <Route path="/storybook">
               <Pages.StoryBook />
             </Route>
-            <Redirect to="/" />
+            <Route path="*">
+              <Redirect to="/projects" />
+            </Route>
           </Suspense>
         </Dashboard>
       </Router>
