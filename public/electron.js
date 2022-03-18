@@ -31,6 +31,11 @@ function createWindow() {
     mainWindow.loadURL(appURL);
   });
 
+  mainWindow.webContents.on('new-window', (e, url) => {
+    e.preventDefault();
+    require('electron').shell.openExternal(url);
+  });
+
   // Automatically open Chrome's DevTools in development mode.
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
