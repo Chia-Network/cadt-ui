@@ -23,6 +23,7 @@ export const SOCKET_STATUS = keyMirror(
 
 let socket;
 let interval;
+let reconnectInterval = 1000;
 
 const notifyRefresh = _.debounce(dispatch => {
   NotificationManager.info(
@@ -32,7 +33,7 @@ const notifyRefresh = _.debounce(dispatch => {
     () => dispatch(refreshApp(true)),
     true,
   );
-}, 5000);
+}, 100);
 
 const initListenersForEachMessageType = dispatch => {
   Object.keys(messageTypes).forEach(key => {
@@ -82,21 +83,22 @@ export const emitAction = actionCreator => {
   };
 };
 
-const reconnectSocket = dispatch => {
+const reconnectSocket = _.debounce(dispatch => {
   if (!socket || (socket && !socket.connected)) {
     dispatch(initiateSocket());
     setTimeout(() => {
       if (!socket || (socket && !socket.connected)) {
         reconnectSocket(dispatch);
       }
-    }, 5000);
+      reconnectInterval = reconnectInterval * 2;
+    }, reconnectInterval);
   }
-};
+}, 100);
 
-export const initiateSocket = () => {
+export const initiateSocket = remoteHost => {
   disconnectSocket();
 
-  const WS_HOST = `${constants.API_HOST}/ws`;
+  const WS_HOST = `${remoteHost || constants.API_HOST}/ws`;
   const transports = ['websocket', 'polling'];
 
   socket = socketIO(WS_HOST, {

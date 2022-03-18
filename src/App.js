@@ -22,10 +22,10 @@ const App = () => {
   const [translationTokens, setTranslationTokens] = useState();
 
   useEffect(() => {
-    dispatch(initiateSocket());
+    dispatch(initiateSocket(appStore.serverAddress));
     dispatch(getOrganizationData());
     dispatch(getPickLists());
-  }, [dispatch]);
+  }, [dispatch, appStore.serverAddress]);
 
   useEffect(
     () => dispatch(setThemeFromLocalStorage),

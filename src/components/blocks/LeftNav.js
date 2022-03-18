@@ -7,6 +7,7 @@ import {
   RegistryIcon,
   Modal,
   AddIconCircle,
+  Body,
 } from '../../components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +22,12 @@ const Container = styled('div')`
   display: flex;
   flex-direction: row;
   height: 100%;
+`;
+
+const StyledAppVersion = styled('div')`
+  position: absolute;
+  bottom: 12px;
+  left: 50px;
 `;
 
 const NavContainer = styled('div')`
@@ -212,6 +219,12 @@ const LeftNav = withTheme(({ children }) => {
           }}
         />
       )}
+      <StyledAppVersion>
+        <Body size="X-Small" color="white">
+          {process?.env?.REACT_APP_VERSION &&
+            `v${process.env.REACT_APP_VERSION}`}
+        </Body>
+      </StyledAppVersion>
     </Container>
   );
 });
