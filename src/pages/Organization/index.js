@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import QRCode from 'qrcode.react';
+import { useDispatch } from 'react-redux';
 
 import { validateUrl } from '../../utils/urlUtils';
 import { Body, CopyIcon, H2, H4 } from '../../components';
 import { FormattedMessage } from 'react-intl';
+import {
+  activateProgressIndicator,
+  deactivateProgressIndicator,
+} from '../../store/actions/app';
 
 const StyledOrganizationContainer = styled('div')`
   padding: 30px 63px;
@@ -44,12 +49,18 @@ const StyledCopyIconContainer = styled('div')`
 `;
 
 const Organization = () => {
+  const dispatch = useDispatch();
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
   const myOrganzation = organizations[myOrgUid];
   const createMarkup = icon => {
     return { __html: icon };
   };
+
+  useEffect(() => {
+    dispatch(activateProgressIndicator);
+    dispatch(deactivateProgressIndicator);
+  }, []);
 
   return (
     <StyledOrganizationContainer>

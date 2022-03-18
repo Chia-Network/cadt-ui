@@ -175,7 +175,11 @@ const LeftNav = withTheme(({ children }) => {
               </MenuItem>
             )}
             {myOrgIsNotCreated && (
-              <MenuItem selected={createOrgIsVisible} to={window.location}>
+              <MenuItem
+                selected={createOrgIsVisible}
+                to={window.location}
+                onClick={() => setCreateOrgIsVisible(true)}
+              >
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
