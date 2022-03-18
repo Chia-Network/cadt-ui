@@ -8,7 +8,7 @@ import {
   Modal,
   Body,
 } from '../../components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
@@ -66,6 +66,7 @@ const StyledTitleContainer = styled('div')`
 `;
 
 const LeftNav = withTheme(({ children }) => {
+  const history = useHistory();
   const [confirmCreateOrgIsVisible, setConfirmCreateOrgIsVisible] =
     useState(false);
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
@@ -89,12 +90,11 @@ const LeftNav = withTheme(({ children }) => {
     return () => clearTimeout(intervalId);
   }, [myOrgIsNotCreated, myOrgIsCreatedButNotSubscribed, createOrgIsVisible]);
 
-  const isUnitsPage = window.location.pathname.includes('/units');
-  const isProjectsPage = window.location.pathname.includes('/projects');
-  const isMyRegistryPage = window.location.search.includes('myRegistry=true');
-  const isOrganizationPage = window.location.pathname.includes('/organization');
-
-  console.log('window.location.pathname', window.location.pathname);
+  const isUnitsPage = history.location.pathname.includes('/units');
+  const isProjectsPage = history.location.pathname.includes('/projects');
+  const isMyRegistryPage = history.location.search.includes('myRegistry=true');
+  const isOrganizationPage =
+    history.location.pathname.includes('/organization');
 
   return (
     <Container>
@@ -166,7 +166,7 @@ const LeftNav = withTheme(({ children }) => {
                 <OrganizationIcon height={20} width={20} />
               )}
               <ButtonText>
-                <FormattedMessage id="Organization" />
+                <FormattedMessage id="organization" />
               </ButtonText>
             </StyledTitleContainer>
             {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (

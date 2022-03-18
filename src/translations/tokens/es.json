@@ -299,5 +299,6 @@
   "creating-organization": "Creación de Organización",
   "public-address": "Direccion publica",
   "address-qr-code": "Dirección Código QR",
-  "my-organization": "Mi organización"
+  "my-organization": "Mi organización",
+  "organization": "Organización"
 }

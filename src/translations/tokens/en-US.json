@@ -323,5 +323,6 @@
   "creating-organization": "Creating Organization",
   "public-address": "Public Address",
   "address-qr-code": "Address QR Code",
-  "my-organization": "My Organization"
+  "my-organization": "My Organization",
+  "organization": "Organization"
 }
