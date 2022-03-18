@@ -5,8 +5,9 @@ import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
+  handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer,LinkIcon } from '..';
+import { SpanTwoColumnsContainer, LinkIcon } from '..';
 
 const ProjectDetails = ({ data }) => {
   return (
@@ -44,7 +45,7 @@ const ProjectDetails = ({ data }) => {
               </Body>
               <Body>
                 <a
-                  href={data.projectLink && data.projectLink}
+                  href={handleClickLink(data.projectLink)}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.projectLink ? data.projectLink : '---'}

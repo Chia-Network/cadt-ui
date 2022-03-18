@@ -5,6 +5,7 @@ import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
+  handleClickLink,
 } from '.';
 import { SpanTwoColumnsContainer, LinkIcon } from '..';
 
@@ -32,7 +33,7 @@ const UnitsLabelsDetails = ({ data }) => {
               </Body>
               <Body>
                 <a
-                  href={data.labelLink && data.labelLink}
+                  href={handleClickLink(data.labelLink)}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.labelLink ? data.labelLink : '---'}
