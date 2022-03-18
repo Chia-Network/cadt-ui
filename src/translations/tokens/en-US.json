@@ -320,5 +320,8 @@
   "add-valid-api-key": "Add a valid Api key",
   "add-valid-organization-name": "Add a valid organization name",
   "add-valid-organization-icon": "Load a valid SVG icon",
-  "creating-organization": "Creating Organization"
+  "creating-organization": "Creating Organization",
+  "public-address": "Public Address",
+  "address-qr-code": "Address QR Code",
+  "my-organization": "My Organization"
 }

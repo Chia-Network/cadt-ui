@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { CircularProgress } from '@mui/material';
 import {
@@ -6,7 +6,6 @@ import {
   WarehouseIcon,
   RegistryIcon,
   Modal,
-  AddIconCircle,
   Body,
 } from '../../components';
 import { Link } from 'react-router-dom';
@@ -17,6 +16,7 @@ import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { CreateOrgForm } from '../forms';
 import { modalTypeEnum } from '.';
 import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
+import { OrganizationIcon } from '../icons';
 
 const Container = styled('div')`
   display: flex;
@@ -35,17 +35,6 @@ const NavContainer = styled('div')`
   min-width: 16rem;
   height: 100%;
   background-color: #3b8ee0;
-`;
-
-const StyledCreateOrgButtonContainer = styled('div')`
-  h4 {
-    color: white;
-  }
-  color: white;
-  margin: 46px 0px 1.3125rem 1.7813rem;
-  cursor: pointer;
-  display: flex;
-  gap: 0.8438rem;
 `;
 
 const MenuItem = styled(Link)`
@@ -104,6 +93,14 @@ const LeftNav = withTheme(({ children }) => {
   const isUnitsPage = window.location.pathname.includes('/units');
   const isProjectsPage = window.location.pathname.includes('/projects');
   const isMyRegistryPage = window.location.search.includes('myRegistry=true');
+  const isOrganizationPage = useMemo(
+    () => window.location.pathname.includes('/organization'),
+    [window.location.pathname],
+  );
+
+  useEffect(() => {
+    console.log('window.location.pathname', window.location.pathname);
+  }, [window.location, window.location.pathname]);
 
   return (
     <Container>
@@ -129,6 +126,7 @@ const LeftNav = withTheme(({ children }) => {
         >
           <FormattedMessage id="units-list" />
         </MenuItem>
+
         {!readOnlyMode && (
           <>
             <StyledTitleContainer disabled={myOrgIsNotCreated}>
@@ -173,32 +171,42 @@ const LeftNav = withTheme(({ children }) => {
                 >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
-                <StyledCreateOrgButtonContainer
-                  onClick={() => setCreateOrgIsVisible(true)}
-                >
-                  <AddIconCircle width="20" height="20" />
-                  <ButtonText>
-                    <FormattedMessage id="create-organization" />
-                  </ButtonText>
-                </StyledCreateOrgButtonContainer>
               </>
             )}
+
+            <StyledTitleContainer>
+              {myOrgIsCreatedButNotSubscribed && (
+                <CircularProgress size={20} thickness={5} />
+              )}
+              {!myOrgIsCreatedButNotSubscribed && (
+                <OrganizationIcon height={20} width={20} />
+              )}
+              <ButtonText>
+                <FormattedMessage id="Organization" />
+              </ButtonText>
+            </StyledTitleContainer>
+            {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (
+              <MenuItem
+                selected={isOrganizationPage}
+                to="/organization"
+                onClick={() => dispatch(resetRefreshPrompt)}
+              >
+                <FormattedMessage id="my-organization" />
+              </MenuItem>
+            )}
+            {myOrgIsNotCreated && (
+              <MenuItem
+                selected={createOrgIsVisible}
+                to={window.location}
+                onClick={() => setCreateOrgIsVisible(true)}
+              >
+                <FormattedMessage id="create-organization" />
+              </MenuItem>
+            )}
             {myOrgIsCreatedButNotSubscribed && (
-              <>
-                <MenuItem to={window.location} disabled>
-                  <FormattedMessage id="my-projects" />
-                </MenuItem>
-                <div></div>
-                <MenuItem to={window.location} disabled>
-                  <FormattedMessage id="my-units" />
-                </MenuItem>
-                <StyledCreateOrgButtonContainer>
-                  <CircularProgress size={20} thickness={5} />
-                  <ButtonText>
-                    <FormattedMessage id="creating-organization" />
-                  </ButtonText>
-                </StyledCreateOrgButtonContainer>
-              </>
+              <MenuItem to={window.location}>
+                <FormattedMessage id="creating-organization" />
+              </MenuItem>
             )}
           </>
         )}

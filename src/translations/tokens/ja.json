@@ -289,5 +289,8 @@
   "Add a valid Api key": "有効なAPIキーを追加します",
   "add-valid-organization-name": "有効な組織名を追加してください",
   "add-valid-organization-icon": "有効なSVGアイコンを追加する",
-  "creating-organization": "組織の作成"
+  "creating-organization": "組織の作成",
+  "public-address": "パブリックアドレス",
+  "address-qr-code": "住所QRコード",
+  "my-organization": "私の組織"
 }
