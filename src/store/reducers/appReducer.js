@@ -39,9 +39,6 @@ const appReducer = (state = initialState, action) => {
     case socketActions.SOCKET_STAGING_UPDATE:
       return u({ updateAvailablePleaseRefesh: true }, state);
 
-    case appActions.RESET_REFRESH_PROMPT:
-      return u({ updateAvailablePleaseRefesh: false }, state);
-
     case appActions.ACTIVATE_PROGRESS_INDICATOR:
       return u({ showProgressOverlay: true }, state);
 

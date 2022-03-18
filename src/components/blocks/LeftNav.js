@@ -11,7 +11,6 @@ import {
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { resetRefreshPrompt } from '../../store/actions/app';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { CreateOrgForm } from '../forms';
 import { modalTypeEnum } from '.';
@@ -95,9 +94,7 @@ const LeftNav = withTheme(({ children }) => {
   const isMyRegistryPage = window.location.search.includes('myRegistry=true');
   const isOrganizationPage = window.location.pathname.includes('/organization');
 
-  useEffect(() => {
-    console.log('window.location.pathname', window.location.pathname);
-  }, [window.location, window.location.pathname]);
+  console.log('window.location.pathname', window.location.pathname);
 
   return (
     <Container>
@@ -108,19 +105,11 @@ const LeftNav = withTheme(({ children }) => {
             <FormattedMessage id="warehouse" />
           </ButtonText>
         </StyledTitleContainer>
-        <MenuItem
-          selected={isProjectsPage && !isMyRegistryPage}
-          to="/projects"
-          onClick={() => dispatch(resetRefreshPrompt)}
-        >
+        <MenuItem selected={isProjectsPage && !isMyRegistryPage} to="/projects">
           <FormattedMessage id="projects-list" />
         </MenuItem>
         <div></div>
-        <MenuItem
-          selected={isUnitsPage && !isMyRegistryPage}
-          to="/units"
-          onClick={() => dispatch(resetRefreshPrompt)}
-        >
+        <MenuItem selected={isUnitsPage && !isMyRegistryPage} to="/units">
           <FormattedMessage id="units-list" />
         </MenuItem>
 
@@ -137,7 +126,6 @@ const LeftNav = withTheme(({ children }) => {
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
                   to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
-                  onClick={() => dispatch(resetRefreshPrompt)}
                 >
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
@@ -145,7 +133,6 @@ const LeftNav = withTheme(({ children }) => {
                 <MenuItem
                   selected={isUnitsPage && isMyRegistryPage}
                   to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
-                  onClick={() => dispatch(resetRefreshPrompt)}
                 >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
@@ -183,11 +170,7 @@ const LeftNav = withTheme(({ children }) => {
               </ButtonText>
             </StyledTitleContainer>
             {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (
-              <MenuItem
-                selected={isOrganizationPage}
-                to="/organization"
-                onClick={() => dispatch(resetRefreshPrompt)}
-              >
+              <MenuItem selected={isOrganizationPage} to="/organization">
                 <FormattedMessage id="my-organization" />
               </MenuItem>
             )}
