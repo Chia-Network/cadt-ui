@@ -57,6 +57,8 @@ const Organization = () => {
     return { __html: icon };
   };
 
+  // TODO remove after pushing fix: location.pathname change doesn't trigger re-render #568
+  // After pushing the above fix test wether accessing the Organization page triggers the left nav MenuItem selected state
   useEffect(() => {
     dispatch(activateProgressIndicator);
     dispatch(deactivateProgressIndicator);
