@@ -8,6 +8,16 @@ import {
 } from '.';
 import { SpanTwoColumnsContainer } from '../layout';
 
+export const handleClickLink = link => {
+  if (link) {
+    if (link.slice(0, 4) === 'http') {
+      return link;
+    } else {
+      return 'http://' + link;
+    }
+  }
+};
+
 const UnitsDetails = ({ data }) => {
   return (
     <StyledDetailedViewTabItem>
@@ -92,7 +102,7 @@ const UnitsDetails = ({ data }) => {
               </Body>
               <Body>
                 <a
-                  href={data.unitRegistryLink}
+                  href={handleClickLink(data.unitRegistryLink)}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.unitRegistryLink ? data.unitRegistryLink : '---'}
@@ -131,7 +141,7 @@ const UnitsDetails = ({ data }) => {
               </Body>
               <Body>
                 <a
-                  href={data.marketplaceLink}
+                  href={handleClickLink(data.marketplaceLink)}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.marketplaceLink ? data.marketplaceLink : '---'}
