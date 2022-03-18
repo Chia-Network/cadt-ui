@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { CircularProgress } from '@mui/material';
 import {
@@ -93,10 +93,7 @@ const LeftNav = withTheme(({ children }) => {
   const isUnitsPage = window.location.pathname.includes('/units');
   const isProjectsPage = window.location.pathname.includes('/projects');
   const isMyRegistryPage = window.location.search.includes('myRegistry=true');
-  const isOrganizationPage = useMemo(
-    () => window.location.pathname.includes('/organization'),
-    [window.location.pathname],
-  );
+  const isOrganizationPage = window.location.pathname.includes('/organization');
 
   useEffect(() => {
     console.log('window.location.pathname', window.location.pathname);
@@ -195,11 +192,7 @@ const LeftNav = withTheme(({ children }) => {
               </MenuItem>
             )}
             {myOrgIsNotCreated && (
-              <MenuItem
-                selected={createOrgIsVisible}
-                to={window.location}
-                onClick={() => setCreateOrgIsVisible(true)}
-              >
+              <MenuItem selected={createOrgIsVisible} to={window.location}>
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
