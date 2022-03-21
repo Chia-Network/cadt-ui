@@ -34,6 +34,7 @@ const ProjectLabelsDetails = ({ data }) => {
               <Body>
                 <a
                   href={handleClickLink(data.labelLink)}
+                  style={{ wordWrap: 'break-word' }}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.labelLink ? data.labelLink : '---'}

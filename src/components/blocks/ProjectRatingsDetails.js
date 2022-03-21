@@ -50,6 +50,7 @@ const ProjectRatingsDetails = ({ data }) => {
               <Body>
                 <a
                   href={handleClickLink(data.ratingLink)}
+                  style={{wordWrap: 'break-word'}}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.ratingLink ? data.ratingLink : '---'}

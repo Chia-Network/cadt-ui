@@ -106,6 +106,7 @@ const UnitsDetails = ({ data }) => {
               <Body>
                 <a
                   href={handleClickLink(data.unitRegistryLink)}
+                  style={{ wordWrap: 'break-word' }}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.unitRegistryLink ? data.unitRegistryLink : '---'}
@@ -145,6 +146,7 @@ const UnitsDetails = ({ data }) => {
               <Body>
                 <a
                   href={handleClickLink(data.marketplaceLink)}
+                  style={{ wordWrap: 'break-word' }}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.marketplaceLink ? data.marketplaceLink : '---'}

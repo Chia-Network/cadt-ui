@@ -46,6 +46,7 @@ const ProjectDetails = ({ data }) => {
               <Body>
                 <a
                   href={handleClickLink(data.projectLink)}
+                  style={{ wordWrap: 'break-word' }}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.projectLink ? data.projectLink : '---'}
