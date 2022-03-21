@@ -332,5 +332,6 @@
   "organization-subscriptions": "Organization Subscriptions",
   "manage": "Manage",
   "add-custom-organization": "Add custom organization (UID)",
-  "add": "Add"
+  "add": "Add",
+  "organization-is-importing": "The organization is importing, this will take a few minutes."
 }

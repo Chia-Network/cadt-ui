@@ -745,6 +745,111 @@ export const postNewOrg = data => {
   };
 };
 
+export const subscribeToOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organization/subscribe`;
+
+      const payload = {
+        method: 'PUT',
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const unsubscribeFromOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organization/unsubscribe`;
+
+      const payload = {
+        method: 'PUT',
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const subscribeImportOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organization/import`;
+
+      const payload = {
+        method: 'PUT',
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-is-importing',
+          ),
+        );
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const uploadXLSXFile = (file, type) => {
   return async dispatch => {
     if (type === 'projects' || type === 'units') {
