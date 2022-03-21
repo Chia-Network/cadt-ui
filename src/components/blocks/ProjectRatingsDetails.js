@@ -5,10 +5,11 @@ import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
+  handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer } from '..';
+import { SpanTwoColumnsContainer, LinkIcon } from '..';
 
-const ProjectRatingsDetails = ({data}) => {
+const ProjectRatingsDetails = ({ data }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -44,10 +45,16 @@ const ProjectRatingsDetails = ({data}) => {
           <SpanTwoColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
-                <FormattedMessage id="rating-range-highest" />
+                <FormattedMessage id="rating-link" />
               </Body>
               <Body>
-                {data.ratingReportLink ? data.ratingReportLink : '---'}
+                <a
+                  href={handleClickLink(data.ratingLink)}
+                  target="_blank"
+                  rel="noreferrer noopener">
+                  {data.ratingLink ? data.ratingLink : '---'}
+                  {data.ratingLink && <LinkIcon height="15" width="30" />}
+                </a>
               </Body>
             </StyledItem>
           </SpanTwoColumnsContainer>
