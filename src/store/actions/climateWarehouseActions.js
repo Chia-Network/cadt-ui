@@ -750,7 +750,7 @@ export const subscribeToOrg = orgUid => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/organization/subscribe`;
+      const url = `${constants.API_HOST}/organizations/subscribe`;
 
       const payload = {
         method: 'PUT',
@@ -783,7 +783,7 @@ export const unsubscribeFromOrg = orgUid => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/organization/unsubscribe`;
+      const url = `${constants.API_HOST}/organizations/unsubscribe`;
 
       const payload = {
         method: 'PUT',
@@ -816,7 +816,7 @@ export const subscribeImportOrg = orgUid => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/organization/import`;
+      const url = `${constants.API_HOST}/organizations/import`;
 
       const payload = {
         method: 'PUT',
