@@ -44,20 +44,11 @@ const SubscriptionModal = ({ onClose }) => {
   const dispatch = useDispatch();
   const [customOrgUID, setCustomOrgUID] = useState('');
   const intl = useIntl();
-  const { notification } = useSelector(state => state.app);
   const { organizations } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
     dispatch(getOrganizationData());
   }, []);
-
-  const orgWasSuccessfullyCreated =
-    notification && notification.id === 'organization-created';
-  useEffect(() => {
-    if (orgWasSuccessfullyCreated) {
-      onClose();
-    }
-  }, [notification]);
 
   return (
     <>
