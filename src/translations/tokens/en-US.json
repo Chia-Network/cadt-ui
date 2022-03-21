@@ -328,5 +328,9 @@
   "organization": "Organization",
   "failed": "Failed",
   "transactions-staged": "Your transactions have been staged.",
-  "transactions-not-staged": "Your transactions could not be staged."
+  "transactions-not-staged": "Your transactions could not be staged.",
+  "organization-subscriptions": "Organization Subscriptions",
+  "manage": "Manage",
+  "add-custom-organization": "Add custom organization (UID)",
+  "add": "Add"
 }

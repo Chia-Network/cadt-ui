@@ -310,5 +310,9 @@
   "organization": "組織",
   "failed": "失敗した",
   "transactions-staged": "トランザクションはステージングされました。",
-  "transactions-not-staged": "トランザクションをステージングできませんでした。"
+  "transactions-not-staged": "トランザクションをステージングできませんでした。",
+  "organization-subscriptions": "組織のサブスクリプション",
+  "manage": "管理",
+  "add-custom-organization": "カスタム組織（UID）を追加する",
+  "add": "追加"
 }
