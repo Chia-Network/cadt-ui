@@ -1,13 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body } from '..';
+import { Body, SpanTwoDetailColumnsContainer, SpanTwoColumnsContainer,LinkIcon } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
   handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer, LinkIcon } from '..';
+
 
 const ProjectDetails = ({ data }) => {
   return (
@@ -38,7 +38,7 @@ const ProjectDetails = ({ data }) => {
             </Body>
             <Body>{data.program ? data.program : '---'}</Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="project-link" />
@@ -53,7 +53,7 @@ const ProjectDetails = ({ data }) => {
                 </a>
               </Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="sector" />
@@ -89,22 +89,22 @@ const ProjectDetails = ({ data }) => {
             </Body>
             <Body>{data.coveredByNDC ? data.coveredByNDC : '---'}</Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="ndc-information" />
               </Body>
               <Body>{data.ndcInformation ? data.ndcInformation : '---'}</Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
-          <SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="current-registry" />
               </Body>
               <Body>{data.currentRegistry ? data.currentRegistry : '---'}</Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="registry-of-origin" />
@@ -126,14 +126,14 @@ const ProjectDetails = ({ data }) => {
             </Body>
             <Body>{data.unitMetric ? data.unitMetric : '---'}</Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="methodology" />
               </Body>
               <Body>{data.methodology ? data.methodology : '---'}</Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="validation-body" />

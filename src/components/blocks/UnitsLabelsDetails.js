@@ -7,7 +7,7 @@ import {
   StyledItem,
   handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer, LinkIcon } from '..';
+import { SpanTwoDetailColumnsContainer, LinkIcon } from '..';
 
 const UnitsLabelsDetails = ({ data }) => {
   return (
@@ -26,7 +26,7 @@ const UnitsLabelsDetails = ({ data }) => {
             </Body>
             <Body>{data.labelType ? data.labelType : '---'}</Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="label-link" />
@@ -41,7 +41,7 @@ const UnitsLabelsDetails = ({ data }) => {
                 </a>
               </Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="validity-period-start-date" />

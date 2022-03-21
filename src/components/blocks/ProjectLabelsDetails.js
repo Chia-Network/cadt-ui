@@ -7,7 +7,7 @@ import {
   StyledItem,
   handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer } from '..';
+import { SpanTwoColumnsContainer, SpanTwoDetailColumnsContainer } from '..';
 
 const ProjectLabelsDetails = ({ data }) => {
   return (
@@ -26,7 +26,7 @@ const ProjectLabelsDetails = ({ data }) => {
             </Body>
             <Body>{data.labelType ? data.labelType : '---'}</Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="label-link" />
@@ -41,7 +41,7 @@ const ProjectLabelsDetails = ({ data }) => {
                 </a>
               </Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <SpanTwoColumnsContainer>
             <hr />
           </SpanTwoColumnsContainer>

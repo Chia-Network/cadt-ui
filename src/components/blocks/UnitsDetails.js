@@ -6,7 +6,10 @@ import {
   StyledDetailedViewTabItem,
   StyledItem,
 } from '.';
-import { SpanTwoColumnsContainer } from '../layout';
+import {
+  SpanTwoColumnsContainer,
+  SpanTwoDetailColumnsContainer,
+} from '../layout';
 
 export const handleClickLink = link => {
   if (link) {
@@ -85,7 +88,7 @@ const UnitsDetails = ({ data }) => {
             </Body>
             <Body>{data.unitStatus ? data.unitStatus : '---'}</Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-status-reason" />
@@ -94,8 +97,8 @@ const UnitsDetails = ({ data }) => {
                 {data.unitStatusReason ? data.unitStatusReason : '---'}
               </Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
-          <SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-registry-link" />
@@ -110,7 +113,7 @@ const UnitsDetails = ({ data }) => {
                 </a>
               </Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="vintage-year" />
@@ -134,7 +137,7 @@ const UnitsDetails = ({ data }) => {
               {data.marketplaceIdentifier ? data.marketplaceIdentifier : '---'}
             </Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="marketplace-link" />
@@ -149,7 +152,7 @@ const UnitsDetails = ({ data }) => {
                 </a>
               </Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="corresponding-adjustment-declaration" />
@@ -173,14 +176,14 @@ const UnitsDetails = ({ data }) => {
           <SpanTwoColumnsContainer>
             <hr />
           </SpanTwoColumnsContainer>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-tags" />
               </Body>
               <Body>{data.unitTags ? data.unitTags : '---'}</Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
         </StyledDetailedViewTab>
       </div>
     </StyledDetailedViewTabItem>

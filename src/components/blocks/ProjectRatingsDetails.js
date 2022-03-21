@@ -7,7 +7,7 @@ import {
   StyledItem,
   handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer, LinkIcon } from '..';
+import { SpanTwoDetailColumnsContainer, LinkIcon } from '..';
 
 const ProjectRatingsDetails = ({ data }) => {
   return (
@@ -42,7 +42,7 @@ const ProjectRatingsDetails = ({ data }) => {
               {data.ratingRangeLowest ? data.ratingRangeLowest : '---'}
             </Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="rating-link" />
@@ -57,7 +57,7 @@ const ProjectRatingsDetails = ({ data }) => {
                 </a>
               </Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
         </StyledDetailedViewTab>
       </div>
     </StyledDetailedViewTabItem>
