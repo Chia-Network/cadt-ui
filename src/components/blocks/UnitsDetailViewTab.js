@@ -26,7 +26,7 @@ export const StyledItem = styled('div')`
   padding: 10px 0;
 `;
 
-const UnitsDetailViewTab = ({ entry, action }) => {
+const UnitsDetailViewTab = ({ entry }) => {
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -39,15 +39,15 @@ const UnitsDetailViewTab = ({ entry, action }) => {
     entry[key]?.changes.length > 0 &&
     entry[key]?.changes.some(x => x !== null);
 
-  const getOriginalColorForKey = entryProp => {
+  const getOriginalColorForKey = (entryProp, action) => {
     if (areThereAnyChangesForThisOriginal(entryProp)) {
+      if (action === 'DELETE') {
+        return '#f5222d';
+      }
+      if (action === 'INSERT') {
+        return '#52C41A';
+      }
       return '#f5222d';
-    }
-    if (action === 'DELETE') {
-      return '#f5222d';
-    }
-    if (action === 'INSERT') {
-      return '#52C41A';
     }
     return '#000000';
   };

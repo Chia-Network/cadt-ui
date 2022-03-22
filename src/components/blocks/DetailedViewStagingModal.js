@@ -1,9 +1,11 @@
+import _ from 'lodash';
 import React, { useMemo } from 'react';
 import {
   Modal,
   modalTypeEnum,
   //DetailedViewStagingTab,
   UnitsDetailViewTab,
+  ProjectDetailedViewTab,
 } from '..';
 
 import { getDiffObject } from '../../utils/objectUtils';
@@ -86,9 +88,13 @@ const DetailedViewStagingModal = ({
             {record?.issuance && <Tab label="Issuance" />}
           </Tabs>
           <TabPanel value={tabValue} index={0}> */}
-          {[recordDetails].map((detail, id) => (
-            <UnitsDetailViewTab entry={detail} key={id} action={action} />
-          ))}
+          {_.includes(Object.keys(record), 'warehouseUnitId')
+            ? [recordDetails].map((detail, id) => (
+                <UnitsDetailViewTab entry={detail} key={id} />
+              ))
+            : [recordDetails].map((detail, id) => (
+                <ProjectDetailedViewTab entry={detail} key={id} />
+              ))}
           {/* </TabPanel> */}
           {/* {recordTabsWithEntries.map((tabKey, index) => ( */}
           {/* <TabPanel value={tabValue} index={index + 1} key={tabKey}>

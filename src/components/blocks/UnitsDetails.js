@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Body, LinkIcon } from '..';
@@ -31,8 +32,17 @@ const UnitsDetails = ({ data, changeColor }) => {
               <Body>
                 {data.projectLocationId ? data.projectLocationId : '---'}
               </Body>
+            ) : !_.isEmpty(data.serialNumberBlock?.changes) ? (
+              <>
+                <Body color={changeColor('projectLocationId', 'INSERT')}>
+                  {data.projectLocationId?.changes[0]}
+                </Body>
+                <Body color={changeColor('projectLocationId', 'DELETE')}>
+                  <s>{data.projectLocationId?.original}</s>
+                </Body>
+              </>
             ) : (
-              <Body color={changeColor('projectLocationId')}>
+              <Body color={changeColor('projectLocationId', 'INSERT')}>
                 {data.projectLocationId?.original}
               </Body>
             )}
@@ -43,8 +53,17 @@ const UnitsDetails = ({ data, changeColor }) => {
             </Body>
             {!data.unitOwner?.original ? (
               <Body>{data.unitOwner ? data.unitOwner : '---'}</Body>
+            ) : !_.isEmpty(data.unitOwner?.changes) ? (
+              <>
+                <Body color={changeColor('unitOwner', 'INSERT')}>
+                  {data.unitOwner?.changes[0]}
+                </Body>
+                <Body color={changeColor('unitOwner', 'DELETE')}>
+                  <s>{data.unitOwner?.original}</s>
+                </Body>
+              </>
             ) : (
-              <Body color={changeColor('unitOwner')}>
+              <Body color={changeColor('unitOwner', 'INSERT')}>
                 {data.unitOwner?.original}
               </Body>
             )}
@@ -57,8 +76,17 @@ const UnitsDetails = ({ data, changeColor }) => {
               <Body>
                 {data.serialNumberPattern ? data.serialNumberPattern : '---'}
               </Body>
+            ) : data.serialNumberPattern?.changes[0] ? (
+              <>
+                <Body color={changeColor('serialNumberPattern', 'INSERT')}>
+                  {data.serialNumberPattern?.changes[0]}
+                </Body>
+                <Body color={changeColor('serialNumberPattern', 'DELETE')}>
+                  <s>{data.serialNumberPattern?.original}</s>
+                </Body>
+              </>
             ) : (
-              <Body color={changeColor('serialNumberPattern')}>
+              <Body color={changeColor('serialNumberPattern', 'INSERT')}>
                 {data.serialNumberPattern?.original}
               </Body>
             )}
@@ -71,8 +99,17 @@ const UnitsDetails = ({ data, changeColor }) => {
               <Body>
                 {data.serialNumberBlock ? data.serialNumberBlock : '---'}
               </Body>
+            ) : !_.isEmpty(data.serialNumberBlock?.changes[0]) ? (
+              <>
+                <Body color={changeColor('serialNumberBlock', 'INSERT')}>
+                  {data.serialNumberBlock?.changes[0]}
+                </Body>
+                <Body color={changeColor('serialNumberBlock', 'DELETE')}>
+                  <s>{data.serialNumberBlock?.original}</s>
+                </Body>
+              </>
             ) : (
-              <Body color={changeColor('serialNumberBlock')}>
+              <Body color={changeColor('serialNumberBlock', 'INSERT')}>
                 {data.serialNumberBlock?.original}
               </Body>
             )}
@@ -87,8 +124,20 @@ const UnitsDetails = ({ data, changeColor }) => {
                   ? data.inCountryJurisdictionOfOwner
                   : '---'}
               </Body>
+            ) : !_.isEmpty(data.inCountryJurisdictionOfOwner?.changes) ? (
+              <>
+                <Body
+                  color={changeColor('inCountryJurisdictionOfOwner', 'INSERT')}>
+                  {data.inCountryJurisdictionOfOwner?.changes[0]}
+                </Body>
+                <Body
+                  color={changeColor('inCountryJurisdictionOfOwner', 'DELETE')}>
+                  <s>{data.inCountryJurisdictionOfOwner?.original}</s>
+                </Body>
+              </>
             ) : (
-              <Body color={changeColor('inCountryJurisdictionOfOwner')}>
+              <Body
+                color={changeColor('inCountryJurisdictionOfOwner', 'INSERT')}>
                 {data.inCountryJurisdictionOfOwner?.original}
               </Body>
             )}
@@ -103,9 +152,20 @@ const UnitsDetails = ({ data, changeColor }) => {
                   ? data.countryJurisdictionOfOwner
                   : '---'}
               </Body>
+            ) : !_.isEmpty(data.countryJurisdictionOfOwner?.changes) ? (
+              <>
+                <Body
+                  color={changeColor('countryJurisdictionOfOwner', 'INSERT')}>
+                  {data.countryJurisdictionOfOwner?.changes[0]}
+                </Body>
+                <Body
+                  color={changeColor('countryJurisdictionOfOwner', 'DELETE')}>
+                  <s>{data.countryJurisdictionOfOwner?.original}</s>
+                </Body>
+              </>
             ) : (
-              <Body color={changeColor('countryJurisdictionOfOwner')}>
-                {data.countryJurisdictionOfOwner?.original}
+              <Body color={changeColor('countryJurisdictionOfOwner', 'INSERT')}>
+                <s>{data.countryJurisdictionOfOwner?.original}</s>
               </Body>
             )}
           </StyledItem>
@@ -115,8 +175,17 @@ const UnitsDetails = ({ data, changeColor }) => {
             </Body>
             {!data.unitType?.original ? (
               <Body>{data.unitType ? data.unitType : '---'}</Body>
+            ) : !_.isEmpty(data.unitType?.changes) ? (
+              <>
+                <Body color={changeColor('unitType', 'INSERT')}>
+                  {data.unitType?.changes[0]}
+                </Body>
+                <Body color={changeColor('unitType', 'DELETE')}>
+                  <s>{data.unitType?.original}</s>
+                </Body>
+              </>
             ) : (
-              <Body color={changeColor('unitType')}>
+              <Body color={changeColor('unitType', 'INSERT')}>
                 {data.unitType?.original}
               </Body>
             )}
@@ -128,9 +197,14 @@ const UnitsDetails = ({ data, changeColor }) => {
             {!data.unitStatus?.original ? (
               <Body>{data.unitStatus ? data.unitStatus : '---'}</Body>
             ) : (
-              <Body color={changeColor('unitStatus')}>
-                {data.unitStatus?.original}
-              </Body>
+              <>
+                <Body color={changeColor('unitStatus', 'INSERT')}>
+                  {data.unitStatus?.changes[0]}
+                </Body>
+                <Body color={changeColor('unitStatus', 'DELETE')}>
+                  <s>{data.unitStatus?.original}</s>
+                </Body>
+              </>
             )}
           </StyledItem>
           <SpanTwoColumnsContainer>
@@ -143,9 +217,14 @@ const UnitsDetails = ({ data, changeColor }) => {
                   {data.unitStatusReason ? data.unitStatusReason : '---'}
                 </Body>
               ) : (
-                <Body color={changeColor('unitStatusReason')}>
-                  {data.unitStatusReason?.original}
-                </Body>
+                <>
+                  <Body color={changeColor('unitStatusReason', 'INSERT')}>
+                    {data.unitStatusReason?.changes[0]}
+                  </Body>
+                  <Body color={changeColor('unitStatusReason', 'DELETE')}>
+                    <s>{data.unitStatusReason?.original}</s>
+                  </Body>
+                </>
               )}
             </StyledItem>
           </SpanTwoColumnsContainer>
@@ -167,19 +246,36 @@ const UnitsDetails = ({ data, changeColor }) => {
                   </a>
                 </Body>
               ) : (
-                <Body color={changeColor('unitRegistryLink')}>
-                  <a
-                    href={handleClickLink(data.unitRegistryLink?.original)}
-                    target="_blank"
-                    rel="noreferrer noopener">
-                    {data.unitRegistryLink?.original
-                      ? data.unitRegistryLink?.original
-                      : '---'}
-                    {data.unitRegistryLink?.original && (
-                      <LinkIcon height="15" width="30" />
-                    )}
-                  </a>
-                </Body>
+                <>
+                  <Body color={changeColor('unitRegistryLink', 'INSERT')}>
+                    <a
+                      href={handleClickLink(data.unitRegistryLink?.changes[0])}
+                      target="_blank"
+                      rel="noreferrer noopener">
+                      {data.unitRegistryLink?.original
+                        ? data.unitRegistryLink?.original
+                        : '---'}
+                      {data.unitRegistryLink?.original && (
+                        <LinkIcon height="15" width="30" />
+                      )}
+                    </a>
+                  </Body>
+                  <Body color={changeColor('unitRegistryLink', 'DELETE')}>
+                    <s>
+                      <a
+                        href={handleClickLink(data.unitRegistryLink?.original)}
+                        target="_blank"
+                        rel="noreferrer noopener">
+                        {data.unitRegistryLink?.original
+                          ? data.unitRegistryLink?.original
+                          : '---'}
+                        {data.unitRegistryLink?.original && (
+                          <LinkIcon height="15" width="30" />
+                        )}
+                      </a>
+                    </s>
+                  </Body>
+                </>
               )}
             </StyledItem>
           </SpanTwoColumnsContainer>
@@ -190,9 +286,14 @@ const UnitsDetails = ({ data, changeColor }) => {
             {!data.vintageYear?.original ? (
               <Body>{data.vintageYear ? data.vintageYear : '---'}</Body>
             ) : (
-              <Body color={changeColor('vintageYear')}>
-                {data.vintageYear?.original}
-              </Body>
+              <>
+                <Body color={changeColor('vintageYear', 'INSERT')}>
+                  {data.vintageYear?.changes[0]}
+                </Body>
+                <Body color={changeColor('vintageYear', 'DELETE')}>
+                  <s>{data.vintageYear?.original}</s>
+                </Body>
+              </>
             )}
           </StyledItem>
           <SpanTwoColumnsContainer>
@@ -204,9 +305,18 @@ const UnitsDetails = ({ data, changeColor }) => {
             </Body>
             {!data.marketplace?.original ? (
               <Body>{data.marketplace ? data.marketplace : '---'}</Body>
+            ) : !_.isEmpty(data.marketplace?.changes) ? (
+              <>
+                <Body color={changeColor('marketplace', 'INSERT')}>
+                  {data.marketplace?.changes[0]}
+                </Body>
+                <Body color={changeColor('marketplace', 'DELETE')}>
+                  <s>{data.marketplace?.original}</s>
+                </Body>
+              </>
             ) : (
               <Body color={changeColor('marketplace')}>
-                {data.marketplace?.original}
+                <s>{data.marketplace?.original}</s>
               </Body>
             )}
           </StyledItem>
@@ -221,9 +331,14 @@ const UnitsDetails = ({ data, changeColor }) => {
                   : '---'}
               </Body>
             ) : (
-              <Body color={changeColor('marketplaceIdentifier')}>
-                {data.marketplaceIdentifier?.original}
-              </Body>
+              <>
+                <Body color={changeColor('marketplaceIdentifier', 'INSERT')}>
+                  {data.marketplaceIdentifier?.changes[0]}
+                </Body>
+                <Body color={changeColor('marketplaceIdentifier', 'DELETE')}>
+                  <s>{data.marketplaceIdentifier?.original}</s>
+                </Body>
+              </>
             )}
           </StyledItem>
           <SpanTwoColumnsContainer>
@@ -244,19 +359,36 @@ const UnitsDetails = ({ data, changeColor }) => {
                   </a>
                 </Body>
               ) : (
-                <Body color={changeColor('marketplaceLink')}>
-                  <a
-                    href={handleClickLink(data.marketplaceLink?.original)}
-                    target="_blank"
-                    rel="noreferrer noopener">
-                    {data.marketplaceLink?.original
-                      ? data.marketplaceLink?.original
-                      : '---'}
-                    {data.marketplaceLink?.original && (
-                      <LinkIcon height="15" width="30" />
-                    )}
-                  </a>
-                </Body>
+                <>
+                  <Body color={changeColor('marketplaceLink', 'INSERT')}>
+                    <a
+                      href={handleClickLink(data.marketplaceLink?.changes[0])}
+                      target="_blank"
+                      rel="noreferrer noopener">
+                      {data.marketplaceLink?.original
+                        ? data.marketplaceLink?.original
+                        : '---'}
+                      {data.marketplaceLink?.original && (
+                        <LinkIcon height="15" width="30" />
+                      )}
+                    </a>
+                  </Body>
+                  <Body color={changeColor('marketplaceLink', 'DELETE')}>
+                    <s>
+                      <a
+                        href={handleClickLink(data.marketplaceLink?.original)}
+                        target="_blank"
+                        rel="noreferrer noopener">
+                        {data.marketplaceLink?.original
+                          ? data.marketplaceLink?.original
+                          : '---'}
+                        {data.marketplaceLink?.original && (
+                          <LinkIcon height="15" width="30" />
+                        )}
+                      </a>
+                    </s>
+                  </Body>
+                </>
               )}
             </StyledItem>
           </SpanTwoColumnsContainer>
@@ -271,9 +403,22 @@ const UnitsDetails = ({ data, changeColor }) => {
                   : '---'}
               </Body>
             ) : (
-              <Body color={changeColor('correspondingAdjustmentDeclaration')}>
-                {data.correspondingAdjustmentDeclaration?.original}
-              </Body>
+              <>
+                <Body
+                  color={changeColor(
+                    'correspondingAdjustmentDeclaration',
+                    'INSERT',
+                  )}>
+                  {data.correspondingAdjustmentDeclaration?.changes[0]}
+                </Body>
+                <Body
+                  color={changeColor(
+                    'correspondingAdjustmentDeclaration',
+                    'DELETE',
+                  )}>
+                  <s>{data.correspondingAdjustmentDeclaration?.original}</s>
+                </Body>
+              </>
             )}
           </StyledItem>
           <StyledItem>
@@ -287,9 +432,22 @@ const UnitsDetails = ({ data, changeColor }) => {
                   : '---'}
               </Body>
             ) : (
-              <Body color={changeColor('correspondingAdjustmentStatus')}>
-                {data.correspondingAdjustmentStatus?.original}
-              </Body>
+              <>
+                <Body
+                  color={changeColor(
+                    'correspondingAdjustmentStatus',
+                    'INSERT',
+                  )}>
+                  {data.correspondingAdjustmentStatus?.changes[0]}
+                </Body>
+                <Body
+                  color={changeColor(
+                    'correspondingAdjustmentStatus',
+                    'DELETE',
+                  )}>
+                  <s>{data.correspondingAdjustmentStatus?.original}</s>
+                </Body>
+              </>
             )}
           </StyledItem>
           <SpanTwoColumnsContainer>
@@ -303,9 +461,14 @@ const UnitsDetails = ({ data, changeColor }) => {
               {!data.unitTags?.original ? (
                 <Body>{data.unitTags ? data.unitTags : '---'}</Body>
               ) : (
-                <Body color={changeColor('unitTags')}>
-                  {data.unitTags?.original}
-                </Body>
+                <>
+                  <Body color={changeColor('unitTags', 'INSERT')}>
+                    {data.unitTags?.changes[0]}
+                  </Body>
+                  <Body color={changeColor('unitTags', 'DELETE')}>
+                    <s>{data.unitTags?.original}</s>
+                  </Body>
+                </>
               )}
             </StyledItem>
           </SpanTwoColumnsContainer>
