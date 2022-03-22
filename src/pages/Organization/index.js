@@ -15,10 +15,7 @@ import {
   SubscriptionModal,
 } from '../../components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-  activateProgressIndicator,
-  deactivateProgressIndicator,
-} from '../../store/actions/app';
+import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
 
 const StyledOrganizationContainer = styled('div')`
   padding: 30px 63px;
@@ -71,18 +68,19 @@ const Organization = () => {
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
   const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
-  const myOrganzation = organizations[myOrgUid];
+  const myOrgUid = organizations && getMyOrgUid(organizations);
+  const myOrganzation = organizations && organizations[myOrgUid];
   const createMarkup = icon => {
     return { __html: icon };
   };
 
-  // TODO remove after pushing fix: location.pathname change doesn't trigger re-render #568
-  // After pushing the above fix test wether accessing the Organization page triggers the left nav MenuItem selected state
   useEffect(() => {
-    dispatch(activateProgressIndicator);
-    dispatch(deactivateProgressIndicator);
+    dispatch(getOrganizationData());
   }, []);
+
+  if (!organizations || myOrgUid === 'none') {
+    return null;
+  }
 
   return (
     <StyledOrganizationContainer>
