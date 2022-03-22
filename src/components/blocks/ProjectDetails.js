@@ -1,13 +1,12 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body } from '..';
+import { Body, SpanTwoColumnsContainer, LinkIcon } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
-  handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer, LinkIcon } from '..';
+import { handleClickLink } from '../../utils/functionUtils';
 
 const ProjectDetails = ({ data }) => {
   return (

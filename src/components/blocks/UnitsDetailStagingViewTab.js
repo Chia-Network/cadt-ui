@@ -26,16 +26,29 @@ export const StyledItem = styled('div')`
   padding: 10px 0;
 `;
 
-const UnitsDetailViewTab = ({ entry }) => {
+const UnitsDetailStagingViewTab = ({ entry }) => {
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  const getOriginalColorForKey = (entryProp, action) => {
+    if (entryProp) {
+      if (action === 'DELETE') {
+        return '#f5222d';
+      }
+      if (action === 'INSERT') {
+        return '#52C41A';
+      }
+    }
+    return '#000000';
+  };
+
   const unitsTabs = _.remove(
     [_.isEmpty(entry), _.isEmpty(entry?.labels), _.isEmpty(entry?.issuance)],
     item => item,
   );
-console.log(entry)
+
   return (
     <>
       <Tabs value={tabValue} onChange={handleTabChange}>
@@ -44,11 +57,17 @@ console.log(entry)
         {!_.isEmpty(entry?.labels) && <Tab label={'Labels'} />}
       </Tabs>
       <TabPanel value={tabValue} index={0}>
-        <UnitsDetails data={entry} />
+        <UnitsDetails
+          stagingData={entry}
+          changeColor={getOriginalColorForKey}
+        />
       </TabPanel>
       {!_.isEmpty(entry?.issuance) && (
         <TabPanel value={tabValue} index={1}>
-          <UnitsIssuanceDetails data={entry?.issuance} />
+          <UnitsIssuanceDetails
+            stagingData={entry?.issuance}
+            changeColor={getOriginalColorForKey}
+          />
         </TabPanel>
       )}
       {!_.isEmpty(entry?.labels) &&
@@ -57,10 +76,13 @@ console.log(entry)
             noHeight
             value={tabValue}
             index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
-            <UnitsLabelsDetails data={labelValue} />
+            <UnitsLabelsDetails
+              stagingData={labelValue}
+              changeColor={getOriginalColorForKey}
+            />
           </TabPanel>
         ))}
     </>
   );
 };
-export { UnitsDetailViewTab };
+export { UnitsDetailStagingViewTab };
