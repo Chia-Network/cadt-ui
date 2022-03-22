@@ -754,6 +754,9 @@ export const subscribeToOrg = orgUid => {
 
       const payload = {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ orgUid }),
       };
 
@@ -787,6 +790,9 @@ export const unsubscribeFromOrg = orgUid => {
 
       const payload = {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ orgUid }),
       };
 
@@ -820,6 +826,9 @@ export const subscribeImportOrg = orgUid => {
 
       const payload = {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ orgUid }),
       };
 
