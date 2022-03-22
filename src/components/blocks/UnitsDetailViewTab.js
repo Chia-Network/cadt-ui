@@ -32,12 +32,12 @@ const UnitsDetailViewTab = ({ entry, action }) => {
     setTabValue(newValue);
   };
 
-  console.log(entry)
+  console.log(entry);
 
   const areThereAnyChangesForThisOriginal = key =>
-    entry[key].changes &&
-    entry[key].changes.length > 0 &&
-    entry[key].changes.some(x => x !== null);
+    entry[key]?.changes &&
+    entry[key]?.changes.length > 0 &&
+    entry[key]?.changes.some(x => x !== null);
 
   const getOriginalColorForKey = entryProp => {
     if (areThereAnyChangesForThisOriginal(entryProp)) {
@@ -78,6 +78,7 @@ const UnitsDetailViewTab = ({ entry, action }) => {
       {!_.isEmpty(entry?.labels) &&
         _.map(entry?.labels, labelValue => (
           <TabPanel
+            noHeight
             value={tabValue}
             index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
             <UnitsLabelsDetails

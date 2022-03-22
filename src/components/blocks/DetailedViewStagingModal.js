@@ -59,9 +59,7 @@ const DetailedViewStagingModal = ({
     const detailsObj = {};
 
     Object.keys(record).forEach(key => {
-      if (typeof record[key] !== 'object') {
-        detailsObj[key] = recordDiffs[key];
-      }
+      return (detailsObj[key] = recordDiffs[key]);
     });
 
     return detailsObj;
@@ -70,6 +68,7 @@ const DetailedViewStagingModal = ({
   if (!modalSizeAndPosition || !record || !title || !onClose || !action) {
     return <></>;
   }
+  console.log(record);
 
   return (
     <Modal
