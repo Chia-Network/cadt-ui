@@ -7,6 +7,7 @@ import {
   RegistryIcon,
   Modal,
   Body,
+  SocketStatusContainer,
 } from '../../components';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -71,7 +72,7 @@ const LeftNav = withTheme(({ children }) => {
     useState(false);
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
   const intl = useIntl();
-  const { readOnlyMode } = useSelector(state => state.app);
+  const { readOnlyMode, socketStatus } = useSelector(state => state.app);
   const dispatch = useDispatch();
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
@@ -207,6 +208,7 @@ const LeftNav = withTheme(({ children }) => {
           }}
         />
       )}
+      <SocketStatusContainer socketStatus={socketStatus} />
       <StyledAppVersion>
         <Body size="X-Small" color="white">
           {process?.env?.REACT_APP_VERSION &&

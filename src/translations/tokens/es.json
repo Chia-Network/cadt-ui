@@ -315,5 +315,6 @@
   "manage": "Administrar",
   "add-custom-organization": "Agregar organización personalizada (UID)",
   "add": "Agregar",
-  "organization-is-importing": "La organización está importando, esto llevará unos minutos."
+  "organization-is-importing": "La organización está importando, esto llevará unos minutos.",
+  "connected-to": "Conectado al"
 }

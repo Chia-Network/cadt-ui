@@ -315,5 +315,6 @@
   "manage": "管理",
   "add-custom-organization": "カスタム組織（UID）を追加する",
   "add": "追加",
-  "organization-is-importing": "組織がインポートしています。これには数分かかります。"
+  "organization-is-importing": "組織がインポートしています。これには数分かかります。",
+  "connected-to": "サーバーに接続しました"
 }
