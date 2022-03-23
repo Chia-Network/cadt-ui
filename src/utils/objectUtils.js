@@ -45,10 +45,12 @@ export const getDiffObject = (original, ...changes) => {
       original[uniqueKey] &&
       typeof original[uniqueKey] === 'object'
     ) {
-      diffObject[uniqueKey] = getDiffObject(
-        original[uniqueKey],
-        ...changes.map(change => change[uniqueKey]),
-      );
+      if (uniqueKey !== 'label_unit') {
+        diffObject[uniqueKey] = getDiffObject(
+          original[uniqueKey],
+          ...changes.map(change => change[uniqueKey]),
+        );
+      }
     }
     // handle key is primitive case
     else {

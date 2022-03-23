@@ -9,7 +9,6 @@ import {
 import { detailsViewData } from '../../utils/functionUtils';
 
 const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
-  console.log(stagingData)
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>

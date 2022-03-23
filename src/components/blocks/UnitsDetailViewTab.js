@@ -35,7 +35,7 @@ const UnitsDetailViewTab = ({ entry }) => {
     [_.isEmpty(entry), _.isEmpty(entry?.labels), _.isEmpty(entry?.issuance)],
     item => item,
   );
-console.log(entry)
+  
   return (
     <>
       <Tabs value={tabValue} onChange={handleTabChange}>

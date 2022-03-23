@@ -13,10 +13,19 @@ export const handleClickLink = link => {
 };
 
 export const detailsViewData = (type, detailData, dataType, changeColor) => {
-  if (type === 'data' || !detailData[dataType]) {
+  if (detailData.changes) {
+    if (!detailData?.changes[0]) {
+      return null;
+    }
+    return (
+      <Body color={changeColor(dataType, 'INSERT')}>
+        {!detailData?.changes[0] ? detailData.changes[0][dataType] : '---'}
+      </Body>
+    );
+  } else if (type === 'data' || !detailData[dataType]) {
     return <Body>{detailData[dataType] ? detailData[dataType] : '---'}</Body>;
   }
-  
+
   if (type === 'stagingData') {
     if (
       !_.isEmpty(detailData[dataType]?.changes) &&
@@ -71,11 +80,14 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
                 ? detailData[dataType].changes[0]
                 : '---' && detailData[dataType].original}
               {detailData[dataType].changes[0] && (
-                <LinkIcon height="15" width="30" />
-              )}
+                  <LinkIcon height="15" width="30" />
+                ) ||
+                detailData[dataType].original && (
+                  <LinkIcon height="15" width="30" />
+                )}
             </a>
           </Body>
-          {detailData[dataType].changes[0] && (
+          {detailData[dataType]?.changes[0] && detailData[dataType]?.original && (
             <Body color={changeColor(dataType, 'DELETE')}>
               <s>
                 <a

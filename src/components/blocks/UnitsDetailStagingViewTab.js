@@ -44,8 +44,17 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
     return '#000000';
   };
 
+  const issuanceTab = () => {
+    if (entry.issuance?.changes && !entry.issuance?.original) {
+      return false;
+    }
+    if (!_.isEmpty(entry?.issuance)) {
+      return <Tab label={'Issuance'} />;
+    }
+  };
+
   const unitsTabs = _.remove(
-    [_.isEmpty(entry), _.isEmpty(entry?.labels), _.isEmpty(entry?.issuance)],
+    [_.isEmpty(entry), _.isEmpty(entry?.labels), !issuanceTab()],
     item => item,
   );
 
@@ -53,7 +62,7 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
     <>
       <Tabs value={tabValue} onChange={handleTabChange}>
         <Tab label="Units" />
-        {!_.isEmpty(entry?.issuance) && <Tab label={'Issuance'} />}
+        {issuanceTab()}
         {!_.isEmpty(entry?.labels) && <Tab label={'Labels'} />}
       </Tabs>
       <TabPanel value={tabValue} index={0}>
@@ -62,12 +71,14 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
           changeColor={getOriginalColorForKey}
         />
       </TabPanel>
-      {!_.isEmpty(entry?.issuance) && (
+      {issuanceTab() && (
         <TabPanel value={tabValue} index={1}>
-          <UnitsIssuanceDetails
-            stagingData={entry?.issuance}
-            changeColor={getOriginalColorForKey}
-          />
+          {
+            <UnitsIssuanceDetails
+              stagingData={entry?.issuance}
+              changeColor={getOriginalColorForKey}
+            />
+          }
         </TabPanel>
       )}
       {!_.isEmpty(entry?.labels) &&
