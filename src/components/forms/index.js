@@ -25,3 +25,4 @@ export * from './CreateProjectLabelsForm';
 export * from './ProjectLabelsRepeater';
 export * from './CreateProjectIssuancesForm';
 export * from './ProjectIssuancesRepeater';
+export * from './SubscriptionModal';

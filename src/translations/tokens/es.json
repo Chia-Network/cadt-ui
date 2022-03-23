@@ -310,5 +310,11 @@
   "organization": "Organización",
   "failed": "Ha fallado",
   "transactions-staged": "Sus transacciones han sido puestas en escena.",
-  "transactions-not-staged": "Sus transacciones no se pudieron organizar."
+  "transactions-not-staged": "Sus transacciones no se pudieron organizar.",
+  "organization-subscriptions": "Suscripciones de organización",
+  "manage": "Administrar",
+  "add-custom-organization": "Agregar organización personalizada (UID)",
+  "add": "Agregar",
+  "organization-is-importing": "La organización está importando, esto llevará unos minutos.",
+  "connected-to": "Conectado al"
 }

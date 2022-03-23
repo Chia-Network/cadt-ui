@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -6,12 +6,16 @@ import QRCode from 'qrcode.react';
 import { useDispatch } from 'react-redux';
 
 import { validateUrl } from '../../utils/urlUtils';
-import { Body, CopyIcon, H2, H4 } from '../../components';
-import { FormattedMessage } from 'react-intl';
 import {
-  activateProgressIndicator,
-  deactivateProgressIndicator,
-} from '../../store/actions/app';
+  Body,
+  CopyIcon,
+  H2,
+  H4,
+  PrimaryButton,
+  SubscriptionModal,
+} from '../../components';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
 
 const StyledOrganizationContainer = styled('div')`
   padding: 30px 63px;
@@ -28,6 +32,9 @@ const StyledItemContainer = styled('div')`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  button {
+    width: fit-content;
+  }
 `;
 
 const StyledSvgContainer = styled('div')`
@@ -46,23 +53,34 @@ const StyledCopyIconContainer = styled('div')`
   display: inline-block;
   cursor: pointer;
   margin-left: 2px;
+  color: #d9d9d9;
+  :hover {
+    color: #bfbfbf;
+  }
+  :active {
+    color: #096dd9;
+  }
 `;
 
 const Organization = () => {
+  const intl = useIntl();
   const dispatch = useDispatch();
+  const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
+    useState(false);
   const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
-  const myOrganzation = organizations[myOrgUid];
+  const myOrgUid = organizations && getMyOrgUid(organizations);
+  const myOrganzation = organizations && organizations[myOrgUid];
   const createMarkup = icon => {
     return { __html: icon };
   };
 
-  // TODO remove after pushing fix: location.pathname change doesn't trigger re-render #568
-  // After pushing the above fix test wether accessing the Organization page triggers the left nav MenuItem selected state
   useEffect(() => {
-    dispatch(activateProgressIndicator);
-    dispatch(deactivateProgressIndicator);
+    dispatch(getOrganizationData());
   }, []);
+
+  if (!organizations || myOrgUid === 'none') {
+    return null;
+  }
 
   return (
     <StyledOrganizationContainer>
@@ -81,7 +99,6 @@ const Organization = () => {
               <CopyIcon
                 height={18}
                 width={18}
-                fill="#D9D9D9"
                 onClick={() => {
                   navigator.clipboard.writeText(myOrganzation.name);
                 }}
@@ -100,7 +117,6 @@ const Organization = () => {
               <CopyIcon
                 height={18}
                 width={18}
-                fill="#D9D9D9"
                 onClick={() => {
                   navigator.clipboard.writeText(myOrgUid);
                 }}
@@ -119,7 +135,6 @@ const Organization = () => {
               <CopyIcon
                 height={18}
                 width={18}
-                fill="#D9D9D9"
                 onClick={() => {
                   navigator.clipboard.writeText(myOrganzation.xchAddress);
                 }}
@@ -134,7 +149,24 @@ const Organization = () => {
           </H4>
           <QRCode value={myOrganzation.xchAddress} />
         </StyledItemContainer>
+
+        <StyledItemContainer>
+          <H4>
+            <FormattedMessage id="organization-subscriptions" />
+          </H4>
+          <PrimaryButton
+            label={intl.formatMessage({ id: 'manage' })}
+            size="large"
+            onClick={() => setIsSubscriptionsModalDisplayed(true)}
+          />
+        </StyledItemContainer>
       </div>
+
+      {isSubscriptionsModalDisplayed && (
+        <SubscriptionModal
+          onClose={() => setIsSubscriptionsModalDisplayed(false)}
+        />
+      )}
 
       <StyledLogoContainer>
         {validateUrl(myOrganzation.icon) && (
