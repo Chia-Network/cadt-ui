@@ -7,7 +7,7 @@ import {
   StyledItem,
   handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer } from '..';
+import { SpanTwoColumnsContainer, SpanTwoDetailColumnsContainer } from '..';
 
 const ProjectLabelsDetails = ({ data }) => {
   return (
@@ -26,7 +26,7 @@ const ProjectLabelsDetails = ({ data }) => {
             </Body>
             <Body>{data.labelType ? data.labelType : '---'}</Body>
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="label-link" />
@@ -34,6 +34,7 @@ const ProjectLabelsDetails = ({ data }) => {
               <Body>
                 <a
                   href={handleClickLink(data.labelLink)}
+                  style={{ wordWrap: 'break-word' }}
                   target="_blank"
                   rel="noreferrer noopener">
                   {data.labelLink ? data.labelLink : '---'}
@@ -41,7 +42,7 @@ const ProjectLabelsDetails = ({ data }) => {
                 </a>
               </Body>
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <SpanTwoColumnsContainer>
             <hr />
           </SpanTwoColumnsContainer>
