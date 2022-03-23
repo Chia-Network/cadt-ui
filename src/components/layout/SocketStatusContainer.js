@@ -1,8 +1,7 @@
 import React from 'react';
 import styled, { css, withTheme } from 'styled-components';
-import { useSelector } from 'react-redux';
 import socketIO from 'socket.io-client';
-import { EllipseIcon, TableCellHeaderText } from '..';
+import { EllipseIcon } from '..';
 import constants from '../../constants';
 
 const Container = styled('div')`
@@ -55,17 +54,8 @@ let socket = socketIO(WS_HOST, {
 });
 
 const SocketStatusContainer = withTheme(({ socketStatus }) => {
-  const { serverAddress } = useSelector(state => state.app);
   return (
     <Container>
-      {serverAddress && (
-        <>
-          <TableCellHeaderText color="white">Connected to:</TableCellHeaderText>
-          <TableCellHeaderText color="white">
-            {serverAddress}
-          </TableCellHeaderText>
-        </>
-      )}
       <SocketStatusCard>
         <StatusColor socketStatus={socketStatus}>
           {socket.id ? socket.id : 'Retrieving socket ID'}

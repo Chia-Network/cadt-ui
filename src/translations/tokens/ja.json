@@ -304,7 +304,17 @@
   "add-valid-organization-name": "有効な組織名を追加してください",
   "add-valid-organization-icon": "有効なSVGアイコンを追加する",
   "creating-organization": "組織の作成",
+  "public-address": "パブリックアドレス",
+  "address-qr-code": "住所QRコード",
+  "my-organization": "私の組織",
+  "organization": "組織",
   "failed": "失敗した",
   "transactions-staged": "トランザクションはステージングされました。",
-  "transactions-not-staged": "トランザクションをステージングできませんでした。"
+  "transactions-not-staged": "トランザクションをステージングできませんでした。",
+  "organization-subscriptions": "組織のサブスクリプション",
+  "manage": "管理",
+  "add-custom-organization": "カスタム組織（UID）を追加する",
+  "add": "追加",
+  "organization-is-importing": "組織がインポートしています。これには数分かかります。",
+  "connected-to": "サーバーに接続しました"
 }

@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
+import { useIntl } from 'react-intl';
+
 import {
   LeftNav,
   LocaleSwitcher,
@@ -59,16 +61,8 @@ const HomeOrgUidContainer = styled('div')`
 `;
 
 const Dashboard = withTheme(({ children }) => {
-  const climateWarehouseStore = useSelector(state => state.climateWarehouse);
-
-  const homeOrgUid = useMemo(
-    () =>
-      climateWarehouseStore?.organizations &&
-      Object.values(climateWarehouseStore.organizations).filter(
-        org => org.isHome != false,
-      )[0]?.orgUid,
-    [climateWarehouseStore.organizations],
-  );
+  const { serverAddress } = useSelector(state => state.app);
+  const intl = useIntl();
 
   return (
     <Main>
@@ -78,11 +72,15 @@ const Dashboard = withTheme(({ children }) => {
             <ClimateWarehouseLogo width="100%" height="100%" />
           </LogoContainer>
           <HomeOrgUidContainer>
-            {homeOrgUid ? (
-              <div>
-                <Body size="Small">{`Organization ID: ${homeOrgUid}`}</Body>
-              </div>
-            ) : null}
+            {serverAddress && (
+              <Body size="Small">
+                {intl.formatMessage({
+                  id: 'connected-to',
+                })}
+                {': '}
+                {serverAddress}
+              </Body>
+            )}
           </HomeOrgUidContainer>
           <MyAccount />
           <LocaleSwitcher />

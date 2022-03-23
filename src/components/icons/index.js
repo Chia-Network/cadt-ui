@@ -29,5 +29,7 @@ export * from './WarehouseIcon';
 export * from './RegistryIcon';
 export * from './DescriptionIcon';
 export * from './AddIconCircle';
+export * from './OrganizationIcon';
+export * from './CopyIcon';
 export * from './LinkIcon';
 export * from './ReloadIcon';

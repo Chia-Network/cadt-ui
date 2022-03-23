@@ -29,7 +29,7 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
               )}
           </StyledItem>
           <StyledItem>
-            <Body width="100%">
+            <Body size="Bold" width="100%">
               <FormattedMessage id="unit-owner" />
             </Body>
             {data && detailsViewData('data', data, 'unitOwner', changeColor)}
@@ -133,7 +133,7 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
                 changeColor,
               )}
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-status-reason" />
@@ -148,8 +148,8 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
                   changeColor,
                 )}
             </StyledItem>
-          </SpanTwoColumnsContainer>
-          <SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-registry-link" />
@@ -164,7 +164,7 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
                   changeColor,
                 )}
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="vintage-year" />
@@ -213,7 +213,7 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
                 changeColor,
               )}
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="marketplace-link" />
@@ -228,7 +228,7 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
                   changeColor,
                 )}
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="corresponding-adjustment-declaration" />
@@ -270,7 +270,7 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
           <SpanTwoColumnsContainer>
             <hr />
           </SpanTwoColumnsContainer>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-tags" />
@@ -284,7 +284,7 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
                   changeColor,
                 )}
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
         </StyledDetailedViewTab>
       </div>
     </StyledDetailedViewTabItem>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body, SpanTwoColumnsContainer } from '..';
+import { Body } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
@@ -34,7 +34,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
                 changeColor,
               )}
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="label-link" />
@@ -48,7 +48,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
                   changeColor,
                 )}
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="validity-period-start-date" />
