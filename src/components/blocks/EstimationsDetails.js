@@ -7,7 +7,9 @@ import {
   StyledItem,
 } from '.';
 
-const EstimationsDetails = ({data}) => {
+import { detailsViewData } from '../../utils/functionUtils';
+
+const EstimationsDetails = ({ data, stagingData, changeColor }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -16,27 +18,47 @@ const EstimationsDetails = ({data}) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="crediting-period-start-date" />
             </Body>
-            <Body>
-              {data.creditingPeriodStart
-                ? data.creditingPeriodStart
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'creditingPeriodStart',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'creditingPeriodStart',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="crediting-period-end-date" />
             </Body>
-            <Body>
-              {data.creditingPeriodEnd
-                ? data.creditingPeriodEnd
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData('data', data, 'creditingPeriodEnd', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'creditingPeriodEnd',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-count" />
             </Body>
-            <Body>{data.unitCount >= 0 ? data.unitCount : '---'}</Body>
+            {data && detailsViewData('data', data, 'unitCount', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'unitCount',
+                changeColor,
+              )}
           </StyledItem>
         </StyledDetailedViewTab>
       </div>
