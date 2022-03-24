@@ -3,9 +3,8 @@ import React, { useMemo } from 'react';
 import {
   Modal,
   modalTypeEnum,
-  //DetailedViewStagingTab,
+  ProjectDetailsStagingViewTab,
   UnitsDetailStagingViewTab,
-  ProjectDetailedViewTab,
 } from '..';
 
 import { getDiffObject } from '../../utils/objectUtils';
@@ -50,7 +49,7 @@ const DetailedViewStagingModal = ({
                 <UnitsDetailStagingViewTab entry={detail} key={id} />
               ))
             : [recordDetails].map((detail, id) => (
-                <ProjectDetailedViewTab entry={detail} key={id} />
+                <ProjectDetailsStagingViewTab entry={detail} key={id} />
               ))}
         </div>
       }

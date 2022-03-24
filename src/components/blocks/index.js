@@ -32,6 +32,7 @@ export * from './DetailedViewStagingModal';
 export * from './DetailedViewStagingTab';
 export * from './UnitsDetailViewTab';
 export * from './UnitsDetailStagingViewTab';
+export * from './ProjectDetailsStagingViewTab';
 export * from './ProjectDetailViewTab';
 export * from './MyAccount';
 export * from './ProjectIssuanceDetails';
