@@ -12,7 +12,6 @@ export const getDiff = (a, b) => {
 
 export const getDiffObject = (original, ...changes) => {
   let keys = original ? Object.keys(original) : [];
-
   changes.forEach(
     object => object != null && keys.push(...Object.keys(object)),
   );
@@ -60,7 +59,7 @@ export const getDiffObject = (original, ...changes) => {
         original && original[uniqueKey] ? original[uniqueKey] : null;
 
       diffObject[uniqueKey].changes = [];
-
+      // Creates Changes
       changes.forEach((change, index) => {
         if (
           change &&
@@ -69,6 +68,12 @@ export const getDiffObject = (original, ...changes) => {
         ) {
           diffObject[uniqueKey].changes[index] = change[uniqueKey];
         } else {
+          if (change) {
+            if (change[uniqueKey] === original[uniqueKey]) {
+              return (diffObject[uniqueKey].changes[index] = '');
+            }
+          }
+          //add null to changes
           diffObject[uniqueKey].changes[index] = null;
         }
       });
@@ -81,26 +86,27 @@ export const getDiffObject = (original, ...changes) => {
 export const getDiffArray = (originalArray, ...changesArrays) => {
   let ids = originalArray.map(item => item.id);
 
-  changesArrays.forEach(arrayItem =>
-    arrayItem.forEach(key => ids.push(key.id)),
-  );
-
+  if (_.every(changesArrays, i => i)) {
+    changesArrays.forEach(arrayItem =>
+      arrayItem.forEach(key => ids.push(key.id)),
+    );
+  }
+  console.log(changesArrays);
   const uniqueIds = [...new window.Set(ids)].sort();
 
   const diffArray = [];
 
   uniqueIds.forEach(uniqueId => {
-    const originalObj =
-      originalArray.filter(item => item.id === uniqueId)[0] ?? null;
-
-    const changesObjects = changesArrays.map(
-      arrayItem => arrayItem.filter(key => key.id === uniqueId)[0] ?? null,
+    const originalObj = _.find(originalArray, item => item.id === uniqueId);
+    console.log(originalObj);
+    const changesObjects = changesArrays.map(arrayItem =>
+      _.find(arrayItem, key => key.id === uniqueId),
     );
-
+    console.log(changesObjects);
     let diffObject = getDiffObject(originalObj, ...changesObjects);
 
     diffArray.push(diffObject);
+    console.log(diffArray);
   });
-
   return diffArray;
 };

@@ -21,7 +21,7 @@ const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
             {data && detailsViewData('data', data, 'startDate', changeColor)}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                "subformStagingData",
                 stagingData,
                 'startDate',
                 changeColor,
@@ -34,7 +34,7 @@ const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
             {data && detailsViewData('data', data, 'endDate', changeColor)}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                "subformStagingData",
                 stagingData,
                 'endDate',
                 changeColor,
@@ -48,7 +48,7 @@ const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
               detailsViewData('data', data, 'verificationBody', changeColor)}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                "subformStagingData",
                 stagingData,
                 'verificationBody',
                 changeColor,
@@ -67,7 +67,7 @@ const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
               )}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                "subformStagingData",
                 stagingData,
                 'verificationApproach',
                 changeColor,

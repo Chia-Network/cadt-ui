@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body } from '..';
+import { Body, SpanTwoDetailColumnsContainer } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
@@ -19,7 +19,12 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
             </Body>
             {data && detailsViewData('data', data, 'label', changeColor)}
             {stagingData &&
-              detailsViewData('stagingData', stagingData, 'label', changeColor)}
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'label',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
@@ -28,7 +33,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
             {data && detailsViewData('data', data, 'labelType', changeColor)}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                'subformStagingData',
                 stagingData,
                 'labelType',
                 changeColor,
@@ -42,7 +47,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
               {data && detailsViewData('link', data, 'labelLink', changeColor)}
               {stagingData &&
                 detailsViewData(
-                  'stagingLink',
+                  'subformStagingLink',
                   stagingData,
                   'labelLink',
                   changeColor,
@@ -62,7 +67,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
               )}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                'subformStagingData',
                 stagingData,
                 'validityPeriodStartDate',
                 changeColor,
@@ -81,7 +86,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
               )}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                'subformStagingData',
                 stagingData,
                 'validityPeriodEndDate',
                 changeColor,
@@ -100,7 +105,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
               )}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                'subformStagingData',
                 stagingData,
                 'creditingPeriodStartDate',
                 changeColor,
@@ -119,7 +124,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
               )}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                'subformStagingData',
                 stagingData,
                 'creditingPeriodEndDate',
                 changeColor,
@@ -132,7 +137,7 @@ const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
             {data && detailsViewData('data', data, 'unitQuantity', changeColor)}
             {stagingData &&
               detailsViewData(
-                'stagingData',
+                'subformStagingData',
                 stagingData,
                 'unitQuantity',
                 changeColor,

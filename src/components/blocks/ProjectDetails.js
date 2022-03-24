@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body, SpanTwoColumnsContainer, LinkIcon } from '..';
+import { Body, SpanTwoColumnsContainer, LinkIcon, SpanTwoDetailColumnsContainer } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
