@@ -84,6 +84,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
         unitQuantity,
         validityPeriodEndDate,
         validityPeriodStartDate,
+        warehouseProjectId,
       } = selectedLabel;
       onChange({
         creditingPeriodEndDate,
@@ -95,6 +96,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
         unitQuantity,
         validityPeriodEndDate,
         validityPeriodStartDate,
+        warehouseProjectId,
       });
     }
   };
