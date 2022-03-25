@@ -316,5 +316,6 @@
   "add-custom-organization": "Agregar organización personalizada (UID)",
   "add": "Agregar",
   "organization-is-importing": "La organización está importando, esto llevará unos minutos.",
-  "connected-to": "Conectado al"
+  "connected-to": "Conectado al",
+  "audit": "Auditoría"
 }

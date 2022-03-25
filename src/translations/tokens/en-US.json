@@ -334,5 +334,6 @@
   "add-custom-organization": "Add custom organization (UID)",
   "add": "Add",
   "organization-is-importing": "The organization is importing, this will take a few minutes.",
-  "connected-to": "Connected to"
+  "connected-to": "Connected to",
+  "audit": "Audit"
 }

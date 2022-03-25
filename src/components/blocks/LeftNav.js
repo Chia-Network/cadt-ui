@@ -93,6 +93,7 @@ const LeftNav = withTheme(({ children }) => {
 
   const isUnitsPage = history.location.pathname.includes('/units');
   const isProjectsPage = history.location.pathname.includes('/projects');
+  const isAuditPage = history.location.pathname.includes('/audit');
   const isMyRegistryPage = history.location.search.includes('myRegistry=true');
   const isOrganizationPage =
     history.location.pathname.includes('/organization');
@@ -112,6 +113,9 @@ const LeftNav = withTheme(({ children }) => {
         <div></div>
         <MenuItem selected={isUnitsPage && !isMyRegistryPage} to="/units">
           <FormattedMessage id="units-list" />
+        </MenuItem>
+        <MenuItem selected={isAuditPage} to="/audit">
+          <FormattedMessage id="audit" />
         </MenuItem>
 
         {!readOnlyMode && (
