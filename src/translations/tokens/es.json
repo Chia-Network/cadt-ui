@@ -317,5 +317,9 @@
   "add": "Agregar",
   "organization-is-importing": "La organización está importando, esto llevará unos minutos.",
   "connected-to": "Conectado al",
-  "audit": "Auditoría"
+  "audit": "Auditoría",
+  "select-organization": "Seleccionar organización",
+  "timestamp": "Marca de tiempo",
+  "table": "Mesa",
+  "root-hash": "Hachís raíz"
 }

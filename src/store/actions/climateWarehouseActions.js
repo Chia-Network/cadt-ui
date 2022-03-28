@@ -12,6 +12,7 @@ import {
   projectsResponseStub,
   vintagesResponseStub,
   stagingDataResponseStub,
+  auditResponseStub,
 } from '../../mocks';
 
 import {
@@ -40,6 +41,7 @@ export const actions = keyMirror(
   'GET_PICKLISTS',
   'GET_ISSUANCES',
   'GET_LABELS',
+  'GET_AUDIT',
 );
 
 const getClimateWarehouseTable = (
@@ -1073,6 +1075,34 @@ export const getRatings = options => {
         options,
       ),
     );
+  };
+};
+
+export const getAudit = options => {
+  return dispatch => {
+    if (options?.orgUid) {
+      dispatch(
+        getClimateWarehouseTable(
+          `${constants.API_HOST}/audit?orgUid=${options.orgUid}`,
+          actions.GET_AUDIT,
+          mockedAuditResponse(options.orgUid),
+          options,
+        ),
+      );
+    }
+  };
+};
+
+const mockedAuditResponse = orgUid => {
+  const customAuditResponseStub = auditResponseStub.map(auditItem => ({
+    ...auditItem,
+    orgUid,
+  }));
+
+  // Different envs import this differently
+  return {
+    type: actions.GET_AUDIT,
+    payload: _.get(customAuditResponseStub, 'default', customAuditResponseStub),
   };
 };
 
