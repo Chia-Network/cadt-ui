@@ -5,6 +5,19 @@ import { withRouter } from 'react-router-dom';
 import { useIntl, FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
+import {
+  Body,
+  MagnifyGlassIcon,
+  SelectOrganizations,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  AuditItemModal,
+  DescendingClockIcon,
+  AscendingClockIcon,
+} from '../../components';
+import { getAudit } from '../../store/actions/climateWarehouseActions';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
+
 const StyledSectionContainer = styled('div')`
   display: flex;
   flex-direction: column;
@@ -46,15 +59,15 @@ const StyledTr = styled('tr')`
   }
 `;
 
-import {
-  Body,
-  MagnifyGlassIcon,
-  SelectOrganizations,
-  SelectSizeEnum,
-  SelectTypeEnum,
-} from '../../components';
-import { getAudit } from '../../store/actions/climateWarehouseActions';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
+const StyledIconContainer = styled('div')`
+  cursor: pointer;
+`;
+
+const StyledSortContainer = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 const Audit = withRouter(() => {
   const dispatch = useDispatch();
@@ -63,6 +76,8 @@ const Audit = withRouter(() => {
   const { audit, organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
   const [selectedOrgUid, setSelectedOrgUid] = useState(null);
+  const [selectedAuditItem, setSelectedAuditItem] = useState(null);
+  const [isChronologicallySorted, setIsChronologicallySorted] = useState(false);
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
@@ -73,13 +88,21 @@ const Audit = withRouter(() => {
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrgUid(orgUid);
+    dispatch(getAudit({ orgUid, useMockedResponse: true }));
   };
 
   if (!audit || !organizations) {
     return null;
   }
 
-  console.log(audit);
+  let sortedAuditArray = [...audit];
+  let sortSign = isChronologicallySorted ? -1 : 1;
+  sortedAuditArray.sort(
+    (a, b) =>
+      sortSign *
+      (new Date(parseInt(b.onchainConfirmationTimeStamp) * 1000).getTime() -
+        new Date(parseInt(a.onchainConfirmationTimeStamp) * 1000).getTime()),
+  );
 
   return (
     <StyledSectionContainer>
@@ -93,61 +116,98 @@ const Audit = withRouter(() => {
         />
         {selectedOrgUid && (
           <div>
-            {intl.formatMessage({ id: 'organization' })}: {selectedOrgUid}
+            <Body>
+              {intl.formatMessage({ id: 'org-uid' })}: {selectedOrgUid}
+            </Body>
           </div>
         )}
       </StyledHeaderContainer>
-      <StyledBodyContainer>
-        <StyledTable>
-          <StyledTr>
-            <StyledTh></StyledTh>
-            <StyledTh>
-              <Body size="Bold">
-                <FormattedMessage id="table" />
-              </Body>
-            </StyledTh>
-            <StyledTh>
-              <Body size="Bold">
-                <FormattedMessage id="timestamp" />
-              </Body>
-            </StyledTh>
-            <StyledTh>
-              <Body size="Bold">
-                <FormattedMessage id="type" />
-              </Body>
-            </StyledTh>
-            <StyledTh>
-              <Body size="Bold">
-                <FormattedMessage id="root-hash" />
-              </Body>
-            </StyledTh>
-          </StyledTr>
-          {audit?.length &&
-            audit.map(auditItem => (
-              <StyledTr key={auditItem.id}>
-                <StyledTd>
-                  <MagnifyGlassIcon />
-                </StyledTd>
-                <StyledTd>
-                  <Body>{auditItem.table}</Body>
-                </StyledTd>
-                <StyledTd>
-                  <Body>
-                    {dayjs(auditItem.onchainConfirmationTimeStamp).format(
-                      'YYYY-MM-DD HH:mm:ss',
-                    )}
+      {sortedAuditArray?.length > 0 && (
+        <StyledBodyContainer>
+          <StyledTable>
+            <thead>
+              <StyledTr>
+                <StyledTh></StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="table" />
                   </Body>
-                </StyledTd>
-                <StyledTd>
-                  <Body>{auditItem.type}</Body>
-                </StyledTd>
-                <StyledTd>
-                  <Body>{auditItem.rootHash}</Body>
-                </StyledTd>
+                </StyledTh>
+                <StyledTh>
+                  <StyledSortContainer>
+                    <Body size="Bold">
+                      <FormattedMessage id="timestamp" />
+                    </Body>
+                    <StyledIconContainer>
+                      {isChronologicallySorted ? (
+                        <DescendingClockIcon
+                          width={'1.5em'}
+                          height={'1.5em'}
+                          onClick={() => setIsChronologicallySorted(false)}
+                        />
+                      ) : (
+                        <AscendingClockIcon
+                          width={'1.5em'}
+                          height={'1.5em'}
+                          onClick={() => setIsChronologicallySorted(true)}
+                        />
+                      )}
+                    </StyledIconContainer>
+                  </StyledSortContainer>
+                </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="type" />
+                  </Body>
+                </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="root-hash" />
+                  </Body>
+                </StyledTh>
               </StyledTr>
-            ))}
-        </StyledTable>
-      </StyledBodyContainer>
+            </thead>
+            <tbody>
+              {sortedAuditArray?.length &&
+                sortedAuditArray.map(auditItem => (
+                  <StyledTr key={auditItem.id}>
+                    <StyledTd>
+                      {auditItem.change && (
+                        <StyledIconContainer
+                          onClick={() => setSelectedAuditItem(auditItem)}
+                        >
+                          <MagnifyGlassIcon />
+                        </StyledIconContainer>
+                      )}
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>{auditItem.table}</Body>
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>
+                        {dayjs(
+                          auditItem.onchainConfirmationTimeStamp * 1000,
+                        ).format('YYYY-MM-DD HH:mm:ss')}
+                      </Body>
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>{auditItem.type}</Body>
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>{auditItem.rootHash}</Body>
+                    </StyledTd>
+                  </StyledTr>
+                ))}
+            </tbody>
+          </StyledTable>
+        </StyledBodyContainer>
+      )}
+      {selectedAuditItem && (
+        <AuditItemModal
+          onClose={() => setSelectedAuditItem(null)}
+          auditItem={selectedAuditItem}
+        />
+      )}
     </StyledSectionContainer>
   );
 });
