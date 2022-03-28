@@ -81,14 +81,14 @@ const Audit = withRouter(() => {
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
-      dispatch(getAudit({ orgUid: myOrgUid, useMockedResponse: true }));
+      dispatch(getAudit({ orgUid: myOrgUid, useMockedResponse: false }));
     }
   }, [myOrgUid]);
 
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrgUid(orgUid);
-    dispatch(getAudit({ orgUid, useMockedResponse: true }));
+    dispatch(getAudit({ orgUid, useMockedResponse: false }));
   };
 
   if (!audit || !organizations) {
