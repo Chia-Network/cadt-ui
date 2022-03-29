@@ -18,6 +18,49 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
     return <Body>{detailData[dataType] ? detailData[dataType] : '---'}</Body>;
   }
 
+  if (type === 'issuanceStagingData') {
+    if (!_.isEmpty(detailData.changes)) {
+      //show edited form data staging details
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {detailData && detailData?.changes && detailData[detailData]}
+        </Body>
+      );
+    } else if (
+      _.some(detailData[dataType]?.changes) &&
+      detailData[dataType]?.original
+    ) {
+      //show edited form data staging details
+      return (
+        <>
+          <Body color={changeColor(dataType, 'INSERT')}>
+            {detailData[dataType]?.changes[0]}
+          </Body>
+          <Body color={changeColor(dataType, 'DELETE')}>
+            <s>{detailData[dataType]?.original}</s>
+          </Body>
+        </>
+      );
+    } else if (
+      detailData[dataType]?.changes[0] === null &&
+      detailData[dataType]?.original
+    ) {
+      return (
+        <>
+          <Body color={changeColor(dataType, 'DELETE')}>
+            <s>{detailData[dataType]?.original}</s>
+          </Body>
+        </>
+      );
+    } else {
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {detailData && detailData[dataType].original}
+        </Body>
+      );
+    }
+  }
+
   if (type === 'stagingData') {
     if (
       _.some(detailData[dataType]?.changes) &&
@@ -241,7 +284,10 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
   }
 
   if (type === 'stagingLink') {
-    if (!_.isEmpty(detailData[dataType]?.changes)) {
+    if (
+      !_.isEmpty(detailData[dataType]?.changes) &&
+      _.some(detailData[dataType]?.changes)
+    ) {
       return (
         <>
           <Body color={changeColor(dataType, 'INSERT')}>
@@ -282,6 +328,28 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
           )}
         </>
       );
+    } else if (
+      detailData[dataType]?.changes[0] === '' &&
+      detailData[dataType].original
+    ) {
+      //subform links that are not deleted
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>
+          <a
+            href={handleClickLink(detailData[dataType]?.original)}
+            target="_blank"
+            rel="noreferrer noopener">
+            {detailData[dataType]?.original
+              ? detailData[dataType].original
+              : '---'}
+            {detailData[dataType]?.original && (
+              <LinkIcon height="15" width="30" />
+            )}
+          </a>
+        </Body>
+      );
+    } else if (!_.some(detailData[dataType]?.changes)) {
+      return <Body color={changeColor(dataType, 'INSERT')}>---</Body>;
     } else {
       return (
         <Body color={changeColor(dataType, 'INSERT')}>

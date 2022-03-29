@@ -45,9 +45,6 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
   };
 
   const issuanceTab = () => {
-    if (entry.issuance?.changes && !entry.issuance?.original) {
-      return false;
-    }
     if (!_.isEmpty(entry?.issuance)) {
       return <Tab label={'Issuance'} />;
     }

@@ -44,12 +44,12 @@ const DetailedViewStagingModal = ({
       title={title}
       body={
         <div>
-          {_.includes(Object.keys(record), 'warehouseUnitId')
-            ? [recordDetails].map((detail, id) => (
-                <UnitsDetailStagingViewTab entry={detail} key={id} />
+          {_.has(record, 'warehouseUnitId')
+            ? [recordDetails].map((detail, index) => (
+                <UnitsDetailStagingViewTab entry={detail} key={index} />
               ))
-            : [recordDetails].map((detail, id) => (
-                <ProjectDetailsStagingViewTab entry={detail} key={id} />
+            : [recordDetails].map((detail, index) => (
+                <ProjectDetailsStagingViewTab entry={detail} key={index} />
               ))}
         </div>
       }

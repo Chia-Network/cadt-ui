@@ -44,7 +44,16 @@ export const getDiffObject = (original, ...changes) => {
       original[uniqueKey] &&
       typeof original[uniqueKey] === 'object'
     ) {
-      if (uniqueKey !== 'label_unit') {
+      if (_.isObject(original[uniqueKey]) && uniqueKey === 'issuance') {
+        diffObject[uniqueKey] = getDiffObject(
+          original[uniqueKey],
+          ...changes.map(change => change[uniqueKey]),
+        );
+      } else if (_.isEmpty(original[uniqueKey])) {
+        diffObject[uniqueKey] = getDiffObject(
+          original[uniqueKey],
+          ...changes.map(change => change[uniqueKey]),
+        );
         diffObject[uniqueKey] = getDiffObject(
           original[uniqueKey],
           ...changes.map(change => change[uniqueKey]),
@@ -91,22 +100,20 @@ export const getDiffArray = (originalArray, ...changesArrays) => {
       arrayItem.forEach(key => ids.push(key.id)),
     );
   }
-  console.log(changesArrays);
+
   const uniqueIds = [...new window.Set(ids)].sort();
 
   const diffArray = [];
 
   uniqueIds.forEach(uniqueId => {
     const originalObj = _.find(originalArray, item => item.id === uniqueId);
-    console.log(originalObj);
     const changesObjects = changesArrays.map(arrayItem =>
       _.find(arrayItem, key => key.id === uniqueId),
     );
-    console.log(changesObjects);
+
     let diffObject = getDiffObject(originalObj, ...changesObjects);
 
     diffArray.push(diffObject);
-    console.log(diffArray);
   });
   return diffArray;
 };
