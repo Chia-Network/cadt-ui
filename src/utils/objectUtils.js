@@ -77,6 +77,15 @@ export const getDiffObject = (original, ...changes) => {
         ) {
           diffObject[uniqueKey].changes[index] = change[uniqueKey];
         } else {
+          if (uniqueKey === 'unitQuantity' && !diffObject[uniqueKey].original) {
+            return (diffObject[uniqueKey].original = 0);
+          } else if (
+            uniqueKey === 'unitCount' &&
+            !diffObject[uniqueKey].changes[0] &&
+            !_.isEmpty(diffObject[uniqueKey].changes)
+          ) {
+            return (diffObject[uniqueKey].changes[index] = 0);
+          }
           if (change) {
             if (change[uniqueKey] === original[uniqueKey]) {
               return (diffObject[uniqueKey].changes[index] = '');

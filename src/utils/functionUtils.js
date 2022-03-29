@@ -15,7 +15,15 @@ export const handleClickLink = link => {
 export const detailsViewData = (type, detailData, dataType, changeColor) => {
   //all detail view data
   if (type === 'data') {
-    return <Body>{detailData[dataType] ? detailData[dataType] : '---'}</Body>;
+    return (
+      <Body>
+        {detailData[dataType]
+          ? detailData[dataType]
+          : dataType === 'unitCount' || dataType === 'unitQuantity'
+          ? 0
+          : '---'}
+      </Body>
+    );
   }
 
   if (type === 'issuanceStagingData') {
@@ -139,8 +147,10 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
         </Body>
       );
     } else if (
-      !_.isEmpty(detailData[dataType]?.changes) &&
-      !_.isEmpty(detailData[dataType]?.original)
+      (_.some(detailData[dataType]?.changes) &&
+        !_.isEmpty(detailData[dataType]?.original)) ||
+      (_.isNumber(detailData[dataType]?.changes[0]) &&
+        _.isNumber(detailData[dataType]?.original))
     ) {
       //show subform changes in staging view
 
