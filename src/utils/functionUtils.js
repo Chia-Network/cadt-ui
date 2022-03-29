@@ -63,8 +63,9 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
 
   if (type === 'stagingData') {
     if (
-      _.some(detailData[dataType]?.changes) &&
-      detailData[dataType]?.original
+      (_.some(detailData[dataType]?.changes) &&
+        detailData[dataType]?.original) ||
+      (_.some(detailData[dataType]?.changes) && !detailData[dataType]?.original)
     ) {
       //show edited form data staging details
       return (
