@@ -321,5 +321,6 @@
   "select-organization": "組織を選択",
   "timestamp": "タイムスタンプ",
   "table": "テーブル",
-  "root-hash": "ルートハッシュ"
+  "root-hash": "ルートハッシュ",
+  "no-audit-data": "監査データが見つかりませんでした。最初に組織を選択してください。"
 }

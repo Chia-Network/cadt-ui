@@ -14,9 +14,12 @@ import {
   AuditItemModal,
   DescendingClockIcon,
   AscendingClockIcon,
+  H3,
 } from '../../components';
-import { getAudit } from '../../store/actions/climateWarehouseActions';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
+import {
+  getAudit,
+  getOrganizationData,
+} from '../../store/actions/climateWarehouseActions';
 
 const StyledSectionContainer = styled('div')`
   display: flex;
@@ -34,6 +37,13 @@ const StyledHeaderContainer = styled('div')`
 const StyledBodyContainer = styled('div')`
   flex-grow: 1;
   overflow: scroll;
+`;
+
+const StyledBodyNoDataFound = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;
 
 const StyledTable = styled('table')`
@@ -74,35 +84,34 @@ const Audit = withRouter(() => {
   const intl = useIntl();
 
   const { audit, organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
   const [selectedOrgUid, setSelectedOrgUid] = useState(null);
   const [selectedAuditItem, setSelectedAuditItem] = useState(null);
   const [isChronologicallySorted, setIsChronologicallySorted] = useState(false);
 
   useEffect(() => {
-    if (myOrgUid !== 'none') {
-      dispatch(getAudit({ orgUid: myOrgUid, useMockedResponse: false }));
-    }
-  }, [myOrgUid]);
+    dispatch(getOrganizationData());
+  }, []);
 
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrgUid(orgUid);
-    dispatch(getAudit({ orgUid, useMockedResponse: false }));
+    dispatch(getAudit({ orgUid, useMockedResponse: true }));
   };
 
-  if (!audit || !organizations) {
+  if (!organizations) {
     return null;
   }
 
-  let sortedAuditArray = [...audit];
-  let sortSign = isChronologicallySorted ? -1 : 1;
-  sortedAuditArray.sort(
-    (a, b) =>
-      sortSign *
-      (new Date(parseInt(b.onchainConfirmationTimeStamp) * 1000).getTime() -
-        new Date(parseInt(a.onchainConfirmationTimeStamp) * 1000).getTime()),
-  );
+  let sortedAuditArray = audit ? [...audit] : null;
+  if (sortedAuditArray) {
+    let sortSign = isChronologicallySorted ? -1 : 1;
+    sortedAuditArray.sort(
+      (a, b) =>
+        sortSign *
+        (new Date(parseInt(b.onchainConfirmationTimeStamp) * 1000).getTime() -
+          new Date(parseInt(a.onchainConfirmationTimeStamp) * 1000).getTime()),
+    );
+  }
 
   return (
     <StyledSectionContainer>
@@ -122,6 +131,13 @@ const Audit = withRouter(() => {
           </div>
         )}
       </StyledHeaderContainer>
+      {!sortedAuditArray && (
+        <StyledBodyNoDataFound>
+          <H3>
+            <FormattedMessage id="no-audit-data" />
+          </H3>
+        </StyledBodyNoDataFound>
+      )}
       {sortedAuditArray?.length > 0 && (
         <StyledBodyContainer>
           <StyledTable>

@@ -339,5 +339,6 @@
   "select-organization": "Select Organization",
   "timestamp": "Timestamp",
   "table": "Table",
-  "root-hash": "Root Hash"
+  "root-hash": "Root Hash",
+  "no-audit-data": "No audit data was found. Select an organization first."
 }

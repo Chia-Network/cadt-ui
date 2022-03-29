@@ -321,5 +321,6 @@
   "select-organization": "Seleccionar organización",
   "timestamp": "Marca de tiempo",
   "table": "Mesa",
-  "root-hash": "Hachís raíz"
+  "root-hash": "Hachís raíz",
+  "no-audit-data": "No se encontraron datos de auditoría. Seleccione una organización primero."
 }
