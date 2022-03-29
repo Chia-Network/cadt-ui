@@ -14,6 +14,11 @@ const StyledContainer = styled('div')`
   gap: 17px;
 `;
 
+const StyledDivider = styled('div')`
+  border-bottom: 1px solid #e5e5e5;
+  width: 100%;
+`;
+
 const StyledTextContainer = styled('div')`
   overflow-wrap: break-word;
 `;
@@ -21,6 +26,8 @@ const StyledTextContainer = styled('div')`
 const AuditItemModal = ({ onClose, auditItem }) => {
   const intl = useIntl();
   const change = auditItem.change && JSON.parse(auditItem.change);
+
+  const bodyColor = auditItem.type === 'INSERT' ? '#52C41A' : '#F5222D';
 
   return (
     <>
@@ -78,6 +85,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
                 </StyledTextContainer>
               </div>
             </StyledContainer>
+            <StyledDivider />
             <StyledContainer>
               {Object.keys(change).map((changeItemKey, index) => (
                 <div key={index}>
@@ -87,7 +95,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
                     </Body>
                   </div>
                   <StyledTextContainer>
-                    <Body>{change[changeItemKey]}</Body>
+                    <Body color={bodyColor}>{change[changeItemKey]}</Body>
                   </StyledTextContainer>
                 </div>
               ))}
