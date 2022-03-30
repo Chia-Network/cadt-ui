@@ -9,7 +9,6 @@ const LANGUAGE_CODES = Object.freeze({
 });
 
 const loadLocaleData = locale => {
-  // eslint-disable-next-line no-undef
   switch (locale) {
     case LANGUAGE_CODES.SPANISH:
       return es;
