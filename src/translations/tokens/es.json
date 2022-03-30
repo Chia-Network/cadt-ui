@@ -35,7 +35,7 @@
   "projects-current-registry-description": "Nombre del reigstry que actualmente hospeda el proyecto.",
   "projects-project-id-description": "Identificador utilizado para realizar un seguimiento del proyecto en el registro actual.",
   "projects-registry-of-origin-description": "El registro que originalmente hospedaba el proyecto. Si es el mismo que el registro actual, vuelva a enumerar el registro.",
-  "projects-origin-project-id-description": "Identificador utilizado para realizar un seguimiento del proyecto en el registro que lo ocupó por primera vez. Si es el mismo que el ID del proyecto, vuelva a enumerar el ID del proyecto.",
+  "projects-origin-project-id-description": "Identificador utilizado para realizar un seguimiento del proyecto en el registro que lo ocupó por primera vez.",
   "projects-program-description": "Utilice este campo para categorizar el proyecto en un programa específico, si corresponde.",
   "projects-project-name-description": "Nombre del proyecto.",
   "projects-project-link-description": "Coloque un enlace URL al sitio web del proyecto o al sitio web que aloja el proyecto y sus descripciones.",
