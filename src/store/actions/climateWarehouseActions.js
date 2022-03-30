@@ -1080,12 +1080,16 @@ export const getRatings = options => {
 
 export const getAudit = options => {
   return dispatch => {
-    if (options?.orgUid) {
+    if (options?.orgUid && options?.limit && options?.page) {
       dispatch(
         getClimateWarehouseTable(
-          `${constants.API_HOST}/audit?orgUid=${options.orgUid}`,
+          `${constants.API_HOST}/audit?orgUid=${options.orgUid}&limit=${options.limit}&page=${options.page}`,
           actions.GET_AUDIT,
-          mockedAuditResponse(options.orgUid),
+          mockedAuditResponse({
+            orgUid: options.orgUid,
+            limit: options.limit,
+            page: options?.page,
+          }),
           options,
         ),
       );
@@ -1093,11 +1097,17 @@ export const getAudit = options => {
   };
 };
 
-const mockedAuditResponse = orgUid => {
-  const customAuditResponseStub = auditResponseStub.map(auditItem => ({
-    ...auditItem,
-    orgUid,
-  }));
+const mockedAuditResponse = ({ page, limit, orgUid }) => {
+  const customAuditResponseStub = {
+    page: page,
+    pageCount: auditResponseStub.pageCount,
+    data: auditResponseStub.data.reduce((accumulator, current, index) => {
+      if (index < limit) {
+        return [...accumulator, { ...current, orgUid }];
+      }
+      return accumulator;
+    }, []),
+  };
 
   // Different envs import this differently
   return {

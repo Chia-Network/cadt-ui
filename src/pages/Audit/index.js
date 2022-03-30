@@ -15,11 +15,13 @@ import {
   DescendingClockIcon,
   AscendingClockIcon,
   H3,
+  Pagination,
 } from '../../components';
 import {
   getAudit,
   getOrganizationData,
 } from '../../store/actions/climateWarehouseActions';
+import constants from '../../constants';
 
 const StyledSectionContainer = styled('div')`
   display: flex;
@@ -95,14 +97,21 @@ const Audit = withRouter(() => {
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrgUid(orgUid);
-    dispatch(getAudit({ orgUid, useMockedResponse: true }));
+    dispatch(
+      getAudit({
+        orgUid,
+        page: 1,
+        limit: constants.MAX_AUDIT_TABLE_SIZE,
+        useMockedResponse: false,
+      }),
+    );
   };
 
   if (!organizations) {
     return null;
   }
 
-  let sortedAuditArray = audit ? [...audit] : null;
+  let sortedAuditArray = audit?.data ? [...audit?.data] : null;
   if (sortedAuditArray) {
     let sortSign = isChronologicallySorted ? -1 : 1;
     sortedAuditArray.sort(
@@ -123,6 +132,23 @@ const Audit = withRouter(() => {
           width="200px"
           onChange={onOrganizationSelect}
         />
+        {selectedOrgUid && audit?.page && audit?.pageCount && (
+          <Pagination
+            current={audit.page - 1}
+            pages={audit.pageCount}
+            callback={val =>
+              dispatch(
+                getAudit({
+                  orgUid: selectedOrgUid,
+                  page: val + 1,
+                  limit: constants.MAX_AUDIT_TABLE_SIZE,
+                  useMockedResponse: false,
+                }),
+              )
+            }
+            showLast
+          />
+        )}
         {selectedOrgUid && (
           <div>
             <Body>
@@ -138,7 +164,7 @@ const Audit = withRouter(() => {
           </H3>
         </StyledBodyNoDataFound>
       )}
-      {sortedAuditArray?.length > 0 && (
+      {selectedOrgUid && sortedAuditArray?.length > 0 && (
         <StyledBodyContainer>
           <StyledTable>
             <thead>
