@@ -33,3 +33,5 @@ export * from './OrganizationIcon';
 export * from './CopyIcon';
 export * from './LinkIcon';
 export * from './ReloadIcon';
+export * from './AscendingClockIcon';
+export * from './DescendingClockIcon';

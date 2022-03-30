@@ -9,6 +9,7 @@ export default {
       ? 'http://localhost:31310/v1'
       : 'https://api.climatewarehouse.chia.net/v1',
   MAX_TABLE_SIZE: 7,
+  MAX_AUDIT_TABLE_SIZE: 20,
   HEADER_HEIGHT: 64, // Needed to be used to calculate max height for body components
   THEME: {
     DEFAULT: 'default',

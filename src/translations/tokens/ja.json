@@ -316,5 +316,11 @@
   "add-custom-organization": "カスタム組織（UID）を追加する",
   "add": "追加",
   "organization-is-importing": "組織がインポートしています。これには数分かかります。",
-  "connected-to": "サーバーに接続しました"
+  "connected-to": "サーバーに接続しました",
+  "audit": "監査",
+  "select-organization": "組織を選択",
+  "timestamp": "タイムスタンプ",
+  "table": "テーブル",
+  "root-hash": "ルートハッシュ",
+  "no-audit-data": "監査データが見つかりませんでした。最初に組織を選択してください。"
 }

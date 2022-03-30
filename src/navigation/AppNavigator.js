@@ -91,6 +91,9 @@ const AppNavigator = () => {
             <Route path="/organization">
               <Pages.Organization />
             </Route>
+            <Route path="/audit">
+              <Pages.Audit />
+            </Route>
             <Route path="*">
               <Redirect to="/projects" />
             </Route>

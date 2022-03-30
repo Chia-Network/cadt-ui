@@ -43,3 +43,4 @@ export * from './RelatedProjectsDetails';
 export * from './UnitsDetails';
 export * from './UnitsIssuanceDetails';
 export * from './UnitsLabelsDetails';
+export * from './AuditItemModal';
