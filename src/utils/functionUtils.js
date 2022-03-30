@@ -45,7 +45,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
             {detailData[dataType]?.changes[0]}
           </Body>
           <Body color={changeColor(dataType, 'DELETE')}>
-            <s>{detailData[dataType]?.original}</s>
+            {detailData[dataType]?.original}
           </Body>
         </>
       );
@@ -56,7 +56,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
       return (
         <>
           <Body color={changeColor(dataType, 'DELETE')}>
-            <s>{detailData[dataType]?.original}</s>
+            {detailData[dataType]?.original}
           </Body>
         </>
       );
@@ -82,7 +82,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
             {detailData[dataType]?.changes[0]}
           </Body>
           <Body color={changeColor(dataType, 'DELETE')}>
-            <s>{detailData[dataType]?.original}</s>
+            {detailData[dataType]?.original}
           </Body>
         </>
       );
@@ -121,7 +121,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
       return (
         <>
           <Body color={changeColor(dataType, 'DELETE')}>
-            <s>{detailData[dataType]?.original}</s>
+            {detailData[dataType]?.original}
           </Body>
         </>
       );
@@ -160,7 +160,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
             {detailData[dataType]?.changes[0]}
           </Body>
           <Body color={changeColor(dataType, 'DELETE')}>
-            <s>{detailData[dataType]?.original}</s>
+            {detailData[dataType]?.original}
           </Body>
         </>
       );
@@ -218,19 +218,17 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
           </Body>
           {detailData[dataType]?.changes[0] && detailData[dataType]?.original && (
             <Body color={changeColor(dataType, 'DELETE')}>
-              <s>
-                <a
-                  href={handleClickLink(detailData[dataType]?.original)}
-                  target="_blank"
-                  rel="noreferrer noopener">
-                  {detailData[dataType].original
-                    ? detailData[dataType].original
-                    : '---'}
-                  {detailData[dataType].original && (
-                    <LinkIcon height="15" width="30" />
-                  )}
-                </a>
-              </s>
+              <a
+                href={handleClickLink(detailData[dataType]?.original)}
+                target="_blank"
+                rel="noreferrer noopener">
+                {detailData[dataType].original
+                  ? detailData[dataType].original
+                  : '---'}
+                {detailData[dataType].original && (
+                  <LinkIcon height="15" width="30" />
+                )}
+              </a>
             </Body>
           )}
         </>
@@ -276,19 +274,17 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
       // show deleted subform links
       return (
         <Body color={changeColor(dataType, 'DELETE')}>
-          <s>
-            <a
-              href={handleClickLink(detailData[dataType]?.original)}
-              target="_blank"
-              rel="noreferrer noopener">
-              {detailData[dataType].original
-                ? detailData[dataType].original
-                : '---'}
-              {detailData[dataType].original && (
-                <LinkIcon height="15" width="30" />
-              )}
-            </a>
-          </s>
+          <a
+            href={handleClickLink(detailData[dataType]?.original)}
+            target="_blank"
+            rel="noreferrer noopener">
+            {detailData[dataType].original
+              ? detailData[dataType].original
+              : '---'}
+            {detailData[dataType].original && (
+              <LinkIcon height="15" width="30" />
+            )}
+          </a>
         </Body>
       );
     }
@@ -322,19 +318,17 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
           </Body>
           {detailData[dataType]?.changes[0] && detailData[dataType]?.original && (
             <Body color={changeColor(dataType, 'DELETE')}>
-              <s>
-                <a
-                  href={handleClickLink(detailData[dataType]?.original)}
-                  target="_blank"
-                  rel="noreferrer noopener">
-                  {detailData[dataType].original
-                    ? detailData[dataType].original
-                    : '---'}
-                  {detailData[dataType].original && (
-                    <LinkIcon height="15" width="30" />
-                  )}
-                </a>
-              </s>
+              <a
+                href={handleClickLink(detailData[dataType]?.original)}
+                target="_blank"
+                rel="noreferrer noopener">
+                {detailData[dataType].original
+                  ? detailData[dataType].original
+                  : '---'}
+                {detailData[dataType].original && (
+                  <LinkIcon height="15" width="30" />
+                )}
+              </a>
             </Body>
           )}
         </>
