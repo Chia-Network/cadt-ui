@@ -7,7 +7,9 @@ import {
   StyledItem,
 } from '.';
 
-const UnitsIssuanceDetails = ({ data }) => {
+import { detailsViewData } from '../../utils/functionUtils';
+
+const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -16,27 +18,60 @@ const UnitsIssuanceDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="start-date" />
             </Body>
-            <Body>{data.startDate ? data.startDate : '---'}</Body>
+            {data && detailsViewData('data', data, 'startDate', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                "issuanceStagingData",
+                stagingData,
+                'startDate',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="end-date" />
             </Body>
-            <Body>{data.endDate ? data.endDate : '---'}</Body>
+            {data && detailsViewData('data', data, 'endDate', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                "issuanceStagingData",
+                stagingData,
+                'endDate',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="verification-body" />
             </Body>
-            <Body>{data.verificationBody ? data.verificationBody : '---'}</Body>
+            {data &&
+              detailsViewData('data', data, 'verificationBody', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                "issuanceStagingData",
+                stagingData,
+                'verificationBody',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="verification-approach" />
             </Body>
-            <Body>
-              {data.verificationApproach ? data.verificationApproach : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'verificationApproach',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                "issuanceStagingData",
+                stagingData,
+                'verificationApproach',
+                changeColor,
+              )}
           </StyledItem>
         </StyledDetailedViewTab>
       </div>

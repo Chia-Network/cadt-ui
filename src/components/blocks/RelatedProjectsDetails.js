@@ -8,8 +8,9 @@ import {
 } from '.';
 import { SpanTwoColumnsContainer } from '../layout';
 
+import { detailsViewData } from '../../utils/functionUtils';
 
-const RelatedProjectsDetails = ({ data }) => {
+const RelatedProjectsDetails = ({ data, stagingData, changeColor }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -19,23 +20,42 @@ const RelatedProjectsDetails = ({ data }) => {
               <Body size="Bold" width="100%">
                 <FormattedMessage id="related-project-id" />
               </Body>
-              <Body>
-                {data.relatedProjectId ? data.relatedProjectId : '---'}
-              </Body>
+              {data &&
+                detailsViewData('data', data, 'relatedProjectId', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'subformStagingData',
+                  stagingData,
+                  'relatedProjectId',
+                  changeColor,
+                )}
             </StyledItem>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="relationship-type" />
               </Body>
-              <Body>
-                {data.relationshipType ? data.relationshipType : '---'}
-              </Body>
+              {data &&
+                detailsViewData('data', data, 'relationshipType', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'subformStagingData',
+                  stagingData,
+                  'relationshipType',
+                  changeColor,
+                )}
             </StyledItem>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="registry" />
               </Body>
-              <Body>{data.registry ? data.registry : '---'}</Body>
+              {data && detailsViewData('data', data, 'registry', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'subformStagingData',
+                  stagingData,
+                  'registry',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoColumnsContainer>
         </StyledDetailedViewTab>

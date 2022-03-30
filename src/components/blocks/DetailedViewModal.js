@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, modalTypeEnum } from '..';
 import { useIntl } from 'react-intl';
-import { UnitsDetailedViewTab, ProjectDetailedViewTab } from '.';
+import { UnitsDetailViewTab, ProjectDetailedViewTab } from '.';
 
 const detailedViewModalTypeEnum = {
   project: 'projects',
@@ -49,7 +49,7 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
       })}
       body={
         type === detailedViewModalTypeEnum.units ? (
-          <UnitsDetailedViewTab entry={fullRecord} />
+          <UnitsDetailViewTab entry={fullRecord} />
         ) : (
           <ProjectDetailedViewTab entry={fullRecord} />
         )

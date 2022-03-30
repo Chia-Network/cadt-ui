@@ -1,15 +1,15 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body } from '..';
+import { Body, SpanTwoDetailColumnsContainer } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
-  handleClickLink,
 } from '.';
-import { SpanTwoDetailColumnsContainer, LinkIcon } from '..';
 
-const ProjectRatingsDetails = ({ data }) => {
+import { detailsViewData } from '../../utils/functionUtils';
+
+const ProjectRatingsDetails = ({ data, stagingData, changeColor }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -18,45 +18,69 @@ const ProjectRatingsDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="rating-type" />
             </Body>
-            <Body>{data.ratingType ? data.ratingType : '---'}</Body>
+            {data && detailsViewData('data', data, 'ratingType', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'ratingType',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="rating" />
             </Body>
-            <Body>{data.rating ? data.rating : '---'}</Body>
+            {data && detailsViewData('data', data, 'rating', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'rating',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="rating-range-highest" />
             </Body>
-            <Body>
-              {data.ratingRangeHighest ? data.ratingRangeHighest : '---'}
-            </Body>
+            {data &&
+              detailsViewData('data', data, 'ratingRangeHighest', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'ratingRangeHighest',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="rating-range-lowest" />
             </Body>
-            <Body>
-              {data.ratingRangeLowest ? data.ratingRangeLowest : '---'}
-            </Body>
+            {data &&
+              detailsViewData('data', data, 'ratingRangeLowest', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'ratingRangeLowest',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="rating-link" />
               </Body>
-              <Body>
-                <a
-                  href={handleClickLink(data.ratingLink)}
-                  style={{wordWrap: 'break-word'}}
-                  target="_blank"
-                  rel="noreferrer noopener">
-                  {data.ratingLink ? data.ratingLink : '---'}
-                  {data.ratingLink && <LinkIcon height="15" width="30" />}
-                </a>
-              </Body>
+              {data && detailsViewData('link', data, 'ratingLink', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'subformStagingLink',
+                  stagingData,
+                  'ratingLink',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
         </StyledDetailedViewTab>

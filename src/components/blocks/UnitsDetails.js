@@ -1,27 +1,15 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body, LinkIcon } from '..';
+import { Body, SpanTwoDetailColumnsContainer } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
 } from '.';
-import {
-  SpanTwoColumnsContainer,
-  SpanTwoDetailColumnsContainer,
-} from '../layout';
+import { SpanTwoColumnsContainer } from '../layout';
+import { detailsViewData } from '../../utils/functionUtils';
 
-export const handleClickLink = link => {
-  if (link) {
-    if (link.slice(0, 4) === 'http') {
-      return link;
-    } else {
-      return 'http://' + link;
-    }
-  }
-};
-
-const UnitsDetails = ({ data }) => {
+const UnitsDetails = ({ data, stagingData, changeColor }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -30,72 +18,135 @@ const UnitsDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-location-id" />
             </Body>
-            <Body>
-              {data.projectLocationId ? data.projectLocationId : '---'}
-            </Body>
+            {data &&
+              detailsViewData('data', data, 'projectLocationId', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'projectLocationId',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-owner" />
             </Body>
-            <Body>{data.unitOwner ? data.unitOwner : '---'}</Body>
+            {data && detailsViewData('data', data, 'unitOwner', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'unitOwner',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="serial-number-pattern" />
             </Body>
-            <Body>
-              {data.serialNumberPattern ? data.serialNumberPattern : '---'}
-            </Body>
+            {data &&
+              detailsViewData('data', data, 'serialNumberPattern', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'serialNumberPattern',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="serial-number-block" />
             </Body>
-            <Body>
-              {data.serialNumberBlock ? data.serialNumberBlock : '---'}
-            </Body>
+            {data &&
+              detailsViewData('data', data, 'serialNumberBlock', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'serialNumberBlock',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="in-country-jurisdiction-of-owner" />
             </Body>
-            <Body>
-              {data.inCountryJurisdictionOfOwner
-                ? data.inCountryJurisdictionOfOwner
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'inCountryJurisdictionOfOwner',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'inCountryJurisdictionOfOwner',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="country-jurisdiction-of-owner" />
             </Body>
-            <Body>
-              {data.countryJurisdictionOfOwner
-                ? data.countryJurisdictionOfOwner
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'countryJurisdictionOfOwner',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'countryJurisdictionOfOwner',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-type" />
             </Body>
-            <Body>{data.unitType ? data.unitType : '---'}</Body>
+            {data && detailsViewData('data', data, 'unitType', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'unitType',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-status" />
             </Body>
-            <Body>{data.unitStatus ? data.unitStatus : '---'}</Body>
+            {data && detailsViewData('data', data, 'unitStatus', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'unitStatus',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-status-reason" />
               </Body>
-              <Body>
-                {data.unitStatusReason ? data.unitStatusReason : '---'}
-              </Body>
+              {data &&
+                detailsViewData('data', data, 'unitStatusReason', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingData',
+                  stagingData,
+                  'unitStatusReason',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
           <SpanTwoDetailColumnsContainer>
@@ -103,23 +154,29 @@ const UnitsDetails = ({ data }) => {
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-registry-link" />
               </Body>
-              <Body>
-                <a
-                  href={handleClickLink(data.unitRegistryLink)}
-                  style={{ wordWrap: 'break-word' }}
-                  target="_blank"
-                  rel="noreferrer noopener">
-                  {data.unitRegistryLink ? data.unitRegistryLink : '---'}
-                  {data.unitRegistryLink && <LinkIcon height="15" width="30" />}
-                </a>
-              </Body>
+              {data &&
+                detailsViewData('link', data, 'unitRegistryLink', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingLink',
+                  stagingData,
+                  'unitRegistryLink',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="vintage-year" />
             </Body>
-            <Body>{data.vintageYear ? data.vintageYear : '---'}</Body>
+            {data && detailsViewData('data', data, 'vintageYear', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'vintageYear',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoColumnsContainer>
             <hr />
@@ -128,52 +185,87 @@ const UnitsDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="marketplace" />
             </Body>
-            <Body>{data.marketplace ? data.marketplace : '---'}</Body>
+            {data && detailsViewData('data', data, 'marketplace', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'marketplace',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="marketplace-identifier" />
             </Body>
-            <Body>
-              {data.marketplaceIdentifier ? data.marketplaceIdentifier : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'marketplaceIdentifier',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'marketplaceIdentifier',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="marketplace-link" />
               </Body>
-              <Body>
-                <a
-                  href={handleClickLink(data.marketplaceLink)}
-                  style={{ wordWrap: 'break-word' }}
-                  target="_blank"
-                  rel="noreferrer noopener">
-                  {data.marketplaceLink ? data.marketplaceLink : '---'}
-                  {data.marketplaceLink && <LinkIcon height="15" width="30" />}
-                </a>
-              </Body>
+              {data &&
+                detailsViewData('link', data, 'marketplaceLink', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingLink',
+                  stagingData,
+                  'marketplaceLink',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="corresponding-adjustment-declaration" />
             </Body>
-            <Body>
-              {data.correspondingAdjustmentDeclaration
-                ? data.correspondingAdjustmentDeclaration
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'correspondingAdjustmentDeclaration',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'correspondingAdjustmentDeclaration',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="corresponding-adjustment-status" />
             </Body>
-            <Body>
-              {data.correspondingAdjustmentStatus
-                ? data.correspondingAdjustmentStatus
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'correspondingAdjustmentStatus',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'correspondingAdjustmentStatus',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoColumnsContainer>
             <hr />
@@ -183,7 +275,14 @@ const UnitsDetails = ({ data }) => {
               <Body size="Bold" width="100%">
                 <FormattedMessage id="unit-tags" />
               </Body>
-              <Body>{data.unitTags ? data.unitTags : '---'}</Body>
+              {data && detailsViewData('data', data, 'unitTags', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingData',
+                  stagingData,
+                  'unitTags',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
         </StyledDetailedViewTab>

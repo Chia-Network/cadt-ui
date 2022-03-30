@@ -1,15 +1,18 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body, SpanTwoDetailColumnsContainer, SpanTwoColumnsContainer,LinkIcon } from '..';
+import {
+  Body,
+  SpanTwoColumnsContainer,
+  SpanTwoDetailColumnsContainer,
+} from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
-  handleClickLink,
 } from '.';
+import { detailsViewData } from '../../utils/functionUtils';
 
-
-const ProjectDetails = ({ data }) => {
+const ProjectDetails = ({ data, stagingData, changeColor }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -18,68 +21,124 @@ const ProjectDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-name" />
             </Body>
-            <Body>{data.projectName ? data.projectName : '---'}</Body>
+            {data && detailsViewData('data', data, 'projectName', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'projectName',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-id" />
             </Body>
-            <Body>{data.projectId ? data.projectId : '---'}</Body>
+            {data && detailsViewData('data', data, 'projectId', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'projectId',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-developer" />
             </Body>
-            <Body>{data.projectDeveloper ? data.projectDeveloper : '---'}</Body>
+            {data &&
+              detailsViewData('data', data, 'projectDeveloper', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'projectDeveloper',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="program" />
             </Body>
-            <Body>{data.program ? data.program : '---'}</Body>
+            {data && detailsViewData('data', data, 'program', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'program',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="project-link" />
               </Body>
-              <Body>
-                <a
-                  href={handleClickLink(data.projectLink)}
-                  style={{ wordWrap: 'break-word' }}
-                  target="_blank"
-                  rel="noreferrer noopener">
-                  {data.projectLink ? data.projectLink : '---'}
-                  {data.projectLink && <LinkIcon height="15" width="30" />}
-                </a>
-              </Body>
+              {data &&
+                detailsViewData('link', data, 'projectLink', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingLink',
+                  stagingData,
+                  'projectLink',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="sector" />
             </Body>
-            <Body>{data.sector ? data.sector : '---'}</Body>
+            {data && detailsViewData('data', data, 'sector', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'sector',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-type" />
             </Body>
-            <Body>{data.projectType ? data.projectType : '---'}</Body>
+            {data && detailsViewData('data', data, 'projectType', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'projectType',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-status" />
             </Body>
-            <Body>{data.projectStatus ? data.projectStatus : '---'}</Body>
+            {data &&
+              detailsViewData('data', data, 'projectStatus', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'projectStatus',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-status-date" />
             </Body>
-            <Body>
-              {data.projectStatusDate ? data.projectStatusDate : '---'}
-            </Body>
+            {data &&
+              detailsViewData('data', data, 'projectStatusDate', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'projectStatusDate',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoColumnsContainer>
             <hr />
@@ -88,14 +147,29 @@ const ProjectDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="covered-by-ndc" />
             </Body>
-            <Body>{data.coveredByNDC ? data.coveredByNDC : '---'}</Body>
+            {data && detailsViewData('data', data, 'coveredByNDC', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'coveredByNDC',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="ndc-information" />
               </Body>
-              <Body>{data.ndcInformation ? data.ndcInformation : '---'}</Body>
+              {data &&
+                detailsViewData('data', data, 'ndcInformation', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingData',
+                  stagingData,
+                  'ndcInformation',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
           <SpanTwoDetailColumnsContainer>
@@ -103,20 +177,44 @@ const ProjectDetails = ({ data }) => {
               <Body size="Bold" width="100%">
                 <FormattedMessage id="current-registry" />
               </Body>
-              <Body>{data.currentRegistry ? data.currentRegistry : '---'}</Body>
+              {data &&
+                detailsViewData('data', data, 'currentRegistry', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingData',
+                  stagingData,
+                  'currentRegistry',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="registry-of-origin" />
             </Body>
-            <Body>{data.registryOfOrigin ? data.registryOfOrigin : '---'}</Body>
+            {data &&
+              detailsViewData('data', data, 'registryOfOrigin', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'registryOfOrigin',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="origin-project-id" />
             </Body>
-            <Body>{data.originProjectId ? data.originProjectId : '---'}</Body>
+            {data &&
+              detailsViewData('data', data, 'originProjectId', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'originProjectId',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoColumnsContainer>
             <hr />
@@ -125,27 +223,58 @@ const ProjectDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-metric" />
             </Body>
-            <Body>{data.unitMetric ? data.unitMetric : '---'}</Body>
+            {data && detailsViewData('data', data, 'unitMetric', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'unitMetric',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="methodology" />
               </Body>
-              <Body>{data.methodology ? data.methodology : '---'}</Body>
+              {data &&
+                detailsViewData('data', data, 'methodology', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingData',
+                  stagingData,
+                  'methodology',
+                  changeColor,
+                )}
             </StyledItem>
           </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="validation-body" />
             </Body>
-            <Body>{data.validationBody ? data.validationBody : '---'}</Body>
+            {data &&
+              detailsViewData('data', data, 'validationBody', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'validationBody',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="validation-date" />
             </Body>
-            <Body>{data.validationDate ? data.validationDate : '---'}</Body>
+            {data &&
+              detailsViewData('data', data, 'validationDate', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'validationDate',
+                changeColor,
+              )}
           </StyledItem>
           <SpanTwoColumnsContainer>
             <hr />
@@ -154,7 +283,14 @@ const ProjectDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-tags" />
             </Body>
-            <Body>{data.projectTags ? data.projectTags : '---'}</Body>
+            {data && detailsViewData('data', data, 'projectTags', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'projectTags',
+                changeColor,
+              )}
           </StyledItem>
         </StyledDetailedViewTab>
       </div>

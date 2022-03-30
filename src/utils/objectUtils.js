@@ -12,7 +12,6 @@ export const getDiff = (a, b) => {
 
 export const getDiffObject = (original, ...changes) => {
   let keys = original ? Object.keys(original) : [];
-
   changes.forEach(
     object => object != null && keys.push(...Object.keys(object)),
   );
@@ -45,10 +44,21 @@ export const getDiffObject = (original, ...changes) => {
       original[uniqueKey] &&
       typeof original[uniqueKey] === 'object'
     ) {
-      diffObject[uniqueKey] = getDiffObject(
-        original[uniqueKey],
-        ...changes.map(change => change[uniqueKey]),
-      );
+      if (_.isObject(original[uniqueKey]) && uniqueKey === 'issuance') {
+        diffObject[uniqueKey] = getDiffObject(
+          original[uniqueKey],
+          ...changes.map(change => change[uniqueKey]),
+        );
+      } else if (_.isEmpty(original[uniqueKey])) {
+        diffObject[uniqueKey] = getDiffObject(
+          original[uniqueKey],
+          ...changes.map(change => change[uniqueKey]),
+        );
+        diffObject[uniqueKey] = getDiffObject(
+          original[uniqueKey],
+          ...changes.map(change => change[uniqueKey]),
+        );
+      }
     }
     // handle key is primitive case
     else {
@@ -58,7 +68,7 @@ export const getDiffObject = (original, ...changes) => {
         original && original[uniqueKey] ? original[uniqueKey] : null;
 
       diffObject[uniqueKey].changes = [];
-
+      // Creates Changes
       changes.forEach((change, index) => {
         if (
           change &&
@@ -67,6 +77,21 @@ export const getDiffObject = (original, ...changes) => {
         ) {
           diffObject[uniqueKey].changes[index] = change[uniqueKey];
         } else {
+          if (uniqueKey === 'unitQuantity' && !diffObject[uniqueKey].original) {
+            return (diffObject[uniqueKey].original = 0);
+          } else if (
+            uniqueKey === 'unitCount' &&
+            !diffObject[uniqueKey].changes[0] &&
+            !_.isEmpty(diffObject[uniqueKey].changes)
+          ) {
+            return (diffObject[uniqueKey].changes[index] = 0);
+          }
+          if (change) {
+            if (change[uniqueKey] === original[uniqueKey]) {
+              return (diffObject[uniqueKey].changes[index] = '');
+            }
+          }
+          //add null to changes
           diffObject[uniqueKey].changes[index] = null;
         }
       });
@@ -79,26 +104,25 @@ export const getDiffObject = (original, ...changes) => {
 export const getDiffArray = (originalArray, ...changesArrays) => {
   let ids = originalArray.map(item => item.id);
 
-  changesArrays.forEach(arrayItem =>
-    arrayItem.forEach(key => ids.push(key.id)),
-  );
+  if (_.every(changesArrays, i => i)) {
+    changesArrays.forEach(arrayItem =>
+      arrayItem.forEach(key => ids.push(key.id)),
+    );
+  }
 
   const uniqueIds = [...new window.Set(ids)].sort();
 
   const diffArray = [];
 
   uniqueIds.forEach(uniqueId => {
-    const originalObj =
-      originalArray.filter(item => item.id === uniqueId)[0] ?? null;
-
-    const changesObjects = changesArrays.map(
-      arrayItem => arrayItem.filter(key => key.id === uniqueId)[0] ?? null,
+    const originalObj = _.find(originalArray, item => item.id === uniqueId);
+    const changesObjects = changesArrays.map(arrayItem =>
+      _.find(arrayItem, key => key.id === uniqueId),
     );
 
     let diffObject = getDiffObject(originalObj, ...changesObjects);
 
     diffArray.push(diffObject);
   });
-
   return diffArray;
 };
