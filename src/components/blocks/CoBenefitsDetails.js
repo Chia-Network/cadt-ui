@@ -6,8 +6,9 @@ import {
   StyledDetailedViewTabItem,
   StyledItem,
 } from '.';
+import { detailsViewData } from '../../utils/functionUtils';
 
-const CoBenefitsDetails = ({data}) => {
+const CoBenefitsDetails = ({ data, stagingData, changeColor }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -16,7 +17,14 @@ const CoBenefitsDetails = ({data}) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="co-benefit" />
             </Body>
-            <Body>{data.cobenefit ? data.cobenefit : '---'}</Body>
+            {data && detailsViewData('data', data, 'cobenefit', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'cobenefit',
+                changeColor,
+              )}
           </StyledItem>
         </StyledDetailedViewTab>
       </div>

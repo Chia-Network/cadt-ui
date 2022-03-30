@@ -14,7 +14,6 @@ export const actions = keyMirror(
   'CLEAR_GLOBAL_ERROR_MESSAGE',
   'SET_LOCALE',
   'CONNECTION_CHECK',
-  'RESET_REFRESH_PROMPT',
   'SET_NOTIFICATION',
   'COMMIT',
   'PENDING_ERROR',
@@ -30,10 +29,6 @@ export const refreshApp = render => ({
   type: actions.REFRESH_APP,
   payload: render,
 });
-
-export const resetRefreshPrompt = {
-  type: actions.RESET_REFRESH_PROMPT,
-};
 
 export const setReadOnly = isReadOnly => ({
   type: actions.SET_READ_ONLY,

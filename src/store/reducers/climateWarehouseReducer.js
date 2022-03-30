@@ -17,6 +17,7 @@ const initialState = {
   pickLists: null,
   issuances: null,
   labels: null,
+  audit: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -26,6 +27,9 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_PICKLISTS:
       return u({ pickLists: action.payload }, state);
+
+    case climateWarehouseActions.GET_AUDIT:
+      return u({ audit: action.payload }, state);
 
     case climateWarehouseActions.GET_RATINGS:
       return u({ ratings: action.payload }, state);

@@ -12,6 +12,7 @@ import {
   projectsResponseStub,
   vintagesResponseStub,
   stagingDataResponseStub,
+  auditResponseStub,
 } from '../../mocks';
 
 import {
@@ -40,6 +41,7 @@ export const actions = keyMirror(
   'GET_PICKLISTS',
   'GET_ISSUANCES',
   'GET_LABELS',
+  'GET_AUDIT',
 );
 
 const getClimateWarehouseTable = (
@@ -745,6 +747,120 @@ export const postNewOrg = data => {
   };
 };
 
+export const subscribeToOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations/subscribe`;
+
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const unsubscribeFromOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations/unsubscribe`;
+
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const subscribeImportOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations/import`;
+
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-is-importing',
+          ),
+        );
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const uploadXLSXFile = (file, type) => {
   return async dispatch => {
     if (type === 'projects' || type === 'units') {
@@ -959,6 +1075,44 @@ export const getRatings = options => {
         options,
       ),
     );
+  };
+};
+
+export const getAudit = options => {
+  return dispatch => {
+    if (options?.orgUid && options?.limit && options?.page) {
+      dispatch(
+        getClimateWarehouseTable(
+          `${constants.API_HOST}/audit?orgUid=${options.orgUid}&limit=${options.limit}&page=${options.page}`,
+          actions.GET_AUDIT,
+          mockedAuditResponse({
+            orgUid: options.orgUid,
+            limit: options.limit,
+            page: options?.page,
+          }),
+          options,
+        ),
+      );
+    }
+  };
+};
+
+const mockedAuditResponse = ({ page, limit, orgUid }) => {
+  const customAuditResponseStub = {
+    page: page,
+    pageCount: auditResponseStub.pageCount,
+    data: auditResponseStub.data.reduce((accumulator, current, index) => {
+      if (index < limit) {
+        return [...accumulator, { ...current, orgUid }];
+      }
+      return accumulator;
+    }, []),
+  };
+
+  // Different envs import this differently
+  return {
+    type: actions.GET_AUDIT,
+    payload: _.get(customAuditResponseStub, 'default', customAuditResponseStub),
   };
 };
 

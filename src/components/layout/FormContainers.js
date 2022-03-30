@@ -29,6 +29,11 @@ export const SpanTwoColumnsContainer = styled('div')`
   grid-column: 1 / span 2;
 `;
 
+export const SpanTwoDetailColumnsContainer = styled('div')`
+  width: 50%;
+  grid-column: 1 / span 2;
+`;
+
 export const HrSpanTwoColumnsContainer = styled('div')`
   grid-column: 1 / span 2;
   margin: 10px 0;

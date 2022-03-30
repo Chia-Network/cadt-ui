@@ -12,12 +12,7 @@ import * as Pages from '../pages';
 
 import { createNotification } from '../utils/notificationUtils';
 
-import {
-  AppContainer,
-  Modal,
-  SocketStatusContainer,
-  modalTypeEnum,
-} from '../components';
+import { AppContainer, Modal, modalTypeEnum } from '../components';
 import { setPendingError, setNotificationMessage } from '../store/actions/app';
 import { getOrganizationData } from '../store/actions/climateWarehouseActions';
 import { reloadCurrentUrlFromStorage } from './history';
@@ -33,7 +28,6 @@ const AppNavigator = () => {
   const {
     showProgressOverlay,
     connectionCheck,
-    socketStatus,
     pendingError,
     notification,
     apiKey,
@@ -51,7 +45,6 @@ const AppNavigator = () => {
 
   return (
     <AppContainer>
-      <SocketStatusContainer socketStatus={socketStatus} />
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
         <Modal
@@ -83,6 +76,9 @@ const AppNavigator = () => {
             <Route exact path="/">
               <Redirect to="/projects" />
             </Route>
+            <Route exact path="">
+              <Redirect to="/projects" />
+            </Route>
             <Route path="/units">
               <Pages.Units />
             </Route>
@@ -91,6 +87,12 @@ const AppNavigator = () => {
             </Route>
             <Route path="/storybook">
               <Pages.StoryBook />
+            </Route>
+            <Route path="/organization">
+              <Pages.Organization />
+            </Route>
+            <Route path="/audit">
+              <Pages.Audit />
             </Route>
             <Route path="*">
               <Redirect to="/projects" />

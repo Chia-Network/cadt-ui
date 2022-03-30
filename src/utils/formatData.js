@@ -73,7 +73,7 @@ export const cleanObjectFromEmptyFieldsOrArrays = dataToSend => {
     }
 
     // clean empty arrays
-    if (typeof dataToSend[el] === 'object' && dataToSend[el].length === 0) {
+    if (dataToSend[el]?.length === 0) {
       delete dataToSend[el];
     }
 

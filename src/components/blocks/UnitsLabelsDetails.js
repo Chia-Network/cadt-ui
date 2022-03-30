@@ -1,15 +1,14 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Body } from '..';
+import { Body, SpanTwoDetailColumnsContainer } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
-  handleClickLink,
 } from '.';
-import { SpanTwoColumnsContainer, LinkIcon } from '..';
+import { detailsViewData } from '../../utils/functionUtils';
 
-const UnitsLabelsDetails = ({ data }) => {
+const UnitsLabelsDetails = ({ data, stagingData, changeColor }) => {
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -18,73 +17,131 @@ const UnitsLabelsDetails = ({ data }) => {
             <Body size="Bold" width="100%">
               <FormattedMessage id="label" />
             </Body>
-            <Body>{data.label ? data.label : '---'}</Body>
+            {data && detailsViewData('data', data, 'label', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'label',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="label-type" />
             </Body>
-            <Body>{data.labelType ? data.labelType : '---'}</Body>
+            {data && detailsViewData('data', data, 'labelType', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'labelType',
+                changeColor,
+              )}
           </StyledItem>
-          <SpanTwoColumnsContainer>
+          <SpanTwoDetailColumnsContainer>
             <StyledItem>
               <Body size="Bold" width="100%">
                 <FormattedMessage id="label-link" />
               </Body>
-              <Body>
-                <a
-                  href={handleClickLink(data.labelLink)}
-                  target="_blank"
-                  rel="noreferrer noopener">
-                  {data.labelLink ? data.labelLink : '---'}
-                  {data.labelLink && <LinkIcon height="15" width="30" />}
-                </a>
-              </Body>
+              {data && detailsViewData('link', data, 'labelLink', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'subformStagingLink',
+                  stagingData,
+                  'labelLink',
+                  changeColor,
+                )}
             </StyledItem>
-          </SpanTwoColumnsContainer>
+          </SpanTwoDetailColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="validity-period-start-date" />
             </Body>
-            <Body>
-              {data.validityPeriodStartDate
-                ? data.validityPeriodStartDate
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'validityPeriodStartDate',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'validityPeriodStartDate',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="validity-period-end-date" />
             </Body>
-            <Body>
-              {data.validityPeriodEndDate ? data.validityPeriodEndDate : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'validityPeriodEndDate',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'validityPeriodEndDate',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="crediting-period-start-date" />
             </Body>
-            <Body>
-              {data.creditingPeriodStartDate
-                ? data.creditingPeriodStartDate
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'creditingPeriodStartDate',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'creditingPeriodStartDate',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="crediting-period-end-date" />
             </Body>
-            <Body>
-              {data.creditingPeriodEndDate
-                ? data.creditingPeriodEndDate
-                : '---'}
-            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'creditingPeriodEndDate',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'creditingPeriodEndDate',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-quantity" />
             </Body>
-            <Body>{data.unitQuantity && data.unitQuantity}</Body>
+            {data && detailsViewData('data', data, 'unitQuantity', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'subformStagingData',
+                stagingData,
+                'unitQuantity',
+                changeColor,
+              )}
           </StyledItem>
         </StyledDetailedViewTab>
       </div>
