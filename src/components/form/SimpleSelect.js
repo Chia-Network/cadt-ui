@@ -522,31 +522,26 @@ const SimpleSelect = withTheme(
             )}
             {selectState === SimpleSelectStateEnum.focused && (
               <>
-                <div style={inputValue && {width: "100%"}}>
+                <div style={inputValue && { width: '100%' }}>
                   <StyledSearchInput
                     type="text"
                     value={searchInputValue}
                     onChange={onSearchInputChange}
                     placeholder={
                       inputValue
-                        ? intl.formatMessage({ id: 'add-your-own' })
+                        ? intl.formatMessage({ id: 'add-unlisted-methodology' })
                         : placeHolderText
                     }
                     autoFocus
                   />
                 </div>
                 <StyledArrowDownContainer state={selectState}>
-                  {inputValue ? (
-                    <ArrowDownIcon
-                      height={size === SimpleSelectSizeEnum.large ? 12 : 10}
-                      width={size === SimpleSelectSizeEnum.large ? 12 : 10}
-                    />
-                  ) : (
+                  {!inputValue &&
                     <MagnifyGlassIcon
                       height={size === SimpleSelectSizeEnum.large ? 20 : 16}
                       width={size === SimpleSelectSizeEnum.large ? 20 : 16}
                     />
-                  )}
+                  }
                 </StyledArrowDownContainer>
               </>
             )}
@@ -560,7 +555,7 @@ const SimpleSelect = withTheme(
                 isSelected={inputValue}
                 onClick={() => toggleOptionSelection('Add Input')}
                 width={dropdownWidth}>
-                <FormattedMessage id="add-your-own" />
+                <FormattedMessage id="add-unlisted-methodology" />
               </BasicMenuItem>
             )}
             {optionsList.map(option => {
