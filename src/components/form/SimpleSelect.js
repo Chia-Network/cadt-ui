@@ -303,10 +303,10 @@ const SimpleSelect = withTheme(
     }, [ref, ref.current]);
 
     useEffect(() => {
-      if(inputValue){
-        setSelectedOptions('')
+      if (inputValue && !searchInputValue) {
+        onSearchClick();
       }
-    }, [inputValue])
+    }, [menuIsVisible]);
 
     useEffect(() => {
       if (selected !== undefined && selectedInitialized.current === null) {
@@ -385,10 +385,11 @@ const SimpleSelect = withTheme(
       }
     };
 
+    const addInputMethodology = () => {
+      setInputValue(true);
+    };
+
     const toggleOptionSelection = optionToToggle => {
-      if (optionToToggle === 'Add Input') {
-        return setInputValue(true);
-      }
       const optionIsAlreadySelected =
         selectedOptions != null && selectedOptions.length > 0
           ? selectedOptions.find(
@@ -536,12 +537,12 @@ const SimpleSelect = withTheme(
                   />
                 </div>
                 <StyledArrowDownContainer state={selectState}>
-                  {!inputValue &&
+                  {!inputValue && (
                     <MagnifyGlassIcon
                       height={size === SimpleSelectSizeEnum.large ? 20 : 16}
                       width={size === SimpleSelectSizeEnum.large ? 20 : 16}
                     />
-                  }
+                  )}
                 </StyledArrowDownContainer>
               </>
             )}
@@ -553,7 +554,7 @@ const SimpleSelect = withTheme(
             {addInput && (
               <BasicMenuItem
                 isSelected={inputValue}
-                onClick={() => toggleOptionSelection('Add Input')}
+                onClick={() => addInputMethodology()}
                 width={dropdownWidth}>
                 <FormattedMessage id="add-unlisted-methodology" />
               </BasicMenuItem>
