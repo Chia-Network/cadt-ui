@@ -303,7 +303,7 @@ const SimpleSelect = withTheme(
     }, [ref, ref.current]);
 
     useEffect(() => {
-      if (inputValue && !searchInputValue) {
+      if (inputValue && !selectedOptions) {
         onSearchClick();
       }
     }, [menuIsVisible]);
@@ -386,6 +386,7 @@ const SimpleSelect = withTheme(
     };
 
     const addInputMethodology = () => {
+      setSelectedOptions(null)
       setInputValue(true);
     };
 
