@@ -31,6 +31,7 @@
   "pending-stuck-info": "Si cree que un elemento pendiente está atascado, puede eliminarlo a continuación.",
   "staging": "Estadificación",
   "pending": "Pendiente",
+  "add-your-own": "Añade el tuyo propio",
   "projects-warehouse-project-id-description": "Identificador único para proyectos dentro del Almacén Climático.",
   "projects-current-registry-description": "Nombre del reigstry que actualmente hospeda el proyecto.",
   "projects-project-id-description": "Identificador utilizado para realizar un seguimiento del proyecto en el registro actual.",

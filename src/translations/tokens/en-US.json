@@ -32,6 +32,7 @@
   "committed": "Committed",
   "staging": "Staging",
   "pending": "Pending",
+  "add-your-own": "Add Your Own",
   "projects-warehouse-project-id-description": "Unique identifier for projects within the Climate Warehouse.",
   "projects-current-registry-description": "Name of the reigstry that currently hosts the project.",
   "projects-project-id-description": "Identifier used to track the project in the current registry.",

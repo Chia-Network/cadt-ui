@@ -697,6 +697,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </StyledLabelContainer>
               <SimpleSelect
                 width="100%"
+                addInput
                 variant={
                   errorProjectMessage?.methodology &&
                   SimpleSelectVariantEnum.error
