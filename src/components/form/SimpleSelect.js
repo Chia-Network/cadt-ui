@@ -306,7 +306,7 @@ const SimpleSelect = withTheme(
       if (inputValue && !selectedOptions) {
         onSearchClick();
       }
-    }, [menuIsVisible]);
+    }, [menuIsVisible, inputValue, selectedOptions]);
 
     useEffect(() => {
       if (selected !== undefined && selectedInitialized.current === null) {
