@@ -41,6 +41,13 @@ const Th = styled('th')`
   :nth-child(1) {
     display: none;
   }
+  ${props =>
+    props.stick &&
+    css`
+      position: sticky;
+      right: 0px;
+      background-color: rgba(242, 242, 242); 
+    `}
 
   ${props =>
     props.start &&
@@ -81,6 +88,13 @@ const Td = styled('td')`
   :nth-child(1) {
     display: none;
   }
+  ${props =>
+    props.stick &&
+    css`
+      position: sticky;
+      right: 0px;
+      background-color: white;
+    `}
 
   ${props =>
     props.columnId === 'orgUid' &&
@@ -109,6 +123,7 @@ const StyledRefContainer = styled('div')`
 const StyledScalableContainer = styled('div')`
   overflow: auto;
   position: relative;
+  width: 100%;
   ${props =>
     props.height &&
     css`
@@ -158,6 +173,7 @@ const APIDataTable = withTheme(
                   ))}
                   {actionsAreDisplayed && actions && (
                     <Th
+                      stick
                       start={0}
                       end={1}
                       selectedTheme={theme}
@@ -209,7 +225,10 @@ const APIDataTable = withTheme(
                     ))}
 
                     {actionsAreDisplayed && actions === 'Units' && (
-                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
+                      <Td
+                        stick
+                        style={{ cursor: 'pointer' }}
+                        selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
@@ -241,7 +260,10 @@ const APIDataTable = withTheme(
                     )}
 
                     {actionsAreDisplayed && actions === 'Projects' && (
-                      <Td style={{ cursor: 'pointer' }} selectedTheme={theme}>
+                      <Td
+                        stick
+                        style={{ cursor: 'pointer' }}
+                        selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
