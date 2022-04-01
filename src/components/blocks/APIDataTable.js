@@ -41,6 +41,13 @@ const Th = styled('th')`
   :nth-child(1) {
     display: none;
   }
+  ${props =>
+    props.stick &&
+    css`
+      position: sticky;
+      right: 0px;
+      background-color: rgba(242, 242, 242); 
+    `}
 
   ${props =>
     props.start &&
@@ -86,6 +93,7 @@ const Td = styled('td')`
     css`
       position: sticky;
       right: 0px;
+      background-color: white;
     `}
 
   ${props =>
@@ -165,6 +173,7 @@ const APIDataTable = withTheme(
                   ))}
                   {actionsAreDisplayed && actions && (
                     <Th
+                      stick
                       start={0}
                       end={1}
                       selectedTheme={theme}
