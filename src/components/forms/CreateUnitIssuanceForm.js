@@ -25,7 +25,10 @@ import {
   Select,
   SpanTwoColumnsContainer,
 } from '..';
-import { getPaginatedData } from '../../store/actions/climateWarehouseActions';
+import {
+  getIssuances,
+  getPaginatedData,
+} from '../../store/actions/climateWarehouseActions';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 const CreateUnitIssuanceForm = ({ value, onChange }) => {
@@ -41,11 +44,12 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
   useEffect(() => {
     if (myOrgUid !== 'none') {
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
+      dispatch(getIssuances());
     }
   }, []);
 
   useEffect(() => {
-    if (value?.id) {
+    if (value?.id && issuances) {
       setSelectedIssuanceId(value.id);
       const projectId = issuances.filter(item => item.id)[0].warehouseProjectId;
       setSelectedWarehouseProjectId(projectId);
@@ -107,7 +111,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
       }, []);
     }
     return [];
-  }, [projects, issuances, selectedWarehouseProjectId]);
+  }, [issuances, selectedWarehouseProjectId]);
 
   const updateIssuanceById = id => {
     const issuanceIsAvailable = issuances?.some(
@@ -226,6 +230,13 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
+                {issuancesSelectOptions.length === 0 && (
+                  <Body size="Small" color="red">
+                    {intl.formatMessage({
+                      id: 'select-another-project',
+                    })}
+                  </Body>
+                )}
               </StyledFieldContainer>
             )}
           </SpanTwoColumnsContainer>

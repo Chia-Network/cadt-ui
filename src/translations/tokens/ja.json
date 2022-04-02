@@ -324,5 +324,6 @@
   "table": "テーブル",
   "root-hash": "ルートハッシュ",
   "no-audit-data": "監査データが見つかりませんでした。最初に組織を選択してください。",
-  "select-existing-project": "既存のプロジェクトを選択します"
+  "select-existing-project": "既存のプロジェクトを選択します",
+  "select-another-project": "選択したプロジェクトには発行がありません。"
 }
