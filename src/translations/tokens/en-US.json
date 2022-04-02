@@ -341,5 +341,6 @@
   "timestamp": "Timestamp",
   "table": "Table",
   "root-hash": "Root Hash",
-  "no-audit-data": "No audit data was found. Select an organization first."
+  "no-audit-data": "No audit data was found. Select an organization first.",
+  "select-existing-project": "Select an existing project"
 }
