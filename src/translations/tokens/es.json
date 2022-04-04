@@ -323,5 +323,7 @@
   "timestamp": "Marca de tiempo",
   "table": "Mesa",
   "root-hash": "Hachís raíz",
-  "no-audit-data": "No se encontraron datos de auditoría. Seleccione una organización primero."
+  "no-audit-data": "No se encontraron datos de auditoría. Seleccione una organización primero.",
+  "select-existing-project": "Seleccione un proyecto existente",
+  "select-another-project": "El proyecto seleccionado no tiene emisiones."
 }

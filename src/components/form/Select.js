@@ -278,6 +278,8 @@ const Select = withTheme(
       if (selected !== undefined && selectedInitialized.current === null) {
         setSelectedOptions(selected);
         selectedInitialized.current = true;
+      } else if (selected === undefined) {
+        setSelectedOptions(null);
       }
     }, [selected]);
 
