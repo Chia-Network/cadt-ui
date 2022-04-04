@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
 import {
   StandardInput,
@@ -17,10 +16,6 @@ import {
   ToolTipContainer,
   DateSelect,
   LabelContainer,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  SelectStateEnum,
-  Select,
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
@@ -38,68 +33,17 @@ import { labelSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
 
 const CreateProjectLabelsForm = ({ value, onChange }) => {
-  const { labels } = useSelector(store => store.climateWarehouse);
   const { validateForm, formType } = useSelector(state => state.app);
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
-  const { location } = useHistory();
-
-  const isUserOnUnitsPage = location.pathname.includes('units') ? true : false;
 
   const areFieldsDisabled = useMemo(() => {
-    if (!isUserOnUnitsPage) {
-      if (value.id) {
-        return true;
-      }
-      return false;
-    }
-    if (isUserOnUnitsPage) {
+    if (value.id) {
       return true;
     }
-  }, [isUserOnUnitsPage, value, value.id]);
-
-  const labelsSelectOptions = useMemo(() => {
-    if (labels?.length > 0) {
-      return labels.map(label => ({
-        value: label.id,
-        label: label.label,
-      }));
-    } else {
-      return null;
-    }
-  }, [labels]);
-
-  const updateLabelById = id => {
-    const labelIsAvailable = labels?.some(label => label?.id === id);
-    const selectedLabel =
-      labelIsAvailable && labels.filter(label => label?.id === id)[0];
-
-    if (selectedLabel) {
-      const {
-        creditingPeriodEndDate,
-        creditingPeriodStartDate,
-        id,
-        label,
-        labelLink,
-        labelType,
-        unitQuantity,
-        validityPeriodEndDate,
-        validityPeriodStartDate,
-      } = selectedLabel;
-      onChange({
-        creditingPeriodEndDate,
-        creditingPeriodStartDate,
-        id,
-        label,
-        labelLink,
-        labelType,
-        unitQuantity,
-        validityPeriodEndDate,
-        validityPeriodStartDate,
-      });
-    }
-  };
+    return false;
+  }, [value, value.id]);
 
   useEffect(() => {
     if (validateForm && formType === 'labels') {
@@ -111,53 +55,6 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
-                  <FormattedMessage id="select-existing-label" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: isUserOnUnitsPage
-                      ? 'select-existing-label'
-                      : 'select-existing-label-description',
-                  })}
-                >
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <Select
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={labelsSelectOptions ? labelsSelectOptions : []}
-                state={SelectStateEnum.default}
-                selected={
-                  value.id
-                    ? [
-                        {
-                          value: value.id,
-                          label: value.label,
-                        },
-                      ]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  updateLabelById(selectedOptions[0].value)
-                }
-              />
-            </InputContainer>
-            {isUserOnUnitsPage && labelsSelectOptions === null && (
-              <Body size="Small" color="red">
-                {intl.formatMessage({
-                  id: 'add-project-with-label',
-                })}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <div></div>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
