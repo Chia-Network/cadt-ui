@@ -1,5 +1,5 @@
 import u from 'updeep';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -30,12 +30,7 @@ const CreateProjectIssuancesForm = ({ value, onChange }) => {
   const [errorIssuanceMessage, setErrorIssuanceMessage] = useState({});
   const intl = useIntl();
 
-  const areFieldsDisabled = useMemo(() => {
-    if (value.id) {
-      return true;
-    }
-    return false;
-  }, [value, value.id]);
+  const areFieldsDisabled = Boolean(value.id);
 
   const onInputChange = (field, changeValue) => {
     onChange(u({ [field]: changeValue }, value));
