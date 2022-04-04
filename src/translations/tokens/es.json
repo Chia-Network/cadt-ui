@@ -325,5 +325,9 @@
   "root-hash": "Hachís raíz",
   "no-audit-data": "No se encontraron datos de auditoría. Seleccione una organización primero.",
   "select-existing-project": "Seleccione un proyecto existente",
-  "select-another-project": "El proyecto seleccionado no tiene emisiones."
+  "select-another-project": "El proyecto seleccionado no tiene emisiones.",
+  "add-new-label": "Agregar nueva etiqueta",
+  "select-from-all-labels": "Seleccionar de todas las etiquetas existentes",
+  "select-label-by-project": "Seleccionar etiqueta por proyecto",
+  "way-to-add-label": "Seleccione una forma de agregar una etiqueta"
 }

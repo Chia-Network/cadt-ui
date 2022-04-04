@@ -343,5 +343,9 @@
   "root-hash": "Root Hash",
   "no-audit-data": "No audit data was found. Select an organization first.",
   "select-existing-project": "Select an existing project",
-  "select-another-project": "The selected project doesn't have issuances."
+  "select-another-project": "The selected project doesn't have issuances.",
+  "add-new-label": "Add new label",
+  "select-from-all-labels": "Select from all existing labels",
+  "select-label-by-project": "Select label by project",
+  "way-to-add-label": "Select a way to add a label"
 }
