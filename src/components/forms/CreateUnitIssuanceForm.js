@@ -129,6 +129,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
         verificationBody,
         verificationReportDate,
         id,
+        warehouseProjectId,
       } = selectedIssuance;
       onChange({
         endDate,
@@ -137,6 +138,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
         verificationBody,
         verificationReportDate,
         id,
+        warehouseProjectId,
       });
     }
   };
