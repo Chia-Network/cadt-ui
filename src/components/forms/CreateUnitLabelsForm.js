@@ -56,7 +56,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
     selectedWayToAddLabel?.value === 1 ||
     (selectedWayToAddLabel?.value === 2 && selectedLabelOption) ||
     (selectedWayToAddLabel?.value === 3 && selectedProjectLabelOption) ||
-    wasLabelExisting;
+    wasLabelExisting.current;
 
   const wayToAddLabelOptions = [
     {
@@ -179,9 +179,23 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                         ? [selectedWayToAddLabel]
                         : undefined
                     }
-                    onChange={selectedOptions =>
-                      setSelectedWayToAddLabel(selectedOptions[0])
-                    }
+                    onChange={selectedOptions => {
+                      setSelectedWayToAddLabel(selectedOptions[0]);
+                      onChange({
+                        label: '',
+                        labelType: '',
+                        creditingPeriodStartDate: '',
+                        creditingPeriodEndDate: '',
+                        validityPeriodStartDate: '',
+                        validityPeriodEndDate: '',
+                        unitQuantity: 0,
+                        labelLink: '',
+                        warehouseProjectId: null,
+                        id: null,
+                      });
+                      setSelectedProjectLabelOption(null);
+                      setSelectedLabelOption(null);
+                    }}
                   />
                 </InputContainer>
               </StyledFieldContainer>
