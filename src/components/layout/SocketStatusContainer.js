@@ -11,8 +11,8 @@ const Container = styled('div')`
   align-items: center;
   margin: 1.25rem;
   width: 8.125rem;
+  right: 1.875rem;
   bottom: 0;
-  left: 0;
 `;
 
 const SocketStatusCard = styled('div')`
