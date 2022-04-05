@@ -198,6 +198,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
+                {selectedWayToAddLabel === null && (
+                  <Body size="Small" color="red">
+                    <FormattedMessage id="way-to-add-label" />
+                  </Body>
+                )}
               </StyledFieldContainer>
             )}
 
@@ -232,6 +237,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
+                {selectedLabelOption === null && (
+                  <Body size="Small" color="red">
+                    <FormattedMessage id="select-existing-label" />
+                  </Body>
+                )}
               </StyledFieldContainer>
             )}
 
@@ -268,6 +278,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
+                {selectedProjectLabelOption === null && (
+                  <Body size="Small" color="red">
+                    <FormattedMessage id="select-label-by-project" />
+                  </Body>
+                )}
               </StyledFieldContainer>
             )}
           </SpanTwoColumnsContainer>
