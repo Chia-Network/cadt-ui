@@ -240,11 +240,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <StyledLabelContainer>
                   <Body>
                     <LabelContainer>
-                      <FormattedMessage id="select-existing-project" />
+                      <FormattedMessage id="select-label-by-project" />
                     </LabelContainer>
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
-                        id: 'select-existing-project',
+                        id: 'select-label-by-project',
                       })}
                     >
                       <DescriptionIcon height="14" width="14" />
