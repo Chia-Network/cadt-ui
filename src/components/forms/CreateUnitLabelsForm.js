@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -44,10 +44,19 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
   const [selectedWayToAddLabel, setSelectedWayToAddLabel] = useState(null);
   const [selectedProjectLabelOption, setSelectedProjectLabelOption] =
     useState(null);
+  const [selectedLabelOption, setSelectedLabelOption] = useState(null);
+  const wasLabelExisting = useRef(Boolean(value.id));
+
   const areFieldsDisabled = useMemo(
     () => (selectedWayToAddLabel?.value !== 1 ? true : false),
     [selectedWayToAddLabel],
   );
+
+  const areFormFieldsVisible =
+    selectedWayToAddLabel?.value === 1 ||
+    (selectedWayToAddLabel?.value === 2 && selectedLabelOption) ||
+    (selectedWayToAddLabel?.value === 3 && selectedProjectLabelOption) ||
+    wasLabelExisting;
 
   const wayToAddLabelOptions = [
     {
@@ -138,44 +147,45 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
     }
   }, [value, validateForm, formType]);
 
-  console.log(labels, 'labels');
-  console.log(projects, 'projects');
-
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
           <SpanTwoColumnsContainer>
-            <StyledFieldContainer>
-              <StyledLabelContainer>
-                <Body>
-                  <LabelContainer>
-                    <FormattedMessage id="way-to-add-label" />
-                  </LabelContainer>
-                  <ToolTipContainer
-                    tooltip={intl.formatMessage({
-                      id: 'way-to-add-label',
-                    })}
-                  >
-                    <DescriptionIcon height="14" width="14" />
-                  </ToolTipContainer>
-                </Body>
-              </StyledLabelContainer>
-              <InputContainer>
-                <Select
-                  size={SelectSizeEnum.large}
-                  type={SelectTypeEnum.basic}
-                  options={wayToAddLabelOptions}
-                  state={SelectStateEnum.default}
-                  selected={
-                    selectedWayToAddLabel ? selectedWayToAddLabel : undefined
-                  }
-                  onChange={selectedOptions =>
-                    setSelectedWayToAddLabel(selectedOptions[0])
-                  }
-                />
-              </InputContainer>
-            </StyledFieldContainer>
+            {wasLabelExisting.current === false && (
+              <StyledFieldContainer>
+                <StyledLabelContainer>
+                  <Body>
+                    <LabelContainer>
+                      <FormattedMessage id="way-to-add-label" />
+                    </LabelContainer>
+                    <ToolTipContainer
+                      tooltip={intl.formatMessage({
+                        id: 'way-to-add-label',
+                      })}
+                    >
+                      <DescriptionIcon height="14" width="14" />
+                    </ToolTipContainer>
+                  </Body>
+                </StyledLabelContainer>
+                <InputContainer>
+                  <Select
+                    size={SelectSizeEnum.large}
+                    type={SelectTypeEnum.basic}
+                    options={wayToAddLabelOptions}
+                    state={SelectStateEnum.default}
+                    selected={
+                      selectedWayToAddLabel
+                        ? [selectedWayToAddLabel]
+                        : undefined
+                    }
+                    onChange={selectedOptions =>
+                      setSelectedWayToAddLabel(selectedOptions[0])
+                    }
+                  />
+                </InputContainer>
+              </StyledFieldContainer>
+            )}
 
             {selectedWayToAddLabel?.value === 2 && (
               <StyledFieldContainer>
@@ -200,18 +210,12 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     options={labelsSelectOptions}
                     state={SelectStateEnum.default}
                     selected={
-                      value.id
-                        ? [
-                            {
-                              value: value.id,
-                              label: value.label,
-                            },
-                          ]
-                        : undefined
+                      selectedLabelOption ? [selectedLabelOption] : undefined
                     }
-                    onChange={selectedOptions =>
-                      updateLabelById(selectedOptions[0].value)
-                    }
+                    onChange={selectedOptions => {
+                      updateLabelById(selectedOptions[0].value);
+                      setSelectedLabelOption(selectedOptions[0]);
+                    }}
                   />
                 </InputContainer>
               </StyledFieldContainer>
@@ -241,11 +245,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     state={SelectStateEnum.default}
                     selected={
                       selectedProjectLabelOption
-                        ? selectedProjectLabelOption
+                        ? [selectedProjectLabelOption]
                         : undefined
                     }
                     onChange={selectedOptions => {
-                      setSelectedProjectLabelOption(selectedOptions[0].value);
+                      setSelectedProjectLabelOption(selectedOptions[0]);
                       updateLabelById(selectedOptions[0].value);
                     }}
                   />
@@ -254,7 +258,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
             )}
           </SpanTwoColumnsContainer>
 
-          {value.id && selectedWayToAddLabel && (
+          {areFormFieldsVisible && (
             <>
               <StyledFieldContainer>
                 <StyledLabelContainer>
