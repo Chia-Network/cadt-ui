@@ -306,7 +306,7 @@ const SelectOrganizations = withTheme(
         if (
           menuIsVisible &&
           e.target !== ref.current &&
-          !ref.current.contains(e.target)
+          !ref.current?.contains(e.target)
         ) {
           setMenuIsVisible(false);
           setSelectState(SelectStateEnum.default);
