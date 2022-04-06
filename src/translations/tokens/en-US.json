@@ -35,6 +35,7 @@
   "add-unlisted-methodology": "Add Unlisted Methodology",
   "add-unlisted-registry-of-origin": "Add Unlisted Registry Of Origin",
   "add-unlisted-sector": "Add Unlisted Sector",
+  "add-unlisted-current-registry": "Add Unlisted Registry",
   "projects-warehouse-project-id-description": "Unique identifier for projects within the Climate Warehouse.",
   "projects-current-registry-description": "Name of the reigstry that currently hosts the project.",
   "projects-project-id-description": "Identifier used to track the project in the current registry.",

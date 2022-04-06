@@ -522,6 +522,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </StyledLabelContainer>
               <InputContainer>
                 <SimpleSelect
+                  addInput="current-registry"
                   variant={
                     errorProjectMessage?.currentRegistry &&
                     SimpleSelectVariantEnum.error
