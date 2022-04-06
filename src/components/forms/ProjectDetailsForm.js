@@ -565,6 +565,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <SimpleSelect
+                addInput="registry-of-origin"
                 variant={
                   errorProjectMessage?.registryOfOrigin &&
                   SimpleSelectVariantEnum.error
@@ -697,7 +698,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </StyledLabelContainer>
               <SimpleSelect
                 width="100%"
-                addInput
+                addInput="methodology"
                 variant={
                   errorProjectMessage?.methodology &&
                   SimpleSelectVariantEnum.error

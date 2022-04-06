@@ -32,6 +32,7 @@
   "staging": "Estadificación",
   "pending": "Pendiente",
   "add-unlisted-methodology": "Agregar metodología no listada",
+  "add-unlisted-registry-of-origin": "Añadir registro de origen no cotizado",
   "projects-warehouse-project-id-description": "Identificador único para proyectos dentro del Almacén Climático.",
   "projects-current-registry-description": "Nombre del reigstry que actualmente hospeda el proyecto.",
   "projects-project-id-description": "Identificador utilizado para realizar un seguimiento del proyecto en el registro actual.",
