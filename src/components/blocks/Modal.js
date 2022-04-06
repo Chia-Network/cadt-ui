@@ -147,6 +147,7 @@ const Modal = withTheme(
     modalSizeAndPosition,
     extraButtonLabel,
     extraButtonOnClick,
+    addComponent
   }) => {
     const intl = useIntl();
 
@@ -157,8 +158,7 @@ const Modal = withTheme(
           top={modalSizeAndPosition?.top}
           left={modalSizeAndPosition?.left}
           width={modalSizeAndPosition?.width}
-          height={modalSizeAndPosition?.height}
-        >
+          height={modalSizeAndPosition?.height}>
           <TitleContainer modalType={modalType}>
             {modalType === modalTypeEnum.information && (
               <span>
@@ -199,6 +199,7 @@ const Modal = withTheme(
 
           {!hideButtons && (
             <ButtonsContainer modalType={modalType}>
+              {addComponent}
               {(modalType === modalTypeEnum.confirmation ||
                 modalType === modalTypeEnum.basic) && (
                 <PrimaryButton
