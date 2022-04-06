@@ -1,21 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
-import { useIntl } from 'react-intl';
 
-import {
-  LeftNav,
-  LocaleSwitcher,
-  Body,
-  ClimateWarehouseLogo,
-  MyAccount,
-} from '..';
-
-const Headline = styled('div')`
-  width: 100%;
-  height: 4rem;
-  background-color: #ffffff;
-`;
+import { LeftNav, Header, ErrorBoundary } from '..';
 
 const Main = styled('div')`
   width: 100%;
@@ -40,55 +26,15 @@ const InnerContainer = styled('div')`
   overflow: hidden;
 `;
 
-const LogoContainer = styled('div')`
-  align-self: center;
-  height: 100%;
-`;
-
-const StyledLocalContainer = styled('div')`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: left;
-  gap: 20px;
-  padding: 0rem 1.5rem;
-  box-sizing: border-box;
-`;
-
-const HomeOrgUidContainer = styled('div')`
-  margin-left: auto;
-  align-self: center;
-`;
-
 const Dashboard = withTheme(({ children }) => {
-  const { serverAddress } = useSelector(state => state.app);
-  const intl = useIntl();
-
   return (
     <Main>
-      <Headline>
-        <StyledLocalContainer>
-          <LogoContainer>
-            <ClimateWarehouseLogo width="100%" height="100%" />
-          </LogoContainer>
-          <HomeOrgUidContainer>
-            {serverAddress && (
-              <Body size="Small">
-                {intl.formatMessage({
-                  id: 'connected-to',
-                })}
-                {': '}
-                {serverAddress}
-              </Body>
-            )}
-          </HomeOrgUidContainer>
-          <MyAccount />
-          <LocaleSwitcher />
-        </StyledLocalContainer>
-      </Headline>
+      <Header />
       <InnerContainer>
-        <LeftNav />
-        <BodyText>{children}</BodyText>
+        <ErrorBoundary>
+          <LeftNav />
+          <BodyText>{children}</BodyText>
+        </ErrorBoundary>
       </InnerContainer>
     </Main>
   );
