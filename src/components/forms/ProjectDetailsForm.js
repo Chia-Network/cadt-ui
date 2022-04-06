@@ -271,6 +271,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             </StyledLabelContainer>
             <InputContainer>
               <SimpleSelect
+                addInput="sector"
                 variant={
                   errorProjectMessage?.sector && SimpleSelectVariantEnum.error
                 }
