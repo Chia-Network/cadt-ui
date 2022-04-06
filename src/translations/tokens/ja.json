@@ -325,5 +325,9 @@
   "root-hash": "ルートハッシュ",
   "no-audit-data": "監査データが見つかりませんでした。最初に組織を選択してください。",
   "select-existing-project": "既存のプロジェクトを選択します",
-  "select-another-project": "選択したプロジェクトには発行がありません。"
+  "select-another-project": "選択したプロジェクトには発行がありません。",
+  "add-new-label": "新しいラベルを追加",
+  "select-from-all-labels": "既存のすべてのラベルから選択",
+  "select-label-by-project": "プロジェクトごとにラベルを選択",
+  "way-to-add-label": "ラベルを追加する方法を選択してください"
 }

@@ -259,7 +259,8 @@ const BasicMenuItem = ({ children, isSelected, onClick, width }) => {
       isSelected={isSelected}
       onClick={onClick}
       width={width}
-      scrollWidth={scrollWidth}>
+      scrollWidth={scrollWidth}
+    >
       {children}
     </StyledBasicMenuItem>
   );
@@ -297,6 +298,10 @@ const SimpleSelect = withTheme(
       })} -- `;
 
     useEffect(() => {
+      setSelectState(state);
+    }, [state]);
+
+    useEffect(() => {
       if (ref && ref.current) {
         setDropdownWidth(ref.current.getBoundingClientRect().width);
       }
@@ -312,6 +317,8 @@ const SimpleSelect = withTheme(
       if (selected !== undefined && selectedInitialized.current === null) {
         setSelectedOptions(selected);
         selectedInitialized.current = true;
+      } else if (selected === undefined) {
+        setSelectedOptions(null);
       }
     }, [selected]);
 
@@ -386,7 +393,7 @@ const SimpleSelect = withTheme(
     };
 
     const addInputMethodology = () => {
-      setSelectedOptions(null)
+      setSelectedOptions(null);
       setInputValue(true);
     };
 
@@ -448,7 +455,8 @@ const SimpleSelect = withTheme(
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            variant={variant}>
+            variant={variant}
+          >
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0]
@@ -471,7 +479,8 @@ const SimpleSelect = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>
+            onMouseLeave={onMouseLeave}
+          >
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -479,7 +488,8 @@ const SimpleSelect = withTheme(
                       {option}
                       <div
                         style={{ marginLeft: '5px' }}
-                        onClick={() => toggleOptionSelection(option)}>
+                        onClick={() => toggleOptionSelection(option)}
+                      >
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -504,7 +514,8 @@ const SimpleSelect = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>
+            onMouseLeave={onMouseLeave}
+          >
             {selectState !== SimpleSelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -556,7 +567,8 @@ const SimpleSelect = withTheme(
               <BasicMenuItem
                 isSelected={inputValue}
                 onClick={() => addInputMethodology()}
-                width={dropdownWidth}>
+                width={dropdownWidth}
+              >
                 <FormattedMessage id="add-unlisted-methodology" />
               </BasicMenuItem>
             )}
@@ -571,7 +583,8 @@ const SimpleSelect = withTheme(
                   key={option}
                   isSelected={isSelected}
                   onClick={() => toggleOptionSelection(option)}
-                  width={dropdownWidth}>
+                  width={dropdownWidth}
+                >
                   {option}
                   {isSelected && type === SimpleSelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
@@ -597,7 +610,8 @@ const SimpleSelect = withTheme(
                       selectedOptions.find(selected => selected === option)
                     }
                     onClick={() => toggleOptionSelection(option)}
-                    width={dropdownWidth}>
+                    width={dropdownWidth}
+                  >
                     {option}
                   </BasicMenuItem>
                 ),

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -38,12 +38,7 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
 
-  const areFieldsDisabled = useMemo(() => {
-    if (value.id) {
-      return true;
-    }
-    return false;
-  }, [value, value.id]);
+  const areFieldsDisabled = Boolean(value.id);
 
   useEffect(() => {
     if (validateForm && formType === 'labels') {
