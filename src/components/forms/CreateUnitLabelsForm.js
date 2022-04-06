@@ -427,6 +427,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
+                    key={value.validityPeriodStartDate}
                     variant={
                       errorLabelMessage?.validityPeriodStartDate &&
                       DateVariantEnum.error
@@ -462,6 +463,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
+                    key={value.validityPeriodEndDate}
                     variant={
                       errorLabelMessage?.validityPeriodEndDate &&
                       DateVariantEnum.error
@@ -497,6 +499,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
+                    key={value.creditingPeriodStartDate}
                     variant={
                       errorLabelMessage?.creditingPeriodStartDate &&
                       DateVariantEnum.error
@@ -532,6 +535,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
+                    key={value.creditingPeriodEndDate}
                     variant={
                       errorLabelMessage?.creditingPeriodEndDate &&
                       DateVariantEnum.error
