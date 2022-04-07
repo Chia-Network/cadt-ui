@@ -332,5 +332,10 @@
   "add-new-label": "新しいラベルを追加",
   "select-from-all-labels": "既存のすべてのラベルから選択",
   "select-label-by-project": "プロジェクトごとにラベルを選択",
-  "way-to-add-label": "ラベルを追加する方法を選択してください"
+  "way-to-add-label": "ラベルを追加する方法を選択してください",
+  "port": "ポート",
+  "ip": "Ip",
+  "invalid-ip": "有効なIPを入力してください",
+  "invalid-port": "有効なポート番号を入力してください",
+  "invalid-uid": "有効なUIDを入力してください"
 }

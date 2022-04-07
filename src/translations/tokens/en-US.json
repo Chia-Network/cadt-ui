@@ -350,5 +350,10 @@
   "add-new-label": "Add new label",
   "select-from-all-labels": "Select from all existing labels",
   "select-label-by-project": "Select label by project",
-  "way-to-add-label": "Select a way to add a label"
+  "way-to-add-label": "Select a way to add a label",
+  "port": "Port",
+  "ip": "Ip",
+  "invalid-ip": "Enter valid Ip",
+  "invalid-port": "Enter valid port number",
+  "invalid-uid": "Enter valid UID"
 }

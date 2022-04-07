@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Switch from '@mui/material/Switch';
@@ -23,12 +23,27 @@ import {
   unsubscribeFromOrg,
 } from '../../store/actions/climateWarehouseActions';
 import { PrimaryButton } from '../form/PrimaryButton';
+import { validateIp, validatePort } from '../../utils/urlUtils';
 
 const StyledSubscriptionsListContainer = styled('div')`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 9px;
+`;
+
+const StyledIpPortContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  & div:first-child {
+    width: 9.8rem;
+  }
+
+  & div:nth-child(2) {
+    width: 5rem;
+  }
 `;
 
 const StyledSubscriptionContainer = styled('div')`
@@ -42,13 +57,26 @@ const StyledSubscriptionContainer = styled('div')`
 
 const SubscriptionModal = ({ onClose }) => {
   const dispatch = useDispatch();
-  const [customOrgUID, setCustomOrgUID] = useState('');
+  const [orgUid, setOrgUid] = useState('');
+  const [ip, setIp] = useState('');
+  const [port, setPort] = useState('');
   const intl = useIntl();
   const { organizations } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
     dispatch(getOrganizationData());
   }, []);
+
+  const isValidationOn = orgUid.length > 0;
+  const isOrgUidValid = Boolean(orgUid.length > 4);
+  const isIpValid = useMemo(() => validateIp(ip), [ip]);
+  const isPortValid = useMemo(() => validatePort(port), [port]);
+
+  const submitCustomOrganization = () => () => {
+    if (isOrgUidValid && isIpValid && isPortValid) {
+      dispatch(subscribeImportOrg({ orgUid, ip, port }));
+    }
+  };
 
   return (
     <>
@@ -64,24 +92,75 @@ const SubscriptionModal = ({ onClose }) => {
               <InputContainer>
                 <StandardInput
                   size={InputSizeEnum.large}
-                  variant={InputVariantEnum.default}
-                  value={customOrgUID}
-                  onChange={value => setCustomOrgUID(value)}
+                  variant={
+                    isValidationOn && !isOrgUidValid
+                      ? InputVariantEnum.error
+                      : InputVariantEnum.default
+                  }
+                  value={orgUid}
+                  onChange={value => setOrgUid(value)}
                   placeholderText={intl.formatMessage({
                     id: 'add-custom-organization',
                   })}
                 />
               </InputContainer>
               <StyledLabelContainer />
-              <PrimaryButton
-                label={intl.formatMessage({ id: 'add' })}
-                size="large"
-                onClick={() => {
-                  if (customOrgUID.length) {
-                    dispatch(subscribeImportOrg(customOrgUID));
+
+              <StyledIpPortContainer>
+                <StandardInput
+                  size={InputSizeEnum.large}
+                  variant={
+                    isValidationOn && !isIpValid
+                      ? InputVariantEnum.error
+                      : InputVariantEnum.default
                   }
-                }}
-              />
+                  value={ip}
+                  onChange={value => setIp(value)}
+                  placeholderText={intl.formatMessage({
+                    id: 'server-address',
+                  })}
+                />
+
+                <StandardInput
+                  size={InputSizeEnum.large}
+                  variant={
+                    isValidationOn && !isPortValid
+                      ? InputVariantEnum.error
+                      : InputVariantEnum.default
+                  }
+                  value={port}
+                  onChange={value => setPort(value)}
+                  placeholderText={intl.formatMessage({
+                    id: 'port',
+                  })}
+                />
+
+                <PrimaryButton
+                  label={intl.formatMessage({ id: 'add' })}
+                  size="large"
+                  onClick={submitCustomOrganization}
+                />
+              </StyledIpPortContainer>
+
+              {isValidationOn && (
+                <Body size="Small" color="red">
+                  {!isOrgUidValid && (
+                    <div>
+                      <FormattedMessage id="invalid-uid" />
+                    </div>
+                  )}
+                  {!isIpValid && (
+                    <div>
+                      <FormattedMessage id="invalid-ip" />
+                    </div>
+                  )}
+                  {!isPortValid && (
+                    <div>
+                      <FormattedMessage id="invalid-port" />
+                    </div>
+                  )}
+                </Body>
+              )}
             </StyledFieldContainer>
 
             <StyledSubscriptionsListContainer>
