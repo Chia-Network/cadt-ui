@@ -95,11 +95,22 @@ const Audit = withRouter(() => {
   const { audit, organizations } = useSelector(store => store.climateWarehouse);
   const [selectedOrgUid, setSelectedOrgUid] = useState(null);
   const [selectedAuditItem, setSelectedAuditItem] = useState(null);
-  const [isAscendingSorted, setIsAscendingSorted] = useState(false);
+  const [auditSortOrder, setAuditSortOrder] = useState('DESC');
 
   useEffect(() => {
     dispatch(getOrganizationData());
+    const storageAuditSortOrder = localStorage.getItem('auditSortOrder');
+    console.log('storageAuditSortOrder', storageAuditSortOrder);
+    if (storageAuditSortOrder) {
+      setAuditSortOrder(storageAuditSortOrder);
+    }
   }, []);
+
+  const changeSortOrder = () => {
+    const newSortOrder = auditSortOrder === 'DESC' ? 'ASC' : 'DESC';
+    localStorage.setItem('auditSortOrder', newSortOrder);
+    setAuditSortOrder(newSortOrder);
+  };
 
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
@@ -110,7 +121,7 @@ const Audit = withRouter(() => {
         page: 1,
         limit: constants.MAX_AUDIT_TABLE_SIZE,
         useMockedResponse: true,
-        order: isAscendingSorted ? 'ASC' : 'DESC',
+        order: auditSortOrder,
       }),
     );
   };
@@ -129,10 +140,8 @@ const Audit = withRouter(() => {
           width="200px"
           onChange={onOrganizationSelect}
         />
-        <StyledSortButtonContainer
-          onClick={() => setIsAscendingSorted(!isAscendingSorted)}
-        >
-          {isAscendingSorted ? (
+        <StyledSortButtonContainer onClick={changeSortOrder}>
+          {auditSortOrder === 'ASC' ? (
             <>
               <Body>
                 <FormattedMessage id="sort-descending" />
@@ -163,7 +172,7 @@ const Audit = withRouter(() => {
                   page: val + 1,
                   limit: constants.MAX_AUDIT_TABLE_SIZE,
                   useMockedResponse: true,
-                  order: isAscendingSorted ? 'ASC' : 'DESC',
+                  order: auditSortOrder,
                 }),
               )
             }
