@@ -354,5 +354,7 @@
   "ip": "Ip",
   "invalid-ip": "Enter valid Ip",
   "invalid-port": "Enter valid port number",
-  "invalid-uid": "Enter valid UID"
+  "invalid-uid": "Enter valid UID",
+  "sort-ascending": "Sort ascending",
+  "sort-descending": "Sort descending"
 }

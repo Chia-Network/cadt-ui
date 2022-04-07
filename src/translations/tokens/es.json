@@ -336,5 +336,7 @@
   "ip": "Ip",
   "invalid-ip": "Ingrese IP valida",
   "invalid-port": "Introduzca un número de puerto válido",
-  "invalid-uid": "Ingrese UID válido"
+  "invalid-uid": "Ingrese UID válido",
+  "sort-ascending": "Orden ascendente",
+  "sort-descending": "Orden descendiente"
 }

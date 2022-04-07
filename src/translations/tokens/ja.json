@@ -336,5 +336,7 @@
   "ip": "Ip",
   "invalid-ip": "有効なIPを入力してください",
   "invalid-port": "有効なポート番号を入力してください",
-  "invalid-uid": "有効なUIDを入力してください"
+  "invalid-uid": "有効なUIDを入力してください",
+  "sort-ascending": "ソート昇順",
+  "sort-descending": "降順で並べ替える"
 }
