@@ -120,7 +120,7 @@ const Audit = withRouter(() => {
         orgUid,
         page: 1,
         limit: constants.MAX_AUDIT_TABLE_SIZE,
-        useMockedResponse: true,
+        useMockedResponse: false,
         order: auditSortOrder,
       }),
     );
@@ -171,7 +171,7 @@ const Audit = withRouter(() => {
                   orgUid: selectedOrgUid,
                   page: val + 1,
                   limit: constants.MAX_AUDIT_TABLE_SIZE,
-                  useMockedResponse: true,
+                  useMockedResponse: false,
                   order: auditSortOrder,
                 }),
               )
