@@ -28,6 +28,8 @@
   "staging": "ステージング",
   "pending": "ペンディング",
   "add-unlisted-methodology": "リストに記載しない方法の追加",
+  "add-unlisted-registry-of-origin": "非公開の原産地レジストリを追加",
+  "add-unlisted-current-registry": "非公開レジストリを追加",
   "start-date": "開始日",
   "end-date": "終了日",
   "pending-info": "保留中のメッセージ",
@@ -337,4 +339,5 @@
   "invalid-uid": "有効なUIDを入力してください",
   "sort-ascending": "ソート昇順",
   "sort-descending": "降順で並べ替える"
+  "invalid-uid": "有効なUIDを入力してください"
 }

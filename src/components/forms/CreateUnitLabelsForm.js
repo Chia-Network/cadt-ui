@@ -198,6 +198,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
+                {selectedWayToAddLabel === null && (
+                  <Body size="Small" color="red">
+                    <FormattedMessage id="way-to-add-label" />
+                  </Body>
+                )}
               </StyledFieldContainer>
             )}
 
@@ -232,6 +237,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
+                {selectedLabelOption === null && (
+                  <Body size="Small" color="red">
+                    <FormattedMessage id="select-existing-label" />
+                  </Body>
+                )}
               </StyledFieldContainer>
             )}
 
@@ -240,11 +250,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 <StyledLabelContainer>
                   <Body>
                     <LabelContainer>
-                      <FormattedMessage id="select-existing-project" />
+                      <FormattedMessage id="select-label-by-project" />
                     </LabelContainer>
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
-                        id: 'select-existing-project',
+                        id: 'select-label-by-project',
                       })}
                     >
                       <DescriptionIcon height="14" width="14" />
@@ -268,6 +278,11 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
+                {selectedProjectLabelOption === null && (
+                  <Body size="Small" color="red">
+                    <FormattedMessage id="select-label-by-project" />
+                  </Body>
+                )}
               </StyledFieldContainer>
             )}
           </SpanTwoColumnsContainer>
@@ -412,6 +427,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
+                    key={value.validityPeriodStartDate}
                     variant={
                       errorLabelMessage?.validityPeriodStartDate &&
                       DateVariantEnum.error
@@ -447,6 +463,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
+                    key={value.validityPeriodEndDate}
                     variant={
                       errorLabelMessage?.validityPeriodEndDate &&
                       DateVariantEnum.error
@@ -482,6 +499,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
+                    key={value.creditingPeriodStartDate}
                     variant={
                       errorLabelMessage?.creditingPeriodStartDate &&
                       DateVariantEnum.error
@@ -517,6 +535,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
+                    key={value.creditingPeriodEndDate}
                     variant={
                       errorLabelMessage?.creditingPeriodEndDate &&
                       DateVariantEnum.error

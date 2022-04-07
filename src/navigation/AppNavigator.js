@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { Router } from 'react-router';
 import { Route, Redirect } from 'react-router-dom';
-import { IndeterminateProgressOverlay, Dashboard } from '../components/';
+import {
+  IndeterminateProgressOverlay,
+  Dashboard,
+  MyAccount,
+} from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
 import { signOut } from '../store/actions/app';
@@ -48,6 +52,7 @@ const AppNavigator = () => {
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
         <Modal
+          addComponent={<MyAccount />}
           informationType="error"
           modalType={modalTypeEnum.information}
           label="Try Again"
