@@ -329,5 +329,12 @@
   "add-new-label": "Agregar nueva etiqueta",
   "select-from-all-labels": "Seleccionar de todas las etiquetas existentes",
   "select-label-by-project": "Seleccionar etiqueta por proyecto",
-  "way-to-add-label": "Seleccione una forma de agregar una etiqueta"
+  "way-to-add-label": "Seleccione una forma de agregar una etiqueta",
+  "port": "Puerto",
+  "ip": "Ip",
+  "invalid-ip": "Ingrese IP valida",
+  "invalid-port": "Introduzca un número de puerto válido",
+  "invalid-uid": "Ingrese UID válido",
+  "sort-ascending": "Orden ascendente",
+  "sort-descending": "Orden descendiente"
 }

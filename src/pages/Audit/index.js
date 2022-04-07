@@ -71,14 +71,21 @@ const StyledTr = styled('tr')`
   }
 `;
 
-const StyledIconContainer = styled('div')`
+const StyledSortButtonContainer = styled.div`
+  margin-left: 10px;
+  border: 0.0625rem solid #d9d9d9;
+  height: 2.5rem;
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  min-width: 200px;
   cursor: pointer;
 `;
 
-const StyledSortContainer = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+const StyledIconContainer = styled('div')`
+  color: #3b8ee0;
 `;
 
 const Audit = withRouter(() => {
@@ -88,7 +95,7 @@ const Audit = withRouter(() => {
   const { audit, organizations } = useSelector(store => store.climateWarehouse);
   const [selectedOrgUid, setSelectedOrgUid] = useState(null);
   const [selectedAuditItem, setSelectedAuditItem] = useState(null);
-  const [isChronologicallySorted, setIsChronologicallySorted] = useState(false);
+  const [isAscendingSorted, setIsAscendingSorted] = useState(false);
 
   useEffect(() => {
     dispatch(getOrganizationData());
@@ -102,24 +109,14 @@ const Audit = withRouter(() => {
         orgUid,
         page: 1,
         limit: constants.MAX_AUDIT_TABLE_SIZE,
-        useMockedResponse: false,
+        useMockedResponse: true,
+        order: isAscendingSorted ? 'ASC' : 'DESC',
       }),
     );
   };
 
   if (!organizations) {
     return null;
-  }
-
-  let sortedAuditArray = audit?.data ? [...audit?.data] : null;
-  if (sortedAuditArray) {
-    let sortSign = isChronologicallySorted ? -1 : 1;
-    sortedAuditArray.sort(
-      (a, b) =>
-        sortSign *
-        (new Date(parseInt(b.onchainConfirmationTimeStamp) * 1000).getTime() -
-          new Date(parseInt(a.onchainConfirmationTimeStamp) * 1000).getTime()),
-    );
   }
 
   return (
@@ -132,6 +129,29 @@ const Audit = withRouter(() => {
           width="200px"
           onChange={onOrganizationSelect}
         />
+        <StyledSortButtonContainer
+          onClick={() => setIsAscendingSorted(!isAscendingSorted)}
+        >
+          {isAscendingSorted ? (
+            <>
+              <Body>
+                <FormattedMessage id="sort-descending" />
+              </Body>
+              <StyledIconContainer>
+                <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
+              </StyledIconContainer>
+            </>
+          ) : (
+            <>
+              <Body>
+                <FormattedMessage id="sort-ascending" />
+              </Body>
+              <StyledIconContainer>
+                <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
+              </StyledIconContainer>
+            </>
+          )}
+        </StyledSortButtonContainer>
         {selectedOrgUid && audit?.page && audit?.pageCount && (
           <Pagination
             current={audit.page - 1}
@@ -142,7 +162,8 @@ const Audit = withRouter(() => {
                   orgUid: selectedOrgUid,
                   page: val + 1,
                   limit: constants.MAX_AUDIT_TABLE_SIZE,
-                  useMockedResponse: false,
+                  useMockedResponse: true,
+                  order: isAscendingSorted ? 'ASC' : 'DESC',
                 }),
               )
             }
@@ -157,14 +178,14 @@ const Audit = withRouter(() => {
           </div>
         )}
       </StyledHeaderContainer>
-      {!sortedAuditArray && (
+      {!audit?.data && (
         <StyledBodyNoDataFound>
           <H3>
             <FormattedMessage id="no-audit-data" />
           </H3>
         </StyledBodyNoDataFound>
       )}
-      {selectedOrgUid && sortedAuditArray?.length > 0 && (
+      {selectedOrgUid && audit?.data?.length > 0 && (
         <StyledBodyContainer>
           <StyledTable>
             <thead>
@@ -176,26 +197,9 @@ const Audit = withRouter(() => {
                   </Body>
                 </StyledTh>
                 <StyledTh>
-                  <StyledSortContainer>
-                    <Body size="Bold">
-                      <FormattedMessage id="timestamp" />
-                    </Body>
-                    <StyledIconContainer>
-                      {isChronologicallySorted ? (
-                        <DescendingClockIcon
-                          width={'1.5em'}
-                          height={'1.5em'}
-                          onClick={() => setIsChronologicallySorted(false)}
-                        />
-                      ) : (
-                        <AscendingClockIcon
-                          width={'1.5em'}
-                          height={'1.5em'}
-                          onClick={() => setIsChronologicallySorted(true)}
-                        />
-                      )}
-                    </StyledIconContainer>
-                  </StyledSortContainer>
+                  <Body size="Bold">
+                    <FormattedMessage id="timestamp" />
+                  </Body>
                 </StyledTh>
                 <StyledTh>
                   <Body size="Bold">
@@ -210,8 +214,8 @@ const Audit = withRouter(() => {
               </StyledTr>
             </thead>
             <tbody>
-              {sortedAuditArray?.length &&
-                sortedAuditArray.map(auditItem => (
+              {audit?.data?.length &&
+                audit?.data.map(auditItem => (
                   <StyledTr key={auditItem.id}>
                     <StyledTd>
                       {auditItem.change && (

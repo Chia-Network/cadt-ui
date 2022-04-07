@@ -1083,7 +1083,7 @@ export const getAudit = options => {
     if (options?.orgUid && options?.limit && options?.page) {
       dispatch(
         getClimateWarehouseTable(
-          `${constants.API_HOST}/audit?orgUid=${options.orgUid}&limit=${options.limit}&page=${options.page}`,
+          `${constants.API_HOST}/audit?orgUid=${options.orgUid}&limit=${options.limit}&page=${options.page}&order=${options.order}`,
           actions.GET_AUDIT,
           mockedAuditResponse({
             orgUid: options.orgUid,
