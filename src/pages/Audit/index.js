@@ -110,6 +110,15 @@ const Audit = withRouter(() => {
     const newSortOrder = auditSortOrder === 'DESC' ? 'ASC' : 'DESC';
     localStorage.setItem('auditSortOrder', newSortOrder);
     setAuditSortOrder(newSortOrder);
+    dispatch(
+      getAudit({
+        orgUid: selectedOrgUid,
+        page: 1,
+        limit: constants.MAX_AUDIT_TABLE_SIZE,
+        useMockedResponse: false,
+        order: newSortOrder,
+      }),
+    );
   };
 
   const onOrganizationSelect = selectedOption => {
@@ -140,51 +149,56 @@ const Audit = withRouter(() => {
           width="200px"
           onChange={onOrganizationSelect}
         />
-        <StyledSortButtonContainer onClick={changeSortOrder}>
-          {auditSortOrder === 'ASC' ? (
-            <>
-              <Body>
-                <FormattedMessage id="sort-descending" />
-              </Body>
-              <StyledIconContainer>
-                <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
-              </StyledIconContainer>
-            </>
-          ) : (
-            <>
-              <Body>
-                <FormattedMessage id="sort-ascending" />
-              </Body>
-              <StyledIconContainer>
-                <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
-              </StyledIconContainer>
-            </>
-          )}
-        </StyledSortButtonContainer>
-        {selectedOrgUid && audit?.page && audit?.pageCount && (
-          <Pagination
-            current={audit.page - 1}
-            pages={audit.pageCount}
-            callback={val =>
-              dispatch(
-                getAudit({
-                  orgUid: selectedOrgUid,
-                  page: val + 1,
-                  limit: constants.MAX_AUDIT_TABLE_SIZE,
-                  useMockedResponse: false,
-                  order: auditSortOrder,
-                }),
-              )
-            }
-            showLast
-          />
-        )}
+
         {selectedOrgUid && (
-          <div>
-            <Body>
-              {intl.formatMessage({ id: 'org-uid' })}: {selectedOrgUid}
-            </Body>
-          </div>
+          <>
+            <StyledSortButtonContainer onClick={changeSortOrder}>
+              {auditSortOrder === 'ASC' ? (
+                <>
+                  <Body>
+                    <FormattedMessage id="sort-descending" />
+                  </Body>
+                  <StyledIconContainer>
+                    <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
+                  </StyledIconContainer>
+                </>
+              ) : (
+                <>
+                  <Body>
+                    <FormattedMessage id="sort-ascending" />
+                  </Body>
+                  <StyledIconContainer>
+                    <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
+                  </StyledIconContainer>
+                </>
+              )}
+            </StyledSortButtonContainer>
+
+            {selectedOrgUid && audit?.page && audit?.pageCount && (
+              <Pagination
+                current={audit.page - 1}
+                pages={audit.pageCount}
+                callback={val =>
+                  dispatch(
+                    getAudit({
+                      orgUid: selectedOrgUid,
+                      page: val + 1,
+                      limit: constants.MAX_AUDIT_TABLE_SIZE,
+                      useMockedResponse: false,
+                      order: auditSortOrder,
+                    }),
+                  )
+                }
+                showLast
+              />
+            )}
+
+            <div>
+              <Body>
+                {intl.formatMessage({ id: 'org-uid' })}: {selectedOrgUid}
+              </Body>
+            </div>
+          </>
         )}
       </StyledHeaderContainer>
       {!audit?.data && (
