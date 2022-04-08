@@ -7,7 +7,6 @@ import {
   RegistryIcon,
   Modal,
   Body,
-  SocketStatusContainer,
 } from '../../components';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -72,7 +71,7 @@ const LeftNav = withTheme(({ children }) => {
     useState(false);
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
   const intl = useIntl();
-  const { readOnlyMode, socketStatus } = useSelector(state => state.app);
+  const { readOnlyMode } = useSelector(state => state.app);
   const dispatch = useDispatch();
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
@@ -130,15 +129,13 @@ const LeftNav = withTheme(({ children }) => {
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
-                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
-                >
+                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}>
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   selected={isUnitsPage && isMyRegistryPage}
-                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
-                >
+                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}>
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>
@@ -148,16 +145,14 @@ const LeftNav = withTheme(({ children }) => {
                 <MenuItem
                   to={window.location}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled
-                >
+                  disabled>
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   to={window.location}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled
-                >
+                  disabled>
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>
@@ -183,8 +178,7 @@ const LeftNav = withTheme(({ children }) => {
               <MenuItem
                 selected={createOrgIsVisible}
                 to={window.location}
-                onClick={() => setCreateOrgIsVisible(true)}
-              >
+                onClick={() => setCreateOrgIsVisible(true)}>
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
@@ -212,7 +206,6 @@ const LeftNav = withTheme(({ children }) => {
           }}
         />
       )}
-      <SocketStatusContainer socketStatus={socketStatus} />
       <StyledAppVersion>
         <Body size="X-Small" color="white">
           {process?.env?.REACT_APP_VERSION &&

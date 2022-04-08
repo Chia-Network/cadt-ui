@@ -33,6 +33,8 @@
   "staging": "Staging",
   "pending": "Pending",
   "add-unlisted-methodology": "Add Unlisted Methodology",
+  "add-unlisted-registry-of-origin": "Add Unlisted Registry Of Origin",
+  "add-unlisted-current-registry": "Add Unlisted Registry",
   "projects-warehouse-project-id-description": "Unique identifier for projects within the Climate Warehouse.",
   "projects-current-registry-description": "Name of the reigstry that currently hosts the project.",
   "projects-project-id-description": "Identifier used to track the project in the current registry.",
@@ -341,5 +343,18 @@
   "timestamp": "Timestamp",
   "table": "Table",
   "root-hash": "Root Hash",
-  "no-audit-data": "No audit data was found. Select an organization first."
+  "no-audit-data": "No audit data was found. Select an organization first.",
+  "select-existing-project": "Select an existing project",
+  "select-another-project": "The selected project doesn't have issuances.",
+  "add-new-label": "Add new label",
+  "select-from-all-labels": "Select from all existing labels",
+  "select-label-by-project": "Select label by project",
+  "way-to-add-label": "Select a way to add a label",
+  "port": "Port",
+  "ip": "Ip",
+  "invalid-ip": "Enter valid Ip",
+  "invalid-port": "Enter valid port number",
+  "invalid-uid": "Enter valid UID",
+  "sort-ascending": "Sort ascending",
+  "sort-descending": "Sort descending"
 }

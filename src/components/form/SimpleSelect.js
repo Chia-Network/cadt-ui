@@ -297,6 +297,10 @@ const SimpleSelect = withTheme(
       })} -- `;
 
     useEffect(() => {
+      setSelectState(state);
+    }, [state]);
+
+    useEffect(() => {
       if (ref && ref.current) {
         setDropdownWidth(ref.current.getBoundingClientRect().width);
       }
@@ -312,6 +316,8 @@ const SimpleSelect = withTheme(
       if (selected !== undefined && selectedInitialized.current === null) {
         setSelectedOptions(selected);
         selectedInitialized.current = true;
+      } else if (selected === undefined) {
+        setSelectedOptions(null);
       }
     }, [selected]);
 
@@ -385,8 +391,8 @@ const SimpleSelect = withTheme(
       }
     };
 
-    const addInputMethodology = () => {
-      setSelectedOptions(null)
+    const addInputField = () => {
+      setSelectedOptions(null);
       setInputValue(true);
     };
 
@@ -531,7 +537,7 @@ const SimpleSelect = withTheme(
                     onChange={onSearchInputChange}
                     placeholder={
                       inputValue
-                        ? intl.formatMessage({ id: 'add-unlisted-methodology' })
+                        ? intl.formatMessage({ id: `add-unlisted-${addInput}` })
                         : placeHolderText
                     }
                     autoFocus
@@ -555,9 +561,9 @@ const SimpleSelect = withTheme(
             {addInput && (
               <BasicMenuItem
                 isSelected={inputValue}
-                onClick={() => addInputMethodology()}
+                onClick={() => addInputField()}
                 width={dropdownWidth}>
-                <FormattedMessage id="add-unlisted-methodology" />
+                <FormattedMessage id={`add-unlisted-${addInput}`} />
               </BasicMenuItem>
             )}
             {optionsList.map(option => {

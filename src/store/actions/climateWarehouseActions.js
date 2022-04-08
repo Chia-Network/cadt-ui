@@ -819,7 +819,7 @@ export const unsubscribeFromOrg = orgUid => {
   };
 };
 
-export const subscribeImportOrg = orgUid => {
+export const subscribeImportOrg = ({ orgUid, ip, port }) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -831,7 +831,7 @@ export const subscribeImportOrg = orgUid => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ orgUid }),
+        body: JSON.stringify({ orgUid, ip, port }),
       };
 
       const response = await fetchWrapper(url, payload);
@@ -1083,7 +1083,7 @@ export const getAudit = options => {
     if (options?.orgUid && options?.limit && options?.page) {
       dispatch(
         getClimateWarehouseTable(
-          `${constants.API_HOST}/audit?orgUid=${options.orgUid}&limit=${options.limit}&page=${options.page}`,
+          `${constants.API_HOST}/audit?orgUid=${options.orgUid}&limit=${options.limit}&page=${options.page}&order=${options.order}`,
           actions.GET_AUDIT,
           mockedAuditResponse({
             orgUid: options.orgUid,

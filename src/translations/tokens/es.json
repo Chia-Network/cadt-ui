@@ -32,6 +32,8 @@
   "staging": "Estadificación",
   "pending": "Pendiente",
   "add-unlisted-methodology": "Agregar metodología no listada",
+  "add-unlisted-registry-of-origin": "Añadir registro de origen no cotizado",
+  "add-unlisted-current-registry": "Agregar registro no listado",
   "projects-warehouse-project-id-description": "Identificador único para proyectos dentro del Almacén Climático.",
   "projects-current-registry-description": "Nombre del reigstry que actualmente hospeda el proyecto.",
   "projects-project-id-description": "Identificador utilizado para realizar un seguimiento del proyecto en el registro actual.",
@@ -323,5 +325,18 @@
   "timestamp": "Marca de tiempo",
   "table": "Mesa",
   "root-hash": "Hachís raíz",
-  "no-audit-data": "No se encontraron datos de auditoría. Seleccione una organización primero."
+  "no-audit-data": "No se encontraron datos de auditoría. Seleccione una organización primero.",
+  "select-existing-project": "Seleccione un proyecto existente",
+  "select-another-project": "El proyecto seleccionado no tiene emisiones.",
+  "add-new-label": "Agregar nueva etiqueta",
+  "select-from-all-labels": "Seleccionar de todas las etiquetas existentes",
+  "select-label-by-project": "Seleccionar etiqueta por proyecto",
+  "way-to-add-label": "Seleccione una forma de agregar una etiqueta",
+  "port": "Puerto",
+  "ip": "Ip",
+  "invalid-ip": "Ingrese IP valida",
+  "invalid-port": "Introduzca un número de puerto válido",
+  "invalid-uid": "Ingrese UID válido",
+  "sort-ascending": "Orden ascendente",
+  "sort-descending": "Orden descendiente"
 }
