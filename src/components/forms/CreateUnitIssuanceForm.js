@@ -1,7 +1,7 @@
 import u from 'updeep';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -25,28 +25,13 @@ import {
   Select,
   SpanTwoColumnsContainer,
 } from '..';
-import {
-  getIssuances,
-  getPaginatedData,
-} from '../../store/actions/climateWarehouseActions';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 const CreateUnitIssuanceForm = ({ value, onChange }) => {
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
   const { issuances, projects } = useSelector(store => store.climateWarehouse);
   const [selectedWarehouseProjectId, setSelectedWarehouseProjectId] =
     useState(null);
   const [selectedIssuanceId, setSelectedIssuanceId] = useState(null);
   const intl = useIntl();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (myOrgUid !== 'none') {
-      dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
-      dispatch(getIssuances());
-    }
-  }, []);
 
   useEffect(() => {
     if (value?.id && issuances) {
