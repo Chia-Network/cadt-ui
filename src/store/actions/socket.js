@@ -3,7 +3,7 @@ import socketIO from 'socket.io-client';
 import { messageTypes } from '../../utils/message-types';
 import { keyMirror } from '../store-functions';
 import { getStagingData } from './climateWarehouseActions';
-import { reloadApp, saveCurrentUrlToStorage } from '../../navigation/history';
+import { refreshApp } from './app';
 import { NotificationManager } from 'react-notifications';
 import constants from '../../constants';
 
@@ -23,19 +23,17 @@ export const SOCKET_STATUS = keyMirror(
 
 let socket;
 let interval;
+let reconnectInterval = 1000;
 
-const notifyRefresh = _.debounce(() => {
+const notifyRefresh = _.debounce(dispatch => {
   NotificationManager.info(
     'Click Here To Refresh.',
-    'The data that is viewed may be out of date, and a refresh is reccomended',
+    'The data that is viewed may be out of date, and a refresh is recommended',
     20000,
-    () => {
-      saveCurrentUrlToStorage();
-      reloadApp();
-    },
+    () => dispatch(refreshApp(true)),
     true,
   );
-}, 5000);
+}, 100);
 
 const initListenersForEachMessageType = dispatch => {
   Object.keys(messageTypes).forEach(key => {
@@ -85,22 +83,23 @@ export const emitAction = actionCreator => {
   };
 };
 
-const reconnectSocket = dispatch => {
+const reconnectSocket = _.debounce(dispatch => {
   if (!socket || (socket && !socket.connected)) {
     dispatch(initiateSocket());
     setTimeout(() => {
       if (!socket || (socket && !socket.connected)) {
         reconnectSocket(dispatch);
       }
-    }, 5000);
+      reconnectInterval = reconnectInterval * 2;
+    }, reconnectInterval);
   }
-};
+}, 100);
 
-export const initiateSocket = () => {
+export const initiateSocket = remoteHost => {
   disconnectSocket();
 
-  const WS_HOST = `${constants.API_HOST}/ws`;
-  const transports = ['websocket', 'polling'];
+  const WS_HOST = `${remoteHost || constants.API_HOST}/ws`;
+  const transports = ['websocket'];
 
   socket = socketIO(WS_HOST, {
     path: '/socket.io',
@@ -189,7 +188,7 @@ export const setSocketStatus = status => {
 export const projectsHaveBeenUpdated = data => {
   return dispatch => {
     if (window.location.href.includes('/projects')) {
-      notifyRefresh();
+      notifyRefresh(dispatch);
       dispatch({
         type: actions.SOCKET_PROJECTS_UPDATE,
         key: 'change:projects',
@@ -204,7 +203,7 @@ export const projectsHaveBeenUpdated = data => {
 export const unitsHaveBeenUpdated = data => {
   return dispatch => {
     if (window.location.href.includes('/units')) {
-      notifyRefresh();
+      notifyRefresh(dispatch);
       dispatch({
         type: actions.SOCKET_UNITS_UPDATE,
         key: 'change:units',

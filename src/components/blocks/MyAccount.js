@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { validateUrl } from '../../utils/urlUtils';
-import { reloadApp } from '../../navigation/history';
 
 import {
   Modal,
@@ -23,6 +22,7 @@ import {
   signIn,
   signInFromLocalStorage,
   signOut,
+  refreshApp,
 } from '../../store/actions/app';
 
 const StyledMyAccountContainer = styled('div')`
@@ -48,7 +48,6 @@ const MyAccount = () => {
       setServerAddress(null);
       setApiKey(null);
       setIsLogInModalOpen(false);
-      reloadApp();
     }
   };
 
@@ -64,7 +63,7 @@ const MyAccount = () => {
         <div
           onClick={() => {
             dispatch(signOut());
-            reloadApp();
+            dispatch(refreshApp(true));
           }}
         >
           <Body color="#1890ff">

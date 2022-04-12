@@ -14,18 +14,19 @@ import { loadLocaleData } from './translations';
 import { AppNavigator } from './navigation';
 import theme from './theme';
 
-import { IndeterminateProgressOverlay } from './components';
+import { IndeterminateProgressOverlay, SocketStatusContainer } from './components';
 
 const App = () => {
   const dispatch = useDispatch();
+  const {socketStatus} = useSelector(state => state.app);
   const appStore = useSelector(state => state.app);
   const [translationTokens, setTranslationTokens] = useState();
 
   useEffect(() => {
-    dispatch(initiateSocket());
+    dispatch(initiateSocket(appStore.serverAddress));
     dispatch(getOrganizationData());
     dispatch(getPickLists());
-  }, [dispatch]);
+  }, [dispatch, appStore.serverAddress]);
 
   useEffect(
     () => dispatch(setThemeFromLocalStorage),
@@ -53,10 +54,10 @@ const App = () => {
       <IntlProvider
         locale="en"
         defaultLocale="en"
-        messages={translationTokens.default}
-      >
+        messages={translationTokens.default}>
         <AppNavigator />
       </IntlProvider>
+      <SocketStatusContainer socketStatus={socketStatus} />
     </ThemeProvider>
   );
 };

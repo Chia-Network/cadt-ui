@@ -1,0 +1,284 @@
+import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { useSelector, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { useIntl, FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
+
+import {
+  Body,
+  MagnifyGlassIcon,
+  SelectOrganizations,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  AuditItemModal,
+  DescendingClockIcon,
+  AscendingClockIcon,
+  H3,
+  Pagination,
+} from '../../components';
+import {
+  getAudit,
+  getOrganizationData,
+} from '../../store/actions/climateWarehouseActions';
+import constants from '../../constants';
+
+const StyledSectionContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
+const StyledHeaderContainer = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 24px 30px 16px;
+`;
+
+const StyledBodyContainer = styled('div')`
+  flex-grow: 1;
+  overflow: scroll;
+`;
+
+const StyledBodyNoDataFound = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+const StyledTable = styled('table')`
+  width: 100%;
+`;
+
+const StyledTh = styled('th')`
+  text-align: start;
+  padding: 17px;
+  background-color: #e6f7ff;
+  position: sticky;
+  top: 0;
+`;
+
+const StyledTd = styled('td')`
+  text-align: start;
+  padding: 17px;
+`;
+
+const StyledTr = styled('tr')`
+  :nth-child(even) {
+    background-color: #f0f2f5;
+  }
+`;
+
+const StyledSortButtonContainer = styled.div`
+  margin-left: 10px;
+  border: 0.0625rem solid #d9d9d9;
+  height: 2.5rem;
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  min-width: 200px;
+  cursor: pointer;
+`;
+
+const StyledIconContainer = styled('div')`
+  color: #3b8ee0;
+`;
+
+const Audit = withRouter(() => {
+  const dispatch = useDispatch();
+  const intl = useIntl();
+
+  const { audit, organizations } = useSelector(store => store.climateWarehouse);
+  const [selectedOrgUid, setSelectedOrgUid] = useState(null);
+  const [selectedAuditItem, setSelectedAuditItem] = useState(null);
+  const [auditSortOrder, setAuditSortOrder] = useState('DESC');
+
+  useEffect(() => {
+    dispatch(getOrganizationData());
+    const storageAuditSortOrder = localStorage.getItem('auditSortOrder');
+    console.log('storageAuditSortOrder', storageAuditSortOrder);
+    if (storageAuditSortOrder) {
+      setAuditSortOrder(storageAuditSortOrder);
+    }
+  }, []);
+
+  const changeSortOrder = () => {
+    const newSortOrder = auditSortOrder === 'DESC' ? 'ASC' : 'DESC';
+    localStorage.setItem('auditSortOrder', newSortOrder);
+    setAuditSortOrder(newSortOrder);
+    dispatch(
+      getAudit({
+        orgUid: selectedOrgUid,
+        page: 1,
+        limit: constants.MAX_AUDIT_TABLE_SIZE,
+        useMockedResponse: false,
+        order: newSortOrder,
+      }),
+    );
+  };
+
+  const onOrganizationSelect = selectedOption => {
+    const orgUid = selectedOption[0].orgUid;
+    setSelectedOrgUid(orgUid);
+    dispatch(
+      getAudit({
+        orgUid,
+        page: 1,
+        limit: constants.MAX_AUDIT_TABLE_SIZE,
+        useMockedResponse: false,
+        order: auditSortOrder,
+      }),
+    );
+  };
+
+  if (!organizations) {
+    return null;
+  }
+
+  return (
+    <StyledSectionContainer>
+      <StyledHeaderContainer>
+        <SelectOrganizations
+          size={SelectSizeEnum.large}
+          type={SelectTypeEnum.basic}
+          placeholder={intl.formatMessage({ id: 'select-organization' })}
+          width="200px"
+          onChange={onOrganizationSelect}
+        />
+
+        {selectedOrgUid && (
+          <>
+            <StyledSortButtonContainer onClick={changeSortOrder}>
+              {auditSortOrder === 'ASC' ? (
+                <>
+                  <Body>
+                    <FormattedMessage id="sort-descending" />
+                  </Body>
+                  <StyledIconContainer>
+                    <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
+                  </StyledIconContainer>
+                </>
+              ) : (
+                <>
+                  <Body>
+                    <FormattedMessage id="sort-ascending" />
+                  </Body>
+                  <StyledIconContainer>
+                    <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
+                  </StyledIconContainer>
+                </>
+              )}
+            </StyledSortButtonContainer>
+
+            {selectedOrgUid && audit?.page && audit?.pageCount && (
+              <Pagination
+                current={audit.page - 1}
+                pages={audit.pageCount}
+                callback={val =>
+                  dispatch(
+                    getAudit({
+                      orgUid: selectedOrgUid,
+                      page: val + 1,
+                      limit: constants.MAX_AUDIT_TABLE_SIZE,
+                      useMockedResponse: false,
+                      order: auditSortOrder,
+                    }),
+                  )
+                }
+                showLast
+              />
+            )}
+
+            <div>
+              <Body>
+                {intl.formatMessage({ id: 'org-uid' })}: {selectedOrgUid}
+              </Body>
+            </div>
+          </>
+        )}
+      </StyledHeaderContainer>
+      {!audit?.data && (
+        <StyledBodyNoDataFound>
+          <H3>
+            <FormattedMessage id="no-audit-data" />
+          </H3>
+        </StyledBodyNoDataFound>
+      )}
+      {selectedOrgUid && audit?.data?.length > 0 && (
+        <StyledBodyContainer>
+          <StyledTable>
+            <thead>
+              <StyledTr>
+                <StyledTh></StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="table" />
+                  </Body>
+                </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="timestamp" />
+                  </Body>
+                </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="type" />
+                  </Body>
+                </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="root-hash" />
+                  </Body>
+                </StyledTh>
+              </StyledTr>
+            </thead>
+            <tbody>
+              {audit?.data?.length &&
+                audit?.data.map(auditItem => (
+                  <StyledTr key={auditItem.id}>
+                    <StyledTd>
+                      {auditItem.change && (
+                        <StyledIconContainer
+                          onClick={() => setSelectedAuditItem(auditItem)}
+                        >
+                          <MagnifyGlassIcon />
+                        </StyledIconContainer>
+                      )}
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>{auditItem.table}</Body>
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>
+                        {dayjs(
+                          auditItem.onchainConfirmationTimeStamp * 1000,
+                        ).format('YYYY-MM-DD HH:mm:ss')}
+                      </Body>
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>{auditItem.type}</Body>
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>{auditItem.rootHash}</Body>
+                    </StyledTd>
+                  </StyledTr>
+                ))}
+            </tbody>
+          </StyledTable>
+        </StyledBodyContainer>
+      )}
+      {selectedAuditItem && (
+        <AuditItemModal
+          onClose={() => setSelectedAuditItem(null)}
+          auditItem={selectedAuditItem}
+        />
+      )}
+    </StyledSectionContainer>
+  );
+});
+
+export { Audit };

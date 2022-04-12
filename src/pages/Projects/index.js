@@ -40,6 +40,7 @@ import {
   deleteStagingData,
   commitStagingData,
   getPaginatedData,
+  retryStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
 import { setCommit } from '../../store/actions/app';
@@ -145,6 +146,7 @@ const Projects = withRouter(() => {
       'project-successfully-created': 1,
       'project-successfully-edited': 1,
       'transactions-committed': 2,
+      'transactions-staged': 1,
     };
     if (switchTabBySuccessfulRequest[notification?.id]) {
       setTabValue(switchTabBySuccessfulRequest[notification.id]);
@@ -371,6 +373,14 @@ const Projects = withRouter(() => {
                 })`}
               />
             )}
+            {pageIsMyRegistryPage && (
+              <Tab
+                label={`${intl.formatMessage({ id: 'failed' })} (${
+                  climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.projects.failed.length
+                })`}
+              />
+            )}
           </Tabs>
           <StyledCSVOperationsContainer>
             <span onClick={() => downloadTxtFile('projects', searchParams)}>
@@ -409,7 +419,8 @@ const Projects = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
@@ -469,6 +480,28 @@ const Projects = withRouter(() => {
                   <StagingDataGroups
                     headings={headings}
                     data={climateWarehouseStore.stagingData.projects.pending}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                  />
+                )}
+              </TabPanel>
+              <TabPanel value={tabValue} index={3}>
+                {climateWarehouseStore.stagingData &&
+                  climateWarehouseStore.stagingData.projects.failed.length ===
+                    0 && (
+                    <NoDataMessageContainer>
+                      <H3>
+                        <FormattedMessage id="no-failed" />
+                      </H3>
+                    </NoDataMessageContainer>
+                  )}
+                {climateWarehouseStore.stagingData && (
+                  <StagingDataGroups
+                    headings={headings}
+                    data={climateWarehouseStore.stagingData.projects.failed}
+                    deleteStagingData={uuid =>
+                      dispatch(deleteStagingData(uuid))
+                    }
+                    retryStagingData={uuid => dispatch(retryStagingData(uuid))}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}

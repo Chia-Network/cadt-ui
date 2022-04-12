@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled, { withTheme, css } from 'styled-components';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
   ArrowDownIcon,
   MagnifyGlassIcon,
@@ -127,13 +127,14 @@ const StyledBasicMenu = styled(ScrollContainer)`
 
 const StyledBasicMenuItem = styled('div')`
   padding: 0.3125rem 0.75rem 0.3125rem 0.75rem;
-  max-width: 18.5rem;
+  ${props =>
+    props.width ? `max-width: ${props.width}px;` : 'max-width: 18.5rem;'};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   white-space: nowrap;
-  overflow: hidden;
+
   text-overflow: clip;
   font-family: ${props => props.theme.typography.primary.regular};
   cursor: pointer;
@@ -151,6 +152,20 @@ const StyledBasicMenuItem = styled('div')`
       return `font-weight: normal;`;
     }
   }};
+  box-sizing: border-box;
+  transform: translateX(0);
+  transition: 8s;
+  ${props => {
+    if (props.width && props.scrollWidth && props.scrollWidth > props.width) {
+      return `  
+          &:hover {
+            transform: translateX(calc(${props.width}px - ${
+        props.scrollWidth + 10
+      }px));
+          }
+        `;
+    }
+  }}
 `;
 
 const StyledArrowDownContainer = styled('div')`
@@ -228,6 +243,28 @@ const StyledSelectLabel = styled('div')`
   text-overflow: clip;
 `;
 
+const BasicMenuItem = ({ children, isSelected, onClick, width }) => {
+  const [scrollWidth, setScrollWidth] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref?.current?.scrollWidth) {
+      setScrollWidth(ref.current.scrollWidth);
+    }
+  }, [ref, ref.current]);
+
+  return (
+    <StyledBasicMenuItem
+      ref={ref}
+      isSelected={isSelected}
+      onClick={onClick}
+      width={width}
+      scrollWidth={scrollWidth}>
+      {children}
+    </StyledBasicMenuItem>
+  );
+};
+
 const SimpleSelect = withTheme(
   ({
     size = SimpleSelectSizeEnum.default,
@@ -239,16 +276,19 @@ const SimpleSelect = withTheme(
     placeholder,
     width = '20rem',
     onChange,
+    addInput,
   }) => {
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
     const [optionsList] = useState(options);
     const [selectedOptions, setSelectedOptions] = useState(selected || null);
     const [searchInputValue, setSearchInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(false);
     const [menuTopPosition, setMenuTopPosition] = useState(0);
     const selectedInitialized = useRef(null);
     const ref = useRef();
     const selectRef = useRef();
+    const [dropdownWidth, setDropdownWidth] = useState(0);
     const intl = useIntl();
     const placeHolderText =
       placeholder ||
@@ -257,9 +297,27 @@ const SimpleSelect = withTheme(
       })} -- `;
 
     useEffect(() => {
+      setSelectState(state);
+    }, [state]);
+
+    useEffect(() => {
+      if (ref && ref.current) {
+        setDropdownWidth(ref.current.getBoundingClientRect().width);
+      }
+    }, [ref, ref.current]);
+
+    useEffect(() => {
+      if (inputValue && !selectedOptions) {
+        onSearchClick();
+      }
+    }, [menuIsVisible, inputValue, selectedOptions]);
+
+    useEffect(() => {
       if (selected !== undefined && selectedInitialized.current === null) {
         setSelectedOptions(selected);
         selectedInitialized.current = true;
+      } else if (selected === undefined) {
+        setSelectedOptions(null);
       }
     }, [selected]);
 
@@ -333,6 +391,11 @@ const SimpleSelect = withTheme(
       }
     };
 
+    const addInputField = () => {
+      setSelectedOptions(null);
+      setInputValue(true);
+    };
+
     const toggleOptionSelection = optionToToggle => {
       const optionIsAlreadySelected =
         selectedOptions != null && selectedOptions.length > 0
@@ -372,13 +435,16 @@ const SimpleSelect = withTheme(
     };
 
     const onSearchInputChange = e => {
+      if (inputValue) {
+        setSelectedOptions([e.target.value]);
+      }
       setSearchInputValue(e.target.value);
     };
 
     return (
       <div style={{ position: 'relative' }} ref={ref}>
         {/* Select for Basic type */}
-        {type === SimpleSelectTypeEnum.basic && (
+        {type === SimpleSelectTypeEnum.basic && !inputValue && (
           <StyledSelect
             ref={selectRef}
             size={size}
@@ -435,7 +501,7 @@ const SimpleSelect = withTheme(
           </StyledSelect>
         )}
         {/* Select for Search type */}
-        {type === SimpleSelectTypeEnum.search && (
+        {(type === SimpleSelectTypeEnum.search || inputValue) && (
           <StyledSelect
             ref={selectRef}
             width={width}
@@ -450,6 +516,8 @@ const SimpleSelect = withTheme(
                 <StyledSelectLabel>
                   {selectedOptions != null && selectedOptions.length > 0
                     ? selectedOptions[0]
+                    : inputValue
+                    ? null
                     : placeHolderText}
                 </StyledSelectLabel>
                 <StyledArrowDownContainer state={selectState}>
@@ -462,28 +530,42 @@ const SimpleSelect = withTheme(
             )}
             {selectState === SimpleSelectStateEnum.focused && (
               <>
-                <div>
+                <div style={inputValue && { width: '100%' }}>
                   <StyledSearchInput
                     type="text"
                     value={searchInputValue}
                     onChange={onSearchInputChange}
-                    placeholder={placeHolderText}
+                    placeholder={
+                      inputValue
+                        ? intl.formatMessage({ id: `add-unlisted-${addInput}` })
+                        : placeHolderText
+                    }
                     autoFocus
                   />
                 </div>
                 <StyledArrowDownContainer state={selectState}>
-                  <MagnifyGlassIcon
-                    height={size === SimpleSelectSizeEnum.large ? 20 : 16}
-                    width={size === SimpleSelectSizeEnum.large ? 20 : 16}
-                  />
+                  {!inputValue && (
+                    <MagnifyGlassIcon
+                      height={size === SimpleSelectSizeEnum.large ? 20 : 16}
+                      width={size === SimpleSelectSizeEnum.large ? 20 : 16}
+                    />
+                  )}
                 </StyledArrowDownContainer>
               </>
             )}
           </StyledSelect>
         )}
         {/* Menu for Basic and Multiple type */}
-        {menuIsVisible && type !== SimpleSelectTypeEnum.search && (
+        {menuIsVisible && type !== SimpleSelectTypeEnum.search && !inputValue && (
           <StyledBasicMenu size={size} top={menuTopPosition}>
+            {addInput && (
+              <BasicMenuItem
+                isSelected={inputValue}
+                onClick={() => addInputField()}
+                width={dropdownWidth}>
+                <FormattedMessage id={`add-unlisted-${addInput}`} />
+              </BasicMenuItem>
+            )}
             {optionsList.map(option => {
               const isSelected =
                 selectedOptions != null &&
@@ -491,37 +573,39 @@ const SimpleSelect = withTheme(
                 selectedOptions.find(selected => selected === option);
 
               return (
-                <StyledBasicMenuItem
+                <BasicMenuItem
                   key={option}
                   isSelected={isSelected}
-                  onClick={() => toggleOptionSelection(option)}>
+                  onClick={() => toggleOptionSelection(option)}
+                  width={dropdownWidth}>
                   {option}
                   {isSelected && type === SimpleSelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
                   )}
-                </StyledBasicMenuItem>
+                </BasicMenuItem>
               );
             })}
           </StyledBasicMenu>
         )}
         {/* Menu for Search type */}
-        {menuIsVisible && type === SimpleSelectTypeEnum.search && (
+        {menuIsVisible && (type === SimpleSelectTypeEnum.search || inputValue) && (
           <StyledBasicMenu size={size} top={menuTopPosition}>
             {optionsList.map(
               option =>
                 option
                   .toLowerCase()
                   .includes(searchInputValue.toLowerCase()) && (
-                  <StyledBasicMenuItem
+                  <BasicMenuItem
                     key={option}
                     isSelected={
                       selectedOptions != null &&
                       selectedOptions.length > 0 &&
                       selectedOptions.find(selected => selected === option)
                     }
-                    onClick={() => toggleOptionSelection(option)}>
+                    onClick={() => toggleOptionSelection(option)}
+                    width={dropdownWidth}>
                     {option}
-                  </StyledBasicMenuItem>
+                  </BasicMenuItem>
                 ),
             )}
           </StyledBasicMenu>

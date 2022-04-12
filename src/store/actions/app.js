@@ -1,6 +1,9 @@
+import _ from 'lodash';
+
 import { keyMirror } from '../store-functions';
 import { LANGUAGE_CODES } from '../../translations';
-import _ from 'lodash';
+
+import { getOrganizationData } from './climateWarehouseActions';
 
 export const actions = keyMirror(
   'ACTIVATE_PROGRESS_INDICATOR',
@@ -11,7 +14,6 @@ export const actions = keyMirror(
   'CLEAR_GLOBAL_ERROR_MESSAGE',
   'SET_LOCALE',
   'CONNECTION_CHECK',
-  'RESET_REFRESH_PROMPT',
   'SET_NOTIFICATION',
   'COMMIT',
   'PENDING_ERROR',
@@ -20,11 +22,13 @@ export const actions = keyMirror(
   'SIGN_USER_OUT',
   'SET_VALIDATION',
   'SET_FORM',
+  'REFRESH_APP',
 );
 
-export const resetRefreshPrompt = {
-  type: actions.RESET_REFRESH_PROMPT,
-};
+export const refreshApp = render => ({
+  type: actions.REFRESH_APP,
+  payload: render,
+});
 
 export const setReadOnly = isReadOnly => ({
   type: actions.SET_READ_ONLY,
@@ -123,6 +127,8 @@ export const signIn = ({ apiKey, serverAddress }) => {
           serverAddress,
         },
       });
+      dispatch(getOrganizationData());
+      dispatch(refreshApp(true));
     }
   };
 };

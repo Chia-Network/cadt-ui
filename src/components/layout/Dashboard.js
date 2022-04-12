@@ -1,19 +1,7 @@
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import styled, { withTheme } from 'styled-components';
-import {
-  LeftNav,
-  LocaleSwitcher,
-  Body,
-  ClimateWarehouseLogo,
-  MyAccount,
-} from '..';
 
-const Headline = styled('div')`
-  width: 100%;
-  height: 4rem;
-  background-color: #ffffff;
-`;
+import { LeftNav, Header, ErrorBoundary } from '..';
 
 const Main = styled('div')`
   width: 100%;
@@ -38,59 +26,15 @@ const InnerContainer = styled('div')`
   overflow: hidden;
 `;
 
-const LogoContainer = styled('div')`
-  align-self: center;
-  height: 100%;
-`;
-
-const StyledLocalContainer = styled('div')`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: left;
-  gap: 20px;
-  padding: 0rem 1.5rem;
-  box-sizing: border-box;
-`;
-
-const HomeOrgUidContainer = styled('div')`
-  margin-left: auto;
-  align-self: center;
-`;
-
 const Dashboard = withTheme(({ children }) => {
-  const climateWarehouseStore = useSelector(state => state.climateWarehouse);
-
-  const homeOrgUid = useMemo(
-    () =>
-      climateWarehouseStore?.organizations &&
-      Object.values(climateWarehouseStore.organizations).filter(
-        org => org.isHome != false,
-      )[0]?.orgUid,
-    [climateWarehouseStore.organizations],
-  );
-
   return (
     <Main>
-      <Headline>
-        <StyledLocalContainer>
-          <LogoContainer>
-            <ClimateWarehouseLogo width="100%" height="100%" />
-          </LogoContainer>
-          <HomeOrgUidContainer>
-            {homeOrgUid ? (
-              <div>
-                <Body size="Small">{`Organization ID: ${homeOrgUid}`}</Body>
-              </div>
-            ) : null}
-          </HomeOrgUidContainer>
-          <MyAccount />
-          <LocaleSwitcher />
-        </StyledLocalContainer>
-      </Headline>
+      <Header />
       <InnerContainer>
-        <LeftNav />
-        <BodyText>{children}</BodyText>
+        <ErrorBoundary>
+          <LeftNav />
+          <BodyText>{children}</BodyText>
+        </ErrorBoundary>
       </InnerContainer>
     </Main>
   );

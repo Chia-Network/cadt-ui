@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -16,10 +16,6 @@ import {
   ToolTipContainer,
   LabelContainer,
   FieldRequired,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  SelectVariantEnum,
-  Select,
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
@@ -29,6 +25,11 @@ import {
   RequiredContainer,
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
+  SimpleSelectVariantEnum,
+  SimpleSelect,
 } from '..';
 
 import { unitsSchema } from '../../store/validations';
@@ -44,53 +45,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
       setValidationErrors(unitsSchema, unitDetails, setErrorMessage);
     }
   }, [unitDetails, validateForm, formType]);
-
-  const selectUnitStatusOptions = useMemo(
-    () =>
-      pickLists.unitStatus.map(unitStatusItem => ({
-        value: unitStatusItem,
-        label: unitStatusItem,
-      })),
-    [pickLists],
-  );
-
-  const selectUnitTypeOptions = useMemo(
-    () =>
-      pickLists.unitType.map(unitTypeItem => ({
-        value: unitTypeItem,
-        label: unitTypeItem,
-      })),
-    [pickLists],
-  );
-
-  const selectCorrespondingAdjustmentStatusOptions = useMemo(
-    () =>
-      pickLists.correspondingAdjustmentStatus.map(adjustmentStatusItem => ({
-        value: adjustmentStatusItem,
-        label: adjustmentStatusItem,
-      })),
-    [pickLists],
-  );
-
-  const selectCorrespondingAdjustmentDeclarationOptions = useMemo(
-    () =>
-      pickLists.correspondingAdjustmentDeclaration.map(
-        adjustmentDeclarationItem => ({
-          value: adjustmentDeclarationItem,
-          label: adjustmentDeclarationItem,
-        }),
-      ),
-    [pickLists],
-  );
-
-  const selectCountriesOptions = useMemo(
-    () =>
-      pickLists.countries.map(country => ({
-        value: country,
-        label: country,
-      })),
-    [pickLists],
-  );
 
   return (
     <ModalFormContainerStyle>
@@ -108,7 +62,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-project-location-id-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -149,7 +104,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-owner-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -188,7 +144,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-serial-number-pattern-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -229,7 +186,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-serial-number-block-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -270,7 +228,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-in-country-jurisdiction-of-owner-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -311,35 +270,31 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-country-jurisdiction-of-owner-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
+              <SimpleSelect
                 variant={
-                  errorMessage?.countryJurisdictionOfOwner
-                    ? SelectVariantEnum.error
-                    : undefined
+                  errorMessage?.countryJurisdictionOfOwner &&
+                  SimpleSelectVariantEnum.error
                 }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectCountriesOptions}
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.countries}
+                state={SimpleSelectStateEnum.default}
                 selected={
                   unitDetails.countryJurisdictionOfOwner
-                    ? [
-                        {
-                          label: unitDetails.countryJurisdictionOfOwner,
-                          value: unitDetails.countryJurisdictionOfOwner,
-                        },
-                      ]
+                    ? [unitDetails.countryJurisdictionOfOwner]
                     : undefined
                 }
                 onChange={selectedOptions =>
                   setUnitDetails(prev => ({
                     ...prev,
-                    countryJurisdictionOfOwner: selectedOptions[0].value,
+                    countryJurisdictionOfOwner: selectedOptions[0],
                   }))
                 }
               />
@@ -359,33 +314,28 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
+              <SimpleSelect
                 variant={
-                  errorMessage?.unitType ? SelectVariantEnum.error : undefined
+                  errorMessage?.unitType && SimpleSelectVariantEnum.error
                 }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectUnitTypeOptions}
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.unitType}
+                state={SimpleSelectStateEnum.default}
                 selected={
-                  unitDetails.unitType
-                    ? [
-                        {
-                          value: unitDetails.unitType,
-                          label: unitDetails.unitType,
-                        },
-                      ]
-                    : undefined
+                  unitDetails.unitType ? [unitDetails.unitType] : undefined
                 }
                 onChange={selectedOptions =>
                   setUnitDetails(prev => ({
                     ...prev,
-                    unitType: selectedOptions[0].value,
+                    unitType: selectedOptions[0],
                   }))
                 }
               />
@@ -405,33 +355,28 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-status-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
+              <SimpleSelect
                 variant={
-                  errorMessage?.unitStatus ? SelectVariantEnum.error : undefined
+                  errorMessage?.unitStatus && SimpleSelectVariantEnum.error
                 }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectUnitStatusOptions}
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.unitStatus}
+                state={SimpleSelectStateEnum.default}
                 selected={
-                  unitDetails.unitStatus
-                    ? [
-                        {
-                          label: unitDetails.unitStatus,
-                          value: unitDetails.unitStatus,
-                        },
-                      ]
-                    : undefined
+                  unitDetails.unitStatus ? [unitDetails.unitStatus] : undefined
                 }
                 onChange={selectedOptions =>
                   setUnitDetails(prev => ({
                     ...prev,
-                    unitStatus: selectedOptions[0].value,
+                    unitStatus: selectedOptions[0],
                   }))
                 }
               />
@@ -455,7 +400,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-status-reason-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -496,7 +442,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-registry-link-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -536,7 +483,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-vintage-year-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -576,7 +524,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-marketplace-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -615,7 +564,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-marketplace-identifier-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -657,7 +607,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-marketplace-link-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -698,37 +649,32 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-corresponding-adjustment-declaration-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
+              <SimpleSelect
                 variant={
-                  errorMessage?.correspondingAdjustmentDeclaration
-                    ? SelectVariantEnum.error
+                  errorMessage?.correspondingAdjustmentDeclaration &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.correspondingAdjustmentDeclaration}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  unitDetails.correspondingAdjustmentDeclaration
+                    ? [unitDetails.correspondingAdjustmentDeclaration]
                     : undefined
                 }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectCorrespondingAdjustmentDeclarationOptions}
                 onChange={selectedOptions =>
                   setUnitDetails(prev => ({
                     ...prev,
-                    correspondingAdjustmentDeclaration:
-                      selectedOptions[0].value,
+                    correspondingAdjustmentDeclaration: selectedOptions[0],
                   }))
-                }
-                selected={
-                  unitDetails.correspondingAdjustmentDeclaration
-                    ? [
-                        {
-                          value: unitDetails.correspondingAdjustmentDeclaration,
-                          label: unitDetails.correspondingAdjustmentDeclaration,
-                        },
-                      ]
-                    : undefined
                 }
               />
             </InputContainer>
@@ -747,36 +693,32 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-corresponding-adjustment-status-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <Select
+              <SimpleSelect
                 variant={
-                  errorMessage?.correspondingAdjustmentStatus
-                    ? SelectVariantEnum.error
+                  errorMessage?.correspondingAdjustmentStatus &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.correspondingAdjustmentStatus}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  unitDetails.correspondingAdjustmentStatus
+                    ? [unitDetails.correspondingAdjustmentStatus]
                     : undefined
                 }
-                size={SelectSizeEnum.large}
-                type={SelectTypeEnum.basic}
-                options={selectCorrespondingAdjustmentStatusOptions}
                 onChange={selectedOptions =>
                   setUnitDetails(prev => ({
                     ...prev,
-                    correspondingAdjustmentStatus: selectedOptions[0].value,
+                    correspondingAdjustmentStatus: selectedOptions[0],
                   }))
-                }
-                selected={
-                  unitDetails.correspondingAdjustmentStatus
-                    ? [
-                        {
-                          label: unitDetails.correspondingAdjustmentStatus,
-                          value: unitDetails.correspondingAdjustmentStatus,
-                        },
-                      ]
-                    : undefined
                 }
               />
             </InputContainer>
@@ -799,7 +741,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-tags-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>

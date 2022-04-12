@@ -3,24 +3,23 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { Router } from 'react-router';
 import { Route, Redirect } from 'react-router-dom';
-import { IndeterminateProgressOverlay, Dashboard } from '../components/';
+import {
+  IndeterminateProgressOverlay,
+  Dashboard,
+  MyAccount,
+} from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
-import { history, reloadCurrentUrlFromStorage } from './';
 import { signOut } from '../store/actions/app';
-
+import { history } from './';
 import * as Pages from '../pages';
 
 import { createNotification } from '../utils/notificationUtils';
 
-import {
-  AppContainer,
-  Modal,
-  SocketStatusContainer,
-  modalTypeEnum,
-} from '../components';
+import { AppContainer, Modal, modalTypeEnum } from '../components';
 import { setPendingError, setNotificationMessage } from '../store/actions/app';
 import { getOrganizationData } from '../store/actions/climateWarehouseActions';
+import { reloadCurrentUrlFromStorage } from './history';
 
 const AppNavigator = () => {
   const intl = useIntl();
@@ -33,7 +32,6 @@ const AppNavigator = () => {
   const {
     showProgressOverlay,
     connectionCheck,
-    socketStatus,
     pendingError,
     notification,
     apiKey,
@@ -51,10 +49,10 @@ const AppNavigator = () => {
 
   return (
     <AppContainer>
-      <SocketStatusContainer socketStatus={socketStatus} />
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
         <Modal
+          addComponent={<MyAccount />}
           informationType="error"
           modalType={modalTypeEnum.information}
           label="Try Again"
@@ -80,25 +78,30 @@ const AppNavigator = () => {
       <Router history={history}>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
-            <Route exact path="/" render={() => <Redirect to="/projects" />}>
-              <Pages.Projects />
+            <Route exact path="/">
+              <Redirect to="/projects" />
             </Route>
-            <Route exact path="/units">
+            <Route exact path="">
+              <Redirect to="/projects" />
+            </Route>
+            <Route path="/units">
               <Pages.Units />
             </Route>
-            <Route exact path="/projects">
+            <Route path="/projects">
               <Pages.Projects />
             </Route>
-            <Route exact path="/projects/add">
-              <Pages.AddProject />
-            </Route>
-            <Route exact path="/units/add">
-              <Pages.AddUnits />
-            </Route>
-            <Route exact path="/storybook">
+            <Route path="/storybook">
               <Pages.StoryBook />
             </Route>
-            <Route path="*" render={() => <Redirect to="/" />} />
+            <Route path="/organization">
+              <Pages.Organization />
+            </Route>
+            <Route path="/audit">
+              <Pages.Audit />
+            </Route>
+            <Route path="*">
+              <Redirect to="/projects" />
+            </Route>
           </Suspense>
         </Dashboard>
       </Router>

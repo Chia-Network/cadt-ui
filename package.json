@@ -1,6 +1,6 @@
 {
   "name": "climate-warehouse",
-  "version": "0.1.12",
+  "version": "0.1.24",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
   "homepage": "./",
@@ -22,6 +22,7 @@
     "json2csv": "^5.0.6",
     "lodash": "^4.17.21",
     "minisearch": "^3.1.0",
+    "qrcode.react": "^2.0.0",
     "react": "^17.0.2",
     "react-content-loader": "^6.0.3",
     "react-dayjs": "^0.3.2",

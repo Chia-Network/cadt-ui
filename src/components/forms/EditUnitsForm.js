@@ -45,7 +45,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
     dispatch(setForm(stepperStepsTranslationIds[tabValue]));
   }, [tabValue]);
 
-  const stepperStepsTranslationIds = ['unit', 'labels', 'issuances'];
+  const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
@@ -122,17 +122,6 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <UnitLabelsRepeater
-                labelsState={unit.labels}
-                newLabelsState={value =>
-                  setUnit(prev => ({
-                    ...prev,
-                    labels: value,
-                  }))
-                }
-              />
-            </TabPanel>
-            <TabPanel value={tabValue} index={2}>
               <UnitIssuanceRepeater
                 max={1}
                 issuanceState={unit.issuance !== '' ? [unit.issuance] : []}
@@ -140,6 +129,17 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
                   setUnit(prev => ({
                     ...prev,
                     issuance: value[0] ? value[0] : '',
+                  }))
+                }
+              />
+            </TabPanel>
+            <TabPanel value={tabValue} index={2}>
+              <UnitLabelsRepeater
+                labelsState={unit.labels}
+                newLabelsState={value =>
+                  setUnit(prev => ({
+                    ...prev,
+                    labels: value,
                   }))
                 }
               />

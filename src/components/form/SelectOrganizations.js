@@ -248,11 +248,13 @@ const SelectOrganizations = withTheme(
     };
 
     const organizationsList = useMemo(() => {
-      const list = Object.keys(organizations).map(orgUid => ({
-        orgUid: orgUid,
-        name: organizations[orgUid].name,
-        icon: organizations[orgUid].icon,
-      }));
+      const list = Object.keys(organizations)
+        .filter(orgKey => organizations[orgKey]?.subscribed)
+        .map(orgUid => ({
+          orgUid: orgUid,
+          name: organizations[orgUid].name,
+          icon: organizations[orgUid].icon,
+        }));
 
       if (displayAllOrganizations) {
         list.unshift(allOrganizationsItem);
@@ -304,7 +306,7 @@ const SelectOrganizations = withTheme(
         if (
           menuIsVisible &&
           e.target !== ref.current &&
-          !ref.current.contains(e.target)
+          !ref.current?.contains(e.target)
         ) {
           setMenuIsVisible(false);
           setSelectState(SelectStateEnum.default);

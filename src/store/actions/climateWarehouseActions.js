@@ -12,6 +12,7 @@ import {
   projectsResponseStub,
   vintagesResponseStub,
   stagingDataResponseStub,
+  auditResponseStub,
 } from '../../mocks';
 
 import {
@@ -40,6 +41,7 @@ export const actions = keyMirror(
   'GET_PICKLISTS',
   'GET_ISSUANCES',
   'GET_LABELS',
+  'GET_AUDIT',
 );
 
 const getClimateWarehouseTable = (
@@ -87,14 +89,33 @@ const formatStagingData = dataArray => {
 
   splittedByTable.Units = _.groupBy(splittedByTable.Units, 'commited');
 
+  const isNotFailedCommit = item => !item.failedCommit;
+  const isFailedCommit = item => item.failedCommit;
+
   const splittedAndFormatted = {
     projects: {
-      pending: [...(splittedByTable.Projects.true || [])],
-      staging: [...(splittedByTable.Projects.false || [])],
+      pending: [...(splittedByTable.Projects.true || [])].filter(
+        isNotFailedCommit,
+      ),
+      staging: [...(splittedByTable.Projects.false || [])].filter(
+        isNotFailedCommit,
+      ),
+      failed: [
+        ...(splittedByTable.Projects.true || []),
+        ...(splittedByTable.Projects.false || []),
+      ].filter(isFailedCommit),
     },
     units: {
-      pending: [...(splittedByTable.Units.true || [])],
-      staging: [...(splittedByTable.Units.false || [])],
+      pending: [...(splittedByTable.Units.true || [])].filter(
+        isNotFailedCommit,
+      ),
+      staging: [...(splittedByTable.Units.false || [])].filter(
+        isNotFailedCommit,
+      ),
+      failed: [
+        ...(splittedByTable.Units.true || []),
+        ...(splittedByTable.Units.false || []),
+      ].filter(isFailedCommit),
     },
   };
   return splittedAndFormatted;
@@ -153,7 +174,7 @@ export const getPickLists = () => {
     };
 
     try {
-      const response = await fetchWrapper(
+      const response = await fetch(
         `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
       );
 
@@ -303,7 +324,9 @@ export const getPaginatedData = ({
 
           dispatch({
             type: action,
-            payload: results.data,
+            payload: results.data.map(result =>
+              _.omit(result, 'timeStaged', 'createdAt', 'updatedAt'),
+            ),
           });
 
           dispatch({
@@ -311,8 +334,13 @@ export const getPaginatedData = ({
             payload: results.pageCount,
           });
         } else {
-          const error = await response.json();
-          dispatch(setNotificationMessage('error', error.error));
+          const errorResponse = await response.json();
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              formatApiErrorResponse(errorResponse, 'something-went-wrong'),
+            ),
+          );
         }
       } catch {
         dispatch(setGlobalErrorMessage('Something went wrong...'));
@@ -351,10 +379,11 @@ export const commitStagingData = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'transactions-not-committed',
+            formatApiErrorResponse(errorResponse, 'transactions-not-committed'),
           ),
         );
       }
@@ -398,10 +427,14 @@ export const deleteStagingData = uuid => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'staging-group-could-not-be-deleted',
+            formatApiErrorResponse(
+              errorResponse,
+              'staging-group-could-not-be-deleted',
+            ),
           ),
         );
       }
@@ -411,6 +444,54 @@ export const deleteStagingData = uuid => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'staging-group-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const retryStagingData = uuid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/retry`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uuid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transactions-staged',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'transactions-not-staged'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transactions-not-staged',
         ),
       );
     } finally {
@@ -445,10 +526,11 @@ export const deleteUnit = warehouseUnitId => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'unit-could-not-be-deleted',
+            formatApiErrorResponse(errorResponse, 'unit-could-not-be-deleted'),
           ),
         );
       }
@@ -492,10 +574,14 @@ export const deleteProject = warehouseProjectId => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'project-could-not-be-deleted',
+            formatApiErrorResponse(
+              errorResponse,
+              'project-could-not-be-deleted',
+            ),
           ),
         );
       }
@@ -539,22 +625,13 @@ export const postNewProject = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        const responseErrors = await response.json();
-        if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              responseErrors.message,
-            ),
-          );
-        } else {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              'project-not-created',
-            ),
-          );
-        }
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'project-not-created'),
+          ),
+        );
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -596,22 +673,16 @@ export const updateProjectRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        const responseErrors = await response.json();
-        if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              responseErrors.message,
-            ),
-          );
-        } else {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
               'project-could-not-be-edited',
             ),
-          );
-        }
+          ),
+        );
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -654,10 +725,11 @@ export const postNewOrg = data => {
           ),
         );
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'organization-not-created',
+            formatApiErrorResponse(errorResponse, 'organization-not-created'),
           ),
         );
       }
@@ -669,6 +741,120 @@ export const postNewOrg = data => {
           'organization-not-created',
         ),
       );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const subscribeToOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations/subscribe`;
+
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const unsubscribeFromOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations/unsubscribe`;
+
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const subscribeImportOrg = ({ orgUid, ip, port }) => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations/import`;
+
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid, ip, port }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-is-importing',
+          ),
+        );
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -700,10 +886,14 @@ export const uploadXLSXFile = (file, type) => {
           );
           dispatch(getStagingData({ useMockedResponse: false }));
         } else {
+          const errorResponse = await response.json();
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.error,
-              'file-could-not-be-uploaded',
+              formatApiErrorResponse(
+                errorResponse,
+                'file-could-not-be-uploaded',
+              ),
             ),
           );
         }
@@ -748,22 +938,13 @@ export const postNewUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        const responseErrors = await response.json();
-        if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              responseErrors.message,
-            ),
-          );
-        } else {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              'unit-not-created',
-            ),
-          );
-        }
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'unit-not-created'),
+          ),
+        );
       }
     } catch (err) {
       dispatch(setConnectionCheck(false));
@@ -804,10 +985,11 @@ export const splitUnits = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
+        const errorResponse = await response.json();
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            'unit-could-not-be-split',
+            formatApiErrorResponse(errorResponse, 'unit-could-not-be-split'),
           ),
         );
       }
@@ -851,22 +1033,13 @@ export const updateUnitsRecord = data => {
         );
         dispatch(getStagingData({ useMockedResponse: false }));
       } else {
-        const responseErrors = await response.json();
-        if (!_.isEmpty(responseErrors.errors)) {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              responseErrors.message,
-            ),
-          );
-        } else {
-          dispatch(
-            setNotificationMessage(
-              NotificationMessageTypeEnum.error,
-              'unit-could-not-be-edited',
-            ),
-          );
-        }
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'unit-could-not-be-edited'),
+          ),
+        );
       }
     } catch {
       dispatch(setConnectionCheck(false));
@@ -902,6 +1075,44 @@ export const getRatings = options => {
         options,
       ),
     );
+  };
+};
+
+export const getAudit = options => {
+  return dispatch => {
+    if (options?.orgUid && options?.limit && options?.page) {
+      dispatch(
+        getClimateWarehouseTable(
+          `${constants.API_HOST}/audit?orgUid=${options.orgUid}&limit=${options.limit}&page=${options.page}&order=${options.order}`,
+          actions.GET_AUDIT,
+          mockedAuditResponse({
+            orgUid: options.orgUid,
+            limit: options.limit,
+            page: options?.page,
+          }),
+          options,
+        ),
+      );
+    }
+  };
+};
+
+const mockedAuditResponse = ({ page, limit, orgUid }) => {
+  const customAuditResponseStub = {
+    page: page,
+    pageCount: auditResponseStub.pageCount,
+    data: auditResponseStub.data.reduce((accumulator, current, index) => {
+      if (index < limit) {
+        return [...accumulator, { ...current, orgUid }];
+      }
+      return accumulator;
+    }, []),
+  };
+
+  // Different envs import this differently
+  return {
+    type: actions.GET_AUDIT,
+    payload: _.get(customAuditResponseStub, 'default', customAuditResponseStub),
   };
 };
 
@@ -1080,10 +1291,24 @@ const fetchWrapper = async (url, payload) => {
         ? `${serverAddress}/`
         : serverAddressUrl;
 
-    const newUrl = url.replace(/(http:|)(^|\/\/)(.*?\/)/g, serverAddressUrl);
+    const newUrl = url.replace(
+      /(https:|http:|)(^|\/\/)(.*?\/)/g,
+      serverAddressUrl,
+    );
 
     return fetch(newUrl, payloadWithApiKey);
   }
 
   return fetch(url, payload);
+};
+
+const formatApiErrorResponse = ({ errors, message }, alternativeResponseId) => {
+  if (!_.isEmpty(errors) && !_.isEmpty(message)) {
+    let notificationToDisplay = message + ': ';
+    errors.forEach(item => {
+      notificationToDisplay = notificationToDisplay.concat(item, ' ; ');
+    });
+    return notificationToDisplay;
+  }
+  return alternativeResponseId;
 };

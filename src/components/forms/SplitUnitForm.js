@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
@@ -24,10 +24,10 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  SelectStateEnum,
-  Select,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
+  SimpleSelect,
 } from '..';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
 
@@ -56,13 +56,7 @@ const SplitUnitForm = ({ onClose, record }) => {
     unit => unit.warehouseUnitId === record.warehouseUnitId,
   )[0];
 
-  const selectCountriesOptions = useMemo(
-    () =>
-      pickLists.countries.map(country => ({ value: country, label: country })),
-    [pickLists],
-  );
-
-  const unitIsSplitable = fullRecord.unitCount !== 1;
+  const unitIsSplittable = fullRecord.unitCount !== 1;
 
   const validationSchema = yup
     .array()
@@ -162,7 +156,7 @@ const SplitUnitForm = ({ onClose, record }) => {
           onClose={() => setValidationErrors([])}
         />
       )}
-      {unitIsSplitable === false && (
+      {unitIsSplittable === false && (
         <LocalMessage
           msg={intl.formatMessage({
             id: 'unit-cannot-be-split',
@@ -174,7 +168,7 @@ const SplitUnitForm = ({ onClose, record }) => {
         onOk={onSubmit}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
-        hideButtons={!unitIsSplitable}
+        hideButtons={!unitIsSplittable}
         title={intl.formatMessage({
           id: 'split',
         })}
@@ -187,166 +181,168 @@ const SplitUnitForm = ({ onClose, record }) => {
               <FormattedMessage id="total-units-available" />:{' '}
               {fullRecord.unitCount}
             </Body>
-            <StyledFieldRequired />
             <FormContainerStyle>
               {data.map((unit, index) => (
-                <BodyContainer key={index}>
+                <>
+                  {index === 1 && <StyledFieldRequired />}
+                  {index === 0 && <FieldRequired />}
                   <StyledLabelContainer>
                     <Body size="Bold">
                       <FormattedMessage id="record" /> {index + 1}
                     </Body>
                   </StyledLabelContainer>
-                  <StyledFieldContainer>
-                    {index === 1 && <StyledFieldRequired />}
-                    {index === 0 && <FieldRequired />}
-                    <StyledLabelContainer>
-                      <Body>
-                        <LabelContainer>
-                          * <FormattedMessage id="nr-of-units" />
-                        </LabelContainer>
-                        <ToolTipContainer
-                          tooltip={intl.formatMessage({
-                            id: 'unit-count',
+                  <BodyContainer key={index}>
+                    <StyledFieldContainer>
+                      <StyledLabelContainer>
+                        <Body>
+                          <LabelContainer>
+                            * <FormattedMessage id="nr-of-units" />
+                          </LabelContainer>
+                          <ToolTipContainer
+                            tooltip={intl.formatMessage({
+                              id: 'unit-count',
+                            })}
+                          >
+                            <DescriptionIcon height="14" width="14" />
+                          </ToolTipContainer>
+                        </Body>
+                      </StyledLabelContainer>
+                      <InputContainer>
+                        <StandardInput
+                          size={InputSizeEnum.large}
+                          placeholderText={intl.formatMessage({
+                            id: 'nr-of-units',
                           })}
-                        >
-                          <DescriptionIcon height="14" width="14" />
-                        </ToolTipContainer>
-                      </Body>
-                    </StyledLabelContainer>
-                    <InputContainer>
-                      <StandardInput
-                        size={InputSizeEnum.large}
-                        placeholderText={intl.formatMessage({
-                          id: 'nr-of-units',
-                        })}
-                        state={
-                          unitIsSplitable
-                            ? InputStateEnum.default
-                            : InputStateEnum.disabled
-                        }
-                        variant={getInputFieldState(index)}
-                        value={unit.unitCount}
-                        onChange={value =>
-                          setData(prevData => {
-                            const newData = [...prevData];
-                            newData[index].unitCount = value;
-                            return newData;
-                          })
-                        }
-                      />
-                    </InputContainer>
-                  </StyledFieldContainer>
-                  <StyledFieldContainer>
-                    <StyledLabelContainer>
-                      <Body>
-                        <LabelContainer>
-                          <FormattedMessage id="unit-owner" />
-                        </LabelContainer>
-                        <ToolTipContainer
-                          tooltip={intl.formatMessage({
-                            id: 'units-unit-owner-description',
+                          state={
+                            unitIsSplittable
+                              ? InputStateEnum.default
+                              : InputStateEnum.disabled
+                          }
+                          variant={getInputFieldState(index)}
+                          value={unit.unitCount}
+                          onChange={value =>
+                            setData(prevData => {
+                              const newData = [...prevData];
+                              newData[index].unitCount = value;
+                              return newData;
+                            })
+                          }
+                        />
+                      </InputContainer>
+                    </StyledFieldContainer>
+                    <StyledFieldContainer>
+                      <StyledLabelContainer>
+                        <Body>
+                          <LabelContainer>
+                            <FormattedMessage id="unit-owner" />
+                          </LabelContainer>
+                          <ToolTipContainer
+                            tooltip={intl.formatMessage({
+                              id: 'units-unit-owner-description',
+                            })}
+                          >
+                            <DescriptionIcon height="14" width="14" />
+                          </ToolTipContainer>
+                        </Body>
+                      </StyledLabelContainer>
+                      <InputContainer>
+                        <StandardInput
+                          size={InputSizeEnum.large}
+                          placeholderText={intl.formatMessage({
+                            id: 'unit-owner',
                           })}
-                        >
-                          <DescriptionIcon height="14" width="14" />
-                        </ToolTipContainer>
-                      </Body>
-                    </StyledLabelContainer>
-                    <InputContainer>
-                      <StandardInput
-                        size={InputSizeEnum.large}
-                        placeholderText={intl.formatMessage({
-                          id: 'unit-owner',
-                        })}
-                        state={
-                          unitIsSplitable
-                            ? InputStateEnum.default
-                            : InputStateEnum.disabled
-                        }
-                        value={unit.unitOwner}
-                        onChange={value =>
-                          setData(prevData => {
-                            const newData = [...prevData];
-                            newData[index].unitOwner = value;
-                            return newData;
-                          })
-                        }
-                      />
-                    </InputContainer>
-                  </StyledFieldContainer>
-                  <StyledFieldContainer>
-                    <StyledLabelContainer>
-                      <Body>
-                        <LabelContainer>
-                          <FormattedMessage id="country-jurisdiction-of-owner" />
-                        </LabelContainer>
-                        <ToolTipContainer
-                          tooltip={intl.formatMessage({
-                            id: 'units-country-jurisdiction-of-owner-description',
+                          state={
+                            unitIsSplittable
+                              ? InputStateEnum.default
+                              : InputStateEnum.disabled
+                          }
+                          value={unit.unitOwner}
+                          onChange={value =>
+                            setData(prevData => {
+                              const newData = [...prevData];
+                              newData[index].unitOwner = value;
+                              return newData;
+                            })
+                          }
+                        />
+                      </InputContainer>
+                    </StyledFieldContainer>
+                    <StyledFieldContainer>
+                      <StyledLabelContainer>
+                        <Body>
+                          <LabelContainer>
+                            <FormattedMessage id="country-jurisdiction-of-owner" />
+                          </LabelContainer>
+                          <ToolTipContainer
+                            tooltip={intl.formatMessage({
+                              id: 'units-country-jurisdiction-of-owner-description',
+                            })}
+                          >
+                            <DescriptionIcon height="14" width="14" />
+                          </ToolTipContainer>
+                        </Body>
+                      </StyledLabelContainer>
+                      <InputContainer>
+                        <SimpleSelect
+                          size={SimpleSelectSizeEnum.large}
+                          type={SimpleSelectTypeEnum.basic}
+                          options={pickLists.countries}
+                          state={
+                            unitIsSplittable
+                              ? SimpleSelectStateEnum.default
+                              : SimpleSelectStateEnum.disabled
+                          }
+                          onChange={selectedOptions =>
+                            setData(prevData => {
+                              const newData = [...prevData];
+                              newData[index].countryJurisdictionOfOwner =
+                                selectedOptions[0];
+                              return newData;
+                            })
+                          }
+                        />
+                      </InputContainer>
+                    </StyledFieldContainer>
+                    <StyledFieldContainer>
+                      <StyledLabelContainer>
+                        <Body>
+                          <LabelContainer>
+                            <FormattedMessage id="in-country-jurisdiction-of-owner" />
+                          </LabelContainer>
+                          <ToolTipContainer
+                            tooltip={intl.formatMessage({
+                              id: 'units-in-country-jurisdiction-of-owner-description',
+                            })}
+                          >
+                            <DescriptionIcon height="14" width="14" />
+                          </ToolTipContainer>
+                        </Body>
+                      </StyledLabelContainer>
+                      <InputContainer>
+                        <StandardInput
+                          size={InputSizeEnum.large}
+                          placeholderText={intl.formatMessage({
+                            id: 'in-country-jurisdiction-of-owner',
                           })}
-                        >
-                          <DescriptionIcon height="14" width="14" />
-                        </ToolTipContainer>
-                      </Body>
-                    </StyledLabelContainer>
-                    <InputContainer>
-                      <Select
-                        size={SelectSizeEnum.large}
-                        type={SelectTypeEnum.basic}
-                        options={selectCountriesOptions}
-                        state={
-                          unitIsSplitable
-                            ? SelectStateEnum.default
-                            : SelectStateEnum.disabled
-                        }
-                        onChange={selectedOptions =>
-                          setData(prevData => {
-                            const newData = [...prevData];
-                            newData[index].countryJurisdictionOfOwner =
-                              selectedOptions[0].value;
-                            return newData;
-                          })
-                        }
-                      />
-                    </InputContainer>
-                  </StyledFieldContainer>
-                  <StyledFieldContainer>
-                    <StyledLabelContainer>
-                      <Body>
-                        <LabelContainer>
-                          <FormattedMessage id="in-country-jurisdiction-of-owner" />
-                        </LabelContainer>
-                        <ToolTipContainer
-                          tooltip={intl.formatMessage({
-                            id: 'units-in-country-jurisdiction-of-owner-description',
-                          })}
-                        >
-                          <DescriptionIcon height="14" width="14" />
-                        </ToolTipContainer>
-                      </Body>
-                    </StyledLabelContainer>
-                    <InputContainer>
-                      <StandardInput
-                        size={InputSizeEnum.large}
-                        placeholderText={intl.formatMessage({
-                          id: 'in-country-jurisdiction-of-owner',
-                        })}
-                        state={
-                          unitIsSplitable
-                            ? InputStateEnum.default
-                            : InputStateEnum.disabled
-                        }
-                        value={unit.inCountryJurisdictionOfOwner}
-                        onChange={value =>
-                          setData(prevData => {
-                            const newData = [...prevData];
-                            newData[index].inCountryJurisdictionOfOwner = value;
-                            return newData;
-                          })
-                        }
-                      />
-                    </InputContainer>
-                  </StyledFieldContainer>
-                </BodyContainer>
+                          state={
+                            unitIsSplittable
+                              ? InputStateEnum.default
+                              : InputStateEnum.disabled
+                          }
+                          value={unit.inCountryJurisdictionOfOwner}
+                          onChange={value =>
+                            setData(prevData => {
+                              const newData = [...prevData];
+                              newData[index].inCountryJurisdictionOfOwner =
+                                value;
+                              return newData;
+                            })
+                          }
+                        />
+                      </InputContainer>
+                    </StyledFieldContainer>
+                  </BodyContainer>
+                </>
               ))}
             </FormContainerStyle>
           </ModalFormContainerStyle>
