@@ -62,6 +62,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     if (myOrgUid !== 'none') {
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
+      localStorage.removeItem('unitSelectedWarehouseProjectId');
     }
   }, []);
 

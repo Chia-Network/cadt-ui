@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -93,6 +93,32 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
     }
   }, [unitDetails, issuances, projectsSelectOptions]);
 
+  const changeSelectedProjectOption = useCallback(
+    selectedProjectOption => {
+      setSelectedWarehouseProjectOption(selectedProjectOption);
+
+      localStorage.removeItem('unitSelectedWarehouseProjectId');
+      const selectedProjectHasIssuances =
+        selectedProjectOption.value?.issuances?.length > 0;
+      if (selectedProjectHasIssuances) {
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          selectedProjectOption.value.warehouseProjectId,
+        );
+      }
+
+      setUnitDetails(prev => ({
+        ...prev,
+        projectLocationId: '',
+      }));
+    },
+    [
+      selectedWarehouseProjectOption,
+      setSelectedWarehouseProjectOption,
+      setUnitDetails,
+    ],
+  );
+
   return (
     <ModalFormContainerStyle>
       <RequiredContainer>
@@ -127,22 +153,22 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                       ? [selectedWarehouseProjectOption]
                       : undefined
                   }
-                  onChange={selectedOptions => {
-                    setSelectedWarehouseProjectOption(selectedOptions[0]);
-                    localStorage.setItem(
-                      'unitSelectedWarehouseProjectId',
-                      selectedOptions[0].value.warehouseProjectId,
-                    );
-                    setUnitDetails(prev => ({
-                      ...prev,
-                      projectLocationId: '',
-                    }));
-                  }}
+                  onChange={selectedOptions =>
+                    changeSelectedProjectOption(selectedOptions[0])
+                  }
                 />
               </InputContainer>
               {!selectedWarehouseProjectOption && validateForm && (
                 <Body size="Small" color="red">
                   <FormattedMessage id="select-existing-project" />
+                </Body>
+              )}
+              {selectedWarehouseProjectOption?.value?.issuances?.length ===
+                0 && (
+                <Body size="Small" color="red">
+                  {intl.formatMessage({
+                    id: 'select-another-project',
+                  })}
                 </Body>
               )}
             </StyledFieldContainer>

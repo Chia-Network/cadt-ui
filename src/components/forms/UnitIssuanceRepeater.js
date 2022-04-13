@@ -1,17 +1,9 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import { AddIcon, CloseIcon } from '..';
 import { CreateUnitIssuanceForm } from './CreateUnitIssuanceForm';
 import { ComponentRepeater } from '..';
-import { getIssuances } from '../../store/actions/climateWarehouseActions';
 
 function UnitIssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getIssuances());
-  }, []);
-
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
