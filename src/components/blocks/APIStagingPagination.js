@@ -1,66 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import styled, { withTheme } from 'styled-components';
+import { withTheme } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { ArrowDownIcon, ThreeDotsIcon } from '..';
-import { getPaginatedData } from '../../store/actions/climateWarehouseActions';
-import constants from '../../constants';
+import {
+  ArrowDownIcon,
+  ThreeDotsIcon,
+  PagesContainer,
+  ControlsContainer,
+  PaginationContainer,
+} from '..';
+import { getStagingPaginatedData } from '../../store/actions/climateWarehouseActions';
 
-export const PaginationContainer = styled('div')`
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  color: #8c8c8c;
-  background-color: white;
-`;
-
-export const ControlsContainer = styled('div')`
-  cursor: pointer;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #d9d9d9;
-  box-sizing: border-box;
-  border-radius: 2px;
-  ${props =>
-    props.isDisabled &&
-    `background: #F5F5F5; color: #D9D9D9; cursor: default;`};
-  ${props =>
-    props.isBackButton &&
-    `transform-origin: center;   
-    transform: rotate(90deg);`};
-  ${props =>
-    props.isNextButton &&
-    `transform-origin: center;   
-    transform: rotate(270deg);`};
-`;
-
-export const PagesContainer = styled(ControlsContainer)`
-  font-family: ${props => props.theme.typography.primary.regular};
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 150%;
-  ${props => {
-    if (props.isActive) {
-      return `border: 1px solid #3B8EE0;
-                    color: #3B8EE0;`;
-    } else {
-      return `border: 1px solid #D9D9D9;
-                    color: #262626;`;
-    }
-  }};
-`;
-
-const APIPagination = withTheme(({ showLast = false, actions }) => {
+const APIStagingPagination = withTheme(({ showLast = false, actions }) => {
   const dispatch = useDispatch();
-  const { location } = useHistory();
-  let searchParams = new URLSearchParams(location.search);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const [numberOfPages, setNumberOfPages] = useState(
@@ -71,24 +22,18 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
 
   useEffect(() => {
     setCurrentPageNumber(1);
-    setNumberOfPages(climateWarehouseStore.pageCount || 1);
-  }, [climateWarehouseStore.pageCount]);
+    setNumberOfPages(climateWarehouseStore.stagingPageCount || 1);
+  }, [climateWarehouseStore.stagingPageCount]);
 
   const changeCurrentPageTo = newPage => {
     setCurrentPageNumber(newPage);
 
     const options = {
-      type: actions.toLowerCase(),
+      type: actions,
       page: newPage,
-      resultsLimit: constants.MAX_TABLE_SIZE,
+      resultsLimit: 1,
     };
-    if (searchParams.has('search')) {
-      options.searchQuery = searchParams.get('search');
-    }
-    if (searchParams.get('orgUid') !== 'all') {
-      options.orgUid = searchParams.get('orgUid');
-    }
-    dispatch(getPaginatedData(options));
+    dispatch(getStagingPaginatedData(options));
   };
 
   let displayedPages = [currentPageNumber];
@@ -115,8 +60,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
         isBackButton={true}
         onClick={() =>
           !backButtonIsDisabled && changeCurrentPageTo(currentPageNumber - 1)
-        }
-      >
+        }>
         <ArrowDownIcon height={12} width={12} />
       </ControlsContainer>
       {displayedPages &&
@@ -126,8 +70,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
             isActive={currentPageNumber === element}
             onClick={() =>
               currentPageNumber !== element && changeCurrentPageTo(element)
-            }
-          >
+            }>
             {element}
           </PagesContainer>
         ))}
@@ -144,12 +87,11 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
         isNextButton
         onClick={() =>
           !nextButtonIsDisabled && changeCurrentPageTo(currentPageNumber + 1)
-        }
-      >
+        }>
         <ArrowDownIcon height={12} width={12} />
       </ControlsContainer>
     </PaginationContainer>
   );
 });
 
-export { APIPagination };
+export { APIStagingPagination };

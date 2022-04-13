@@ -36,10 +36,10 @@ import {
 } from '../../store/actions/app';
 
 import {
-  getStagingData,
   deleteStagingData,
   commitStagingData,
   getPaginatedData,
+  getStagingPaginatedData,
   retryStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
@@ -232,7 +232,6 @@ const Projects = withRouter(() => {
       options.orgUid = searchParams.get('orgUid');
     }
     dispatch(getPaginatedData(options));
-    dispatch(getStagingData({ useMockedResponse: false }));
   }, [
     dispatch,
     tabValue,
@@ -240,6 +239,15 @@ const Projects = withRouter(() => {
     selectedOrganization,
     pageIsMyRegistryPage,
   ]);
+
+  useEffect(() => {
+    const options = {
+      type: 'staging',
+      page: 1,
+      resultsLimit: 1,
+    };
+    dispatch(getStagingPaginatedData(options));
+  }, [dispatch]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.projects) {
@@ -419,8 +427,7 @@ const Projects = withRouter(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

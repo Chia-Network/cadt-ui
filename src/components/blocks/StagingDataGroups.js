@@ -3,8 +3,16 @@ import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { getDiff } from '../../utils/objectUtils';
-import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon, ReloadIcon } from '..';
-import { modalTypeEnum } from '.';
+import {
+  Modal,
+  MinusIcon,
+  Body,
+  ErrorIcon,
+  SuccessIcon,
+  ReloadIcon,
+  StyledPaginationContainer,
+} from '..';
+import { modalTypeEnum, APIStagingPagination } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { DetailedViewStagingModal } from './DetailedViewStagingModal';
 
@@ -289,8 +297,7 @@ const StagingDataGroups = withTheme(
                           onClick={() => {
                             setDeleteUUID(changeGroup.uuid);
                             setDeleteFromStaging(true);
-                          }}
-                        >
+                          }}>
                           <MinusIcon width={20} height={20} />
                         </div>
                       </StyledDeleteGroupIcon>
@@ -378,8 +385,7 @@ const StagingDataGroups = withTheme(
                         onClick={() => {
                           setDeleteUUID(changeGroup.uuid);
                           setDeleteFromStaging(true);
-                        }}
-                      >
+                        }}>
                         <MinusIcon width={20} height={20} />
                       </div>
                     </StyledDeleteGroupIcon>
@@ -399,6 +405,9 @@ const StagingDataGroups = withTheme(
                 )}
               </React.Fragment>
             ))}
+          <StyledPaginationContainer>
+            <APIStagingPagination actions="staging" />
+          </StyledPaginationContainer>
           {detailedViewData && (
             <DetailedViewStagingModal
               onClose={() => setDetailedViewData(null)}
