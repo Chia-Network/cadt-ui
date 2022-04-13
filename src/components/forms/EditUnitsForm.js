@@ -3,18 +3,23 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
+import { useIntl } from 'react-intl';
+
 import { Modal, TabPanel, modalTypeEnum, UnitDetailsForm } from '..';
 import UnitLabelsRepeater from './UnitLabelsRepeater';
 import UnitIssuanceRepeater from './UnitIssuanceRepeater';
-import { updateUnitsRecord } from '../../store/actions/climateWarehouseActions';
-import { useIntl } from 'react-intl';
-
 import { unitsSchema } from '../../store/validations';
 import { setValidateForm, setForm } from '../../store/actions/app';
+import {
+  getIssuances,
+  getPaginatedData,
+  updateUnitsRecord,
+} from '../../store/actions/climateWarehouseActions';
 import {
   cleanObjectFromEmptyFieldsOrArrays,
   formatAPIData,
 } from '../../utils/formatData';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -24,17 +29,28 @@ const StyledFormContainer = styled('div')`
 `;
 
 const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
+  const { organizations } = useSelector(store => store.climateWarehouse);
+  const myOrgUid = getMyOrgUid(organizations);
   const { notification } = useSelector(state => state.app);
   const [unit, setUnit] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
+
   const unitToBeEdited = useSelector(
     state =>
       state.climateWarehouse.units.filter(
         unit => unit.warehouseUnitId === record.warehouseUnitId,
       )[0],
   );
+
+  useEffect(() => {
+    if (myOrgUid !== 'none') {
+      dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
+      dispatch(getIssuances());
+      localStorage.removeItem('unitSelectedWarehouseProjectId');
+    }
+  }, []);
 
   useEffect(() => {
     const formattedProjectData = formatAPIData(unitToBeEdited);
@@ -50,7 +66,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
     dispatch(setValidateForm(true));
-    if (isUnitValid) {
+    if (isUnitValid && localStorage.getItem('unitSelectedWarehouseProjectId')) {
       dispatch(setValidateForm(false));
       if (desiredStep >= stepperStepsTranslationIds.length) {
         handleUpdateUnit();
@@ -106,7 +122,8 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}>
+                    sx={{ cursor: 'pointer' }}
+                  >
                     <StepLabel>
                       {intl.formatMessage({
                         id: step,
@@ -118,7 +135,8 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}>
+              index={0}
+            >
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
