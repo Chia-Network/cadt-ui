@@ -38,7 +38,7 @@ const ComponentRepeater = ({
     if (currentNumberOfRepetitions < minRepetitions) {
       addNewInstance();
     }
-  });
+  }, [values]);
 
   const allInstances = useMemo(() => {
     return values.map((value, index) => {
