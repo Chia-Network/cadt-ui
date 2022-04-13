@@ -177,6 +177,13 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
+                {!selectedWarehouseProjectId && (
+                  <Body size="Small" color="red">
+                    {intl.formatMessage({
+                      id: 'select-existing-project',
+                    })}
+                  </Body>
+                )}
               </StyledFieldContainer>
             )}
             {selectedWarehouseProjectId && (

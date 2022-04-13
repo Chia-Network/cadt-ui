@@ -16,6 +16,7 @@ function UnitIssuanceRepeater({ issuanceState, newIssuanceState, max = 30 }) {
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
         maxRepetitions={max}
+        minRepetitions={1}
         values={issuanceState}
         updateValues={newIssuanceState}
         initialValue={{
