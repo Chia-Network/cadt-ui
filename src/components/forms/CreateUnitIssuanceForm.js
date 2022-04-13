@@ -33,6 +33,11 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
   const [selectedIssuanceId, setSelectedIssuanceId] = useState(null);
   const intl = useIntl();
 
+  console.log(
+    'unitSelectedWarehouseProjectId',
+    localStorage.getItem('unitSelectedWarehouseProjectId'),
+  );
+
   useEffect(() => {
     if (value?.id && issuances) {
       setSelectedIssuanceId(value.id);

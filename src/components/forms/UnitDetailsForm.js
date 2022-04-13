@@ -129,6 +129,10 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   }
                   onChange={selectedOptions => {
                     setSelectedWarehouseProjectOption(selectedOptions[0]);
+                    localStorage.setItem(
+                      'unitSelectedWarehouseProjectId',
+                      selectedOptions[0].value.warehouseProjectId,
+                    );
                     setUnitDetails(prev => ({
                       ...prev,
                       projectLocationId: '',
@@ -136,7 +140,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   }}
                 />
               </InputContainer>
-              {!selectedWarehouseProjectOption && (
+              {!selectedWarehouseProjectOption && validateForm && (
                 <Body size="Small" color="red">
                   <FormattedMessage id="select-existing-project" />
                 </Body>
