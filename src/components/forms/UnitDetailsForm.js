@@ -34,6 +34,7 @@ import {
   SelectTypeEnum,
   SelectStateEnum,
   Select,
+  SelectVariantEnum,
 } from '..';
 
 import { unitsSchema } from '../../store/validations';
@@ -110,6 +111,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
       setUnitDetails(prev => ({
         ...prev,
         projectLocationId: '',
+        issuance: '',
       }));
     },
     [
@@ -148,6 +150,12 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   type={SelectTypeEnum.basic}
                   options={projectsSelectOptions}
                   state={SelectStateEnum.default}
+                  variant={
+                    ((!selectedWarehouseProjectOption && validateForm) ||
+                      selectedWarehouseProjectOption?.value?.issuances
+                        ?.length === 0) &&
+                    SelectVariantEnum.error
+                  }
                   selected={
                     selectedWarehouseProjectOption
                       ? [selectedWarehouseProjectOption]
