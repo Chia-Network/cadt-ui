@@ -90,6 +90,10 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
         : null;
       if (inferredProjectOption) {
         setSelectedWarehouseProjectOption(inferredProjectOption);
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          inferredProjectOption.value.warehouseProjectId,
+        );
       }
     }
   }, [unitDetails, issuances, projectsSelectOptions]);
@@ -108,11 +112,17 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
         );
       }
 
-      setUnitDetails(prev => ({
-        ...prev,
-        projectLocationId: '',
-        issuance: '',
-      }));
+      const isCurrentSavedIssuanceOnTheSelectedProject =
+        selectedProjectOption?.value?.issuances.some(
+          issuanceItem => issuanceItem?.id === unitDetails?.issuance?.id,
+        );
+      if (!isCurrentSavedIssuanceOnTheSelectedProject) {
+        setUnitDetails(prev => ({
+          ...prev,
+          projectLocationId: '',
+          issuance: '',
+        }));
+      }
     },
     [
       selectedWarehouseProjectOption,
