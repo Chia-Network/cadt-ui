@@ -65,8 +65,18 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
+    const isMandatoryIssuanceChecked =
+      desiredStep > 1 ? Object.keys(unit.issuance)?.length > 0 : true;
+    const isProjectSelectedAtFirstStep = Boolean(
+      localStorage.getItem('unitSelectedWarehouseProjectId'),
+    );
+
     dispatch(setValidateForm(true));
-    if (isUnitValid && localStorage.getItem('unitSelectedWarehouseProjectId')) {
+    if (
+      isUnitValid &&
+      isProjectSelectedAtFirstStep &&
+      isMandatoryIssuanceChecked
+    ) {
       dispatch(setValidateForm(false));
       if (desiredStep >= stepperStepsTranslationIds.length) {
         handleUpdateUnit();

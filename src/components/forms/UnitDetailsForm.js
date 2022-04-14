@@ -90,6 +90,10 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
         : null;
       if (inferredProjectOption) {
         setSelectedWarehouseProjectOption(inferredProjectOption);
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          inferredProjectOption.value.warehouseProjectId,
+        );
       }
     }
   }, [unitDetails, issuances, projectsSelectOptions]);

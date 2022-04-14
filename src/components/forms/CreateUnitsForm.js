@@ -68,8 +68,18 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
+    const isMandatoryIssuanceChecked =
+      desiredStep > 1 ? Object.keys(unit.issuance)?.length > 0 : true;
+    const isProjectSelectedAtFirstStep = Boolean(
+      localStorage.getItem('unitSelectedWarehouseProjectId'),
+    );
+
     dispatch(setValidateForm(true));
-    if (isUnitValid) {
+    if (
+      isUnitValid &&
+      isProjectSelectedAtFirstStep &&
+      isMandatoryIssuanceChecked
+    ) {
       dispatch(setValidateForm(false));
       if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitUnit();
