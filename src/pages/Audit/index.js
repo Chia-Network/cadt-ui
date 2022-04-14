@@ -100,7 +100,6 @@ const Audit = withRouter(() => {
   useEffect(() => {
     dispatch(getOrganizationData());
     const storageAuditSortOrder = localStorage.getItem('auditSortOrder');
-    console.log('storageAuditSortOrder', storageAuditSortOrder);
     if (storageAuditSortOrder) {
       setAuditSortOrder(storageAuditSortOrder);
     }

@@ -112,11 +112,17 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
         );
       }
 
-      setUnitDetails(prev => ({
-        ...prev,
-        projectLocationId: '',
-        issuance: '',
-      }));
+      const isCurrentSavedIssuanceOnTheSelectedProject =
+        selectedProjectOption?.value?.issuances.some(
+          issuanceItem => issuanceItem?.id === unitDetails?.issuance?.id,
+        );
+      if (!isCurrentSavedIssuanceOnTheSelectedProject) {
+        setUnitDetails(prev => ({
+          ...prev,
+          projectLocationId: '',
+          issuance: '',
+        }));
+      }
     },
     [
       selectedWarehouseProjectOption,
