@@ -2,18 +2,23 @@ import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
-import { TabPanel, Modal, modalTypeEnum } from '..';
-import UnitLabelsRepeater from './UnitLabelsRepeater';
-import UnitIssuanceRepeater from './UnitIssuanceRepeater';
-import { postNewUnits } from '../../store/actions/climateWarehouseActions';
-import { useIntl } from 'react-intl';
 
+import {
+  postNewUnits,
+  getIssuances,
+  getPaginatedData,
+} from '../../store/actions/climateWarehouseActions';
+import UnitIssuanceRepeater from './UnitIssuanceRepeater';
+import UnitLabelsRepeater from './UnitLabelsRepeater';
+import { TabPanel, Modal, modalTypeEnum } from '..';
 import { unitsSchema } from '../../store/validations';
 import { UnitDetailsForm } from '.';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 import { setValidateForm, setForm } from '../../store/actions/app';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -49,19 +54,39 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
     labels: [],
     issuance: null,
   });
-
   const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
+  const { organizations } = useSelector(store => store.climateWarehouse);
+  const myOrgUid = getMyOrgUid(organizations);
+
+  useEffect(() => {
+    if (myOrgUid !== 'none') {
+      dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
+      dispatch(getIssuances());
+      localStorage.removeItem('unitSelectedWarehouseProjectId');
+    }
+  }, []);
+
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
+    const isMandatoryIssuanceChecked =
+      desiredStep > 1 ? Object.keys(unit.issuance)?.length > 0 : true;
+    const isProjectSelectedAtFirstStep = Boolean(
+      localStorage.getItem('unitSelectedWarehouseProjectId'),
+    );
+
     dispatch(setValidateForm(true));
-    if (isUnitValid) {
+    if (
+      isUnitValid &&
+      isProjectSelectedAtFirstStep &&
+      isMandatoryIssuanceChecked
+    ) {
       dispatch(setValidateForm(false));
       if (desiredStep >= stepperStepsTranslationIds.length) {
         handleSubmitUnit();
       } else {
         dispatch(setValidateForm(false));
         setTabValue(desiredStep);
-        dispatch(setForm(stepperStepsTranslationIds[desiredStep]))
+        dispatch(setForm(stepperStepsTranslationIds[desiredStep]));
       }
     }
   };
@@ -112,7 +137,8 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}>
+                    sx={{ cursor: 'pointer' }}
+                  >
                     <StepLabel>
                       {intl.formatMessage({
                         id: step,
@@ -124,7 +150,8 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}>
+              index={0}
+            >
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>

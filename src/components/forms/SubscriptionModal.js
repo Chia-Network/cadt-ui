@@ -72,7 +72,7 @@ const SubscriptionModal = ({ onClose }) => {
   const isIpValid = useMemo(() => validateIp(ip), [ip]);
   const isPortValid = useMemo(() => validatePort(port), [port]);
 
-  const submitCustomOrganization = () => () => {
+  const submitCustomOrganization = () => {
     if (isOrgUidValid && isIpValid && isPortValid) {
       dispatch(subscribeImportOrg({ orgUid, ip, port }));
     }

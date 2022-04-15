@@ -1,7 +1,7 @@
 import u from 'updeep';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -25,29 +25,16 @@ import {
   Select,
   SpanTwoColumnsContainer,
 } from '..';
-import {
-  getIssuances,
-  getPaginatedData,
-} from '../../store/actions/climateWarehouseActions';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 const CreateUnitIssuanceForm = ({ value, onChange }) => {
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
-  const { issuances, projects } = useSelector(store => store.climateWarehouse);
+  const { validateForm } = useSelector(state => state.app);
+  const { issuances } = useSelector(store => store.climateWarehouse);
   const [selectedWarehouseProjectId, setSelectedWarehouseProjectId] =
     useState(null);
   const [selectedIssuanceId, setSelectedIssuanceId] = useState(null);
   const intl = useIntl();
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (myOrgUid !== 'none') {
-      dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
-      dispatch(getIssuances());
-    }
-  }, []);
-
+  // if unit has issuance, infer project id
   useEffect(() => {
     if (value?.id && issuances) {
       setSelectedIssuanceId(value.id);
@@ -56,29 +43,15 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
     }
   }, [value, issuances]);
 
-  const projectsSelectOptions = useMemo(() => {
-    if (projects) {
-      return projects.map(projectItem => ({
-        value: projectItem.warehouseProjectId,
-        label: projectItem.projectName,
-      }));
+  // if unit has no issuance yet, infer it from local storage from selected project at the beginning of the form
+  useEffect(() => {
+    const unitSelectedWarehouseProjectId = localStorage.getItem(
+      'unitSelectedWarehouseProjectId',
+    );
+    if (unitSelectedWarehouseProjectId && selectedWarehouseProjectId === null) {
+      setSelectedWarehouseProjectId(unitSelectedWarehouseProjectId);
     }
-    return [];
-  }, [projects]);
-
-  const getProjectLabel = useCallback(
-    id => {
-      if (projects) {
-        for (const project of projects) {
-          if (project.warehouseProjectId === id) {
-            return project.projectName;
-          }
-        }
-      }
-      return id;
-    },
-    [projects],
-  );
+  }, []);
 
   const getIssuanceLabel = useCallback(
     id => {
@@ -152,48 +125,6 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
       <FormContainerStyle>
         <BodyContainer>
           <SpanTwoColumnsContainer>
-            {projectsSelectOptions && (
-              <StyledFieldContainer>
-                <StyledLabelContainer>
-                  <Body>
-                    <LabelContainer>
-                      <FormattedMessage id="select-existing-project" />
-                    </LabelContainer>
-                    <ToolTipContainer
-                      tooltip={intl.formatMessage({
-                        id: 'select-existing-project',
-                      })}
-                    >
-                      <DescriptionIcon height="14" width="14" />
-                    </ToolTipContainer>
-                  </Body>
-                </StyledLabelContainer>
-                <InputContainer>
-                  <Select
-                    size={SelectSizeEnum.large}
-                    type={SelectTypeEnum.basic}
-                    options={projectsSelectOptions}
-                    state={SelectStateEnum.default}
-                    selected={
-                      selectedWarehouseProjectId
-                        ? [
-                            {
-                              value: selectedWarehouseProjectId,
-                              label: getProjectLabel(
-                                selectedWarehouseProjectId,
-                              ),
-                            },
-                          ]
-                        : undefined
-                    }
-                    onChange={selectedOptions => {
-                      setSelectedWarehouseProjectId(selectedOptions[0].value);
-                      setSelectedIssuanceId(null);
-                    }}
-                  />
-                </InputContainer>
-              </StyledFieldContainer>
-            )}
             {selectedWarehouseProjectId && (
               <StyledFieldContainer>
                 <StyledLabelContainer>
@@ -232,10 +163,10 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
-                {issuancesSelectOptions.length === 0 && (
+                {selectedIssuanceId === null && validateForm && (
                   <Body size="Small" color="red">
                     {intl.formatMessage({
-                      id: 'select-another-project',
+                      id: 'select-existing-issuance',
                     })}
                   </Body>
                 )}

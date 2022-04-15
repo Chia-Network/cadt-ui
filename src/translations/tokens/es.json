@@ -338,5 +338,6 @@
   "invalid-port": "Introduzca un número de puerto válido",
   "invalid-uid": "Ingrese UID válido",
   "sort-ascending": "Orden ascendente",
-  "sort-descending": "Orden descendiente"
+  "sort-descending": "Orden descendiente",
+  "project-has-no-locations": "El proyecto seleccionado no tiene ubicaciones añadidas"
 }
