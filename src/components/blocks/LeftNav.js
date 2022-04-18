@@ -8,7 +8,7 @@ import {
   Modal,
   Body,
 } from '../../components';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
@@ -66,7 +66,7 @@ const StyledTitleContainer = styled('div')`
 `;
 
 const LeftNav = withTheme(({ children }) => {
-  const history = useHistory();
+  const location = useLocation();
   const [confirmCreateOrgIsVisible, setConfirmCreateOrgIsVisible] =
     useState(false);
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
@@ -90,12 +90,11 @@ const LeftNav = withTheme(({ children }) => {
     return () => clearTimeout(intervalId);
   }, [myOrgIsNotCreated, myOrgIsCreatedButNotSubscribed, createOrgIsVisible]);
 
-  const isUnitsPage = history.location.pathname.includes('/units');
-  const isProjectsPage = history.location.pathname.includes('/projects');
-  const isAuditPage = history.location.pathname.includes('/audit');
-  const isMyRegistryPage = history.location.search.includes('myRegistry=true');
-  const isOrganizationPage =
-    history.location.pathname.includes('/organization');
+  const isUnitsPage = location.pathname.includes('/units');
+  const isProjectsPage = location.pathname.includes('/projects');
+  const isAuditPage = location.pathname.includes('/audit');
+  const isMyRegistryPage = location.search.includes('myRegistry=true');
+  const isOrganizationPage = location.pathname.includes('/organization');
 
   return (
     <Container>
@@ -129,13 +128,15 @@ const LeftNav = withTheme(({ children }) => {
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
-                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}>
+                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
+                >
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   selected={isUnitsPage && isMyRegistryPage}
-                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}>
+                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
+                >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>
@@ -145,14 +146,16 @@ const LeftNav = withTheme(({ children }) => {
                 <MenuItem
                   to={window.location}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled>
+                  disabled
+                >
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   to={window.location}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled>
+                  disabled
+                >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>
@@ -178,7 +181,8 @@ const LeftNav = withTheme(({ children }) => {
               <MenuItem
                 selected={createOrgIsVisible}
                 to={window.location}
-                onClick={() => setCreateOrgIsVisible(true)}>
+                onClick={() => setCreateOrgIsVisible(true)}
+              >
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
