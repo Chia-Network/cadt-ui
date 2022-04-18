@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
@@ -27,7 +26,7 @@ const StyledFormContainer = styled('div')`
   padding-top: 10px;
 `;
 
-const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
+const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
   const { notification } = useSelector(state => state.app);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
@@ -182,6 +181,6 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
       />
     </>
   );
-});
+};
 
 export { CreateUnitsForm };
