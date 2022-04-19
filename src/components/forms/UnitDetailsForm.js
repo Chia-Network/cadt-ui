@@ -131,6 +131,10 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
     ],
   );
 
+  if (!pickLists) {
+    return null;
+  }
+
   return (
     <ModalFormContainerStyle>
       <RequiredContainer>
