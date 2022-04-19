@@ -131,6 +131,10 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
     ],
   );
 
+  if (!pickLists) {
+    return null;
+  }
+
   return (
     <ModalFormContainerStyle>
       <RequiredContainer>
@@ -215,7 +219,11 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={projectLocationIdOptions}
-                state={SimpleSelectStateEnum.default}
+                state={
+                  selectedWarehouseProjectOption
+                    ? SimpleSelectStateEnum.default
+                    : SimpleSelectStateEnum.disabled
+                }
                 selected={
                   unitDetails.projectLocationId
                     ? [unitDetails.projectLocationId]
