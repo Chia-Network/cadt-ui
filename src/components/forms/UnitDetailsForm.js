@@ -215,7 +215,11 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={projectLocationIdOptions}
-                state={SimpleSelectStateEnum.default}
+                state={
+                  selectedWarehouseProjectOption
+                    ? SimpleSelectStateEnum.default
+                    : SimpleSelectStateEnum.disabled
+                }
                 selected={
                   unitDetails.projectLocationId
                     ? [unitDetails.projectLocationId]
