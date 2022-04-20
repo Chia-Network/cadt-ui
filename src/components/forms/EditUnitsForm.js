@@ -14,6 +14,7 @@ import {
   getIssuances,
   getPaginatedData,
   updateUnitsRecord,
+  getProjects,
 } from '../../store/actions/climateWarehouseActions';
 import {
   cleanObjectFromEmptyFieldsOrArrays,
@@ -46,6 +47,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
+      dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
       localStorage.removeItem('unitSelectedWarehouseProjectId');
