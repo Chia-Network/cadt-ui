@@ -13,7 +13,6 @@ export const handleClickLink = link => {
 };
 
 export const detailsViewData = (type, detailData, dataType, changeColor) => {
-  console.log(detailData)
   //all detail view data
   if (type === 'data') {
     return (
@@ -118,11 +117,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
       !detailData[dataType]?.original
     ) {
       //show new form data not changed staging detail view
-      return (
-        <Body>
-          ---
-        </Body>
-      );
+      return <Body>---</Body>;
     } else {
       // show formdata that has no changes or original
       return <Body color={changeColor(dataType, 'INSERT')}>---</Body>;
@@ -130,6 +125,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
   }
 
   if (type === 'subformStagingData') {
+    console.log(detailData);
     //show subform data that was deleted and not replaced in staging detail view
     if (
       detailData[dataType]?.changes[0] === null &&
@@ -143,10 +139,17 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
         </>
       );
     } else if (detailData[dataType]?.changes[0] === '') {
+      console.log(dataType)
       //show subform data that was kept and not deleted
       return (
         <>
-          <Body>{detailData[dataType]?.original}</Body>
+          <Body>
+            {!dataType === 'unitCount'
+              ? detailData[dataType]?.original
+              : detailData[dataType]?.original
+              ? detailData[dataType]?.original
+              : '0'}
+          </Body>
         </>
       );
     } else if (
