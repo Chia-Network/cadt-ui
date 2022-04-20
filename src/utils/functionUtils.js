@@ -125,7 +125,6 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
   }
 
   if (type === 'subformStagingData') {
-    console.log(detailData);
     //show subform data that was deleted and not replaced in staging detail view
     if (
       detailData[dataType]?.changes[0] === null &&
@@ -139,7 +138,6 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
         </>
       );
     } else if (detailData[dataType]?.changes[0] === '') {
-      console.log(dataType)
       //show subform data that was kept and not deleted
       return (
         <>
@@ -178,6 +176,19 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
             {detailData[dataType]?.changes[0]}
           </Body>
           <Body color={changeColor(dataType, 'DELETE')}>
+            {detailData[dataType]?.original}
+          </Body>
+        </>
+      );
+    } else if (
+      _.isEmpty(detailData[dataType]?.changes) &&
+      _.isNumber(detailData[dataType]?.original)
+    ) {
+      //show subform changes in staging view
+      console.log(detailData)
+      return (
+        <>
+          <Body>
             {detailData[dataType]?.original}
           </Body>
         </>

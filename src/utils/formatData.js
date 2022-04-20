@@ -11,9 +11,12 @@ export const formatAPIData = unformattedData => {
     // format arrays
     if (Array.isArray(unformattedData[key])) {
       // take out fields invalidated by the API
-      let cleanArray = unformattedData[key].map(item =>
-        _.omit(item, ['orgUid']),
-      );
+      let cleanArray =
+        key === 'labels'
+          ? unformattedData[key].map(item => _.omit(item, ['orgUid']))
+          : unformattedData[key].map(item =>
+              _.omit(item, ['warehouseProjectId', 'orgUid']),
+            );
       // reformat fields data type
       cleanArray = cleanArray.map(subObject => {
         const transformedToString = [
