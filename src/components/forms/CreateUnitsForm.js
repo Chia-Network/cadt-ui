@@ -9,6 +9,7 @@ import {
   postNewUnits,
   getIssuances,
   getPaginatedData,
+  getProjects,
 } from '../../store/actions/climateWarehouseActions';
 import UnitIssuanceRepeater from './UnitIssuanceRepeater';
 import UnitLabelsRepeater from './UnitLabelsRepeater';
@@ -59,6 +60,7 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
+      dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
       localStorage.removeItem('unitSelectedWarehouseProjectId');
