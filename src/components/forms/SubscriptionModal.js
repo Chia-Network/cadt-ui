@@ -84,7 +84,7 @@ const SubscriptionModal = ({ onClose }) => {
       setPort('');
       setIsValidation(false);
     } else {
-      window.setTimeout(() => setIsValidation(false), 3000);
+      setTimeout(() => setIsValidation(false), 3000);
     }
   };
 
