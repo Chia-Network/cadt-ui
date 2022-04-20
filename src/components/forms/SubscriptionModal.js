@@ -62,19 +62,29 @@ const SubscriptionModal = ({ onClose }) => {
   const [port, setPort] = useState('');
   const intl = useIntl();
   const { organizations } = useSelector(store => store.climateWarehouse);
+  const [isValidationOn, setIsValidation] = useState(false);
 
   useEffect(() => {
     dispatch(getOrganizationData());
   }, []);
 
-  const isValidationOn = orgUid.length > 0;
   const isOrgUidValid = Boolean(orgUid.length > 4);
   const isIpValid = useMemo(() => validateIp(ip), [ip]);
   const isPortValid = useMemo(() => validatePort(port), [port]);
 
   const submitCustomOrganization = () => {
+    if (!isValidationOn) {
+      setIsValidation(true);
+    }
+
     if (isOrgUidValid && isIpValid && isPortValid) {
       dispatch(subscribeImportOrg({ orgUid, ip, port }));
+      setOrgUid('');
+      setIp('');
+      setPort('');
+      setIsValidation(false);
+    } else {
+      window.setTimeout(() => setIsValidation(false), 3000);
     }
   };
 
