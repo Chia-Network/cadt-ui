@@ -41,7 +41,8 @@ const EditProjectsForm = ({
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { notification, showProgressOverlay } = useSelector(state => state.app);
+  const { notification, showProgressOverlay: apiResponseIsPending } =
+    useSelector(state => state.app);
 
   useEffect(() => {
     const formattedProjectData = formatAPIData(projectToBeEdited);
@@ -70,7 +71,7 @@ const EditProjectsForm = ({
       dispatch(setValidateForm(false));
       if (
         desiredStep >= stepperStepsTranslationIds.length &&
-        !showProgressOverlay
+        !apiResponseIsPending
       ) {
         handleSubmitProject();
       } else {

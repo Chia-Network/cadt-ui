@@ -28,7 +28,8 @@ const CreateProjectForm = ({ onClose, modalSizeAndPosition }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { notification, showProgressOverlay } = useSelector(state => state.app);
+  const { notification, showProgressOverlay: apiResponseIsPending } =
+    useSelector(state => state.app);
 
   const [project, setProject] = useState({
     currentRegistry: '',
@@ -74,7 +75,7 @@ const CreateProjectForm = ({ onClose, modalSizeAndPosition }) => {
       dispatch(setValidateForm(false));
       if (
         desiredStep >= stepperStepsTranslationIds.length &&
-        !showProgressOverlay
+        !apiResponseIsPending
       ) {
         handleSubmitProject();
       } else {

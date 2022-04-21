@@ -49,7 +49,8 @@ const SplitUnitForm = ({ onClose, record }) => {
   ]);
   const intl = useIntl();
   const [validationErrors, setValidationErrors] = useState([]);
-  const { notification, showProgressOverlay } = useSelector(state => state.app);
+  const { notification, showProgressOverlay: apiResponseIsPending } =
+    useSelector(state => state.app);
 
   const { units, pickLists } = useSelector(store => store.climateWarehouse);
   const fullRecord = units.filter(
@@ -73,7 +74,7 @@ const SplitUnitForm = ({ onClose, record }) => {
     });
 
   const onSubmit = () => {
-    if (!showProgressOverlay) {
+    if (!apiResponseIsPending) {
       validationSchema
         .validate(data, { abortEarly: false, recursive: true })
         .then(() => {

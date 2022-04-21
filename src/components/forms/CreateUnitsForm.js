@@ -28,7 +28,8 @@ const StyledFormContainer = styled('div')`
 `;
 
 const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
-  const { notification, showProgressOverlay } = useSelector(state => state.app);
+  const { notification, showProgressOverlay: apiResponseIsPending } =
+    useSelector(state => state.app);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -84,7 +85,7 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
       dispatch(setValidateForm(false));
       if (
         desiredStep >= stepperStepsTranslationIds.length &&
-        !showProgressOverlay
+        !apiResponseIsPending
       ) {
         handleSubmitUnit();
       } else {
