@@ -32,7 +32,8 @@ const StyledFormContainer = styled('div')`
 const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
-  const { notification } = useSelector(state => state.app);
+  const { notification, showProgressOverlay: apiResponseIsPending } =
+    useSelector(state => state.app);
   const [unit, setUnit] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
@@ -80,7 +81,10 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
       isMandatoryIssuanceChecked
     ) {
       dispatch(setValidateForm(false));
-      if (desiredStep >= stepperStepsTranslationIds.length) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !apiResponseIsPending
+      ) {
         handleUpdateUnit();
       } else {
         dispatch(setValidateForm(false));
