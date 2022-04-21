@@ -185,7 +185,6 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
       _.isNumber(detailData[dataType]?.original)
     ) {
       //show subform changes in staging view
-      console.log(detailData)
       return (
         <>
           <Body>
