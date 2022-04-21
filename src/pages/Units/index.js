@@ -326,7 +326,10 @@ const Units = () => {
                 />
               )}
             {isCommitModalVisible && (
-              <CommitModal onClose={() => setIsCommitModalVisible(false)} />
+              <CommitModal
+                onClose={() => setIsCommitModalVisible(false)}
+                modalFor="units"
+              />
             )}
           </StyledButtonContainer>
         </StyledHeaderContainer>

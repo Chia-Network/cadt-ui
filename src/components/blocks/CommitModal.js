@@ -14,7 +14,7 @@ import {
 
 import { commitStagingData } from '../../store/actions/climateWarehouseActions';
 
-const CommitModal = ({ onClose }) => {
+const CommitModal = ({ onClose, modalFor }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const [commitMessage, setCommitMessage] = useState('');
@@ -31,7 +31,12 @@ const CommitModal = ({ onClose }) => {
 
   return (
     <Modal
-      title={intl.formatMessage({ id: 'commit-projects-message-question' })}
+      title={intl.formatMessage({
+        id:
+          modalFor === 'projects'
+            ? 'commit-projects-message-question'
+            : 'commit-units-message-question',
+      })}
       body={
         <div>
           <StyledFieldContainer>

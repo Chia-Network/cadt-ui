@@ -328,7 +328,10 @@ const Projects = () => {
           </StyledButtonContainer>
         </StyledHeaderContainer>
         {isCommitModalVisible && (
-          <CommitModal onClose={() => setIsCommitModalVisible(false)} />
+          <CommitModal
+            onClose={() => setIsCommitModalVisible(false)}
+            modalFor="projects"
+          />
         )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
