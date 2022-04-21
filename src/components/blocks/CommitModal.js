@@ -1,36 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 
-import { Modal, modalTypeEnum, Body } from '../../components';
+import {
+  Modal,
+  modalTypeEnum,
+  StyledFieldContainer,
+  InputContainer,
+  StandardInput,
+  InputSizeEnum,
+  InputVariantEnum,
+} from '../../components';
 
 import { commitStagingData } from '../../store/actions/climateWarehouseActions';
 
 const CommitModal = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
+  const [commitMessage, setCommitMessage] = useState('');
 
   const onCommit = () => {
-    dispatch(commitStagingData('Projects'));
+    dispatch(commitStagingData('Projects', commitMessage));
     onClose();
   };
 
   const onCommitAll = () => {
-    dispatch(commitStagingData('all'));
+    dispatch(commitStagingData('all', commitMessage));
     onClose();
   };
 
   return (
     <Modal
-      title={intl.formatMessage({ id: 'commit-message' })}
+      title={intl.formatMessage({ id: 'commit-projects-message-question' })}
       body={
         <div>
-          this is where the field
-          <Body size="Large">
-            {intl.formatMessage({
-              id: 'commit-projects-message-question',
-            })}
-          </Body>
+          <StyledFieldContainer>
+            <InputContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                variant={InputVariantEnum.default}
+                value={commitMessage}
+                onChange={value => setCommitMessage(value)}
+                placeholderText={intl.formatMessage({
+                  id: 'commit-message',
+                })}
+              />
+            </InputContainer>
+          </StyledFieldContainer>
         </div>
       }
       modalType={modalTypeEnum.basic}

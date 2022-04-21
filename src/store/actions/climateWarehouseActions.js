@@ -352,7 +352,9 @@ export const getPaginatedData = ({
   };
 };
 
-export const commitStagingData = data => {
+export const commitStagingData = (data, message) => {
+  console.log(message);
+
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
