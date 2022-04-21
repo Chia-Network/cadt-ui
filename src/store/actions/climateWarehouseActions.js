@@ -353,8 +353,6 @@ export const getPaginatedData = ({
 };
 
 export const commitStagingData = (data, message) => {
-  console.log(message);
-
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -368,6 +366,9 @@ export const commitStagingData = (data, message) => {
           'Content-Type': 'application/json',
         },
       };
+      if (message?.length > 0) {
+        payload.body = JSON.stringify({ message });
+      }
 
       const response = await fetchWrapper(url, payload);
 
