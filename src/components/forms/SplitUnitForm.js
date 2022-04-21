@@ -49,7 +49,7 @@ const SplitUnitForm = ({ onClose, record }) => {
   ]);
   const intl = useIntl();
   const [validationErrors, setValidationErrors] = useState([]);
-  const { notification } = useSelector(state => state.app);
+  const { notification, showProgressOverlay } = useSelector(state => state.app);
 
   const { units, pickLists } = useSelector(store => store.climateWarehouse);
   const fullRecord = units.filter(
@@ -73,39 +73,41 @@ const SplitUnitForm = ({ onClose, record }) => {
     });
 
   const onSubmit = () => {
-    validationSchema
-      .validate(data, { abortEarly: false, recursive: true })
-      .then(() => {
-        setValidationErrors([]);
-        dispatch(
-          splitUnits({
-            warehouseUnitId: fullRecord.warehouseUnitId,
-            records: data.map(splittedUnit => {
-              const newUnit = {};
-              newUnit.unitCount = splittedUnit.unitCount;
+    if (!showProgressOverlay) {
+      validationSchema
+        .validate(data, { abortEarly: false, recursive: true })
+        .then(() => {
+          setValidationErrors([]);
+          dispatch(
+            splitUnits({
+              warehouseUnitId: fullRecord.warehouseUnitId,
+              records: data.map(splittedUnit => {
+                const newUnit = {};
+                newUnit.unitCount = splittedUnit.unitCount;
 
-              if (splittedUnit.unitOwner !== '') {
-                newUnit.unitOwner = splittedUnit.unitOwner;
-              }
+                if (splittedUnit.unitOwner !== '') {
+                  newUnit.unitOwner = splittedUnit.unitOwner;
+                }
 
-              if (splittedUnit.countryJurisdictionOfOwner !== '') {
-                newUnit.countryJurisdictionOfOwner =
-                  splittedUnit.countryJurisdictionOfOwner;
-              }
+                if (splittedUnit.countryJurisdictionOfOwner !== '') {
+                  newUnit.countryJurisdictionOfOwner =
+                    splittedUnit.countryJurisdictionOfOwner;
+                }
 
-              if (splittedUnit.inCountryJurisdictionOfOwner !== '') {
-                newUnit.inCountryJurisdictionOfOwner =
-                  splittedUnit.inCountryJurisdictionOfOwner;
-              }
+                if (splittedUnit.inCountryJurisdictionOfOwner !== '') {
+                  newUnit.inCountryJurisdictionOfOwner =
+                    splittedUnit.inCountryJurisdictionOfOwner;
+                }
 
-              return newUnit;
+                return newUnit;
+              }),
             }),
-          }),
-        );
-      })
-      .catch(err => {
-        setValidationErrors([...err.errors]);
-      });
+          );
+        })
+        .catch(err => {
+          setValidationErrors([...err.errors]);
+        });
+    }
   };
 
   const unitWasSuccessfullySplit =
