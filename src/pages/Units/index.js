@@ -12,7 +12,6 @@ import { useWindowSize } from '../../components/hooks/useWindowSize';
 import {
   getStagingData,
   deleteStagingData,
-  commitStagingData,
   getPaginatedData,
   retryStagingData,
 } from '../../store/actions/climateWarehouseActions';
@@ -38,11 +37,8 @@ import {
   StagingDataGroups,
   SelectOrganizations,
   UploadXLSX,
-  Modal,
-  modalTypeEnum,
-  Body,
+  CommitModal,
 } from '../../components';
-import { setCommit } from '../../store/actions/app';
 
 const headings = [
   'projectLocationId',
@@ -122,7 +118,8 @@ const StyledCSVOperationsContainer = styled('div')`
 const Units = () => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification, commit } = useSelector(store => store.app);
+  const { notification } = useSelector(store => store.app);
+  const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
   const intl = useIntl();
   let location = useLocation();
   let navigate = useNavigate();
@@ -260,16 +257,6 @@ const Units = () => {
     return null;
   }
 
-  const onCommit = () => {
-    dispatch(commitStagingData('Units'));
-    dispatch(setCommit(false));
-  };
-
-  const onCommitAll = () => {
-    dispatch(commitStagingData('all'));
-    dispatch(setCommit(false));
-  };
-
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrganization(orgUid);
@@ -335,26 +322,11 @@ const Units = () => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={() => dispatch(setCommit(true))}
+                  onClick={() => setIsCommitModalVisible(true)}
                 />
               )}
-            {commit && (
-              <Modal
-                title={intl.formatMessage({ id: 'commit-message' })}
-                body={
-                  <Body size="Large">
-                    {intl.formatMessage({
-                      id: 'commit-units-message-question',
-                    })}
-                  </Body>
-                }
-                modalType={modalTypeEnum.basic}
-                onOk={onCommit}
-                extraButtonLabel={intl.formatMessage({ id: 'everything' })}
-                extraButtonOnClick={onCommitAll}
-                onClose={() => dispatch(setCommit(false))}
-                label={intl.formatMessage({ id: 'only-units' })}
-              />
+            {isCommitModalVisible && (
+              <CommitModal onClose={() => setIsCommitModalVisible(false)} />
             )}
           </StyledButtonContainer>
         </StyledHeaderContainer>

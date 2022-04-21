@@ -25,10 +25,9 @@ import {
   CreateProjectForm,
   H3,
   UploadXLSX,
-  Modal,
-  modalTypeEnum,
-  Body,
+  CommitModal,
 } from '../../components';
+
 import {
   setPendingError,
   setValidateForm,
@@ -38,12 +37,9 @@ import {
 import {
   getStagingData,
   deleteStagingData,
-  commitStagingData,
   getPaginatedData,
   retryStagingData,
 } from '../../store/actions/climateWarehouseActions';
-
-import { setCommit } from '../../store/actions/app';
 
 const headings = [
   'currentRegistry',
@@ -124,7 +120,8 @@ const StyledCSVOperationsContainer = styled('div')`
 
 const Projects = () => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { notification, commit } = useSelector(store => store.app);
+  const { notification } = useSelector(store => store.app);
+  const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -272,16 +269,6 @@ const Projects = () => {
     return null;
   }
 
-  const onCommit = () => {
-    dispatch(commitStagingData('Projects'));
-    dispatch(setCommit(false));
-  };
-
-  const onCommitAll = () => {
-    dispatch(commitStagingData('all'));
-    dispatch(setCommit(false));
-  };
-
   return (
     <>
       <StyledSectionContainer ref={projectsContainerRef}>
@@ -335,28 +322,13 @@ const Projects = () => {
                 <PrimaryButton
                   label={intl.formatMessage({ id: 'commit' })}
                   size="large"
-                  onClick={() => dispatch(setCommit(true))}
+                  onClick={() => setIsCommitModalVisible(true)}
                 />
               )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
-        {commit && (
-          <Modal
-            title={intl.formatMessage({ id: 'commit-message' })}
-            body={
-              <Body size="Large">
-                {intl.formatMessage({
-                  id: 'commit-projects-message-question',
-                })}
-              </Body>
-            }
-            modalType={modalTypeEnum.basic}
-            extraButtonLabel={intl.formatMessage({ id: 'everything' })}
-            extraButtonOnClick={onCommitAll}
-            onClose={() => dispatch(setCommit(false))}
-            onOk={onCommit}
-            label={intl.formatMessage({ id: 'only-projects' })}
-          />
+        {isCommitModalVisible && (
+          <CommitModal onClose={() => setIsCommitModalVisible(false)} />
         )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
