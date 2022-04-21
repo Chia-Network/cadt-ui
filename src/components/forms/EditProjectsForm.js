@@ -41,7 +41,7 @@ const EditProjectsForm = ({
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { notification } = useSelector(state => state.app);
+  const { notification, showProgressOverlay } = useSelector(state => state.app);
 
   useEffect(() => {
     const formattedProjectData = formatAPIData(projectToBeEdited);
@@ -68,11 +68,13 @@ const EditProjectsForm = ({
     dispatch(setValidateForm(true));
     if (isValid) {
       dispatch(setValidateForm(false));
-      if (desiredStep >= stepperStepsTranslationIds.length) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !showProgressOverlay
+      ) {
         handleSubmitProject();
       } else {
         setTabValue(desiredStep);
-        dispatch(setValidateForm(false));
       }
     }
   };
@@ -122,7 +124,8 @@ const EditProjectsForm = ({
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}>
+                    sx={{ cursor: 'pointer' }}
+                  >
                     <StepLabel>
                       {intl.formatMessage({
                         id: stepTranslationId,
@@ -135,7 +138,8 @@ const EditProjectsForm = ({
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
+                index={0}
+              >
                 <ProjectDetailsForm
                   projectDetails={project}
                   setProjectDetails={setProject}

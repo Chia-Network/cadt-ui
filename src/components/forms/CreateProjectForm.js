@@ -28,7 +28,7 @@ const CreateProjectForm = ({ onClose, modalSizeAndPosition }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { notification } = useSelector(state => state.app);
+  const { notification, showProgressOverlay } = useSelector(state => state.app);
 
   const [project, setProject] = useState({
     currentRegistry: '',
@@ -72,11 +72,13 @@ const CreateProjectForm = ({ onClose, modalSizeAndPosition }) => {
     dispatch(setValidateForm(true));
     if (isValid) {
       dispatch(setValidateForm(false));
-      if (desiredStep >= stepperStepsTranslationIds.length) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !showProgressOverlay
+      ) {
         handleSubmitProject();
       } else {
         setTabValue(desiredStep);
-        dispatch(setValidateForm(false));
       }
     }
   };
