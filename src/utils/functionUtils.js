@@ -60,6 +60,12 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
           </Body>
         </>
       );
+    } else if (detailData[dataType]?.changes[0] === '') {
+      return (
+        <>
+          <Body>{detailData[dataType]?.original}</Body>
+        </>
+      );
     } else {
       return (
         <Body color={changeColor(dataType, 'INSERT')}>
@@ -102,10 +108,16 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
     ) {
       //show new form data not changed staging detail view
       return (
-        <Body color={changeColor(dataType, 'INSERT')}>
+        <Body>
           {detailData && detailData[dataType] && detailData[dataType].original}
         </Body>
       );
+    } else if (
+      !detailData[dataType]?.changes[0] &&
+      !detailData[dataType]?.original
+    ) {
+      //show new form data not changed staging detail view
+      return <Body>---</Body>;
     } else {
       // show formdata that has no changes or original
       return <Body color={changeColor(dataType, 'INSERT')}>---</Body>;
@@ -129,8 +141,12 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
       //show subform data that was kept and not deleted
       return (
         <>
-          <Body color={changeColor(dataType, 'INSERT')}>
-            {detailData[dataType]?.original}
+          <Body>
+            {!dataType === 'unitCount'
+              ? detailData[dataType]?.original
+              : detailData[dataType]?.original
+              ? detailData[dataType]?.original
+              : '0'}
           </Body>
         </>
       );
@@ -164,11 +180,25 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
           </Body>
         </>
       );
+    } else if (
+      _.isEmpty(detailData[dataType]?.changes) &&
+      _.isNumber(detailData[dataType]?.original)
+    ) {
+      //show subform changes in staging view
+      return (
+        <>
+          <Body>
+            {detailData[dataType]?.original}
+          </Body>
+        </>
+      );
     } else {
       //show subform original in staging view
       return (
         <Body color={changeColor(dataType, 'INSERT')}>
-          {detailData && detailData[dataType] && detailData[dataType].original}
+          {detailData && detailData[dataType] && detailData[dataType].original
+            ? detailData[dataType].original
+            : '0'}
         </Body>
       );
     }
@@ -217,8 +247,9 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
             </a>
           </Body>
           {detailData[dataType]?.changes[0] && detailData[dataType]?.original && (
-            <Body color={changeColor(dataType, 'DELETE')}>
+            <Body>
               <a
+                style={{ color: 'red' }}
                 href={handleClickLink(detailData[dataType]?.original)}
                 target="_blank"
                 rel="noreferrer noopener">
@@ -273,8 +304,9 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
     } else if (detailData[dataType]?.changes[0] === null) {
       // show deleted subform links
       return (
-        <Body color={changeColor(dataType, 'DELETE')}>
+        <Body>
           <a
+            style={{ color: 'red' }}
             href={handleClickLink(detailData[dataType]?.original)}
             target="_blank"
             rel="noreferrer noopener">
@@ -295,6 +327,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
       !_.isEmpty(detailData[dataType]?.changes) &&
       _.some(detailData[dataType]?.changes)
     ) {
+      //subform link changes
       return (
         <>
           <Body color={changeColor(dataType, 'INSERT')}>
@@ -317,8 +350,9 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
             </a>
           </Body>
           {detailData[dataType]?.changes[0] && detailData[dataType]?.original && (
-            <Body color={changeColor(dataType, 'DELETE')}>
+            <Body>
               <a
+                style={{ color: 'red' }}
                 href={handleClickLink(detailData[dataType]?.original)}
                 target="_blank"
                 rel="noreferrer noopener">
@@ -353,8 +387,21 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
           </a>
         </Body>
       );
-    } else if (!_.some(detailData[dataType]?.changes)) {
-      return <Body color={changeColor(dataType, 'INSERT')}>---</Body>;
+    } else if (
+      _.isEmpty(detailData[dataType]?.changes) &&
+      detailData[dataType]?.original
+    ) {
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {detailData[dataType].original}
+        </Body>
+      );
+    } else if (
+      !detailData[dataType]?.changes[0] &&
+      !detailData[dataType]?.original
+    ) {
+      //show new form data not changed staging detail view
+      return <Body>---</Body>;
     } else {
       return (
         <Body color={changeColor(dataType, 'INSERT')}>
