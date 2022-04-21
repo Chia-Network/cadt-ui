@@ -28,7 +28,7 @@ const StyledFormContainer = styled('div')`
 `;
 
 const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
-  const { notification } = useSelector(state => state.app);
+  const { notification, showProgressOverlay } = useSelector(state => state.app);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -82,10 +82,12 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
       isMandatoryIssuanceChecked
     ) {
       dispatch(setValidateForm(false));
-      if (desiredStep >= stepperStepsTranslationIds.length) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !showProgressOverlay
+      ) {
         handleSubmitUnit();
       } else {
-        dispatch(setValidateForm(false));
         setTabValue(desiredStep);
         dispatch(setForm(stepperStepsTranslationIds[desiredStep]));
       }
