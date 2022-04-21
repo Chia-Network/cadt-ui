@@ -20,7 +20,11 @@ const CommitModal = ({ onClose, modalFor }) => {
   const [commitMessage, setCommitMessage] = useState('');
 
   const onCommit = () => {
-    dispatch(commitStagingData('Projects', commitMessage));
+    if (modalFor === 'projects') {
+      dispatch(commitStagingData('Projects', commitMessage));
+    } else {
+      dispatch(commitStagingData('Units', commitMessage));
+    }
     onClose();
   };
 
@@ -59,7 +63,9 @@ const CommitModal = ({ onClose, modalFor }) => {
       extraButtonOnClick={onCommitAll}
       onClose={() => onClose()}
       onOk={onCommit}
-      label={intl.formatMessage({ id: 'only-projects' })}
+      label={intl.formatMessage({
+        id: modalFor === 'projects' ? 'only-projects' : 'only-units',
+      })}
     />
   );
 };
