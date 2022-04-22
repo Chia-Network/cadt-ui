@@ -10,7 +10,6 @@ import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
 
 import {
-  getStagingData,
   deleteStagingData,
   commitStagingData,
   getPaginatedData,
@@ -223,7 +222,6 @@ const Units = () => {
       options.orgUid = searchParams.get('orgUid');
     }
     dispatch(getPaginatedData(options));
-    dispatch(getStagingData({ useMockedResponse: false }));
   }, [
     dispatch,
     tabValue,

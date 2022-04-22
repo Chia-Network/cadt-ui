@@ -19,7 +19,6 @@ const StyledPaginationContainer = styled('div')`
   min-height: 70px;
   width: 100%;
   max-height: 70px;
-  z-index: 10000;
   margin: 25px 0px 25px 0px;
 `;
 
