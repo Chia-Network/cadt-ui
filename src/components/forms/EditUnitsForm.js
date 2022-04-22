@@ -14,6 +14,7 @@ import {
   getIssuances,
   getPaginatedData,
   updateUnitsRecord,
+  getProjects,
 } from '../../store/actions/climateWarehouseActions';
 import {
   cleanObjectFromEmptyFieldsOrArrays,
@@ -31,7 +32,8 @@ const StyledFormContainer = styled('div')`
 const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
-  const { notification } = useSelector(state => state.app);
+  const { notification, showProgressOverlay: apiResponseIsPending } =
+    useSelector(state => state.app);
   const [unit, setUnit] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
@@ -46,6 +48,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
+      dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
       localStorage.removeItem('unitSelectedWarehouseProjectId');
@@ -78,7 +81,10 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
       isMandatoryIssuanceChecked
     ) {
       dispatch(setValidateForm(false));
-      if (desiredStep >= stepperStepsTranslationIds.length) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !apiResponseIsPending
+      ) {
         handleUpdateUnit();
       } else {
         dispatch(setValidateForm(false));

@@ -248,19 +248,22 @@ const SelectOrganizations = withTheme(
     };
 
     const organizationsList = useMemo(() => {
-      const list = Object.keys(organizations)
-        .filter(orgKey => organizations[orgKey]?.subscribed)
-        .map(orgUid => ({
-          orgUid: orgUid,
-          name: organizations[orgUid].name,
-          icon: organizations[orgUid].icon,
-        }));
+      if (organizations) {
+        const list = Object.keys(organizations)
+          .filter(orgKey => organizations[orgKey]?.subscribed)
+          .map(orgUid => ({
+            orgUid: orgUid,
+            name: organizations[orgUid].name,
+            icon: organizations[orgUid].icon,
+          }));
 
-      if (displayAllOrganizations) {
-        list.unshift(allOrganizationsItem);
+        if (displayAllOrganizations) {
+          list.unshift(allOrganizationsItem);
+        }
+
+        return list;
       }
-
-      return list;
+      return [];
     }, [organizations]);
 
     const noChangeOrganization = {
