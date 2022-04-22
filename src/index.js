@@ -9,7 +9,6 @@ import './index.css';
 
 import App from './App';
 import store from './store';
-import { saveCurrentUrlToStorage } from './navigation';
 
 // Allows the app to reload in a platform agnostic way (either in browser or electron)
 const RefreshWrapper = () => {
@@ -21,7 +20,6 @@ const RefreshWrapper = () => {
   }, [appStore.refresh]);
 
   if (appStore.refresh) {
-    saveCurrentUrlToStorage();
     return null;
   }
 

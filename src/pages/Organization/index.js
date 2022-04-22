@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import QRCode from 'qrcode.react';
-import { useDispatch } from 'react-redux';
 
 import { validateUrl } from '../../utils/urlUtils';
 import {
@@ -15,7 +14,6 @@ import {
   SubscriptionModal,
 } from '../../components';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
 
 const StyledOrganizationContainer = styled('div')`
   padding: 30px 63px;
@@ -64,7 +62,6 @@ const StyledCopyIconContainer = styled('div')`
 
 const Organization = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
   const { organizations } = useSelector(store => store.climateWarehouse);
@@ -73,10 +70,6 @@ const Organization = () => {
   const createMarkup = icon => {
     return { __html: icon };
   };
-
-  useEffect(() => {
-    dispatch(getOrganizationData());
-  }, []);
 
   if (!organizations || myOrgUid === 'none') {
     return null;

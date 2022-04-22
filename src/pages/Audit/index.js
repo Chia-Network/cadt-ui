@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { useIntl, FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
@@ -88,7 +87,7 @@ const StyledIconContainer = styled('div')`
   color: #3b8ee0;
 `;
 
-const Audit = withRouter(() => {
+const Audit = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
@@ -100,7 +99,6 @@ const Audit = withRouter(() => {
   useEffect(() => {
     dispatch(getOrganizationData());
     const storageAuditSortOrder = localStorage.getItem('auditSortOrder');
-    console.log('storageAuditSortOrder', storageAuditSortOrder);
     if (storageAuditSortOrder) {
       setAuditSortOrder(storageAuditSortOrder);
     }
@@ -279,6 +277,6 @@ const Audit = withRouter(() => {
       )}
     </StyledSectionContainer>
   );
-});
+};
 
 export { Audit };

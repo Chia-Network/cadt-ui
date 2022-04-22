@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/xlsxUtils';
@@ -119,17 +119,18 @@ const StyledCSVOperationsContainer = styled('div')`
   gap: 20px;
 `;
 
-const Units = withRouter(() => {
+const Units = () => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const { notification, commit } = useSelector(store => store.app);
   const intl = useIntl();
-  let history = useHistory();
+  let location = useLocation();
+  let navigate = useNavigate();
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
-  let searchParams = new URLSearchParams(history.location.search);
+  let searchParams = new URLSearchParams(location.search);
   const unitsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
@@ -178,19 +179,21 @@ const Units = withRouter(() => {
     () =>
       _.debounce(event => {
         if (event.target.value !== '') {
-          history.replace({
-            search: getUpdatedUrl(window.location.search, {
+          navigate(
+            `${location.pathname}?${getUpdatedUrl(location.search, {
               param: 'search',
               value: event.target.value,
-            }),
-          });
+            })}`,
+            { replace: true },
+          );
         } else {
-          history.replace({
-            search: getUpdatedUrl(window.location.search, {
+          navigate(
+            `${location.pathname}?${getUpdatedUrl(location.search, {
               param: 'search',
               value: null,
-            }),
-          });
+            })}`,
+            { replace: true },
+          );
         }
         setSearchQuery(event.target.value);
       }, 300),
@@ -270,12 +273,13 @@ const Units = withRouter(() => {
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrganization(orgUid);
-    history.replace({
-      search: getUpdatedUrl(window.location.search, {
+    navigate(
+      `${location.pathname}?${getUpdatedUrl(location.search, {
         param: 'orgUid',
         value: orgUid,
-      }),
-    });
+      })}`,
+      { replace: true },
+    );
   };
 
   return (
@@ -524,6 +528,6 @@ const Units = withRouter(() => {
       </StyledSectionContainer>
     </>
   );
-});
+};
 
 export { Units };

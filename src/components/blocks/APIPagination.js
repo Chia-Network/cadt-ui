@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ArrowDownIcon, ThreeDotsIcon } from '..';
 import { getPaginatedData } from '../../store/actions/climateWarehouseActions';
 import constants from '../../constants';
@@ -59,7 +59,7 @@ export const PagesContainer = styled(ControlsContainer)`
 
 const APIPagination = withTheme(({ showLast = false, actions }) => {
   const dispatch = useDispatch();
-  const { location } = useHistory();
+  const location = useLocation();
   let searchParams = new URLSearchParams(location.search);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);

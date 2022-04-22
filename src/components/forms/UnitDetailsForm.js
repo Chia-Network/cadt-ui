@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 
@@ -30,6 +30,11 @@ import {
   SimpleSelectStateEnum,
   SimpleSelectVariantEnum,
   SimpleSelect,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
+  SelectVariantEnum,
 } from '..';
 
 import { unitsSchema } from '../../store/validations';
@@ -38,13 +43,97 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
   const [errorMessage, setErrorMessage] = useState({});
   const { validateForm, formType } = useSelector(state => state.app);
   const intl = useIntl();
-  const { pickLists } = useSelector(store => store.climateWarehouse);
+  const { pickLists, projects, issuances } = useSelector(
+    store => store.climateWarehouse,
+  );
+  const [selectedWarehouseProjectOption, setSelectedWarehouseProjectOption] =
+    useState(null);
 
   useEffect(() => {
     if (validateForm && formType === 'unit') {
       setValidationErrors(unitsSchema, unitDetails, setErrorMessage);
     }
   }, [unitDetails, validateForm, formType]);
+
+  const projectsSelectOptions = useMemo(() => {
+    if (projects) {
+      return projects.map(projectItem => ({
+        value: projectItem,
+        label: projectItem.projectName,
+      }));
+    }
+    return [];
+  }, [projects]);
+
+  const projectLocationIdOptions = useMemo(() => {
+    if (selectedWarehouseProjectOption?.value?.projectLocations?.length > 0) {
+      return selectedWarehouseProjectOption?.value?.projectLocations?.map(
+        item => item.country,
+      );
+    }
+    return [];
+  }, [selectedWarehouseProjectOption]);
+
+  useEffect(() => {
+    if (
+      unitDetails?.issuance &&
+      issuances?.length > 0 &&
+      selectedWarehouseProjectOption === null &&
+      projectsSelectOptions
+    ) {
+      const inferredProjectId = issuances.filter(item => item.id)[0]
+        ?.warehouseProjectId;
+      const inferredProjectOption = inferredProjectId
+        ? projectsSelectOptions.filter(
+            item => item.value.warehouseProjectId === inferredProjectId,
+          )[0]
+        : null;
+      if (inferredProjectOption) {
+        setSelectedWarehouseProjectOption(inferredProjectOption);
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          inferredProjectOption.value.warehouseProjectId,
+        );
+      }
+    }
+  }, [unitDetails, issuances, projectsSelectOptions]);
+
+  const changeSelectedProjectOption = useCallback(
+    selectedProjectOption => {
+      setSelectedWarehouseProjectOption(selectedProjectOption);
+
+      localStorage.removeItem('unitSelectedWarehouseProjectId');
+      const selectedProjectHasIssuances =
+        selectedProjectOption.value?.issuances?.length > 0;
+      if (selectedProjectHasIssuances) {
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          selectedProjectOption.value.warehouseProjectId,
+        );
+      }
+
+      const isCurrentSavedIssuanceOnTheSelectedProject =
+        selectedProjectOption?.value?.issuances.some(
+          issuanceItem => issuanceItem?.id === unitDetails?.issuance?.id,
+        );
+      if (!isCurrentSavedIssuanceOnTheSelectedProject) {
+        setUnitDetails(prev => ({
+          ...prev,
+          projectLocationId: '',
+          issuance: '',
+        }));
+      }
+    },
+    [
+      selectedWarehouseProjectOption,
+      setSelectedWarehouseProjectOption,
+      setUnitDetails,
+    ],
+  );
+
+  if (!pickLists) {
+    return null;
+  }
 
   return (
     <ModalFormContainerStyle>
@@ -53,11 +142,64 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
       </RequiredContainer>
       <FormContainerStyle>
         <BodyContainer>
+          {projectsSelectOptions && (
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="select-existing-project" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'select-existing-project',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <Select
+                  size={SelectSizeEnum.large}
+                  type={SelectTypeEnum.basic}
+                  options={projectsSelectOptions}
+                  state={SelectStateEnum.default}
+                  variant={
+                    ((!selectedWarehouseProjectOption && validateForm) ||
+                      selectedWarehouseProjectOption?.value?.issuances
+                        ?.length === 0) &&
+                    SelectVariantEnum.error
+                  }
+                  selected={
+                    selectedWarehouseProjectOption
+                      ? [selectedWarehouseProjectOption]
+                      : undefined
+                  }
+                  onChange={selectedOptions =>
+                    changeSelectedProjectOption(selectedOptions[0])
+                  }
+                />
+              </InputContainer>
+              {!selectedWarehouseProjectOption && validateForm && (
+                <Body size="Small" color="red">
+                  <FormattedMessage id="select-existing-project" />
+                </Body>
+              )}
+              {selectedWarehouseProjectOption?.value?.issuances?.length ===
+                0 && (
+                <Body size="Small" color="red">
+                  {intl.formatMessage({
+                    id: 'select-another-project',
+                  })}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          )}
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="project-location-id" />
+                  <FormattedMessage id="project-location-id" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -69,26 +211,38 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.projectLocationId
-                    ? InputVariantEnum.error
+              <SimpleSelect
+                key={
+                  selectedWarehouseProjectOption?.value?.warehouseProjectId ||
+                  'location-select'
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={projectLocationIdOptions}
+                state={
+                  selectedWarehouseProjectOption
+                    ? SimpleSelectStateEnum.default
+                    : SimpleSelectStateEnum.disabled
+                }
+                selected={
+                  unitDetails.projectLocationId
+                    ? [unitDetails.projectLocationId]
                     : undefined
                 }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'project-location-id',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.projectLocationId}
-                onChange={value =>
+                onChange={selectedOptions =>
                   setUnitDetails(prev => ({
                     ...prev,
-                    projectLocationId: value,
+                    projectLocationId: selectedOptions[0],
                   }))
                 }
               />
             </InputContainer>
+            {selectedWarehouseProjectOption &&
+              projectLocationIdOptions.length === 0 && (
+                <Body size="Small">
+                  <FormattedMessage id="project-has-no-locations" />
+                </Body>
+              )}
             {errorMessage?.projectLocationId && (
               <Body size="Small" color="red">
                 {errorMessage.projectLocationId}

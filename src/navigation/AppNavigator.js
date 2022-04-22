@@ -1,8 +1,12 @@
 import React, { Suspense, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
-import { Router } from 'react-router';
-import { Route, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import {
   IndeterminateProgressOverlay,
   Dashboard,
@@ -11,7 +15,6 @@ import {
 import { NotificationContainer } from 'react-notifications';
 
 import { signOut } from '../store/actions/app';
-import { history } from './';
 import * as Pages from '../pages';
 
 import { createNotification } from '../utils/notificationUtils';
@@ -19,15 +22,10 @@ import { createNotification } from '../utils/notificationUtils';
 import { AppContainer, Modal, modalTypeEnum } from '../components';
 import { setPendingError, setNotificationMessage } from '../store/actions/app';
 import { getOrganizationData } from '../store/actions/climateWarehouseActions';
-import { reloadCurrentUrlFromStorage } from './history';
 
 const AppNavigator = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    reloadCurrentUrlFromStorage();
-  }, []);
 
   const {
     showProgressOverlay,
@@ -75,33 +73,19 @@ const AppNavigator = () => {
         />
       )}
       <NotificationContainer />
-      <Router history={history}>
+      <Router>
         <Dashboard>
           <Suspense fallback={<IndeterminateProgressOverlay />}>
-            <Route exact path="/">
-              <Redirect to="/projects" />
-            </Route>
-            <Route exact path="">
-              <Redirect to="/projects" />
-            </Route>
-            <Route path="/units">
-              <Pages.Units />
-            </Route>
-            <Route path="/projects">
-              <Pages.Projects />
-            </Route>
-            <Route path="/storybook">
-              <Pages.StoryBook />
-            </Route>
-            <Route path="/organization">
-              <Pages.Organization />
-            </Route>
-            <Route path="/audit">
-              <Pages.Audit />
-            </Route>
-            <Route path="*">
-              <Redirect to="/projects" />
-            </Route>
+            <Routes>
+              <Route exact path="/" element={<Navigate to="/projects" />} />
+              <Route exact path="" element={<Navigate to="/projects" />} />
+              <Route path="/units" element={<Pages.Units />} />
+              <Route path="/projects" element={<Pages.Projects />} />
+              <Route path="/storybook" element={<Pages.StoryBook />} />
+              <Route path="/organization" element={<Pages.Organization />} />
+              <Route path="/audit" element={<Pages.Audit />} />
+              <Route path="*" element={<Navigate to="/projects" />} />
+            </Routes>
           </Suspense>
         </Dashboard>
       </Router>

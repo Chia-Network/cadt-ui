@@ -338,5 +338,6 @@
   "invalid-port": "有効なポート番号を入力してください",
   "invalid-uid": "有効なUIDを入力してください",
   "sort-ascending": "ソート昇順",
-  "sort-descending": "降順で並べ替える"
+  "sort-descending": "降順で並べ替える",
+  "project-has-no-locations": "選択したプロジェクトに場所が追加されていません"
 }

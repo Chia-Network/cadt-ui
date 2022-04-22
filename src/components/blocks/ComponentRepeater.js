@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { Body } from '../typography';
@@ -21,6 +21,7 @@ const ComponentRepeater = ({
   addIcon,
   removeIcon,
   maxRepetitions = 2,
+  minRepetitions = 0,
 }) => {
   const addNewInstance = useCallback(() => {
     if (values.length < maxRepetitions) {
@@ -29,6 +30,13 @@ const ComponentRepeater = ({
           ? [..._.cloneDeep(values), _.cloneDeep(initialValue)]
           : [_.cloneDeep(initialValue)],
       );
+    }
+  }, [values]);
+
+  useEffect(() => {
+    const currentNumberOfRepetitions = values.length;
+    if (currentNumberOfRepetitions < minRepetitions) {
+      addNewInstance();
     }
   }, [values]);
 
