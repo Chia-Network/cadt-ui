@@ -248,6 +248,7 @@ const Projects = () => {
     const options = {
       type: 'staging',
       page: 1,
+      formType: 'Projects',
       resultsLimit: 1,
     };
     dispatch(getStagingPaginatedData(options));

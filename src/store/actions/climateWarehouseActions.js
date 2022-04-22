@@ -353,7 +353,12 @@ export const getPaginatedData = ({
   };
 };
 
-export const getStagingPaginatedData = ({ type, page, resultsLimit }) => {
+export const getStagingPaginatedData = ({
+  type,
+  formType,
+  page,
+  resultsLimit,
+}) => {
   return async dispatch => {
     const pageAndLimitAreValid =
       typeof page === 'number' && typeof resultsLimit === 'number';
@@ -361,10 +366,10 @@ export const getStagingPaginatedData = ({ type, page, resultsLimit }) => {
     if (pageAndLimitAreValid) {
       dispatch(activateProgressIndicator);
       try {
-        let url = `${constants.API_HOST}/${type}?page=${page}&limit=${resultsLimit}`;
+        let url = `${constants.API_HOST}/${type}?table=${formType}&page=${page}&limit=${resultsLimit}`;
 
         const response = await fetchWrapper(url);
-        console.log(response);
+
         if (response.ok) {
           dispatch(
             setReadOnly(response.headers.get('cw-read-only') === 'true'),

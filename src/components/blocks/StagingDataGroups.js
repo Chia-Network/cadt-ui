@@ -3,18 +3,25 @@ import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { getDiff } from '../../utils/objectUtils';
-import {
-  Modal,
-  MinusIcon,
-  Body,
-  ErrorIcon,
-  SuccessIcon,
-  ReloadIcon,
-  StyledPaginationContainer,
-} from '..';
+import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon, ReloadIcon } from '..';
 import { modalTypeEnum, APIStagingPagination } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { DetailedViewStagingModal } from './DetailedViewStagingModal';
+
+const StyledPaginationContainer = styled('div')`
+  box-sizing: border-box;
+  background-color: white;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70px;
+  width: 100%;
+  max-height: 70px;
+  z-index: 10000;
+  margin: 25px 0px 25px 0px;
+`;
 
 const StyledChangeGroup = styled('div')`
   background: #f0f2f5;
@@ -406,7 +413,7 @@ const StagingDataGroups = withTheme(
               </React.Fragment>
             ))}
           <StyledPaginationContainer>
-            <APIStagingPagination actions="staging" />
+            <APIStagingPagination actions="staging" formType={data} />
           </StyledPaginationContainer>
           {detailedViewData && (
             <DetailedViewStagingModal

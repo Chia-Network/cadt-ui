@@ -15,6 +15,7 @@ import {
   commitStagingData,
   getPaginatedData,
   retryStagingData,
+  getStagingPaginatedData
 } from '../../store/actions/climateWarehouseActions';
 import {
   setPendingError,
@@ -230,6 +231,16 @@ const Units = () => {
     selectedOrganization,
     pageIsMyRegistryPage,
   ]);
+
+  useEffect(() => {
+    const options = {
+      type: 'staging',
+      page: 1,
+      formType: 'Units',
+      resultsLimit: 1,
+    };
+    dispatch(getStagingPaginatedData(options));
+  }, [dispatch]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
