@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
@@ -10,6 +9,7 @@ import {
   postNewUnits,
   getIssuances,
   getPaginatedData,
+  getProjects,
 } from '../../store/actions/climateWarehouseActions';
 import UnitIssuanceRepeater from './UnitIssuanceRepeater';
 import UnitLabelsRepeater from './UnitLabelsRepeater';
@@ -27,8 +27,9 @@ const StyledFormContainer = styled('div')`
   padding-top: 10px;
 `;
 
-const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
-  const { notification } = useSelector(state => state.app);
+const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
+  const { notification, showProgressOverlay: apiResponseIsPending } =
+    useSelector(state => state.app);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -60,6 +61,7 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
+      dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
       localStorage.removeItem('unitSelectedWarehouseProjectId');
@@ -81,10 +83,12 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
       isMandatoryIssuanceChecked
     ) {
       dispatch(setValidateForm(false));
-      if (desiredStep >= stepperStepsTranslationIds.length) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !apiResponseIsPending
+      ) {
         handleSubmitUnit();
       } else {
-        dispatch(setValidateForm(false));
         setTabValue(desiredStep);
         dispatch(setForm(stepperStepsTranslationIds[desiredStep]));
       }
@@ -182,6 +186,6 @@ const CreateUnitsForm = withRouter(({ onClose, modalSizeAndPosition }) => {
       />
     </>
   );
-});
+};
 
 export { CreateUnitsForm };

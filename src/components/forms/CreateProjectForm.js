@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { Stepper, Step, StepLabel } from '@mui/material';
 
 import {
@@ -25,11 +24,12 @@ import { projectSchema } from '../../store/validations';
 import { setValidateForm, setForm } from '../../store/actions/app';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
-const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
+const CreateProjectForm = ({ onClose, modalSizeAndPosition }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { notification } = useSelector(state => state.app);
+  const { notification, showProgressOverlay: apiResponseIsPending } =
+    useSelector(state => state.app);
 
   const [project, setProject] = useState({
     currentRegistry: '',
@@ -70,14 +70,16 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
 
   const onChangeStep = async (desiredStep = null) => {
     const isValid = await projectSchema.isValid(project);
-     dispatch(setValidateForm(true));
+    dispatch(setValidateForm(true));
     if (isValid) {
       dispatch(setValidateForm(false));
-      if (desiredStep >= stepperStepsTranslationIds.length) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !apiResponseIsPending
+      ) {
         handleSubmitProject();
       } else {
         setTabValue(desiredStep);
-        dispatch(setValidateForm(false));
       }
     }
   };
@@ -121,7 +123,8 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}>
+                    sx={{ cursor: 'pointer' }}
+                  >
                     <StepLabel>
                       {intl.formatMessage({
                         id: stepTranslationId,
@@ -134,7 +137,8 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
+                index={0}
+              >
                 <ProjectDetailsForm
                   projectDetails={project}
                   setProjectDetails={setProject}
@@ -223,6 +227,6 @@ const CreateProjectForm = withRouter(({ onClose, modalSizeAndPosition }) => {
       />
     </>
   );
-});
+};
 
 export { CreateProjectForm };

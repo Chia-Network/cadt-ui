@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/xlsxUtils';
@@ -122,17 +122,18 @@ const StyledCSVOperationsContainer = styled('div')`
   gap: 20px;
 `;
 
-const Projects = withRouter(() => {
+const Projects = () => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const { notification, commit } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
   const dispatch = useDispatch();
-  let history = useHistory();
+  let navigate = useNavigate();
+  let location = useLocation();
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
-  let searchParams = new URLSearchParams(history.location.search);
+  let searchParams = new URLSearchParams(location.search);
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
@@ -179,31 +180,34 @@ const Projects = withRouter(() => {
   const onOrganizationSelect = selectedOption => {
     const orgUid = selectedOption[0].orgUid;
     setSelectedOrganization(orgUid);
-    history.replace({
-      search: getUpdatedUrl(window.location.search, {
+    navigate(
+      `${location.pathname}?${getUpdatedUrl(location.search, {
         param: 'orgUid',
         value: orgUid,
-      }),
-    });
+      })}`,
+      { replace: true },
+    );
   };
 
   const onSearch = useMemo(
     () =>
       _.debounce(event => {
         if (event.target.value !== '') {
-          history.replace({
-            search: getUpdatedUrl(window.location.search, {
+          navigate(
+            `${location.pathname}?${getUpdatedUrl(location.search, {
               param: 'search',
               value: event.target.value,
-            }),
-          });
+            })}`,
+            { replace: true },
+          );
         } else {
-          history.replace({
-            search: getUpdatedUrl(window.location.search, {
+          navigate(
+            `${location.pathname}?${getUpdatedUrl(location.search, {
               param: 'search',
               value: null,
-            }),
-          });
+            })}`,
+            { replace: true },
+          );
         }
         setSearchQuery(event.target.value);
       }, 300),
@@ -522,6 +526,6 @@ const Projects = withRouter(() => {
       )}
     </>
   );
-});
+};
 
 export { Projects };
