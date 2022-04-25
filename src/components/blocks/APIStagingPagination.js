@@ -8,6 +8,7 @@ import {
   ControlsContainer,
   PaginationContainer,
 } from '..';
+import constants from '../../constants';
 import { getStagingPaginatedData } from '../../store/actions/climateWarehouseActions';
 
 const APIStagingPagination = withTheme(
@@ -33,7 +34,7 @@ const APIStagingPagination = withTheme(
         type: actions,
         page: newPage,
         formType: formType[0]?.table,
-        resultsLimit: 1,
+        resultsLimit: constants.MAX_TABLE_SIZE,
       };
       
       dispatch(getStagingPaginatedData(options));

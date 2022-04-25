@@ -235,7 +235,7 @@ const Units = () => {
       type: 'staging',
       page: 1,
       formType: 'Units',
-      resultsLimit: 1,
+      resultsLimit: constants.MAX_TABLE_SIZE,
     };
     dispatch(getStagingPaginatedData(options));
   }, [dispatch]);
