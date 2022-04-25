@@ -175,7 +175,7 @@ export const getPickLists = () => {
 
     try {
       const response = await fetch(
-        `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
+        `${constants.API_HOST}/governance/meta/pickList`,
       );
 
       if (response.ok) {
