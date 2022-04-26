@@ -28,6 +28,7 @@ import {
   Modal,
   modalTypeEnum,
   Body,
+  MinusIcon,
 } from '../../components';
 import {
   setPendingError,
@@ -41,6 +42,7 @@ import {
   commitStagingData,
   getPaginatedData,
   retryStagingData,
+  deleteAllStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
 import { setCommit } from '../../store/actions/app';
@@ -120,10 +122,16 @@ const StyledCSVOperationsContainer = styled('div')`
   display: flex;
   justify-content: flex-end;
   gap: 20px;
+
+  svg {
+    cursor: pointer;
+  }
 `;
 
 const Projects = () => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
+  const [isDeleteAllStagingVisible, setIsDeleteAllStagingVisible] =
+    useState(false);
   const { notification, commit } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
@@ -387,6 +395,13 @@ const Projects = () => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
+            {pageIsMyRegistryPage &&
+              tabValue === 1 &&
+              climateWarehouseStore.stagingData.projects.staging.length > 0 && (
+                <span onClick={() => setIsDeleteAllStagingVisible(true)}>
+                  <MinusIcon width={20} height={20} />
+                </span>
+              )}
             <span onClick={() => downloadTxtFile('projects', searchParams)}>
               <DownloadIcon />
             </span>
@@ -522,6 +537,22 @@ const Projects = () => {
             dispatch(setValidateForm(false));
           }}
           modalSizeAndPosition={modalSizeAndPosition}
+        />
+      )}
+      {isDeleteAllStagingVisible && (
+        <Modal
+          title={intl.formatMessage({
+            id: 'notification',
+          })}
+          body={intl.formatMessage({
+            id: 'confirm-deletion',
+          })}
+          modalType={modalTypeEnum.confirmation}
+          onClose={() => setIsDeleteAllStagingVisible(false)}
+          onOk={() => {
+            dispatch(deleteAllStagingData());
+            setIsDeleteAllStagingVisible(false);
+          }}
         />
       )}
     </>

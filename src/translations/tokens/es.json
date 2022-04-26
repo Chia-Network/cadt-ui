@@ -339,5 +339,7 @@
   "invalid-uid": "Ingrese UID válido",
   "sort-ascending": "Orden ascendente",
   "sort-descending": "Orden descendiente",
-  "project-has-no-locations": "El proyecto seleccionado no tiene ubicaciones añadidas"
+  "project-has-no-locations": "El proyecto seleccionado no tiene ubicaciones añadidas",
+  "delete-all-staging-data-success": "Todos los datos provisionales se eliminaron correctamente",
+  "delete-all-staging-data-error": "No se pudieron eliminar todos los datos de preparación"
 }
