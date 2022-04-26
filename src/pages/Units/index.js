@@ -14,7 +14,8 @@ import {
   commitStagingData,
   getPaginatedData,
   retryStagingData,
-  getStagingPaginatedData
+  getStagingPaginatedData,
+  getStagingData,
 } from '../../store/actions/climateWarehouseActions';
 import {
   setPendingError,
@@ -231,6 +232,10 @@ const Units = () => {
   ]);
 
   useEffect(() => {
+    dispatch(getStagingData({ useMockedResponse: false }));
+  }, [climateWarehouseStore.totalUnitsPages]);
+
+  useEffect(() => {
     const options = {
       type: 'staging',
       page: 1,
@@ -374,7 +379,7 @@ const Units = () => {
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.units.staging.length
+                  climateWarehouseStore?.totalUnitsPages
                 })`}
               />
             )}
@@ -432,8 +437,7 @@ const Units = () => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

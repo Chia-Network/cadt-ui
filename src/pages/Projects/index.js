@@ -41,6 +41,7 @@ import {
   getPaginatedData,
   getStagingPaginatedData,
   retryStagingData,
+  getStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
 import { setCommit } from '../../store/actions/app';
@@ -153,6 +154,11 @@ const Projects = () => {
       setTabValue(switchTabBySuccessfulRequest[notification.id]);
     }
   }, [notification]);
+
+
+useEffect(() => {
+  dispatch(getStagingData({useMockedResponse: false}))
+}, [climateWarehouseStore.totalProjectsPages])
 
   useEffect(() => {
     setTabValue(0);
@@ -374,7 +380,7 @@ const Projects = () => {
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.projects.staging.length
+                  climateWarehouseStore?.totalProjectsPages
                 })`}
               />
             )}

@@ -43,6 +43,8 @@ export const actions = keyMirror(
   'GET_LABELS',
   'GET_AUDIT',
   'GET_STAGING_PAGE_COUNT',
+  'GET_STAGING_PROJECTS_PAGES',
+  'GET_STAGING_UNITS_PAGES',
 );
 
 const getClimateWarehouseTable = (
@@ -219,6 +221,14 @@ export const getStagingData = ({ useMockedResponse = false }) => {
           dispatch({
             type: actions.GET_STAGING_DATA,
             payload: formatStagingData(results),
+          });
+          dispatch({
+            type: actions.GET_STAGING_PROJECTS_PAGES,
+            payload: formatStagingData(results).projects.staging.length,
+          });
+          dispatch({
+            type: actions.GET_STAGING_UNITS_PAGES,
+            payload: formatStagingData(results).units.staging.length,
           });
         }
       }
