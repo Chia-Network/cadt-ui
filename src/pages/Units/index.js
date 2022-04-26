@@ -397,7 +397,8 @@ const Units = () => {
           <StyledCSVOperationsContainer>
             {pageIsMyRegistryPage &&
               tabValue === 1 &&
-              climateWarehouseStore.stagingData.units.staging.length > 0 && (
+              climateWarehouseStore?.stagingData?.units?.staging?.length >
+                0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
                   <MinusIcon width={20} height={20} />
                 </span>

@@ -397,7 +397,8 @@ const Projects = () => {
           <StyledCSVOperationsContainer>
             {pageIsMyRegistryPage &&
               tabValue === 1 &&
-              climateWarehouseStore.stagingData.projects.staging.length > 0 && (
+              climateWarehouseStore?.stagingData?.projects?.staging?.length >
+                0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
                   <MinusIcon width={20} height={20} />
                 </span>
