@@ -359,5 +359,6 @@
   "sort-descending": "Sort descending",
   "project-has-no-locations": "Selected project doesn't have locations added",
   "delete-all-staging-data-success": "All staging data was successfully deleted",
-  "delete-all-staging-data-error": "All staging data could not be deleted"
+  "delete-all-staging-data-error": "All staging data could not be deleted",
+  "confirm-all-staging-data-deletion": "Are you sure you want to delete all staging data?"
 }

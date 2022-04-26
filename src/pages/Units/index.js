@@ -547,7 +547,7 @@ const Units = () => {
             id: 'notification',
           })}
           body={intl.formatMessage({
-            id: 'confirm-deletion',
+            id: 'confirm-all-staging-data-deletion',
           })}
           modalType={modalTypeEnum.confirmation}
           onClose={() => setIsDeleteAllStagingVisible(false)}
