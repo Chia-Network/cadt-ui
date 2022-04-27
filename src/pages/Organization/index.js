@@ -66,7 +66,18 @@ const Organization = () => {
     useState(false);
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = organizations && getMyOrgUid(organizations);
-  const myOrganzation = organizations && organizations[myOrgUid];
+  const myOrganization = organizations && organizations[myOrgUid];
+
+  const isLogoPngType = myOrganization?.icon
+    ? myOrganization.icon.includes('data:image/png;base64')
+    : false;
+  const isLogoSvgType = myOrganization?.icon
+    ? myOrganization.icon.includes('svg')
+    : false;
+  const isLogoUrlType = myOrganization?.icon
+    ? validateUrl(myOrganization.icon)
+    : false;
+
   const createMarkup = icon => {
     return { __html: icon };
   };
@@ -87,13 +98,13 @@ const Organization = () => {
             <FormattedMessage id="organization-name" />
           </H4>
           <Body size="Big">
-            {myOrganzation.name}
+            {myOrganization.name}
             <StyledCopyIconContainer>
               <CopyIcon
                 height={18}
                 width={18}
                 onClick={() => {
-                  navigator.clipboard.writeText(myOrganzation.name);
+                  navigator.clipboard.writeText(myOrganization.name);
                 }}
               />
             </StyledCopyIconContainer>
@@ -123,13 +134,13 @@ const Organization = () => {
             <FormattedMessage id="public-address" />
           </H4>
           <Body size="Big">
-            {myOrganzation.xchAddress}
+            {myOrganization.xchAddress}
             <StyledCopyIconContainer>
               <CopyIcon
                 height={18}
                 width={18}
                 onClick={() => {
-                  navigator.clipboard.writeText(myOrganzation.xchAddress);
+                  navigator.clipboard.writeText(myOrganization.xchAddress);
                 }}
               />
             </StyledCopyIconContainer>
@@ -140,7 +151,7 @@ const Organization = () => {
           <H4>
             <FormattedMessage id="address-qr-code" />
           </H4>
-          <QRCode value={myOrganzation.xchAddress} />
+          <QRCode value={myOrganization.xchAddress} />
         </StyledItemContainer>
 
         <StyledItemContainer>
@@ -162,13 +173,16 @@ const Organization = () => {
       )}
 
       <StyledLogoContainer>
-        {validateUrl(myOrganzation.icon) && (
-          <img src={myOrganzation.icon} width={100} height={100} />
-        )}
-        {!validateUrl(myOrganzation.icon) && (
+        {isLogoSvgType && (
           <StyledSvgContainer
-            dangerouslySetInnerHTML={createMarkup(myOrganzation.icon)}
+            dangerouslySetInnerHTML={createMarkup(myOrganization.icon)}
           />
+        )}
+        {isLogoUrlType && (
+          <img src={myOrganization.icon} width={100} height={100} />
+        )}
+        {isLogoPngType && (
+          <img src={myOrganization.icon} width={100} height={100} />
         )}
       </StyledLogoContainer>
     </StyledOrganizationContainer>
