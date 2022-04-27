@@ -72,7 +72,7 @@ const Organization = () => {
     ? myOrganization.icon.includes('data:image/png;base64')
     : false;
   const isLogoSvgType = myOrganization?.icon
-    ? myOrganization.icon.includes('svg')
+    ? myOrganization.icon.includes('<svg')
     : false;
   const isLogoUrlType = myOrganization?.icon
     ? validateUrl(myOrganization.icon)
