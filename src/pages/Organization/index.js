@@ -68,12 +68,8 @@ const Organization = () => {
   const myOrgUid = organizations && getMyOrgUid(organizations);
   const myOrganization = organizations && organizations[myOrgUid];
 
-  const isLogoPngType = myOrganization?.icon
-    ? myOrganization.icon.includes('data:image/png;base64')
-    : false;
-  const isLogoSvgType = myOrganization?.icon
-    ? myOrganization.icon.includes('<svg')
-    : false;
+  const isLogoPngType = myOrganization?.icon?.includes('data:image/png;base64');
+  const isLogoSvgType = myOrganization?.icon?.includes('<svg');
   const isLogoUrlType = myOrganization?.icon
     ? validateUrl(myOrganization.icon)
     : false;
