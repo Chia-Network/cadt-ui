@@ -339,5 +339,8 @@
   "invalid-uid": "有効なUIDを入力してください",
   "sort-ascending": "ソート昇順",
   "sort-descending": "降順で並べ替える",
-  "project-has-no-locations": "選択したプロジェクトに場所が追加されていません"
+  "project-has-no-locations": "選択したプロジェクトに場所が追加されていません",
+  "delete-all-staging-data-success": "すべてのステージングデータが正常に削除されました",
+  "delete-all-staging-data-error": "すべてのステージングデータを削除できませんでした",
+  "confirm-all-staging-data-deletion": "すべてのステージングデータを削除してもよろしいですか？"
 }
