@@ -29,6 +29,7 @@ import {
   modalTypeEnum,
   Body,
   MinusIcon,
+  DetailedViewModal,
 } from '../../components';
 import {
   setPendingError,
@@ -145,8 +146,28 @@ const Projects = () => {
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
+  const [projectIdToOpenInDetailedView, setProjectIdToOpenInDetailedView] =
+    useState(null);
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+
+  useEffect(() => {
+    const projectId = searchParams.get('projectId');
+    if (projectId) {
+      setProjectIdToOpenInDetailedView(projectId);
+    }
+  }, [searchParams.get('projectId')]);
+
+  const closeProjectOpenedInDetailedView = () => {
+    setProjectIdToOpenInDetailedView(null);
+    navigate(
+      `${location.pathname}?${getUpdatedUrl(location.search, {
+        param: 'projectId',
+        value: null,
+      })}`,
+      { replace: true },
+    );
   };
 
   useEffect(() => {
@@ -554,6 +575,14 @@ const Projects = () => {
             dispatch(deleteAllStagingData());
             setIsDeleteAllStagingVisible(false);
           }}
+        />
+      )}
+      {projectIdToOpenInDetailedView && (
+        <DetailedViewModal
+          onClose={closeProjectOpenedInDetailedView}
+          modalSizeAndPosition={modalSizeAndPosition}
+          type={'projects'}
+          unitOrProjectWarehouseId={projectIdToOpenInDetailedView}
         />
       )}
     </>

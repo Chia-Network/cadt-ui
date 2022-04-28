@@ -309,7 +309,9 @@ const APIDataTable = withTheme(
             onClose={() => setRecord(null)}
             modalSizeAndPosition={modalSizeAndPosition}
             type={actions.toLowerCase()}
-            record={getRecord}
+            unitOrProjectWarehouseId={
+              getRecord?.warehouseUnitId || getRecord?.warehouseProjectId
+            }
           />
         )}
         {actions === 'Units' && editRecord && (

@@ -9,7 +9,12 @@ const detailedViewModalTypeEnum = {
   units: 'units',
 };
 
-const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
+const DetailedViewModal = ({
+  onClose,
+  modalSizeAndPosition,
+  type,
+  unitOrProjectWarehouseId,
+}) => {
   const intl = useIntl();
 
   const fullRecord =
@@ -18,20 +23,20 @@ const DetailedViewModal = ({ onClose, modalSizeAndPosition, type, record }) => {
           state =>
             state.climateWarehouse.projects.filter(
               project =>
-                project.warehouseProjectId === record.warehouseProjectId,
+                project.warehouseProjectId === unitOrProjectWarehouseId,
             )[0],
         )
       : useSelector(
           state =>
             state.climateWarehouse.units.filter(
-              unit => unit.warehouseUnitId === record.warehouseUnitId,
+              unit => unit.warehouseUnitId === unitOrProjectWarehouseId,
             )[0],
         );
 
   if (
     (type !== detailedViewModalTypeEnum.project &&
       type !== detailedViewModalTypeEnum.units) ||
-    (record?.warehouseProjectId != null && record?.warehouseUnitId != null)
+    !unitOrProjectWarehouseId
   ) {
     return <></>;
   }
