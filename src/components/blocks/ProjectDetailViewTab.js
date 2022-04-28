@@ -1,6 +1,8 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
+import { useDispatch } from 'react-redux';
+
 import { Tab, Tabs, TabPanel } from '..';
 import {
   ProjectLocationsDetails,
@@ -12,13 +14,19 @@ import {
   CoBenefitsDetails,
   RelatedProjectsDetails,
 } from '.';
+import { getUnits } from '../../store/actions/climateWarehouseActions';
 
 const ProjectDetailedViewTab = ({ entry }) => {
+  const dispatch = useDispatch();
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  useEffect(() => {
+    dispatch(getUnits({ useMockedResponse: false, useApiMock: false }));
+  }, []);
 
   const estimationTabIndexAdjustment = _.remove(
     [_.isEmpty(entry.issuances), _.isEmpty(entry.projectLocations)],
@@ -108,7 +116,8 @@ const ProjectDetailedViewTab = ({ entry }) => {
           <TabPanel
             noHeight
             value={tabValue}
-            index={_.isEmpty(entry?.issuances) ? 1 : 2}>
+            index={_.isEmpty(entry?.issuances) ? 1 : 2}
+          >
             <ProjectLocationsDetails data={locations} />
           </TabPanel>
         ))}
@@ -121,7 +130,8 @@ const ProjectDetailedViewTab = ({ entry }) => {
               !_.isEmpty(estimationTabIndexAdjustment)
                 ? 3 - estimationTabIndexAdjustment.length
                 : 3
-            }>
+            }
+          >
             <EstimationsDetails data={estimate} />
           </TabPanel>
         ))}
@@ -135,7 +145,8 @@ const ProjectDetailedViewTab = ({ entry }) => {
               !_.isEmpty(labelsTabIndexAdjustment)
                 ? 4 - labelsTabIndexAdjustment.length
                 : 4
-            }>
+            }
+          >
             <ProjectLabelsDetails data={labelValue} />
           </TabPanel>
         ))}
@@ -148,7 +159,8 @@ const ProjectDetailedViewTab = ({ entry }) => {
               !_.isEmpty(ratingsTabIndexAdjustment)
                 ? 5 - ratingsTabIndexAdjustment.length
                 : 5
-            }>
+            }
+          >
             <ProjectRatingsDetails data={rating} />
           </TabPanel>
         ))}
@@ -161,7 +173,8 @@ const ProjectDetailedViewTab = ({ entry }) => {
               !_.isEmpty(coBenefitsTabIndexAdjustment)
                 ? 6 - coBenefitsTabIndexAdjustment.length
                 : 6
-            }>
+            }
+          >
             <CoBenefitsDetails data={coBenefit} />
           </TabPanel>
         ))}
@@ -174,7 +187,8 @@ const ProjectDetailedViewTab = ({ entry }) => {
               !_.isEmpty(relatedProjectsTabIndexAdjustment)
                 ? 7 - relatedProjectsTabIndexAdjustment.length
                 : 7
-            }>
+            }
+          >
             <RelatedProjectsDetails data={project} />
           </TabPanel>
         ))}

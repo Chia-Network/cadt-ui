@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Body } from '..';
 import {
@@ -8,8 +8,22 @@ import {
 } from '.';
 
 import { detailsViewData } from '../../utils/functionUtils';
+import { useSelector } from 'react-redux';
 
 const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
+  const { units } = useSelector(store => store.climateWarehouse);
+
+  const unitsBelongingToThisIssuance = useMemo(
+    () =>
+      units?.reduce((accumulator, currentUnit) => {
+        if (currentUnit.issuanceId === data.id) {
+          return [...accumulator, currentUnit.warehouseUnitId];
+        }
+        return accumulator;
+      }, []),
+    [units, data],
+  );
+
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -73,6 +87,18 @@ const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
                 changeColor,
               )}
           </StyledItem>
+          {data && (
+            <StyledItem>
+              <Body size="Bold" width="100%">
+                <FormattedMessage id="units-belonging-to-issuance" />
+              </Body>
+              {unitsBelongingToThisIssuance?.length > 0 &&
+                unitsBelongingToThisIssuance.map(unitId => (
+                  <Body key={unitId}>{unitId}</Body>
+                ))}
+              {unitsBelongingToThisIssuance?.length === 0 && '---'}
+            </StyledItem>
+          )}
         </StyledDetailedViewTab>
       </div>
     </StyledDetailedViewTabItem>
