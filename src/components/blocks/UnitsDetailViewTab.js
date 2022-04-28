@@ -1,8 +1,14 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
-import { Tab, Tabs, TabPanel } from '..';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+
+import { Tab, Tabs, TabPanel } from '..';
 import { UnitsDetails, UnitsIssuanceDetails, UnitsLabelsDetails } from '.';
+import {
+  getIssuances,
+  getProjects,
+} from '../../store/actions/climateWarehouseActions';
 
 export const StyledDetailedViewTabItem = styled('div')`
   display: flex;
@@ -28,6 +34,7 @@ export const StyledItem = styled('div')`
 
 const UnitsDetailViewTab = ({ entry }) => {
   const [tabValue, setTabValue] = useState(0);
+  const dispatch = useDispatch();
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -35,7 +42,12 @@ const UnitsDetailViewTab = ({ entry }) => {
     [_.isEmpty(entry), _.isEmpty(entry?.labels), _.isEmpty(entry?.issuance)],
     item => item,
   );
-  
+
+  useEffect(() => {
+    dispatch(getIssuances());
+    dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
+  }, []);
+
   return (
     <>
       <Tabs value={tabValue} onChange={handleTabChange}>
@@ -56,7 +68,8 @@ const UnitsDetailViewTab = ({ entry }) => {
           <TabPanel
             noHeight
             value={tabValue}
-            index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
+            index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}
+          >
             <UnitsLabelsDetails data={labelValue} />
           </TabPanel>
         ))}

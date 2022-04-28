@@ -1,5 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
+
 import { Body, SpanTwoDetailColumnsContainer } from '..';
 import {
   StyledDetailedViewTab,
@@ -10,10 +12,30 @@ import { SpanTwoColumnsContainer } from '../layout';
 import { detailsViewData } from '../../utils/functionUtils';
 
 const UnitsDetails = ({ data, stagingData, changeColor }) => {
+  const { issuances, projects } = useSelector(store => store.climateWarehouse);
+
+  const unitBelongsToProjectId = issuances?.filter(
+    issuanceItem => issuanceItem.id === data.issuanceId,
+  )[0]?.warehouseProjectId;
+
+  const unitBelongsToProjectName = projects?.filter(
+    projectItem => projectItem.warehouseProjectId === unitBelongsToProjectId,
+  )[0]?.projectName;
+
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
         <StyledDetailedViewTab>
+          {data && (
+            <StyledItem>
+              <Body size="Bold" width="100%">
+                <FormattedMessage id="project-name" />
+              </Body>
+              <Body>
+                {unitBelongsToProjectName ? unitBelongsToProjectName : '---'}
+              </Body>
+            </StyledItem>
+          )}
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-location-id" />
