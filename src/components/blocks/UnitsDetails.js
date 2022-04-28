@@ -1,6 +1,8 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styledComponents from 'styled-components';
 
 import { Body, SpanTwoDetailColumnsContainer } from '..';
 import {
@@ -10,9 +12,18 @@ import {
 } from '.';
 import { SpanTwoColumnsContainer } from '../layout';
 import { detailsViewData } from '../../utils/functionUtils';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
+import { MagnifyGlassIcon } from '..';
+
+const StyledCursor = styledComponents('div')`
+  cursor: pointer;
+`;
 
 const UnitsDetails = ({ data, stagingData, changeColor }) => {
   const { issuances, projects } = useSelector(store => store.climateWarehouse);
+  const navigate = useNavigate();
+  const { organizations } = useSelector(store => store.climateWarehouse);
+  const myOrgUid = getMyOrgUid(organizations);
 
   const unitBelongsToProjectId = issuances?.filter(
     issuanceItem => issuanceItem.id === data.issuanceId,
@@ -21,6 +32,8 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
   const unitBelongsToProjectName = projects?.filter(
     projectItem => projectItem.warehouseProjectId === unitBelongsToProjectId,
   )[0]?.projectName;
+
+  const projectUrl = `/projects?orgUid=${myOrgUid}&myRegistry=true&projectId=${unitBelongsToProjectId}`;
 
   return (
     <StyledDetailedViewTabItem>
@@ -31,9 +44,12 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
               <Body size="Bold" width="100%">
                 <FormattedMessage id="project-name" />
               </Body>
-              <Body>
-                {unitBelongsToProjectName ? unitBelongsToProjectName : '---'}
-              </Body>
+              <StyledCursor>
+                <Body onClick={() => navigate(projectUrl)} color="#1890ff">
+                  {unitBelongsToProjectName ? unitBelongsToProjectName : '---'}
+                  <MagnifyGlassIcon height="15" width="30" />
+                </Body>
+              </StyledCursor>
             </StyledItem>
           )}
           <StyledItem>
