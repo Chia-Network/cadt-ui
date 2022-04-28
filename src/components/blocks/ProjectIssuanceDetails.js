@@ -109,7 +109,7 @@ const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
                     <Body
                       onClick={() =>
                         navigate(
-                          `/units?orgUid=${myOrgUid}&myRegistry=true&projectId=${unitId}`,
+                          `/units?orgUid=${myOrgUid}&myRegistry=true&unitId=${unitId}`,
                         )
                       }
                       color="#1890ff"

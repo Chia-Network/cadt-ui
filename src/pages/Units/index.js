@@ -43,6 +43,7 @@ import {
   modalTypeEnum,
   Body,
   MinusIcon,
+  DetailedViewModal,
 } from '../../components';
 import { setCommit } from '../../store/actions/app';
 
@@ -144,6 +145,26 @@ const Units = () => {
   const windowSize = useWindowSize();
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+  const [unitIdToOpenInDetailedView, setUnitIdToOpenInDetailedView] =
+    useState(null);
+
+  useEffect(() => {
+    const unitId = searchParams.get('unitId');
+    if (unitId) {
+      setUnitIdToOpenInDetailedView(unitId);
+    }
+  }, [searchParams.get('unitId')]);
+
+  const closeProjectOpenedInDetailedView = () => {
+    setUnitIdToOpenInDetailedView(null);
+    navigate(
+      `${location.pathname}?${getUpdatedUrl(location.search, {
+        param: 'unitId',
+        value: null,
+      })}`,
+      { replace: true },
+    );
   };
 
   useEffect(() => {
@@ -556,6 +577,14 @@ const Units = () => {
             dispatch(deleteAllStagingData());
             setIsDeleteAllStagingVisible(false);
           }}
+        />
+      )}
+      {unitIdToOpenInDetailedView && (
+        <DetailedViewModal
+          onClose={closeProjectOpenedInDetailedView}
+          modalSizeAndPosition={modalSizeAndPosition}
+          type={'units'}
+          unitOrProjectWarehouseId={unitIdToOpenInDetailedView}
         />
       )}
     </>
