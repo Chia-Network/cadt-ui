@@ -1,15 +1,40 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import styledComponents from 'styled-components';
+
 import { Body } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
 } from '.';
-
 import { detailsViewData } from '../../utils/functionUtils';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
+import { MagnifyGlassIcon } from '../icons';
+
+const StyledCursor = styledComponents('div')`
+  cursor: pointer;
+`;
 
 const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
+  const { units } = useSelector(store => store.climateWarehouse);
+  const navigate = useNavigate();
+  const { organizations } = useSelector(store => store.climateWarehouse);
+  const myOrgUid = getMyOrgUid(organizations);
+
+  const unitsBelongingToThisIssuance = useMemo(
+    () =>
+      units?.reduce((accumulator, currentUnit) => {
+        if (currentUnit.issuanceId === data.id) {
+          return [...accumulator, currentUnit.warehouseUnitId];
+        }
+        return accumulator;
+      }, []),
+    [units, data],
+  );
+
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
@@ -73,6 +98,30 @@ const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
                 changeColor,
               )}
           </StyledItem>
+          {data && (
+            <StyledItem>
+              <Body size="Bold" width="100%">
+                <FormattedMessage id="units-belonging-to-issuance" />
+              </Body>
+              {unitsBelongingToThisIssuance?.length > 0 &&
+                unitsBelongingToThisIssuance.map(unitId => (
+                  <StyledCursor key={unitId}>
+                    <Body
+                      onClick={() =>
+                        navigate(
+                          `/units?orgUid=${myOrgUid}&myRegistry=true&unitId=${unitId}`,
+                        )
+                      }
+                      color="#1890ff"
+                    >
+                      {unitId}
+                      <MagnifyGlassIcon height="15" width="30" />
+                    </Body>
+                  </StyledCursor>
+                ))}
+              {unitsBelongingToThisIssuance?.length === 0 && '---'}
+            </StyledItem>
+          )}
         </StyledDetailedViewTab>
       </div>
     </StyledDetailedViewTabItem>
