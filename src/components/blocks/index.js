@@ -45,3 +45,4 @@ export * from './UnitsDetails';
 export * from './UnitsIssuanceDetails';
 export * from './UnitsLabelsDetails';
 export * from './AuditItemModal';
+export * from './DetailedViewIssuanceUnitTable';
