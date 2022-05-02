@@ -69,12 +69,18 @@ const DetailedViewIssuanceUnitTable = ({ issuance }) => {
 
   const unitsBelongingToThisIssuance = useMemo(
     () =>
-      units?.reduce((accumulator, currentUnit) => {
-        if (currentUnit.issuanceId === issuance.id) {
-          return [...accumulator, currentUnit];
-        }
-        return accumulator;
-      }, []),
+      units
+        ?.reduce((accumulator, currentUnit) => {
+          if (currentUnit.issuanceId === issuance.id) {
+            return [...accumulator, currentUnit];
+          }
+          return accumulator;
+        }, [])
+        .sort(function (x, y) {
+          let a = x.serialNumberBlock,
+            b = y.serialNumberBlock;
+          return a == b ? 0 : a > b ? 1 : -1;
+        }),
     [units, issuance],
   );
 
