@@ -18,6 +18,9 @@ const initialState = {
   issuances: null,
   labels: null,
   audit: null,
+  stagingPageCount: null,
+  totalProjectsPages: null,
+  totalUnitsPages: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -64,9 +67,18 @@ const climateWarehouseReducer = (state = initialState, action) => {
     case climateWarehouseActions.GET_STAGING_DATA:
       return u({ stagingData: action.payload }, state);
 
+    case climateWarehouseActions.GET_STAGING_PROJECTS_PAGES:
+      return u({ totalProjectsPages: action.payload }, state);
+
+    case climateWarehouseActions.GET_STAGING_UNITS_PAGES:
+      return u({ totalUnitsPages: action.payload }, state);
+
     case climateWarehouseActions.GET_PROJECTS_PAGE_COUNT:
     case climateWarehouseActions.GET_UNITS_PAGE_COUNT:
       return u({ pageCount: action.payload }, state);
+
+    case climateWarehouseActions.GET_STAGING_PAGE_COUNT:
+      return u({ stagingPageCount: action.payload }, state);
 
     default:
       return state;

@@ -103,7 +103,7 @@ const Td = styled('td')`
   `}
 `;
 
-const StyledPaginationContainer = styled('div')`
+export const StyledPaginationContainer = styled('div')`
   box-sizing: border-box;
   background-color: white;
   display: flex;

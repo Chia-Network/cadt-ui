@@ -10,12 +10,14 @@ import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
 
 import {
-  getStagingData,
   deleteStagingData,
   commitStagingData,
   getPaginatedData,
   retryStagingData,
+  getStagingPaginatedData,
+  getStagingData,
   deleteAllStagingData,
+
 } from '../../store/actions/climateWarehouseActions';
 import {
   setPendingError,
@@ -251,7 +253,6 @@ const Units = () => {
       options.orgUid = searchParams.get('orgUid');
     }
     dispatch(getPaginatedData(options));
-    dispatch(getStagingData({ useMockedResponse: false }));
   }, [
     dispatch,
     tabValue,
@@ -259,6 +260,20 @@ const Units = () => {
     selectedOrganization,
     pageIsMyRegistryPage,
   ]);
+
+  useEffect(() => {
+    dispatch(getStagingData({ useMockedResponse: false }));
+  }, [climateWarehouseStore.totalUnitsPages]);
+
+  useEffect(() => {
+    const options = {
+      type: 'staging',
+      page: 1,
+      formType: 'Units',
+      resultsLimit: constants.MAX_TABLE_SIZE,
+    };
+    dispatch(getStagingPaginatedData(options));
+  }, [dispatch]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
@@ -394,7 +409,7 @@ const Units = () => {
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.units.staging.length
+                  climateWarehouseStore?.totalUnitsPages
                 })`}
               />
             )}
@@ -460,8 +475,7 @@ const Units = () => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

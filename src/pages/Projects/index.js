@@ -38,12 +38,14 @@ import {
 } from '../../store/actions/app';
 
 import {
-  getStagingData,
   deleteStagingData,
   commitStagingData,
   getPaginatedData,
+  getStagingPaginatedData,
   retryStagingData,
+  getStagingData,
   deleteAllStagingData,
+
 } from '../../store/actions/climateWarehouseActions';
 
 import { setCommit } from '../../store/actions/app';
@@ -183,6 +185,11 @@ const Projects = () => {
     }
   }, [notification]);
 
+
+useEffect(() => {
+  dispatch(getStagingData({useMockedResponse: false}))
+}, [climateWarehouseStore.totalProjectsPages])
+
   useEffect(() => {
     setTabValue(0);
   }, [searchParams.get('orgUid')]);
@@ -265,7 +272,6 @@ const Projects = () => {
       options.orgUid = searchParams.get('orgUid');
     }
     dispatch(getPaginatedData(options));
-    dispatch(getStagingData({ useMockedResponse: false }));
   }, [
     dispatch,
     tabValue,
@@ -273,6 +279,16 @@ const Projects = () => {
     selectedOrganization,
     pageIsMyRegistryPage,
   ]);
+
+  useEffect(() => {
+    const options = {
+      type: 'staging',
+      page: 1,
+      formType: 'Projects',
+      resultsLimit: constants.MAX_TABLE_SIZE,
+    };
+    dispatch(getStagingPaginatedData(options));
+  }, [dispatch]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.projects) {
@@ -394,7 +410,7 @@ const Projects = () => {
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.projects.staging.length
+                  climateWarehouseStore?.totalProjectsPages
                 })`}
               />
             )}
@@ -460,8 +476,7 @@ const Projects = () => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}
-                        >
+                          }}>
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

@@ -42,6 +42,9 @@ export const actions = keyMirror(
   'GET_ISSUANCES',
   'GET_LABELS',
   'GET_AUDIT',
+  'GET_STAGING_PAGE_COUNT',
+  'GET_STAGING_PROJECTS_PAGES',
+  'GET_STAGING_UNITS_PAGES',
 );
 
 const getClimateWarehouseTable = (
@@ -219,6 +222,14 @@ export const getStagingData = ({ useMockedResponse = false }) => {
             type: actions.GET_STAGING_DATA,
             payload: formatStagingData(results),
           });
+          dispatch({
+            type: actions.GET_STAGING_PROJECTS_PAGES,
+            payload: formatStagingData(results).projects.staging.length,
+          });
+          dispatch({
+            type: actions.GET_STAGING_UNITS_PAGES,
+            payload: formatStagingData(results).units.staging.length,
+          });
         }
       }
     } catch {
@@ -327,6 +338,61 @@ export const getPaginatedData = ({
             payload: results.data.map(result =>
               _.omit(result, 'timeStaged', 'createdAt', 'updatedAt'),
             ),
+          });
+
+          dispatch({
+            type: paginationAction,
+            payload: results.pageCount,
+          });
+        } else {
+          const errorResponse = await response.json();
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              formatApiErrorResponse(errorResponse, 'something-went-wrong'),
+            ),
+          );
+        }
+      } catch {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(setConnectionCheck(false));
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
+    }
+  };
+};
+
+export const getStagingPaginatedData = ({
+  type,
+  formType,
+  page,
+  resultsLimit,
+}) => {
+  return async dispatch => {
+    const pageAndLimitAreValid =
+      typeof page === 'number' && typeof resultsLimit === 'number';
+
+    if (pageAndLimitAreValid) {
+      dispatch(activateProgressIndicator);
+      try {
+        let url = `${constants.API_HOST}/${type}?table=${formType}&page=${page}&limit=${resultsLimit}`;
+
+        const response = await fetchWrapper(url);
+
+        if (response.ok) {
+          dispatch(
+            setReadOnly(response.headers.get('cw-read-only') === 'true'),
+          );
+          dispatch(setGlobalErrorMessage(null));
+          dispatch(setConnectionCheck(true));
+          const results = await response.json();
+          let action = actions.GET_STAGING_DATA;
+          let paginationAction = actions.GET_STAGING_PAGE_COUNT;
+
+          dispatch({
+            type: action,
+            payload: formatStagingData(results.data.map(result => result)),
           });
 
           dispatch({

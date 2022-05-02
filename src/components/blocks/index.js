@@ -11,6 +11,7 @@ export * from './LeftNav';
 export * from './Notifications';
 export * from './Pagination';
 export * from './APIPagination';
+export * from './APIStagingPagination';
 export * from './TableDrawer';
 export * from './ComponentRepeater';
 export * from './Modal';
