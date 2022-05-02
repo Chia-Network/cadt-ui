@@ -25,33 +25,43 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
 
-  const unitBelongsToProjectId = issuances?.filter(
-    issuanceItem => issuanceItem.id === data.issuanceId,
-  )[0]?.warehouseProjectId;
+  const unitBelongsToProjectId =
+    data &&
+    issuances?.filter(issuanceItem => issuanceItem.id === data.issuanceId)[0]
+      ?.warehouseProjectId;
 
-  const unitBelongsToProjectName = projects?.filter(
-    projectItem => projectItem.warehouseProjectId === unitBelongsToProjectId,
-  )[0]?.projectName;
+  const unitBelongsToProjectName =
+    data &&
+    projects?.filter(
+      projectItem => projectItem.warehouseProjectId === unitBelongsToProjectId,
+    )[0]?.projectName;
 
-  const projectUrl = `/projects?orgUid=${myOrgUid}&myRegistry=true&projectId=${unitBelongsToProjectId}`;
+  const projectUrl =
+    data &&
+    `/projects?orgUid=${myOrgUid}&myRegistry=true&projectId=${unitBelongsToProjectId}`;
 
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
         <StyledDetailedViewTab>
-          {data && (
-            <StyledItem>
-              <Body size="Bold" width="100%">
-                <FormattedMessage id="project-name" />
-              </Body>
-              <StyledCursor>
-                <Body onClick={() => navigate(projectUrl)} color="#1890ff">
-                  {unitBelongsToProjectName ? unitBelongsToProjectName : '---'}
-                  <MagnifyGlassIcon height="15" width="30" />
+          {data &&
+            unitBelongsToProjectId &&
+            unitBelongsToProjectName &&
+            projectUrl && (
+              <StyledItem>
+                <Body size="Bold" width="100%">
+                  <FormattedMessage id="project-name" />
                 </Body>
-              </StyledCursor>
-            </StyledItem>
-          )}
+                <StyledCursor>
+                  <Body onClick={() => navigate(projectUrl)} color="#1890ff">
+                    {unitBelongsToProjectName
+                      ? unitBelongsToProjectName
+                      : '---'}
+                    <MagnifyGlassIcon height="15" width="30" />
+                  </Body>
+                </StyledCursor>
+              </StyledItem>
+            )}
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-location-id" />
