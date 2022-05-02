@@ -305,7 +305,7 @@
   "add-valid-server-address": "Agregar una dirección de servidor válida",
   "add-valid-api-key": "Agregar una clave Api válida",
   "add-valid-organization-name": "Agregar un nombre de organización válido",
-  "add-valid-organization-icon": "Agregar un icono SVG válido",
+  "add-valid-organization-icon": "Agregar un icono PNG válido",
   "creating-organization": "Creación de Organización",
   "public-address": "Direccion publica",
   "address-qr-code": "Dirección Código QR",
@@ -339,5 +339,10 @@
   "invalid-uid": "Ingrese UID válido",
   "sort-ascending": "Orden ascendente",
   "sort-descending": "Orden descendiente",
-  "project-has-no-locations": "El proyecto seleccionado no tiene ubicaciones añadidas"
+  "project-has-no-locations": "El proyecto seleccionado no tiene ubicaciones añadidas",
+  "delete-all-staging-data-success": "Todos los datos provisionales se eliminaron correctamente",
+  "delete-all-staging-data-error": "No se pudieron eliminar todos los datos de preparación",
+  "confirm-all-staging-data-deletion": "¿Está seguro de que desea eliminar todos los datos provisionales?",
+  "units-belonging-to-issuance": "Unidades pertenecientes a esta emisión",
+  "issuance": "Emisión"
 }

@@ -178,7 +178,7 @@ export const getPickLists = () => {
 
     try {
       const response = await fetch(
-        `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
+        `${constants.API_HOST}/governance/meta/pickList`,
       );
 
       if (response.ok) {
@@ -518,6 +518,53 @@ export const deleteStagingData = uuid => {
   };
 };
 
+export const deleteAllStagingData = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/clean`;
+      const payload = {
+        method: 'DELETE',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'delete-all-staging-data-success',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'delete-all-staging-data-error',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'delete-all-staging-data-error',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const retryStagingData = uuid => {
   return async dispatch => {
     try {
@@ -770,7 +817,7 @@ export const postNewOrg = data => {
       dispatch(activateProgressIndicator);
 
       const formData = new FormData();
-      formData.append('svg', data.svg);
+      formData.append('file', data.png);
       formData.append('name', data.name);
 
       const url = `${constants.API_HOST}/organizations/create`;

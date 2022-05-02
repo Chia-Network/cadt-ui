@@ -549,10 +549,13 @@ const SelectOrganizations = withTheme(
                   {option.name}
                   {option.icon && (
                     <StyledIconContainer>
+                      {option.icon.includes('data:image/png;base64') && (
+                        <img src={option.icon} width={17} height={17} />
+                      )}
                       {validateUrl(option.icon) && (
                         <img src={option.icon} width={17} height={17} />
                       )}
-                      {!validateUrl(option.icon) && (
+                      {option.icon.includes('<svg') && (
                         <StyledSvgContainer
                           dangerouslySetInnerHTML={createMarkup(option.icon)}
                         />

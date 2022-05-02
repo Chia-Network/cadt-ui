@@ -1,5 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styledComponents from 'styled-components';
+
 import { Body, SpanTwoDetailColumnsContainer } from '..';
 import {
   StyledDetailedViewTab,
@@ -8,12 +12,56 @@ import {
 } from '.';
 import { SpanTwoColumnsContainer } from '../layout';
 import { detailsViewData } from '../../utils/functionUtils';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
+import { MagnifyGlassIcon } from '..';
+
+const StyledCursor = styledComponents('div')`
+  cursor: pointer;
+`;
 
 const UnitsDetails = ({ data, stagingData, changeColor }) => {
+  const { issuances, projects } = useSelector(store => store.climateWarehouse);
+  const navigate = useNavigate();
+  const { organizations } = useSelector(store => store.climateWarehouse);
+  const myOrgUid = getMyOrgUid(organizations);
+
+  const unitBelongsToProjectId =
+    data &&
+    issuances?.filter(issuanceItem => issuanceItem.id === data.issuanceId)[0]
+      ?.warehouseProjectId;
+
+  const unitBelongsToProjectName =
+    data &&
+    projects?.filter(
+      projectItem => projectItem.warehouseProjectId === unitBelongsToProjectId,
+    )[0]?.projectName;
+
+  const projectUrl =
+    data &&
+    `/projects?orgUid=${myOrgUid}&myRegistry=true&projectId=${unitBelongsToProjectId}`;
+
   return (
     <StyledDetailedViewTabItem>
       <div style={{ width: '60%' }}>
         <StyledDetailedViewTab>
+          {data &&
+            unitBelongsToProjectId &&
+            unitBelongsToProjectName &&
+            projectUrl && (
+              <StyledItem>
+                <Body size="Bold" width="100%">
+                  <FormattedMessage id="project-name" />
+                </Body>
+                <StyledCursor>
+                  <Body onClick={() => navigate(projectUrl)} color="#1890ff">
+                    {unitBelongsToProjectName
+                      ? unitBelongsToProjectName
+                      : '---'}
+                    <MagnifyGlassIcon height="15" width="30" />
+                  </Body>
+                </StyledCursor>
+              </StyledItem>
+            )}
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-location-id" />

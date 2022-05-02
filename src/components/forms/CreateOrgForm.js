@@ -39,29 +39,29 @@ const CreateOrgForm = ({ onClose }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: '',
-    svg: null,
+    png: null,
   });
   const intl = useIntl();
   const { notification } = useSelector(state => state.app);
 
   const nameIsValid = formData?.name?.length > 0;
 
-  const svgIsValid = formData?.svg != null;
+  const pngIsValid = formData?.png != null;
 
   const onSubmit = async () => {
-    if (nameIsValid && svgIsValid) {
+    if (nameIsValid && pngIsValid) {
       dispatch(postNewOrg(formData));
     }
   };
 
-  const onSvgInputChange = e => {
+  const onPngInputChange = e => {
     if (e.target.value && e.target.value !== '') {
-      const fileNameIsValid = /\.svg$/.test(e.target.value);
+      const fileNameIsValid = /\.png$/.test(e.target.value);
       if (fileNameIsValid) {
         const file = e.target.files[0];
         setFormData(prevState => ({
           ...prevState,
-          svg: file,
+          png: file,
         }));
       }
     }
@@ -124,19 +124,19 @@ const CreateOrgForm = ({ onClose }) => {
               </StyledLabelContainer>
               <InputContainer>
                 <StyledDiv>
-                  <label htmlFor="svg">
-                    {!svgIsValid && <UploadIcon width="20" height="20" />}
-                    {svgIsValid && <SuccessIcon width="20" height="20" />}
+                  <label htmlFor="png">
+                    {!pngIsValid && <UploadIcon width="20" height="20" />}
+                    {pngIsValid && <SuccessIcon width="20" height="20" />}
                   </label>
                   <StyledInput
                     type="file"
-                    id="svg"
-                    accept=".svg"
-                    onChange={onSvgInputChange}
+                    id="png"
+                    accept=".png"
+                    onChange={onPngInputChange}
                   />
                 </StyledDiv>
               </InputContainer>
-              {!svgIsValid && (
+              {!pngIsValid && (
                 <Body size="Small" color="red">
                   {intl.formatMessage({
                     id: 'add-valid-organization-icon',
