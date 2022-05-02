@@ -35,7 +35,8 @@ const DetailedViewIssuanceUnitTable = ({ issuance }) => {
   const myOrgUid = getMyOrgUid(organizations);
   const intl = useIntl();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const rowsPerPageOptions = [7, 14, 21];
+  const [rowsPerPage, setRowsPerPage] = React.useState(rowsPerPageOptions[0]);
   const [columns] = useState([
     {
       unitObjectKey: 'serialNumberBlock',
@@ -128,15 +129,17 @@ const DetailedViewIssuanceUnitTable = ({ issuance }) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[7, 14, 21]}
-            component="div"
-            count={unitsBelongingToThisIssuance.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          {unitsBelongingToThisIssuance.length > rowsPerPage && (
+            <TablePagination
+              rowsPerPageOptions={rowsPerPageOptions}
+              component="div"
+              count={unitsBelongingToThisIssuance.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          )}
         </Paper>
       )}
       {unitsBelongingToThisIssuance?.length === 0 && '---'}
