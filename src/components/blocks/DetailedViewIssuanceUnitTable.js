@@ -16,63 +16,23 @@ import TableRow from '@mui/material/TableRow';
 
 import { Body } from '..';
 import { StyledItem } from '.';
-import { MagnifyGlassIcon } from '../icons';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
-const StyledCursor = styled('div')`
-  cursor: pointer;
-`;
+const StyledTableRow = styled(TableRow)(() => ({
+  '& td, & th': {
+    cursor: 'zoom-in',
+  },
+}));
+
+const Spacing = styled('div')({
+  paddingTop: '17px',
+});
 
 const DetailedViewIssuanceUnitTable = ({ issuance }) => {
   const navigate = useNavigate();
   const { organizations } = useSelector(store => store.climateWarehouse);
   const { units } = useSelector(store => store.climateWarehouse);
   const myOrgUid = getMyOrgUid(organizations);
-
-  const unitsBelongingToThisIssuance = useMemo(
-    () =>
-      units?.reduce((accumulator, currentUnit) => {
-        if (currentUnit.issuanceId === issuance.id) {
-          return [...accumulator, currentUnit];
-        }
-        return accumulator;
-      }, []),
-    [units, issuance],
-  );
-
-  return (
-    <StyledItem>
-      <Body size="Bold" width="100%">
-        <FormattedMessage id="units-belonging-to-issuance" />
-      </Body>
-      {false &&
-        unitsBelongingToThisIssuance?.length > 0 &&
-        unitsBelongingToThisIssuance.map(unitItem => (
-          <StyledCursor key={unitItem.warehouseUnitId}>
-            <Body
-              onClick={() =>
-                navigate(
-                  `/units?orgUid=${myOrgUid}&myRegistry=true&unitId=${unitItem.warehouseUnitId}`,
-                )
-              }
-              color="#1890ff"
-            >
-              {unitItem.warehouseUnitId}
-              <MagnifyGlassIcon height="15" width="30" />
-            </Body>
-          </StyledCursor>
-        ))}
-      <CustomizedTables
-        unitsBelongingToThisIssuance={unitsBelongingToThisIssuance}
-      />
-      {unitsBelongingToThisIssuance?.length === 0 && '---'}
-    </StyledItem>
-  );
-};
-
-export { DetailedViewIssuanceUnitTable };
-
-const CustomizedTables = ({ unitsBelongingToThisIssuance }) => {
   const intl = useIntl();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -81,7 +41,7 @@ const CustomizedTables = ({ unitsBelongingToThisIssuance }) => {
       unitObjectKey: 'serialNumberBlock',
       label: intl.formatMessage({ id: 'serial-number-block' }),
       minWidth: 170,
-      align: 'right',
+      align: 'left',
     },
     {
       unitObjectKey: 'unitCount',
@@ -106,54 +66,82 @@ const CustomizedTables = ({ unitsBelongingToThisIssuance }) => {
     setPage(0);
   };
 
-  if (!unitsBelongingToThisIssuance?.length) return null;
+  const unitsBelongingToThisIssuance = useMemo(
+    () =>
+      units?.reduce((accumulator, currentUnit) => {
+        if (currentUnit.issuanceId === issuance.id) {
+          return [...accumulator, currentUnit];
+        }
+        return accumulator;
+      }, []),
+    [units, issuance],
+  );
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map(column => (
-                <TableCell
-                  key={column.unitObjectKey}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {unitsBelongingToThisIssuance
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map(unitItem => (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={unitItem.warehouseUnitId}
-                >
+    <StyledItem>
+      <Body size="Bold" width="100%">
+        <FormattedMessage id="units-belonging-to-issuance" />
+      </Body>
+      <Spacing />
+      {unitsBelongingToThisIssuance?.length > 0 && (
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
                   {columns.map(column => (
-                    <TableCell key={column.unitObjectKey} align={column.align}>
-                      {unitItem[column.unitObjectKey]}
+                    <TableCell
+                      key={column.unitObjectKey}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
                     </TableCell>
                   ))}
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={unitsBelongingToThisIssuance.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+              </TableHead>
+              <TableBody>
+                {unitsBelongingToThisIssuance
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(unitItem => (
+                    <StyledTableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={unitItem.warehouseUnitId}
+                      onClick={() =>
+                        navigate(
+                          `/units?orgUid=${myOrgUid}&myRegistry=true&unitId=${unitItem.warehouseUnitId}`,
+                        )
+                      }
+                    >
+                      {columns.map(column => (
+                        <TableCell
+                          key={column.unitObjectKey}
+                          align={column.align}
+                        >
+                          {unitItem[column.unitObjectKey]}
+                        </TableCell>
+                      ))}
+                    </StyledTableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[7, 14, 21]}
+            component="div"
+            count={unitsBelongingToThisIssuance.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+      )}
+      {unitsBelongingToThisIssuance?.length === 0 && '---'}
+    </StyledItem>
   );
 };
+
+export { DetailedViewIssuanceUnitTable };
