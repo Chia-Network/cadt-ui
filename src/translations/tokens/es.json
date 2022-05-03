@@ -344,5 +344,6 @@
   "delete-all-staging-data-error": "No se pudieron eliminar todos los datos de preparación",
   "confirm-all-staging-data-deletion": "¿Está seguro de que desea eliminar todos los datos provisionales?",
   "units-belonging-to-issuance": "Unidades pertenecientes a esta emisión",
-  "issuance": "Emisión"
+  "issuance": "Emisión",
+  "already-subscribed-org": "Ya estás suscrito a esta organización."
 }
