@@ -360,7 +360,7 @@
   "project-has-no-locations": "Selected project doesn't have locations added",
   "delete-all-staging-data-success": "All staging data was successfully deleted",
   "delete-all-staging-data-error": "All staging data could not be deleted",
-  "confirm-all-staging-data-deletion": "Are you sure you want to delete all staging data?",
+  "confirm-all-staging-data-deletion": "Are you sure you want to delete all of Units and Projects staging data?",
   "units-belonging-to-issuance": "Units belonging to this issuance",
   "issuance": "Issuance"
 }
