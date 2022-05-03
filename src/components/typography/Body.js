@@ -7,7 +7,7 @@ const Text = styled('div')`
   font-size: 16px;
   font-family: ${props => props.theme.typography.primary.regular};
   font-weight: 400;
-  width:100%;
+  width: 100%;
   line-height: 150%;
   ${props =>
     props.size === 'Big' &&
@@ -43,10 +43,15 @@ const Text = styled('div')`
     `}
 `;
 
-const Body = withTheme(({ children, color, size }) => {
+const Body = withTheme(({ children, color, size, onClick }) => {
   const appStore = useSelector(state => state.app);
   return (
-    <Text color={color} selectedTheme={appStore.theme} size={size}>
+    <Text
+      color={color}
+      selectedTheme={appStore.theme}
+      size={size}
+      onClick={onClick}
+    >
       {children}
     </Text>
   );

@@ -42,6 +42,9 @@ export const actions = keyMirror(
   'GET_ISSUANCES',
   'GET_LABELS',
   'GET_AUDIT',
+  'GET_STAGING_PAGE_COUNT',
+  'GET_STAGING_PROJECTS_PAGES',
+  'GET_STAGING_UNITS_PAGES',
 );
 
 const getClimateWarehouseTable = (
@@ -175,7 +178,7 @@ export const getPickLists = () => {
 
     try {
       const response = await fetch(
-        `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
+        `${constants.API_HOST}/governance/meta/pickList`,
       );
 
       if (response.ok) {
@@ -218,6 +221,14 @@ export const getStagingData = ({ useMockedResponse = false }) => {
           dispatch({
             type: actions.GET_STAGING_DATA,
             payload: formatStagingData(results),
+          });
+          dispatch({
+            type: actions.GET_STAGING_PROJECTS_PAGES,
+            payload: formatStagingData(results).projects.staging.length,
+          });
+          dispatch({
+            type: actions.GET_STAGING_UNITS_PAGES,
+            payload: formatStagingData(results).units.staging.length,
           });
         }
       }
@@ -352,6 +363,61 @@ export const getPaginatedData = ({
   };
 };
 
+export const getStagingPaginatedData = ({
+  type,
+  formType,
+  page,
+  resultsLimit,
+}) => {
+  return async dispatch => {
+    const pageAndLimitAreValid =
+      typeof page === 'number' && typeof resultsLimit === 'number';
+
+    if (pageAndLimitAreValid) {
+      dispatch(activateProgressIndicator);
+      try {
+        let url = `${constants.API_HOST}/${type}?table=${formType}&page=${page}&limit=${resultsLimit}`;
+
+        const response = await fetchWrapper(url);
+
+        if (response.ok) {
+          dispatch(
+            setReadOnly(response.headers.get('cw-read-only') === 'true'),
+          );
+          dispatch(setGlobalErrorMessage(null));
+          dispatch(setConnectionCheck(true));
+          const results = await response.json();
+          let action = actions.GET_STAGING_DATA;
+          let paginationAction = actions.GET_STAGING_PAGE_COUNT;
+
+          dispatch({
+            type: action,
+            payload: formatStagingData(results.data.map(result => result)),
+          });
+
+          dispatch({
+            type: paginationAction,
+            payload: results.pageCount,
+          });
+        } else {
+          const errorResponse = await response.json();
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              formatApiErrorResponse(errorResponse, 'something-went-wrong'),
+            ),
+          );
+        }
+      } catch {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(setConnectionCheck(false));
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
+    }
+  };
+};
+
 export const commitStagingData = (data, message) => {
   return async dispatch => {
     try {
@@ -447,6 +513,53 @@ export const deleteStagingData = uuid => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'staging-group-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteAllStagingData = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/clean`;
+      const payload = {
+        method: 'DELETE',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'delete-all-staging-data-success',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'delete-all-staging-data-error',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'delete-all-staging-data-error',
         ),
       );
     } finally {
@@ -707,7 +820,7 @@ export const postNewOrg = data => {
       dispatch(activateProgressIndicator);
 
       const formData = new FormData();
-      formData.append('svg', data.svg);
+      formData.append('file', data.png);
       formData.append('name', data.name);
 
       const url = `${constants.API_HOST}/organizations/create`;

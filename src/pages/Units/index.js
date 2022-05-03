@@ -10,10 +10,12 @@ import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
 
 import {
-  getStagingData,
   deleteStagingData,
   getPaginatedData,
   retryStagingData,
+  getStagingPaginatedData,
+  getStagingData,
+  deleteAllStagingData,
 } from '../../store/actions/climateWarehouseActions';
 import {
   setPendingError,
@@ -38,6 +40,10 @@ import {
   SelectOrganizations,
   UploadXLSX,
   CommitModal,
+  Modal,
+  modalTypeEnum,
+  MinusIcon,
+  DetailedViewModal,
 } from '../../components';
 
 const headings = [
@@ -113,13 +119,19 @@ const StyledCSVOperationsContainer = styled('div')`
   display: flex;
   justify-content: flex-end;
   gap: 20px;
+
+  svg {
+    cursor: pointer;
+  }
 `;
 
 const Units = () => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
-  const { notification } = useSelector(store => store.app);
   const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
+  const [isDeleteAllStagingVisible, setIsDeleteAllStagingVisible] =
+    useState(false);
+  const { notification } = useSelector(store => store.app);
   const intl = useIntl();
   let location = useLocation();
   let navigate = useNavigate();
@@ -133,6 +145,26 @@ const Units = () => {
   const windowSize = useWindowSize();
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+  const [unitIdToOpenInDetailedView, setUnitIdToOpenInDetailedView] =
+    useState(null);
+
+  useEffect(() => {
+    const unitId = searchParams.get('unitId');
+    if (unitId) {
+      setUnitIdToOpenInDetailedView(unitId);
+    }
+  }, [searchParams.get('unitId')]);
+
+  const closeProjectOpenedInDetailedView = () => {
+    setUnitIdToOpenInDetailedView(null);
+    navigate(
+      `${location.pathname}?${getUpdatedUrl(location.search, {
+        param: 'unitId',
+        value: null,
+      })}`,
+      { replace: true },
+    );
   };
 
   useEffect(() => {
@@ -219,7 +251,6 @@ const Units = () => {
       options.orgUid = searchParams.get('orgUid');
     }
     dispatch(getPaginatedData(options));
-    dispatch(getStagingData({ useMockedResponse: false }));
   }, [
     dispatch,
     tabValue,
@@ -227,6 +258,20 @@ const Units = () => {
     selectedOrganization,
     pageIsMyRegistryPage,
   ]);
+
+  useEffect(() => {
+    dispatch(getStagingData({ useMockedResponse: false }));
+  }, [climateWarehouseStore.totalUnitsPages]);
+
+  useEffect(() => {
+    const options = {
+      type: 'staging',
+      page: 1,
+      formType: 'Units',
+      resultsLimit: constants.MAX_TABLE_SIZE,
+    };
+    dispatch(getStagingPaginatedData(options));
+  }, [dispatch]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.units) {
@@ -340,7 +385,7 @@ const Units = () => {
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.units.staging.length
+                  climateWarehouseStore?.totalUnitsPages
                 })`}
               />
             )}
@@ -362,6 +407,14 @@ const Units = () => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
+            {pageIsMyRegistryPage &&
+              tabValue === 1 &&
+              climateWarehouseStore?.stagingData?.units?.staging?.length >
+                0 && (
+                <span onClick={() => setIsDeleteAllStagingVisible(true)}>
+                  <MinusIcon width={20} height={20} />
+                </span>
+              )}
             <span onClick={() => downloadTxtFile('units', searchParams)}>
               <DownloadIcon />
             </span>
@@ -501,6 +554,30 @@ const Units = () => {
           )}
         </StyledBodyContainer>
       </StyledSectionContainer>
+      {isDeleteAllStagingVisible && (
+        <Modal
+          title={intl.formatMessage({
+            id: 'notification',
+          })}
+          body={intl.formatMessage({
+            id: 'confirm-all-staging-data-deletion',
+          })}
+          modalType={modalTypeEnum.confirmation}
+          onClose={() => setIsDeleteAllStagingVisible(false)}
+          onOk={() => {
+            dispatch(deleteAllStagingData());
+            setIsDeleteAllStagingVisible(false);
+          }}
+        />
+      )}
+      {unitIdToOpenInDetailedView && (
+        <DetailedViewModal
+          onClose={closeProjectOpenedInDetailedView}
+          modalSizeAndPosition={modalSizeAndPosition}
+          type={'units'}
+          unitOrProjectWarehouseId={unitIdToOpenInDetailedView}
+        />
+      )}
     </>
   );
 };

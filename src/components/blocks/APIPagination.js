@@ -6,7 +6,7 @@ import { ArrowDownIcon, ThreeDotsIcon } from '..';
 import { getPaginatedData } from '../../store/actions/climateWarehouseActions';
 import constants from '../../constants';
 
-const PaginationContainer = styled('div')`
+export const PaginationContainer = styled('div')`
   display: inline-flex;
   flex-direction: row;
   justify-content: center;
@@ -17,7 +17,7 @@ const PaginationContainer = styled('div')`
   background-color: white;
 `;
 
-const ControlsContainer = styled('div')`
+export const ControlsContainer = styled('div')`
   cursor: pointer;
   width: 32px;
   height: 32px;
@@ -40,7 +40,7 @@ const ControlsContainer = styled('div')`
     transform: rotate(270deg);`};
 `;
 
-const PagesContainer = styled(ControlsContainer)`
+export const PagesContainer = styled(ControlsContainer)`
   font-family: ${props => props.theme.typography.primary.regular};
   font-style: normal;
   font-weight: bold;

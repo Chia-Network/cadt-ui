@@ -26,6 +26,10 @@ import {
   H3,
   UploadXLSX,
   CommitModal,
+  Modal,
+  modalTypeEnum,
+  MinusIcon,
+  DetailedViewModal,
 } from '../../components';
 
 import {
@@ -35,10 +39,12 @@ import {
 } from '../../store/actions/app';
 
 import {
-  getStagingData,
   deleteStagingData,
   getPaginatedData,
+  getStagingPaginatedData,
   retryStagingData,
+  getStagingData,
+  deleteAllStagingData,
 } from '../../store/actions/climateWarehouseActions';
 
 const headings = [
@@ -116,12 +122,18 @@ const StyledCSVOperationsContainer = styled('div')`
   display: flex;
   justify-content: flex-end;
   gap: 20px;
+
+  svg {
+    cursor: pointer;
+  }
 `;
 
 const Projects = () => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
-  const { notification } = useSelector(store => store.app);
   const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
+  const [isDeleteAllStagingVisible, setIsDeleteAllStagingVisible] =
+    useState(false);
+  const { notification } = useSelector(store => store.app);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -134,8 +146,28 @@ const Projects = () => {
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
+  const [projectIdToOpenInDetailedView, setProjectIdToOpenInDetailedView] =
+    useState(null);
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+
+  useEffect(() => {
+    const projectId = searchParams.get('projectId');
+    if (projectId) {
+      setProjectIdToOpenInDetailedView(projectId);
+    }
+  }, [searchParams.get('projectId')]);
+
+  const closeProjectOpenedInDetailedView = () => {
+    setProjectIdToOpenInDetailedView(null);
+    navigate(
+      `${location.pathname}?${getUpdatedUrl(location.search, {
+        param: 'projectId',
+        value: null,
+      })}`,
+      { replace: true },
+    );
   };
 
   useEffect(() => {
@@ -150,6 +182,10 @@ const Projects = () => {
       setTabValue(switchTabBySuccessfulRequest[notification.id]);
     }
   }, [notification]);
+
+  useEffect(() => {
+    dispatch(getStagingData({ useMockedResponse: false }));
+  }, [climateWarehouseStore.totalProjectsPages]);
 
   useEffect(() => {
     setTabValue(0);
@@ -233,7 +269,6 @@ const Projects = () => {
       options.orgUid = searchParams.get('orgUid');
     }
     dispatch(getPaginatedData(options));
-    dispatch(getStagingData({ useMockedResponse: false }));
   }, [
     dispatch,
     tabValue,
@@ -241,6 +276,16 @@ const Projects = () => {
     selectedOrganization,
     pageIsMyRegistryPage,
   ]);
+
+  useEffect(() => {
+    const options = {
+      type: 'staging',
+      page: 1,
+      formType: 'Projects',
+      resultsLimit: constants.MAX_TABLE_SIZE,
+    };
+    dispatch(getStagingPaginatedData(options));
+  }, [dispatch]);
 
   const filteredColumnsTableData = useMemo(() => {
     if (!climateWarehouseStore.projects) {
@@ -340,7 +385,7 @@ const Projects = () => {
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.projects.staging.length
+                  climateWarehouseStore?.totalProjectsPages
                 })`}
               />
             )}
@@ -362,6 +407,14 @@ const Projects = () => {
             )}
           </Tabs>
           <StyledCSVOperationsContainer>
+            {pageIsMyRegistryPage &&
+              tabValue === 1 &&
+              climateWarehouseStore?.stagingData?.projects?.staging?.length >
+                0 && (
+                <span onClick={() => setIsDeleteAllStagingVisible(true)}>
+                  <MinusIcon width={20} height={20} />
+                </span>
+              )}
             <span onClick={() => downloadTxtFile('projects', searchParams)}>
               <DownloadIcon />
             </span>
@@ -497,6 +550,30 @@ const Projects = () => {
             dispatch(setValidateForm(false));
           }}
           modalSizeAndPosition={modalSizeAndPosition}
+        />
+      )}
+      {isDeleteAllStagingVisible && (
+        <Modal
+          title={intl.formatMessage({
+            id: 'notification',
+          })}
+          body={intl.formatMessage({
+            id: 'confirm-all-staging-data-deletion',
+          })}
+          modalType={modalTypeEnum.confirmation}
+          onClose={() => setIsDeleteAllStagingVisible(false)}
+          onOk={() => {
+            dispatch(deleteAllStagingData());
+            setIsDeleteAllStagingVisible(false);
+          }}
+        />
+      )}
+      {projectIdToOpenInDetailedView && (
+        <DetailedViewModal
+          onClose={closeProjectOpenedInDetailedView}
+          modalSizeAndPosition={modalSizeAndPosition}
+          type={'projects'}
+          unitOrProjectWarehouseId={projectIdToOpenInDetailedView}
         />
       )}
     </>
