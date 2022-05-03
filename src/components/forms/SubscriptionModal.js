@@ -72,6 +72,16 @@ const SubscriptionModal = ({ onClose }) => {
   const isIpValid = useMemo(() => validateIp(ip), [ip]);
   const isPortValid = useMemo(() => validatePort(port), [port]);
 
+  const isUserAlreadySubscribedToOrgUid = () => {
+    for (const orgUidKey in organizations) {
+      if (orgUid === orgUidKey && organizations[orgUidKey]?.subscribed) {
+        return true;
+      }
+    }
+    return false;
+  };
+  console.log(isUserAlreadySubscribedToOrgUid);
+
   const submitCustomOrganization = () => {
     if (!isValidationOn) {
       setIsValidation(true);
