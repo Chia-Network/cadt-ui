@@ -151,6 +151,12 @@ const Units = () => {
   const [unitIdToOpenInDetailedView, setUnitIdToOpenInDetailedView] =
     useState(null);
 
+     useEffect(() => {
+       if (!create) {
+         localStorage.removeItem('selectedLabel');
+       }
+     }, [create]);
+
   useEffect(() => {
     const unitId = searchParams.get('unitId');
     if (unitId) {
