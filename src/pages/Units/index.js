@@ -17,7 +17,6 @@ import {
   getStagingPaginatedData,
   getStagingData,
   deleteAllStagingData,
-
 } from '../../store/actions/climateWarehouseActions';
 import {
   setPendingError,
@@ -228,7 +227,7 @@ const Units = () => {
         }
         setSearchQuery(event.target.value);
       }, 300),
-    [dispatch],
+    [dispatch, location],
   );
 
   useEffect(() => {
@@ -475,7 +474,8 @@ const Units = () => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>

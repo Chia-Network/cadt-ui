@@ -72,12 +72,26 @@ const SubscriptionModal = ({ onClose }) => {
   const isIpValid = useMemo(() => validateIp(ip), [ip]);
   const isPortValid = useMemo(() => validatePort(port), [port]);
 
+  const isUserAlreadySubscribedToOrgUid = useMemo(() => {
+    for (const orgUidKey in organizations) {
+      if (orgUid === orgUidKey && organizations[orgUidKey]?.subscribed) {
+        return true;
+      }
+    }
+    return false;
+  }, [orgUid]);
+
   const submitCustomOrganization = () => {
     if (!isValidationOn) {
       setIsValidation(true);
     }
 
-    if (isOrgUidValid && isIpValid && isPortValid) {
+    if (
+      isOrgUidValid &&
+      isIpValid &&
+      isPortValid &&
+      !isUserAlreadySubscribedToOrgUid
+    ) {
       dispatch(subscribeImportOrg({ orgUid, ip, port }));
       setOrgUid('');
       setIp('');
@@ -152,7 +166,7 @@ const SubscriptionModal = ({ onClose }) => {
                 />
               </StyledIpPortContainer>
 
-              {isValidationOn && (
+              {isValidationOn && !isUserAlreadySubscribedToOrgUid && (
                 <Body size="Small" color="red">
                   {!isOrgUidValid && (
                     <div>
@@ -169,6 +183,13 @@ const SubscriptionModal = ({ onClose }) => {
                       <FormattedMessage id="invalid-port" />
                     </div>
                   )}
+                </Body>
+              )}
+              {isValidationOn && isUserAlreadySubscribedToOrgUid && (
+                <Body size="Small" color="red">
+                  <div>
+                    <FormattedMessage id="already-subscribed-org" />
+                  </div>
                 </Body>
               )}
             </StyledFieldContainer>
