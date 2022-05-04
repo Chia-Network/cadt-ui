@@ -344,5 +344,6 @@
   "delete-all-staging-data-error": "すべてのステージングデータを削除できませんでした",
   "confirm-all-staging-data-deletion": "すべてのステージングデータを削除してもよろしいですか？",
   "units-belonging-to-issuance": "この発行に属するユニット",
-  "issuance": "発行"
+  "issuance": "発行",
+  "already-subscribed-org": "あなたはすでにこの組織に加入しています"
 }

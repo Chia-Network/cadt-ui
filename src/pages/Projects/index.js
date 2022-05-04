@@ -45,7 +45,6 @@ import {
   retryStagingData,
   getStagingData,
   deleteAllStagingData,
-
 } from '../../store/actions/climateWarehouseActions';
 
 import { setCommit } from '../../store/actions/app';
@@ -185,10 +184,9 @@ const Projects = () => {
     }
   }, [notification]);
 
-
-useEffect(() => {
-  dispatch(getStagingData({useMockedResponse: false}))
-}, [climateWarehouseStore.totalProjectsPages])
+  useEffect(() => {
+    dispatch(getStagingData({ useMockedResponse: false }));
+  }, [climateWarehouseStore.totalProjectsPages]);
 
   useEffect(() => {
     setTabValue(0);
@@ -247,7 +245,7 @@ useEffect(() => {
         }
         setSearchQuery(event.target.value);
       }, 300),
-    [dispatch],
+    [dispatch, location],
   );
 
   useEffect(() => {
@@ -476,7 +474,8 @@ useEffect(() => {
                             } else {
                               dispatch(setPendingError(true));
                             }
-                          }}>
+                          }}
+                        >
                           <FormattedMessage id="create-one-now" />
                         </StyledCreateOneNowContainer>
                       </>
