@@ -29,49 +29,49 @@ const ProjectDetailedViewTab = ({ entry }) => {
   }, []);
 
   const estimationTabIndexAdjustment = _.remove(
-    [_.isEmpty(entry.issuances), _.isEmpty(entry.projectLocations)],
+    [_.isEmpty(entry?.issuances), _.isEmpty(entry?.projectLocations)],
     item => item,
   );
 
   const labelsTabIndexAdjustment = _.remove(
     [
-      _.isEmpty(entry.issuances),
-      _.isEmpty(entry.projectLocations),
-      _.isEmpty(entry.estimations),
+      _.isEmpty(entry?.issuances),
+      _.isEmpty(entry?.projectLocations),
+      _.isEmpty(entry?.estimations),
     ],
     item => item,
   );
 
   const ratingsTabIndexAdjustment = _.remove(
     [
-      _.isEmpty(entry.labels),
-      _.isEmpty(entry.issuances),
-      _.isEmpty(entry.projectLocations),
-      _.isEmpty(entry.estimations),
+      _.isEmpty(entry?.labels),
+      _.isEmpty(entry?.issuances),
+      _.isEmpty(entry?.projectLocations),
+      _.isEmpty(entry?.estimations),
     ],
     item => item,
   );
 
   const coBenefitsTabIndexAdjustment = _.remove(
     [
-      _.isEmpty(entry.labels),
-      _.isEmpty(entry.issuances),
-      _.isEmpty(entry.projectLocations),
-      _.isEmpty(entry.projectRatings),
-      _.isEmpty(entry.estimations),
+      _.isEmpty(entry?.labels),
+      _.isEmpty(entry?.issuances),
+      _.isEmpty(entry?.projectLocations),
+      _.isEmpty(entry?.projectRatings),
+      _.isEmpty(entry?.estimations),
     ],
     item => item,
   );
 
   const relatedProjectsTabIndexAdjustment = _.remove(
     [
-      _.isEmpty(entry.labels),
-      _.isEmpty(entry.issuances),
-      _.isEmpty(entry.projectLocations),
-      _.isEmpty(entry.projectRatings),
-      _.isEmpty(entry.estimations),
-      _.isEmpty(entry.coBenefits),
-      _.isEmpty(entry.relatedProjects),
+      _.isEmpty(entry?.labels),
+      _.isEmpty(entry?.issuances),
+      _.isEmpty(entry?.projectLocations),
+      _.isEmpty(entry?.projectRatings),
+      _.isEmpty(entry?.estimations),
+      _.isEmpty(entry?.coBenefits),
+      _.isEmpty(entry?.relatedProjects),
     ],
     item => item,
   );
