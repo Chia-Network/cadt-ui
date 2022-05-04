@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -52,9 +53,21 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
     [selectedWayToAddLabel],
   );
 
+  useEffect(() => {
+    if (
+      !_.isEmpty(_.filter(Object.values(value), value => value)) &&
+      !selectedWayToAddLabel
+    ) {
+      if (!value.id && JSON.parse(localStorage.getItem('selectedLabel'))) {
+        setSelectedWayToAddLabel(
+          JSON.parse(localStorage.getItem('selectedLabel')),
+        );
+      }
+    }
+  }, [selectedWayToAddLabel, value]);
+
   const areFormFieldsVisible =
-    (selectedWayToAddLabel?.value ||
-      JSON.parse(localStorage.getItem('selectedLabel'))?.value) === 1 ||
+    selectedWayToAddLabel?.value === 1 ||
     (selectedWayToAddLabel?.value === 2 && selectedLabelOption) ||
     (selectedWayToAddLabel?.value === 3 && selectedProjectLabelOption) ||
     wasLabelExisting.current;
@@ -201,8 +214,6 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     selected={
                       selectedWayToAddLabel
                         ? [selectedWayToAddLabel]
-                        : JSON.parse(localStorage.getItem('selectedLabel'))
-                        ? [JSON.parse(localStorage.getItem('selectedLabel'))]
                         : undefined
                     }
                     onChange={handleChange}
