@@ -40,7 +40,7 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
     serialNumberBlock: '',
-    serialNumberPattern: '[.*\\D]+([0-9]+)+[-][.*\\D]+([0-9]+)$',
+    unitCount: '',
     marketplace: '',
     marketplaceLink: '',
     marketplaceIdentifier: '',
