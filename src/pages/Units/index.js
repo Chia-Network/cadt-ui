@@ -44,7 +44,7 @@ import {
   modalTypeEnum,
   Body,
   MinusIcon,
-  DetailedViewModal,
+  UnitsDetailViewModal,
 } from '../../components';
 import { setCommit } from '../../store/actions/app';
 
@@ -594,11 +594,10 @@ const Units = () => {
         />
       )}
       {unitIdToOpenInDetailedView && (
-        <DetailedViewModal
+        <UnitsDetailViewModal
           onClose={closeProjectOpenedInDetailedView}
           modalSizeAndPosition={modalSizeAndPosition}
-          type={'units'}
-          unitOrProjectWarehouseId={unitIdToOpenInDetailedView}
+          unitObject={unitIdToOpenInDetailedView}
         />
       )}
     </>

@@ -29,7 +29,7 @@ import {
   modalTypeEnum,
   Body,
   MinusIcon,
-  DetailedViewModal,
+  ProjectDetailedViewModal,
 } from '../../components';
 import {
   setPendingError,
@@ -592,11 +592,10 @@ const Projects = () => {
         />
       )}
       {projectIdToOpenInDetailedView && (
-        <DetailedViewModal
+        <ProjectDetailedViewModal
           onClose={closeProjectOpenedInDetailedView}
           modalSizeAndPosition={modalSizeAndPosition}
-          type={'projects'}
-          unitOrProjectWarehouseId={projectIdToOpenInDetailedView}
+          projectObject={projectIdToOpenInDetailedView}
         />
       )}
     </>
