@@ -26,7 +26,7 @@ const APIStagingPagination = withTheme(
       setCurrentPageNumber(1);
       setNumberOfPages(climateWarehouseStore.stagingPageCount || 1);
     }, [climateWarehouseStore.stagingPageCount]);
-   
+
     const changeCurrentPageTo = newPage => {
       setCurrentPageNumber(newPage);
 
@@ -36,7 +36,7 @@ const APIStagingPagination = withTheme(
         formType: formType[0]?.table,
         resultsLimit: constants.MAX_TABLE_SIZE,
       };
-      
+
       dispatch(getStagingPaginatedData(options));
     };
 
@@ -64,7 +64,8 @@ const APIStagingPagination = withTheme(
           isBackButton={true}
           onClick={() =>
             !backButtonIsDisabled && changeCurrentPageTo(currentPageNumber - 1)
-          }>
+          }
+        >
           <ArrowDownIcon height={12} width={12} />
         </ControlsContainer>
         {displayedPages &&
@@ -74,7 +75,8 @@ const APIStagingPagination = withTheme(
               isActive={currentPageNumber === element}
               onClick={() =>
                 currentPageNumber !== element && changeCurrentPageTo(element)
-              }>
+              }
+            >
               {element}
             </PagesContainer>
           ))}
@@ -84,7 +86,8 @@ const APIStagingPagination = withTheme(
             <>
               <ThreeDotsIcon width={10} height={10} />
               <PagesContainer
-                onClick={() => changeCurrentPageTo(numberOfPages)}>
+                onClick={() => changeCurrentPageTo(numberOfPages)}
+              >
                 {numberOfPages}
               </PagesContainer>
             </>
@@ -94,7 +97,8 @@ const APIStagingPagination = withTheme(
           isNextButton
           onClick={() =>
             !nextButtonIsDisabled && changeCurrentPageTo(currentPageNumber + 1)
-          }>
+          }
+        >
           <ArrowDownIcon height={12} width={12} />
         </ControlsContainer>
       </PaginationContainer>
