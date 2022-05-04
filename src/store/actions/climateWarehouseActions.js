@@ -191,6 +191,15 @@ export const getProjectData = id => {
   };
 };
 
+export const clearProjectData = () => {
+  return async dispatch => {
+    dispatch({
+      type: actions.GET_PROJECT,
+      payload: null,
+    });
+  };
+};
+
 export const getUnitData = id => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -217,6 +226,15 @@ export const getUnitData = id => {
     } finally {
       dispatch(deactivateProgressIndicator);
     }
+  };
+};
+
+export const clearUnitData = () => {
+  return async dispatch => {
+    dispatch({
+      type: actions.GET_UNIT,
+      payload: null,
+    });
   };
 };
 

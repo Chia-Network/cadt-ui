@@ -45,6 +45,8 @@ import {
   retryStagingData,
   getStagingData,
   deleteAllStagingData,
+  clearProjectData,
+  getProjectData,
 } from '../../store/actions/climateWarehouseActions';
 
 import { setCommit } from '../../store/actions/app';
@@ -135,7 +137,9 @@ const Projects = () => {
   const [isDeleteAllStagingVisible, setIsDeleteAllStagingVisible] =
     useState(false);
   const { notification, commit } = useSelector(store => store.app);
-  const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+  const { project, projects, stagingData, totalProjectsPages } = useSelector(
+    store => store.climateWarehouse,
+  );
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -147,8 +151,7 @@ const Projects = () => {
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
-  const [projectIdToOpenInDetailedView, setProjectIdToOpenInDetailedView] =
-    useState(null);
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -156,12 +159,12 @@ const Projects = () => {
   useEffect(() => {
     const projectId = searchParams.get('projectId');
     if (projectId) {
-      setProjectIdToOpenInDetailedView(projectId);
+      dispatch(getProjectData(projectId));
     }
   }, [searchParams.get('projectId')]);
 
   const closeProjectOpenedInDetailedView = () => {
-    setProjectIdToOpenInDetailedView(null);
+    dispatch(clearProjectData());
     navigate(
       `${location.pathname}?${getUpdatedUrl(location.search, {
         param: 'projectId',
@@ -186,7 +189,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, [climateWarehouseStore.totalProjectsPages]);
+  }, [totalProjectsPages]);
 
   useEffect(() => {
     setTabValue(0);
@@ -289,11 +292,11 @@ const Projects = () => {
   }, [dispatch]);
 
   const filteredColumnsTableData = useMemo(() => {
-    if (!climateWarehouseStore.projects) {
+    if (!projects) {
       return null;
     }
 
-    return climateWarehouseStore.projects.map(project =>
+    return projects.map(project =>
       _.pick(project, [
         'warehouseProjectId',
         'currentRegistry',
@@ -309,7 +312,7 @@ const Projects = () => {
         'validationBody',
       ]),
     );
-  }, [climateWarehouseStore.projects, climateWarehouseStore.stagingData]);
+  }, [projects, stagingData]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -357,12 +360,8 @@ const Projects = () => {
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
                 onClick={() => {
                   if (
-                    _.isEmpty(
-                      climateWarehouseStore.stagingData.units.pending,
-                    ) &&
-                    _.isEmpty(
-                      climateWarehouseStore.stagingData.projects.pending,
-                    )
+                    _.isEmpty(stagingData.units.pending) &&
+                    _.isEmpty(stagingData.projects.pending)
                   ) {
                     setCreateFormIsDisplayed(true);
                     dispatch(setForm('project'));
@@ -373,14 +372,13 @@ const Projects = () => {
                 }}
               />
             )}
-            {tabValue === 1 &&
-              climateWarehouseStore.stagingData.projects.staging.length > 0 && (
-                <PrimaryButton
-                  label={intl.formatMessage({ id: 'commit' })}
-                  size="large"
-                  onClick={() => dispatch(setCommit(true))}
-                />
-              )}
+            {tabValue === 1 && stagingData.projects.staging.length > 0 && (
+              <PrimaryButton
+                label={intl.formatMessage({ id: 'commit' })}
+                size="large"
+                onClick={() => dispatch(setCommit(true))}
+              />
+            )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
         {commit && (
@@ -407,24 +405,21 @@ const Projects = () => {
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
-                  climateWarehouseStore.stagingData &&
-                  climateWarehouseStore?.totalProjectsPages
+                  stagingData && totalProjectsPages
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.projects.pending.length
+                  stagingData && stagingData.projects.pending.length
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'failed' })} (${
-                  climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.projects.failed.length
+                  stagingData && stagingData.projects.failed.length
                 })`}
               />
             )}
@@ -432,8 +427,7 @@ const Projects = () => {
           <StyledCSVOperationsContainer>
             {pageIsMyRegistryPage &&
               tabValue === 1 &&
-              climateWarehouseStore?.stagingData?.projects?.staging?.length >
-                0 && (
+              stagingData?.projects?.staging?.length > 0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
                   <MinusIcon width={20} height={20} />
                 </span>
@@ -450,70 +444,61 @@ const Projects = () => {
         </StyledSubHeaderContainer>
         <StyledBodyContainer>
           <TabPanel value={tabValue} index={0}>
-            {climateWarehouseStore.projects &&
-              climateWarehouseStore.projects.length === 0 && (
-                <NoDataMessageContainer>
-                  <H3>
-                    {!searchQuery && pageIsMyRegistryPage && (
-                      <>
-                        <FormattedMessage id="no-projects-created" />
-                        <StyledCreateOneNowContainer
-                          onClick={() => {
-                            if (
-                              _.isEmpty(
-                                climateWarehouseStore.stagingData.units.pending,
-                              ) &&
-                              _.isEmpty(
-                                climateWarehouseStore.stagingData.projects
-                                  .pending,
-                              )
-                            ) {
-                              setCreateFormIsDisplayed(true);
-                              dispatch(setForm('project'));
-                              dispatch(setValidateForm(false));
-                            } else {
-                              dispatch(setPendingError(true));
-                            }
-                          }}
-                        >
-                          <FormattedMessage id="create-one-now" />
-                        </StyledCreateOneNowContainer>
-                      </>
-                    )}
-                    {!searchQuery && !pageIsMyRegistryPage && (
-                      <FormattedMessage id="no-search-results" />
-                    )}
-                    {searchQuery && <FormattedMessage id="no-search-results" />}
-                  </H3>
-                </NoDataMessageContainer>
-              )}
-            {climateWarehouseStore.projects &&
-              climateWarehouseStore.projects.length > 0 && (
-                <APIDataTable
-                  headings={Object.keys(filteredColumnsTableData[0])}
-                  data={filteredColumnsTableData}
-                  actions={'Projects'}
-                  modalSizeAndPosition={modalSizeAndPosition}
-                  actionsAreDisplayed={pageIsMyRegistryPage}
-                />
-              )}
+            {projects && projects.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>
+                  {!searchQuery && pageIsMyRegistryPage && (
+                    <>
+                      <FormattedMessage id="no-projects-created" />
+                      <StyledCreateOneNowContainer
+                        onClick={() => {
+                          if (
+                            _.isEmpty(stagingData.units.pending) &&
+                            _.isEmpty(stagingData.projects.pending)
+                          ) {
+                            setCreateFormIsDisplayed(true);
+                            dispatch(setForm('project'));
+                            dispatch(setValidateForm(false));
+                          } else {
+                            dispatch(setPendingError(true));
+                          }
+                        }}
+                      >
+                        <FormattedMessage id="create-one-now" />
+                      </StyledCreateOneNowContainer>
+                    </>
+                  )}
+                  {!searchQuery && !pageIsMyRegistryPage && (
+                    <FormattedMessage id="no-search-results" />
+                  )}
+                  {searchQuery && <FormattedMessage id="no-search-results" />}
+                </H3>
+              </NoDataMessageContainer>
+            )}
+            {projects && projects.length > 0 && (
+              <APIDataTable
+                headings={Object.keys(filteredColumnsTableData[0])}
+                data={filteredColumnsTableData}
+                actions={'Projects'}
+                modalSizeAndPosition={modalSizeAndPosition}
+                actionsAreDisplayed={pageIsMyRegistryPage}
+              />
+            )}
           </TabPanel>
           {pageIsMyRegistryPage && (
             <>
               <TabPanel value={tabValue} index={1}>
-                {climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.projects.staging.length ===
-                    0 && (
-                    <NoDataMessageContainer>
-                      <H3>
-                        <FormattedMessage id="no-staged" />
-                      </H3>
-                    </NoDataMessageContainer>
-                  )}
-                {climateWarehouseStore.stagingData && (
+                {stagingData && stagingData.projects.staging.length === 0 && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-staged" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {stagingData && (
                   <StagingDataGroups
                     headings={headings}
-                    data={climateWarehouseStore.stagingData.projects.staging}
+                    data={stagingData.projects.staging}
                     deleteStagingData={uuid =>
                       dispatch(deleteStagingData(uuid))
                     }
@@ -522,37 +507,33 @@ const Projects = () => {
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                {climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.projects.pending.length ===
-                    0 && (
-                    <NoDataMessageContainer>
-                      <H3>
-                        <FormattedMessage id="no-pending" />
-                      </H3>
-                    </NoDataMessageContainer>
-                  )}
-                {climateWarehouseStore.stagingData && (
+                {stagingData && stagingData.projects.pending.length === 0 && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-pending" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {stagingData && (
                   <StagingDataGroups
                     headings={headings}
-                    data={climateWarehouseStore.stagingData.projects.pending}
+                    data={stagingData.projects.pending}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
-                {climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.projects.failed.length ===
-                    0 && (
-                    <NoDataMessageContainer>
-                      <H3>
-                        <FormattedMessage id="no-failed" />
-                      </H3>
-                    </NoDataMessageContainer>
-                  )}
-                {climateWarehouseStore.stagingData && (
+                {stagingData && stagingData.projects.failed.length === 0 && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-failed" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {stagingData && (
                   <StagingDataGroups
                     headings={headings}
-                    data={climateWarehouseStore.stagingData.projects.failed}
+                    data={stagingData.projects.failed}
                     deleteStagingData={uuid =>
                       dispatch(deleteStagingData(uuid))
                     }
@@ -591,11 +572,11 @@ const Projects = () => {
           }}
         />
       )}
-      {projectIdToOpenInDetailedView && (
+      {project && (
         <ProjectDetailedViewModal
           onClose={closeProjectOpenedInDetailedView}
           modalSizeAndPosition={modalSizeAndPosition}
-          projectObject={projectIdToOpenInDetailedView}
+          projectObject={project}
         />
       )}
     </>
