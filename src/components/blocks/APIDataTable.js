@@ -146,6 +146,12 @@ const APIDataTable = withTheme(
     const dispatch = useDispatch();
 
     useEffect(() => {
+      if (!editRecord) {
+        localStorage.removeItem('selectedLabel');
+      }
+    }, [editRecord]);
+
+    useEffect(() => {
       setHeight(
         windowSize.height - ref.current.getBoundingClientRect().top - 20,
       );
@@ -163,8 +169,7 @@ const APIDataTable = withTheme(
                       start={index === 0 ? 1 : 0}
                       end={!actions && index === headings.length - 1 ? 1 : 0}
                       selectedTheme={theme}
-                      key={index}
-                    >
+                      key={index}>
                       <TableCellHeaderText>
                         {heading === 'orgUid' && 'Organization'}
                         {heading !== 'orgUid' &&
@@ -178,8 +183,7 @@ const APIDataTable = withTheme(
                       start={0}
                       end={1}
                       selectedTheme={theme}
-                      key={'action'}
-                    ></Th>
+                      key={'action'}></Th>
                   )}
                 </tr>
               </THead>
@@ -191,16 +195,14 @@ const APIDataTable = withTheme(
                         onClick={() => setRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
-                        key={index}
-                      >
+                        key={index}>
                         <TableCellText
                           tooltip={
                             record[key] &&
                             `${convertPascalCaseToSentenceCase(key)}: ${record[
                               key
                             ].toString()}`
-                          }
-                        >
+                          }>
                           {key === 'orgUid' &&
                             climateWarehouseStore.organizations[
                               record[key]
@@ -232,8 +234,7 @@ const APIDataTable = withTheme(
                       <Td
                         stick
                         style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}
-                      >
+                        selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
@@ -268,8 +269,7 @@ const APIDataTable = withTheme(
                       <Td
                         stick
                         style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}
-                      >
+                        selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
