@@ -16,6 +16,8 @@ import {
   getStagingPaginatedData,
   getStagingData,
   deleteAllStagingData,
+  getUnitData,
+  clearUnitData,
 } from '../../store/actions/climateWarehouseActions';
 import {
   setPendingError,
@@ -43,7 +45,7 @@ import {
   Modal,
   modalTypeEnum,
   MinusIcon,
-  DetailedViewModal,
+  UnitsDetailViewModal,
 } from '../../components';
 
 const headings = [
@@ -135,7 +137,9 @@ const Units = () => {
   const intl = useIntl();
   let location = useLocation();
   let navigate = useNavigate();
-  const climateWarehouseStore = useSelector(store => store.climateWarehouse);
+  const { stagingData, units, unit, totalUnitsPages } = useSelector(
+    store => store.climateWarehouse,
+  );
   const [tabValue, setTabValue] = useState(0);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
@@ -143,21 +147,21 @@ const Units = () => {
   const unitsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-  const [unitIdToOpenInDetailedView, setUnitIdToOpenInDetailedView] =
-    useState(null);
 
   useEffect(() => {
     const unitId = searchParams.get('unitId');
     if (unitId) {
-      setUnitIdToOpenInDetailedView(unitId);
+      dispatch(getUnitData(unitId));
     }
+    return () => dispatch(clearUnitData());
   }, [searchParams.get('unitId')]);
 
   const closeProjectOpenedInDetailedView = () => {
-    setUnitIdToOpenInDetailedView(null);
+    dispatch(clearUnitData());
     navigate(
       `${location.pathname}?${getUpdatedUrl(location.search, {
         param: 'unitId',
@@ -261,7 +265,7 @@ const Units = () => {
 
   useEffect(() => {
     dispatch(getStagingData({ useMockedResponse: false }));
-  }, [climateWarehouseStore.totalUnitsPages]);
+  }, [totalUnitsPages]);
 
   useEffect(() => {
     const options = {
@@ -274,11 +278,11 @@ const Units = () => {
   }, [dispatch]);
 
   const filteredColumnsTableData = useMemo(() => {
-    if (!climateWarehouseStore.units) {
+    if (!units) {
       return null;
     }
 
-    return climateWarehouseStore.units.map(unit =>
+    return units.map(unit =>
       _.pick(unit, [
         'warehouseUnitId',
         'unitOwner',
@@ -296,7 +300,7 @@ const Units = () => {
         'correspondingAdjustmentStatus',
       ]),
     );
-  }, [climateWarehouseStore.units]);
+  }, [units]);
 
   if (!filteredColumnsTableData) {
     return null;
@@ -346,12 +350,8 @@ const Units = () => {
                 icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
                 onClick={() => {
                   if (
-                    _.isEmpty(
-                      climateWarehouseStore.stagingData.units.pending,
-                    ) &&
-                    _.isEmpty(
-                      climateWarehouseStore.stagingData.projects.pending,
-                    )
+                    _.isEmpty(stagingData.units.pending) &&
+                    _.isEmpty(stagingData.projects.pending)
                   ) {
                     setCreate(true);
                     dispatch(setForm('unit'));
@@ -362,14 +362,15 @@ const Units = () => {
                 }}
               />
             )}
-            {tabValue === 1 &&
-              climateWarehouseStore.stagingData.units.staging.length > 0 && (
-                <PrimaryButton
-                  label={intl.formatMessage({ id: 'commit' })}
-                  size="large"
-                  onClick={() => setIsCommitModalVisible(true)}
-                />
-              )}
+
+            {tabValue === 1 && stagingData.units.staging.length > 0 && (
+              <PrimaryButton
+                label={intl.formatMessage({ id: 'commit' })}
+                size="large"
+                onClick={() => setIsCommitModalVisible(true)}
+              />
+            )}
+
             {isCommitModalVisible && (
               <CommitModal
                 onClose={() => setIsCommitModalVisible(false)}
@@ -384,24 +385,21 @@ const Units = () => {
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
-                  climateWarehouseStore.stagingData &&
-                  climateWarehouseStore?.totalUnitsPages
+                  stagingData && totalUnitsPages
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.units.pending.length
+                  stagingData && stagingData.units.pending.length
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'failed' })} (${
-                  climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.units.failed.length
+                  stagingData && stagingData.units.failed.length
                 })`}
               />
             )}
@@ -409,8 +407,7 @@ const Units = () => {
           <StyledCSVOperationsContainer>
             {pageIsMyRegistryPage &&
               tabValue === 1 &&
-              climateWarehouseStore?.stagingData?.units?.staging?.length >
-                0 && (
+              stagingData?.units?.staging?.length > 0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
                   <MinusIcon width={20} height={20} />
                 </span>
@@ -427,55 +424,48 @@ const Units = () => {
         </StyledSubHeaderContainer>
         <StyledBodyContainer>
           <TabPanel value={tabValue} index={0}>
-            {climateWarehouseStore.units &&
-              climateWarehouseStore.units.length === 0 && (
-                <NoDataMessageContainer>
-                  <H3>
-                    {!searchQuery && pageIsMyRegistryPage && (
-                      <>
-                        <FormattedMessage id="no-units-created" />
-                        <StyledCreateOneNowContainer
-                          onClick={() => {
-                            if (
-                              _.isEmpty(
-                                climateWarehouseStore.stagingData.units.pending,
-                              ) &&
-                              _.isEmpty(
-                                climateWarehouseStore.stagingData.projects
-                                  .pending,
-                              )
-                            ) {
-                              setCreate(true);
-                              dispatch(setForm('unit'));
-                              dispatch(setValidateForm(false));
-                            } else {
-                              dispatch(setPendingError(true));
-                            }
-                          }}
-                        >
-                          <FormattedMessage id="create-one-now" />
-                        </StyledCreateOneNowContainer>
-                      </>
-                    )}
-                    {!searchQuery && !pageIsMyRegistryPage && (
-                      <FormattedMessage id="no-search-results" />
-                    )}
-                    {searchQuery && <FormattedMessage id="no-search-results" />}
-                  </H3>
-                </NoDataMessageContainer>
-              )}
-            {climateWarehouseStore.units &&
-              climateWarehouseStore.units.length > 0 && (
-                <>
-                  <APIDataTable
-                    headings={Object.keys(filteredColumnsTableData[0])}
-                    data={filteredColumnsTableData}
-                    actions={'Units'}
-                    modalSizeAndPosition={modalSizeAndPosition}
-                    actionsAreDisplayed={pageIsMyRegistryPage}
-                  />
-                </>
-              )}
+            {units && units.length === 0 && (
+              <NoDataMessageContainer>
+                <H3>
+                  {!searchQuery && pageIsMyRegistryPage && (
+                    <>
+                      <FormattedMessage id="no-units-created" />
+                      <StyledCreateOneNowContainer
+                        onClick={() => {
+                          if (
+                            _.isEmpty(stagingData.units.pending) &&
+                            _.isEmpty(stagingData.projects.pending)
+                          ) {
+                            setCreate(true);
+                            dispatch(setForm('unit'));
+                            dispatch(setValidateForm(false));
+                          } else {
+                            dispatch(setPendingError(true));
+                          }
+                        }}
+                      >
+                        <FormattedMessage id="create-one-now" />
+                      </StyledCreateOneNowContainer>
+                    </>
+                  )}
+                  {!searchQuery && !pageIsMyRegistryPage && (
+                    <FormattedMessage id="no-search-results" />
+                  )}
+                  {searchQuery && <FormattedMessage id="no-search-results" />}
+                </H3>
+              </NoDataMessageContainer>
+            )}
+            {units && units.length > 0 && (
+              <>
+                <APIDataTable
+                  headings={Object.keys(filteredColumnsTableData[0])}
+                  data={filteredColumnsTableData}
+                  actions={'Units'}
+                  modalSizeAndPosition={modalSizeAndPosition}
+                  actionsAreDisplayed={pageIsMyRegistryPage}
+                />
+              </>
+            )}
             {create && (
               <CreateUnitsForm
                 onClose={() => {
@@ -490,19 +480,17 @@ const Units = () => {
           {pageIsMyRegistryPage && (
             <>
               <TabPanel value={tabValue} index={1}>
-                {climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.units.staging.length ===
-                    0 && (
-                    <NoDataMessageContainer>
-                      <H3>
-                        <FormattedMessage id="no-staged" />
-                      </H3>
-                    </NoDataMessageContainer>
-                  )}
-                {climateWarehouseStore.stagingData && (
+                {stagingData && stagingData.units.staging.length === 0 && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-staged" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {stagingData && (
                   <StagingDataGroups
                     headings={headings}
-                    data={climateWarehouseStore.stagingData.units.staging}
+                    data={stagingData.units.staging}
                     deleteStagingData={uuid =>
                       dispatch(deleteStagingData(uuid))
                     }
@@ -511,37 +499,33 @@ const Units = () => {
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                {climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.units.pending.length ===
-                    0 && (
-                    <NoDataMessageContainer>
-                      <H3>
-                        <FormattedMessage id="no-pending" />
-                      </H3>
-                    </NoDataMessageContainer>
-                  )}
-                {climateWarehouseStore.stagingData && (
+                {stagingData && stagingData.units.pending.length === 0 && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-pending" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {stagingData && (
                   <StagingDataGroups
                     headings={headings}
-                    data={climateWarehouseStore.stagingData.units.pending}
+                    data={stagingData.units.pending}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
-                {climateWarehouseStore.stagingData &&
-                  climateWarehouseStore.stagingData.units.failed.length ===
-                    0 && (
-                    <NoDataMessageContainer>
-                      <H3>
-                        <FormattedMessage id="no-failed" />
-                      </H3>
-                    </NoDataMessageContainer>
-                  )}
-                {climateWarehouseStore.stagingData && (
+                {stagingData && stagingData.units.failed.length === 0 && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-failed" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {stagingData && (
                   <StagingDataGroups
                     headings={headings}
-                    data={climateWarehouseStore.stagingData.units.failed}
+                    data={stagingData.units.failed}
                     deleteStagingData={uuid =>
                       dispatch(deleteStagingData(uuid))
                     }
@@ -570,12 +554,11 @@ const Units = () => {
           }}
         />
       )}
-      {unitIdToOpenInDetailedView && (
-        <DetailedViewModal
+      {unit && (
+        <UnitsDetailViewModal
           onClose={closeProjectOpenedInDetailedView}
           modalSizeAndPosition={modalSizeAndPosition}
-          type={'units'}
-          unitOrProjectWarehouseId={unitIdToOpenInDetailedView}
+          unitObject={unit}
         />
       )}
     </>
