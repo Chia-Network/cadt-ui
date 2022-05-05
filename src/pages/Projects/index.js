@@ -258,6 +258,10 @@ const Projects = () => {
   }, []);
 
   useEffect(() => {
+    setSearchQuery(null);
+  }, [searchParams.get('myRegistry')]);
+
+  useEffect(() => {
     const options = {
       type: 'projects',
       page: 1,

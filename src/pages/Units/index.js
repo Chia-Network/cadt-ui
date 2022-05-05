@@ -240,6 +240,10 @@ const Units = () => {
   }, []);
 
   useEffect(() => {
+    setSearchQuery(null);
+  }, [searchParams.get('myRegistry')]);
+
+  useEffect(() => {
     const options = {
       type: 'units',
       page: 1,
