@@ -160,6 +160,7 @@ const Projects = () => {
     if (projectId) {
       dispatch(getProjectData(projectId));
     }
+    return () => dispatch(clearProjectData());
   }, [searchParams.get('projectId')]);
 
   const closeProjectOpenedInDetailedView = () => {

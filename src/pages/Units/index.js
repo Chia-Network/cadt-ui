@@ -157,6 +157,7 @@ const Units = () => {
     if (unitId) {
       dispatch(getUnitData(unitId));
     }
+    return () => dispatch(clearUnitData());
   }, [searchParams.get('unitId')]);
 
   const closeProjectOpenedInDetailedView = () => {
@@ -363,20 +364,19 @@ const Units = () => {
             )}
 
             {tabValue === 1 && stagingData.units.staging.length > 0 && (
-                <PrimaryButton
-                  label={intl.formatMessage({ id: 'commit' })}
-                  size="large"
-                  onClick={() => setIsCommitModalVisible(true)}
-                />
-              )}
-              
+              <PrimaryButton
+                label={intl.formatMessage({ id: 'commit' })}
+                size="large"
+                onClick={() => setIsCommitModalVisible(true)}
+              />
+            )}
+
             {isCommitModalVisible && (
               <CommitModal
                 onClose={() => setIsCommitModalVisible(false)}
                 modalFor="units"
               />
             )}
-            
           </StyledButtonContainer>
         </StyledHeaderContainer>
         <StyledSubHeaderContainer>
