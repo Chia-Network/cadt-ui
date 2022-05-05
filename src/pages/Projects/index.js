@@ -135,7 +135,7 @@ const Projects = () => {
   const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
   const [isDeleteAllStagingVisible, setIsDeleteAllStagingVisible] =
     useState(false);
-  const { notification, commit } = useSelector(store => store.app);
+  const { notification } = useSelector(store => store.app);
   const { project, projects, stagingData, totalProjectsPages } = useSelector(
     store => store.climateWarehouse,
   );
@@ -363,13 +363,12 @@ const Projects = () => {
             )}
 
             {tabValue === 1 && stagingData.projects.staging.length > 0 && (
-                <PrimaryButton
-                  label={intl.formatMessage({ id: 'commit' })}
-                  size="large"
-                  onClick={() => setIsCommitModalVisible(true)}
-                />
-              )}
-
+              <PrimaryButton
+                label={intl.formatMessage({ id: 'commit' })}
+                size="large"
+                onClick={() => setIsCommitModalVisible(true)}
+              />
+            )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
         {isCommitModalVisible && (
