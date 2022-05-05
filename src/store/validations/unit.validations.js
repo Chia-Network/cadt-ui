@@ -6,22 +6,10 @@ export const unitsSchema = yup.object().shape({
   unitOwner: yup.string().required('Required Field'),
   countryJurisdictionOfOwner: yup.string().required('Required Field'),
   inCountryJurisdictionOfOwner: yup.string().optional(),
-  serialNumberBlock: yup
-    .string()
-    .test({
-      message: 'Add serial number that corresponds to pattern',
-      test: function (value) {
-        try {
-          const reg = new RegExp(this.options.parent.serialNumberPattern);
-          const isValid = reg.test(value);
-          return isValid;
-        } catch {
-          return false;
-        }
-      },
-    })
-    .required('Required Field'),
-  serialNumberPattern: yup.string().required('Required Field'),
+  serialNumberBlock: yup.string().required('Required Field'),
+  unitBlockEnd: yup.string().required('Required Field'),
+  unitBlockStart: yup.string().required('Required Field'),
+  unitCount: yup.number().required('Required Field'),
   vintageYear: yup
     .number()
     .typeError('Invalid Year')
