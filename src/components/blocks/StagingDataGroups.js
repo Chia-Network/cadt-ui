@@ -303,7 +303,8 @@ const StagingDataGroups = withTheme(
                           onClick={() => {
                             setDeleteUUID(changeGroup.uuid);
                             setDeleteFromStaging(true);
-                          }}>
+                          }}
+                        >
                           <MinusIcon width={20} height={20} />
                         </div>
                       </StyledDeleteGroupIcon>
@@ -391,7 +392,8 @@ const StagingDataGroups = withTheme(
                         onClick={() => {
                           setDeleteUUID(changeGroup.uuid);
                           setDeleteFromStaging(true);
-                        }}>
+                        }}
+                      >
                         <MinusIcon width={20} height={20} />
                       </div>
                     </StyledDeleteGroupIcon>
