@@ -32,8 +32,10 @@ export const actions = keyMirror(
   'GET_PROJECT_LOCATIONS',
   'GET_RELATED_PROJECTS',
   'GET_UNITS',
+  'GET_UNIT',
   'GET_UNITS_PAGE_COUNT',
   'GET_PROJECTS',
+  'GET_PROJECT',
   'GET_PROJECTS_PAGE_COUNT',
   'GET_VINTAGES',
   'GET_STAGING_DATA',
@@ -157,6 +159,82 @@ export const getOrganizationData = () => {
     } finally {
       dispatch(deactivateProgressIndicator);
     }
+  };
+};
+
+export const getProjectData = id => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/projects?warehouseProjectId=${id}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_PROJECT,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const clearProjectData = () => {
+  return async dispatch => {
+    dispatch({
+      type: actions.GET_PROJECT,
+      payload: null,
+    });
+  };
+};
+
+export const getUnitData = id => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/units?warehouseUnitId=${id}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_UNIT,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const clearUnitData = () => {
+  return async dispatch => {
+    dispatch({
+      type: actions.GET_UNIT,
+      payload: null,
+    });
   };
 };
 
@@ -418,7 +496,7 @@ export const getStagingPaginatedData = ({
   };
 };
 
-export const commitStagingData = data => {
+export const commitStagingData = (data, comment) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -432,6 +510,9 @@ export const commitStagingData = data => {
           'Content-Type': 'application/json',
         },
       };
+      if (comment?.length > 0) {
+        payload.body = JSON.stringify({ comment });
+      }
 
       const response = await fetchWrapper(url, payload);
 
