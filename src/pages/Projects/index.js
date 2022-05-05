@@ -324,6 +324,7 @@ const Projects = () => {
         <StyledHeaderContainer>
           <StyledSearchContainer>
             <SearchInput
+              key={pageIsMyRegistryPage.toString()}
               size="large"
               onChange={onSearch}
               disabled={tabValue !== 0}
