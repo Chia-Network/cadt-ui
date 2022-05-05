@@ -258,6 +258,10 @@ const Projects = () => {
   }, []);
 
   useEffect(() => {
+    setSearchQuery(null);
+  }, [searchParams.get('myRegistry')]);
+
+  useEffect(() => {
     const options = {
       type: 'projects',
       page: 1,
@@ -324,6 +328,7 @@ const Projects = () => {
         <StyledHeaderContainer>
           <StyledSearchContainer>
             <SearchInput
+              key={pageIsMyRegistryPage.toString()}
               size="large"
               onChange={onSearch}
               disabled={tabValue !== 0}

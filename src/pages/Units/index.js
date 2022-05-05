@@ -240,6 +240,10 @@ const Units = () => {
   }, []);
 
   useEffect(() => {
+    setSearchQuery(null);
+  }, [searchParams.get('myRegistry')]);
+
+  useEffect(() => {
     const options = {
       type: 'units',
       page: 1,
@@ -324,6 +328,7 @@ const Units = () => {
         <StyledHeaderContainer>
           <StyledSearchContainer>
             <SearchInput
+              key={pageIsMyRegistryPage.toString()}
               size="large"
               onChange={onSearch}
               disabled={tabValue !== 0}
