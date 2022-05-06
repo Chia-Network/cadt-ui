@@ -9,7 +9,10 @@ export const unitsSchema = yup.object().shape({
   serialNumberBlock: yup.string().required('Required Field'),
   unitBlockEnd: yup.string().required('Required Field'),
   unitBlockStart: yup.string().required('Required Field'),
-  unitCount: yup.number().required('Required Field'),
+  unitCount: yup
+    .number()
+    .min(1, 'Count must be greater than 0')
+    .required('Required Field'),
   vintageYear: yup
     .number()
     .typeError('Invalid Year')

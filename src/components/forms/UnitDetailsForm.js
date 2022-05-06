@@ -293,11 +293,11 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="serial-number-pattern" />
+                  *<FormattedMessage id="unit-block-start" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'units-serial-number-pattern-description',
+                    id: 'units-unit-block-start-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />
@@ -307,27 +307,109 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorMessage?.serialNumberPattern
+                  errorMessage?.unitBlockStart
                     ? InputVariantEnum.error
                     : undefined
                 }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'serial-number-pattern',
+                  id: 'unit-block-start',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.serialNumberPattern}
+                value={unitDetails.unitBlockStart}
                 onChange={value =>
                   setUnitDetails(prev => ({
                     ...prev,
-                    serialNumberPattern: value,
+                    unitBlockStart: value,
                   }))
                 }
               />
             </InputContainer>
-            {errorMessage?.serialNumberPattern && (
+            {errorMessage?.unitBlockStart && (
               <Body size="Small" color="red">
-                {errorMessage.serialNumberPattern}
+                {errorMessage.unitBlockStart}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-block-end" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-block-end-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.unitBlockEnd
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-block-end',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.unitBlockEnd}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    unitBlockEnd: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.unitBlockEnd && (
+              <Body size="Small" color="red">
+                {errorMessage.unitBlockEnd}
+              </Body>
+            )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-count" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-count-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errorMessage?.unitCount ? InputVariantEnum.error : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-count',
+                })}
+                state={InputStateEnum.default}
+                value={unitDetails.unitCount}
+                onChange={value =>
+                  setUnitDetails(prev => ({
+                    ...prev,
+                    unitCount: value,
+                  }))
+                }
+              />
+            </InputContainer>
+            {errorMessage?.unitCount && (
+              <Body size="Small" color="red">
+                {errorMessage.unitCount}
               </Body>
             )}
           </StyledFieldContainer>

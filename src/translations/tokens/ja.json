@@ -345,5 +345,7 @@
   "confirm-all-staging-data-deletion": "すべてのステージングデータを削除してもよろしいですか？",
   "units-belonging-to-issuance": "この発行に属するユニット",
   "issuance": "発行",
-  "already-subscribed-org": "あなたはすでにこの組織に加入しています"
+  "already-subscribed-org": "あなたはすでにこの組織に加入しています",
+  "unit-block-start": "ユニットブロック開始",
+  "unit-block-end": "ユニットブロックエンド"
 }
