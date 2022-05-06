@@ -35,13 +35,13 @@ const SplitUnitForm = ({ onClose, record }) => {
   const dispatch = useDispatch();
   const [data, setData] = useState([
     {
-      unitCount: '',
+      unitCount: 0,
       unitOwner: '',
       countryJurisdictionOfOwner: '',
       inCountryJurisdictionOfOwner: '',
     },
     {
-      unitCount: '',
+      unitCount: 0,
       unitOwner: '',
       countryJurisdictionOfOwner: '',
       inCountryJurisdictionOfOwner: '',
@@ -57,7 +57,7 @@ const SplitUnitForm = ({ onClose, record }) => {
     unit => unit.warehouseUnitId === record.warehouseUnitId,
   )[0];
 
-  const unitIsSplittable = fullRecord.unitCount !== 1;
+  const unitIsSplittable = parseInt(fullRecord.unitCount, 10) !== 1;
 
   const validationSchema = yup
     .array()
@@ -70,7 +70,8 @@ const SplitUnitForm = ({ onClose, record }) => {
     .test({
       message: 'units do not add up',
       test: value =>
-        value[0].unitCount + value[1].unitCount === fullRecord.unitCount,
+        value[0].unitCount + value[1].unitCount ===
+        parseInt(fullRecord.unitCount, 10),
     });
 
   const onSubmit = () => {
