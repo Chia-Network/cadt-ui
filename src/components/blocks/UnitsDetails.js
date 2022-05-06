@@ -91,17 +91,22 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
-              <FormattedMessage id="serial-number-pattern" />
+              <FormattedMessage id="unit-block-start" />
             </Body>
             {data &&
-              detailsViewData('data', data, 'serialNumberPattern', changeColor)}
-            {stagingData &&
-              detailsViewData(
-                'stagingData',
-                stagingData,
-                'serialNumberPattern',
-                changeColor,
-              )}
+              detailsViewData('data', data, 'unitBlockStart', changeColor)}
+          </StyledItem>
+          <StyledItem>
+            <Body size="Bold" width="100%">
+              <FormattedMessage id="unit-block-end" />
+            </Body>
+            {data && detailsViewData('data', data, 'unitBlockEnd', changeColor)}
+          </StyledItem>
+          <StyledItem>
+            <Body size="Bold" width="100%">
+              <FormattedMessage id="unit-count" />
+            </Body>
+            {data && detailsViewData('data', data, 'unitCount', changeColor)}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
