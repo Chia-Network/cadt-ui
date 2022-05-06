@@ -56,8 +56,8 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   }, []);
 
   useEffect(() => {
-    const formattedProjectData = formatAPIData(unitToBeEdited);
-    setUnit(formattedProjectData);
+    const formattedUnitToBeEdited = formatAPIData(unitToBeEdited);
+    setUnit(formattedUnitToBeEdited);
   }, [unitToBeEdited]);
 
   useEffect(() => {
