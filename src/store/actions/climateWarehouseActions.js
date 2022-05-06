@@ -47,6 +47,7 @@ export const actions = keyMirror(
   'GET_STAGING_PAGE_COUNT',
   'GET_STAGING_PROJECTS_PAGES',
   'GET_STAGING_UNITS_PAGES',
+  'GET_MY_PROJECTS',
 );
 
 const getClimateWarehouseTable = (
@@ -178,6 +179,35 @@ export const getProjectData = id => {
 
         dispatch({
           type: actions.GET_PROJECT,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getMyProjects = myOrgUid => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/projects?orgUid=${myOrgUid}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_MY_PROJECTS,
           payload: results,
         });
       } else {

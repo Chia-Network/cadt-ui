@@ -43,7 +43,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
   const [errorMessage, setErrorMessage] = useState({});
   const { validateForm, formType } = useSelector(state => state.app);
   const intl = useIntl();
-  const { pickLists, projects, issuances } = useSelector(
+  const { pickLists, myProjects, issuances } = useSelector(
     store => store.climateWarehouse,
   );
   const [selectedWarehouseProjectOption, setSelectedWarehouseProjectOption] =
@@ -56,14 +56,14 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
   }, [unitDetails, validateForm, formType]);
 
   const projectsSelectOptions = useMemo(() => {
-    if (projects) {
-      return projects.map(projectItem => ({
+    if (myProjects) {
+      return myProjects.map(projectItem => ({
         value: projectItem,
         label: projectItem.projectName,
       }));
     }
     return [];
-  }, [projects]);
+  }, [myProjects]);
 
   const projectLocationIdOptions = useMemo(() => {
     if (selectedWarehouseProjectOption?.value?.projectLocations?.length > 0) {
