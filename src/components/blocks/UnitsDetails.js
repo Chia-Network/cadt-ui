@@ -95,18 +95,39 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
             </Body>
             {data &&
               detailsViewData('data', data, 'unitBlockStart', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'unitBlockStart',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-block-end" />
             </Body>
             {data && detailsViewData('data', data, 'unitBlockEnd', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'unitBlockEnd',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="unit-count" />
             </Body>
             {data && detailsViewData('data', data, 'unitCount', changeColor)}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'unitCount',
+                changeColor,
+              )}
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
