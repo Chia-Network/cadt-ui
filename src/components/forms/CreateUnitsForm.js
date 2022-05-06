@@ -61,7 +61,13 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
-      dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
+      dispatch(
+        getProjects({
+          useMockedResponse: false,
+          useApiMock: false,
+          orgUid: myOrgUid,
+        }),
+      );
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
       localStorage.removeItem('unitSelectedWarehouseProjectId');

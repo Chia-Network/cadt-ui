@@ -1428,9 +1428,14 @@ export const mockProjectsResponse = {
 };
 
 export const getProjects = options => {
-  const url = options?.searchQuery
-    ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
-    : `${constants.API_HOST}/projects`;
+  let url = `${constants.API_HOST}/projects?`;
+
+  if (options?.searchQuery) {
+    url += `search=${options.searchQuery}`;
+  }
+  if (options?.orgUid) {
+    url += `orgUid=${options.orgUid}`;
+  }
 
   return dispatch => {
     dispatch(
