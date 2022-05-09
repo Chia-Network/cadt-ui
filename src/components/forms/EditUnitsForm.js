@@ -56,8 +56,8 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   }, []);
 
   useEffect(() => {
-    const formattedProjectData = formatAPIData(unitToBeEdited);
-    setUnit(formattedProjectData);
+    const formattedUnitToBeEdited = formatAPIData(unitToBeEdited);
+    setUnit(formattedUnitToBeEdited);
   }, [unitToBeEdited]);
 
   useEffect(() => {
@@ -95,6 +95,9 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   const handleUpdateUnit = async () => {
     const dataToSend = _.cloneDeep(unit);
+    if (dataToSend.serialNumberBlock) {
+      delete dataToSend.serialNumberBlock;
+    }
     cleanObjectFromEmptyFieldsOrArrays(dataToSend);
     dispatch(updateUnitsRecord(dataToSend));
   };

@@ -363,5 +363,9 @@
   "confirm-all-staging-data-deletion": "Are you sure you want to delete all of the Units and Projects staging data?",
   "units-belonging-to-issuance": "Units belonging to this issuance",
   "issuance": "Issuance",
-  "already-subscribed-org": "You are already subscribed to this organization"
+  "already-subscribed-org": "You are already subscribed to this organization",
+  "unit-block-start": "Unit Block Start",
+  "unit-block-end": "Unit Block End",
+  "unit-block-start-error": "Add valid unit block start",
+  "unit-block-end-error": "Add valid unit block end"
 }

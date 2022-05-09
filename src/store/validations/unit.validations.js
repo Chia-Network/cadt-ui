@@ -6,22 +6,12 @@ export const unitsSchema = yup.object().shape({
   unitOwner: yup.string().required('Required Field'),
   countryJurisdictionOfOwner: yup.string().required('Required Field'),
   inCountryJurisdictionOfOwner: yup.string().optional(),
-  serialNumberBlock: yup
-    .string()
-    .test({
-      message: 'Add serial number that corresponds to pattern',
-      test: function (value) {
-        try {
-          const reg = new RegExp(this.options.parent.serialNumberPattern);
-          const isValid = reg.test(value);
-          return isValid;
-        } catch {
-          return false;
-        }
-      },
-    })
+  unitBlockEnd: yup.string().required('Required Field'),
+  unitBlockStart: yup.string().required('Required Field'),
+  unitCount: yup
+    .number()
+    .min(1, 'Count must be greater than 0')
     .required('Required Field'),
-  serialNumberPattern: yup.string().required('Required Field'),
   vintageYear: yup
     .number()
     .typeError('Invalid Year')
@@ -46,3 +36,14 @@ export const unitsSchema = yup.object().shape({
   issuance: issuanceSchema,
   labels: yup.array().of(labelSchema).optional(),
 });
+
+export const splitUnitValidationSchema = yup.array().of(
+  yup.object().shape({
+    unitCount: yup.number().required().positive().integer(),
+    unitOwner: yup.string().optional(),
+    unitBlockStart: yup.string().required(),
+    unitBlockEnd: yup.string().required(),
+    countryJurisdictionOfOwner: yup.string().optional(),
+    inCountryJurisdictionOfOwner: yup.string().optional(),
+  }),
+);

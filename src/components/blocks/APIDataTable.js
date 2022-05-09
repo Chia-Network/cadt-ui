@@ -68,17 +68,16 @@ const Th = styled('th')`
 
 const Tr = styled('tr')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-  background-color: ${props =>
-    props.theme.hexToRgba(
-      props.theme.colors[props.selectedTheme].secondary,
-      0.3,
-    )};
-
-  ${props =>
-    props.index % 2 !== 0 &&
-    `
   background-color: white;
-  `}
+
+  :hover {
+    cursor: zoom-in;
+    background-color: ${props =>
+      props.theme.hexToRgba(
+        props.theme.colors[props.selectedTheme].secondary,
+        0.3,
+      )};
+  }
 `;
 
 const Td = styled('td')`
