@@ -15,7 +15,6 @@ export const actions = keyMirror(
   'SET_LOCALE',
   'CONNECTION_CHECK',
   'SET_NOTIFICATION',
-  'COMMIT',
   'PENDING_ERROR',
   'SET_READ_ONLY',
   'SIGN_USER_IN',
@@ -73,11 +72,6 @@ export const clearGlobalErrorMessage = {
 
 export const setConnectionCheck = bool => ({
   type: actions.CONNECTION_CHECK,
-  payload: bool,
-});
-
-export const setCommit = bool => ({
-  type: actions.COMMIT,
   payload: bool,
 });
 

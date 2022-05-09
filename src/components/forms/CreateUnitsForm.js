@@ -9,7 +9,7 @@ import {
   postNewUnits,
   getIssuances,
   getPaginatedData,
-  getProjects,
+  getMyProjects,
 } from '../../store/actions/climateWarehouseActions';
 import UnitIssuanceRepeater from './UnitIssuanceRepeater';
 import UnitLabelsRepeater from './UnitLabelsRepeater';
@@ -39,8 +39,9 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
     unitOwner: '',
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
-    serialNumberBlock: '',
-    serialNumberPattern: '[.*\\D]+([0-9]+)+[-][.*\\D]+([0-9]+)$',
+    unitCount: 0,
+    unitBlockEnd: '',
+    unitBlockStart: '',
     marketplace: '',
     marketplaceLink: '',
     marketplaceIdentifier: '',
@@ -61,7 +62,7 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
-      dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
+      dispatch(getMyProjects(myOrgUid));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
       localStorage.removeItem('unitSelectedWarehouseProjectId');

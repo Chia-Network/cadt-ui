@@ -32,8 +32,10 @@ export const actions = keyMirror(
   'GET_PROJECT_LOCATIONS',
   'GET_RELATED_PROJECTS',
   'GET_UNITS',
+  'GET_UNIT',
   'GET_UNITS_PAGE_COUNT',
   'GET_PROJECTS',
+  'GET_PROJECT',
   'GET_PROJECTS_PAGE_COUNT',
   'GET_VINTAGES',
   'GET_STAGING_DATA',
@@ -42,6 +44,10 @@ export const actions = keyMirror(
   'GET_ISSUANCES',
   'GET_LABELS',
   'GET_AUDIT',
+  'GET_STAGING_PAGE_COUNT',
+  'GET_STAGING_PROJECTS_PAGES',
+  'GET_STAGING_UNITS_PAGES',
+  'GET_MY_PROJECTS',
 );
 
 const getClimateWarehouseTable = (
@@ -157,6 +163,111 @@ export const getOrganizationData = () => {
   };
 };
 
+export const getProjectData = id => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/projects?warehouseProjectId=${id}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_PROJECT,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getMyProjects = myOrgUid => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/projects?orgUid=${myOrgUid}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_MY_PROJECTS,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const clearProjectData = () => {
+  return async dispatch => {
+    dispatch({
+      type: actions.GET_PROJECT,
+      payload: null,
+    });
+  };
+};
+
+export const getUnitData = id => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/units?warehouseUnitId=${id}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_UNIT,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const clearUnitData = () => {
+  return async dispatch => {
+    dispatch({
+      type: actions.GET_UNIT,
+      payload: null,
+    });
+  };
+};
+
 export const getPickLists = () => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -218,6 +329,14 @@ export const getStagingData = ({ useMockedResponse = false }) => {
           dispatch({
             type: actions.GET_STAGING_DATA,
             payload: formatStagingData(results),
+          });
+          dispatch({
+            type: actions.GET_STAGING_PROJECTS_PAGES,
+            payload: formatStagingData(results).projects.staging.length,
+          });
+          dispatch({
+            type: actions.GET_STAGING_UNITS_PAGES,
+            payload: formatStagingData(results).units.staging.length,
           });
         }
       }
@@ -352,7 +471,62 @@ export const getPaginatedData = ({
   };
 };
 
-export const commitStagingData = data => {
+export const getStagingPaginatedData = ({
+  type,
+  formType,
+  page,
+  resultsLimit,
+}) => {
+  return async dispatch => {
+    const pageAndLimitAreValid =
+      typeof page === 'number' && typeof resultsLimit === 'number';
+
+    if (pageAndLimitAreValid) {
+      dispatch(activateProgressIndicator);
+      try {
+        let url = `${constants.API_HOST}/${type}?table=${formType}&page=${page}&limit=${resultsLimit}`;
+
+        const response = await fetchWrapper(url);
+
+        if (response.ok) {
+          dispatch(
+            setReadOnly(response.headers.get('cw-read-only') === 'true'),
+          );
+          dispatch(setGlobalErrorMessage(null));
+          dispatch(setConnectionCheck(true));
+          const results = await response.json();
+          let action = actions.GET_STAGING_DATA;
+          let paginationAction = actions.GET_STAGING_PAGE_COUNT;
+
+          dispatch({
+            type: action,
+            payload: formatStagingData(results.data.map(result => result)),
+          });
+
+          dispatch({
+            type: paginationAction,
+            payload: results.pageCount,
+          });
+        } else {
+          const errorResponse = await response.json();
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              formatApiErrorResponse(errorResponse, 'something-went-wrong'),
+            ),
+          );
+        }
+      } catch {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(setConnectionCheck(false));
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
+    }
+  };
+};
+
+export const commitStagingData = (data, comment) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -366,6 +540,9 @@ export const commitStagingData = data => {
           'Content-Type': 'application/json',
         },
       };
+      if (comment?.length > 0) {
+        payload.body = JSON.stringify({ comment });
+      }
 
       const response = await fetchWrapper(url, payload);
 
@@ -444,6 +621,53 @@ export const deleteStagingData = uuid => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'staging-group-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteAllStagingData = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/clean`;
+      const payload = {
+        method: 'DELETE',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'delete-all-staging-data-success',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'delete-all-staging-data-error',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'delete-all-staging-data-error',
         ),
       );
     } finally {
@@ -704,7 +928,7 @@ export const postNewOrg = data => {
       dispatch(activateProgressIndicator);
 
       const formData = new FormData();
-      formData.append('svg', data.svg);
+      formData.append('file', data.png);
       formData.append('name', data.name);
 
       const url = `${constants.API_HOST}/organizations/create`;
@@ -1234,9 +1458,14 @@ export const mockProjectsResponse = {
 };
 
 export const getProjects = options => {
-  const url = options?.searchQuery
-    ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
-    : `${constants.API_HOST}/projects`;
+  let url = `${constants.API_HOST}/projects?`;
+
+  if (options?.searchQuery) {
+    url += `search=${options.searchQuery}`;
+  }
+  if (options?.orgUid) {
+    url += `orgUid=${options.orgUid}`;
+  }
 
   return dispatch => {
     dispatch(

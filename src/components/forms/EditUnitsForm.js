@@ -14,7 +14,7 @@ import {
   getIssuances,
   getPaginatedData,
   updateUnitsRecord,
-  getProjects,
+  getMyProjects,
 } from '../../store/actions/climateWarehouseActions';
 import {
   cleanObjectFromEmptyFieldsOrArrays,
@@ -48,7 +48,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   useEffect(() => {
     if (myOrgUid !== 'none') {
-      dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
+      dispatch(getMyProjects(myOrgUid));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
       localStorage.removeItem('unitSelectedWarehouseProjectId');
@@ -56,8 +56,8 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   }, []);
 
   useEffect(() => {
-    const formattedProjectData = formatAPIData(unitToBeEdited);
-    setUnit(formattedProjectData);
+    const formattedUnitToBeEdited = formatAPIData(unitToBeEdited);
+    setUnit(formattedUnitToBeEdited);
   }, [unitToBeEdited]);
 
   useEffect(() => {
@@ -95,6 +95,9 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   const handleUpdateUnit = async () => {
     const dataToSend = _.cloneDeep(unit);
+    if (dataToSend.serialNumberBlock) {
+      delete dataToSend.serialNumberBlock;
+    }
     cleanObjectFromEmptyFieldsOrArrays(dataToSend);
     dispatch(updateUnitsRecord(dataToSend));
   };

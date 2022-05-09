@@ -5,7 +5,11 @@ import styled, { withTheme, css } from 'styled-components';
 
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { APIPagination, DetailedViewModal } from '.';
+import {
+  APIPagination,
+  ProjectDetailedViewModal,
+  UnitsDetailViewModal,
+} from '.';
 import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
@@ -64,17 +68,16 @@ const Th = styled('th')`
 
 const Tr = styled('tr')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-  background-color: ${props =>
-    props.theme.hexToRgba(
-      props.theme.colors[props.selectedTheme].secondary,
-      0.3,
-    )};
-
-  ${props =>
-    props.index % 2 !== 0 &&
-    `
   background-color: white;
-  `}
+
+  :hover {
+    cursor: zoom-in;
+    background-color: ${props =>
+      props.theme.hexToRgba(
+        props.theme.colors[props.selectedTheme].secondary,
+        0.3,
+      )};
+  }
 `;
 
 const Td = styled('td')`
@@ -103,7 +106,7 @@ const Td = styled('td')`
   `}
 `;
 
-const StyledPaginationContainer = styled('div')`
+export const StyledPaginationContainer = styled('div')`
   box-sizing: border-box;
   background-color: white;
   display: flex;
@@ -133,11 +136,14 @@ const StyledScalableContainer = styled('div')`
 
 const APIDataTable = withTheme(
   ({ headings, data, actions, modalSizeAndPosition, actionsAreDisplayed }) => {
-    const [getRecord, setRecord] = useState(null);
+    const [unitOrProjectFullRecord, setUnitOrProjectFullRecord] =
+      useState(null);
     const [editRecord, setEditRecord] = useState(null);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
     const { theme } = useSelector(state => state.app);
-    const climateWarehouseStore = useSelector(state => state.climateWarehouse);
+    const { organizations, projects, units } = useSelector(
+      state => state.climateWarehouse,
+    );
     const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
     const ref = React.useRef(null);
     const [height, setHeight] = React.useState(0);
@@ -150,6 +156,25 @@ const APIDataTable = withTheme(
         windowSize.height - ref.current.getBoundingClientRect().top - 20,
       );
     }, [ref.current, windowSize.height]);
+
+    const getFullRecord = partialRecord => {
+      let fullRecord = null;
+
+      if (actions === 'Projects') {
+        fullRecord = projects.filter(
+          project =>
+            project.warehouseProjectId === partialRecord.warehouseProjectId,
+        )[0];
+      }
+
+      if (actions === 'Units') {
+        fullRecord = units.filter(
+          unit => unit.warehouseUnitId === partialRecord.warehouseUnitId,
+        )[0];
+      }
+
+      setUnitOrProjectFullRecord(fullRecord);
+    };
 
     return (
       <>
@@ -188,7 +213,7 @@ const APIDataTable = withTheme(
                   <Tr index={index} selectedTheme={theme} key={index}>
                     {Object.keys(record).map((key, index) => (
                       <Td
-                        onClick={() => setRecord(record)}
+                        onClick={() => getFullRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
                         key={index}
@@ -201,18 +226,9 @@ const APIDataTable = withTheme(
                             ].toString()}`
                           }
                         >
-                          {key === 'orgUid' &&
-                            climateWarehouseStore.organizations[
-                              record[key]
-                            ] && (
-                              <img
-                                src={
-                                  climateWarehouseStore.organizations[
-                                    record[key]
-                                  ].icon
-                                }
-                              />
-                            )}
+                          {key === 'orgUid' && organizations[record[key]] && (
+                            <img src={organizations[record[key]].icon} />
+                          )}
 
                           {key !== 'orgUid' &&
                             record[key] &&
@@ -304,12 +320,18 @@ const APIDataTable = withTheme(
             </StyledPaginationContainer>
           </StyledScalableContainer>
         </StyledRefContainer>
-        {getRecord && (actions === 'Units' || actions === 'Projects') && (
-          <DetailedViewModal
-            onClose={() => setRecord(null)}
+        {unitOrProjectFullRecord && actions === 'Projects' && (
+          <ProjectDetailedViewModal
+            onClose={() => setUnitOrProjectFullRecord(null)}
             modalSizeAndPosition={modalSizeAndPosition}
-            type={actions.toLowerCase()}
-            record={getRecord}
+            projectObject={unitOrProjectFullRecord}
+          />
+        )}
+        {unitOrProjectFullRecord && actions === 'Units' && (
+          <UnitsDetailViewModal
+            onClose={() => setUnitOrProjectFullRecord(null)}
+            modalSizeAndPosition={modalSizeAndPosition}
+            unitObject={unitOrProjectFullRecord}
           />
         )}
         {actions === 'Units' && editRecord && (
@@ -336,7 +358,7 @@ const APIDataTable = withTheme(
         )}
         {unitToBeSplit && (
           <SplitUnitForm
-            organizations={climateWarehouseStore.organizations}
+            organizations={organizations}
             onClose={() => setUnitToBeSplit(null)}
             record={unitToBeSplit}
           />
