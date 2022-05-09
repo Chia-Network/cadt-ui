@@ -193,7 +193,6 @@ const SplitUnitForm = ({ onClose, record }) => {
                         onChange={value =>
                           setData(prevData => {
                             const newData = [...prevData];
-                            console.log('value typeof', typeof value);
                             newData[index].unitCount = value;
                             return newData;
                           })
