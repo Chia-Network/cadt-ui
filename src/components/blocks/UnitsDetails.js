@@ -119,25 +119,6 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
-              <FormattedMessage id="in-country-jurisdiction-of-owner" />
-            </Body>
-            {data &&
-              detailsViewData(
-                'data',
-                data,
-                'inCountryJurisdictionOfOwner',
-                changeColor,
-              )}
-            {stagingData &&
-              detailsViewData(
-                'stagingData',
-                stagingData,
-                'inCountryJurisdictionOfOwner',
-                changeColor,
-              )}
-          </StyledItem>
-          <StyledItem>
-            <Body size="Bold" width="100%">
               <FormattedMessage id="country-jurisdiction-of-owner" />
             </Body>
             {data &&
@@ -152,6 +133,25 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
                 'stagingData',
                 stagingData,
                 'countryJurisdictionOfOwner',
+                changeColor,
+              )}
+          </StyledItem>
+          <StyledItem>
+            <Body size="Bold" width="100%">
+              <FormattedMessage id="in-country-jurisdiction-of-owner" />
+            </Body>
+            {data &&
+              detailsViewData(
+                'data',
+                data,
+                'inCountryJurisdictionOfOwner',
+                changeColor,
+              )}
+            {stagingData &&
+              detailsViewData(
+                'stagingData',
+                stagingData,
+                'inCountryJurisdictionOfOwner',
                 changeColor,
               )}
           </StyledItem>
