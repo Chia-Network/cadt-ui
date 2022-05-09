@@ -68,6 +68,7 @@ const Th = styled('th')`
 
 const Tr = styled('tr')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
+  cursor: zoom-in;
   background-color: ${props =>
     props.theme.hexToRgba(
       props.theme.colors[props.selectedTheme].secondary,
