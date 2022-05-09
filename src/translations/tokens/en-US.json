@@ -365,5 +365,7 @@
   "issuance": "Issuance",
   "already-subscribed-org": "You are already subscribed to this organization",
   "unit-block-start": "Unit Block Start",
-  "unit-block-end": "Unit Block End"
+  "unit-block-end": "Unit Block End",
+  "unit-block-start-error": "Add valid unit block start",
+  "unit-block-end-error": "Add valid unit block end"
 }

@@ -347,5 +347,7 @@
   "issuance": "Emisión",
   "already-subscribed-org": "Ya estás suscrito a esta organización.",
   "unit-block-start": "Inicio del bloque de unidades",
-  "unit-block-end": "Fin del bloque de unidades"
+  "unit-block-end": "Fin del bloque de unidades",
+  "unit-block-start-error": "Agregar inicio de bloque de unidad válido",
+  "unit-block-end-error": "Agregar final de bloque de unidad válido"
 }

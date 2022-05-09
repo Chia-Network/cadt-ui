@@ -347,5 +347,7 @@
   "issuance": "発行",
   "already-subscribed-org": "あなたはすでにこの組織に加入しています",
   "unit-block-start": "ユニットブロック開始",
-  "unit-block-end": "ユニットブロックエンド"
+  "unit-block-end": "ユニットブロックエンド",
+  "unit-block-start-error": "有効なユニットブロック開始を追加",
+  "unit-block-end-error": "有効なユニットブロックの終わりを追加します"
 }

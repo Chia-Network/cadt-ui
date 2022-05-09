@@ -36,3 +36,14 @@ export const unitsSchema = yup.object().shape({
   issuance: issuanceSchema,
   labels: yup.array().of(labelSchema).optional(),
 });
+
+export const splitUnitValidationSchema = yup.array().of(
+  yup.object().shape({
+    unitCount: yup.number().required().positive().integer(),
+    unitOwner: yup.string().optional(),
+    unitBlockStart: yup.string().required(),
+    unitBlockEnd: yup.string().required(),
+    countryJurisdictionOfOwner: yup.string().optional(),
+    inCountryJurisdictionOfOwner: yup.string().optional(),
+  }),
+);
