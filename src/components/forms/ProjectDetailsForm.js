@@ -466,7 +466,6 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               <StyledLabelContainer>
                 <Body>
                   <LabelContainer>
-                    {projectDetails.coveredByNDC === 'Inside NDC' && '*'}
                     <FormattedMessage id="ndc-information" />
                   </LabelContainer>
                   <ToolTipContainer
