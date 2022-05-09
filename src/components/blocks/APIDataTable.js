@@ -223,10 +223,10 @@ const APIDataTable = withTheme(
                             ].toString()}`
                           }
                         >
-                          {key === 'orgUid' && organizations[record[key]] && (
+                            {key === 'orgUid' && organizations[record[key]] && (
                             <img src={organizations[record[key]].icon} />
                           )}
-
+                          
                           {key !== 'orgUid' &&
                             record[key] &&
                             record[key] !== 'null' &&
