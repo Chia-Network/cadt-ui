@@ -153,12 +153,6 @@ const APIDataTable = withTheme(
     const dispatch = useDispatch();
 
     useEffect(() => {
-      if (!editRecord) {
-        localStorage.removeItem('selectedLabel');
-      }
-    }, [editRecord]);
-
-    useEffect(() => {
       setHeight(
         windowSize.height - ref.current.getBoundingClientRect().top - 20,
       );

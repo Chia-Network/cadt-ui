@@ -58,10 +58,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
       !_.isEmpty(_.filter(Object.values(value), value => value)) &&
       !selectedWayToAddLabel
     ) {
-      if (!value.id && JSON.parse(localStorage.getItem('selectedLabel'))) {
-        setSelectedWayToAddLabel(
-          JSON.parse(localStorage.getItem('selectedLabel')),
-        );
+      if (!value.id) {
+        setSelectedWayToAddLabel(wayToAddLabelOptions[0]);
       }
     }
   }, [selectedWayToAddLabel, value]);
@@ -95,12 +93,6 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
 
   const handleChange = selectedOptions => {
     setSelectedWayToAddLabel(selectedOptions[0]);
-    if (selectedWayToAddLabel?.value == 1) {
-      localStorage.setItem(
-        'selectedLabel',
-        JSON.stringify(selectedWayToAddLabel),
-      );
-    }
     onChange({
       label: '',
       labelType: '',

@@ -152,12 +152,6 @@ const Units = () => {
     setTabValue(newValue);
   };
 
-     useEffect(() => {
-       if (!create) {
-         localStorage.removeItem('selectedLabel');
-       }
-     }, [create]);
-
   useEffect(() => {
     const unitId = searchParams.get('unitId');
     if (unitId) {
