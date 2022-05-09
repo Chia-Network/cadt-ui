@@ -6,7 +6,6 @@ export const unitsSchema = yup.object().shape({
   unitOwner: yup.string().required('Required Field'),
   countryJurisdictionOfOwner: yup.string().required('Required Field'),
   inCountryJurisdictionOfOwner: yup.string().optional(),
-  serialNumberBlock: yup.string().required('Required Field'),
   unitBlockEnd: yup.string().required('Required Field'),
   unitBlockStart: yup.string().required('Required Field'),
   unitCount: yup

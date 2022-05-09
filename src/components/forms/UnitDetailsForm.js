@@ -417,48 +417,6 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="serial-number-block" />
-                </LabelContainer>
-                <ToolTipContainer
-                  tooltip={intl.formatMessage({
-                    id: 'units-serial-number-block-description',
-                  })}
-                >
-                  <DescriptionIcon height="14" width="14" />
-                </ToolTipContainer>
-              </Body>
-            </StyledLabelContainer>
-            <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.serialNumberBlock
-                    ? InputVariantEnum.error
-                    : undefined
-                }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'serial-number-block',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.serialNumberBlock}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    serialNumberBlock: value,
-                  }))
-                }
-              />
-            </InputContainer>
-            {errorMessage?.serialNumberBlock && (
-              <Body size="Small" color="red">
-                {errorMessage.serialNumberBlock}
-              </Body>
-            )}
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <StyledLabelContainer>
-              <Body>
-                <LabelContainer>
                   <FormattedMessage id="in-country-jurisdiction-of-owner" />
                 </LabelContainer>
                 <ToolTipContainer

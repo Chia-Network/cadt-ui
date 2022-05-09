@@ -95,6 +95,9 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
 
   const handleUpdateUnit = async () => {
     const dataToSend = _.cloneDeep(unit);
+    if (dataToSend.serialNumberBlock) {
+      delete dataToSend.serialNumberBlock;
+    }
     cleanObjectFromEmptyFieldsOrArrays(dataToSend);
     dispatch(updateUnitsRecord(dataToSend));
   };

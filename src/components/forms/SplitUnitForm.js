@@ -39,12 +39,16 @@ const SplitUnitForm = ({ onClose, record }) => {
       unitOwner: '',
       countryJurisdictionOfOwner: '',
       inCountryJurisdictionOfOwner: '',
+      unitBlockStart: '',
+      unitBlockEnd: '',
     },
     {
       unitCount: 0,
       unitOwner: '',
       countryJurisdictionOfOwner: '',
       inCountryJurisdictionOfOwner: '',
+      unitBlockStart: '',
+      unitBlockEnd: '',
     },
   ]);
   const intl = useIntl();
@@ -84,7 +88,7 @@ const SplitUnitForm = ({ onClose, record }) => {
             splitUnits({
               warehouseUnitId: fullRecord.warehouseUnitId,
               records: data.map(splittedUnit => {
-                const newUnit = {};
+                const newUnit = { ...splittedUnit };
                 newUnit.unitCount = splittedUnit.unitCount;
 
                 if (splittedUnit.unitOwner !== '') {
@@ -265,6 +269,80 @@ const SplitUnitForm = ({ onClose, record }) => {
                             setData(prevData => {
                               const newData = [...prevData];
                               newData[index].unitOwner = value;
+                              return newData;
+                            })
+                          }
+                        />
+                      </InputContainer>
+                    </StyledFieldContainer>
+                    <StyledFieldContainer>
+                      <StyledLabelContainer>
+                        <Body>
+                          <LabelContainer>
+                            <FormattedMessage id="unit-block-start" />
+                          </LabelContainer>
+                          <ToolTipContainer
+                            tooltip={intl.formatMessage({
+                              id: 'units-unit-block-start-description',
+                            })}
+                          >
+                            <DescriptionIcon height="14" width="14" />
+                          </ToolTipContainer>
+                        </Body>
+                      </StyledLabelContainer>
+                      <InputContainer>
+                        <StandardInput
+                          size={InputSizeEnum.large}
+                          placeholderText={intl.formatMessage({
+                            id: 'unit-block-start',
+                          })}
+                          state={
+                            unitIsSplittable
+                              ? InputStateEnum.default
+                              : InputStateEnum.disabled
+                          }
+                          value={unit.unitBlockStart}
+                          onChange={value =>
+                            setData(prevData => {
+                              const newData = [...prevData];
+                              newData[index].unitBlockStart = value;
+                              return newData;
+                            })
+                          }
+                        />
+                      </InputContainer>
+                    </StyledFieldContainer>
+                    <StyledFieldContainer>
+                      <StyledLabelContainer>
+                        <Body>
+                          <LabelContainer>
+                            <FormattedMessage id="unit-block-end" />
+                          </LabelContainer>
+                          <ToolTipContainer
+                            tooltip={intl.formatMessage({
+                              id: 'units-unit-block-end-description',
+                            })}
+                          >
+                            <DescriptionIcon height="14" width="14" />
+                          </ToolTipContainer>
+                        </Body>
+                      </StyledLabelContainer>
+                      <InputContainer>
+                        <StandardInput
+                          size={InputSizeEnum.large}
+                          placeholderText={intl.formatMessage({
+                            id: 'unit-block-end',
+                          })}
+                          state={
+                            unitIsSplittable
+                              ? InputStateEnum.default
+                              : InputStateEnum.disabled
+                          }
+                          value={unit.unitBlockEnd}
+                          onChange={value =>
+                            setData(prevData => {
+                              const newData = [...prevData];
+                              newData[index].unitBlockEnd = value;
                               return newData;
                             })
                           }

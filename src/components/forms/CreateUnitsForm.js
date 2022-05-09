@@ -39,7 +39,6 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
     unitOwner: '',
     countryJurisdictionOfOwner: '',
     inCountryJurisdictionOfOwner: '',
-    serialNumberBlock: '',
     unitCount: 0,
     unitBlockEnd: '',
     unitBlockStart: '',
