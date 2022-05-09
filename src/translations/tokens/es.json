@@ -345,5 +345,9 @@
   "confirm-all-staging-data-deletion": "¿Está seguro de que desea eliminar todos los datos provisionales?",
   "units-belonging-to-issuance": "Unidades pertenecientes a esta emisión",
   "issuance": "Emisión",
-  "already-subscribed-org": "Ya estás suscrito a esta organización."
+  "already-subscribed-org": "Ya estás suscrito a esta organización.",
+  "unit-block-start": "Inicio del bloque de unidades",
+  "unit-block-end": "Fin del bloque de unidades",
+  "unit-block-start-error": "Agregar inicio de bloque de unidad válido",
+  "unit-block-end-error": "Agregar final de bloque de unidad válido"
 }

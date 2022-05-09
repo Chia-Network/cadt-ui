@@ -52,15 +52,7 @@ export const formatAPIData = unformattedData => {
     }
 
     // if none of the above and key name is valid for API requests
-    else if (
-      ![
-        'orgUid',
-        'unitBlockStart',
-        'unitBlockEnd',
-        'unitCount',
-        'issuanceId',
-      ].includes(key)
-    ) {
+    else if (!['orgUid', 'issuanceId'].includes(key)) {
       result[key] = unformattedData[key];
     }
   });
