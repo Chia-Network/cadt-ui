@@ -19,11 +19,7 @@ export const projectSchema = yup.object().shape({
   sector: yup.string().required('Required Field'),
   projectType: yup.string().required('Required Field'),
   coveredByNDC: yup.string().required('Required Field'),
-  ndcInformation: yup.string().when('coveredByNDC', {
-    is: 'Inside NDC',
-    then: yup.string().required('NDC Information is required'),
-    otherwise: yup.string().optional(),
-  }),
+  ndcInformation: yup.string().optional(),
   projectStatus: yup.string().required('Required Field'),
   unitMetric: yup.string().required('Required Field'),
   methodology: yup.string().required('Required Field'),
