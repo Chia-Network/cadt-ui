@@ -87,7 +87,8 @@ const SplitUnitForm = ({ onClose, record }) => {
   const onFormSubmit = async () => {
     if (!isFormValidationOn) {
       setIsFormValidationOn(true);
-    } else if (!apiResponseIsPending) {
+    }
+    if (!apiResponseIsPending) {
       const isSplitUnitDataValid = await splitUnitValidationSchema.isValid();
       if (isSplitUnitDataValid && isUnitSumValid) {
         dispatch(splitUnits(getFormattedSplitUnitData()));
