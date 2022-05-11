@@ -105,6 +105,7 @@ const DateSelect = ({
             setDateValue(null);
           }
         }}
+        views={['month', 'year', 'day']}
         disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
