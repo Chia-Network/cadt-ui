@@ -63,7 +63,6 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
         </Body>
       );
     } else if (_.isNull(info?.changes[0]) && info?.original) {
-      console.log(info);
       return (
         <Body color={changeColor(dataType, 'DELETE')}>{info?.original}</Body>
       );
