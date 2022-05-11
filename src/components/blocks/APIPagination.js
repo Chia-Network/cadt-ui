@@ -72,7 +72,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
   useEffect(() => {
     setCurrentPageNumber(1);
     setNumberOfPages(climateWarehouseStore.pageCount || 1);
-  }, [climateWarehouseStore.pageCount]);
+  }, [climateWarehouseStore.pageCount, searchParams.get('myRegistry')]);
 
   const changeCurrentPageTo = newPage => {
     setCurrentPageNumber(newPage);
