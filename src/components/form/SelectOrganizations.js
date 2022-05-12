@@ -261,8 +261,8 @@ const SelectOrganizations = withTheme(
           list.unshift(allOrganizationsItem);
         }
         return list.sort(function (a, b) {
-          const orgA = a.name.toUpperCase();
-          const orgB = b.name.toUpperCase();
+          const orgA = a.orgUid != 'all' && a.name.toUpperCase();
+          const orgB = b.orgUid != 'all' && b.name.toUpperCase();
           if (orgA < orgB) {
             return -1;
           }
