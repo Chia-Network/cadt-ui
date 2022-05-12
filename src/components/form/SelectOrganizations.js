@@ -260,8 +260,18 @@ const SelectOrganizations = withTheme(
         if (displayAllOrganizations) {
           list.unshift(allOrganizationsItem);
         }
+        return list.sort(function (a, b) {
+          const orgA = a.name.toUpperCase();
+          const orgB = b.name.toUpperCase();
+          if (orgA < orgB) {
+            return -1;
+          }
+          if (orgA > orgB) {
+            return 1;
+          }
 
-        return list;
+          return 0;
+        });
       }
       return [];
     }, [organizations]);
@@ -420,8 +430,7 @@ const SelectOrganizations = withTheme(
             state={selectState}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0].name
@@ -444,8 +453,7 @@ const SelectOrganizations = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -459,8 +467,7 @@ const SelectOrganizations = withTheme(
                             name: option.name,
                             icon: option.icon,
                           })
-                        }
-                      >
+                        }>
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -485,8 +492,7 @@ const SelectOrganizations = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             {selectState !== SelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -544,8 +550,7 @@ const SelectOrganizations = withTheme(
                       name: option.name,
                       icon: option.icon,
                     })
-                  }
-                >
+                  }>
                   {option.name}
                   {option.icon && (
                     <StyledIconContainer>
@@ -590,8 +595,7 @@ const SelectOrganizations = withTheme(
                         name: option.name,
                         icon: option.icon,
                       })
-                    }
-                  >
+                    }>
                     {option.name}
                   </StyledBasicMenuItem>
                 ),
