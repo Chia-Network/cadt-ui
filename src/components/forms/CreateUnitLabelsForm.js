@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -52,6 +53,17 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
     [selectedWayToAddLabel],
   );
 
+  useEffect(() => {
+    if (
+      !_.isEmpty(_.filter(Object.values(value), value => value)) &&
+      !selectedWayToAddLabel
+    ) {
+      if (!value.id) {
+        setSelectedWayToAddLabel(wayToAddLabelOptions[0]);
+      }
+    }
+  }, [selectedWayToAddLabel, value]);
+
   const areFormFieldsVisible =
     selectedWayToAddLabel?.value === 1 ||
     (selectedWayToAddLabel?.value === 2 && selectedLabelOption) ||
@@ -78,6 +90,24 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
       value: 3,
     },
   ];
+
+  const handleChange = selectedOptions => {
+    setSelectedWayToAddLabel(selectedOptions[0]);
+    onChange({
+      label: '',
+      labelType: '',
+      creditingPeriodStartDate: '',
+      creditingPeriodEndDate: '',
+      validityPeriodStartDate: '',
+      validityPeriodEndDate: '',
+      unitQuantity: 0,
+      labelLink: '',
+      warehouseProjectId: null,
+      id: null,
+    });
+    setSelectedProjectLabelOption(null);
+    setSelectedLabelOption(null);
+  };
 
   const projectsSelectOptions = useMemo(() => {
     if (projects?.length > 0) {
@@ -162,8 +192,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'way-to-add-label',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -179,23 +208,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                         ? [selectedWayToAddLabel]
                         : undefined
                     }
-                    onChange={selectedOptions => {
-                      setSelectedWayToAddLabel(selectedOptions[0]);
-                      onChange({
-                        label: '',
-                        labelType: '',
-                        creditingPeriodStartDate: '',
-                        creditingPeriodEndDate: '',
-                        validityPeriodStartDate: '',
-                        validityPeriodEndDate: '',
-                        unitQuantity: 0,
-                        labelLink: '',
-                        warehouseProjectId: null,
-                        id: null,
-                      });
-                      setSelectedProjectLabelOption(null);
-                      setSelectedLabelOption(null);
-                    }}
+                    onChange={handleChange}
                   />
                 </InputContainer>
                 {selectedWayToAddLabel === null && (
@@ -216,8 +229,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'select-existing-label',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -255,8 +267,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'select-label-by-project',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -298,8 +309,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-label-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -337,8 +347,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-label-type-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -379,8 +388,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-label-link-description',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -419,8 +427,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-validity-period-start-date-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -455,8 +462,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-validity-period-end-date-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -491,8 +497,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-crediting-period-start-date-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -527,8 +532,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-crediting-period-end-date-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -563,8 +567,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-unit-quantity-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
