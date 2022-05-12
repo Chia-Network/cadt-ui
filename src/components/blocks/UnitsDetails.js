@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styledComponents from 'styled-components';
 
 import { Body, SpanTwoDetailColumnsContainer } from '..';
@@ -12,8 +12,8 @@ import {
 } from '.';
 import { SpanTwoColumnsContainer } from '../layout';
 import { detailsViewData } from '../../utils/functionUtils';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { MagnifyGlassIcon } from '..';
+import { getUpdatedUrl } from '../../utils/urlUtils';
 
 const StyledCursor = styledComponents('div')`
   cursor: pointer;
@@ -22,8 +22,7 @@ const StyledCursor = styledComponents('div')`
 const UnitsDetails = ({ data, stagingData, changeColor }) => {
   const { issuances, projects } = useSelector(store => store.climateWarehouse);
   const navigate = useNavigate();
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
+  let location = useLocation();
 
   const unitBelongsToProjectId =
     data &&
@@ -38,7 +37,10 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
 
   const projectUrl =
     data &&
-    `/projects?orgUid=${myOrgUid}&myRegistry=true&projectId=${unitBelongsToProjectId}`;
+    `/projects?${getUpdatedUrl(location.search, {
+      param: 'projectId',
+      value: unitBelongsToProjectId,
+    })}`;
 
   return (
     <StyledDetailedViewTabItem>

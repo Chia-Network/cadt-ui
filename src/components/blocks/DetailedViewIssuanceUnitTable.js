@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 
@@ -16,7 +16,7 @@ import TableRow from '@mui/material/TableRow';
 
 import { Body } from '..';
 import { StyledItem } from '.';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
+import { getUpdatedUrl } from '../../utils/urlUtils';
 
 const StyledTableRow = styled(TableRow)(() => ({
   '& td, & th': {
@@ -30,13 +30,12 @@ const Spacing = styled('div')({
 
 const DetailedViewIssuanceUnitTable = ({ issuance }) => {
   const navigate = useNavigate();
-  const { organizations } = useSelector(store => store.climateWarehouse);
   const { units } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
   const intl = useIntl();
   const [page, setPage] = React.useState(0);
   const rowsPerPageOptions = [7, 14, 21];
   const [rowsPerPage, setRowsPerPage] = React.useState(rowsPerPageOptions[0]);
+  let location = useLocation();
   const [columns] = useState([
     {
       unitObjectKey: 'serialNumberBlock',
@@ -118,7 +117,11 @@ const DetailedViewIssuanceUnitTable = ({ issuance }) => {
                       key={unitItem.warehouseUnitId}
                       onClick={() =>
                         navigate(
-                          `/units?orgUid=${myOrgUid}&myRegistry=true&unitId=${unitItem.warehouseUnitId}`,
+                          `/units?${getUpdatedUrl(location.search, {
+                            param: 'unitId',
+                            value: unitItem.warehouseUnitId,
+                          })}`,
+                          { replace: true },
                         )
                       }
                     >
