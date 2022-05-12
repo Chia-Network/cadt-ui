@@ -188,8 +188,7 @@ const APIDataTable = withTheme(
                       start={index === 0 ? 1 : 0}
                       end={!actions && index === headings.length - 1 ? 1 : 0}
                       selectedTheme={theme}
-                      key={index}
-                    >
+                      key={index}>
                       <TableCellHeaderText>
                         {heading === 'orgUid' && 'Organization'}
                         {heading !== 'orgUid' &&
@@ -203,8 +202,7 @@ const APIDataTable = withTheme(
                       start={0}
                       end={1}
                       selectedTheme={theme}
-                      key={'action'}
-                    ></Th>
+                      key={'action'}></Th>
                   )}
                 </tr>
               </THead>
@@ -216,8 +214,7 @@ const APIDataTable = withTheme(
                         onClick={() => getFullRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
-                        key={index}
-                      >
+                        key={index}>
                         <TableCellText
                           tooltip={
                             record[key] &&
@@ -226,10 +223,10 @@ const APIDataTable = withTheme(
                             ].toString()}`
                           }
                         >
-                          {key === 'orgUid' && organizations[record[key]] && (
+                            {key === 'orgUid' && organizations[record[key]] && (
                             <img src={organizations[record[key]].icon} />
                           )}
-
+                          
                           {key !== 'orgUid' &&
                             record[key] &&
                             record[key] !== 'null' &&
@@ -248,8 +245,7 @@ const APIDataTable = withTheme(
                       <Td
                         stick
                         style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}
-                      >
+                        selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
@@ -284,8 +280,7 @@ const APIDataTable = withTheme(
                       <Td
                         stick
                         style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}
-                      >
+                        selectedTheme={theme}>
                         <BasicMenu
                           options={[
                             {
