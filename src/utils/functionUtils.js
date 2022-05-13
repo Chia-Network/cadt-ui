@@ -111,6 +111,20 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
           </a>
         </Body>
       );
+    } else if (_.isNull(info?.changes[0]) && info?.original) {
+      //Staging Detail View No Changes
+      return (
+        <Body>
+          <a
+            style={{ color: 'red' }}
+            href={handleClickLink(info?.original)}
+            target="_blank"
+            rel="noreferrer noopener">
+            {info?.original}
+            {info?.original && <LinkIcon height="15" width="30" />}
+          </a>
+        </Body>
+      );
     } else if (_.isEmpty(info?.changes[0]) && info?.original) {
       //Staging Detail View No Changes
       return (
@@ -156,7 +170,7 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
       return (
         <Body>
           <a
-            color="red"
+            style={{ color: 'red' }}
             href={handleClickLink(info?.changes[0] || info?.original)}
             target="_blank"
             rel="noreferrer noopener">
