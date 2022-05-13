@@ -44,6 +44,7 @@ export const actions = keyMirror(
   'GET_ISSUANCES',
   'GET_LABELS',
   'GET_AUDIT',
+  'GET_CONFLICTS',
   'GET_STAGING_PAGE_COUNT',
   'GET_STAGING_PROJECTS_PAGES',
   'GET_STAGING_UNITS_PAGES',
@@ -150,6 +151,35 @@ export const getOrganizationData = () => {
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getConflictsData = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/audit/findConflicts`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_CONFLICTS,
           payload: results,
         });
       } else {

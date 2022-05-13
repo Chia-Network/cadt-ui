@@ -16,7 +16,7 @@ import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { MagnifyGlassIcon } from '..';
 
 const StyledCursor = styledComponents('div')`
-  cursor: pointer;
+  cursor: zoom-in;
 `;
 
 const UnitsDetails = ({ data, stagingData, changeColor }) => {

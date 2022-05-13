@@ -95,6 +95,7 @@ const LeftNav = withTheme(({ children }) => {
   const isAuditPage = location.pathname.includes('/audit');
   const isMyRegistryPage = location.search.includes('myRegistry=true');
   const isOrganizationPage = location.pathname.includes('/organization');
+  const isConflictsPage = location.pathname.includes('/conflicts');
 
   return (
     <Container>
@@ -114,6 +115,9 @@ const LeftNav = withTheme(({ children }) => {
         </MenuItem>
         <MenuItem selected={isAuditPage} to="/audit">
           <FormattedMessage id="audit" />
+        </MenuItem>
+        <MenuItem selected={isConflictsPage} to="/conflicts">
+          <FormattedMessage id="conflicts" />
         </MenuItem>
 
         {!readOnlyMode && (
