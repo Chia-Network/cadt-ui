@@ -77,7 +77,7 @@ const Conflicts = withTheme(() => {
     return null;
   }
 
-  const keysToShow = Object.keys(conflicts[0]);
+  const keysToShow = conflicts[0] ? Object.keys(conflicts[0]) : null;
 
   return (
     <StyledSectionContainer>
