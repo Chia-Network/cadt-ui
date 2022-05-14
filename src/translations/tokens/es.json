@@ -25,6 +25,8 @@
   "commit-projects-message-question": "¿Comprometerse todo o solo proyectos?",
   "commit-units-message-question": "¿Comprometer todo o solo unidades?",
   "committed": "Comprometido",
+  "project-one": "Proyecto 1",
+  "project-two": "Proyecto 2",
   "pending-info": "Mensaje pendiente",
   "create-pending-title": "Temas pendientes",
   "create-pending-error": "No puede crear hasta que todos los elementos pendientes hayan terminado.",

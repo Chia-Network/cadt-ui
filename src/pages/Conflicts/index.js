@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -93,39 +94,128 @@ const Conflicts = withTheme(() => {
           <StyledTable>
             <thead>
               <StyledTr selectedTheme={theme}>
-                {keysToShow.map((keyItem, index) => (
-                  <StyledTh key={index}>
-                    <Body size="Bold">
-                      {convertPascalCaseToSentenceCase(keyItem)}
-                    </Body>
-                  </StyledTh>
-                ))}
+                <StyledTh selectedTheme={theme}>
+                  <Body size="Bold">
+                    <FormattedMessage id="project-name" />
+                  </Body>
+                </StyledTh>
+                {keysToShow
+                  .filter(
+                    project =>
+                      project === 'firstProjectRegistry' ||
+                      project === 'secondProjectRegistry',
+                  )
+                  .sort((a, b) => {
+                    if (_.includes(b, 'first')) {
+                      return 1;
+                    } else {
+                      return -1;
+                    }
+                  })
+                  .map((keyItem, index) => (
+                    <StyledTh key={index}>
+                      <Body size="Bold">
+                        {convertPascalCaseToSentenceCase(keyItem)}
+                      </Body>
+                    </StyledTh>
+                  ))}
+                {keysToShow
+                  .filter(
+                    project =>
+                      project === 'firstProjectName' ||
+                      project === 'secondProjectName',
+                  )
+                  .sort((a, b) => {
+                    if (_.includes(b, 'first')) {
+                      return 1;
+                    } else {
+                      return -1;
+                    }
+                  })
+                  .map((keyItem, index) => (
+                    <StyledTh key={index}>
+                      <Body size="Bold">
+                        {convertPascalCaseToSentenceCase(keyItem)}
+                      </Body>
+                    </StyledTh>
+                  ))}
               </StyledTr>
             </thead>
             <tbody>
               {conflicts.map((conflictItem, index) => (
                 <StyledTr key={index} selectedTheme={theme}>
-                  {keysToShow.map((keyItem, index) => (
-                    <StyledTd key={index}>
-                      {!keyItem.includes('ProjectId') ? (
+                  <StyledTd selectedTheme={theme}>
+                    <Body size="Bold">{conflictItem.firstProjectName}</Body>
+                  </StyledTd>
+                  {keysToShow
+                    .filter(
+                      project =>
+                        project === 'firstProjectRegistry' ||
+                        project === 'secondProjectRegistry',
+                    )
+                    .sort((a, b) => {
+                      if (_.includes(b, 'first')) {
+                        return 1;
+                      } else {
+                        return -1;
+                      }
+                    })
+                    .map((keyItem, index) => (
+                      <StyledTd key={index}>
                         <Body>{conflictItem[keyItem]}</Body>
-                      ) : (
-                        <StyledCursor>
-                          <Body
-                            onClick={() =>
-                              navigate(
-                                `/projects?projectId=${conflictItem[keyItem]}`,
-                              )
-                            }
-                            color="#1890ff"
-                          >
-                            {conflictItem[keyItem]}
-                            <MagnifyGlassIcon height="15" width="30" />
-                          </Body>
-                        </StyledCursor>
-                      )}
-                    </StyledTd>
-                  ))}
+                      </StyledTd>
+                    ))}
+                  {keysToShow
+                    .filter(
+                      project =>
+                        project === 'firstProjectName' ||
+                        project === 'secondProjectName',
+                    )
+                    .sort((a, b) => {
+                      if (_.includes(b, 'first')) {
+                        return 1;
+                      } else {
+                        return -1;
+                      }
+                    })
+                    .map((keyItem, index) => (
+                      <StyledTd key={index}>
+                        {keyItem.includes('firstProjectName') && (
+                          <>
+                            <StyledCursor>
+                              <Body
+                                onClick={() => {
+                                  keyItem === 'firstProjectName' &&
+                                    navigate(
+                                      `/projects?projectId=${conflictItem.firstProjectId}`,
+                                    );
+                                }}
+                                color="#1890ff">
+                                <FormattedMessage id="project-one" />
+                                <MagnifyGlassIcon height="15" width="30" />
+                              </Body>
+                            </StyledCursor>
+                          </>
+                        )}
+                        {keyItem.includes('secondProjectName') && (
+                          <>
+                            <StyledCursor>
+                              <Body
+                                onClick={() => {
+                                  keyItem === 'secondProjectName' &&
+                                    navigate(
+                                      `/projects?projectId=${conflictItem.secondProjectId}`,
+                                    );
+                                }}
+                                color="#1890ff">
+                                <FormattedMessage id="project-two" />
+                                <MagnifyGlassIcon height="15" width="30" />
+                              </Body>
+                            </StyledCursor>
+                          </>
+                        )}
+                      </StyledTd>
+                    ))}
                 </StyledTr>
               ))}
             </tbody>
