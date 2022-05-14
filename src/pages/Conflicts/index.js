@@ -135,7 +135,12 @@ const Conflicts = withTheme(() => {
                   .map((keyItem, index) => (
                     <StyledTh key={index}>
                       <Body size="Bold">
-                        {convertPascalCaseToSentenceCase(keyItem)}
+                        {keyItem === 'firstProjectName' && (
+                          <FormattedMessage id="first-project" />
+                        )}
+                        {keyItem === 'secondProjectName' && (
+                          <FormattedMessage id="second-project" />
+                        )}
                       </Body>
                     </StyledTh>
                   ))}

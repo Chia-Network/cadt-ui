@@ -27,6 +27,8 @@
   "committed": "Comprometido",
   "project-one": "Proyecto 1",
   "project-two": "Proyecto 2",
+  "first-project": "primer proyecto",
+  "second-project": "Segundo Proyecto",
   "pending-info": "Mensaje pendiente",
   "create-pending-title": "Temas pendientes",
   "create-pending-error": "No puede crear hasta que todos los elementos pendientes hayan terminado.",
