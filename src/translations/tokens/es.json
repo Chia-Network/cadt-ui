@@ -25,6 +25,10 @@
   "commit-projects-message-question": "¿Comprometerse todo o solo proyectos?",
   "commit-units-message-question": "¿Comprometer todo o solo unidades?",
   "committed": "Comprometido",
+  "project-one": "Proyecto 1",
+  "project-two": "Proyecto 2",
+  "first-project": "primer proyecto",
+  "second-project": "Segundo Proyecto",
   "pending-info": "Mensaje pendiente",
   "create-pending-title": "Temas pendientes",
   "create-pending-error": "No puede crear hasta que todos los elementos pendientes hayan terminado.",
@@ -349,5 +353,7 @@
   "unit-block-start": "Inicio del bloque de unidades",
   "unit-block-end": "Fin del bloque de unidades",
   "unit-block-start-error": "Agregar inicio de bloque de unidad válido",
-  "unit-block-end-error": "Agregar final de bloque de unidad válido"
+  "unit-block-end-error": "Agregar final de bloque de unidad válido",
+  "conflicts": "Conflictos",
+  "no-conflict-data": "No se encontraron datos de conflicto."
 }

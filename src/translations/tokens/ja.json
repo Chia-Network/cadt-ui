@@ -27,6 +27,10 @@
   "committed": "コミット",
   "staging": "ステージング",
   "pending": "ペンディング",
+  "project-one": "プロジェクト1",
+  "project-two": "プロジェクト2",
+  "first-project": "最初のプロジェクト",
+  "second-project": "2番目のプロジェクト",
   "add-unlisted-methodology": "リストに記載しない方法の追加",
   "add-unlisted-registry-of-origin": "非公開の原産地レジストリを追加",
   "add-unlisted-current-registry": "非公開レジストリを追加",
@@ -349,5 +353,7 @@
   "unit-block-start": "ユニットブロック開始",
   "unit-block-end": "ユニットブロックエンド",
   "unit-block-start-error": "有効なユニットブロック開始を追加",
-  "unit-block-end-error": "有効なユニットブロックの終わりを追加します"
+  "unit-block-end-error": "有効なユニットブロックの終わりを追加します",
+  "conflicts": "競合",
+  "no-conflict-data": "競合データは見つかりませんでした."
 }

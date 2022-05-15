@@ -323,6 +323,10 @@
   "add-valid-server-address": "Add a valid server address",
   "add-valid-api-key": "Add a valid Api key",
   "add-valid-organization-name": "Add a valid organization name",
+  "project-one": "Project 1",
+  "project-two": "Project 2",
+  "first-project": "First Project",
+  "second-project": "Second Project",
   "add-valid-organization-icon": "Load a valid PNG icon",
   "creating-organization": "Creating Organization",
   "public-address": "Public Address",
@@ -344,6 +348,7 @@
   "table": "Table",
   "root-hash": "Root Hash",
   "no-audit-data": "No audit data was found. Select an organization first.",
+  "no-conflict-data": "No conflict data was found.",
   "select-existing-project": "Select an existing project",
   "select-another-project": "The selected project doesn't have issuances.",
   "add-new-label": "Add new label",
@@ -367,5 +372,6 @@
   "unit-block-start": "Unit Block Start",
   "unit-block-end": "Unit Block End",
   "unit-block-start-error": "Add valid unit block start",
-  "unit-block-end-error": "Add valid unit block end"
+  "unit-block-end-error": "Add valid unit block end",
+  "conflicts": "Conflicts"
 }
