@@ -29,6 +29,8 @@
   "project-two": "Proyecto 2",
   "first-project": "primer proyecto",
   "second-project": "Segundo Proyecto",
+  "project-description": "Descripción",
+  "projects-description-description": "Descripción del proyecto",
   "pending-info": "Mensaje pendiente",
   "create-pending-title": "Temas pendientes",
   "create-pending-error": "No puede crear hasta que todos los elementos pendientes hayan terminado.",

@@ -40,6 +40,7 @@ const CreateProjectForm = ({ onClose, modalSizeAndPosition }) => {
     projectName: '',
     projectLink: '',
     projectDeveloper: '',
+    description: '',
     sector: '',
     projectType: '',
     coveredByNDC: '',
