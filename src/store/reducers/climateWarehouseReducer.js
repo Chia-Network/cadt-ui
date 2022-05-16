@@ -21,6 +21,7 @@ const initialState = {
   issuances: null,
   labels: null,
   audit: null,
+  conflicts: null,
   stagingPageCount: null,
   totalProjectsPages: null,
   totalUnitsPages: null,
@@ -72,6 +73,9 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_PROJECT:
       return u({ project: action.payload }, state);
+
+    case climateWarehouseActions.GET_CONFLICTS:
+      return u({ conflicts: action.payload }, state);
 
     case climateWarehouseActions.GET_VINTAGES:
       return u({ vintages: action.payload }, state);

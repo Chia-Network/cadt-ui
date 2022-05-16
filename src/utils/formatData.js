@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import dayjs from 'dayjs';
 
-export const formatDate = date =>
-  dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+export const formatDate = date => dayjs(date).format('YYYY-MM-DDT00:00:00[Z]');
 
 export const formatAPIData = unformattedData => {
   const result = {};
