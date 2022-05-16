@@ -20,6 +20,7 @@ const TextareaSizeEnum = {
 const StyledTextarea = styled('textarea')`
   box-sizing: border-box;
   border: 0.0625rem solid #d9d9d9;
+  resize: none;
   color: #262626;
   border-radius: 0.125rem;
   ::placeholder {
