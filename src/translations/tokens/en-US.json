@@ -327,6 +327,8 @@
   "project-two": "Project 2",
   "first-project": "First Project",
   "second-project": "Second Project",
+  "project-description": "Description",
+  "projects-description-description": "Description of the Project",
   "add-valid-organization-icon": "Load a valid PNG icon",
   "creating-organization": "Creating Organization",
   "public-address": "Public Address",

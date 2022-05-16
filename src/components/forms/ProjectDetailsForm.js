@@ -30,6 +30,9 @@ import {
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
   RequiredContainer,
+  Textarea,
+  TextareaSizeEnum,
+  TextareaStateEnum,
 } from '..';
 
 import { projectSchema } from '../../store/validations';
@@ -137,6 +140,43 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             )}
           </StyledFieldContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    <FormattedMessage id="project-description" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-description-description',
+                    })}>
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <Textarea
+                cols={75}
+                size={TextareaSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'project-description',
+                })}
+                value={projectDetails.description}
+                state={TextareaStateEnum.default}
+                onChange={event  =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    description: event.target.value,
+                  }))
+                }
+              />
+              {errorProjectMessage?.description && (
+                <Body size="Small" color="red">
+                  {errorProjectMessage.description}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
