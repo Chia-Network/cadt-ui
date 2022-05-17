@@ -7,10 +7,7 @@ import { coBenefitSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
 
 import {
-  StandardInput,
-  InputSizeEnum,
   InputVariantEnum,
-  InputStateEnum,
   Divider,
   ModalFormContainerStyle,
   FormContainerStyle,
@@ -21,11 +18,16 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
+  SimpleSelect,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
 } from '..';
 
 const CreateCoBenefitsForm = ({ value, onChange }) => {
   const [errorCoBenefitsMessage, setErrorCoBenefitsMessage] = useState({});
   const { validateForm, formType } = useSelector(state => state.app);
+  const { pickLists } = useSelector(state => state.climateWarehouse);
   const intl = useIntl();
 
   const onInputChange = (field, changeValue) => {
@@ -56,16 +58,19 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
             </Body>
           </StyledLabelContainer>
           <InputContainer>
-            <StandardInput
+            <SimpleSelect
+              width="100%"
+              addInput={intl.formatMessage({ id: 'co-benefit' })}
               variant={
                 errorCoBenefitsMessage?.cobenefit
                   ? InputVariantEnum.error
                   : undefined
               }
-              size={InputSizeEnum.large}
-              placeholderText={intl.formatMessage({ id: 'co-benefit' })}
-              state={InputStateEnum.default}
-              value={value.cobenefit}
+              size={SimpleSelectSizeEnum.large}
+              type={SimpleSelectTypeEnum.basic}
+              options={pickLists.methodology}
+              state={SimpleSelectStateEnum.default}
+              selected={value.cobenefit ? [value.cobenefit] : undefined}
               onChange={changeValue => onInputChange('cobenefit', changeValue)}
             />
             {errorCoBenefitsMessage?.cobenefit && (
