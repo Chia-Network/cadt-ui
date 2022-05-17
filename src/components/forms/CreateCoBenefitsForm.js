@@ -62,7 +62,7 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
             </Body>
           </StyledLabelContainer>
           <InputContainer>
-            {!_.isEmpty(pickLists?.coBenefits) ? (
+            {!_.isEmpty(pickLists?.cobenefits) ? (
               <SimpleSelect
                 width="100%"
                 addInput={intl.formatMessage({ id: 'co-benefit' })}
@@ -73,7 +73,7 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
                 }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
-                options={pickLists?.coBenefits}
+                options={pickLists?.cobenefits}
                 state={SimpleSelectStateEnum.default}
                 selected={value.cobenefit ? [value.cobenefit] : undefined}
                 onChange={changeValue =>
