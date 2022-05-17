@@ -60,7 +60,7 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
           <InputContainer>
             <SimpleSelect
               width="100%"
-              addInput={intl.formatMessage({ id: 'co-benefit' })}
+              addInput={intl.formatMessage({ id: 'cobenefits' })}
               variant={
                 errorCoBenefitsMessage?.cobenefit
                   ? InputVariantEnum.error
