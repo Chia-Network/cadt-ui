@@ -16,7 +16,7 @@ import { MagnifyGlassIcon } from '..';
 import { getUpdatedUrl } from '../../utils/urlUtils';
 
 const StyledCursor = styledComponents('div')`
-  cursor: pointer;
+  cursor: zoom-in;
 `;
 
 const UnitsDetails = ({ data, stagingData, changeColor }) => {

@@ -28,6 +28,7 @@ export const StyledDetailedViewTab = styled('div')`
 `;
 
 export const StyledItem = styled('div')`
+  overflow-wrap: break-word;
   display: flex;
   flex-direction: column;
   padding: 10px 0;

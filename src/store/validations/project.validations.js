@@ -14,6 +14,7 @@ export const projectSchema = yup.object().shape({
   program: yup.string().optional(),
   projectId: yup.string().required('Required Field'),
   projectName: yup.string().required('Required Field'),
+  description: yup.string().optional(),
   projectLink: yup.string().required('Required Field'),
   projectDeveloper: yup.string().required('Required Field'),
   sector: yup.string().required('Required Field'),
