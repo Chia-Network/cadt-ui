@@ -38,6 +38,7 @@ const StyledTextarea = styled('textarea')`
         font-style: normal;
         font-weight: 400;
         height: 4rem;
+        width: 100%;
         font-size: 1rem;
         line-height: 1.5rem;
       `;

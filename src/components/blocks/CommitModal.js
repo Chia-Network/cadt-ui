@@ -46,7 +46,6 @@ const CommitModal = ({ onClose, modalFor }) => {
           <StyledFieldContainer>
             <InputContainer>
               <Textarea
-                cols={33}
                 size={TextareaSizeEnum.large}
                 placeholder={intl.formatMessage({
                   id: 'commit-message',
