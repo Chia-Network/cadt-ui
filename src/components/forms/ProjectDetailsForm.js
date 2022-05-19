@@ -156,14 +156,13 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 </Body>
               </StyledLabelContainer>
               <Textarea
-                cols={75}
                 size={TextareaSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'project-description',
                 })}
                 value={projectDetails.description}
                 state={TextareaStateEnum.default}
-                onChange={event  =>
+                onChange={event =>
                   setProjectDetails(prev => ({
                     ...prev,
                     description: event.target.value,
