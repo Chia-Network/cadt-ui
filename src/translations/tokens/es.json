@@ -272,7 +272,6 @@
   "my-projects": "Mis proyectos",
   "create-organization": "Crear organización",
   "you-need-to-create-organization": "Debe crear su Organización para tener acceso completo al Registro.",
-  "organization-information": "Información de la organización",
   "organization-name": "Nombre de la Organización",
   "organization-icon": "Icono de organización",
   "organization-website": "Sitio web de la organización",
@@ -357,5 +356,7 @@
   "unit-block-start-error": "Agregar inicio de bloque de unidad válido",
   "unit-block-end-error": "Agregar final de bloque de unidad válido",
   "conflicts": "Conflictos",
-  "no-conflict-data": "No se encontraron datos de conflicto."
+  "no-conflict-data": "No se encontraron datos de conflicto.",
+  "import-by-orgUid": "Importar por Id",
+  "add-details": "Agregar detalles"
 }

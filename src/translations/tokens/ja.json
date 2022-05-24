@@ -272,7 +272,6 @@
   "my-projects": "私のプロジェクト",
   "create-organization": "組織を作成する",
   "you-need-to-create-organization": "レジストリに完全にアクセスするには、組織を作成する必要があります。",
-  "organization-information": "組織情報",
   "organization-name": "組織名",
   "organization-icon": "組織アイコン",
   "organization-website": "組織のウェブサイト",
@@ -357,5 +356,7 @@
   "unit-block-start-error": "有効なユニットブロック開始を追加",
   "unit-block-end-error": "有効なユニットブロックの終わりを追加します",
   "conflicts": "競合",
-  "no-conflict-data": "競合データは見つかりませんでした."
+  "no-conflict-data": "競合データは見つかりませんでした.",
+  "import-by-orgUid": "IDによるインポート",
+  "add-details": "詳細を追加"
 }

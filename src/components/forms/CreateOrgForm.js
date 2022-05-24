@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import {
   Modal,
   Body,
@@ -15,8 +16,14 @@ import {
   ModalFormContainerStyle,
   UploadIcon,
   SuccessIcon,
+  TabPanel,
+  Tab,
+  Tabs,
 } from '..';
-import { postNewOrg } from '../../store/actions/climateWarehouseActions';
+import {
+  importNewOrg,
+  postNewOrg,
+} from '../../store/actions/climateWarehouseActions';
 
 const StyledInput = styled('input')`
   visibility: hidden;
@@ -35,21 +42,39 @@ const StyledDiv = styled('div')`
   }
 `;
 
+const StyledTabsHeader = styled('div')`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 30px;
+`;
+
 const CreateOrgForm = ({ onClose }) => {
   const dispatch = useDispatch();
+  const intl = useIntl();
+  const { notification } = useSelector(state => state.app);
   const [formData, setFormData] = useState({
     name: '',
     png: null,
   });
-  const intl = useIntl();
-  const { notification } = useSelector(state => state.app);
+  const [importedOrgUid, setImportedOrgUid] = useState('');
+  const [tabValue, setTabValue] = useState(0);
 
   const nameIsValid = formData?.name?.length > 0;
-
   const pngIsValid = formData?.png != null;
+  const isOrgUidValid = importedOrgUid?.length > 4;
+
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
 
   const onSubmit = async () => {
-    if (nameIsValid && pngIsValid) {
+    if (tabValue === 1 && isOrgUidValid) {
+      dispatch(importNewOrg(importedOrgUid));
+    }
+    if (tabValue === 0 && nameIsValid && pngIsValid) {
       dispatch(postNewOrg(formData));
     }
   };
@@ -86,64 +111,93 @@ const CreateOrgForm = ({ onClose }) => {
         })}
         body={
           <ModalFormContainerStyle>
-            <Body size="Big" color={'#262626'}>
-              <FormattedMessage id="organization-information" />
-            </Body>
-            <StyledFieldContainer>
-              <StyledLabelContainer>
-                <Body>
-                  *<FormattedMessage id="organization-name" />
-                </Body>
-              </StyledLabelContainer>
-              <InputContainer>
-                <StandardInput
-                  size={InputSizeEnum.large}
-                  variant={InputVariantEnum.default}
-                  value={formData.name}
-                  onChange={value =>
-                    setFormData(prevState => ({
-                      ...prevState,
-                      name: value,
-                    }))
-                  }
-                />
-              </InputContainer>
-              {!nameIsValid && (
-                <Body size="Small" color="red">
-                  {intl.formatMessage({
-                    id: 'add-valid-organization-name',
-                  })}
-                </Body>
-              )}
-            </StyledFieldContainer>
-            <StyledFieldContainer>
-              <StyledLabelContainer>
-                <Body>
-                  *<FormattedMessage id="organization-icon" />
-                </Body>
-              </StyledLabelContainer>
-              <InputContainer>
-                <StyledDiv>
-                  <label htmlFor="png">
-                    {!pngIsValid && <UploadIcon width="20" height="20" />}
-                    {pngIsValid && <SuccessIcon width="20" height="20" />}
-                  </label>
-                  <StyledInput
-                    type="file"
-                    id="png"
-                    accept=".png"
-                    onChange={onPngInputChange}
+            <StyledTabsHeader>
+              <Tabs value={tabValue} onChange={handleTabChange}>
+                <Tab label={intl.formatMessage({ id: 'add-details' })} />
+                <Tab label={intl.formatMessage({ id: 'import-by-orgUid' })} />
+              </Tabs>
+            </StyledTabsHeader>
+            <TabPanel value={tabValue} index={0}>
+              <StyledFieldContainer>
+                <StyledLabelContainer>
+                  <Body>
+                    *<FormattedMessage id="organization-name" />
+                  </Body>
+                </StyledLabelContainer>
+                <InputContainer>
+                  <StandardInput
+                    size={InputSizeEnum.large}
+                    variant={InputVariantEnum.default}
+                    value={formData.name}
+                    onChange={value =>
+                      setFormData(prevState => ({
+                        ...prevState,
+                        name: value,
+                      }))
+                    }
                   />
-                </StyledDiv>
-              </InputContainer>
-              {!pngIsValid && (
-                <Body size="Small" color="red">
-                  {intl.formatMessage({
-                    id: 'add-valid-organization-icon',
-                  })}
-                </Body>
-              )}
-            </StyledFieldContainer>
+                </InputContainer>
+                {!nameIsValid && (
+                  <Body size="Small" color="red">
+                    {intl.formatMessage({
+                      id: 'add-valid-organization-name',
+                    })}
+                  </Body>
+                )}
+              </StyledFieldContainer>
+              <StyledFieldContainer>
+                <StyledLabelContainer>
+                  <Body>
+                    *<FormattedMessage id="organization-icon" />
+                  </Body>
+                </StyledLabelContainer>
+                <InputContainer>
+                  <StyledDiv>
+                    <label htmlFor="png">
+                      {!pngIsValid && <UploadIcon width="20" height="20" />}
+                      {pngIsValid && <SuccessIcon width="20" height="20" />}
+                    </label>
+                    <StyledInput
+                      type="file"
+                      id="png"
+                      accept=".png"
+                      onChange={onPngInputChange}
+                    />
+                  </StyledDiv>
+                </InputContainer>
+                {!pngIsValid && (
+                  <Body size="Small" color="red">
+                    {intl.formatMessage({
+                      id: 'add-valid-organization-icon',
+                    })}
+                  </Body>
+                )}
+              </StyledFieldContainer>
+            </TabPanel>
+            <TabPanel value={tabValue} index={1}>
+              <StyledFieldContainer>
+                <StyledLabelContainer>
+                  <Body>
+                    *<FormattedMessage id="org-uid" />
+                  </Body>
+                </StyledLabelContainer>
+                <InputContainer>
+                  <StandardInput
+                    size={InputSizeEnum.large}
+                    variant={InputVariantEnum.default}
+                    value={importedOrgUid}
+                    onChange={value => setImportedOrgUid(value)}
+                  />
+                </InputContainer>
+                {!isOrgUidValid && (
+                  <Body size="Small" color="red">
+                    {intl.formatMessage({
+                      id: 'invalid-uid',
+                    })}
+                  </Body>
+                )}
+              </StyledFieldContainer>
+            </TabPanel>
           </ModalFormContainerStyle>
         }
       />
