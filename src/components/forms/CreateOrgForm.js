@@ -21,7 +21,7 @@ import {
   Tabs,
 } from '..';
 import {
-  importNewOrg,
+  importHomeOrg,
   postNewOrg,
 } from '../../store/actions/climateWarehouseActions';
 
@@ -72,7 +72,7 @@ const CreateOrgForm = ({ onClose }) => {
 
   const onSubmit = async () => {
     if (tabValue === 1 && isOrgUidValid) {
-      dispatch(importNewOrg(importedOrgUid));
+      dispatch(importHomeOrg(importedOrgUid));
     }
     if (tabValue === 0 && nameIsValid && pngIsValid) {
       dispatch(postNewOrg(formData));

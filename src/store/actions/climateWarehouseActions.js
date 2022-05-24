@@ -1001,15 +1001,15 @@ export const postNewOrg = data => {
   };
 };
 
-export const importNewOrg = orgUid => {
+export const importHomeOrg = orgUid => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/organization/import`;
+      const url = `${constants.API_HOST}/organizations`;
 
       const payload = {
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify({ orgUid }),
       };
 
