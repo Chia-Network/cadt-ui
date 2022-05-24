@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
@@ -164,7 +163,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 })}
                 value={projectDetails.description}
                 state={TextareaStateEnum.default}
-                onChange={event =>
+                onChange={event  =>
                   setProjectDetails(prev => ({
                     ...prev,
                     description: event.target.value,
@@ -560,49 +559,28 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                {!_.isEmpty(pickLists.registries) ? (
-                  <SimpleSelect
-                    addInput="current-registry"
-                    variant={
-                      errorProjectMessage?.currentRegistry &&
-                      SimpleSelectVariantEnum.error
-                    }
-                    size={SimpleSelectSizeEnum.large}
-                    type={SimpleSelectTypeEnum.basic}
-                    options={pickLists.registries}
-                    state={SimpleSelectStateEnum.default}
-                    selected={
-                      projectDetails.currentRegistry
-                        ? [projectDetails.currentRegistry]
-                        : undefined
-                    }
-                    onChange={selectedOptions =>
-                      setProjectDetails(prev => ({
-                        ...prev,
-                        currentRegistry: selectedOptions[0],
-                      }))
-                    }
-                  />
-                ) : (
-                  <StandardInput
-                    variant={
-                      errorProjectMessage?.currentRegistry &&
-                      SimpleSelectVariantEnum.error
-                    }
-                    size={InputSizeEnum.large}
-                    placeholderText={intl.formatMessage({
-                      id: 'current-registry',
-                    })}
-                    state={InputStateEnum.default}
-                    value={projectDetails.currentRegistry}
-                    onChange={value =>
-                      setProjectDetails(prev => ({
-                        ...prev,
-                        currentRegistry: value,
-                      }))
-                    }
-                  />
-                )}
+                <SimpleSelect
+                  addInput="current-registry"
+                  variant={
+                    errorProjectMessage?.currentRegistry &&
+                    SimpleSelectVariantEnum.error
+                  }
+                  size={SimpleSelectSizeEnum.large}
+                  type={SimpleSelectTypeEnum.basic}
+                  options={pickLists.registries}
+                  state={SimpleSelectStateEnum.default}
+                  selected={
+                    projectDetails.currentRegistry
+                      ? [projectDetails.currentRegistry]
+                      : undefined
+                  }
+                  onChange={selectedOptions =>
+                    setProjectDetails(prev => ({
+                      ...prev,
+                      currentRegistry: selectedOptions[0],
+                    }))
+                  }
+                />
               </InputContainer>
               {errorProjectMessage?.currentRegistry && (
                 <Body size="Small" color="red">
@@ -626,49 +604,28 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              {!_.isEmpty(pickLists.registries) ? (
-                <SimpleSelect
-                  addInput="registry-of-origin"
-                  variant={
-                    errorProjectMessage?.registryOfOrigin &&
-                    SimpleSelectVariantEnum.error
-                  }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
-                  options={pickLists.registries}
-                  state={SimpleSelectStateEnum.default}
-                  selected={
-                    projectDetails.registryOfOrigin
-                      ? [projectDetails.registryOfOrigin]
-                      : undefined
-                  }
-                  onChange={selectedOptions =>
-                    setProjectDetails(prev => ({
-                      ...prev,
-                      registryOfOrigin: selectedOptions[0],
-                    }))
-                  }
-                />
-              ) : (
-                <StandardInput
-                  variant={
-                    errorProjectMessage?.registryOfOrigin &&
-                    SimpleSelectVariantEnum.error
-                  }
-                  size={InputSizeEnum.large}
-                  placeholderText={intl.formatMessage({
-                    id: 'registry-of-origin',
-                  })}
-                  state={InputStateEnum.default}
-                  value={projectDetails.registryOfOrigin}
-                  onChange={value =>
-                    setProjectDetails(prev => ({
-                      ...prev,
-                      registryOfOrigin: value,
-                    }))
-                  }
-                />
-              )}
+              <SimpleSelect
+                addInput="registry-of-origin"
+                variant={
+                  errorProjectMessage?.registryOfOrigin &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.registries}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  projectDetails.registryOfOrigin
+                    ? [projectDetails.registryOfOrigin]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    registryOfOrigin: selectedOptions[0],
+                  }))
+                }
+              />
             </InputContainer>
             {errorProjectMessage?.registryOfOrigin && (
               <Body size="Small" color="red">
@@ -779,48 +736,29 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
-              {!_.isEmpty(pickLists.methodology) ? (
-                <SimpleSelect
-                  width="100%"
-                  addInput="methodology"
-                  variant={
-                    errorProjectMessage?.methodology &&
-                    SimpleSelectVariantEnum.error
-                  }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
-                  options={pickLists.methodology}
-                  state={SimpleSelectStateEnum.default}
-                  selected={
-                    projectDetails.methodology
-                      ? [projectDetails.methodology]
-                      : undefined
-                  }
-                  onChange={selectedOptions =>
-                    setProjectDetails(prev => ({
-                      ...prev,
-                      methodology: selectedOptions[0],
-                    }))
-                  }
-                />
-              ) : (
-                <StandardInput
-                  variant={
-                    errorProjectMessage?.methodology &&
-                    SimpleSelectVariantEnum.error
-                  }
-                  size={InputSizeEnum.large}
-                  placeholderText={intl.formatMessage({ id: 'methodology' })}
-                  state={InputStateEnum.default}
-                  value={projectDetails.methodology}
-                  onChange={value =>
-                    setProjectDetails(prev => ({
-                      ...prev,
-                      methodology: value,
-                    }))
-                  }
-                />
-              )}
+              <SimpleSelect
+                width="100%"
+                addInput="methodology"
+                variant={
+                  errorProjectMessage?.methodology &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.methodology}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  projectDetails.methodology
+                    ? [projectDetails.methodology]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setProjectDetails(prev => ({
+                    ...prev,
+                    methodology: selectedOptions[0],
+                  }))
+                }
+              />
               {errorProjectMessage?.methodology && (
                 <Body size="Small" color="red">
                   {errorProjectMessage.methodology}
