@@ -7,9 +7,9 @@ import {
   modalTypeEnum,
   StyledFieldContainer,
   InputContainer,
-  StandardInput,
-  InputSizeEnum,
-  InputVariantEnum,
+  TextareaStateEnum,
+  TextareaSizeEnum,
+  Textarea,
 } from '../../components';
 
 import { commitStagingData } from '../../store/actions/climateWarehouseActions';
@@ -45,14 +45,14 @@ const CommitModal = ({ onClose, modalFor }) => {
         <div>
           <StyledFieldContainer>
             <InputContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                variant={InputVariantEnum.default}
-                value={commitMessage}
-                onChange={value => setCommitMessage(value)}
-                placeholderText={intl.formatMessage({
+              <Textarea
+                size={TextareaSizeEnum.large}
+                placeholder={intl.formatMessage({
                   id: 'commit-message',
                 })}
+                state={TextareaStateEnum.default}
+                value={commitMessage}
+                onChange={event => setCommitMessage(event.target.value)}
               />
             </InputContainer>
           </StyledFieldContainer>

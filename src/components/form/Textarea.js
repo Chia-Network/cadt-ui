@@ -38,6 +38,7 @@ const StyledTextarea = styled('textarea')`
         font-style: normal;
         font-weight: 400;
         height: 4rem;
+        width: 100%;
         font-size: 1rem;
         line-height: 1.5rem;
       `;
@@ -84,7 +85,6 @@ const Textarea = withTheme(
     size = TextareaSizeEnum.default,
     value,
     placeholder,
-    cols,
     onChange,
   }) => {
     const [textareaState, setTextareaState] = useState(state);
@@ -117,7 +117,6 @@ const Textarea = withTheme(
 
     return (
       <StyledTextarea
-        cols={cols}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onBlur={onBlur}
