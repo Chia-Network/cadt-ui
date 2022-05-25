@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import u from 'updeep';
 import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -7,10 +8,7 @@ import { coBenefitSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
 
 import {
-  StandardInput,
-  InputSizeEnum,
   InputVariantEnum,
-  InputStateEnum,
   Divider,
   ModalFormContainerStyle,
   FormContainerStyle,
@@ -21,11 +19,19 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
+  SimpleSelect,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
+  StandardInput,
+  InputStateEnum,
+  InputSizeEnum,
 } from '..';
 
 const CreateCoBenefitsForm = ({ value, onChange }) => {
   const [errorCoBenefitsMessage, setErrorCoBenefitsMessage] = useState({});
   const { validateForm, formType } = useSelector(state => state.app);
+  const { pickLists } = useSelector(state => state.climateWarehouse);
   const intl = useIntl();
 
   const onInputChange = (field, changeValue) => {
@@ -56,18 +62,35 @@ const CreateCoBenefitsForm = ({ value, onChange }) => {
             </Body>
           </StyledLabelContainer>
           <InputContainer>
-            <StandardInput
-              variant={
-                errorCoBenefitsMessage?.cobenefit
-                  ? InputVariantEnum.error
-                  : undefined
-              }
-              size={InputSizeEnum.large}
-              placeholderText={intl.formatMessage({ id: 'co-benefit' })}
-              state={InputStateEnum.default}
-              value={value.cobenefit}
-              onChange={changeValue => onInputChange('cobenefit', changeValue)}
-            />
+            {!_.isEmpty(pickLists?.cobenefits) ? (
+              <SimpleSelect
+                width="100%"
+                addInput={intl.formatMessage({ id: 'co-benefit' })}
+                variant={
+                  errorCoBenefitsMessage?.cobenefit
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists?.cobenefits}
+                state={SimpleSelectStateEnum.default}
+                selected={value.cobenefit ? [value.cobenefit] : undefined}
+                onChange={changeValue =>
+                  onInputChange('cobenefit', changeValue)
+                }
+              />
+            ) : (
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({ id: 'co-benefit' })}
+                state={InputStateEnum.default}
+                value={value.cobenefit}
+                onChange={changeValue =>
+                  onInputChange('cobenefit', changeValue)
+                }
+              />
+            )}
             {errorCoBenefitsMessage?.cobenefit && (
               <Body size="Small" color="red">
                 {errorCoBenefitsMessage.cobenefit}

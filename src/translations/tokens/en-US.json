@@ -144,6 +144,7 @@
   "qualifications": "Qualifications",
   "vintages": "Vintages",
   "co-benefits": "Co-Benefits",
+  "add-unlisted-cobenefits": "Add Unlisted Co-Benefit",
   "edit-project": "Edit Project",
   "create-project": "Create Project",
   "create-unit": "Create Unit",
@@ -287,7 +288,6 @@
   "my-projects": "My Projects",
   "create-organization": "Create Organization",
   "you-need-to-create-organization": "You need to create your Organization to have full access to the Registry.",
-  "organization-information": "Organization Information",
   "organization-name": "Organization Name",
   "organization-icon": "Organization Icon",
   "organization-website": "Organization Website",
@@ -375,5 +375,7 @@
   "unit-block-end": "Unit Block End",
   "unit-block-start-error": "Add valid unit block start",
   "unit-block-end-error": "Add valid unit block end",
-  "conflicts": "Conflicts"
+  "conflicts": "Conflicts",
+  "import-by-orgUid": "Import by Id",
+  "add-details": "Add details"
 }
