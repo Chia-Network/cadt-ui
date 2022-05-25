@@ -150,6 +150,8 @@ export const getOrganizationData = () => {
         dispatch(setConnectionCheck(true));
         const results = await response.json();
 
+        dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
+
         dispatch({
           type: actions.GET_ORGANIZATIONS,
           payload: results,
@@ -470,10 +472,6 @@ export const getPaginatedData = ({
             );
           }
 
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
-
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
           const results = await response.json();
@@ -533,9 +531,6 @@ export const getStagingPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
           const results = await response.json();
