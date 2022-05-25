@@ -74,7 +74,7 @@ const CreateOrgForm = ({ onClose }) => {
     if (tabValue === 1 && isOrgUidValid) {
       dispatch(importHomeOrg(importedOrgUid));
     }
-    if (tabValue === 0 && nameIsValid && pngIsValid) {
+    if (tabValue === 0 && nameIsValid) {
       dispatch(postNewOrg(formData));
     }
   };
@@ -148,7 +148,7 @@ const CreateOrgForm = ({ onClose }) => {
               <StyledFieldContainer>
                 <StyledLabelContainer>
                   <Body>
-                    *<FormattedMessage id="organization-icon" />
+                    <FormattedMessage id="organization-icon" />
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
@@ -165,13 +165,6 @@ const CreateOrgForm = ({ onClose }) => {
                     />
                   </StyledDiv>
                 </InputContainer>
-                {!pngIsValid && (
-                  <Body size="Small" color="red">
-                    {intl.formatMessage({
-                      id: 'add-valid-organization-icon',
-                    })}
-                  </Body>
-                )}
               </StyledFieldContainer>
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
