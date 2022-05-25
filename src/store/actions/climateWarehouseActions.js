@@ -24,6 +24,7 @@ import {
   setNotificationMessage,
   setReadOnly,
 } from './app';
+import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
 
 export const actions = keyMirror(
   'GET_RATINGS',
@@ -456,6 +457,19 @@ export const getPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
+          if (
+            !areUiAndDataModelMajorVersionsAMatch(
+              response.headers.get('x-datamodel-version'),
+            )
+          ) {
+            dispatch(
+              setNotificationMessage(
+                NotificationMessageTypeEnum.error,
+                'ui-data-model-mismatch',
+              ),
+            );
+          }
+
           dispatch(
             setReadOnly(response.headers.get('cw-read-only') === 'true'),
           );
