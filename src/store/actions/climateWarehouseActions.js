@@ -958,7 +958,7 @@ export const postNewOrg = data => {
       dispatch(activateProgressIndicator);
 
       const formData = new FormData();
-      formData.append('file', data.png);
+      formData.append('file', data.file);
       formData.append('name', data.name);
 
       const url = `${constants.API_HOST}/organizations/create`;

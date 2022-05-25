@@ -67,8 +67,9 @@ const Organization = () => {
   const { organizations } = useSelector(store => store.climateWarehouse);
   const myOrgUid = organizations && getMyOrgUid(organizations);
   const myOrganization = organizations && organizations[myOrgUid];
+  const [hideImg, setHideImg] = useState(false);
 
-  const isLogoPngType = myOrganization?.icon?.includes('data:image/png;base64');
+  const isLogoPngType = !hideImg && myOrganization?.icon?.includes('data:image/png;base64');
   const isLogoSvgType = myOrganization?.icon?.includes('<svg');
   const isLogoUrlType = myOrganization?.icon
     ? validateUrl(myOrganization.icon)
@@ -80,6 +81,10 @@ const Organization = () => {
 
   if (!organizations || myOrgUid === 'none') {
     return null;
+  }
+
+  const errorImg = () => {
+    setHideImg(true);
   }
 
   return (
@@ -178,7 +183,7 @@ const Organization = () => {
           <img src={myOrganization.icon} width={100} height={100} />
         )}
         {isLogoPngType && (
-          <img src={myOrganization.icon} width={100} height={100} />
+          <img src={myOrganization.icon} width={100} height={100} onError={errorImg}  />
         )}
       </StyledLogoContainer>
     </StyledOrganizationContainer>

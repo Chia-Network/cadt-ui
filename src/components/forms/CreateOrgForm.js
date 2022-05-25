@@ -57,13 +57,13 @@ const CreateOrgForm = ({ onClose }) => {
   const { notification } = useSelector(state => state.app);
   const [formData, setFormData] = useState({
     name: '',
-    png: null,
+    file: null,
   });
   const [importedOrgUid, setImportedOrgUid] = useState('');
   const [tabValue, setTabValue] = useState(0);
 
   const nameIsValid = formData?.name?.length > 0;
-  const pngIsValid = formData?.png != null;
+  const fileIsValid = formData?.file != null;
   const isOrgUidValid = importedOrgUid?.length > 4;
 
   const handleTabChange = (event, newValue) => {
@@ -74,21 +74,17 @@ const CreateOrgForm = ({ onClose }) => {
     if (tabValue === 1 && isOrgUidValid) {
       dispatch(importHomeOrg(importedOrgUid));
     }
-    if (tabValue === 0 && nameIsValid && pngIsValid) {
+    if (tabValue === 0 && nameIsValid && fileIsValid) {
       dispatch(postNewOrg(formData));
     }
   };
 
   const onPngInputChange = e => {
     if (e.target.value && e.target.value !== '') {
-      const fileNameIsValid = /\.png$/.test(e.target.value);
-      if (fileNameIsValid) {
-        const file = e.target.files[0];
-        setFormData(prevState => ({
-          ...prevState,
-          png: file,
-        }));
-      }
+      setFormData(prevState => ({
+        ...prevState,
+        file: e.target.files[0],
+      }));
     }
   };
 
@@ -153,19 +149,19 @@ const CreateOrgForm = ({ onClose }) => {
                 </StyledLabelContainer>
                 <InputContainer>
                   <StyledDiv>
-                    <label htmlFor="png">
-                      {!pngIsValid && <UploadIcon width="20" height="20" />}
-                      {pngIsValid && <SuccessIcon width="20" height="20" />}
+                    <label htmlFor="file">
+                      {!fileIsValid && <UploadIcon width="20" height="20" />}
+                      {fileIsValid && <SuccessIcon width="20" height="20" />}
                     </label>
                     <StyledInput
                       type="file"
-                      id="png"
-                      accept=".png"
+                      id="file"
+                      accept="image/*"
                       onChange={onPngInputChange}
                     />
                   </StyledDiv>
                 </InputContainer>
-                {!pngIsValid && (
+                {!fileIsValid && (
                   <Body size="Small" color="red">
                     {intl.formatMessage({
                       id: 'add-valid-organization-icon',
