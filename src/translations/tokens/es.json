@@ -359,5 +359,6 @@
   "conflicts": "Conflictos",
   "no-conflict-data": "No se encontraron datos de conflicto.",
   "import-by-orgUid": "Importar por Id",
-  "add-details": "Agregar detalles"
+  "add-details": "Agregar detalles",
+  "ui-data-model-mismatch": "Hay una discrepancia entre la interfaz de usuario y el modelo de datos."
 }

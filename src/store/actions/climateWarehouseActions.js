@@ -24,6 +24,7 @@ import {
   setNotificationMessage,
   setReadOnly,
 } from './app';
+import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
 
 export const actions = keyMirror(
   'GET_RATINGS',
@@ -148,6 +149,8 @@ export const getOrganizationData = () => {
         dispatch(setGlobalErrorMessage(null));
         dispatch(setConnectionCheck(true));
         const results = await response.json();
+
+        dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
@@ -456,9 +459,18 @@ export const getPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
+          if (
+            !areUiAndDataModelMajorVersionsAMatch(
+              response.headers.get('x-datamodel-version'),
+            )
+          ) {
+            dispatch(
+              setNotificationMessage(
+                NotificationMessageTypeEnum.error,
+                'ui-data-model-mismatch',
+              ),
+            );
+          }
 
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
@@ -519,9 +531,6 @@ export const getStagingPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
           const results = await response.json();
