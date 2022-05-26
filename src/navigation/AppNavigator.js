@@ -10,7 +10,6 @@ import {
 import {
   IndeterminateProgressOverlay,
   Dashboard,
-  MyAccount,
 } from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
@@ -49,8 +48,7 @@ const AppNavigator = () => {
     <AppContainer>
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck && (
-        <Modal
-          addComponent={<MyAccount />}
+        <Modal        
           informationType="error"
           modalType={modalTypeEnum.information}
           label="Try Again"

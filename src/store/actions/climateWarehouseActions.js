@@ -24,6 +24,7 @@ import {
   setNotificationMessage,
   setReadOnly,
 } from './app';
+import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
 
 export const actions = keyMirror(
   'GET_RATINGS',
@@ -148,6 +149,8 @@ export const getOrganizationData = () => {
         dispatch(setGlobalErrorMessage(null));
         dispatch(setConnectionCheck(true));
         const results = await response.json();
+
+        dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
@@ -456,9 +459,18 @@ export const getPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
+          if (
+            !areUiAndDataModelMajorVersionsAMatch(
+              response.headers.get('x-datamodel-version'),
+            )
+          ) {
+            dispatch(
+              setNotificationMessage(
+                NotificationMessageTypeEnum.error,
+                'ui-data-model-mismatch',
+              ),
+            );
+          }
 
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
@@ -519,9 +531,6 @@ export const getStagingPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
           const results = await response.json();
@@ -965,6 +974,52 @@ export const postNewOrg = data => {
       const payload = {
         method: 'POST',
         body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-created',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'organization-not-created'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'organization-not-created',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const importHomeOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations`;
+
+      const payload = {
+        method: 'PUT',
+        body: JSON.stringify({ orgUid }),
       };
 
       const response = await fetchWrapper(url, payload);

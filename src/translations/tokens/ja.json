@@ -214,6 +214,7 @@
   "org-uid": "組織 UID",
   "updated-at": "更新時点",
   "co-benefit": "共同利益",
+  "add-unlisted-cobenefits": "リストに記載しない共同特典の追加",
   "in-country-region": "国内地域",
   "host-country": "開催国",
   "label": "ラベル",
@@ -272,7 +273,6 @@
   "my-projects": "私のプロジェクト",
   "create-organization": "組織を作成する",
   "you-need-to-create-organization": "レジストリに完全にアクセスするには、組織を作成する必要があります。",
-  "organization-information": "組織情報",
   "organization-name": "組織名",
   "organization-icon": "組織アイコン",
   "organization-website": "組織のウェブサイト",
@@ -357,5 +357,8 @@
   "unit-block-start-error": "有効なユニットブロック開始を追加",
   "unit-block-end-error": "有効なユニットブロックの終わりを追加します",
   "conflicts": "競合",
-  "no-conflict-data": "競合データは見つかりませんでした."
+  "no-conflict-data": "競合データは見つかりませんでした.",
+  "import-by-orgUid": "IDによるインポート",
+  "add-details": "詳細を追加",
+  "ui-data-model-mismatch": "UIとデータモデルの間に不一致があります。"
 }
