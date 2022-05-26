@@ -377,5 +377,7 @@
   "unit-block-end-error": "Add valid unit block end",
   "conflicts": "Conflicts",
   "import-by-orgUid": "Import by Id",
-  "add-details": "Add details"
+  "add-details": "Add details",
+  "organization-information": "Organization Information",
+  "governance-data-failed": "Governance Data failed to load, please contact admin."
 }
