@@ -18,7 +18,6 @@ import { unitsSchema } from '../../store/validations';
 import { UnitDetailsForm } from '.';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 import { setValidateForm, setForm } from '../../store/actions/app';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -57,11 +56,10 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
     issuance: null,
   });
   const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
+  const { myOrgUid } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
-    if (myOrgUid !== 'none') {
+    if (myOrgUid) {
       dispatch(getMyProjects(myOrgUid));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());

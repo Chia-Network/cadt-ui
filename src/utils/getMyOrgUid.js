@@ -4,5 +4,5 @@ export const getMyOrgUid = organizations => {
       return property;
     }
   }
-  return 'none';
+  return null;
 };

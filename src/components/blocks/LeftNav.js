@@ -11,7 +11,6 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { CreateOrgForm } from '../forms';
 import { modalTypeEnum } from '.';
 import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
@@ -73,9 +72,10 @@ const LeftNav = withTheme(({ children }) => {
   const intl = useIntl();
   const { readOnlyMode } = useSelector(state => state.app);
   const dispatch = useDispatch();
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
-  const myOrgIsNotCreated = myOrgUid === 'none';
+  const { myOrgUid, organizations } = useSelector(
+    store => store.climateWarehouse,
+  );
+  const myOrgIsNotCreated = !myOrgUid;
   const myOrgIsCreatedButNotSubscribed =
     !myOrgIsNotCreated && organizations && !organizations[myOrgUid].subscribed;
 
