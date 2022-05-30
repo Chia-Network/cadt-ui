@@ -40,7 +40,8 @@ const MenuItem = styled(Link)`
   ${props =>
     !props.selected && !props.disabled && `:hover {background: #40a9ff;}`};
   padding: 0.5625rem 0rem 0.75rem 4.25rem;
-  ${props => (props.disabled ? 'color: #BFBFBF;' : 'color: white;')}
+  ${props =>
+    props.disabled ? 'color: #BFBFBF; pointer-events: none;' : 'color: white;'}
   font-family: ${props => props.theme.typography.primary.bold};
   cursor: pointer;
   display: block;
@@ -72,12 +73,10 @@ const LeftNav = withTheme(({ children }) => {
   const intl = useIntl();
   const { readOnlyMode } = useSelector(state => state.app);
   const dispatch = useDispatch();
-  const { myOrgUid, organizations } = useSelector(
-    store => store.climateWarehouse,
-  );
+  const { myOrgUid } = useSelector(store => store.climateWarehouse);
+
   const myOrgIsNotCreated = !myOrgUid;
-  const myOrgIsCreatedButNotSubscribed =
-    !myOrgIsNotCreated && organizations && !organizations[myOrgUid].subscribed;
+  const myOrgIsCreatedButNotSubscribed = myOrgUid === 'pending';
 
   useEffect(() => {
     let intervalId;
@@ -191,7 +190,7 @@ const LeftNav = withTheme(({ children }) => {
               </MenuItem>
             )}
             {myOrgIsCreatedButNotSubscribed && (
-              <MenuItem to={window.location}>
+              <MenuItem to={window.location} disabled>
                 <FormattedMessage id="creating-organization" />
               </MenuItem>
             )}

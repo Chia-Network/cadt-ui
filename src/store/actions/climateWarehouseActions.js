@@ -159,6 +159,8 @@ export const getOrganizationData = () => {
 
         dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
 
+        console.log('api results:', results);
+
         const myOrgUid = getMyOrgUid(results);
         dispatch(setMyOrgUid(myOrgUid));
 
