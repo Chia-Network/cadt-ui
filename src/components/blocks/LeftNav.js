@@ -15,7 +15,7 @@ import { CreateOrgForm } from '../forms';
 import { modalTypeEnum } from '.';
 import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
 import { OrganizationIcon } from '../icons';
-import { getHomeOrg } from '../../store/view';
+import { getHomeOrg } from '../../store/view/organization.view';
 
 const Container = styled('div')`
   display: flex;
