@@ -379,5 +379,6 @@
   "import-by-orgUid": "Import by Id",
   "add-details": "Add details",
   "ui-data-model-mismatch": "There is a mismatch between the UI and the data model.",
-  "comment": "Comment"
+  "comment": "Comment",
+  "organization-information": "Organization Information"
 }
