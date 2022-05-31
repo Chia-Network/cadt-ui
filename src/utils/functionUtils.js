@@ -19,7 +19,10 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
     _.includes(dataType, 'unitQuantity') ||
     _.includes(dataType, 'unitCount')
   ) {
-    if (_.isEmpty(info?.changes) && info?.original) {
+    if (
+      _.isEmpty(info?.changes) &&
+      (info?.original || _.isNull(info?.original))
+    ) {
       //New Staging Detail View Form (Number)
       return (
         <Body color={changeColor(dataType, 'INSERT')}>
@@ -28,7 +31,7 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
       );
     } else if (
       (!_.isEmpty(info?.changes[0]) && info?.original) ||
-      (info?.changes[0] && _.isNull(info.original)) ||
+      (info?.changes[0] && _.isNull(info?.original)) ||
       (_.isNull(info?.changes[0]) && info?.original)
     ) {
       //Staging Detail View Changes (Number)
@@ -38,9 +41,16 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
             {info?.changes[0] || 0}
           </Body>
           <Body color={changeColor(dataType, 'DELETE')}>
-            {info?.original || 0}
+            {info?.original}
           </Body>
         </>
+      );
+    } else if (_.isNull(info?.changes[0]) && _.isNull(info?.original)) {
+      //Staging Detail View Changes (Number)
+      return (
+        <Body color={changeColor(dataType, 'DELETE')}>
+          {info?.original || 0}
+        </Body>
       );
     } else if (_.isEmpty(info?.changes[0]) && info?.original) {
       //Staging Detail View No Changes (Number)
