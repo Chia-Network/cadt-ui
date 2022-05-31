@@ -20,7 +20,6 @@ import {
   cleanObjectFromEmptyFieldsOrArrays,
   formatAPIData,
 } from '../../utils/formatData';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -30,8 +29,7 @@ const StyledFormContainer = styled('div')`
 `;
 
 const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
+  const { myOrgUid } = useSelector(store => store.climateWarehouse);
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
   const [unit, setUnit] = useState([]);
@@ -47,7 +45,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
   );
 
   useEffect(() => {
-    if (myOrgUid !== 'none') {
+    if (myOrgUid) {
       dispatch(getMyProjects(myOrgUid));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
       dispatch(getIssuances());
