@@ -361,6 +361,7 @@
   "import-by-orgUid": "IDによるインポート",
   "add-details": "詳細を追加",
   "organization-information": "組織情報",
-  "governance-data-failed": "ガバナンスデータを読み込めませんでした。管理者に連絡してください。"
+  "governance-data-failed": "ガバナンスデータを読み込めませんでした。管理者に連絡してください。",
+  "ui-data-model-mismatch": "UIとデータモデルの間に不一致があります。",
+  "comment": "コメント"
 }
-

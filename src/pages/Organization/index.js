@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import QRCode from 'qrcode.react';
@@ -64,8 +63,14 @@ const Organization = () => {
   const intl = useIntl();
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = organizations && getMyOrgUid(organizations);
+  const { myOrgUid, organizations } = useSelector(
+    store => store.climateWarehouse,
+  );
+
+  if (!organizations || !myOrgUid) {
+    return null;
+  }
+
   const myOrganization = organizations && organizations[myOrgUid];
 
   const isLogoPngType = myOrganization?.icon?.includes('data:image/png;base64');
@@ -77,10 +82,6 @@ const Organization = () => {
   const createMarkup = icon => {
     return { __html: icon };
   };
-
-  if (!organizations || myOrgUid === 'none') {
-    return null;
-  }
 
   return (
     <StyledOrganizationContainer>
