@@ -25,12 +25,16 @@ const initialState = {
   stagingPageCount: null,
   totalProjectsPages: null,
   totalUnitsPages: null,
+  myOrgUid: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case climateWarehouseActions.GET_ORGANIZATIONS:
       return u({ organizations: action.payload }, state);
+
+    case climateWarehouseActions.SET_MY_ORG_UID:
+      return u({ myOrgUid: action.payload }, state);
 
     case climateWarehouseActions.GET_PICKLISTS:
       return u({ pickLists: action.payload }, state);

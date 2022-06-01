@@ -84,6 +84,16 @@ const AuditItemModal = ({ onClose, auditItem }) => {
                   <Body>{auditItem.rootHash}</Body>
                 </StyledTextContainer>
               </div>
+              <div>
+                <div>
+                  <Body size="Bold" color="#40A9FF">
+                    <FormattedMessage id="comment" />
+                  </Body>
+                </div>
+                <StyledTextContainer>
+                  <Body>{auditItem.comment}</Body>
+                </StyledTextContainer>
+              </div>
             </StyledContainer>
             <StyledDivider />
             <StyledContainer>

@@ -18,6 +18,7 @@ import {
 import {
   activateProgressIndicator,
   deactivateProgressIndicator,
+  lockApp,
   NotificationMessageTypeEnum,
   setConnectionCheck,
   setGlobalErrorMessage,
@@ -25,6 +26,7 @@ import {
   setReadOnly,
 } from './app';
 import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 export const actions = keyMirror(
   'GET_RATINGS',
@@ -50,6 +52,7 @@ export const actions = keyMirror(
   'GET_STAGING_PROJECTS_PAGES',
   'GET_STAGING_UNITS_PAGES',
   'GET_MY_PROJECTS',
+  'SET_MY_ORG_UID',
 );
 
 const getClimateWarehouseTable = (
@@ -136,6 +139,11 @@ export const mockGetStagingDataResponse = {
   ),
 };
 
+export const setMyOrgUid = uid => ({
+  type: actions.SET_MY_ORG_UID,
+  payload: uid,
+});
+
 export const getOrganizationData = () => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -151,6 +159,9 @@ export const getOrganizationData = () => {
         const results = await response.json();
 
         dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
+
+        const myOrgUid = getMyOrgUid(results);
+        dispatch(setMyOrgUid(myOrgUid));
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
@@ -314,6 +325,13 @@ export const getPickLists = () => {
         });
       } else {
         dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'governance-data-failed',
+          ),
+        );
+        dispatch(lockApp(true));
       }
     };
 
@@ -323,6 +341,7 @@ export const getPickLists = () => {
       );
 
       if (response.ok) {
+        dispatch(lockApp(false));
         dispatch(setConnectionCheck(true));
 
         const results = await response.json();

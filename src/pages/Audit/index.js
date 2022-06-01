@@ -85,6 +85,7 @@ const StyledSortButtonContainer = styled.div`
 
 const StyledIconContainer = styled('div')`
   color: #3b8ee0;
+  cursor: zoom-in;
 `;
 
 const Audit = () => {
@@ -232,6 +233,11 @@ const Audit = () => {
                     <FormattedMessage id="root-hash" />
                   </Body>
                 </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="comment" />
+                  </Body>
+                </StyledTh>
               </StyledTr>
             </thead>
             <tbody>
@@ -262,6 +268,9 @@ const Audit = () => {
                     </StyledTd>
                     <StyledTd>
                       <Body>{auditItem.rootHash}</Body>
+                    </StyledTd>
+                    <StyledTd>
+                      <Body>{auditItem.comment}</Body>
                     </StyledTd>
                   </StyledTr>
                 ))}
