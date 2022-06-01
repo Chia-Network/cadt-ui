@@ -11,11 +11,11 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { CreateOrgForm } from '../forms';
 import { modalTypeEnum } from '.';
 import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
 import { OrganizationIcon } from '../icons';
+import { getHomeOrg } from '../../store/view/organization.view';
 
 const Container = styled('div')`
   display: flex;
@@ -41,7 +41,8 @@ const MenuItem = styled(Link)`
   ${props =>
     !props.selected && !props.disabled && `:hover {background: #40a9ff;}`};
   padding: 0.5625rem 0rem 0.75rem 4.25rem;
-  ${props => (props.disabled ? 'color: #BFBFBF;' : 'color: white;')}
+  ${props =>
+    props.disabled ? 'color: #BFBFBF; pointer-events: none;' : 'color: white;'}
   font-family: ${props => props.theme.typography.primary.bold};
   cursor: pointer;
   display: block;
@@ -73,22 +74,20 @@ const LeftNav = withTheme(({ children }) => {
   const intl = useIntl();
   const { readOnlyMode } = useSelector(state => state.app);
   const dispatch = useDispatch();
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
-  const myOrgIsNotCreated = myOrgUid === 'none';
-  const myOrgIsCreatedButNotSubscribed =
-    !myOrgIsNotCreated && organizations && !organizations[myOrgUid].subscribed;
+  const [myOrgUid, isMyOrgPending] = useSelector(store => getHomeOrg(store));
+
+  const myOrgIsNotCreated = !myOrgUid;
 
   useEffect(() => {
     let intervalId;
-    if (!createOrgIsVisible && myOrgIsCreatedButNotSubscribed) {
+    if (!createOrgIsVisible && isMyOrgPending) {
       intervalId = setInterval(
         () => dispatch(getOrganizationData()),
         30 * 1000,
       );
     }
     return () => clearTimeout(intervalId);
-  }, [myOrgIsNotCreated, myOrgIsCreatedButNotSubscribed, createOrgIsVisible]);
+  }, [myOrgIsNotCreated, isMyOrgPending, createOrgIsVisible]);
 
   const isUnitsPage = location.pathname.includes('/units');
   const isProjectsPage = location.pathname.includes('/projects');
@@ -128,7 +127,7 @@ const LeftNav = withTheme(({ children }) => {
                 <FormattedMessage id="registry" />
               </ButtonText>
             </StyledTitleContainer>
-            {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (
+            {!myOrgIsNotCreated && !isMyOrgPending && (
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
@@ -166,17 +165,13 @@ const LeftNav = withTheme(({ children }) => {
             )}
 
             <StyledTitleContainer>
-              {myOrgIsCreatedButNotSubscribed && (
-                <CircularProgress size={20} thickness={5} />
-              )}
-              {!myOrgIsCreatedButNotSubscribed && (
-                <OrganizationIcon height={20} width={20} />
-              )}
+              {isMyOrgPending && <CircularProgress size={20} thickness={5} />}
+              {!isMyOrgPending && <OrganizationIcon height={20} width={20} />}
               <ButtonText>
                 <FormattedMessage id="organization" />
               </ButtonText>
             </StyledTitleContainer>
-            {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (
+            {!myOrgIsNotCreated && !isMyOrgPending && (
               <MenuItem selected={isOrganizationPage} to="/organization">
                 <FormattedMessage id="my-organization" />
               </MenuItem>
@@ -190,8 +185,8 @@ const LeftNav = withTheme(({ children }) => {
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
-            {myOrgIsCreatedButNotSubscribed && (
-              <MenuItem to={window.location}>
+            {isMyOrgPending && (
+              <MenuItem to={window.location} disabled>
                 <FormattedMessage id="creating-organization" />
               </MenuItem>
             )}

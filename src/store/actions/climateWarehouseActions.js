@@ -24,6 +24,8 @@ import {
   setNotificationMessage,
   setReadOnly,
 } from './app';
+import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 export const actions = keyMirror(
   'GET_RATINGS',
@@ -49,6 +51,7 @@ export const actions = keyMirror(
   'GET_STAGING_PROJECTS_PAGES',
   'GET_STAGING_UNITS_PAGES',
   'GET_MY_PROJECTS',
+  'SET_MY_ORG_UID',
 );
 
 const getClimateWarehouseTable = (
@@ -135,6 +138,11 @@ export const mockGetStagingDataResponse = {
   ),
 };
 
+export const setMyOrgUid = uid => ({
+  type: actions.SET_MY_ORG_UID,
+  payload: uid,
+});
+
 export const getOrganizationData = () => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -148,6 +156,11 @@ export const getOrganizationData = () => {
         dispatch(setGlobalErrorMessage(null));
         dispatch(setConnectionCheck(true));
         const results = await response.json();
+
+        dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
+
+        const myOrgUid = getMyOrgUid(results);
+        dispatch(setMyOrgUid(myOrgUid));
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
@@ -456,9 +469,18 @@ export const getPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
+          if (
+            !areUiAndDataModelMajorVersionsAMatch(
+              response.headers.get('x-datamodel-version'),
+            )
+          ) {
+            dispatch(
+              setNotificationMessage(
+                NotificationMessageTypeEnum.error,
+                'ui-data-model-mismatch',
+              ),
+            );
+          }
 
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
@@ -519,9 +541,6 @@ export const getStagingPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
           const results = await response.json();

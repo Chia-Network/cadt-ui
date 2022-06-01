@@ -359,5 +359,8 @@
   "conflicts": "競合",
   "no-conflict-data": "競合データは見つかりませんでした.",
   "import-by-orgUid": "IDによるインポート",
-  "add-details": "詳細を追加"
+  "add-details": "詳細を追加",
+  "ui-data-model-mismatch": "UIとデータモデルの間に不一致があります。",
+  "comment": "コメント",
+  "organization-information": "組織情報"
 }

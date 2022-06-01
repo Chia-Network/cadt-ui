@@ -9,5 +9,5 @@ export const organizationSchema = yup.object().shape({
       message: 'Add valid image URL',
       test: value => validateUrl(value),
     })
-    .required('Required Field'),
+    .optional(),
 });
