@@ -54,13 +54,15 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'estimation-period-start-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}crediting-period-start-date`}
                 variant={
                   errorEstimationMessage?.creditingPeriodStart &&
                   DateVariantEnum.error
@@ -87,13 +89,15 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'estimation-period-end-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}crediting-period-end-date`}
                 variant={
                   errorEstimationMessage?.creditingPeriodEnd &&
                   DateVariantEnum.error
@@ -120,7 +124,8 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'estimation-unit-count-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>

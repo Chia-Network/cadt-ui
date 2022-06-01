@@ -63,6 +63,7 @@ const CreateProjectIssuancesForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}start-date`}
                 variant={
                   errorIssuanceMessage?.startDate && DateVariantEnum.error
                 }
@@ -97,6 +98,7 @@ const CreateProjectIssuancesForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}end-date`}
                 variant={errorIssuanceMessage?.endDate && DateVariantEnum.error}
                 size="large"
                 dateValue={value.endDate}
@@ -171,6 +173,7 @@ const CreateProjectIssuancesForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}verification-report-date`}
                 variant={
                   errorIssuanceMessage?.verificationReportDate &&
                   DateVariantEnum.error

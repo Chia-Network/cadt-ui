@@ -188,6 +188,7 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}validity-period-start-date`}
                 variant={
                   errorLabelMessage?.validityPeriodStartDate &&
                   DateVariantEnum.error
@@ -223,6 +224,7 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}validity-period-end-date`}
                 variant={
                   errorLabelMessage?.validityPeriodEndDate &&
                   DateVariantEnum.error
@@ -258,6 +260,7 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}crediting-period-start-date`}
                 variant={
                   errorLabelMessage?.creditingPeriodStartDate &&
                   DateVariantEnum.error
@@ -293,6 +296,7 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
+                key={value?.id && `${value.id}crediting-period-end-date`}
                 variant={
                   errorLabelMessage?.creditingPeriodEndDate &&
                   DateVariantEnum.error
