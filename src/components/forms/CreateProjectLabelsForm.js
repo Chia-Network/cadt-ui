@@ -32,7 +32,7 @@ import {
 import { labelSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
 
-const CreateProjectLabelsForm = ({ value, onChange }) => {
+const CreateProjectLabelsForm = ({ value, onChange, key }) => {
   const { validateForm, formType } = useSelector(state => state.app);
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
@@ -188,7 +188,7 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                key={value?.id && `${value.id}validity-period-start-date`}
+                key={`${key}validity-period-start-date`}
                 variant={
                   errorLabelMessage?.validityPeriodStartDate &&
                   DateVariantEnum.error
@@ -224,7 +224,6 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                key={value?.id && `${value.id}validity-period-end-date`}
                 variant={
                   errorLabelMessage?.validityPeriodEndDate &&
                   DateVariantEnum.error
@@ -260,7 +259,6 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                key={value?.id && `${value.id}crediting-period-start-date`}
                 variant={
                   errorLabelMessage?.creditingPeriodStartDate &&
                   DateVariantEnum.error
@@ -296,7 +294,6 @@ const CreateProjectLabelsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                key={value?.id && `${value.id}crediting-period-end-date`}
                 variant={
                   errorLabelMessage?.creditingPeriodEndDate &&
                   DateVariantEnum.error

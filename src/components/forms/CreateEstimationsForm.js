@@ -62,7 +62,6 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                key={value?.id && `${value.id}crediting-period-start-date`}
                 variant={
                   errorEstimationMessage?.creditingPeriodStart &&
                   DateVariantEnum.error
@@ -97,7 +96,6 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                key={value?.id && `${value.id}crediting-period-end-date`}
                 variant={
                   errorEstimationMessage?.creditingPeriodEnd &&
                   DateVariantEnum.error
