@@ -20,12 +20,16 @@ const initialState = {
   validateForm: false,
   formType: null,
   refresh: false,
+  isAppLocked: false,
 };
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case appActions.REFRESH_APP:
       return u({ refresh: action.payload }, state);
+
+    case appActions.LOCK_APP:
+      return u({ isAppLocked: action.payload }, state);
 
     case appActions.SET_READ_ONLY:
       return u({ readOnlyMode: action.payload }, state);
