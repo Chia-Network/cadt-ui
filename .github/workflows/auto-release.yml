@@ -36,6 +36,7 @@ jobs:
             rm -f CHANGELOG.md
             npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0
             git add CHANGELOG.md
+            sed -i -e '/<s>/d' CHANGELOG.md
             git config --global user.name 'ChiaAutomation'
             git config --global user.email 'automation@chia.net'
             git commit -m "Updating changelog for $version"
