@@ -1,6 +1,6 @@
 {
   "name": "climate-warehouse",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
   "homepage": "./",
@@ -46,7 +46,7 @@
     "dist": "npm run build && build",
     "requirements-check": "node check_node_version.js",
     "postinstall": "npm run requirements-check && install-app-deps",
-    "release": "./node_modules/.bin/standard-version && git push --tags",
+    "release": "",
     "prepare": "husky install",
     "electron:package:mac": "npm run build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "npm run build && electron-builder -w -c.extraMetadata.main=build/electron.js",

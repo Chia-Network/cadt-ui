@@ -7,10 +7,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import {
-  IndeterminateProgressOverlay,
-  Dashboard,
-} from '../components/';
+import { IndeterminateProgressOverlay, Dashboard } from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
 import { signOut } from '../store/actions/app';
@@ -32,6 +29,7 @@ const AppNavigator = () => {
     pendingError,
     notification,
     apiKey,
+    isAppLocked,
   } = useSelector(store => store.app);
 
   useEffect(() => {
@@ -47,8 +45,17 @@ const AppNavigator = () => {
   return (
     <AppContainer>
       {showProgressOverlay && <IndeterminateProgressOverlay />}
+      {isAppLocked && (
+        <Modal
+          informationType="error"
+          modalType={modalTypeEnum.information}
+          title={intl.formatMessage({ id: 'something-went-wrong' })}
+          body={intl.formatMessage({ id: 'governance-data-failed' })}
+          hideButtons
+        />
+      )}
       {!connectionCheck && (
-        <Modal        
+        <Modal
           informationType="error"
           modalType={modalTypeEnum.information}
           label="Try Again"

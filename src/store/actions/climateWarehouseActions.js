@@ -18,6 +18,7 @@ import {
 import {
   activateProgressIndicator,
   deactivateProgressIndicator,
+  lockApp,
   NotificationMessageTypeEnum,
   setConnectionCheck,
   setGlobalErrorMessage,
@@ -324,6 +325,13 @@ export const getPickLists = () => {
         });
       } else {
         dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'governance-data-failed',
+          ),
+        );
+        dispatch(lockApp(true));
       }
     };
 
@@ -333,6 +341,7 @@ export const getPickLists = () => {
       );
 
       if (response.ok) {
+        dispatch(lockApp(false));
         dispatch(setConnectionCheck(true));
 
         const results = await response.json();

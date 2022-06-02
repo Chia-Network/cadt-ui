@@ -22,11 +22,17 @@ export const actions = keyMirror(
   'SET_VALIDATION',
   'SET_FORM',
   'REFRESH_APP',
+  'LOCK_APP',
 );
 
 export const refreshApp = render => ({
   type: actions.REFRESH_APP,
   payload: render,
+});
+
+export const lockApp = isLocked => ({
+  type: actions.LOCK_APP,
+  payload: isLocked,
 });
 
 export const setReadOnly = isReadOnly => ({

@@ -1,5 +1,5 @@
 export const getHomeOrg = store => {
   const { myOrgUid } = store.climateWarehouse;
-  const isMyOrgPending = myOrgUid === 'pending';
+  const isMyOrgPending = myOrgUid === 'PENDING';
   return [myOrgUid, isMyOrgPending];
 };
