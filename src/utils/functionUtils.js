@@ -14,10 +14,11 @@ export const handleClickLink = link => {
 
 const stagingDetailsViewInfo = (info, dataType, changeColor) => {
   if (
-    _.isNumber(info?.original) ||
-    _.isNumber(info?.changes[0]) ||
-    _.includes(dataType, 'unitQuantity') ||
-    _.includes(dataType, 'unitCount')
+    (_.isNumber(info?.original) ||
+      _.isNumber(info?.changes[0]) ||
+      _.includes(dataType, 'unitQuantity') ||
+      _.includes(dataType, 'unitCount')) &&
+    !_.includes(dataType, 'vintageYear')
   ) {
     if (
       _.isEmpty(info?.changes) &&
@@ -29,8 +30,11 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
           {info?.original || 0}
         </Body>
       );
+    } else if (_.isEmpty(info?.changes[0]) && info?.original) {
+      //Staging Detail View No Changes (Number)
+      return <Body>{info?.original || 0}</Body>;
     } else if (
-      (!_.isEmpty(info?.changes[0]) && info?.original) ||
+      (!_.isEmpty(info?.changes) && info?.original) ||
       (info?.changes[0] && _.isNull(info?.original)) ||
       (_.isNull(info?.changes[0]) && info?.original)
     ) {
@@ -40,9 +44,7 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
           <Body color={changeColor(dataType, 'INSERT')}>
             {info?.changes[0] || 0}
           </Body>
-          <Body color={changeColor(dataType, 'DELETE')}>
-            {info?.original}
-          </Body>
+          <Body color={changeColor(dataType, 'DELETE')}>{info?.original}</Body>
         </>
       );
     } else if (_.isNull(info?.changes[0]) && _.isNull(info?.original)) {
@@ -52,9 +54,6 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
           {info?.original || 0}
         </Body>
       );
-    } else if (_.isEmpty(info?.changes[0]) && info?.original) {
-      //Staging Detail View No Changes (Number)
-      return <Body>{info?.original || 0}</Body>;
     } else {
       return <Body>{0}</Body>;
     }
@@ -98,6 +97,35 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
     }
   } else if (_.isNull(info?.original) && _.isNull(info?.changes[0])) {
     return <Body>---</Body>;
+  } else if (
+    info?.changes &&
+    info?.changes[0] &&
+    info?.changes[0][dataType] &&
+    _.isNull(info?.original) 
+  ) {
+    return (
+      <Body color={changeColor(dataType, 'INSERT')}>
+        {info?.changes[0][dataType] || info?.original[0][dataType]}
+      </Body>
+    );
+  } else if (
+    info?.changes &&
+    info?.changes[0] &&
+    info?.changes[0][dataType] &&
+    info?.original &&
+    info?.original[0] &&
+    info?.original[0][dataType]
+  ) {
+    return (
+      <>
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {info?.changes[0][dataType]}
+        </Body>
+        <Body color={changeColor(dataType, 'DELETE')}>
+          {info?.original[0][dataType]}
+        </Body>
+      </>
+    );
   }
 };
 
@@ -222,7 +250,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
   }
 
   if (type === 'issuanceStagingData') {
-    return stagingDetailsViewInfo(detailData[dataType], dataType, changeColor);
+    return stagingDetailsViewInfo(detailData, dataType, changeColor);
   }
 
   if (type === 'stagingData') {
