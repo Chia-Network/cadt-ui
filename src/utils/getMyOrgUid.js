@@ -1,6 +1,6 @@
 export const getMyOrgUid = organizations => {
-  if (organizations?.pending) {
-    return 'pending';
+  if (organizations?.PENDING) {
+    return 'PENDING';
   }
 
   for (const property in organizations) {

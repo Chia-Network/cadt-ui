@@ -32,7 +32,7 @@ import {
 import { labelSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
 
-const CreateProjectLabelsForm = ({ value, onChange, key }) => {
+const CreateProjectLabelsForm = ({ value, onChange }) => {
   const { validateForm, formType } = useSelector(state => state.app);
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
@@ -188,7 +188,6 @@ const CreateProjectLabelsForm = ({ value, onChange, key }) => {
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                key={`${key}validity-period-start-date`}
                 variant={
                   errorLabelMessage?.validityPeriodStartDate &&
                   DateVariantEnum.error

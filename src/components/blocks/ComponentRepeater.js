@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { v4 as generateUUID } from '@lukeed/uuid';
 import styled from 'styled-components';
+import { v4 as generateUUID } from '@lukeed/uuid';
 import _ from 'lodash';
 
 import { Body } from '../typography';
@@ -54,7 +54,12 @@ const ComponentRepeater = ({
         newValues.splice(index, 1);
         updateValues(newValues);
       };
-      const key = value?.id || generateUUID();
+
+      if (!value?.id && !value.tempId) {
+        value.tempId = generateUUID();
+      }
+      const key = value?.id || value.tempId;
+
       return (
         <StyledRepeatedComponentContainer key={key}>
           {component && React.cloneElement(component, { value, onChange })}
