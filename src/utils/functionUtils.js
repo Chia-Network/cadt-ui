@@ -12,6 +12,37 @@ export const handleClickLink = link => {
   }
 };
 
+const stagingIssuanceViewInfo = (info, dataType, changeColor) => {
+   if (
+     _.isEmpty(info[dataType]?.changes) &&
+     info[dataType]?.original
+   ) {
+     return (
+       <Body color={changeColor(dataType, 'INSERT')}>
+         {info[dataType]?.original}
+       </Body>
+     );
+   } else if (
+     info[dataType]?.changes[0] &&
+     info[dataType]?.original 
+   ) {
+     return (
+       <>
+         <Body color={changeColor(dataType, 'INSERT')}>
+           {info[dataType]?.changes[0]}
+         </Body>
+         <Body color={changeColor(dataType, 'DELETE')}>
+           {info[dataType]?.original}
+         </Body>
+       </>
+     );
+   }else if(info[dataType]?.changes[0] === '' &&
+     info[dataType]?.original){
+       return <Body>{info[dataType]?.original}</Body>;
+     }
+
+}
+
 const stagingDetailsViewInfo = (info, dataType, changeColor) => {
   if (dataType === 'creditingPeriodStart') {
     if (!_.isNull(info?.changes[0])) {
@@ -139,35 +170,6 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
     }
   } else if (_.isNull(info?.original) && _.isNull(info?.changes[0])) {
     return <Body>---</Body>;
-  } else if (
-    info?.changes &&
-    info?.changes[0] &&
-    info?.changes[0][dataType] &&
-    _.isNull(info?.original)
-  ) {
-    return (
-      <Body color={changeColor(dataType, 'INSERT')}>
-        {info?.changes[0][dataType] || info?.original[0][dataType]}
-      </Body>
-    );
-  } else if (
-    info?.changes &&
-    info?.changes[0] &&
-    info?.changes[0][dataType] &&
-    info?.original &&
-    info?.original[0] &&
-    info?.original[0][dataType]
-  ) {
-    return (
-      <>
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {info?.changes[0][dataType]}
-        </Body>
-        <Body color={changeColor(dataType, 'DELETE')}>
-          {info?.original[0][dataType]}
-        </Body>
-      </>
-    );
   }
 };
 
@@ -292,7 +294,7 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
   }
 
   if (type === 'issuanceStagingData') {
-    return stagingDetailsViewInfo(detailData, dataType, changeColor);
+    return stagingIssuanceViewInfo(detailData, dataType, changeColor);
   }
 
   if (type === 'stagingData') {
