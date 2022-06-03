@@ -13,35 +13,27 @@ export const handleClickLink = link => {
 };
 
 const stagingIssuanceViewInfo = (info, dataType, changeColor) => {
-   if (
-     _.isEmpty(info[dataType]?.changes) &&
-     info[dataType]?.original
-   ) {
-     return (
-       <Body color={changeColor(dataType, 'INSERT')}>
-         {info[dataType]?.original}
-       </Body>
-     );
-   } else if (
-     info[dataType]?.changes[0] &&
-     info[dataType]?.original 
-   ) {
-     return (
-       <>
-         <Body color={changeColor(dataType, 'INSERT')}>
-           {info[dataType]?.changes[0]}
-         </Body>
-         <Body color={changeColor(dataType, 'DELETE')}>
-           {info[dataType]?.original}
-         </Body>
-       </>
-     );
-   }else if(info[dataType]?.changes[0] === '' &&
-     info[dataType]?.original){
-       return <Body>{info[dataType]?.original}</Body>;
-     }
-
-}
+  if (_.isEmpty(info[dataType]?.changes) && info[dataType]?.original) {
+    return (
+      <Body color={changeColor(dataType, 'INSERT')}>
+        {info[dataType]?.original}
+      </Body>
+    );
+  } else if (info[dataType]?.changes[0] && info[dataType]?.original) {
+    return (
+      <>
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {info[dataType]?.changes[0]}
+        </Body>
+        <Body color={changeColor(dataType, 'DELETE')}>
+          {info[dataType]?.original}
+        </Body>
+      </>
+    );
+  } else if (info[dataType]?.changes[0] === '' && info[dataType]?.original) {
+    return <Body>{info[dataType]?.original}</Body>;
+  }
+};
 
 const stagingDetailsViewInfo = (info, dataType, changeColor) => {
   if (dataType === 'creditingPeriodStart') {
@@ -184,13 +176,17 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
       //New Staging Detail View Form
       return (
         <Body color={changeColor(dataType, 'INSERT')}>
-          <a
-            href={handleClickLink(info?.original)}
-            target="_blank"
-            rel="noreferrer noopener">
-            {info?.original}
-            {info?.original && <LinkIcon height="15" width="30" />}
-          </a>
+          {info?.original ? (
+            <a
+              href={handleClickLink(info?.original)}
+              target="_blank"
+              rel="noreferrer noopener">
+              {info?.original}
+              {info?.original && <LinkIcon height="15" width="30" />}
+            </a>
+          ) : (
+            '---'
+          )}
         </Body>
       );
     } else if (_.isNull(info?.changes[0]) && info?.original) {
@@ -276,6 +272,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
         </>
       );
     }
+  } else {
+    return <Body>---</Body>;
   }
 };
 
