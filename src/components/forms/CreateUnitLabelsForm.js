@@ -62,7 +62,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
         setSelectedWayToAddLabel(wayToAddLabelOptions[0]);
       }
     }
-  }, [selectedWayToAddLabel, value]);
+  }, []);
 
   const areFormFieldsVisible =
     selectedWayToAddLabel?.value === 1 ||
