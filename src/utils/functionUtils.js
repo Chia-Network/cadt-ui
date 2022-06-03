@@ -13,12 +13,48 @@ export const handleClickLink = link => {
 };
 
 const stagingDetailsViewInfo = (info, dataType, changeColor) => {
+  if (dataType === 'creditingPeriodStart') {
+    if (!_.isNull(info?.changes[0])) {
+      localStorage.setItem('addUnitCount', true);
+    }
+  } else if (dataType === 'label') {
+    if (_.isNull(info?.changes[0])) {
+      localStorage.setItem('removeUnitQuantity', true);
+    } else if (info?.changes[0]) {
+      localStorage.setItem('addUnitQuantity', true);
+    }
+  }
+
   if (
-    (_.isNumber(info?.original) ||
-      _.isNumber(info?.changes[0]) ||
-      _.includes(dataType, 'unitQuantity') ||
-      _.includes(dataType, 'unitCount')) &&
-    !_.includes(dataType, 'vintageYear')
+    dataType === 'unitCount' &&
+    localStorage.getItem('addUnitCount') &&
+    _.isNull(info?.changes[0]) &&
+    _.isNull(info?.original)
+  ) {
+    localStorage.removeItem('addUnitCount');
+    return <Body color={changeColor(dataType, 'INSERT')}>{0}</Body>;
+  } else if (
+    dataType === 'unitQuantity' &&
+    localStorage.getItem('removeUnitQuantity')
+  ) {
+    localStorage.removeItem('removeUnitQuantity');
+    return (
+      <Body color={changeColor(dataType, 'DELETE')}>{info?.original || 0}</Body>
+    );
+  } else if (
+    localStorage.getItem('addUnitQuantity') &&
+    dataType === 'unitQuantity' &&
+    _.isEmpty(info?.changes)
+  ) {
+    localStorage.removeItem('addUnitQuantity');
+    return <Body color={changeColor(dataType, 'INSERT')}>{0}</Body>;
+  }
+
+  if (
+    _.isNumber(info?.original) ||
+    _.isNumber(info?.changes[0]) ||
+    _.includes(dataType, 'unitQuantity') ||
+    _.includes(dataType, 'unitCount')
   ) {
     if (
       _.isEmpty(info?.changes) &&
@@ -30,13 +66,16 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
           {info?.original || 0}
         </Body>
       );
-    } else if (_.isEmpty(info?.changes[0]) && info?.original) {
+    } else if (
+      info?.changes[0] === '' &&
+      !_.isNull(info?.changes[0]) &&
+      info?.original
+    ) {
       //Staging Detail View No Changes (Number)
       return <Body>{info?.original || 0}</Body>;
     } else if (
-      (!_.isEmpty(info?.changes) && info?.original) ||
-      (info?.changes[0] && _.isNull(info?.original)) ||
-      (_.isNull(info?.changes[0]) && info?.original)
+      (info?.changes[0] && info?.original) ||
+      (info?.changes[0] && _.isNull(info?.original))
     ) {
       //Staging Detail View Changes (Number)
       return (
@@ -47,7 +86,10 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
           <Body color={changeColor(dataType, 'DELETE')}>{info?.original}</Body>
         </>
       );
-    } else if (_.isNull(info?.changes[0]) && _.isNull(info?.original)) {
+    } else if (
+      _.isNull(info?.changes[0] && _.isNull(info?.original)) ||
+      info?.original
+    ) {
       //Staging Detail View Changes (Number)
       return (
         <Body color={changeColor(dataType, 'DELETE')}>
@@ -101,7 +143,7 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
     info?.changes &&
     info?.changes[0] &&
     info?.changes[0][dataType] &&
-    _.isNull(info?.original) 
+    _.isNull(info?.original)
   ) {
     return (
       <Body color={changeColor(dataType, 'INSERT')}>
