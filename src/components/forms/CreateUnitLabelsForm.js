@@ -192,7 +192,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'way-to-add-label',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -229,7 +230,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'select-existing-label',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -267,7 +269,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'select-label-by-project',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -309,7 +312,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-label-description',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -347,7 +351,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-label-type-description',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -388,7 +393,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-label-link-description',
-                        })}>
+                        })}
+                      >
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -427,14 +433,14 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-validity-period-start-date-description',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
-                    key={value.validityPeriodStartDate}
                     variant={
                       errorLabelMessage?.validityPeriodStartDate &&
                       DateVariantEnum.error
@@ -462,14 +468,14 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-validity-period-end-date-description',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
-                    key={value.validityPeriodEndDate}
                     variant={
                       errorLabelMessage?.validityPeriodEndDate &&
                       DateVariantEnum.error
@@ -497,14 +503,14 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-crediting-period-start-date-description',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
-                    key={value.creditingPeriodStartDate}
                     variant={
                       errorLabelMessage?.creditingPeriodStartDate &&
                       DateVariantEnum.error
@@ -532,14 +538,14 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-crediting-period-end-date-description',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
                   <DateSelect
-                    key={value.creditingPeriodEndDate}
                     variant={
                       errorLabelMessage?.creditingPeriodEndDate &&
                       DateVariantEnum.error
@@ -567,7 +573,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-unit-quantity-description',
-                      })}>
+                      })}
+                    >
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
