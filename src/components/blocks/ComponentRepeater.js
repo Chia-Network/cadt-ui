@@ -55,7 +55,7 @@ const ComponentRepeater = ({
         updateValues(newValues);
       };
 
-      if (!value?.id && !value.tempId) {
+      if (!value?.id && !value?.tempId) {
         value.tempId = generateUUID();
       }
       const key = value?.id || value.tempId;

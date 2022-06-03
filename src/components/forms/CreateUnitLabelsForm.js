@@ -48,21 +48,23 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
   const [selectedLabelOption, setSelectedLabelOption] = useState(null);
   const wasLabelExisting = useRef(Boolean(value.id));
 
-  const areFieldsDisabled = useMemo(
-    () => (selectedWayToAddLabel?.value !== 1 ? true : false),
-    [selectedWayToAddLabel],
-  );
-
   useEffect(() => {
     if (
-      !_.isEmpty(_.filter(Object.values(value), value => value)) &&
+      !_.isEmpty(
+        _.filter(Object.values({ ...value, tempId: '' }), value => value),
+      ) &&
       !selectedWayToAddLabel
     ) {
       if (!value.id) {
         setSelectedWayToAddLabel(wayToAddLabelOptions[0]);
       }
     }
-  }, [selectedWayToAddLabel, value]);
+  }, []);
+
+  const areFieldsDisabled = useMemo(
+    () => (selectedWayToAddLabel?.value !== 1 ? true : false),
+    [selectedWayToAddLabel],
+  );
 
   const areFormFieldsVisible =
     selectedWayToAddLabel?.value === 1 ||
@@ -104,6 +106,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
       labelLink: '',
       warehouseProjectId: null,
       id: null,
+      tempId: value?.tempId || null,
     });
     setSelectedProjectLabelOption(null);
     setSelectedLabelOption(null);
