@@ -37,7 +37,7 @@ import { labelSchema } from '../../store/validations';
 import { setValidationErrors } from '../../utils/validationUtils';
 
 const CreateUnitLabelsForm = ({ value, onChange }) => {
-  const { labels, projects } = useSelector(store => store.climateWarehouse);
+  const { labels, myProjects } = useSelector(store => store.climateWarehouse);
   const { validateForm, formType } = useSelector(state => state.app);
   const [errorLabelMessage, setErrorLabelMessage] = useState({});
   const intl = useIntl();
@@ -113,8 +113,8 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
   };
 
   const projectsSelectOptions = useMemo(() => {
-    if (projects?.length > 0) {
-      return projects.reduce((accumulator, project) => {
+    if (myProjects?.length > 0) {
+      return myProjects.reduce((accumulator, project) => {
         if (project?.labels?.length > 0) {
           const optionsForTheCurrentProject = project.labels.map(label => ({
             value: label.id,
@@ -128,7 +128,7 @@ const CreateUnitLabelsForm = ({ value, onChange }) => {
     } else {
       return null;
     }
-  }, [projects]);
+  }, [myProjects]);
 
   const labelsSelectOptions = useMemo(() => {
     if (labels?.length > 0) {
