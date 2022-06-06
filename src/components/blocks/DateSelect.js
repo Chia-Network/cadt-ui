@@ -95,6 +95,7 @@ const DateSelect = ({
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
+        inputFormat="YYYY-MM-DD"
         disableOpenPicker={disabled}
         label="Select time"
         value={dateValue}
@@ -105,7 +106,7 @@ const DateSelect = ({
             setDateValue(null);
           }
         }}
-        views={['month', 'year', 'day']}
+        views={['year', 'month', 'day']}
         disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (
