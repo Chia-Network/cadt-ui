@@ -81,13 +81,20 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
       selectedWarehouseProjectOption === null &&
       projectsSelectOptions
     ) {
-      const inferredProjectId = issuances.filter(item => item.id)[0]
-        ?.warehouseProjectId;
-      const inferredProjectOption = inferredProjectId
+      const currentUnitIssuanceId = unitDetails.issuance.id;
+
+      const inferredProjectIdOfTheCurrentUnit = issuances.filter(
+        issuanceItem => issuanceItem?.id === currentUnitIssuanceId,
+      )[0]?.warehouseProjectId;
+
+      const inferredProjectOption = inferredProjectIdOfTheCurrentUnit
         ? projectsSelectOptions.filter(
-            item => item.value.warehouseProjectId === inferredProjectId,
+            item =>
+              item.value.warehouseProjectId ===
+              inferredProjectIdOfTheCurrentUnit,
           )[0]
         : null;
+
       if (inferredProjectOption) {
         setSelectedWarehouseProjectOption(inferredProjectOption);
         localStorage.setItem(
