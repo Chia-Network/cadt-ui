@@ -72,12 +72,14 @@ export const cleanObjectFromEmptyFieldsOrArrays = dataToSend => {
     }
 
     // clean empty strings within arrays
+    // clean tempId used for Ui key iteration purpose
     if (Array.isArray(dataToSend[el])) {
       dataToSend[el].forEach(individualArrayItem =>
         Object.keys(individualArrayItem).forEach(key => {
           if (
             individualArrayItem[key] === '' ||
-            individualArrayItem[key] === null
+            individualArrayItem[key] === null ||
+            key === 'tempId'
           ) {
             delete individualArrayItem[key];
           }
