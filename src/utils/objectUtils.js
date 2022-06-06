@@ -87,7 +87,7 @@ export const getDiffObject = (original, ...changes) => {
             return (diffObject[uniqueKey].changes[index] = 0);
           }
           if (change) {
-            if (change[uniqueKey] === original[uniqueKey]) {
+            if (change[uniqueKey] === (original && original[uniqueKey])) {
               return (diffObject[uniqueKey].changes[index] = '');
             }
           }

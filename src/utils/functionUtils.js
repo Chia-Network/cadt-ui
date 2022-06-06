@@ -12,6 +12,271 @@ export const handleClickLink = link => {
   }
 };
 
+const stagingIssuanceViewInfo = (info, dataType, changeColor) => {
+  if (_.isEmpty(info[dataType]?.changes) && info[dataType]?.original) {
+    return (
+      <Body color={changeColor(dataType, 'INSERT')}>
+        {info[dataType]?.original}
+      </Body>
+    );
+  } else if (info[dataType]?.changes[0] && info[dataType]?.original) {
+    return (
+      <>
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {info[dataType]?.changes[0]}
+        </Body>
+        <Body color={changeColor(dataType, 'DELETE')}>
+          {info[dataType]?.original}
+        </Body>
+      </>
+    );
+  } else if (info[dataType]?.changes[0] === '' && info[dataType]?.original) {
+    return <Body>{info[dataType]?.original}</Body>;
+  }
+};
+
+const stagingDetailsViewInfo = (info, dataType, changeColor) => {
+  if (dataType === 'creditingPeriodStart') {
+    if (!_.isNull(info?.changes[0])) {
+      localStorage.setItem('addUnitCount', true);
+    }
+  } else if (dataType === 'label') {
+    if (_.isNull(info?.changes[0])) {
+      localStorage.setItem('removeUnitQuantity', true);
+    } else if (info?.changes[0]) {
+      localStorage.setItem('addUnitQuantity', true);
+    }
+  }
+
+  if (
+    dataType === 'unitCount' &&
+    localStorage.getItem('addUnitCount') &&
+    _.isNull(info?.changes[0]) &&
+    _.isNull(info?.original)
+  ) {
+    localStorage.removeItem('addUnitCount');
+    return <Body color={changeColor(dataType, 'INSERT')}>{0}</Body>;
+  } else if (
+    dataType === 'unitQuantity' &&
+    localStorage.getItem('removeUnitQuantity')
+  ) {
+    localStorage.removeItem('removeUnitQuantity');
+    return (
+      <Body color={changeColor(dataType, 'DELETE')}>{info?.original || 0}</Body>
+    );
+  } else if (
+    localStorage.getItem('addUnitQuantity') &&
+    dataType === 'unitQuantity' &&
+    _.isEmpty(info?.changes)
+  ) {
+    localStorage.removeItem('addUnitQuantity');
+    return <Body color={changeColor(dataType, 'INSERT')}>{0}</Body>;
+  }
+
+  if (
+    _.isNumber(info?.original) ||
+    _.isNumber(info?.changes[0]) ||
+    _.includes(dataType, 'unitQuantity') ||
+    _.includes(dataType, 'unitCount')
+  ) {
+    if (
+      _.isEmpty(info?.changes) &&
+      (info?.original || _.isNull(info?.original))
+    ) {
+      //New Staging Detail View Form (Number)
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {info?.original || 0}
+        </Body>
+      );
+    } else if (
+      info?.changes[0] === '' &&
+      !_.isNull(info?.changes[0]) &&
+      info?.original
+    ) {
+      //Staging Detail View No Changes (Number)
+      return <Body>{info?.original || 0}</Body>;
+    } else if (
+      (info?.changes[0] && info?.original) ||
+      (info?.changes[0] && _.isNull(info?.original))
+    ) {
+      //Staging Detail View Changes (Number)
+      return (
+        <>
+          <Body color={changeColor(dataType, 'INSERT')}>
+            {info?.changes[0] || 0}
+          </Body>
+          <Body color={changeColor(dataType, 'DELETE')}>{info?.original}</Body>
+        </>
+      );
+    } else if (
+      _.isNull(info?.changes[0] && _.isNull(info?.original)) ||
+      info?.original
+    ) {
+      //Staging Detail View Changes (Number)
+      return (
+        <Body color={changeColor(dataType, 'DELETE')}>
+          {info?.original || 0}
+        </Body>
+      );
+    } else {
+      return <Body>{0}</Body>;
+    }
+  } else if (
+    (_.isString(info?.original) ||
+      _.isString(info?.changes[0]) ||
+      _.isUndefined(info)) &&
+    (!_.includes(dataType, 'unitQuantity') ||
+      !_.includes(dataType, 'unitCount'))
+  ) {
+    if ((_.isEmpty(info?.changes) && info?.original) || _.isUndefined(info)) {
+      //New Staging Detail View Form
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {info?.original || '---'}
+        </Body>
+      );
+    } else if (_.isNull(info?.changes[0]) && info?.original) {
+      return (
+        <Body color={changeColor(dataType, 'DELETE')}>{info?.original}</Body>
+      );
+    } else if (_.isEmpty(info?.changes[0]) && info?.original) {
+      //Staging Detail View No Changes
+      return <Body>{info?.original}</Body>;
+    } else if (!_.isEmpty(info?.changes) && info?.original) {
+      //Staging Detail View Changes
+      return (
+        <>
+          <Body color={changeColor(dataType, 'INSERT')}>
+            {info?.changes[0] || '---'}
+          </Body>
+          <Body color={changeColor(dataType, 'DELETE')}>
+            {info?.original || '---'}
+          </Body>
+        </>
+      );
+    } else if (_.isNull(info?.original) && !_.isEmpty(info?.changes)) {
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>{info?.changes[0]}</Body>
+      );
+    }
+  } else if (_.isNull(info?.original) && _.isNull(info?.changes[0])) {
+    return <Body>---</Body>;
+  }
+};
+
+const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
+  // show subform links changes
+  if (
+    _.isString(info?.original) ||
+    _.isString(info?.changes[0]) ||
+    _.isUndefined(info)
+  ) {
+    if ((_.isEmpty(info?.changes) && info?.original) || _.isUndefined(info)) {
+      //New Staging Detail View Form
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>
+          {info?.original ? (
+            <a
+              href={handleClickLink(info?.original)}
+              target="_blank"
+              rel="noreferrer noopener">
+              {info?.original}
+              {info?.original && <LinkIcon height="15" width="30" />}
+            </a>
+          ) : (
+            '---'
+          )}
+        </Body>
+      );
+    } else if (_.isNull(info?.changes[0]) && info?.original) {
+      //Staging Detail View No Changes
+      return (
+        <Body>
+          <a
+            style={{ color: 'red' }}
+            href={handleClickLink(info?.original)}
+            target="_blank"
+            rel="noreferrer noopener">
+            {info?.original}
+            {info?.original && <LinkIcon height="15" width="30" />}
+          </a>
+        </Body>
+      );
+    } else if (_.isEmpty(info?.changes[0]) && info?.original) {
+      //Staging Detail View No Changes
+      return (
+        <Body color={changeColor(dataType, 'INSERT')}>
+          <a
+            href={handleClickLink(info?.original)}
+            target="_blank"
+            rel="noreferrer noopener">
+            {info?.original}
+            {info?.original && <LinkIcon height="15" width="30" />}
+          </a>
+        </Body>
+      );
+    } else if (!_.isEmpty(info?.changes) && info?.original) {
+      //Staging Detail View Changes
+      return (
+        <>
+          <Body color={changeColor(dataType, 'INSERT')}>
+            <a
+              href={handleClickLink(info?.changes[0] || info?.original)}
+              target="_blank"
+              rel="noreferrer noopener">
+              {info.changes[0] ? info.changes[0] : '---'}
+              {(info.changes[0] && <LinkIcon height="15" width="30" />) ||
+                (info.original && <LinkIcon height="15" width="30" />)}
+            </a>
+          </Body>
+          {info?.changes[0] && info?.original && (
+            <Body>
+              <a
+                style={{ color: 'red' }}
+                href={handleClickLink(info?.original)}
+                target="_blank"
+                rel="noreferrer noopener">
+                {info?.original}
+                {info?.original && <LinkIcon height="15" width="30" />}
+              </a>
+            </Body>
+          )}
+        </>
+      );
+    } else if (!_.isEmpty(info?.original) && !_.isNull(info?.changes)) {
+      return (
+        <Body>
+          <a
+            style={{ color: 'red' }}
+            href={handleClickLink(info?.changes[0] || info?.original)}
+            target="_blank"
+            rel="noreferrer noopener">
+            {info?.changes[0]}
+            {info?.changes[0] && <LinkIcon height="15" width="30" />}
+          </a>
+        </Body>
+      );
+    } else if (!_.isEmpty(info?.changes[0]) && _.isNull(info?.original)) {
+      return (
+        <>
+          <Body>
+            <a
+              href={handleClickLink(info?.changes[0])}
+              target="_blank"
+              rel="noreferrer noopener">
+              {info?.changes[0]}
+              {info?.changes[0] && <LinkIcon height="15" width="30" />}
+            </a>
+          </Body>
+        </>
+      );
+    }
+  } else {
+    return <Body>---</Body>;
+  }
+};
+
 export const detailsViewData = (type, detailData, dataType, changeColor) => {
   //all detail view data
   if (type === 'data') {
@@ -27,181 +292,15 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
   }
 
   if (type === 'issuanceStagingData') {
-    if (!_.isEmpty(detailData.changes)) {
-      //show edited form data staging details
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {detailData && detailData?.changes && detailData[detailData]}
-        </Body>
-      );
-    } else if (
-      _.some(detailData[dataType]?.changes) &&
-      detailData[dataType]?.original
-    ) {
-      //show edited form data staging details
-      return (
-        <>
-          <Body color={changeColor(dataType, 'INSERT')}>
-            {detailData[dataType]?.changes[0]}
-          </Body>
-          <Body color={changeColor(dataType, 'DELETE')}>
-            {detailData[dataType]?.original}
-          </Body>
-        </>
-      );
-    } else if (
-      detailData[dataType]?.changes[0] === null &&
-      detailData[dataType]?.original
-    ) {
-      return (
-        <>
-          <Body color={changeColor(dataType, 'DELETE')}>
-            {detailData[dataType]?.original}
-          </Body>
-        </>
-      );
-    } else if (detailData[dataType]?.changes[0] === '') {
-      return (
-        <>
-          <Body>{detailData[dataType]?.original}</Body>
-        </>
-      );
-    } else {
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {detailData && detailData[dataType].original}
-        </Body>
-      );
-    }
+    return stagingIssuanceViewInfo(detailData, dataType, changeColor);
   }
 
   if (type === 'stagingData') {
-    if (
-      (_.some(detailData[dataType]?.changes) &&
-        detailData[dataType]?.original) ||
-      (_.some(detailData[dataType]?.changes) && !detailData[dataType]?.original)
-    ) {
-      //show edited form data staging details
-      return (
-        <>
-          <Body color={changeColor(dataType, 'INSERT')}>
-            {detailData[dataType]?.changes[0]}
-          </Body>
-          <Body color={changeColor(dataType, 'DELETE')}>
-            {detailData[dataType]?.original}
-          </Body>
-        </>
-      );
-    } else if (
-      _.isEmpty(detailData[dataType]?.changes) &&
-      detailData[dataType]?.original
-    ) {
-      //show new form data to staging
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {detailData && detailData[dataType] && detailData[dataType].original}
-        </Body>
-      );
-    } else if (
-      detailData[dataType]?.changes[0] === '' &&
-      detailData[dataType]?.original
-    ) {
-      //show new form data not changed staging detail view
-      return (
-        <Body>
-          {detailData && detailData[dataType] && detailData[dataType].original}
-        </Body>
-      );
-    } else if (
-      !detailData[dataType]?.changes[0] &&
-      !detailData[dataType]?.original
-    ) {
-      //show new form data not changed staging detail view
-      return <Body>---</Body>;
-    } else {
-      // show formdata that has no changes or original
-      return <Body color={changeColor(dataType, 'INSERT')}>---</Body>;
-    }
+    return stagingDetailsViewInfo(detailData[dataType], dataType, changeColor);
   }
 
   if (type === 'subformStagingData') {
-    //show subform data that was deleted and not replaced in staging detail view
-    if (
-      detailData[dataType]?.changes[0] === null &&
-      detailData[dataType]?.original
-    ) {
-      return (
-        <>
-          <Body color={changeColor(dataType, 'DELETE')}>
-            {detailData[dataType]?.original}
-          </Body>
-        </>
-      );
-    } else if (detailData[dataType]?.changes[0] === '') {
-      //show subform data that was kept and not deleted
-      return (
-        <>
-          <Body>
-            {!dataType === 'unitCount'
-              ? detailData[dataType]?.original
-              : detailData[dataType]?.original
-              ? detailData[dataType]?.original
-              : '0'}
-          </Body>
-        </>
-      );
-    } else if (
-      detailData[dataType]?.original === null &&
-      !_.isEmpty(detailData[dataType]?.changes)
-    ) {
-      //show new subform data in staging view
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {detailData &&
-            detailData[dataType] &&
-            detailData[dataType].changes[0]}
-        </Body>
-      );
-    } else if (
-      (_.some(detailData[dataType]?.changes) &&
-        !_.isEmpty(detailData[dataType]?.original)) ||
-      (_.isNumber(detailData[dataType]?.changes[0]) &&
-        _.isNumber(detailData[dataType]?.original))
-    ) {
-      //show subform changes in staging view
-
-      return (
-        <>
-          <Body color={changeColor(dataType, 'INSERT')}>
-            {detailData[dataType]?.changes[0]}
-          </Body>
-          <Body color={changeColor(dataType, 'DELETE')}>
-            {detailData[dataType]?.original}
-          </Body>
-        </>
-      );
-    } else if (
-      _.isEmpty(detailData[dataType]?.changes) &&
-      _.isNumber(detailData[dataType]?.original)
-    ) {
-      //show subform changes in staging view
-      return (
-        <>
-          <Body>
-            {detailData[dataType]?.original}
-          </Body>
-        </>
-      );
-    } else {
-      //show subform original in staging view
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {detailData && detailData[dataType] && detailData[dataType].original
-            ? detailData[dataType].original
-            : '0'}
-        </Body>
-      );
-    }
+    return stagingDetailsViewInfo(detailData[dataType], dataType, changeColor);
   }
 
   if (type === 'link') {
@@ -219,206 +318,19 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
     );
   }
   if (type === 'subformStagingLink') {
-    // show subform links changes
-    if (
-      !_.isEmpty(detailData[dataType]?.changes) &&
-      detailData[dataType]?.changes[0] !== '' &&
-      detailData[dataType]?.changes[0] !== null
-    ) {
-      return (
-        <>
-          <Body color={changeColor(dataType, 'INSERT')}>
-            <a
-              href={handleClickLink(
-                detailData[dataType]?.changes[0] ||
-                  detailData[dataType]?.original,
-              )}
-              target="_blank"
-              rel="noreferrer noopener">
-              {detailData[dataType].changes[0]
-                ? detailData[dataType].changes[0]
-                : '---'}
-              {(detailData[dataType].changes[0] && (
-                <LinkIcon height="15" width="30" />
-              )) ||
-                (detailData[dataType].original && (
-                  <LinkIcon height="15" width="30" />
-                ))}
-            </a>
-          </Body>
-          {detailData[dataType]?.changes[0] && detailData[dataType]?.original && (
-            <Body>
-              <a
-                style={{ color: 'red' }}
-                href={handleClickLink(detailData[dataType]?.original)}
-                target="_blank"
-                rel="noreferrer noopener">
-                {detailData[dataType].original
-                  ? detailData[dataType].original
-                  : '---'}
-                {detailData[dataType].original && (
-                  <LinkIcon height="15" width="30" />
-                )}
-              </a>
-            </Body>
-          )}
-        </>
-      );
-    } else if (
-      detailData[dataType]?.changes[0] === '' &&
-      detailData[dataType].original
-    ) {
-      //subform links that are not deleted
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          <a
-            href={handleClickLink(detailData[dataType]?.original)}
-            target="_blank"
-            rel="noreferrer noopener">
-            {detailData[dataType]?.original
-              ? detailData[dataType].original
-              : '---'}
-            {detailData[dataType]?.original && (
-              <LinkIcon height="15" width="30" />
-            )}
-          </a>
-        </Body>
-      );
-    } else if (_.isEmpty(detailData[dataType]?.changes)) {
-      //show new subforms links in staging detail view
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          <a
-            href={handleClickLink(detailData[dataType]?.original)}
-            target="_blank"
-            rel="noreferrer noopener">
-            {detailData[dataType]?.original
-              ? detailData[dataType].original
-              : '---'}
-            {detailData[dataType]?.original && (
-              <LinkIcon height="15" width="30" />
-            )}
-          </a>
-        </Body>
-      );
-    } else if (detailData[dataType]?.changes[0] === null) {
-      // show deleted subform links
-      return (
-        <Body>
-          <a
-            style={{ color: 'red' }}
-            href={handleClickLink(detailData[dataType]?.original)}
-            target="_blank"
-            rel="noreferrer noopener">
-            {detailData[dataType].original
-              ? detailData[dataType].original
-              : '---'}
-            {detailData[dataType].original && (
-              <LinkIcon height="15" width="30" />
-            )}
-          </a>
-        </Body>
-      );
-    }
+    return stagingDetailsViewLinkInfo(
+      detailData[dataType],
+      dataType,
+      changeColor,
+    );
   }
 
   if (type === 'stagingLink') {
-    if (
-      !_.isEmpty(detailData[dataType]?.changes) &&
-      _.some(detailData[dataType]?.changes)
-    ) {
-      //subform link changes
-      return (
-        <>
-          <Body color={changeColor(dataType, 'INSERT')}>
-            <a
-              href={handleClickLink(
-                detailData[dataType]?.changes[0] ||
-                  detailData[dataType]?.original,
-              )}
-              target="_blank"
-              rel="noreferrer noopener">
-              {detailData[dataType].changes[0]
-                ? detailData[dataType].changes[0]
-                : '---' && detailData[dataType].original}
-              {(detailData[dataType].changes[0] && (
-                <LinkIcon height="15" width="30" />
-              )) ||
-                (detailData[dataType].original && (
-                  <LinkIcon height="15" width="30" />
-                ))}
-            </a>
-          </Body>
-          {detailData[dataType]?.changes[0] && detailData[dataType]?.original && (
-            <Body>
-              <a
-                style={{ color: 'red' }}
-                href={handleClickLink(detailData[dataType]?.original)}
-                target="_blank"
-                rel="noreferrer noopener">
-                {detailData[dataType].original
-                  ? detailData[dataType].original
-                  : '---'}
-                {detailData[dataType].original && (
-                  <LinkIcon height="15" width="30" />
-                )}
-              </a>
-            </Body>
-          )}
-        </>
-      );
-    } else if (
-      detailData[dataType]?.changes[0] === '' &&
-      detailData[dataType].original
-    ) {
-      //subform links that are not deleted
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          <a
-            href={handleClickLink(detailData[dataType]?.original)}
-            target="_blank"
-            rel="noreferrer noopener">
-            {detailData[dataType]?.original
-              ? detailData[dataType].original
-              : '---'}
-            {detailData[dataType]?.original && (
-              <LinkIcon height="15" width="30" />
-            )}
-          </a>
-        </Body>
-      );
-    } else if (
-      _.isEmpty(detailData[dataType]?.changes) &&
-      detailData[dataType]?.original
-    ) {
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {detailData[dataType].original}
-        </Body>
-      );
-    } else if (
-      !detailData[dataType]?.changes[0] &&
-      !detailData[dataType]?.original
-    ) {
-      //show new form data not changed staging detail view
-      return <Body>---</Body>;
-    } else {
-      return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          <a
-            href={handleClickLink(detailData[dataType]?.original)}
-            target="_blank"
-            rel="noreferrer noopener">
-            {detailData[dataType]?.original
-              ? detailData[dataType].original
-              : '---'}
-            {detailData[dataType]?.original && (
-              <LinkIcon height="15" width="30" />
-            )}
-          </a>
-        </Body>
-      );
-    }
+    return stagingDetailsViewLinkInfo(
+      detailData[dataType],
+      dataType,
+      changeColor,
+    );
   }
 
   return null;
