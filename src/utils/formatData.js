@@ -3,6 +3,8 @@ import dayjs from 'dayjs';
 
 export const formatDate = date => dayjs(date).format('YYYY-MM-DDT00:00:00[Z]');
 
+export const getISODate = date => dayjs(date).format('YYYY/MM/DD');
+
 export const formatAPIData = unformattedData => {
   const result = {};
   const unformattedDataKeys = Object.keys(unformattedData);

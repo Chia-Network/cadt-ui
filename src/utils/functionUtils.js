@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Body, LinkIcon } from '../components';
+import { getISODate } from './formatData';
 
 export const handleClickLink = link => {
   if (link) {
@@ -180,7 +181,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             <a
               href={handleClickLink(info?.original)}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               {info?.original}
               {info?.original && <LinkIcon height="15" width="30" />}
             </a>
@@ -197,7 +199,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             style={{ color: 'red' }}
             href={handleClickLink(info?.original)}
             target="_blank"
-            rel="noreferrer noopener">
+            rel="noreferrer noopener"
+          >
             {info?.original}
             {info?.original && <LinkIcon height="15" width="30" />}
           </a>
@@ -210,7 +213,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
           <a
             href={handleClickLink(info?.original)}
             target="_blank"
-            rel="noreferrer noopener">
+            rel="noreferrer noopener"
+          >
             {info?.original}
             {info?.original && <LinkIcon height="15" width="30" />}
           </a>
@@ -224,7 +228,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             <a
               href={handleClickLink(info?.changes[0] || info?.original)}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               {info.changes[0] ? info.changes[0] : '---'}
               {(info.changes[0] && <LinkIcon height="15" width="30" />) ||
                 (info.original && <LinkIcon height="15" width="30" />)}
@@ -236,7 +241,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
                 style={{ color: 'red' }}
                 href={handleClickLink(info?.original)}
                 target="_blank"
-                rel="noreferrer noopener">
+                rel="noreferrer noopener"
+              >
                 {info?.original}
                 {info?.original && <LinkIcon height="15" width="30" />}
               </a>
@@ -251,7 +257,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             style={{ color: 'red' }}
             href={handleClickLink(info?.changes[0] || info?.original)}
             target="_blank"
-            rel="noreferrer noopener">
+            rel="noreferrer noopener"
+          >
             {info?.changes[0]}
             {info?.changes[0] && <LinkIcon height="15" width="30" />}
           </a>
@@ -264,7 +271,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             <a
               href={handleClickLink(info?.changes[0])}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               {info?.changes[0]}
               {info?.changes[0] && <LinkIcon height="15" width="30" />}
             </a>
@@ -278,7 +286,16 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
 };
 
 export const detailsViewData = (type, detailData, dataType, changeColor) => {
-  //all detail view data
+  //all detail view data corresponding to dates
+  if (type === 'data' && dataType.toLowerCase().includes('date')) {
+    return (
+      <Body>
+        {detailData[dataType] ? getISODate(detailData[dataType]) : '---'}
+      </Body>
+    );
+  }
+
+  //all other detail view data
   if (type === 'data') {
     return (
       <Body>
@@ -310,13 +327,15 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
         <a
           href={handleClickLink(detailData[dataType])}
           target="_blank"
-          rel="noreferrer noopener">
+          rel="noreferrer noopener"
+        >
           {detailData[dataType] ? detailData[dataType] : '---'}
           {detailData[dataType] && <LinkIcon height="15" width="30" />}
         </a>
       </Body>
     );
   }
+
   if (type === 'subformStagingLink') {
     return stagingDetailsViewLinkInfo(
       detailData[dataType],
