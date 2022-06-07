@@ -37,14 +37,20 @@ const stagingIssuanceViewInfo = (info, dataType, changeColor) => {
 };
 
 const stagingDetailsViewInfo = (info, dataType, changeColor) => {
+  const isDate = dataType.toLowerCase().includes('date');
+  const changedValue = !isDate
+    ? info?.changes[0]
+    : getISODate(info?.changes[0]);
+  const initialValue = !isDate ? info?.original : getISODate(info?.original);
+
   if (dataType === 'creditingPeriodStart') {
-    if (!_.isNull(info?.changes[0])) {
+    if (!_.isNull(changedValue)) {
       localStorage.setItem('addUnitCount', true);
     }
   } else if (dataType === 'label') {
-    if (_.isNull(info?.changes[0])) {
+    if (_.isNull(changedValue)) {
       localStorage.setItem('removeUnitQuantity', true);
-    } else if (info?.changes[0]) {
+    } else if (changedValue) {
       localStorage.setItem('addUnitQuantity', true);
     }
   }
@@ -52,8 +58,8 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
   if (
     dataType === 'unitCount' &&
     localStorage.getItem('addUnitCount') &&
-    _.isNull(info?.changes[0]) &&
-    _.isNull(info?.original)
+    _.isNull(changedValue) &&
+    _.isNull(initialValue)
   ) {
     localStorage.removeItem('addUnitCount');
     return <Body color={changeColor(dataType, 'INSERT')}>{0}</Body>;
@@ -63,7 +69,7 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
   ) {
     localStorage.removeItem('removeUnitQuantity');
     return (
-      <Body color={changeColor(dataType, 'DELETE')}>{info?.original || 0}</Body>
+      <Body color={changeColor(dataType, 'DELETE')}>{initialValue || 0}</Body>
     );
   } else if (
     localStorage.getItem('addUnitQuantity') &&
@@ -75,93 +81,82 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
   }
 
   if (
-    _.isNumber(info?.original) ||
-    _.isNumber(info?.changes[0]) ||
+    _.isNumber(initialValue) ||
+    _.isNumber(changedValue) ||
     _.includes(dataType, 'unitQuantity') ||
     _.includes(dataType, 'unitCount')
   ) {
-    if (
-      _.isEmpty(info?.changes) &&
-      (info?.original || _.isNull(info?.original))
-    ) {
+    if (_.isEmpty(info?.changes) && (initialValue || _.isNull(initialValue))) {
       //New Staging Detail View Form (Number)
       return (
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {info?.original || 0}
-        </Body>
+        <Body color={changeColor(dataType, 'INSERT')}>{initialValue || 0}</Body>
       );
-    } else if (
-      info?.changes[0] === '' &&
-      !_.isNull(info?.changes[0]) &&
-      info?.original
-    ) {
+    } else if (changedValue === '' && !_.isNull(changedValue) && initialValue) {
       //Staging Detail View No Changes (Number)
-      return <Body>{info?.original || 0}</Body>;
+      return <Body>{initialValue || 0}</Body>;
     } else if (
-      (info?.changes[0] && info?.original) ||
-      (info?.changes[0] && _.isNull(info?.original))
+      (changedValue && initialValue) ||
+      (changedValue && _.isNull(initialValue))
     ) {
       //Staging Detail View Changes (Number)
       return (
         <>
           <Body color={changeColor(dataType, 'INSERT')}>
-            {info?.changes[0] || 0}
+            {changedValue || 0}
           </Body>
-          <Body color={changeColor(dataType, 'DELETE')}>{info?.original}</Body>
+          <Body color={changeColor(dataType, 'DELETE')}>{initialValue}</Body>
         </>
       );
     } else if (
-      _.isNull(info?.changes[0] && _.isNull(info?.original)) ||
-      info?.original
+      _.isNull(changedValue && _.isNull(initialValue)) ||
+      initialValue
     ) {
       //Staging Detail View Changes (Number)
       return (
-        <Body color={changeColor(dataType, 'DELETE')}>
-          {info?.original || 0}
-        </Body>
+        <Body color={changeColor(dataType, 'DELETE')}>{initialValue || 0}</Body>
       );
     } else {
       return <Body>{0}</Body>;
     }
   } else if (
-    (_.isString(info?.original) ||
-      _.isString(info?.changes[0]) ||
+    (_.isString(initialValue) ||
+      _.isString(changedValue) ||
       _.isUndefined(info)) &&
     (!_.includes(dataType, 'unitQuantity') ||
       !_.includes(dataType, 'unitCount'))
   ) {
-    if ((_.isEmpty(info?.changes) && info?.original) || _.isUndefined(info)) {
+    if ((_.isEmpty(info?.changes) && initialValue) || _.isUndefined(info)) {
       //New Staging Detail View Form
       return (
         <Body color={changeColor(dataType, 'INSERT')}>
-          {info?.original || '---'}
+          {initialValue || '---'}
         </Body>
       );
-    } else if (_.isNull(info?.changes[0]) && info?.original) {
+    } else if (_.isNull(changedValue) && initialValue) {
       return (
-        <Body color={changeColor(dataType, 'DELETE')}>{info?.original}</Body>
+        <Body color={changeColor(dataType, 'DELETE')}>{initialValue}</Body>
       );
-    } else if (_.isEmpty(info?.changes[0]) && info?.original) {
+    } else if (_.isEmpty(changedValue) && initialValue) {
       //Staging Detail View No Changes
-      return <Body>{info?.original}</Body>;
-    } else if (!_.isEmpty(info?.changes) && info?.original) {
+      return <Body>{initialValue}</Body>;
+    } else if (!_.isEmpty(info?.changes) && initialValue) {
       //Staging Detail View Changes
       return (
         <>
           <Body color={changeColor(dataType, 'INSERT')}>
-            {info?.changes[0] || '---'}
+            {changedValue || '---'}
           </Body>
           <Body color={changeColor(dataType, 'DELETE')}>
-            {info?.original || '---'}
+            {initialValue || '---'}
           </Body>
         </>
       );
-    } else if (_.isNull(info?.original) && !_.isEmpty(info?.changes)) {
+    } else if (_.isNull(initialValue) && !_.isEmpty(info?.changes)) {
       return (
-        <Body color={changeColor(dataType, 'INSERT')}>{info?.changes[0]}</Body>
+        <Body color={changeColor(dataType, 'INSERT')}>{changedValue}</Body>
       );
     }
-  } else if (_.isNull(info?.original) && _.isNull(info?.changes[0])) {
+  } else if (_.isNull(initialValue) && _.isNull(changedValue)) {
     return <Body>---</Body>;
   }
 };

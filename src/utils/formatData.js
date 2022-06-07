@@ -3,7 +3,10 @@ import dayjs from 'dayjs';
 
 export const formatDate = date => dayjs(date).format('YYYY-MM-DDT00:00:00[Z]');
 
-export const getISODate = date => dayjs(date).format('YYYY/MM/DD');
+export const getISODate = date => {
+  const isValidDate = !isNaN(Date.parse(date));
+  return isValidDate ? dayjs(date).format('YYYY/MM/DD') : date;
+};
 
 export const formatAPIData = unformattedData => {
   const result = {};
