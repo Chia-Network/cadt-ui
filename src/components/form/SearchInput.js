@@ -89,7 +89,7 @@ const ButtonSearchText = styled('p')`
   align-items: center;
   font-size: 1rem;
   width: 3.125rem;
-  color: ${props => (props.usePrimaryButton ? '#ffffff' : props.theme.colors.default.onSurface)};
+  color: ${props => (props.usePrimaryButton ? props.theme.colors.default.onButton : props.theme.colors.default.onSurface)};
   box-sizing: border-box;
 `;
 

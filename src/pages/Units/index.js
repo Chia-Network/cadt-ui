@@ -47,6 +47,7 @@ import {
   MinusIcon,
   UnitsDetailViewModal,
 } from '../../components';
+import theme from '../../theme';
 
 const headings = [
   'projectLocationId',
@@ -352,7 +353,7 @@ const Units = () => {
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
-                icon={<AddIcon width="16.13" height="16.88" fill="#ffffff" />}
+                icon={<AddIcon width="16.13" height="16.88" fill={theme.colors.default.onButton} />}
                 onClick={() => {
                   if (
                     _.isEmpty(stagingData.units.pending) &&

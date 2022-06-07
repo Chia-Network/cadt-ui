@@ -45,7 +45,7 @@ const StyledSelect = styled('div')`
   color: #262626;
   box-sizing: border-box;
   border: 0.0625rem solid #d9d9d9;
-  background: #ffffff;
+  background: ${props => props.theme.colors.default.onButton}
   z-index: 5;
   user-select: none;
   align-items: center;
@@ -118,7 +118,7 @@ const StyledBasicMenu = styled(ScrollContainer)`
   position: absolute;
   padding: 0.25rem 0rem 0.25rem 0rem;
   top: ${props => (props.top ? props.top + 10 + 'px' : '10px')};
-  background: #ffffff;
+  background: ${props => props.theme.colors.default.onButton}
   box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
     0px 6px 16px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12);
   border-radius: 0.125rem;

@@ -25,7 +25,7 @@ const MaskContainer = styled('div')`
 `;
 
 const ModalContainer = styled('div')`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.default.onButton};
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
