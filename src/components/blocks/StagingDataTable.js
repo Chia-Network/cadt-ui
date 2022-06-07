@@ -53,7 +53,7 @@ const Tr = styled('tr')`
           };
           `;
     } else if (props.color === 'gray') {
-      return `border: 1px solid #F2F2F2;`;
+      return `border: 1px solid ${props.theme.colors.default.primary};`;
     }
   }};
   th:last-child {

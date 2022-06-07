@@ -48,8 +48,8 @@ export const PagesContainer = styled(ControlsContainer)`
   line-height: 150%;
   ${props => {
     if (props.isActive) {
-      return `border: 1px solid #3B8EE0;
-                    color: #3B8EE0;`;
+      return `border: 1px solid ${props.theme.colors.default.primary};
+                    color: ${props.theme.colors.default.primary};`;
     } else {
       return `border: 1px solid #D9D9D9;
                     color: #262626;`;

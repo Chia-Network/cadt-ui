@@ -46,7 +46,7 @@ const StyledTd = styled('td')`
 
 const StyledTr = styled('tr')`
   :nth-child(even) {
-    background-color: #f0f2f5;
+    background-color: ${props => props.theme.colors.default.background};
   }
   :hover {
     background-color: ${props =>

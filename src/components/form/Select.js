@@ -81,13 +81,13 @@ const StyledSelect = styled('div')`
       return `border: 1px solid #40A9FF;`;
     } else if (props.state === SelectStateEnum.focused) {
       return `
-        border: 1px solid #3B8EE0;
+        border: 1px solid ${props.theme.colors.default.primary};
         box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
       `;
     } else if (props.state === SelectStateEnum.disabled) {
       return css`
         background: #f5f5f5;
-        color: #000000;
+        color: ${props.theme.colors.default.onSurface};
         cursor: default;
       `;
     }

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Tab, Tabs, TabPanel } from '..';
 import styled from 'styled-components';
 import { UnitsDetails, UnitsIssuanceDetails, UnitsLabelsDetails } from '.';
+import theme from '../../theme';
 
 export const StyledDetailedViewTabItem = styled('div')`
   display: flex;
@@ -41,7 +42,7 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
         return '#52C41A';
       }
     }
-    return '#000000';
+    return theme.colors.default.onSurface;
   };
 
   const issuanceTab = () => {

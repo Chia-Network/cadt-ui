@@ -23,7 +23,7 @@ const StyledPaginationContainer = styled('div')`
 `;
 
 const StyledChangeGroup = styled('div')`
-  background: #f0f2f5;
+  background: ${props => props.theme.colors.default.background};
   margin: 20px 20px 20px 20px;
   border-radius: 20px;
   display: flex;

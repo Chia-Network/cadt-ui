@@ -4,7 +4,7 @@ import styled, { withTheme } from 'styled-components';
 import { ToolTip, ToolTipPlacement } from '../../components';
 
 const Text = styled('p')`
-  color: ${props => props.color || '#000000'};
+  color: ${props => props.color || props.theme.colors.default.onSurface};
   font-size: 0.875rem;
   font-family: ${props => props.theme.typography.primary.regular};
   font-style: normal;
