@@ -54,13 +54,13 @@ const InputContainer = styled('div')`
   ${props => {
     if (props.variant === DateVariantEnum.error) {
       return css`
-        border: 1px solid #f5222d;
+        border: 1px solid ${props.theme.colors.default.status.error.primary};
         :focus-within {
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         }
         :hover {
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
         }
       `;
     }

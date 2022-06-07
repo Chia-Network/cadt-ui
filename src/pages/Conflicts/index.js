@@ -34,7 +34,7 @@ const StyledTable = styled('table')`
 const StyledTh = styled('th')`
   text-align: start;
   padding: 17px;
-  background-color: #e6f7ff;
+  background-color: ${props => props.theme.colors.default.info.secondary};
   position: sticky;
   top: 0;
 `;

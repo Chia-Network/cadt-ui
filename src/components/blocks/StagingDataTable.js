@@ -47,9 +47,9 @@ const Tr = styled('tr')`
     } else if (props.color === 'red') {
       return `
           background: #FFEBEE;  
-          border: 1px solid #F5222D;
+          border: 1px solid ${props.theme.colors.default.status.error.primary}
           p, span {
-            color: #F5222D !important;
+            color: ${props.theme.colors.default.status.error.primary} !important;
           };
           `;
     } else if (props.color === 'gray') {

@@ -51,9 +51,9 @@ const StyledChangeCardTitle = styled('div')`
   ${props =>
     props.displayInRed
       ? ` background-color: #ffebee;
-      border: 2px solid #f5222d;
+      border: 2px solid ${props.theme.colors.default.status.error.primary};
       body {
-        color: #f5222d;
+        color: ${props.theme.colors.default.status.error.primary};
       }`
       : ` background-color: #ECF8E6;
       border: 2px solid #52C41A;

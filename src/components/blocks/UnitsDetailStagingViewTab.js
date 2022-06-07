@@ -36,7 +36,7 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
   const getOriginalColorForKey = (entryProp, action) => {
     if (entryProp) {
       if (action === 'DELETE') {
-        return '#f5222d';
+        return theme.colors.default.status.error.primary;
       }
       if (action === 'INSERT') {
         return '#52C41A';

@@ -49,7 +49,9 @@ const StyledDetails = styled('div')`
   align-items: center;
   gap: 5px;
   ${props => props.isGreen && `body {color: #52C41A}`};
-  ${props => props.isRed && `body {color: #f5222d}`};
+  ${props =>
+    props.isRed &&
+    `body {color: ${props.theme.colors.default.status.error.primary}}`};
 `;
 
 const StyledValuesContainer = styled('div')`
