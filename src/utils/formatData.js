@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import dayjs from 'dayjs';
 
-export const formatDate = date => dayjs(date).format('YYYY-MM-DDT00:00:00[Z]');
+export const formatDate = date => dayjs(date).format('YYYY-DD-MMT00:00:00[Z]');
 
 export const getISODate = date => {
   const isValidDate = !isNaN(Date.parse(date));
