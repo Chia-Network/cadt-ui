@@ -14,25 +14,25 @@ export const handleClickLink = link => {
 };
 
 const stagingIssuanceViewInfo = (info, dataType, changeColor) => {
-  if (_.isEmpty(info[dataType]?.changes) && info[dataType]?.original) {
-    return (
-      <Body color={changeColor(dataType, 'INSERT')}>
-        {info[dataType]?.original}
-      </Body>
-    );
-  } else if (info[dataType]?.changes[0] && info[dataType]?.original) {
+  const isDate = dataType.toLowerCase().includes('date');
+  const changedValue = !isDate
+    ? info[dataType]?.changes[0]
+    : getISODate(info[dataType]?.changes[0]);
+  const initialValue = !isDate
+    ? info[dataType]?.original
+    : getISODate(info[dataType]?.original);
+
+  if (_.isEmpty(info[dataType]?.changes) && initialValue) {
+    return <Body color={changeColor(dataType, 'INSERT')}>{initialValue}</Body>;
+  } else if (changedValue && initialValue) {
     return (
       <>
-        <Body color={changeColor(dataType, 'INSERT')}>
-          {info[dataType]?.changes[0]}
-        </Body>
-        <Body color={changeColor(dataType, 'DELETE')}>
-          {info[dataType]?.original}
-        </Body>
+        <Body color={changeColor(dataType, 'INSERT')}>{changedValue}</Body>
+        <Body color={changeColor(dataType, 'DELETE')}>{initialValue}</Body>
       </>
     );
-  } else if (info[dataType]?.changes[0] === '' && info[dataType]?.original) {
-    return <Body>{info[dataType]?.original}</Body>;
+  } else if (changedValue === '' && initialValue) {
+    return <Body>{initialValue}</Body>;
   }
 };
 
