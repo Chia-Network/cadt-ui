@@ -78,7 +78,7 @@ const Input = styled('input')`
     props.disabled &&
     css`
       background-color: #f5f5f5;
-      color: #000000;
+      color: ${props.theme.colors.default.onSurface}
       cursor: default;
     `};
 `;
