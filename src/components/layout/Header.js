@@ -8,7 +8,7 @@ import { LocaleSwitcher, Body, ClimateWarehouseLogo, MyAccount } from '..';
 const Headline = styled('div')`
   width: 100%;
   height: 4rem;
-  background-color: ${props => props.theme.colors.default.secondary};
+  background-color: ${props => props.theme.colors.default.onButton};
 `;
 
 const LogoContainer = styled('div')`
