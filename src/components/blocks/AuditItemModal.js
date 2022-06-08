@@ -28,7 +28,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
   const intl = useIntl();
   const change = auditItem.change && JSON.parse(auditItem.change);
 
-  const bodyColor = auditItem.type === 'INSERT' ? '#52C41A' : theme.colors.default.status.error.primary;
+  const bodyColor = auditItem.type === 'INSERT' ? theme.colors.default.status.ok.primary : theme.colors.default.status.error.primary;
 
   return (
     <>

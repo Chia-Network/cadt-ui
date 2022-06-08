@@ -38,15 +38,15 @@ const Tr = styled('tr')`
   ${props => {
     if (props.color === 'green') {
       return `
-            border: 1px solid #52C41A;
-            background: #ECF8E6;
+            border: 1px solid ${props.theme.colors.default.status.ok.primary};
+            background: ${props.theme.colors.default.status.ok.secondary};
             p, span {
-              color: #52C41A !important;
+              color: ${props.theme.colors.default.status.ok.primary} !important;
             };
             `;
     } else if (props.color === 'red') {
       return `
-          background: #FFEBEE;  
+          background: ${props.theme.colors.default.status.error.secondary};  
           border: 1px solid ${props.theme.colors.default.status.error.primary}
           p, span {
             color: ${props.theme.colors.default.status.error.primary} !important;

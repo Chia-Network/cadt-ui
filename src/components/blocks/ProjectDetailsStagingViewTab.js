@@ -27,7 +27,7 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
         return theme.colors.default.status.error.primary;
       }
       if (action === 'INSERT') {
-        return '#52C41A';
+        return theme.colors.default.status.ok.primary;
       }
     }
     return theme.colors.default.onSurface;

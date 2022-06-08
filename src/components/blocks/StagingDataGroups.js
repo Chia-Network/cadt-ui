@@ -50,15 +50,15 @@ const StyledChangeCard = styled('div')`
 const StyledChangeCardTitle = styled('div')`
   ${props =>
     props.displayInRed
-      ? ` background-color: #ffebee;
+      ? ` background-color: ${props.theme.colors.default.status.error.secondary};
       border: 2px solid ${props.theme.colors.default.status.error.primary};
       body {
         color: ${props.theme.colors.default.status.error.primary};
       }`
-      : ` background-color: #ECF8E6;
-      border: 2px solid #52C41A;
+      : ` background-color: ${props.theme.colors.default.status.ok.secondary};
+      border: 2px solid ${props.theme.colors.default.status.ok.primary};
       body {
-        color: #52C41A;
+        color: ${props.theme.colors.default.status.ok.primary};
       }`}
   padding: 15px 5px 8px 17px;
   border-top-left-radius: 5px;
