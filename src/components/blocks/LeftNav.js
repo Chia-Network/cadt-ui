@@ -95,6 +95,7 @@ const LeftNav = withTheme(({ children }) => {
   const isMyRegistryPage = location.search.includes('myRegistry=true');
   const isOrganizationPage = location.pathname.includes('/organization');
   const isConflictsPage = location.pathname.includes('/conflicts');
+  const isGovernancePage = location.pathname.includes('/governance');
 
   return (
     <Container>
@@ -172,9 +173,14 @@ const LeftNav = withTheme(({ children }) => {
               </ButtonText>
             </StyledTitleContainer>
             {!myOrgIsNotCreated && !isMyOrgPending && (
-              <MenuItem selected={isOrganizationPage} to="/organization">
-                <FormattedMessage id="my-organization" />
-              </MenuItem>
+              <>
+                <MenuItem selected={isOrganizationPage} to="/organization">
+                  <FormattedMessage id="my-organization" />
+                </MenuItem>
+                <MenuItem selected={isGovernancePage} to="/governance">
+                  <FormattedMessage id="governance" />
+                </MenuItem>
+              </>
             )}
             {myOrgIsNotCreated && (
               <MenuItem

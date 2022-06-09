@@ -381,5 +381,13 @@
   "organization-information": "Organization Information",
   "governance-data-failed": "Governance Data failed to load, please contact admin.",
   "ui-data-model-mismatch": "There is a mismatch between the UI and the data model.",
-  "comment": "Comment"
+  "comment": "Comment",
+  "governance": "Governance",
+  "initiate-governance": "Initiate Governance",
+  "governance-initiating-please0wait": "Your governance body is initiating, please 5 minutes then refresh.",
+  "picklists": "All picklists",
+  "json-is-valid": "JSON is valid",
+  "json-not-valid": "Please add valid JSON",
+  "valid-json-example": "Valid JSON example",
+  "send": "Send"
 }

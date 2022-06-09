@@ -363,5 +363,13 @@
   "organization-information": "Información de la organización",
   "governance-data-failed": "No se pudieron cargar los datos de gobernanza, comuníquese con el administrador.",
   "ui-data-model-mismatch": "Hay una discrepancia entre la interfaz de usuario y el modelo de datos.",
-  "comment": "Comentario"
+  "comment": "Comentario",
+  "governance": "Gobernancia",
+  "initiate-governance": "Iniciar Gobernanza",
+  "governance-initiating-please0wait": "Su órgano de gobierno está iniciando, por favor 5 minutos y luego actualice.",
+  "picklists": "Todas las listas de selección",
+  "json-is-valid": "JSON es válida",
+  "json-not-valid": "Agregue JSON válido",
+  "valid-json-example": "Ejemplo válido de JSON",
+  "send": "Enviar"
 }
