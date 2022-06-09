@@ -1,3 +1,39 @@
+## [1.0.4](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.3...1.0.4) (2022-06-09)
+
+
+### Bug Fixes
+
+* add red to links that are deleted ([15d6d7e](https://github.com/Chia-Network/climate-warehouse-ui/commit/15d6d7e29db2b284c83a776187568b333164ff0e))
+* added correct colors to marketplace link ([75ce004](https://github.com/Chia-Network/climate-warehouse-ui/commit/75ce004ffe5239644c8793910dac2dc065fb6133))
+* dates are autocompleted when adding a second issuance on a project ([d9ac9f2](https://github.com/Chia-Network/climate-warehouse-ui/commit/d9ac9f267c1e45419f1e54dc6652f56b3e5b2e91))
+* dates not rendered properly in case of multiple entry tabs ([af3989f](https://github.com/Chia-Network/climate-warehouse-ui/commit/af3989f586c5277caab214fe6287a692e71181b8))
+* dates not rendered properly in case of multiple entry tabs ([d4d7c6f](https://github.com/Chia-Network/climate-warehouse-ui/commit/d4d7c6fa54d31ca06832da1d7ed1e120781eae62))
+* dates not rendered properly in case of multiple entry tabs ([1376854](https://github.com/Chia-Network/climate-warehouse-ui/commit/13768546f4c0de1ea51d0b15b1832aa9a6f7a138))
+* dates not rendered properly in case of multiple entry tabs ([91871e5](https://github.com/Chia-Network/climate-warehouse-ui/commit/91871e55e657ae2128f28c1d07b205be8114de29))
+* dates not rendered properly in case of multiple entry tabs ([4d7e9b8](https://github.com/Chia-Network/climate-warehouse-ui/commit/4d7e9b8be0eec8c258814db1cf44bcbcaf2b02e3))
+* fixed error colors for unit count ([d528d08](https://github.com/Chia-Network/climate-warehouse-ui/commit/d528d083ed8a02885c446ad7c141b9424779ac5e))
+* fixed unit Issuance not showing correct colors ([d1cdf9c](https://github.com/Chia-Network/climate-warehouse-ui/commit/d1cdf9ccd389271ac90e315c174a8dd5e26b2586))
+* fixed unitCount and unit Quantity zero color ([82a4a6b](https://github.com/Chia-Network/climate-warehouse-ui/commit/82a4a6b4f0bcb6bf5b01c0840ff64462d7a49622))
+* project not inferred for edit unit ([e69bd73](https://github.com/Chia-Network/climate-warehouse-ui/commit/e69bd7351f2d77c72d7f7eb9ba1d71342446356e))
+* remove console.log ([4e6764b](https://github.com/Chia-Network/climate-warehouse-ui/commit/4e6764bc648ccb044088979acdaa86acb5f1ef9a))
+
+
+### Features
+
+* add standard input fallback for methodology / registry origin / current origin picklists ([7a9973a](https://github.com/Chia-Network/climate-warehouse-ui/commit/7a9973af36acf33eed6295912315233bae15229b))
+* save dates as UTC but view as international date format ([ddbf9f8](https://github.com/Chia-Network/climate-warehouse-ui/commit/ddbf9f8bf3825c6bd9d0d05c14b188f36625a04f))
+* save dates as UTC but view as international date format ([b511159](https://github.com/Chia-Network/climate-warehouse-ui/commit/b5111592f103caf70f2f2e0d850d4923f836a738))
+* save dates as UTC but view as international date format ([f86d602](https://github.com/Chia-Network/climate-warehouse-ui/commit/f86d60295633236ecee9709f74a62354bac6b23d))
+* save dates as UTC but view as international date format ([ae1142d](https://github.com/Chia-Network/climate-warehouse-ui/commit/ae1142d0dd2e75e7cf8797a4860e263cb18b4bd1))
+* save dates as UTC but view as international date format ([a352049](https://github.com/Chia-Network/climate-warehouse-ui/commit/a352049f079081526ed7db11f988e7d79dc99c63))
+* save dates as UTC but view as international date format ([1ef687d](https://github.com/Chia-Network/climate-warehouse-ui/commit/1ef687daf1cca1713cced30581b824462fc3edeb))
+* save dates as UTC but view as international date format ([59e9b5b](https://github.com/Chia-Network/climate-warehouse-ui/commit/59e9b5beac32faf4ee37b1f8a05da7fd0007e3c6))
+* save dates as UTC but view as international date format ([802e931](https://github.com/Chia-Network/climate-warehouse-ui/commit/802e931e8c81ecfb3344dce5e1676a06e26176c9))
+* save dates as UTC but view as international date format ([e6497bd](https://github.com/Chia-Network/climate-warehouse-ui/commit/e6497bd042aec82d447f29f4e419683adba22c7a))
+* save dates as UTC but view as international date format ([7d9ffc0](https://github.com/Chia-Network/climate-warehouse-ui/commit/7d9ffc04d17746f11a19aa74a2045a57ef602e07))
+
+
+
 ## [1.0.3](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.2...1.0.3) (2022-06-02)
 
 
