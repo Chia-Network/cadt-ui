@@ -3,7 +3,7 @@ import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import styled, { css } from 'styled-components';
-import { formatDate } from '../../utils/formatData';
+import { formatDate, getISODate } from '../../utils/formatData';
 import { DateVariantEnum } from '.';
 
 const InputContainer = styled('div')`
@@ -95,9 +95,10 @@ const DateSelect = ({
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <DatePicker
+        inputFormat="YYYY-MM-DD"
         disableOpenPicker={disabled}
         label="Select time"
-        value={dateValue}
+        value={getISODate(dateValue)}
         onChange={newValue => {
           if (newValue) {
             setDateValue(formatDate(newValue));
@@ -105,7 +106,7 @@ const DateSelect = ({
             setDateValue(null);
           }
         }}
-        views={['month', 'year', 'day']}
+        views={['year', 'month', 'day']}
         disabled={disabled}
         renderInput={({ inputRef, inputProps, InputProps }) => {
           return (

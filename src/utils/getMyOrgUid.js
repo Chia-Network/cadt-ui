@@ -1,5 +1,5 @@
 export const getMyOrgUid = organizations => {
-  if (organizations?.pending) {
+  if (organizations?.PENDING) {
     return 'PENDING';
   }
 
