@@ -1,188 +1,138 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+/* eslint-disable */
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import QRCode from 'qrcode.react';
-
-import { validateUrl } from '../../utils/urlUtils';
-import {
-  Body,
-  CopyIcon,
-  H2,
-  H4,
-  PrimaryButton,
-  SubscriptionModal,
-} from '../../components';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-const StyledOrganizationContainer = styled('div')`
+import {
+  H2,
+  H4,
+  Textarea,
+  TextareaSizeEnum,
+  TextareaStateEnum,
+  PrimaryButton,
+  Body,
+} from '../../components';
+import { useDispatch, useSelector } from 'react-redux';
+import { getGovernanceOrgList } from '../../store/actions/climateWarehouseActions';
+import { isJsonString } from '../../utils/json';
+
+const StyledGovernanceContainer = styled('div')`
   padding: 30px 63px;
   display: flex;
+  flex-direction: column;
+  gap: 40px;
+`;
+
+const StyledJSONSectionContainer = styled.div`
+  display: flex;
   flex-direction: row;
+  gap: 50px;
 `;
 
-const StyledLogoContainer = styled('div')`
-  margin-left: auto;
-`;
-
-const StyledItemContainer = styled('div')`
-  padding: 14px 0px;
+const StyledJSONContainer = styled.div`
+  width: 50%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  button {
-    width: fit-content;
-  }
+  gap: 20px;
 `;
 
-const StyledSvgContainer = styled('div')`
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & svg {
-    width: 100px;
-    height: 100px;
-  }
-`;
-
-const StyledCopyIconContainer = styled('div')`
-  display: inline-block;
-  cursor: pointer;
-  margin-left: 2px;
-  color: #d9d9d9;
-  :hover {
-    color: #bfbfbf;
-  }
-  :active {
-    color: #096dd9;
-  }
+const StyledButtonContainer = styled.div`
+  width: fit-content;
 `;
 
 const Governance = () => {
   const intl = useIntl();
-  const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
-    useState(false);
-  const { myOrgUid, organizations } = useSelector(
+  const [picklistsTextarea, setPicklistsTextarea] = useState('');
+  const [orgListTextarea, setOrgListTextarea] = useState('');
+  const { pickLists, governanceOrgList } = useSelector(
     store => store.climateWarehouse,
   );
+  const dispatch = useDispatch();
 
-  if (!organizations || !myOrgUid) {
-    return null;
-  }
+  useEffect(() => {
+    dispatch(getGovernanceOrgList());
+  }, []);
 
-  const myOrganization = organizations && organizations[myOrgUid];
+  useEffect(() => {
+    setPicklistsTextarea(JSON.stringify(pickLists));
+  }, [pickLists]);
 
-  const isLogoPngType = myOrganization?.icon?.includes('data:image/png;base64');
-  const isLogoSvgType = myOrganization?.icon?.includes('<svg');
-  const isLogoUrlType = myOrganization?.icon
-    ? validateUrl(myOrganization.icon)
-    : false;
+  useEffect(() => {
+    setOrgListTextarea(JSON.stringify(orgListTextarea));
+  }, [governanceOrgList]);
 
-  const createMarkup = icon => {
-    return { __html: icon };
-  };
+  const arePickListsValid = useMemo(() => {
+    return isJsonString(picklistsTextarea);
+  }, [picklistsTextarea]);
+
+  const isOrgListValid = useMemo(() => {
+    return isJsonString(orgListTextarea);
+  }, [orgListTextarea]);
 
   return (
-    <StyledOrganizationContainer>
-      <div>
-        <H2>
-          <FormattedMessage id="organization-information" />
-        </H2>
-
-        <StyledItemContainer>
+    <StyledGovernanceContainer>
+      <H2>
+        <FormattedMessage id="governance" />
+      </H2>
+      <StyledJSONSectionContainer>
+        <StyledJSONContainer>
           <H4>
-            <FormattedMessage id="organization-name" />
+            <FormattedMessage id="picklists" />
           </H4>
-          <Body size="Big">
-            {myOrganization.name}
-            <StyledCopyIconContainer>
-              <CopyIcon
-                height={18}
-                width={18}
-                onClick={() => {
-                  navigator.clipboard.writeText(myOrganization.name);
-                }}
-              />
-            </StyledCopyIconContainer>
-          </Body>
-        </StyledItemContainer>
-
-        <StyledItemContainer>
-          <H4>
-            <FormattedMessage id="org-uid" />
-          </H4>
-          <Body size="Big">
-            {myOrgUid}
-            <StyledCopyIconContainer>
-              <CopyIcon
-                height={18}
-                width={18}
-                onClick={() => {
-                  navigator.clipboard.writeText(myOrgUid);
-                }}
-              />
-            </StyledCopyIconContainer>
-          </Body>
-        </StyledItemContainer>
-
-        <StyledItemContainer>
-          <H4>
-            <FormattedMessage id="public-address" />
-          </H4>
-          <Body size="Big">
-            {myOrganization.xchAddress}
-            <StyledCopyIconContainer>
-              <CopyIcon
-                height={18}
-                width={18}
-                onClick={() => {
-                  navigator.clipboard.writeText(myOrganization.xchAddress);
-                }}
-              />
-            </StyledCopyIconContainer>
-          </Body>
-        </StyledItemContainer>
-
-        <StyledItemContainer>
-          <H4>
-            <FormattedMessage id="address-qr-code" />
-          </H4>
-          <QRCode value={myOrganization.xchAddress} />
-        </StyledItemContainer>
-
-        <StyledItemContainer>
-          <H4>
-            <FormattedMessage id="organization-subscriptions" />
-          </H4>
-          <PrimaryButton
-            label={intl.formatMessage({ id: 'manage' })}
-            size="large"
-            onClick={() => setIsSubscriptionsModalDisplayed(true)}
+          {arePickListsValid && (
+            <Body>
+              <FormattedMessage id="json-is-valid" />
+            </Body>
+          )}
+          {!arePickListsValid && (
+            <Body>
+              <FormattedMessage id="json-not-valid" />
+            </Body>
+          )}
+          <Textarea
+            size={TextareaSizeEnum.large}
+            placeholder={intl.formatMessage({
+              id: 'picklists',
+            })}
+            value={picklistsTextarea}
+            onChange={e => setPicklistsTextarea(e.target.value)}
+            state={TextareaStateEnum.default}
           />
-        </StyledItemContainer>
-      </div>
+        </StyledJSONContainer>
+        <StyledJSONContainer>
+          <H4>
+            <FormattedMessage id="all-organizations" />
+          </H4>
+          {isOrgListValid && (
+            <Body>
+              <FormattedMessage id="json-is-valid" />
+            </Body>
+          )}
+          {!isOrgListValid && (
+            <Body>
+              <FormattedMessage id="json-not-valid" />
+            </Body>
+          )}
 
-      {isSubscriptionsModalDisplayed && (
-        <SubscriptionModal
-          onClose={() => setIsSubscriptionsModalDisplayed(false)}
+          <Textarea
+            size={TextareaSizeEnum.large}
+            placeholder={intl.formatMessage({
+              id: 'all-organizations',
+            })}
+            value={orgListTextarea}
+            onChange={e => setOrgListTextarea(e.target.value)}
+            state={TextareaStateEnum.default}
+          />
+        </StyledJSONContainer>
+      </StyledJSONSectionContainer>
+      <StyledButtonContainer>
+        <PrimaryButton
+          label={intl.formatMessage({ id: 'initiate-governance' })}
+          size="large"
+          onClick={() => console.log('pac pac')}
         />
-      )}
-
-      <StyledLogoContainer>
-        {isLogoSvgType && (
-          <StyledSvgContainer
-            dangerouslySetInnerHTML={createMarkup(myOrganization.icon)}
-          />
-        )}
-        {isLogoUrlType && (
-          <img src={myOrganization.icon} width={100} height={100} />
-        )}
-        {isLogoPngType && (
-          <img src={myOrganization.icon} width={100} height={100} />
-        )}
-      </StyledLogoContainer>
-    </StyledOrganizationContainer>
+      </StyledButtonContainer>
+    </StyledGovernanceContainer>
   );
 };
 

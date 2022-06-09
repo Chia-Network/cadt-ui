@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import QRCode from 'qrcode.react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { validateUrl } from '../../utils/urlUtils';
 import {
@@ -12,7 +13,6 @@ import {
   PrimaryButton,
   SubscriptionModal,
 } from '../../components';
-import { FormattedMessage, useIntl } from 'react-intl';
 
 const StyledOrganizationContainer = styled('div')`
   padding: 30px 63px;

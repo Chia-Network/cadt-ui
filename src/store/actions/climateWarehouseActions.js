@@ -53,6 +53,7 @@ export const actions = keyMirror(
   'GET_STAGING_UNITS_PAGES',
   'GET_MY_PROJECTS',
   'SET_MY_ORG_UID',
+  'GET_GOVERNANCE_ORG_LIST',
 );
 
 const getClimateWarehouseTable = (
@@ -357,6 +358,32 @@ export const getPickLists = () => {
     } catch {
       dispatch(setConnectionCheck(false));
       tryToGetPickListsFromStorage();
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getGovernanceOrgList = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetch(
+        `${constants.API_HOST}/governance/meta/orgList`,
+      );
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+
+        const results = await response.json();
+        dispatch({
+          type: actions.GET_GOVERNANCE_ORG_LIST,
+          payload: results,
+        });
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
