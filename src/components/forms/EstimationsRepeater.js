@@ -6,10 +6,15 @@ import {
   CreateEstimationsForm,
 } from '..';
 
-function EstimationsRepeater({ estimationsState, setEstimationsState }) {
+function EstimationsRepeater({
+  estimationsState,
+  setEstimationsState,
+  useToolTip,
+}) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
+        useToolTip={useToolTip}
         maxRepetitions={100}
         values={estimationsState}
         updateValues={setEstimationsState}

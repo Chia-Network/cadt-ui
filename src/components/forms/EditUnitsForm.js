@@ -139,8 +139,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
+                    sx={{ cursor: 'pointer' }}>
                     <StepLabel>
                       {intl.formatMessage({
                         id: step,
@@ -152,8 +151,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}
-            >
+              index={0}>
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
@@ -170,6 +168,9 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <UnitLabelsRepeater
+                useToolTip={intl.formatMessage({
+                  id: 'labels-units-optional',
+                })}
                 labelsState={unit.labels}
                 newLabelsState={value =>
                   setUnit(prev => ({

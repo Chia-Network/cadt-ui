@@ -1,10 +1,11 @@
 import React from 'react';
 import { AddIcon, CloseIcon, ComponentRepeater, CreateRatingsForm } from '..';
 
-function RatingsRepeater({ ratingsState, setRatingsState }) {
+function RatingsRepeater({ ratingsState, setRatingsState, useToolTip }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
+        useToolTip={useToolTip}
         maxRepetitions={100}
         values={ratingsState}
         updateValues={setRatingsState}
