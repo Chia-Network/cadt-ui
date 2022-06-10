@@ -27,12 +27,16 @@ const initialState = {
   totalUnitsPages: null,
   myOrgUid: null,
   governanceOrgList: null,
+  isGovernance: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case climateWarehouseActions.GET_ORGANIZATIONS:
       return u({ organizations: action.payload }, state);
+
+    case climateWarehouseActions.SET_IS_GOVERNANCE:
+      return u({ isGovernance: action.payload }, state);
 
     case climateWarehouseActions.GET_GOVERNANCE_ORG_LIST:
       return u({ governanceOrgList: action.payload }, state);

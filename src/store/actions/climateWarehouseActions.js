@@ -54,6 +54,7 @@ export const actions = keyMirror(
   'GET_MY_PROJECTS',
   'SET_MY_ORG_UID',
   'GET_GOVERNANCE_ORG_LIST',
+  'SET_IS_GOVERNANCE',
 );
 
 const getClimateWarehouseTable = (
@@ -160,6 +161,9 @@ export const getOrganizationData = () => {
         const results = await response.json();
 
         dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
+        dispatch(
+          setIsGovernance(response.headers.get('x-governance-body') === 'true'),
+        );
 
         const myOrgUid = getMyOrgUid(results);
         dispatch(setMyOrgUid(myOrgUid));
@@ -178,6 +182,11 @@ export const getOrganizationData = () => {
     }
   };
 };
+
+export const setIsGovernance = isGovernance => ({
+  type: actions.SET_IS_GOVERNANCE,
+  payload: isGovernance,
+});
 
 export const getConflictsData = () => {
   return async dispatch => {

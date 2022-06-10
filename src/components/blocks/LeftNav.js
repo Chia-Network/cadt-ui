@@ -73,6 +73,7 @@ const LeftNav = withTheme(({ children }) => {
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
   const intl = useIntl();
   const { readOnlyMode } = useSelector(state => state.app);
+  const { isGovernance } = useSelector(state => state.climateWarehouse);
   const dispatch = useDispatch();
   const [myOrgUid, isMyOrgPending] = useSelector(store => getHomeOrg(store));
 
@@ -173,14 +174,14 @@ const LeftNav = withTheme(({ children }) => {
               </ButtonText>
             </StyledTitleContainer>
             {!myOrgIsNotCreated && !isMyOrgPending && (
-              <>
-                <MenuItem selected={isOrganizationPage} to="/organization">
-                  <FormattedMessage id="my-organization" />
-                </MenuItem>
-                <MenuItem selected={isGovernancePage} to="/governance">
-                  <FormattedMessage id="governance" />
-                </MenuItem>
-              </>
+              <MenuItem selected={isOrganizationPage} to="/organization">
+                <FormattedMessage id="my-organization" />
+              </MenuItem>
+            )}
+            {!myOrgIsNotCreated && !isMyOrgPending && isGovernance && (
+              <MenuItem selected={isGovernancePage} to="/governance">
+                <FormattedMessage id="governance" />
+              </MenuItem>
             )}
             {myOrgIsNotCreated && (
               <MenuItem
