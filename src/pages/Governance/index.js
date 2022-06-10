@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -15,6 +14,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getGovernanceOrgList,
+  getIsGovernanceCreated,
+  initiateGovernance,
   updateGovernanceOrgLists,
   updateGovernancePickLists,
 } from '../../store/actions/climateWarehouseActions';
@@ -53,10 +54,13 @@ const Governance = () => {
     JSON.stringify({}),
   );
   const [orgListTextarea, setOrgListTextarea] = useState(JSON.stringify([]));
-  const { pickLists, governanceOrgList } = useSelector(
+  const { pickLists, governanceOrgList, isGovernanceCreated } = useSelector(
     store => store.climateWarehouse,
   );
   const dispatch = useDispatch();
+  const [isGovernanceInitiated, setIsGovernanceInitiated] = useState(
+    localStorage.getItem('IsGovernanceInitiated') || false,
+  );
 
   useEffect(() => {
     dispatch(getGovernanceOrgList());
@@ -102,23 +106,40 @@ const Governance = () => {
     [orgListTextarea],
   );
 
-  const handleOnSend = () => {
+  const handleOnSend = useCallback(() => {
     if (isOrgListValid && arePickListsValid) {
       dispatch(updateGovernanceOrgLists(orgListTextarea));
       dispatch(updateGovernancePickLists(picklistsTextarea));
     }
-  };
+  }, [isOrgListValid, arePickListsValid, orgListTextarea, picklistsTextarea]);
 
-  const isSendButtonDisabled = !arePickListsValid || !isOrgListValid;
-  const isGovernanceInitiated = false;
-  const isGovernancePending = false;
+  const handleInitiateGovernance = useCallback(() => {
+    dispatch(initiateGovernance());
+    setIsGovernanceInitiated(true);
+    localStorage.setItem('IsGovernanceInitiated', 'true');
+  }, [isGovernanceCreated, setIsGovernanceInitiated]);
+
+  // if governance is initiated, call api each 30 seconds to check whether governance has been created
+  useEffect(() => {
+    let id = null;
+    if (isGovernanceInitiated) {
+      id = window.setInterval(() => {
+        if (!isGovernanceCreated) {
+          dispatch(getIsGovernanceCreated());
+        } else if (isGovernanceCreated) {
+          clearInterval(id);
+        }
+      }, 30000);
+    }
+    if (id) return () => clearInterval(id);
+  }, [isGovernanceInitiated, isGovernanceCreated]);
 
   return (
     <StyledGovernanceContainer>
       <H2>
         <FormattedMessage id="governance" />
       </H2>
-      {isGovernanceInitiated && !isGovernancePending && (
+      {isGovernanceCreated && (
         <StyledJSONSectionContainer>
           <StyledJSONContainer>
             <div>
@@ -179,15 +200,20 @@ const Governance = () => {
           <PrimaryButton
             label={intl.formatMessage({ id: 'initiate-governance' })}
             size="large"
-            onClick={() => console.log('pac pac')}
+            onClick={handleInitiateGovernance}
           />
         )}
-        {isGovernanceInitiated && !isGovernancePending && (
+        {isGovernanceInitiated && !isGovernanceCreated && (
+          <H4>
+            <FormattedMessage id="governance-initiating-please-wait" />
+          </H4>
+        )}
+        {isGovernanceCreated && (
           <PrimaryButton
             label={intl.formatMessage({ id: 'send' })}
             size="large"
             onClick={handleOnSend}
-            disabled={isSendButtonDisabled}
+            disabled={!arePickListsValid || !isOrgListValid}
           />
         )}
       </StyledButtonContainer>

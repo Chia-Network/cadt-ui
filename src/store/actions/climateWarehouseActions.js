@@ -55,6 +55,7 @@ export const actions = keyMirror(
   'SET_MY_ORG_UID',
   'GET_GOVERNANCE_ORG_LIST',
   'SET_IS_GOVERNANCE',
+  'GET_IS_GOVERNANCE_CREATED',
 );
 
 const getClimateWarehouseTable = (
@@ -187,6 +188,34 @@ export const setIsGovernance = isGovernance => ({
   type: actions.SET_IS_GOVERNANCE,
   payload: isGovernance,
 });
+
+export const getIsGovernanceCreated = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/governance/exists`,
+      );
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_IS_GOVERNANCE_CREATED,
+          payload: results.created,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
 
 export const getConflictsData = () => {
   return async dispatch => {

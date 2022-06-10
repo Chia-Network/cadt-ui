@@ -384,7 +384,7 @@
   "comment": "Comment",
   "governance": "Governance",
   "initiate-governance": "Initiate Governance",
-  "governance-initiating-please-wait": "Your governance body is initiating, please 5 minutes then refresh.",
+  "governance-initiating-please-wait": "Your governance body is initiating, please wait 5 minutes then refresh.",
   "governance-initiating-failed": "Your governance body could not be initiated.",
   "picklists": "All pick lists",
   "json-is-valid": "JSON is valid",

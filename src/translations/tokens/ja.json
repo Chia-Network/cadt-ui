@@ -366,7 +366,7 @@
   "comment": "コメント",
   "governance": "Governance",
   "initiate-governance": "ガバナンス",
-  "governance-initiating-please-wait": "ガバナンス機関が開始しています。5分後に更新してください。",
+  "governance-initiating-please-wait": "ガバナンス機関が開始しています。5分待ってから更新してください。",
   "governance-initiating-failed": "ガバナンス機関を開始できませんでした。",
   "picklists": "すべての選択リスト",
   "json-is-valid": "JSONは有効です",

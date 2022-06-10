@@ -366,7 +366,7 @@
   "comment": "Comentario",
   "governance": "Gobernancia",
   "initiate-governance": "Iniciar Gobernanza",
-  "governance-initiating-please-wait": "Su órgano de gobierno está iniciando, por favor 5 minutos y luego actualice.",
+  "governance-initiating-please-wait": "Su órgano de gobierno está iniciando, espere 5 minutos y luego actualice.",
   "governance-initiating-failed": "No se pudo iniciar su órgano de gobierno.",
   "picklists": "Todas las listas de selección",
   "json-is-valid": "JSON es válida",
