@@ -34,6 +34,9 @@ const StyledJSONContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  textarea {
+    height: 50vh;
+  }
 `;
 
 const StyledButtonContainer = styled.div`
@@ -42,8 +45,10 @@ const StyledButtonContainer = styled.div`
 
 const Governance = () => {
   const intl = useIntl();
-  const [picklistsTextarea, setPicklistsTextarea] = useState('');
-  const [orgListTextarea, setOrgListTextarea] = useState('');
+  const [picklistsTextarea, setPicklistsTextarea] = useState(
+    JSON.stringify('{}'),
+  );
+  const [orgListTextarea, setOrgListTextarea] = useState(JSON.stringify('[]'));
   const { pickLists, governanceOrgList } = useSelector(
     store => store.climateWarehouse,
   );
@@ -62,12 +67,36 @@ const Governance = () => {
   }, [governanceOrgList]);
 
   const arePickListsValid = useMemo(() => {
-    return isJsonString(picklistsTextarea);
+    const arePickListsAnObject =
+      picklistsTextarea.length > 4 &&
+      picklistsTextarea[0] === '{' &&
+      picklistsTextarea[picklistsTextarea.length - 1] === '}';
+    return arePickListsAnObject && isJsonString(picklistsTextarea);
   }, [picklistsTextarea]);
 
+  const prettyfiedPicklists = useMemo(
+    () =>
+      arePickListsValid
+        ? JSON.stringify(JSON.parse(picklistsTextarea), undefined, 4)
+        : picklistsTextarea,
+    [picklistsTextarea],
+  );
+
   const isOrgListValid = useMemo(() => {
-    return isJsonString(orgListTextarea);
+    const isOrgListAnArray =
+      orgListTextarea.length > 4 &&
+      orgListTextarea[0] === '[' &&
+      orgListTextarea[orgListTextarea.length - 1] === ']';
+    return isOrgListAnArray && isJsonString(orgListTextarea);
   }, [orgListTextarea]);
+
+  const prettyfiedOrgList = useMemo(
+    () =>
+      isOrgListValid
+        ? JSON.stringify(JSON.parse(orgListTextarea), undefined, 4)
+        : orgListTextarea,
+    [orgListTextarea],
+  );
 
   return (
     <StyledGovernanceContainer>
@@ -76,58 +105,67 @@ const Governance = () => {
       </H2>
       <StyledJSONSectionContainer>
         <StyledJSONContainer>
-          <H4>
-            <FormattedMessage id="picklists" />
-          </H4>
-          {arePickListsValid && (
-            <Body>
-              <FormattedMessage id="json-is-valid" />
-            </Body>
-          )}
-          {!arePickListsValid && (
-            <Body>
-              <FormattedMessage id="json-not-valid" />
-            </Body>
-          )}
+          <div>
+            <H4>
+              <FormattedMessage id="picklists" />
+            </H4>
+            {arePickListsValid && (
+              <Body size="Small" color="green">
+                <FormattedMessage id="json-is-valid" />
+              </Body>
+            )}
+            {!arePickListsValid && (
+              <Body size="Small" color="red">
+                <FormattedMessage id="json-not-valid" />
+              </Body>
+            )}
+          </div>
           <Textarea
             size={TextareaSizeEnum.large}
             placeholder={intl.formatMessage({
               id: 'picklists',
             })}
-            value={picklistsTextarea}
+            value={prettyfiedPicklists}
             onChange={e => setPicklistsTextarea(e.target.value)}
             state={TextareaStateEnum.default}
           />
         </StyledJSONContainer>
         <StyledJSONContainer>
-          <H4>
-            <FormattedMessage id="all-organizations" />
-          </H4>
-          {isOrgListValid && (
-            <Body>
-              <FormattedMessage id="json-is-valid" />
-            </Body>
-          )}
-          {!isOrgListValid && (
-            <Body>
-              <FormattedMessage id="json-not-valid" />
-            </Body>
-          )}
-
+          <div>
+            <H4>
+              <FormattedMessage id="all-organizations" />
+            </H4>
+            {isOrgListValid && (
+              <Body size="Small" color="green">
+                <FormattedMessage id="json-is-valid" />
+              </Body>
+            )}
+            {!isOrgListValid && (
+              <Body size="Small" color="red">
+                <FormattedMessage id="json-not-valid" />
+              </Body>
+            )}
+          </div>
           <Textarea
             size={TextareaSizeEnum.large}
             placeholder={intl.formatMessage({
               id: 'all-organizations',
             })}
-            value={orgListTextarea}
+            value={prettyfiedOrgList}
             onChange={e => setOrgListTextarea(e.target.value)}
             state={TextareaStateEnum.default}
           />
         </StyledJSONContainer>
       </StyledJSONSectionContainer>
       <StyledButtonContainer>
-        <PrimaryButton
+        {/* <PrimaryButton
           label={intl.formatMessage({ id: 'initiate-governance' })}
+          size="large"
+          onClick={() => console.log('pac pac')}
+        /> */}
+        <PrimaryButton
+          disabled={!isOrgListValid && !arePickListsValid}
+          label={intl.formatMessage({ id: 'Send' })}
           size="large"
           onClick={() => console.log('pac pac')}
         />
