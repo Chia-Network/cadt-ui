@@ -14,7 +14,7 @@ export const PaginationContainer = styled('div')`
   gap: 8px;
   width: 100%;
   color: #8c8c8c;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
 `;
 
 export const ControlsContainer = styled('div')`
