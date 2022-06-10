@@ -5,7 +5,7 @@ import { CreateUnitLabelsForm } from '.';
 import { ComponentRepeater } from '..';
 import { getLabels } from '../../store/actions/climateWarehouseActions';
 
-function UnitLabelsRepeater({ labelsState, newLabelsState }) {
+function UnitLabelsRepeater({ labelsState, newLabelsState, useToolTip }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,6 +15,7 @@ function UnitLabelsRepeater({ labelsState, newLabelsState }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
+        useToolTip={useToolTip}
         maxRepetitions={100}
         values={labelsState}
         updateValues={newLabelsState}

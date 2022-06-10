@@ -6,10 +6,12 @@ import { ComponentRepeater } from '..';
 function RelatedProjectsRepeater({
   relatedProjectsState,
   setRelatedProjectsState,
+  useToolTip
 }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
+      useToolTip={useToolTip}
         maxRepetitions={100}
         values={relatedProjectsState}
         updateValues={setRelatedProjectsState}

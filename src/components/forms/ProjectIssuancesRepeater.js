@@ -5,7 +5,12 @@ import { CreateProjectIssuancesForm } from '.';
 import { ComponentRepeater } from '..';
 import { getIssuances } from '../../store/actions/climateWarehouseActions';
 
-function ProjectIssuancesRepeater({ issuanceState, newIssuanceState, max = 30 }) {
+function ProjectIssuancesRepeater({
+  issuanceState,
+  newIssuanceState,
+  useToolTip,
+  max = 30,
+}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,6 +20,7 @@ function ProjectIssuancesRepeater({ issuanceState, newIssuanceState, max = 30 })
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
+        useToolTip={useToolTip}
         maxRepetitions={max}
         values={issuanceState}
         updateValues={newIssuanceState}
