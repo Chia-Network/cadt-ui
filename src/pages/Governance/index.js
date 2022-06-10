@@ -13,7 +13,11 @@ import {
   Body,
 } from '../../components';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGovernanceOrgList } from '../../store/actions/climateWarehouseActions';
+import {
+  getGovernanceOrgList,
+  updateGovernanceOrgLists,
+  updateGovernancePickLists,
+} from '../../store/actions/climateWarehouseActions';
 import { isJsonString } from '../../utils/json';
 
 const StyledGovernanceContainer = styled('div')`
@@ -98,6 +102,13 @@ const Governance = () => {
     [orgListTextarea],
   );
 
+  const handleOnSend = () => {
+    if (isOrgListValid && arePickListsValid) {
+      dispatch(updateGovernanceOrgLists(orgListTextarea));
+      dispatch(updateGovernancePickLists(picklistsTextarea));
+    }
+  };
+
   return (
     <StyledGovernanceContainer>
       <H2>
@@ -167,7 +178,7 @@ const Governance = () => {
           disabled={!isOrgListValid && !arePickListsValid}
           label={intl.formatMessage({ id: 'Send' })}
           size="large"
-          onClick={() => console.log('pac pac')}
+          onClick={handleOnSend}
         />
       </StyledButtonContainer>
     </StyledGovernanceContainer>

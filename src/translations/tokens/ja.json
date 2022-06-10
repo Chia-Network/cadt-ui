@@ -364,7 +364,6 @@
   "governance-data-failed": "ガバナンスデータを読み込めませんでした。管理者に連絡してください。",
   "ui-data-model-mismatch": "UIとデータモデルの間に不一致があります。",
   "comment": "コメント",
-  "organization-information": "組織情報",
   "governance": "Governance",
   "initiate-governance": "ガバナンス",
   "governance-initiating-please0wait": "ガバナンス機関が開始しています。5分後に更新してください。",
@@ -372,5 +371,9 @@
   "json-is-valid": "JSONは有効です",
   "json-not-valid": "JSONは有効です",
   "valid-json-example": "有効なJSONの例",
-  "send": "送信"
+  "send": "送信",
+  "governance-picklists-updated-successfully": "ガバナンス選択リストは正常に更新されました。",
+  "governance-picklists-update-failed": "ガバナンス選択リストを更新できませんでした。",
+  "governance-orglist-updated-successfully": "ガバナンス組織リストが正常に更新されました。",
+  "governance-orglist-update-failed": "ガバナンス組織リストを更新できませんでした。"
 }

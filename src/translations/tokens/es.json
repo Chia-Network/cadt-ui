@@ -371,5 +371,9 @@
   "json-is-valid": "JSON es válida",
   "json-not-valid": "Agregue JSON válido",
   "valid-json-example": "Ejemplo válido de JSON",
-  "send": "Enviar"
+  "send": "Enviar",
+  "governance-picklists-updated-successfully": "Las listas de selección de gobernanza se actualizaron correctamente.",
+  "governance-picklists-update-failed": "Las listas de selección de gobernanza no se pudieron actualizar.",
+  "governance-orglist-updated-successfully": "La lista de organizaciones de gobierno se actualizó correctamente.",
+  "governance-orglist-update-failed": "No se pudo actualizar la lista de organizaciones de gobierno."
 }
