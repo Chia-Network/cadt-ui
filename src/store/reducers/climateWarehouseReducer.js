@@ -29,6 +29,7 @@ const initialState = {
   governanceOrgList: null,
   isGovernance: null,
   isGovernanceCreated: null,
+  isGovernanceInitiated: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -38,6 +39,9 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.SET_IS_GOVERNANCE:
       return u({ isGovernance: action.payload }, state);
+
+    case climateWarehouseActions.SET_IS_GOVERNANCE_INITIATED:
+      return u({ isGovernanceInitiated: action.payload }, state);
 
     case climateWarehouseActions.GET_IS_GOVERNANCE_CREATED:
       return u({ isGovernanceCreated: action.payload }, state);

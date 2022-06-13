@@ -56,6 +56,7 @@ export const actions = keyMirror(
   'GET_GOVERNANCE_ORG_LIST',
   'SET_IS_GOVERNANCE',
   'GET_IS_GOVERNANCE_CREATED',
+  'SET_IS_GOVERNANCE_INITIATED',
 );
 
 const getClimateWarehouseTable = (
@@ -706,7 +707,7 @@ export const updateGovernancePickLists = data => {
     try {
       dispatch(activateProgressIndicator);
 
-      const url = `${constants.API_HOST}/governance/meta/pickLists`;
+      const url = `${constants.API_HOST}/governance/meta/pickList`;
       const payload = {
         method: 'POST',
         headers: {
@@ -751,6 +752,11 @@ export const updateGovernancePickLists = data => {
   };
 };
 
+export const setIsGovernanceInitiated = () => ({
+  type: actions.SET_IS_GOVERNANCE_INITIATED,
+  payload: true,
+});
+
 export const initiateGovernance = () => {
   return async dispatch => {
     try {
@@ -768,6 +774,7 @@ export const initiateGovernance = () => {
 
       if (response.ok) {
         dispatch(setConnectionCheck(true));
+        dispatch(setIsGovernanceInitiated());
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
