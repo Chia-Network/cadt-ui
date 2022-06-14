@@ -152,7 +152,7 @@ const Modal = withTheme(
     const intl = useIntl();
 
     return (
-      <MaskContainer>
+      <MaskContainer onClick={onClose}>
         <ModalContainer
           modalType={modalType}
           top={modalSizeAndPosition?.top}
