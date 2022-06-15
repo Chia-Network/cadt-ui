@@ -120,7 +120,7 @@ const DateSelect = ({
               <Input
                 ref={inputRef}
                 {...inputProps}
-                placeholder="Select Date"
+                placeholder="YYYY-MM-DD"
                 disabled={disabled}
               />
               {InputProps?.endAdornment}
