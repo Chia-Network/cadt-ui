@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 
-import { StandardInputFormik } from '../form/StandardInputFormik';
 import {
   Modal,
   Body,
@@ -31,6 +30,7 @@ import {
 import { splitUnitValidationSchema } from '../../store/validations';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
 import { ErrorFormik } from '../form/ErrorFormik';
+import { StandardInput } from '../form/StandardInput';
 
 const SplitUnitFormik = ({ onClose, record }) => {
   const { units, pickLists } = useSelector(store => store.climateWarehouse);
@@ -164,7 +164,7 @@ const SplitUnitFormik = ({ onClose, record }) => {
                       </Body>
                     </StyledLabelContainer>
                     <InputContainer>
-                      <StandardInputFormik
+                      <StandardInput
                         size={InputSizeEnum.large}
                         placeholderText={intl.formatMessage({
                           id: 'nr-of-units',
@@ -181,7 +181,9 @@ const SplitUnitFormik = ({ onClose, record }) => {
                         }
                         name={`[${index}].unitCount`}
                         value={unit.unitCount}
-                        onChange={formik.handleChange}
+                        onChange={value =>
+                          formik.setFieldValue(`[${index}].unitCount`, value)
+                        }
                         onBlur={formik.handleBlur}
                       />
                     </InputContainer>
@@ -212,7 +214,7 @@ const SplitUnitFormik = ({ onClose, record }) => {
                       </Body>
                     </StyledLabelContainer>
                     <InputContainer>
-                      <StandardInputFormik
+                      <StandardInput
                         size={InputSizeEnum.large}
                         placeholderText={intl.formatMessage({
                           id: 'unit-owner',
@@ -229,7 +231,9 @@ const SplitUnitFormik = ({ onClose, record }) => {
                         }
                         value={unit.unitOwner}
                         name={`[${index}].unitOwner`}
-                        onChange={formik.handleChange}
+                        onChange={value =>
+                          formik.setFieldValue(`[${index}].unitOwner`, value)
+                        }
                         onBlur={formik.handleBlur}
                       />
                     </InputContainer>
@@ -254,7 +258,7 @@ const SplitUnitFormik = ({ onClose, record }) => {
                       </Body>
                     </StyledLabelContainer>
                     <InputContainer>
-                      <StandardInputFormik
+                      <StandardInput
                         size={InputSizeEnum.large}
                         placeholderText={intl.formatMessage({
                           id: 'unit-block-start',
@@ -271,7 +275,12 @@ const SplitUnitFormik = ({ onClose, record }) => {
                         }
                         value={unit.unitBlockStart}
                         name={`[${index}].unitBlockStart`}
-                        onChange={formik.handleChange}
+                        onChange={value =>
+                          formik.setFieldValue(
+                            `[${index}].unitBlockStart`,
+                            value,
+                          )
+                        }
                         onBlur={formik.handleBlur}
                       />
                     </InputContainer>
@@ -296,7 +305,7 @@ const SplitUnitFormik = ({ onClose, record }) => {
                       </Body>
                     </StyledLabelContainer>
                     <InputContainer>
-                      <StandardInputFormik
+                      <StandardInput
                         size={InputSizeEnum.large}
                         placeholderText={intl.formatMessage({
                           id: 'unit-block-end',
@@ -313,7 +322,9 @@ const SplitUnitFormik = ({ onClose, record }) => {
                         }
                         value={unit.unitBlockEnd}
                         name={`[${index}].unitBlockEnd`}
-                        onChange={formik.handleChange}
+                        onChange={value =>
+                          formik.setFieldValue(`[${index}].unitBlockEnd`, value)
+                        }
                         onBlur={formik.handleBlur}
                       />
                     </InputContainer>
@@ -379,7 +390,7 @@ const SplitUnitFormik = ({ onClose, record }) => {
                       </Body>
                     </StyledLabelContainer>
                     <InputContainer>
-                      <StandardInputFormik
+                      <StandardInput
                         size={InputSizeEnum.large}
                         placeholderText={intl.formatMessage({
                           id: 'in-country-jurisdiction-of-owner',
@@ -391,7 +402,12 @@ const SplitUnitFormik = ({ onClose, record }) => {
                         }
                         value={unit.inCountryJurisdictionOfOwner}
                         name={`[${index}].inCountryJurisdictionOfOwner`}
-                        onChange={formik.handleChange}
+                        onChange={value =>
+                          formik.setFieldValue(
+                            `[${index}].inCountryJurisdictionOfOwner`,
+                            value,
+                          )
+                        }
                         onBlur={formik.handleBlur}
                       />
                     </InputContainer>
