@@ -147,13 +147,14 @@ const Modal = withTheme(
     modalSizeAndPosition,
     extraButtonLabel,
     extraButtonOnClick,
-    addComponent
+    addComponent,
   }) => {
     const intl = useIntl();
 
     return (
-      <MaskContainer>
+      <MaskContainer onClick={onClose}>
         <ModalContainer
+          onClick={e => e.stopPropagation()}
           modalType={modalType}
           top={modalSizeAndPosition?.top}
           left={modalSizeAndPosition?.left}
