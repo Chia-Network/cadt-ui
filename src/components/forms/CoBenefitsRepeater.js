@@ -3,15 +3,20 @@ import { AddIcon, CloseIcon } from '..';
 import { CreateCoBenefitsForm } from '.';
 import { ComponentRepeater } from '..';
 
-function CoBenefitsRepeater({ coBenefitsState, setNewCoBenefitsState }) {
+function CoBenefitsRepeater({
+  coBenefitsState,
+  setNewCoBenefitsState,
+  useToolTip,
+}) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
+        useToolTip={useToolTip}
         maxRepetitions={100}
         values={coBenefitsState}
         updateValues={setNewCoBenefitsState}
         initialValue={{
-          cobenefit: ''
+          cobenefit: '',
         }}
         component={<CreateCoBenefitsForm />}
         addIcon={<AddIcon height={14} width={14} fill={'#1890FF'} />}

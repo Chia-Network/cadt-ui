@@ -13,7 +13,11 @@ import {
 } from '../../store/actions/climateWarehouseActions';
 import UnitIssuanceRepeater from './UnitIssuanceRepeater';
 import UnitLabelsRepeater from './UnitLabelsRepeater';
-import { TabPanel, Modal, modalTypeEnum } from '..';
+import {
+  TabPanel,
+  Modal,
+  modalTypeEnum,
+} from '..';
 import { unitsSchema } from '../../store/validations';
 import { UnitDetailsForm } from '.';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
@@ -140,8 +144,7 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
+                    sx={{ cursor: 'pointer' }}>
                     <StepLabel>
                       {intl.formatMessage({
                         id: step,
@@ -153,8 +156,7 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}
-            >
+              index={0}>
               <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
@@ -171,6 +173,9 @@ const CreateUnitsForm = ({ onClose, modalSizeAndPosition }) => {
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <UnitLabelsRepeater
+                useToolTip={intl.formatMessage({
+                  id: 'labels-units-optional',
+                })}
                 labelsState={unit?.labels ?? []}
                 newLabelsState={value =>
                   setUnit(prev => ({

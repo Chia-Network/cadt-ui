@@ -125,8 +125,7 @@ const EditProjectsForm = ({
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
+                    sx={{ cursor: 'pointer' }}>
                     <StepLabel>
                       {intl.formatMessage({
                         id: stepTranslationId,
@@ -139,8 +138,7 @@ const EditProjectsForm = ({
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}
-              >
+                index={0}>
                 <ProjectDetailsForm
                   projectDetails={project}
                   setProjectDetails={setProject}
@@ -148,6 +146,9 @@ const EditProjectsForm = ({
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <ProjectIssuancesRepeater
+                  useToolTip={intl.formatMessage({
+                    id: 'issuances-optional',
+                  })}
                   issuanceState={project?.issuances ?? []}
                   newIssuanceState={value =>
                     setProject(prev => ({
@@ -159,6 +160,9 @@ const EditProjectsForm = ({
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <LocationsRepeater
+                  useToolTip={intl.formatMessage({
+                    id: 'locations-optional',
+                  })}
                   locationsState={project?.projectLocations ?? []}
                   setLocationsState={value =>
                     setProject(prev => ({
@@ -170,6 +174,9 @@ const EditProjectsForm = ({
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
                 <EstimationsRepeater
+                  useToolTip={intl.formatMessage({
+                    id: 'estimations-optional',
+                  })}
                   estimationsState={project?.estimations ?? []}
                   setEstimationsState={value =>
                     setProject(prev => ({
@@ -181,6 +188,9 @@ const EditProjectsForm = ({
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
                 <ProjectLabelsRepeater
+                  useToolTip={intl.formatMessage({
+                    id: 'labels-optional',
+                  })}
                   labelsState={project?.labels ?? []}
                   newLabelsState={value =>
                     setProject(prev => ({
@@ -192,6 +202,9 @@ const EditProjectsForm = ({
               </TabPanel>
               <TabPanel value={tabValue} index={5}>
                 <RatingsRepeater
+                  useToolTip={intl.formatMessage({
+                    id: 'ratings-optional',
+                  })}
                   ratingsState={project?.projectRatings ?? []}
                   setRatingsState={value =>
                     setProject(prev => ({
@@ -204,6 +217,9 @@ const EditProjectsForm = ({
 
               <TabPanel value={tabValue} index={6}>
                 <CoBenefitsRepeater
+                  useToolTip={intl.formatMessage({
+                    id: 'cobenefits-optional',
+                  })}
                   coBenefitsState={project?.coBenefits ?? []}
                   setNewCoBenefitsState={value =>
                     setProject(prev => ({
@@ -216,6 +232,9 @@ const EditProjectsForm = ({
 
               <TabPanel value={tabValue} index={7}>
                 <RelatedProjectsRepeater
+                  useToolTip={intl.formatMessage({
+                    id: 'relatedprojects-optional',
+                  })}
                   relatedProjectsState={project?.relatedProjects ?? []}
                   setRelatedProjectsState={value =>
                     setProject(prev => ({

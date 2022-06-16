@@ -5,6 +5,8 @@ import _ from 'lodash';
 
 import { Body } from '../typography';
 import { FormattedMessage } from 'react-intl';
+import { ToolTipContainer } from '.';
+import { DescriptionIcon } from '..';
 
 const StyledRepeatedComponentContainer = styled('div')`
   display: flex;
@@ -22,6 +24,7 @@ const ComponentRepeater = ({
   initialValue,
   addIcon,
   removeIcon,
+  useToolTip,
   maxRepetitions = 2,
   minRepetitions = 0,
 }) => {
@@ -76,6 +79,11 @@ const ComponentRepeater = ({
           {addIcon}
           <Body color="#1890ff">
             <FormattedMessage id="click-to-add" />
+            {useToolTip && (
+              <ToolTipContainer tooltip={useToolTip}>
+                <DescriptionIcon height="14" width="20" />
+              </ToolTipContainer>
+            )}
           </Body>
         </StyledRepeatedComponentContainer>
       )}

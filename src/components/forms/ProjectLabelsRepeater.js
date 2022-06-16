@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AddIcon, CloseIcon } from '..';
-import { CreateProjectLabelsForm } from '.'; 
+import { CreateProjectLabelsForm } from '.';
 import { ComponentRepeater } from '..';
 import { getLabels } from '../../store/actions/climateWarehouseActions';
 
-function ProjectLabelsRepeater({ labelsState, newLabelsState }) {
+function ProjectLabelsRepeater({ labelsState, newLabelsState, useToolTip }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,6 +15,7 @@ function ProjectLabelsRepeater({ labelsState, newLabelsState }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
+        useToolTip={useToolTip}
         maxRepetitions={100}
         values={labelsState}
         updateValues={newLabelsState}

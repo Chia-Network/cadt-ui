@@ -53,6 +53,10 @@ export const actions = keyMirror(
   'GET_STAGING_UNITS_PAGES',
   'GET_MY_PROJECTS',
   'SET_MY_ORG_UID',
+  'GET_GOVERNANCE_ORG_LIST',
+  'SET_IS_GOVERNANCE',
+  'GET_IS_GOVERNANCE_CREATED',
+  'SET_IS_GOVERNANCE_INITIATED',
 );
 
 const getClimateWarehouseTable = (
@@ -159,6 +163,9 @@ export const getOrganizationData = () => {
         const results = await response.json();
 
         dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
+        dispatch(
+          setIsGovernance(response.headers.get('x-governance-body') === 'true'),
+        );
 
         const myOrgUid = getMyOrgUid(results);
         dispatch(setMyOrgUid(myOrgUid));
@@ -166,6 +173,39 @@ export const getOrganizationData = () => {
         dispatch({
           type: actions.GET_ORGANIZATIONS,
           payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const setIsGovernance = isGovernance => ({
+  type: actions.SET_IS_GOVERNANCE,
+  payload: isGovernance,
+});
+
+export const getIsGovernanceCreated = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/governance/exists`,
+      );
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_IS_GOVERNANCE_CREATED,
+          payload: results.created,
         });
       } else {
         dispatch(setConnectionCheck(false));
@@ -357,6 +397,32 @@ export const getPickLists = () => {
     } catch {
       dispatch(setConnectionCheck(false));
       tryToGetPickListsFromStorage();
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getGovernanceOrgList = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetch(
+        `${constants.API_HOST}/governance/meta/orgList`,
+      );
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+
+        const results = await response.json();
+        dispatch({
+          type: actions.GET_GOVERNANCE_ORG_LIST,
+          payload: results,
+        });
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -627,6 +693,161 @@ export const commitStagingData = (data, comment) => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'transactions-not-committed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const updateGovernancePickLists = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/governance/meta/pickList`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'governance-picklists-updated-successfully',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'governance-picklists-update-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'governance-picklists-update-failed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const setIsGovernanceInitiated = () => ({
+  type: actions.SET_IS_GOVERNANCE_INITIATED,
+  payload: true,
+});
+
+export const initiateGovernance = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/governance`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(setIsGovernanceInitiated());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'governance-initiating-please-wait',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'governance-initiating-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'governance-initiating-failed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const updateGovernanceOrgLists = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/governance/meta/orgList`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'governance-orglist-updated-successfully',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'governance-orglist-update-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'governance-orglist-update-failed',
         ),
       );
       dispatch(setConnectionCheck(false));

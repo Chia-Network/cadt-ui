@@ -3,13 +3,11 @@ import { AddIcon, CloseIcon } from '..';
 import { CreateLocationsForm } from './CreateLocationsForm';
 import { ComponentRepeater } from '..';
 
-function LocationsRepeater({
-  locationsState,
-  setLocationsState,
-}) {
+function LocationsRepeater({ locationsState, setLocationsState, useToolTip }) {
   return (
     <div style={{ padding: '20px 30px' }}>
       <ComponentRepeater
+        useToolTip={useToolTip}
         maxRepetitions={100}
         values={locationsState}
         updateValues={setLocationsState}
