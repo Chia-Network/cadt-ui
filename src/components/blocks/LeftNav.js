@@ -73,6 +73,7 @@ const LeftNav = withTheme(({ children }) => {
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
   const intl = useIntl();
   const { readOnlyMode } = useSelector(state => state.app);
+  const { isGovernance } = useSelector(state => state.climateWarehouse);
   const dispatch = useDispatch();
   const [myOrgUid, isMyOrgPending] = useSelector(store => getHomeOrg(store));
 
@@ -95,6 +96,7 @@ const LeftNav = withTheme(({ children }) => {
   const isMyRegistryPage = location.search.includes('myRegistry=true');
   const isOrganizationPage = location.pathname.includes('/organization');
   const isConflictsPage = location.pathname.includes('/conflicts');
+  const isGovernancePage = location.pathname.includes('/governance');
 
   return (
     <Container>
@@ -174,6 +176,11 @@ const LeftNav = withTheme(({ children }) => {
             {!myOrgIsNotCreated && !isMyOrgPending && (
               <MenuItem selected={isOrganizationPage} to="/organization">
                 <FormattedMessage id="my-organization" />
+              </MenuItem>
+            )}
+            {!myOrgIsNotCreated && !isMyOrgPending && isGovernance && (
+              <MenuItem selected={isGovernancePage} to="/governance">
+                <FormattedMessage id="governance" />
               </MenuItem>
             )}
             {myOrgIsNotCreated && (

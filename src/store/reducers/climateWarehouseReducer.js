@@ -26,12 +26,28 @@ const initialState = {
   totalProjectsPages: null,
   totalUnitsPages: null,
   myOrgUid: null,
+  governanceOrgList: null,
+  isGovernance: null,
+  isGovernanceCreated: null,
+  isGovernanceInitiated: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case climateWarehouseActions.GET_ORGANIZATIONS:
       return u({ organizations: action.payload }, state);
+
+    case climateWarehouseActions.SET_IS_GOVERNANCE:
+      return u({ isGovernance: action.payload }, state);
+
+    case climateWarehouseActions.SET_IS_GOVERNANCE_INITIATED:
+      return u({ isGovernanceInitiated: action.payload }, state);
+
+    case climateWarehouseActions.GET_IS_GOVERNANCE_CREATED:
+      return u({ isGovernanceCreated: action.payload }, state);
+
+    case climateWarehouseActions.GET_GOVERNANCE_ORG_LIST:
+      return u({ governanceOrgList: action.payload }, state);
 
     case climateWarehouseActions.SET_MY_ORG_UID:
       return u({ myOrgUid: action.payload }, state);

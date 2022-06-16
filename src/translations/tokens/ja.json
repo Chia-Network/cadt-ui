@@ -376,5 +376,18 @@
   "yup-validation-valid-string": "有効な文字列を追加してください",
   "yup-validation-valid-number": "有効な番号を追加してください",
   "yup-validation-positive-number": "数値は正でなければなりません",
-  "yup-validation-integer": "数値は整数でなければなりません"
+  "yup-validation-integer": "数値は整数でなければなりません",
+  "governance": "Governance",
+  "initiate-governance": "ガバナンス",
+  "governance-initiating-please-wait": "ガバナンス機関が開始しています。5分待ってから更新してください。",
+  "governance-initiating-failed": "ガバナンス機関を開始できませんでした。",
+  "picklists": "すべての選択リスト",
+  "json-is-valid": "JSONは有効です",
+  "json-not-valid": "JSONは有効です",
+  "valid-json-example": "有効なJSONの例",
+  "send": "送信",
+  "governance-picklists-updated-successfully": "ガバナンス選択リストは正常に更新されました。",
+  "governance-picklists-update-failed": "ガバナンス選択リストを更新できませんでした。",
+  "governance-orglist-updated-successfully": "ガバナンス組織リストが正常に更新されました。",
+  "governance-orglist-update-failed": "ガバナンス組織リストを更新できませんでした。"
 }

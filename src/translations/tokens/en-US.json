@@ -394,5 +394,18 @@
   "yup-validation-valid-string": "Add a valid string",
   "yup-validation-valid-number": "Add a valid number",
   "yup-validation-positive-number": "The number must be positive",
-  "yup-validation-integer": "The number must be integer"
+  "yup-validation-integer": "The number must be integer",
+  "governance": "Governance",
+  "initiate-governance": "Initiate Governance",
+  "governance-initiating-please-wait": "Your governance body is initiating, please wait 5 minutes then refresh.",
+  "governance-initiating-failed": "Your governance body could not be initiated.",
+  "picklists": "All pick lists",
+  "json-is-valid": "JSON is valid",
+  "json-not-valid": "Please add valid JSON",
+  "valid-json-example": "Valid JSON example",
+  "send": "Send",
+  "governance-picklists-updated-successfully": "The governance pick lists were updated successfully.",
+  "governance-picklists-update-failed": "The governance pick lists could not be updated.",
+  "governance-orglist-updated-successfully": "The governance organization list was updated successfully.",
+  "governance-orglist-update-failed": "The governance organization list could not be updated."
 }

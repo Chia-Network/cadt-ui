@@ -385,7 +385,9 @@ const Projects = () => {
         )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label={intl.formatMessage({ id: 'committed' })} />
+            <Tab label={`${intl.formatMessage({ id: 'committed' })} (${
+                  projects && projects?.length
+                })`} />
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${

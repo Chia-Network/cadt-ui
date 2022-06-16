@@ -90,6 +90,7 @@ const AppNavigator = () => {
               <Route path="/organization" element={<Pages.Organization />} />
               <Route path="/audit" element={<Pages.Audit />} />
               <Route path="/conflicts" element={<Pages.Conflicts />} />
+              <Route path="/governance" element={<Pages.Governance />} />
               <Route path="*" element={<Navigate to="/projects" />} />
             </Routes>
           </Suspense>
