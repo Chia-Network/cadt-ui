@@ -1,3 +1,29 @@
+## [1.0.5](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.4...1.0.5) (2022-06-16)
+
+
+### Bug Fixes
+
+* close form only when clicking outside ([ff1c6ca](https://github.com/Chia-Network/climate-warehouse-ui/commit/ff1c6ca5aa4ded261af73dae894bbd0763364c24))
+
+
+### Features
+
+* add tooltip for projects and units forms ([2c5e708](https://github.com/Chia-Network/climate-warehouse-ui/commit/2c5e708a396f340849c4d513da0a100eea415208))
+* Added Counter to Committed ([b048735](https://github.com/Chia-Network/climate-warehouse-ui/commit/b0487355fb286ad69680bdb187e271d938fd08a5))
+* added manual input for date ([43ab77f](https://github.com/Chia-Network/climate-warehouse-ui/commit/43ab77fe315aead335dec59e68b59304c79825e9))
+* allow a click outside of detail view to close ([611300b](https://github.com/Chia-Network/climate-warehouse-ui/commit/611300b4c9b963e243c3203fc59e93380452e4e0))
+* build governance UI ([b217231](https://github.com/Chia-Network/climate-warehouse-ui/commit/b217231cf225f013633fdf83bd28c6d8b8bbe7c7))
+* build governance UI ([b4b1840](https://github.com/Chia-Network/climate-warehouse-ui/commit/b4b184083e1377041b956795cefca9de7680748c))
+* build governance UI ([28f2749](https://github.com/Chia-Network/climate-warehouse-ui/commit/28f27495c5fd65dbbfaf7e4a87a753635d66d0a3))
+* build governance UI ([02da026](https://github.com/Chia-Network/climate-warehouse-ui/commit/02da02640360514e58dfffc7c54da2c5ee638ec8))
+* build governance UI ([8e15fc8](https://github.com/Chia-Network/climate-warehouse-ui/commit/8e15fc8bab4d077fefac4a3974a9076fda5bcb4c))
+* build governance UI ([0e1eff2](https://github.com/Chia-Network/climate-warehouse-ui/commit/0e1eff28ab795f5a22b6b273123f507acb9ac150))
+* build governance UI ([cc87084](https://github.com/Chia-Network/climate-warehouse-ui/commit/cc87084397a357df2dd29d5f7342d91ca8f2f2ea))
+* build governance UI ([34af02e](https://github.com/Chia-Network/climate-warehouse-ui/commit/34af02e88471056d8f9a2bf773812d3fa9d2d1fc))
+* build governance UI ([d891d44](https://github.com/Chia-Network/climate-warehouse-ui/commit/d891d4491f3fbc9f9a8be12bc52e7fe8e55093d7))
+
+
+
 ## [1.0.4](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.3...1.0.4) (2022-06-09)
 
 
