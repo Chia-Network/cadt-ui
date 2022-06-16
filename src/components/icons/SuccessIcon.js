@@ -1,8 +1,8 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
-import theme from '../../theme';
 
-const SuccessIcon = withTheme(({ width, height }) => {
+
+const SuccessIcon = withTheme(({ width, height, theme }) => {
   return (
     <>
       <svg

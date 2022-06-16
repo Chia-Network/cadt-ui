@@ -1,8 +1,8 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
-import theme from '../../theme';
 
-const CheckIcon = withTheme(({ width, height }) => {
+
+const CheckIcon = withTheme(({ width, height, theme }) => {
   return (
     <svg
       width={`${width}px`}

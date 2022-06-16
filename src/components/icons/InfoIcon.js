@@ -1,8 +1,8 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
-import theme from '../../theme';
 
-const InfoIcon = withTheme(({ width, height }) => {
+
+const InfoIcon = withTheme(({ width, height, theme }) => {
   return (
     <>
       <svg
