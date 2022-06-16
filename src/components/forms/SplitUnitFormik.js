@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 import React, { useMemo, useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,10 +25,10 @@ import {
   SimpleSelectStateEnum,
   SimpleSelectTypeEnum,
   SimpleSelect,
+  ErrorFormik,
 } from '..';
 import { splitUnitValidationSchema } from '../../store/validations';
 import { splitUnits } from '../../store/actions/climateWarehouseActions';
-import { ErrorFormik } from '../form/ErrorFormik';
 import { StandardInput } from '../form/StandardInput';
 
 const SplitUnitFormik = ({ onClose, record }) => {
@@ -175,7 +174,8 @@ const SplitUnitFormik = ({ onClose, record }) => {
                             : InputStateEnum.disabled
                         }
                         variant={
-                          false
+                          formik?.touched[index]?.unitCount &&
+                          formik?.errors[index]?.unitCount
                             ? InputVariantEnum.error
                             : InputVariantEnum.default
                         }
@@ -220,7 +220,8 @@ const SplitUnitFormik = ({ onClose, record }) => {
                           id: 'unit-owner',
                         })}
                         variant={
-                          false
+                          formik?.touched[index]?.unitOwner &&
+                          formik?.errors[index]?.unitOwner
                             ? InputVariantEnum.error
                             : InputVariantEnum.default
                         }
@@ -264,7 +265,8 @@ const SplitUnitFormik = ({ onClose, record }) => {
                           id: 'unit-block-start',
                         })}
                         variant={
-                          false
+                          formik?.touched[index]?.unitBlockStart &&
+                          formik?.errors[index]?.unitBlockStart
                             ? InputVariantEnum.error
                             : InputVariantEnum.default
                         }
@@ -311,7 +313,8 @@ const SplitUnitFormik = ({ onClose, record }) => {
                           id: 'unit-block-end',
                         })}
                         variant={
-                          false
+                          formik?.touched[index]?.unitBlockEnd &&
+                          formik?.errors[index]?.unitBlockEnd
                             ? InputVariantEnum.error
                             : InputVariantEnum.default
                         }
@@ -399,6 +402,13 @@ const SplitUnitFormik = ({ onClose, record }) => {
                           isUnitDivisible
                             ? InputStateEnum.default
                             : InputStateEnum.disabled
+                        }
+                        variant={
+                          formik?.touched[index]
+                            ?.inCountryJurisdictionOfOwner &&
+                          formik?.errors[index]?.inCountryJurisdictionOfOwner
+                            ? InputVariantEnum.error
+                            : InputVariantEnum.default
                         }
                         value={unit.inCountryJurisdictionOfOwner}
                         name={`[${index}].inCountryJurisdictionOfOwner`}

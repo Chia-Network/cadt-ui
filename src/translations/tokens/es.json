@@ -371,5 +371,10 @@
   "organization-information": "Información de la organización",
   "governance-data-failed": "No se pudieron cargar los datos de gobernanza, comuníquese con el administrador.",
   "ui-data-model-mismatch": "Hay una discrepancia entre la interfaz de usuario y el modelo de datos.",
-  "comment": "Comentario"
+  "comment": "Comentario",
+  "yup-validation-field-required": "Se requiere campo",
+  "yup-validation-valid-string": "Agregar una cadena válida",
+  "yup-validation-valid-number": "Agregar un número válido",
+  "yup-validation-positive-number": "El número debe ser positivo",
+  "yup-validation-integer": "El número debe ser entero"
 }

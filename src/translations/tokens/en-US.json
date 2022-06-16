@@ -389,5 +389,10 @@
   "organization-information": "Organization Information",
   "governance-data-failed": "Governance Data failed to load, please contact admin.",
   "ui-data-model-mismatch": "There is a mismatch between the UI and the data model.",
-  "comment": "Comment"
+  "comment": "Comment",
+  "yup-validation-field-required": "Field is required",
+  "yup-validation-valid-string": "Add a valid string",
+  "yup-validation-valid-number": "Add a valid number",
+  "yup-validation-positive-number": "The number must be positive",
+  "yup-validation-integer": "The number must be integer"
 }

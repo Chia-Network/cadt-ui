@@ -178,6 +178,7 @@ const StandardInput = withTheme(
     type,
     onChange,
     onBlur,
+    name,
   }) => {
     const [inputState, setInputState] = useState(state);
 
@@ -233,6 +234,7 @@ const StandardInput = withTheme(
           value={value}
           onChange={event => onChange(event.target.value)}
           onBlur={onBlur}
+          name={name}
         />
         {suffix && (
           <StyledSuffixPrefixContainer>{suffix}</StyledSuffixPrefixContainer>
