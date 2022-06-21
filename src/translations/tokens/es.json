@@ -321,6 +321,7 @@
   "relatedprojects-optional": "Esta página no es necesaria para crear su Proyecto, pero se puede utilizar para proporcionar información adicional. Si desea proporcionar Proyectos relacionados, utilice el botón 'Hacer clic para agregar' para agregar una entrada para Proyectos relacionados.",
   "labels-units-optional": "Esta página no es necesaria para crear su Unidad, pero se puede utilizar para proporcionar información adicional. Si desea proporcionar Etiquetas, utilice el botón 'Hacer clic para agregar' para agregar una entrada para Etiquetas.",
   "creating-organization": "Creación de Organización",
+  "informational-quote-for-conflicts": "Esta pantalla de conflictos se ha creado para ilustrar cómo un actor del mercado público o privado de la capa de servicio puede consultar los datos que se cargan en el Almacén Climático e identificar posibles conflictos: esta pantalla está destinada a mostrar cómo se pueden detectar y mostrar los conflictos. Tenga en cuenta que esta es una demostración y no formará parte del alcance del Almacén Climático Operativo",
   "public-address": "Direccion publica",
   "address-qr-code": "Dirección Código QR",
   "my-organization": "Mi organización",

@@ -19,8 +19,8 @@ const NotificationCard = styled('div')`
     0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
   background-color: #ffffff;
   border: none;
-  height: ${props => (props.buttonText ? '9rem' : '6.5rem')};
-  width: 25.0625rem;
+  height: ${props => (props.buttonText ? '9rem' : "fit-content")};
+  width: 100%;
 `;
 
 const CloseButton = styled('div')`
@@ -45,6 +45,7 @@ const ConfirmButton = styled('button')`
 `;
 
 const NotificationMessage = styled('div')`
+  margin: 3.125rem;
   display: flex;
   word-wrap: break-word;
   flex-direction: column;
@@ -106,7 +107,7 @@ const Notification = withTheme(
             )}
             <NotificationMessage>
               <Body showIcon={showIcon}>{title}</Body>
-              <Body size="Small" showIcon={showIcon}>
+              <Body size="Large" showIcon={showIcon}>
                 {body}
               </Body>
             </NotificationMessage>
