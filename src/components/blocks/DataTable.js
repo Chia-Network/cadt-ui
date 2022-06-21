@@ -2,14 +2,14 @@ import _ from 'lodash';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { withTheme, css } from 'styled-components';
+
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
 import { BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-
-import { EditUnitsForm, EditProjectsForm } from '..';
+import { UnitEditModal, EditProjectsForm } from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -231,7 +231,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
       </StyledRefContainer>
       <TableDrawer getRecord={getRecord} onClose={() => setRecord(null)} />
       {editUnits && (
-        <EditUnitsForm
+        <UnitEditModal
           onClose={() => {
             setEditUnits(false);
             setEditRecord(null);

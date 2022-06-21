@@ -1,25 +1,24 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
-import { useIntl } from 'react-intl';
+import { Formik } from 'formik';
 
-import { Modal, TabPanel, modalTypeEnum, UnitDetailsForm } from '..';
-import UnitLabelsRepeater from './UnitLabelsRepeater';
-import UnitIssuanceRepeater from './UnitIssuanceRepeater';
-import { unitsSchema } from '../../store/validations';
-import { setValidateForm, setForm } from '../../store/actions/app';
 import {
+  postNewUnits,
   getIssuances,
   getPaginatedData,
-  updateUnitsRecord,
   getMyProjects,
 } from '../../store/actions/climateWarehouseActions';
-import {
-  cleanObjectFromEmptyFieldsOrArrays,
-  formatAPIData,
-} from '../../utils/formatData';
+import UnitIssuanceRepeater from './UnitIssuanceRepeater';
+import UnitLabelsRepeater from './UnitLabelsRepeater';
+import { TabPanel, Modal, modalTypeEnum } from '..';
+import { unitsSchema } from '../../store/validations';
+import { UnitDetailsFormik } from '.';
+import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
+import { setValidateForm, setForm } from '../../store/actions/app';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -28,21 +27,39 @@ const StyledFormContainer = styled('div')`
   padding-top: 10px;
 `;
 
-const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
-  const { myOrgUid } = useSelector(store => store.climateWarehouse);
+const initialState = {
+  projectLocationId: '',
+  unitOwner: '',
+  countryJurisdictionOfOwner: '',
+  inCountryJurisdictionOfOwner: '',
+  unitCount: 0,
+  unitBlockEnd: '',
+  unitBlockStart: '',
+  marketplace: '',
+  marketplaceLink: '',
+  marketplaceIdentifier: '',
+  unitTags: '',
+  unitStatusReason: '',
+  vintageYear: '',
+  unitRegistryLink: '',
+  unitType: '',
+  unitStatus: '',
+  correspondingAdjustmentDeclaration: '',
+  correspondingAdjustmentStatus: '',
+  labels: [],
+  issuance: null,
+};
+
+const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
-  const [unit, setUnit] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const unitToBeEdited = useSelector(
-    state =>
-      state.climateWarehouse.units.filter(
-        unit => unit.warehouseUnitId === record.warehouseUnitId,
-      )[0],
-  );
+  const [unit, setUnit] = useState(initialState);
+  const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
+  const { myOrgUid } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
     if (myOrgUid) {
@@ -52,17 +69,6 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
       localStorage.removeItem('unitSelectedWarehouseProjectId');
     }
   }, []);
-
-  useEffect(() => {
-    const formattedUnitToBeEdited = formatAPIData(unitToBeEdited);
-    setUnit(formattedUnitToBeEdited);
-  }, [unitToBeEdited]);
-
-  useEffect(() => {
-    dispatch(setForm(stepperStepsTranslationIds[tabValue]));
-  }, [tabValue]);
-
-  const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);
@@ -83,43 +89,41 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
         desiredStep >= stepperStepsTranslationIds.length &&
         !apiResponseIsPending
       ) {
-        handleUpdateUnit();
+        handleSubmitUnit();
       } else {
-        dispatch(setValidateForm(false));
         setTabValue(desiredStep);
+        dispatch(setForm(stepperStepsTranslationIds[desiredStep]));
       }
     }
   };
 
-  const handleUpdateUnit = async () => {
+  const handleSubmitUnit = async () => {
     const dataToSend = _.cloneDeep(unit);
-    if (dataToSend.serialNumberBlock) {
-      delete dataToSend.serialNumberBlock;
-    }
     cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-    dispatch(updateUnitsRecord(dataToSend));
+    dispatch(postNewUnits(dataToSend));
   };
 
-  const unitWasSuccessfullyEdited =
-    notification?.id === 'unit-successfully-edited';
+  const unitWasSuccessfullyCreated =
+    notification?.id === 'unit-successfully-created';
+
   useEffect(() => {
-    if (unitWasSuccessfullyEdited) {
+    if (unitWasSuccessfullyCreated) {
       onClose();
     }
   }, [notification]);
 
   return (
-    <>
+    <Formik initialValues={initialState} validationSchema={unitsSchema}>
       <Modal
         modalSizeAndPosition={modalSizeAndPosition}
         onOk={() => onChangeStep(tabValue + 1)}
         onClose={onClose}
         modalType={modalTypeEnum.basic}
         title={intl.formatMessage({
-          id: 'edit-unit',
+          id: 'create-unit',
         })}
         label={intl.formatMessage({
-          id: tabValue < 2 ? 'next' : 'update-unit',
+          id: tabValue < 2 ? 'next' : 'create',
         })}
         extraButtonLabel={
           tabValue > 0
@@ -139,7 +143,8 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}>
+                    sx={{ cursor: 'pointer' }}
+                  >
                     <StepLabel>
                       {intl.formatMessage({
                         id: step,
@@ -151,17 +156,18 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
             <TabPanel
               style={{ paddingTop: '1.25rem' }}
               value={tabValue}
-              index={0}>
-              <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
+              index={0}
+            >
+              <UnitDetailsFormik unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
               <UnitIssuanceRepeater
                 max={1}
-                issuanceState={unit.issuance !== '' ? [unit.issuance] : []}
+                issuanceState={unit.issuance ? [unit.issuance] : []}
                 newIssuanceState={value =>
                   setUnit(prev => ({
                     ...prev,
-                    issuance: value[0] ? value[0] : '',
+                    issuance: value[0] ? value[0] : null,
                   }))
                 }
               />
@@ -171,7 +177,7 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
                 useToolTip={intl.formatMessage({
                   id: 'labels-units-optional',
                 })}
-                labelsState={unit.labels}
+                labelsState={unit?.labels ?? []}
                 newLabelsState={value =>
                   setUnit(prev => ({
                     ...prev,
@@ -183,8 +189,8 @@ const EditUnitsForm = ({ onClose, record, modalSizeAndPosition }) => {
           </StyledFormContainer>
         }
       />
-    </>
+    </Formik>
   );
 };
 
-export { EditUnitsForm };
+export { UnitCreateModalFormik };

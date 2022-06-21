@@ -33,7 +33,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   PrimaryButton,
-  CreateUnitsForm,
+  UnitCreateModalFormik,
   DownloadIcon,
   Tab,
   Tabs,
@@ -386,9 +386,11 @@ const Units = () => {
         </StyledHeaderContainer>
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label={`${intl.formatMessage({ id: 'committed' })} (${
-                  units && units?.length
-                })`} />
+            <Tab
+              label={`${intl.formatMessage({ id: 'committed' })} (${
+                units && units?.length
+              })`}
+            />
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
@@ -474,7 +476,7 @@ const Units = () => {
               </>
             )}
             {create && (
-              <CreateUnitsForm
+              <UnitCreateModalFormik
                 onClose={() => {
                   setCreate(false);
                   dispatch(setForm(null));

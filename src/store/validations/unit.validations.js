@@ -26,7 +26,7 @@ export const unitsSchema = yup.object().shape({
   unitTags: yup.string().optional(),
   unitStatus: yup.string().required('Required Field'),
   unitStatusReason: yup.string().when('unitStatus', {
-    is: val => ['cancelled', 'retired'].includes(val.toLowerCase()),
+    is: val => val && ['cancelled', 'retired'].includes(val.toLowerCase()),
     then: yup.string().required('Required Field'),
     otherwise: yup.string().optional(),
   }),

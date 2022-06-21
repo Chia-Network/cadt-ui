@@ -1,0 +1,870 @@
+import React, { useMemo, useEffect, useCallback, useState } from 'react';
+import { useIntl, FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
+
+import {
+  StandardInput,
+  InputSizeEnum,
+  InputStateEnum,
+  ModalFormContainerStyle,
+  FormContainerStyle,
+  BodyContainer,
+  Body,
+  DescriptionIcon,
+  ToolTipContainer,
+  LabelContainer,
+  FieldRequired,
+  InputContainer,
+  StyledFieldContainer,
+  StyledLabelContainer,
+  InputVariantEnum,
+  YearSelect,
+  DateVariantEnum,
+  RequiredContainer,
+  SpanTwoColumnsContainer,
+  HrSpanTwoColumnsContainer,
+  SimpleSelectSizeEnum,
+  SimpleSelectTypeEnum,
+  SimpleSelectStateEnum,
+  SimpleSelectVariantEnum,
+  SimpleSelect,
+  FormikError,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
+  SelectVariantEnum,
+} from '..';
+
+import { useFormikContext } from 'formik';
+
+const UnitDetailsFormik = () => {
+  const intl = useIntl();
+  const { pickLists, myProjects, issuances } = useSelector(
+    store => store.climateWarehouse,
+  );
+
+  const { values, setFieldValue, handleBlur, errors, touched } =
+    useFormikContext();
+
+  const [selectedWarehouseProjectOption, setSelectedWarehouseProjectOption] =
+    useState(null);
+
+  const projectsSelectOptions = useMemo(() => {
+    if (myProjects) {
+      return myProjects.map(projectItem => ({
+        value: projectItem,
+        label: projectItem.projectName,
+      }));
+    }
+    return [];
+  }, [myProjects]);
+
+  const projectLocationIdOptions = useMemo(() => {
+    if (selectedWarehouseProjectOption?.value?.projectLocations?.length > 0) {
+      return selectedWarehouseProjectOption?.value?.projectLocations?.map(
+        item => item.country,
+      );
+    }
+    return [];
+  }, [selectedWarehouseProjectOption]);
+
+  useEffect(() => {
+    if (
+      values?.issuance &&
+      issuances?.length > 0 &&
+      selectedWarehouseProjectOption === null &&
+      projectsSelectOptions
+    ) {
+      const currentUnitIssuanceId = values.issuance.id;
+
+      const inferredProjectIdOfTheCurrentUnit = issuances.filter(
+        issuanceItem => issuanceItem?.id === currentUnitIssuanceId,
+      )[0]?.warehouseProjectId;
+
+      const inferredProjectOption = inferredProjectIdOfTheCurrentUnit
+        ? projectsSelectOptions.filter(
+            item =>
+              item.value.warehouseProjectId ===
+              inferredProjectIdOfTheCurrentUnit,
+          )[0]
+        : null;
+
+      if (inferredProjectOption) {
+        setSelectedWarehouseProjectOption(inferredProjectOption);
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          inferredProjectOption.value.warehouseProjectId,
+        );
+      }
+    }
+  }, [values, issuances, projectsSelectOptions]);
+
+  const changeSelectedProjectOption = useCallback(
+    selectedProjectOption => {
+      setSelectedWarehouseProjectOption(selectedProjectOption);
+
+      localStorage.removeItem('unitSelectedWarehouseProjectId');
+      const selectedProjectHasIssuances =
+        selectedProjectOption.value?.issuances?.length > 0;
+      if (selectedProjectHasIssuances) {
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          selectedProjectOption.value.warehouseProjectId,
+        );
+      }
+
+      const isCurrentSavedIssuanceOnTheSelectedProject =
+        selectedProjectOption?.value?.issuances.some(
+          issuanceItem => issuanceItem?.id === values?.issuance?.id,
+        );
+      if (!isCurrentSavedIssuanceOnTheSelectedProject) {
+        setFieldValue('projectLocationId', '');
+        setFieldValue('issuance', '');
+      }
+    },
+    [
+      selectedWarehouseProjectOption,
+      setSelectedWarehouseProjectOption,
+      setFieldValue,
+    ],
+  );
+
+  if (!pickLists) {
+    return null;
+  }
+
+  return (
+    <ModalFormContainerStyle>
+      <RequiredContainer>
+        <FieldRequired />
+      </RequiredContainer>
+      <FormContainerStyle>
+        <BodyContainer>
+          {projectsSelectOptions && (
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="select-existing-project" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'select-existing-project',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <Select
+                  size={SelectSizeEnum.large}
+                  type={SelectTypeEnum.basic}
+                  options={projectsSelectOptions}
+                  state={SelectStateEnum.default}
+                  variant={
+                    (!selectedWarehouseProjectOption ||
+                      selectedWarehouseProjectOption?.value?.issuances
+                        ?.length === 0) &&
+                    SelectVariantEnum.error
+                  }
+                  selected={
+                    selectedWarehouseProjectOption
+                      ? [selectedWarehouseProjectOption]
+                      : undefined
+                  }
+                  onChange={selectedOptions =>
+                    changeSelectedProjectOption(selectedOptions[0])
+                  }
+                />
+              </InputContainer>
+              {!selectedWarehouseProjectOption && (
+                <Body size="Small" color="red">
+                  <FormattedMessage id="select-existing-project" />
+                </Body>
+              )}
+              {selectedWarehouseProjectOption?.value?.issuances?.length ===
+                0 && (
+                <Body size="Small" color="red">
+                  {intl.formatMessage({
+                    id: 'select-another-project',
+                  })}
+                </Body>
+              )}
+            </StyledFieldContainer>
+          )}
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  <FormattedMessage id="project-location-id" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-project-location-id-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={projectLocationIdOptions}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  values.projectLocationId
+                    ? [values.projectLocationId]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setFieldValue('projectLocationId', selectedOptions[0])
+                }
+                name="projectLocationId"
+                onBlur={handleBlur}
+              />
+            </InputContainer>
+            <FormikError name="projectLocationId" />
+            {selectedWarehouseProjectOption &&
+              projectLocationIdOptions.length === 0 && (
+                <Body size="Small">
+                  <FormattedMessage id="project-has-no-locations" />
+                </Body>
+              )}
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-owner" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-owner-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errors.unitOwner && touched.unitOwner
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-owner',
+                })}
+                state={InputStateEnum.default}
+                value={values.unitOwner}
+                onChange={value => setFieldValue('unitOwner', value)}
+                onBlur={handleBlur}
+                name="unitOwner"
+              />
+            </InputContainer>
+            <FormikError name="unitOwner" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-block-start" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-block-start-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errors.unitBlockStart && touched.unitBlockStart
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-block-start',
+                })}
+                state={InputStateEnum.default}
+                value={values.unitBlockStart}
+                onChange={value => setFieldValue('unitBlockStart', value)}
+                onBlur={handleBlur}
+                name="unitBlockStart"
+              />
+            </InputContainer>
+            <FormikError name="unitBlockStart" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-block-end" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-block-end-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errors.unitBlockEnd && touched.unitBlockEnd
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-block-end',
+                })}
+                state={InputStateEnum.default}
+                value={values.unitBlockEnd}
+                onChange={value => setFieldValue('unitBlockEnd', value)}
+                onBlur={handleBlur}
+                name="unitBlockEnd"
+              />
+            </InputContainer>
+            <FormikError name="unitBlockEnd" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-count" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-count-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errors.unitCount && touched.unitCount
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-count',
+                })}
+                state={InputStateEnum.default}
+                value={values.unitCount}
+                onChange={value => setFieldValue('unitCount', value)}
+                onBlur={handleBlur}
+                name="unitCount"
+              />
+            </InputContainer>
+            <FormikError name="unitCount" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  <FormattedMessage id="in-country-jurisdiction-of-owner" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-in-country-jurisdiction-of-owner-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errors.inCountryJurisdictionOfOwner &&
+                  touched.inCountryJurisdictionOfOwner
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'in-country-jurisdiction-of-owner',
+                })}
+                state={InputStateEnum.default}
+                value={values.inCountryJurisdictionOfOwner}
+                onChange={value =>
+                  setFieldValue('inCountryJurisdictionOfOwner', value)
+                }
+                onBlur={handleBlur}
+                name="inCountryJurisdictionOfOwner"
+              />
+            </InputContainer>
+            <FormikError name="inCountryJurisdictionOfOwner" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="country-jurisdiction-of-owner" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-country-jurisdiction-of-owner-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                variant={
+                  errors.countryJurisdictionOfOwner &&
+                  touched.countryJurisdictionOfOwner &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.countries}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  values.countryJurisdictionOfOwner
+                    ? [values.countryJurisdictionOfOwner]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setFieldValue(
+                    'countryJurisdictionOfOwner',
+                    selectedOptions[0],
+                  )
+                }
+                onBlur={handleBlur}
+              />
+            </InputContainer>
+            <FormikError name="countryJurisdictionOfOwner" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-type" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-type-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                variant={
+                  errors.unitType &&
+                  touched.unitType &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.unitType}
+                state={SimpleSelectStateEnum.default}
+                selected={values.unitType ? [values.unitType] : undefined}
+                onChange={selectedOptions =>
+                  setFieldValue('unitType', selectedOptions[0])
+                }
+                onBlur={handleBlur}
+              />
+            </InputContainer>
+            <FormikError name="unitType" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-status" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-status-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                variant={
+                  errors.unitStatus &&
+                  touched.unitStatus &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.unitStatus}
+                state={SimpleSelectStateEnum.default}
+                selected={values.unitStatus ? [values.unitStatus] : undefined}
+                onChange={selectedOptions =>
+                  setFieldValue('unitStatus', selectedOptions[0])
+                }
+                onBlur={handleBlur}
+              />
+            </InputContainer>
+            <FormikError name="unitStatus" />
+          </StyledFieldContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body color={'#262626'}>
+                  <LabelContainer>
+                    {['cancelled', 'retired'].includes(
+                      values?.unitStatus?.toLowerCase(),
+                    ) && '*'}
+                    <FormattedMessage id="unit-status-reason" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'units-unit-status-reason-description',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <StandardInput
+                variant={
+                  errors.unitStatusReason && touched.unitStatusReason
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-status-reason',
+                })}
+                state={InputStateEnum.default}
+                value={values.unitStatusReason}
+                onChange={value => setFieldValue('unitStatusReason', value)}
+                onBlur={handleBlur}
+                name="unitStatusReason"
+              />
+              <FormikError name="unitStatusReason" />
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="unit-registry-link" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'units-unit-registry-link-description',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <StandardInput
+                variant={
+                  errors.unitRegistryLink && touched.unitRegistryLink
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-registry-link',
+                })}
+                state={InputStateEnum.default}
+                value={values.unitRegistryLink}
+                onChange={value => setFieldValue('unitRegistryLink', value)}
+                onBlur={handleBlur}
+                name="unitRegistryLink"
+              />
+              <FormikError name="unitRegistryLink" />
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body style={{ color: '#262626' }}>
+                <LabelContainer>
+                  *<FormattedMessage id="vintage-year" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-vintage-year-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <YearSelect
+                variant={
+                  errors.vintageYear && touched.vintageYear
+                    ? DateVariantEnum.error
+                    : undefined
+                }
+                size="large"
+                yearValue={values.vintageYear}
+                onChange={value => {
+                  if (value) {
+                    setFieldValue('vintageYear', value.$y);
+                  }
+                }}
+                name="vintageYear"
+                onBlur={handleBlur}
+              />
+            </InputContainer>
+            <FormikError name="vintageYear" />
+          </StyledFieldContainer>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body color={'#262626'}>
+                <LabelContainer>
+                  <FormattedMessage id="marketplace" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-marketplace-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errors.marketplace && touched.marketplace
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'marketplace',
+                })}
+                state={InputStateEnum.default}
+                value={values.marketplace}
+                onChange={value => setFieldValue('marketplace', value)}
+                onBlur={handleBlur}
+                name="marketplace"
+              />
+            </InputContainer>
+            <FormikError name="marketplace" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body color={'#262626'}>
+                <LabelContainer>
+                  <FormattedMessage id="marketplace-identifier" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-marketplace-identifier-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errors.marketplaceIdentifier && touched.marketplaceIdentifier
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'marketplace-identifier',
+                })}
+                state={InputStateEnum.default}
+                value={values.marketplaceIdentifier}
+                onChange={value =>
+                  setFieldValue('marketplaceIdentifier', value)
+                }
+                onBlur={handleBlur}
+                name="marketplaceIdentifier"
+              />
+            </InputContainer>
+            <FormikError name="marketplaceIdentifier" />
+          </StyledFieldContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body color={'#262626'}>
+                  <LabelContainer>
+                    <FormattedMessage id="marketplace-link" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'units-marketplace-link-description',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <StandardInput
+                variant={
+                  errors.marketplaceLink && touched.marketplaceLink
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'marketplace-link',
+                })}
+                state={InputStateEnum.default}
+                value={values.marketplaceLink}
+                onChange={value => setFieldValue('marketplaceLink', value)}
+                onBlur={handleBlur}
+                name="marketplaceLink"
+              />
+              <FormikError name="marketplaceLink" />
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *
+                  <FormattedMessage id="corresponding-adjustment-declaration" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-corresponding-adjustment-declaration-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                variant={
+                  errors.correspondingAdjustmentDeclaration &&
+                  touched.correspondingAdjustmentDeclaration &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.correspondingAdjustmentDeclaration}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  values.correspondingAdjustmentDeclaration
+                    ? [values.correspondingAdjustmentDeclaration]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setFieldValue(
+                    'correspondingAdjustmentDeclaration',
+                    selectedOptions[0],
+                  )
+                }
+                onBlur={handleBlur}
+              />
+            </InputContainer>
+            <FormikError name="correspondingAdjustmentDeclaration" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="corresponding-adjustment-status" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-corresponding-adjustment-status-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
+              </Body>
+            </StyledLabelContainer>
+            <InputContainer>
+              <SimpleSelect
+                variant={
+                  errors.correspondingAdjustmentStatus &&
+                  touched.correspondingAdjustmentStatus &&
+                  SimpleSelectVariantEnum.error
+                }
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={pickLists.correspondingAdjustmentStatus}
+                state={SimpleSelectStateEnum.default}
+                selected={
+                  values.correspondingAdjustmentStatus
+                    ? [values.correspondingAdjustmentStatus]
+                    : undefined
+                }
+                onChange={selectedOptions =>
+                  setFieldValue(
+                    'correspondingAdjustmentStatus',
+                    selectedOptions[0],
+                  )
+                }
+                onBlur={handleBlur}
+              />
+            </InputContainer>
+            <FormikError name="correspondingAdjustmentStatus" />
+          </StyledFieldContainer>
+          <HrSpanTwoColumnsContainer>
+            <hr />
+          </HrSpanTwoColumnsContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    <FormattedMessage id="unit-tags" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'units-unit-tags-description',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <StandardInput
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-tags',
+                })}
+                state={InputStateEnum.default}
+                value={values.unitTags}
+                onChange={value => setFieldValue('unitTags', value)}
+                onBlur={handleBlur}
+                name="unitTags"
+              />
+              <FormikError name="unitTags" />
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
+        </BodyContainer>
+      </FormContainerStyle>
+    </ModalFormContainerStyle>
+  );
+};
+
+export { UnitDetailsFormik };
