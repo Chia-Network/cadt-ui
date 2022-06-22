@@ -270,6 +270,7 @@
   "total-units-available": "Total split units available",
   "upload-successful": "Your file was successfully uploaded.",
   "file-could-not-be-uploaded": "Your file could not be uploaded.",
+  "informational-quote-for-conflicts": "This Conflict screen has been built to illustrate how a public or private market player from the service layer can query the data that is uploaded to the Climate Warehouse and identify potential conflicts - this screen is meant to show how conflicts might be detected and shown. Please note that this is a demonstration and will not be part of the Operational Climate Warehouse’s scope",
   "delete-project": "Delete Project",
   "add-project": "Add Project",
   "update-project": "Update Project",

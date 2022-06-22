@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import styled, { withTheme } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-import { Body, H3, MagnifyGlassIcon } from '../../components';
+import { Body, H3, MagnifyGlassIcon, Notification } from '../../components';
 import { getConflictsData } from '../../store/actions/climateWarehouseActions';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 
@@ -63,8 +63,14 @@ const StyledCursor = styled('div')`
 
 const Conflicts = withTheme(() => {
   const { theme } = useSelector(state => state.app);
+  const [info, setInfo] = useState(true);
+  const intl = useIntl();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => setInfo(false), 20000);
+  }, []);
 
   const { organizations, conflicts } = useSelector(
     store => store.climateWarehouse,
@@ -82,6 +88,13 @@ const Conflicts = withTheme(() => {
 
   return (
     <StyledSectionContainer>
+      {info && (
+        <Notification
+          onClick={() => setInfo(false)}
+          showIcon="info"
+          body={intl.formatMessage({ id: 'informational-quote-for-conflicts' })}
+        />
+      )}
       {(!conflicts || !conflicts.length) && (
         <StyledBodyNoDataFound>
           <H3>
