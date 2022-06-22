@@ -14,7 +14,7 @@ const BodyText = styled('div')`
   max-width: calc(100% - 3rem);
   width: calc(100% - 3rem);
   margin: 1.5rem;
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.default.onButton};
   overflow: hidden;
   box-sizing: border-box;
   padding: 0;

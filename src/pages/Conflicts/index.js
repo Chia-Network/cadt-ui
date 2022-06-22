@@ -34,7 +34,7 @@ const StyledTable = styled('table')`
 const StyledTh = styled('th')`
   text-align: start;
   padding: 17px;
-  background-color: #e6f7ff;
+  background-color: ${props => props.theme.colors.default.status.info.secondary};
   position: sticky;
   top: 0;
 `;
@@ -46,7 +46,7 @@ const StyledTd = styled('td')`
 
 const StyledTr = styled('tr')`
   :nth-child(even) {
-    background-color: #f0f2f5;
+    background-color: ${props => props.theme.colors.default.background};
   }
   :hover {
     background-color: ${props =>

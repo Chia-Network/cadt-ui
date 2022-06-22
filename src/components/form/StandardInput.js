@@ -58,7 +58,7 @@ const StyledInputContainer = styled('div')`
     if (props.variant === InputVariantEnum.warning) {
       if (props.inputState === InputStateEnum.default) {
         return css`
-          border: 1px solid #faad14;
+          border: 1px solid ${props.theme.colors.default.status.warning.primary};
         `;
       } else if (props.inputState === InputStateEnum.hover) {
         return css`
@@ -69,7 +69,7 @@ const StyledInputContainer = styled('div')`
         props.inputState === InputStateEnum.typing
       ) {
         return css`
-          border: 1px solid #faad14;
+          border: 1px solid ${props.theme.colors.default.status.warning.primary};
           box-shadow: 0px 0px 4px rgba(250, 173, 20, 0.5);
         `;
       } else if (props.inputState === InputStateEnum.disabled) {

@@ -4,7 +4,7 @@ import styled, { withTheme } from 'styled-components';
 
 const Text = styled('h4')`
   margin: 0;
-  color: ${props => props.color || '#000000'};
+  color: ${props => props.color || props.theme.colors.default.onSurface};
   font-size: 1.3125rem;
   font-family: ${props => props.theme.typography.primary.semiBold};
   font-weight: 600;

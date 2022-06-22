@@ -22,7 +22,7 @@ import { SplitUnitFormik } from '../forms/SplitUnitFormik';
 
 const Table = styled('table')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   width: 100%;
   display: table;
   border-spacing: 0;
@@ -69,7 +69,7 @@ const Th = styled('th')`
 
 const Tr = styled('tr')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
 
   :hover {
     cursor: zoom-in;
@@ -97,7 +97,7 @@ const Td = styled('td')`
     css`
       position: sticky;
       right: 0px;
-      background-color: white;
+      background-color: ${props.theme.colors.default.onButton};
     `}
 
   ${props =>
@@ -109,7 +109,7 @@ const Td = styled('td')`
 
 export const StyledPaginationContainer = styled('div')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   display: flex;
   justify-content: center;
   align-items: center;
