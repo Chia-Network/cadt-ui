@@ -177,6 +177,8 @@ const StandardInput = withTheme(
     value,
     type,
     onChange,
+    onBlur,
+    name,
   }) => {
     const [inputState, setInputState] = useState(state);
 
@@ -198,7 +200,7 @@ const StandardInput = withTheme(
         setInputState(InputStateEnum.default);
     }, [inputState]);
 
-    const onBlur = useCallback(() => {
+    const onContainerBlur = useCallback(() => {
       inputState !== InputStateEnum.default &&
         inputState !== InputStateEnum.disabled &&
         setInputState(InputStateEnum.default);
@@ -216,7 +218,7 @@ const StandardInput = withTheme(
         variant={variant}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        onBlur={onBlur}
+        onBlur={onContainerBlur}
         onFocus={onFocus}
       >
         {prefix && (
@@ -231,6 +233,8 @@ const StandardInput = withTheme(
           disabled={inputState === InputStateEnum.disabled}
           value={value}
           onChange={event => onChange(event.target.value)}
+          onBlur={onBlur}
+          name={name}
         />
         {suffix && (
           <StyledSuffixPrefixContainer>{suffix}</StyledSuffixPrefixContainer>
