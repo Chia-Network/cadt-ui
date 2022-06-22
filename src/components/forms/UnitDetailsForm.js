@@ -260,7 +260,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="unit-owner" />
+                  <FormattedMessage id="unit-owner" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
