@@ -40,13 +40,17 @@ import { useFormikContext } from 'formik';
 
 const UnitDetailsFormik = () => {
   const intl = useIntl();
-  const { validateForm } = useSelector(state => state.app);
   const { pickLists, myProjects, issuances } = useSelector(
     store => store.climateWarehouse,
   );
 
   const { values, setFieldValue, handleBlur, errors, touched } =
     useFormikContext();
+
+  const hasUserInteractedWithForm = useMemo(
+    () => Object.keys(touched).length > 0,
+    [touched],
+  );
 
   const [selectedWarehouseProjectOption, setSelectedWarehouseProjectOption] =
     useState(null);
@@ -121,7 +125,7 @@ const UnitDetailsFormik = () => {
         );
       if (!isCurrentSavedIssuanceOnTheSelectedProject) {
         setFieldValue('projectLocationId', '');
-        setFieldValue('issuance', '');
+        setFieldValue('issuance', null);
       }
     },
     [
@@ -166,7 +170,8 @@ const UnitDetailsFormik = () => {
                   options={projectsSelectOptions}
                   state={SelectStateEnum.default}
                   variant={
-                    ((validateForm && !selectedWarehouseProjectOption) ||
+                    ((hasUserInteractedWithForm &&
+                      !selectedWarehouseProjectOption) ||
                       (selectedWarehouseProjectOption &&
                         selectedWarehouseProjectOption?.value?.issuances
                           ?.length === 0)) &&
@@ -183,7 +188,7 @@ const UnitDetailsFormik = () => {
                 />
               </InputContainer>
               {/* display error if form validation is on and user didn't select any project */}
-              {validateForm && !selectedWarehouseProjectOption && (
+              {hasUserInteractedWithForm && !selectedWarehouseProjectOption && (
                 <Body size="Small" color="red">
                   <FormattedMessage id="select-existing-project" />
                 </Body>

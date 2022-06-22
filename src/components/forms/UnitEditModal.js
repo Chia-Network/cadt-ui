@@ -5,9 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
 
-import { Modal, TabPanel, modalTypeEnum, UnitDetailsForm } from '..';
+import { Modal, TabPanel, modalTypeEnum, UnitDetailsFormik } from '..';
 import UnitLabelsRepeater from './UnitLabelsRepeater';
-import UnitIssuanceRepeater from './UnitIssuanceRepeater';
 import { unitsSchema } from '../../store/validations';
 import { setValidateForm, setForm } from '../../store/actions/app';
 import {
@@ -154,10 +153,10 @@ const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
               value={tabValue}
               index={0}
             >
-              <UnitDetailsForm unitDetails={unit} setUnitDetails={setUnit} />
+              <UnitDetailsFormik unitDetails={unit} setUnitDetails={setUnit} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
-              <UnitIssuanceRepeater
+              {/* <UnitIssuanceRepeater
                 max={1}
                 issuanceState={unit.issuance !== '' ? [unit.issuance] : []}
                 newIssuanceState={value =>
@@ -166,7 +165,7 @@ const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
                     issuance: value[0] ? value[0] : '',
                   }))
                 }
-              />
+              /> */}
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
               <UnitLabelsRepeater
