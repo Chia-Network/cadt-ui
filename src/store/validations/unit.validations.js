@@ -25,11 +25,7 @@ export const unitsSchema = yup.object().shape({
   marketplaceIdentifier: yup.string().optional(),
   unitTags: yup.string().optional(),
   unitStatus: yup.string().required('Required Field'),
-  unitStatusReason: yup.string().when('unitStatus', {
-    is: val => ['cancelled', 'retired'].includes(val.toLowerCase()),
-    then: yup.string().required('Required Field'),
-    otherwise: yup.string().optional(),
-  }),
+  unitStatusReason: yup.string().optional(),
   unitRegistryLink: yup.string().required('Required Field'),
   correspondingAdjustmentDeclaration: yup.string().required('Required Field'),
   correspondingAdjustmentStatus: yup.string().required('Required Field'),
