@@ -3,36 +3,44 @@ import { labelSchema, issuanceSchema } from '.';
 
 export const unitsSchema = yup.object().shape({
   projectLocationId: yup.string().optional(),
-  unitOwner: yup.string().required('Required Field'),
-  countryJurisdictionOfOwner: yup.string().required('Required Field'),
+  unitOwner: yup.string().required('yup-validation-field-required'),
+  countryJurisdictionOfOwner: yup
+    .string()
+    .required('yup-validation-field-required'),
   inCountryJurisdictionOfOwner: yup.string().optional(),
-  unitBlockEnd: yup.string().required('Required Field'),
-  unitBlockStart: yup.string().required('Required Field'),
+  unitBlockEnd: yup.string().required('yup-validation-field-required'),
+  unitBlockStart: yup.string().required('yup-validation-field-required'),
   unitCount: yup
     .number()
-    .min(1, 'Count must be greater than 0')
-    .required('Required Field'),
+    .positive('yup-validation-positive-number')
+    .integer('yup-validation-integer')
+    .required('yup-validation-field-required')
+    .typeError('yup-validation-valid-number'),
   vintageYear: yup
     .number()
-    .typeError('Invalid Year')
+    .typeError('yup-validation-year')
     .integer()
     .min(1900)
     .max(3000)
-    .required('Required Field'),
-  unitType: yup.string().required('Required Field'),
+    .required('yup-validation-field-required'),
+  unitType: yup.string().required('yup-validation-field-required'),
   marketplace: yup.string().optional(),
   marketplaceLink: yup.string().optional(),
   marketplaceIdentifier: yup.string().optional(),
   unitTags: yup.string().optional(),
-  unitStatus: yup.string().required('Required Field'),
+  unitStatus: yup.string().required('yup-validation-field-required'),
   unitStatusReason: yup.string().when('unitStatus', {
     is: val => val && ['cancelled', 'retired'].includes(val.toLowerCase()),
-    then: yup.string().required('Required Field'),
+    then: yup.string().required('yup-validation-field-required'),
     otherwise: yup.string().optional(),
   }),
-  unitRegistryLink: yup.string().required('Required Field'),
-  correspondingAdjustmentDeclaration: yup.string().required('Required Field'),
-  correspondingAdjustmentStatus: yup.string().required('Required Field'),
+  unitRegistryLink: yup.string().required('yup-validation-field-required'),
+  correspondingAdjustmentDeclaration: yup
+    .string()
+    .required('yup-validation-field-required'),
+  correspondingAdjustmentStatus: yup
+    .string()
+    .required('yup-validation-field-required'),
   issuance: issuanceSchema,
   labels: yup.array().of(labelSchema).optional(),
 });

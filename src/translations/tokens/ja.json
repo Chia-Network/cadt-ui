@@ -377,6 +377,7 @@
   "yup-validation-valid-number": "有効な番号を追加してください",
   "yup-validation-positive-number": "数値は正でなければなりません",
   "yup-validation-integer": "数値は整数でなければなりません",
+  "yup-validation-year": "有効な年を追加する",
   "governance": "Governance",
   "initiate-governance": "ガバナンス",
   "governance-initiating-please-wait": "ガバナンス機関が開始しています。5分待ってから更新してください。",

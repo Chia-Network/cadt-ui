@@ -40,6 +40,7 @@ import { useFormikContext } from 'formik';
 
 const UnitDetailsFormik = () => {
   const intl = useIntl();
+  const { validateForm } = useSelector(state => state.app);
   const { pickLists, myProjects, issuances } = useSelector(
     store => store.climateWarehouse,
   );
@@ -141,6 +142,7 @@ const UnitDetailsFormik = () => {
       </RequiredContainer>
       <FormContainerStyle>
         <BodyContainer>
+          {/* the input below is not connected to formik */}
           {projectsSelectOptions && (
             <StyledFieldContainer>
               <StyledLabelContainer>
@@ -164,9 +166,10 @@ const UnitDetailsFormik = () => {
                   options={projectsSelectOptions}
                   state={SelectStateEnum.default}
                   variant={
-                    (!selectedWarehouseProjectOption ||
-                      selectedWarehouseProjectOption?.value?.issuances
-                        ?.length === 0) &&
+                    ((validateForm && !selectedWarehouseProjectOption) ||
+                      (selectedWarehouseProjectOption &&
+                        selectedWarehouseProjectOption?.value?.issuances
+                          ?.length === 0)) &&
                     SelectVariantEnum.error
                   }
                   selected={
@@ -179,19 +182,22 @@ const UnitDetailsFormik = () => {
                   }
                 />
               </InputContainer>
-              {!selectedWarehouseProjectOption && (
+              {/* display error if form validation is on and user didn't select any project */}
+              {validateForm && !selectedWarehouseProjectOption && (
                 <Body size="Small" color="red">
                   <FormattedMessage id="select-existing-project" />
                 </Body>
               )}
-              {selectedWarehouseProjectOption?.value?.issuances?.length ===
-                0 && (
-                <Body size="Small" color="red">
-                  {intl.formatMessage({
-                    id: 'select-another-project',
-                  })}
-                </Body>
-              )}
+              {/* display error if user selected a project with no issuances */}
+              {selectedWarehouseProjectOption &&
+                selectedWarehouseProjectOption?.value?.issuances?.length ===
+                  0 && (
+                  <Body size="Small" color="red">
+                    {intl.formatMessage({
+                      id: 'select-another-project',
+                    })}
+                  </Body>
+                )}
             </StyledFieldContainer>
           )}
           <StyledFieldContainer>
@@ -214,7 +220,11 @@ const UnitDetailsFormik = () => {
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={projectLocationIdOptions}
-                state={SimpleSelectStateEnum.default}
+                state={
+                  projectLocationIdOptions.length === 0
+                    ? SimpleSelectStateEnum.disabled
+                    : SimpleSelectStateEnum.default
+                }
                 selected={
                   values.projectLocationId
                     ? [values.projectLocationId]

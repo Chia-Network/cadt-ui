@@ -10,12 +10,14 @@ const FormikError = ({ name }) => {
     return null;
   }
 
+  const intl = useIntl();
+
   const getTranslatedOrFormattedError = error => {
     const isErrorOfTranslationIdType = error
       ? error.includes('yup-validation-')
       : false;
     if (isErrorOfTranslationIdType) {
-      return useIntl({ id: error });
+      return intl.formatMessage({ id: error });
     }
     /* fallback in case error is not of translation id type */
     return formatValidationError(error);
