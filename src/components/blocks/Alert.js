@@ -145,7 +145,7 @@ const RefreshLinkContainer = styled('a')`
   align-self: flex-end;
   margin-right: 2.5rem;
   margin-bottom: 0.525rem;
-  color: blue;
+  color: ${props => props.theme.colors.default.status.warning.primary};
 `;
 
 const Alert = withTheme(

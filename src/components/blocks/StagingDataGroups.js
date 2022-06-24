@@ -23,7 +23,7 @@ const StyledPaginationContainer = styled('div')`
 `;
 
 const StyledChangeGroup = styled('div')`
-  background: #f0f2f5;
+  background: ${props => props.theme.colors.default.background};
   margin: 20px 20px 20px 20px;
   border-radius: 20px;
   display: flex;
@@ -50,15 +50,15 @@ const StyledChangeCard = styled('div')`
 const StyledChangeCardTitle = styled('div')`
   ${props =>
     props.displayInRed
-      ? ` background-color: #ffebee;
-      border: 2px solid #f5222d;
+      ? ` background-color: ${props.theme.colors.default.status.error.secondary};
+      border: 2px solid ${props.theme.colors.default.status.error.primary};
       body {
-        color: #f5222d;
+        color: ${props.theme.colors.default.status.error.primary};
       }`
-      : ` background-color: #ECF8E6;
-      border: 2px solid #52C41A;
+      : ` background-color: ${props.theme.colors.default.status.ok.secondary};
+      border: 2px solid ${props.theme.colors.default.status.ok.primary};
       body {
-        color: #52C41A;
+        color: ${props.theme.colors.default.status.ok.primary};
       }`}
   padding: 15px 5px 8px 17px;
   border-top-left-radius: 5px;

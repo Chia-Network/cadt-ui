@@ -12,16 +12,17 @@ import {
 } from '.';
 import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
+import { EditUnitsForm, EditProjectsForm } from '..';
 import {
   deleteProject,
   deleteUnit,
 } from '../../store/actions/climateWarehouseActions';
 import { setForm, setValidateForm } from '../../store/actions/app';
+import { SplitUnitFormik } from '../forms/SplitUnitFormik';
 
 const Table = styled('table')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   width: 100%;
   display: table;
   border-spacing: 0;
@@ -68,7 +69,7 @@ const Th = styled('th')`
 
 const Tr = styled('tr')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
 
   :hover {
     cursor: zoom-in;
@@ -96,7 +97,7 @@ const Td = styled('td')`
     css`
       position: sticky;
       right: 0px;
-      background-color: white;
+      background-color: ${props.theme.colors.default.onButton};
     `}
 
   ${props =>
@@ -108,7 +109,7 @@ const Td = styled('td')`
 
 export const StyledPaginationContainer = styled('div')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -188,7 +189,8 @@ const APIDataTable = withTheme(
                       start={index === 0 ? 1 : 0}
                       end={!actions && index === headings.length - 1 ? 1 : 0}
                       selectedTheme={theme}
-                      key={index}>
+                      key={index}
+                    >
                       <TableCellHeaderText>
                         {heading === 'orgUid' && 'Organization'}
                         {heading !== 'orgUid' &&
@@ -202,7 +204,8 @@ const APIDataTable = withTheme(
                       start={0}
                       end={1}
                       selectedTheme={theme}
-                      key={'action'}></Th>
+                      key={'action'}
+                    ></Th>
                   )}
                 </tr>
               </THead>
@@ -214,7 +217,8 @@ const APIDataTable = withTheme(
                         onClick={() => getFullRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
-                        key={index}>
+                        key={index}
+                      >
                         <TableCellText
                           tooltip={
                             record[key] &&
@@ -223,10 +227,10 @@ const APIDataTable = withTheme(
                             ].toString()}`
                           }
                         >
-                            {key === 'orgUid' && organizations[record[key]] && (
+                          {key === 'orgUid' && organizations[record[key]] && (
                             <img src={organizations[record[key]].icon} />
                           )}
-                          
+
                           {key !== 'orgUid' &&
                             record[key] &&
                             record[key] !== 'null' &&
@@ -245,7 +249,8 @@ const APIDataTable = withTheme(
                       <Td
                         stick
                         style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}>
+                        selectedTheme={theme}
+                      >
                         <BasicMenu
                           options={[
                             {
@@ -280,7 +285,8 @@ const APIDataTable = withTheme(
                       <Td
                         stick
                         style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}>
+                        selectedTheme={theme}
+                      >
                         <BasicMenu
                           options={[
                             {
@@ -352,7 +358,7 @@ const APIDataTable = withTheme(
           />
         )}
         {unitToBeSplit && (
-          <SplitUnitForm
+          <SplitUnitFormik
             organizations={organizations}
             onClose={() => setUnitToBeSplit(null)}
             record={unitToBeSplit}

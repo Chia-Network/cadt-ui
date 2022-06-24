@@ -6,3 +6,4 @@ export * from './Textarea';
 export * from './Select';
 export * from './SelectOrganizations';
 export * from './SimpleSelect';
+export * from './ErrorFormik';

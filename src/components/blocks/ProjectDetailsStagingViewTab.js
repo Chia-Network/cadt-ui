@@ -12,6 +12,7 @@ import {
   CoBenefitsDetails,
   RelatedProjectsDetails,
 } from '.';
+import theme from '../../theme';
 
 const ProjectDetailsStagingViewTab = ({ entry }) => {
   const [tabValue, setTabValue] = useState(0);
@@ -23,13 +24,13 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
   const getOriginalColorForKey = (entryProp, action) => {
     if (entryProp) {
       if (action === 'DELETE') {
-        return '#f5222d';
+        return theme.colors.default.status.error.primary;
       }
       if (action === 'INSERT') {
-        return '#52C41A';
+        return theme.colors.default.status.ok.primary;
       }
     }
-    return '#000000';
+    return theme.colors.default.onSurface;
   };
 
   const estimationTabIndexAdjustment = _.remove(

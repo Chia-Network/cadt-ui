@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import styled, { withTheme } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-import { Body, H3, MagnifyGlassIcon } from '../../components';
+import { Body, H3, MagnifyGlassIcon, Notification } from '../../components';
 import { getConflictsData } from '../../store/actions/climateWarehouseActions';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 
@@ -34,7 +34,7 @@ const StyledTable = styled('table')`
 const StyledTh = styled('th')`
   text-align: start;
   padding: 17px;
-  background-color: #e6f7ff;
+  background-color: ${props => props.theme.colors.default.status.info.secondary};
   position: sticky;
   top: 0;
 `;
@@ -46,7 +46,7 @@ const StyledTd = styled('td')`
 
 const StyledTr = styled('tr')`
   :nth-child(even) {
-    background-color: #f0f2f5;
+    background-color: ${props => props.theme.colors.default.background};
   }
   :hover {
     background-color: ${props =>
@@ -63,8 +63,14 @@ const StyledCursor = styled('div')`
 
 const Conflicts = withTheme(() => {
   const { theme } = useSelector(state => state.app);
+  const [info, setInfo] = useState(true);
+  const intl = useIntl();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => setInfo(false), 20000);
+  }, []);
 
   const { organizations, conflicts } = useSelector(
     store => store.climateWarehouse,
@@ -82,6 +88,13 @@ const Conflicts = withTheme(() => {
 
   return (
     <StyledSectionContainer>
+      {info && (
+        <Notification
+          onClick={() => setInfo(false)}
+          showIcon="info"
+          body={intl.formatMessage({ id: 'informational-quote-for-conflicts' })}
+        />
+      )}
       {(!conflicts || !conflicts.length) && (
         <StyledBodyNoDataFound>
           <H3>

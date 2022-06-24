@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 
 const Text = styled('h2')`
-  color: ${props => props.color || '#000000'};
+  color: ${props => props.color || props.theme.colors.default.onSurface};
   font-size: 2rem;
   font-family: ${props => props.theme.typography.primary.bold};
   font-weight: bold;

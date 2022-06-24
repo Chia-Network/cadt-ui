@@ -9,6 +9,7 @@ import {
   Body,
   ButtonText,
 } from '..';
+import theme from '../../theme';
 
 const NotificationCard = styled('div')`
   display: flex;
@@ -17,10 +18,10 @@ const NotificationCard = styled('div')`
   box-shadow: 0rem 0.5625rem 1.75rem 0.5rem rgba(0, 0, 0, 0.05),
     0rem 0.375rem 1rem rgba(0, 0, 0, 0.08),
     0rem 0.1875rem 0.375rem -0.25rem rgba(0, 0, 0, 0.12);
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.default.onButton};
   border: none;
-  height: ${props => (props.buttonText ? '9rem' : '6.5rem')};
-  width: 25.0625rem;
+  height: ${props => (props.buttonText ? '9rem' : "fit-content")};
+  width: 100%;
 `;
 
 const CloseButton = styled('div')`
@@ -40,11 +41,12 @@ const ConfirmButton = styled('button')`
   background-color: #1890ff;
   border-radius: 0.125rem;
   border: none;
-  color: #ffffff;
+  color: ${props => props.theme.colors.default.onButton};
   cursor: pointer;
 `;
 
 const NotificationMessage = styled('div')`
+  margin: 3.125rem;
   display: flex;
   word-wrap: break-word;
   flex-direction: column;
@@ -106,7 +108,7 @@ const Notification = withTheme(
             )}
             <NotificationMessage>
               <Body showIcon={showIcon}>{title}</Body>
-              <Body size="Small" showIcon={showIcon}>
+              <Body size="Large" showIcon={showIcon}>
                 {body}
               </Body>
             </NotificationMessage>
@@ -117,7 +119,7 @@ const Notification = withTheme(
           </div>
           {buttonText && (
             <ConfirmButton>
-              <ButtonText color="#ffffff">{buttonText}</ButtonText>
+              <ButtonText color={theme.colors.default.onButton}>{buttonText}</ButtonText>
             </ConfirmButton>
           )}
         </NotificationCard>
