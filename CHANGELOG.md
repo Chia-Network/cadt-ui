@@ -1,3 +1,28 @@
+## [1.0.6](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.5...1.0.6) (2022-06-24)
+
+
+### Bug Fixes
+
+* added theme colors ([b321954](https://github.com/Chia-Network/climate-warehouse-ui/commit/b3219545a0e6251e7b17f317a935b59f9220feec))
+* deconstructed theme replacing import ([69b5a4b](https://github.com/Chia-Network/climate-warehouse-ui/commit/69b5a4bb2da5161591073b3ebe8f1b44807fa90e))
+* fixed split unit detail view showing incorrect ([54c9d4b](https://github.com/Chia-Network/climate-warehouse-ui/commit/54c9d4b9d7688e8a8a22479c93dfdd0e62992e67))
+* replace hardcoded colors with theme colors 1 ([75a4f38](https://github.com/Chia-Network/climate-warehouse-ui/commit/75a4f38d685d2f564b544cfda02fd28a82353c01))
+* replace hardcoded colors with theme colors 2 ([bcc2378](https://github.com/Chia-Network/climate-warehouse-ui/commit/bcc2378be71497ed7dd01009507d8cbb51f8a557))
+* replace hardcoded colors with theme colors 3 ([00b46a2](https://github.com/Chia-Network/climate-warehouse-ui/commit/00b46a2bbddc8fa999f66e0852df9fd887407d7c))
+* replace hardcoded colors with theme colors 4 ([01d54b4](https://github.com/Chia-Network/climate-warehouse-ui/commit/01d54b487faf0b3ec746191f42754a236076928f))
+* replace hardcoded colors with theme colors 5 ([58eae79](https://github.com/Chia-Network/climate-warehouse-ui/commit/58eae79a194e1850dfe2ad3ca03526bf17eaf52d))
+* replaced incorrect color ([0ad6ff8](https://github.com/Chia-Network/climate-warehouse-ui/commit/0ad6ff83ed550729d4037f997b0816cc37056491))
+
+
+### Features
+
+* add informational text to Conflict tab ([d164830](https://github.com/Chia-Network/climate-warehouse-ui/commit/d164830ccb3bdc966a957da58cc30ad587996eb0))
+* formik proof of concept ([3610488](https://github.com/Chia-Network/climate-warehouse-ui/commit/36104881b8dc63b875b8ed0c35db32d020a791a3))
+* formik proof of concept ([c43690a](https://github.com/Chia-Network/climate-warehouse-ui/commit/c43690a3676fc8cf607c5e73e4c56623c5f20f9c))
+* formik proof of oncept ([959014c](https://github.com/Chia-Network/climate-warehouse-ui/commit/959014c46ac25698f1cfb4fd4539ecb031c19d91))
+
+
+
 ## [1.0.5](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.4...1.0.5) (2022-06-16)
 
 
