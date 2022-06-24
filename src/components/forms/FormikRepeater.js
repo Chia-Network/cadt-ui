@@ -31,8 +31,9 @@ const FormikRepeater = ({
   Component,
   tooltip,
 }) => {
-  const { values, setFieldValue } = useFormikContext();
-  const entriesArray = values[name] ? values[name] : [];
+  const { values, setFieldValue, handleBlur, errors, touched } =
+    useFormikContext();
+  const entriesArray = _.get(values, `${name}`, []);
   const entriesNumber = entriesArray.length;
   const dispatch = useDispatch();
 
@@ -88,7 +89,15 @@ const FormikRepeater = ({
             {entriesArray?.length > 0 &&
               entriesArray.map((entry, index) => (
                 <StyledRepeatedComponentContainer key={index}>
-                  <Component name={name} index={index} key={index} />
+                  <Component
+                    name={name}
+                    index={index}
+                    value={entry}
+                    setFieldValue={setFieldValue}
+                    handleBlur={handleBlur}
+                    touched={_.get(touched, `${name}[${index}]`, null)}
+                    errors={_.get(errors, `${name}[${index}]`, null)}
+                  />
                   <div onClick={() => arrayHelpers.remove(index)}>
                     <CloseIcon height={12} width={12} fill={'#1890FF'} />
                   </div>
