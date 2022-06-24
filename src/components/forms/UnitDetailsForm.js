@@ -38,7 +38,7 @@ import {
 
 import { useFormikContext } from 'formik';
 
-const UnitDetailsFormik = () => {
+const UnitDetailsForm = () => {
   const intl = useIntl();
   const { pickLists, myProjects, issuances } = useSelector(
     store => store.climateWarehouse,
@@ -882,4 +882,4 @@ const UnitDetailsFormik = () => {
   );
 };
 
-export { UnitDetailsFormik };
+export { UnitDetailsForm };

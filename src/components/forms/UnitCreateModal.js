@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,12 +17,12 @@ import {
   Modal,
   modalTypeEnum,
   UnitIssuanceForm,
-  UnitDetailsFormik,
+  UnitDetailsForm,
+  UnitLabelsForm,
+  FormikRepeater,
 } from '..';
 import { unitsSchema } from '../../store/validations';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
-import { FormikRepeater } from './FormikRepeater';
-import { UnitLabelsFormik } from './UnitLabelsFormik';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -65,7 +65,7 @@ const emptyLabel = {
   labelLink: '',
 };
 
-const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
+const UnitCreateModal = ({ onClose, modalSizeAndPosition }) => {
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
   const [tabValue, setTabValue] = useState(0);
@@ -83,7 +83,7 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
     }
   }, []);
 
-  const onChangeStepTo = async ({ formik, desiredStep = null }) => {
+  const onChangeStepTo = useCallback(async ({ formik, desiredStep = null }) => {
     const errors = await formik.validateForm();
 
     // manually setting touched for error fields so errors are displayed
@@ -108,7 +108,7 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
         setTabValue(desiredStep);
       }
     }
-  };
+  }, []);
 
   // if unit was successfully created, close modal
   const unitWasSuccessfullyCreated =
@@ -187,7 +187,7 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
                 value={tabValue}
                 index={0}
               >
-                <UnitDetailsFormik />
+                <UnitDetailsForm />
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <UnitIssuanceForm />
@@ -200,7 +200,7 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
                     id: 'labels-units-optional',
                   })}
                   min={0}
-                  component={<UnitLabelsFormik />}
+                  component={<UnitLabelsForm />}
                 />
               </TabPanel>
             </StyledFormContainer>
@@ -211,4 +211,4 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
   );
 };
 
-export { UnitCreateModalFormik };
+export { UnitCreateModal };

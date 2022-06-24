@@ -1,5 +1,11 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -37,7 +43,7 @@ import { useFormikContext } from 'formik';
 import { FormikError } from '../form/FormikError';
 import { SelectVariantEnum } from '../form/Select';
 
-const UnitLabelsFormik = ({ index, name }) => {
+const UnitLabelsForm = ({ index, name }) => {
   const { values, setFieldValue, handleBlur, errors, touched } =
     useFormikContext();
   const value = values[name][index];
@@ -66,10 +72,7 @@ const UnitLabelsFormik = ({ index, name }) => {
     }
   }, []);
 
-  const areFieldsDisabled = useMemo(
-    () => (selectedWayToAddLabel?.value !== 1 ? true : false),
-    [selectedWayToAddLabel],
-  );
+  const areFieldsDisabled = selectedWayToAddLabel?.value !== 1 ? true : false;
 
   const areFormFieldsVisible =
     selectedWayToAddLabel?.value === 1 ||
@@ -77,45 +80,51 @@ const UnitLabelsFormik = ({ index, name }) => {
     (selectedWayToAddLabel?.value === 3 && selectedProjectLabelOption) ||
     wasLabelExisting.current;
 
-  const wayToAddLabelOptions = [
-    {
-      label: intl.formatMessage({
-        id: 'add-new-label',
-      }),
-      value: 1,
-    },
-    {
-      label: intl.formatMessage({
-        id: 'select-from-all-labels',
-      }),
-      value: 2,
-    },
-    {
-      label: intl.formatMessage({
-        id: 'select-label-by-project',
-      }),
-      value: 3,
-    },
-  ];
+  const wayToAddLabelOptions = useMemo(
+    () => [
+      {
+        label: intl.formatMessage({
+          id: 'add-new-label',
+        }),
+        value: 1,
+      },
+      {
+        label: intl.formatMessage({
+          id: 'select-from-all-labels',
+        }),
+        value: 2,
+      },
+      {
+        label: intl.formatMessage({
+          id: 'select-label-by-project',
+        }),
+        value: 3,
+      },
+    ],
+    [],
+  );
 
-  const handleChange = selectedOptions => {
-    setSelectedWayToAddLabel(selectedOptions[0]);
-    setFieldValue(`${name}[${index}]`, {
-      label: '',
-      labelType: '',
-      creditingPeriodStartDate: '',
-      creditingPeriodEndDate: '',
-      validityPeriodStartDate: '',
-      validityPeriodEndDate: '',
-      unitQuantity: 0,
-      labelLink: '',
-      warehouseProjectId: null,
-      id: null,
-      tempId: value?.tempId || null,
-    });
-    setSelectedProjectLabelOption(null);
-    setSelectedLabelOption(null);
-  };
+  const changeWayToAddLabel = useCallback(
+    selectedOptions => {
+      setSelectedWayToAddLabel(selectedOptions[0]);
+      setFieldValue(`${name}[${index}]`, {
+        label: '',
+        labelType: '',
+        creditingPeriodStartDate: '',
+        creditingPeriodEndDate: '',
+        validityPeriodStartDate: '',
+        validityPeriodEndDate: '',
+        unitQuantity: 0,
+        labelLink: '',
+        warehouseProjectId: null,
+        id: null,
+        tempId: value?.tempId || null,
+      });
+      setSelectedProjectLabelOption(null);
+      setSelectedLabelOption(null);
+    },
+    [name, index, setFieldValue],
+  );
 
   const projectsSelectOptions = useMemo(() => {
     if (myProjects?.length > 0) {
@@ -146,38 +155,41 @@ const UnitLabelsFormik = ({ index, name }) => {
     }
   }, [labels]);
 
-  const updateLabelById = id => {
-    const labelIsAvailable = labels?.some(label => label?.id === id);
-    const selectedLabel =
-      labelIsAvailable && labels.filter(label => label?.id === id)[0];
+  const updateLabelById = useCallback(
+    id => {
+      const labelIsAvailable = labels?.some(label => label?.id === id);
+      const selectedLabel =
+        labelIsAvailable && labels.filter(label => label?.id === id)[0];
 
-    if (selectedLabel) {
-      const {
-        creditingPeriodEndDate,
-        creditingPeriodStartDate,
-        id,
-        label,
-        labelLink,
-        labelType,
-        unitQuantity,
-        validityPeriodEndDate,
-        validityPeriodStartDate,
-        warehouseProjectId,
-      } = selectedLabel;
-      setFieldValue(`${name}[${index}]`, {
-        creditingPeriodEndDate,
-        creditingPeriodStartDate,
-        id,
-        label,
-        labelLink,
-        labelType,
-        unitQuantity,
-        validityPeriodEndDate,
-        validityPeriodStartDate,
-        warehouseProjectId,
-      });
-    }
-  };
+      if (selectedLabel) {
+        const {
+          creditingPeriodEndDate,
+          creditingPeriodStartDate,
+          id,
+          label,
+          labelLink,
+          labelType,
+          unitQuantity,
+          validityPeriodEndDate,
+          validityPeriodStartDate,
+          warehouseProjectId,
+        } = selectedLabel;
+        setFieldValue(`${name}[${index}]`, {
+          creditingPeriodEndDate,
+          creditingPeriodStartDate,
+          id,
+          label,
+          labelLink,
+          labelType,
+          unitQuantity,
+          validityPeriodEndDate,
+          validityPeriodStartDate,
+          warehouseProjectId,
+        });
+      }
+    },
+    [labels, name, index, setFieldValue],
+  );
 
   return (
     <ModalFormContainerStyle>
@@ -214,7 +226,7 @@ const UnitLabelsFormik = ({ index, name }) => {
                         ? [selectedWayToAddLabel]
                         : undefined
                     }
-                    onChange={handleChange}
+                    onChange={changeWayToAddLabel}
                   />
                 </InputContainer>
                 {selectedWayToAddLabel === null && (
@@ -639,4 +651,4 @@ const UnitLabelsFormik = ({ index, name }) => {
   );
 };
 
-export { UnitLabelsFormik };
+export { UnitLabelsForm };

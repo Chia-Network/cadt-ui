@@ -33,7 +33,7 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   PrimaryButton,
-  UnitCreateModalFormik,
+  UnitCreateModal,
   DownloadIcon,
   Tab,
   Tabs,
@@ -476,7 +476,7 @@ const Units = () => {
               </>
             )}
             {create && (
-              <UnitCreateModalFormik
+              <UnitCreateModal
                 onClose={() => {
                   setCreate(false);
                   dispatch(setForm(null));

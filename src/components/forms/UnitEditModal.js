@@ -1,14 +1,21 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
+import { Formik, setNestedObjectValues } from 'formik';
 
-import { Modal, TabPanel, modalTypeEnum, UnitDetailsFormik } from '..';
-import UnitLabelsRepeater from './UnitLabelsRepeater';
+import {
+  Modal,
+  TabPanel,
+  modalTypeEnum,
+  UnitDetailsForm,
+  UnitLabelsForm,
+  UnitIssuanceForm,
+  FormikRepeater,
+} from '..';
 import { unitsSchema } from '../../store/validations';
-import { setValidateForm, setForm } from '../../store/actions/app';
 import {
   getIssuances,
   getPaginatedData,
@@ -27,11 +34,22 @@ const StyledFormContainer = styled('div')`
   padding-top: 10px;
 `;
 
+const emptyLabel = {
+  label: '',
+  labelType: '',
+  creditingPeriodStartDate: '',
+  creditingPeriodEndDate: '',
+  validityPeriodStartDate: '',
+  validityPeriodEndDate: '',
+  unitQuantity: 0,
+  labelLink: '',
+};
+
 const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
   const { myOrgUid } = useSelector(store => store.climateWarehouse);
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
-  const [unit, setUnit] = useState([]);
+  const [unit, setUnit] = useState(null);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -44,6 +62,11 @@ const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
   );
 
   useEffect(() => {
+    const formattedUnitToBeEdited = formatAPIData(unitToBeEdited);
+    setUnit(formattedUnitToBeEdited);
+  }, [unitToBeEdited]);
+
+  useEffect(() => {
     if (myOrgUid) {
       dispatch(getMyProjects(myOrgUid));
       dispatch(getPaginatedData({ type: 'projects', orgUid: myOrgUid }));
@@ -52,53 +75,36 @@ const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
     }
   }, []);
 
-  useEffect(() => {
-    const formattedUnitToBeEdited = formatAPIData(unitToBeEdited);
-    setUnit(formattedUnitToBeEdited);
-  }, [unitToBeEdited]);
-
-  useEffect(() => {
-    dispatch(setForm(stepperStepsTranslationIds[tabValue]));
-  }, [tabValue]);
-
   const stepperStepsTranslationIds = ['unit', 'issuance', 'labels'];
 
-  const onChangeStep = async (desiredStep = null) => {
-    const isUnitValid = await unitsSchema.isValid(unit);
-    const isMandatoryIssuanceChecked =
-      desiredStep > 1 ? Object.keys(unit.issuance)?.length > 0 : true;
-    const isProjectSelectedAtFirstStep = Boolean(
+  const onChangeStep = useCallback(async ({ formik, desiredStep = null }) => {
+    const errors = await formik.validateForm();
+
+    // manually setting touched for error fields so errors are displayed
+    formik.setTouched(setNestedObjectValues(errors, true));
+
+    const isUnitValid = _.isEmpty(errors);
+
+    const isIssuanceSelected =
+      desiredStep > 1 ? !_.isEmpty(formik.values?.issuance) : true;
+
+    const isProjectSelected = Boolean(
       localStorage.getItem('unitSelectedWarehouseProjectId'),
     );
 
-    dispatch(setValidateForm(true));
-    if (
-      isUnitValid &&
-      isProjectSelectedAtFirstStep &&
-      isMandatoryIssuanceChecked
-    ) {
-      dispatch(setValidateForm(false));
+    if (isUnitValid && isProjectSelected && isIssuanceSelected) {
       if (
         desiredStep >= stepperStepsTranslationIds.length &&
         !apiResponseIsPending
       ) {
-        handleUpdateUnit();
+        formik.submitForm();
       } else {
-        dispatch(setValidateForm(false));
         setTabValue(desiredStep);
       }
     }
-  };
+  }, []);
 
-  const handleUpdateUnit = async () => {
-    const dataToSend = _.cloneDeep(unit);
-    if (dataToSend.serialNumberBlock) {
-      delete dataToSend.serialNumberBlock;
-    }
-    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-    dispatch(updateUnitsRecord(dataToSend));
-  };
-
+  // if unit was successfully edited, close modal
   const unitWasSuccessfullyEdited =
     notification?.id === 'unit-successfully-edited';
   useEffect(() => {
@@ -107,84 +113,94 @@ const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
     }
   }, [notification]);
 
+  if (!unit) {
+    return null;
+  }
+
   return (
-    <>
-      <Modal
-        modalSizeAndPosition={modalSizeAndPosition}
-        onOk={() => onChangeStep(tabValue + 1)}
-        onClose={onClose}
-        modalType={modalTypeEnum.basic}
-        title={intl.formatMessage({
-          id: 'edit-unit',
-        })}
-        label={intl.formatMessage({
-          id: tabValue < 2 ? 'next' : 'update-unit',
-        })}
-        extraButtonLabel={
-          tabValue > 0
-            ? intl.formatMessage({
-                id: 'back',
-              })
-            : undefined
+    <Formik
+      initialValues={unit}
+      validationSchema={unitsSchema}
+      onSubmit={values => {
+        const dataToSend = _.cloneDeep(values);
+        if (dataToSend.serialNumberBlock) {
+          delete dataToSend.serialNumberBlock;
         }
-        extraButtonOnClick={() =>
-          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
-        }
-        body={
-          <StyledFormContainer>
-            <Stepper activeStep={tabValue} alternativeLabel>
-              {stepperStepsTranslationIds &&
-                stepperStepsTranslationIds.map((step, index) => (
-                  <Step
-                    key={index}
-                    onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    <StepLabel>
-                      {intl.formatMessage({
-                        id: step,
-                      })}
-                    </StepLabel>
-                  </Step>
-                ))}
-            </Stepper>
-            <TabPanel
-              style={{ paddingTop: '1.25rem' }}
-              value={tabValue}
-              index={0}
-            >
-              <UnitDetailsFormik unitDetails={unit} setUnitDetails={setUnit} />
-            </TabPanel>
-            <TabPanel value={tabValue} index={1}>
-              {/* <UnitIssuanceRepeater
-                max={1}
-                issuanceState={unit.issuance !== '' ? [unit.issuance] : []}
-                newIssuanceState={value =>
-                  setUnit(prev => ({
-                    ...prev,
-                    issuance: value[0] ? value[0] : '',
-                  }))
-                }
-              /> */}
-            </TabPanel>
-            <TabPanel value={tabValue} index={2}>
-              <UnitLabelsRepeater
-                useToolTip={intl.formatMessage({
-                  id: 'labels-units-optional',
-                })}
-                labelsState={unit.labels}
-                newLabelsState={value =>
-                  setUnit(prev => ({
-                    ...prev,
-                    labels: value,
-                  }))
-                }
-              />
-            </TabPanel>
-          </StyledFormContainer>
-        }
-      />
-    </>
+        cleanObjectFromEmptyFieldsOrArrays(dataToSend);
+        dispatch(updateUnitsRecord(dataToSend));
+      }}
+    >
+      {formik => (
+        <Modal
+          modalSizeAndPosition={modalSizeAndPosition}
+          onOk={() => onChangeStep({ formik, desiredStep: tabValue + 1 })}
+          onClose={onClose}
+          modalType={modalTypeEnum.basic}
+          title={intl.formatMessage({
+            id: 'edit-unit',
+          })}
+          label={intl.formatMessage({
+            id: tabValue < 2 ? 'next' : 'update-unit',
+          })}
+          extraButtonLabel={
+            tabValue > 0
+              ? intl.formatMessage({
+                  id: 'back',
+                })
+              : undefined
+          }
+          extraButtonOnClick={() =>
+            onChangeStep({
+              formik,
+              desiredStep: tabValue > 0 ? tabValue - 1 : tabValue,
+            })
+          }
+          body={
+            <StyledFormContainer>
+              <Stepper activeStep={tabValue} alternativeLabel>
+                {stepperStepsTranslationIds &&
+                  stepperStepsTranslationIds.map((step, index) => (
+                    <Step
+                      key={index}
+                      onClick={() =>
+                        onChangeStep({ formik, desiredStep: index })
+                      }
+                      sx={{ cursor: 'pointer' }}
+                    >
+                      <StepLabel>
+                        {intl.formatMessage({
+                          id: step,
+                        })}
+                      </StepLabel>
+                    </Step>
+                  ))}
+              </Stepper>
+              <TabPanel
+                style={{ paddingTop: '1.25rem' }}
+                value={tabValue}
+                index={0}
+              >
+                <UnitDetailsForm />
+              </TabPanel>
+              <TabPanel value={tabValue} index={1}>
+                <UnitIssuanceForm />
+              </TabPanel>
+              <TabPanel value={tabValue} index={2}>
+                <FormikRepeater
+                  empty={emptyLabel}
+                  name="labels"
+                  tooltip={intl.formatMessage({
+                    id: 'labels-units-optional',
+                  })}
+                  min={0}
+                  component={<UnitLabelsForm />}
+                />
+              </TabPanel>
+            </StyledFormContainer>
+          }
+        />
+      )}
+    </Formik>
   );
 };
 
