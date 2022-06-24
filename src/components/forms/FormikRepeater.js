@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useEffect, cloneElement, isValidElement } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { FieldArray, useFormikContext } from 'formik';
 import styled from 'styled-components';
@@ -28,7 +28,7 @@ const FormikRepeater = ({
   min = 1,
   max = 10,
   name,
-  component,
+  Component,
   tooltip,
 }) => {
   const { values, setFieldValue } = useFormikContext();
@@ -88,8 +88,7 @@ const FormikRepeater = ({
             {entriesArray?.length > 0 &&
               entriesArray.map((entry, index) => (
                 <StyledRepeatedComponentContainer key={index}>
-                  {isValidElement(component) &&
-                    cloneElement(component, { name, index })}
+                  <Component name={name} index={index} key={index} />
                   <div onClick={() => arrayHelpers.remove(index)}>
                     <CloseIcon height={12} width={12} fill={'#1890FF'} />
                   </div>

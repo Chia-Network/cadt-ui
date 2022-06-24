@@ -193,7 +193,7 @@ const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
                     id: 'labels-units-optional',
                   })}
                   min={0}
-                  component={<UnitLabelsForm />}
+                  Component={UnitLabelsForm}
                 />
               </TabPanel>
             </StyledFormContainer>

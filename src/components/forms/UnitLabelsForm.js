@@ -44,11 +44,18 @@ import { FormikError } from '../form/FormikError';
 import { SelectVariantEnum } from '../form/Select';
 
 const UnitLabelsForm = ({ index, name }) => {
-  const { values, setFieldValue, handleBlur, errors, touched } =
-    useFormikContext();
-  const value = values[name][index];
-  const valueErrors = errors[name] ? errors[name][index] : {};
-  const valueTouched = touched[name] ? touched[name][index] : {};
+  const {
+    values: {
+      [name]: { [index]: value },
+    },
+    setFieldValue,
+    handleBlur,
+    errors,
+    touched,
+  } = useFormikContext();
+  const valueErrors = _.get(errors, `${name}[${index}]`, {});
+  const valueTouched = _.get(touched, `${name}[${index}]`, {});
+
   const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
   const { labels, myProjects } = useSelector(store => store.climateWarehouse);
   const intl = useIntl();

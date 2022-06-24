@@ -46,7 +46,7 @@ const UnitIssuanceForm = () => {
       const projectId = issuances.filter(item => item.id)[0].warehouseProjectId;
       setSelectedWarehouseProjectId(projectId);
     }
-  }, [value, issuances]);
+  }, []);
 
   // if unit has no issuance yet, infer it from local storage from selected project at the beginning of the form
   useEffect(() => {
