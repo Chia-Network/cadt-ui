@@ -61,7 +61,7 @@ const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
     dispatch(setForm(stepperStepsTranslationIds[tabValue]));
   }, [tabValue]);
 
-  const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
+  const stepperStepsTranslationIds = ['unit', 'issuance', 'labels'];
 
   const onChangeStep = async (desiredStep = null) => {
     const isUnitValid = await unitsSchema.isValid(unit);

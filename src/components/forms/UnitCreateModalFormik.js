@@ -12,11 +12,17 @@ import {
   getPaginatedData,
   getMyProjects,
 } from '../../store/actions/climateWarehouseActions';
-import { TabPanel, Modal, modalTypeEnum } from '..';
+import {
+  TabPanel,
+  Modal,
+  modalTypeEnum,
+  UnitIssuanceForm,
+  UnitDetailsFormik,
+} from '..';
 import { unitsSchema } from '../../store/validations';
-import { UnitDetailsFormik } from '.';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
-import { UnitIssuanceForm } from './UnitIssuanceForm';
+import { FormikRepeater } from './FormikRepeater';
+import { UnitLabelsFormik } from './UnitLabelsFormik';
 
 const StyledFormContainer = styled('div')`
   display: flex;
@@ -25,7 +31,7 @@ const StyledFormContainer = styled('div')`
   padding-top: 10px;
 `;
 
-const initialState = {
+const emptyUnit = {
   projectLocationId: '',
   unitOwner: '',
   countryJurisdictionOfOwner: '',
@@ -48,13 +54,24 @@ const initialState = {
   issuance: null,
 };
 
+const emptyLabel = {
+  label: '',
+  labelType: '',
+  creditingPeriodStartDate: '',
+  creditingPeriodEndDate: '',
+  validityPeriodStartDate: '',
+  validityPeriodEndDate: '',
+  unitQuantity: 0,
+  labelLink: '',
+};
+
 const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const stepperStepsTranslationIds = ['unit', 'issuances', 'labels'];
+  const stepperStepsTranslationIds = ['unit', 'issuance', 'labels'];
   const { myOrgUid } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
@@ -68,14 +85,14 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
 
   const onChangeStepTo = async ({ formik, desiredStep = null }) => {
     const errors = await formik.validateForm();
-    const isUnitValid = Object.keys(errors).length === 0;
-    if (!isUnitValid) {
-      // manually setting touched for error fields so errors are displayed
-      formik.setTouched(setNestedObjectValues(errors, true));
-    }
+
+    // manually setting touched for error fields so errors are displayed
+    formik.setTouched(setNestedObjectValues(errors, true));
+
+    const isUnitValid = _.isEmpty(errors);
 
     const isIssuanceSelected =
-      desiredStep > 1 ? Object.keys(formik.values.issuance)?.length > 0 : true;
+      desiredStep > 1 ? !_.isEmpty(formik.values?.issuance) : true;
 
     const isProjectSelected = Boolean(
       localStorage.getItem('unitSelectedWarehouseProjectId'),
@@ -86,22 +103,16 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
         desiredStep >= stepperStepsTranslationIds.length &&
         !apiResponseIsPending
       ) {
-        handleSubmitUnit(formik.values);
+        formik.submitForm();
       } else {
         setTabValue(desiredStep);
       }
     }
   };
 
-  const handleSubmitUnit = async values => {
-    const dataToSend = _.cloneDeep(values);
-    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-    dispatch(postNewUnits(dataToSend));
-  };
-
+  // if unit was successfully created, close modal
   const unitWasSuccessfullyCreated =
     notification?.id === 'unit-successfully-created';
-
   useEffect(() => {
     if (unitWasSuccessfullyCreated) {
       onClose();
@@ -109,7 +120,15 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
   }, [notification]);
 
   return (
-    <Formik initialValues={initialState} validationSchema={unitsSchema}>
+    <Formik
+      initialValues={emptyUnit}
+      validationSchema={unitsSchema}
+      onSubmit={values => {
+        const dataToSend = _.cloneDeep(values);
+        cleanObjectFromEmptyFieldsOrArrays(dataToSend);
+        dispatch(postNewUnits(dataToSend));
+      }}
+    >
       {formik => (
         <Modal
           modalSizeAndPosition={modalSizeAndPosition}
@@ -174,18 +193,15 @@ const UnitCreateModalFormik = ({ onClose, modalSizeAndPosition }) => {
                 <UnitIssuanceForm />
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                {/* <UnitLabelsRepeater
-                  useToolTip={intl.formatMessage({
+                <FormikRepeater
+                  empty={emptyLabel}
+                  name="labels"
+                  tooltip={intl.formatMessage({
                     id: 'labels-units-optional',
                   })}
-                  labelsState={unit?.labels ?? []}
-                  newLabelsState={value =>
-                    setUnit(prev => ({
-                      ...prev,
-                      labels: value,
-                    }))
-                  }
-                /> */}
+                  min={0}
+                  component={<UnitLabelsFormik />}
+                />
               </TabPanel>
             </StyledFormContainer>
           }

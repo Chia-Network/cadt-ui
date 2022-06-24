@@ -25,6 +25,7 @@ import {
   Select,
   SpanTwoColumnsContainer,
 } from '..';
+import { SelectVariantEnum } from '../form/Select';
 
 const UnitIssuanceForm = () => {
   const { issuances } = useSelector(store => store.climateWarehouse);
@@ -36,12 +37,7 @@ const UnitIssuanceForm = () => {
     values,
     values: { issuance: value },
     setValues,
-    touched,
   } = useFormikContext();
-  const hasUserInteractedWithForm = useMemo(
-    () => Object.keys(touched).length > 0,
-    [touched],
-  );
 
   // if unit has issuance, infer project id
   useEffect(() => {
@@ -156,6 +152,9 @@ const UnitIssuanceForm = () => {
                     type={SelectTypeEnum.basic}
                     options={issuancesSelectOptions}
                     state={SelectStateEnum.default}
+                    variant={
+                      selectedIssuanceId === null && SelectVariantEnum.error
+                    }
                     selected={
                       selectedIssuanceId
                         ? [
@@ -172,7 +171,7 @@ const UnitIssuanceForm = () => {
                     }}
                   />
                 </InputContainer>
-                {selectedIssuanceId === null && hasUserInteractedWithForm && (
+                {selectedIssuanceId === null && (
                   <Body size="Small" color="red">
                     {intl.formatMessage({
                       id: 'select-existing-issuance',
