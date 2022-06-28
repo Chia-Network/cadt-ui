@@ -2,16 +2,37 @@ import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
-import { Modal, TabPanel, modalTypeEnum, StyledFormContainer } from '..';
-import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
+import { Formik, setNestedObjectValues } from 'formik';
 
-import { projectSchema } from '../../store/validations';
-import { setValidateForm, setForm } from '../../store/actions/app';
+import {
+  Modal,
+  TabPanel,
+  modalTypeEnum,
+  StyledFormContainer,
+  FormikRepeater,
+  ProjectDetailsForm,
+  ProjectIssuanceForm,
+  ProjectLocationForm,
+  ProjectEstimationForm,
+  ProjectLabelForm,
+  ProjectRatingForm,
+  ProjectCoBenefitForm,
+  ProjectRelatedProjectForm,
+  emptyIssuance,
+  emptyCobenefit,
+  emptyEstimation,
+  emptyLocation,
+  emptyLabel,
+  emptyRelatedProject,
+  emptyRating,
+} from '..';
+import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
 import {
   formatAPIData,
   cleanObjectFromEmptyFieldsOrArrays,
 } from '../../utils/formatData';
+import { projectSchema } from '../../store/validations';
 
 const ProjectEditModal = ({
   onClose,
@@ -24,7 +45,7 @@ const ProjectEditModal = ({
         project => project.warehouseProjectId === record.warehouseProjectId,
       )[0],
   );
-  const [project, setProject] = useState({});
+  const [project, setProject] = useState(null);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -47,32 +68,27 @@ const ProjectEditModal = ({
     'related-projects',
   ];
 
-  useEffect(() => {
-    dispatch(setForm(stepperStepsTranslationIds[tabValue]));
-  }, [tabValue]);
+  const onChangeStepTo = async ({ formik, desiredStep = null }) => {
+    const errors = await formik.validateForm();
 
-  const onChangeStep = async (desiredStep = null) => {
-    const isValid = await projectSchema.isValid(project);
-    dispatch(setValidateForm(true));
-    if (isValid) {
-      dispatch(setValidateForm(false));
+    // manually setting touched for error fields so errors are displayed
+    formik.setTouched(setNestedObjectValues(errors, true));
+
+    const isProjectValid = _.isEmpty(errors);
+
+    if (isProjectValid) {
       if (
         desiredStep >= stepperStepsTranslationIds.length &&
         !apiResponseIsPending
       ) {
-        handleSubmitProject();
+        formik.submitForm();
       } else {
         setTabValue(desiredStep);
       }
     }
   };
 
-  const handleSubmitProject = async () => {
-    const dataToSend = _.cloneDeep(project);
-    cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-    dispatch(updateProjectRecord(dataToSend));
-  };
-
+  // if project was successfully edited, close modal
   const projectWasSuccessfullyEdited =
     notification?.id === 'project-successfully-edited';
   useEffect(() => {
@@ -81,163 +97,164 @@ const ProjectEditModal = ({
     }
   }, [notification]);
 
+  if (!project) {
+    return null;
+  }
+
   return (
-    <>
-      <Modal
-        modalSizeAndPosition={modalSizeAndPosition}
-        onOk={() => onChangeStep(tabValue + 1)}
-        onClose={onClose}
-        modalType={modalTypeEnum.basic}
-        title={intl.formatMessage({
-          id: 'edit-project',
-        })}
-        label={intl.formatMessage({
-          id: tabValue < 7 ? 'next' : 'update-project',
-        })}
-        extraButtonLabel={
-          tabValue > 0
-            ? intl.formatMessage({
-                id: 'back',
-              })
-            : undefined
-        }
-        extraButtonOnClick={() =>
-          onChangeStep(tabValue > 0 ? tabValue - 1 : tabValue)
-        }
-        body={
-          <StyledFormContainer>
-            <Stepper activeStep={tabValue} alternativeLabel>
-              {stepperStepsTranslationIds &&
-                stepperStepsTranslationIds.map((stepTranslationId, index) => (
-                  <Step
-                    key={index}
-                    onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    <StepLabel>
-                      {intl.formatMessage({
-                        id: stepTranslationId,
-                      })}
-                    </StepLabel>
-                  </Step>
-                ))}
-            </Stepper>
-            <div>
-              <TabPanel
-                style={{ paddingTop: '1.25rem' }}
-                value={tabValue}
-                index={0}
-              >
-                {/* <ProjectDetailsFormOld
-                  projectDetails={project}
-                  setProjectDetails={setProject}
-                /> */}
-              </TabPanel>
-              <TabPanel value={tabValue} index={1}>
-                {/* <ProjectIssuancesRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'issuances-optional',
-                  })}
-                  issuanceState={project?.issuances ?? []}
-                  newIssuanceState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      issuances: value,
-                    }))
-                  }
-                /> */}
-              </TabPanel>
-              <TabPanel value={tabValue} index={2}>
-                {/* <LocationsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'locations-optional',
-                  })}
-                  locationsState={project?.projectLocations ?? []}
-                  setLocationsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      projectLocations: value,
-                    }))
-                  }
-                /> */}
-              </TabPanel>
-              <TabPanel value={tabValue} index={3}>
-                {/* <EstimationsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'estimations-optional',
-                  })}
-                  estimationsState={project?.estimations ?? []}
-                  setEstimationsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      estimations: value,
-                    }))
-                  }
-                /> */}
-              </TabPanel>
-              <TabPanel value={tabValue} index={4}>
-                {/* <ProjectLabelsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'labels-optional',
-                  })}
-                  labelsState={project?.labels ?? []}
-                  newLabelsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      labels: value,
-                    }))
-                  }
-                /> */}
-              </TabPanel>
-              <TabPanel value={tabValue} index={5}>
-                {/* <RatingsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'ratings-optional',
-                  })}
-                  ratingsState={project?.projectRatings ?? []}
-                  setRatingsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      projectRatings: value,
-                    }))
-                  }
-                /> */}
-              </TabPanel>
+    <Formik
+      validationSchema={projectSchema}
+      initialValues={project}
+      onSubmit={values => {
+        const dataToSend = _.cloneDeep(values);
+        cleanObjectFromEmptyFieldsOrArrays(dataToSend);
+        dispatch(updateProjectRecord(dataToSend));
+      }}
+    >
+      {formik => (
+        <Modal
+          modalSizeAndPosition={modalSizeAndPosition}
+          onOk={() => onChangeStepTo({ formik, desiredStep: tabValue + 1 })}
+          onClose={onClose}
+          modalType={modalTypeEnum.basic}
+          title={intl.formatMessage({
+            id: 'edit-project',
+          })}
+          label={intl.formatMessage({
+            id: tabValue < 7 ? 'next' : 'update-project',
+          })}
+          extraButtonLabel={
+            tabValue > 0
+              ? intl.formatMessage({
+                  id: 'back',
+                })
+              : undefined
+          }
+          extraButtonOnClick={() =>
+            onChangeStepTo({
+              formik,
+              desiredStep: tabValue > 0 ? tabValue - 1 : tabValue,
+            })
+          }
+          body={
+            <StyledFormContainer>
+              <Stepper activeStep={tabValue} alternativeLabel>
+                {stepperStepsTranslationIds &&
+                  stepperStepsTranslationIds.map((stepTranslationId, index) => (
+                    <Step
+                      key={index}
+                      onClick={() =>
+                        onChangeStepTo({ formik, desiredStep: index })
+                      }
+                      sx={{ cursor: 'pointer' }}
+                    >
+                      <StepLabel>
+                        {intl.formatMessage({
+                          id: stepTranslationId,
+                        })}
+                      </StepLabel>
+                    </Step>
+                  ))}
+              </Stepper>
+              <div>
+                <TabPanel
+                  style={{ paddingTop: '1.25rem' }}
+                  value={tabValue}
+                  index={0}
+                >
+                  <ProjectDetailsForm />
+                </TabPanel>
+                <TabPanel value={tabValue} index={1}>
+                  <FormikRepeater
+                    empty={emptyIssuance}
+                    name="issuances"
+                    tooltip={intl.formatMessage({
+                      id: 'issuances-optional',
+                    })}
+                    min={0}
+                    Component={ProjectIssuanceForm}
+                  />
+                </TabPanel>
+                <TabPanel value={tabValue} index={2}>
+                  <FormikRepeater
+                    empty={emptyLocation}
+                    name="projectLocations"
+                    tooltip={intl.formatMessage({
+                      id: 'locations-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectLocationForm}
+                  />
+                </TabPanel>
+                <TabPanel value={tabValue} index={3}>
+                  <FormikRepeater
+                    empty={emptyEstimation}
+                    name="estimations"
+                    tooltip={intl.formatMessage({
+                      id: 'estimations-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectEstimationForm}
+                  />
+                </TabPanel>
+                <TabPanel value={tabValue} index={4}>
+                  <FormikRepeater
+                    empty={emptyLabel}
+                    name="labels"
+                    tooltip={intl.formatMessage({
+                      id: 'labels-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectLabelForm}
+                  />
+                </TabPanel>
+                <TabPanel value={tabValue} index={5}>
+                  <FormikRepeater
+                    empty={emptyRating}
+                    name="projectRatings"
+                    tooltip={intl.formatMessage({
+                      id: 'ratings-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectRatingForm}
+                  />
+                </TabPanel>
 
-              <TabPanel value={tabValue} index={6}>
-                {/* <CoBenefitsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'cobenefits-optional',
-                  })}
-                  coBenefitsState={project?.coBenefits ?? []}
-                  setNewCoBenefitsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      coBenefits: value,
-                    }))
-                  }
-                /> */}
-              </TabPanel>
+                <TabPanel value={tabValue} index={6}>
+                  <FormikRepeater
+                    empty={emptyCobenefit}
+                    name="coBenefits"
+                    tooltip={intl.formatMessage({
+                      id: 'cobenefits-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectCoBenefitForm}
+                  />
+                </TabPanel>
 
-              <TabPanel value={tabValue} index={7}>
-                {/* <RelatedProjectsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'relatedprojects-optional',
-                  })}
-                  relatedProjectsState={project?.relatedProjects ?? []}
-                  setRelatedProjectsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      relatedProjects: value,
-                    }))
-                  }
-                /> */}
-              </TabPanel>
-            </div>
-          </StyledFormContainer>
-        }
-      />
-    </>
+                <TabPanel value={tabValue} index={7}>
+                  <FormikRepeater
+                    empty={emptyRelatedProject}
+                    name="relatedProjects"
+                    tooltip={intl.formatMessage({
+                      id: 'relatedprojects-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectRelatedProjectForm}
+                  />
+                </TabPanel>
+              </div>
+            </StyledFormContainer>
+          }
+        />
+      )}
+    </Formik>
   );
 };
 

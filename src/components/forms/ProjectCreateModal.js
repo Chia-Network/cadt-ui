@@ -24,7 +24,7 @@ import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { projectSchema } from '../../store/validations';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
-const emptyRating = {
+export const emptyRating = {
   ratingType: '',
   ratingRangeHighest: '',
   ratingRangeLowest: '',
@@ -32,13 +32,13 @@ const emptyRating = {
   ratingLink: '',
 };
 
-const emptyRelatedProject = {
+export const emptyRelatedProject = {
   relatedProjectId: '',
   relationshipType: '',
   registry: '',
 };
 
-const emptyLabel = {
+export const emptyLabel = {
   label: '',
   labelType: '',
   creditingPeriodStartDate: '',
@@ -49,23 +49,23 @@ const emptyLabel = {
   labelLink: '',
 };
 
-const emptyLocation = {
+export const emptyLocation = {
   country: '',
   inCountryRegion: '',
   geographicIdentifier: '',
 };
 
-const emptyEstimation = {
+export const emptyEstimation = {
   creditingPeriodStart: '',
   creditingPeriodEnd: '',
   unitCount: 0,
 };
 
-const emptyCobenefit = {
+export const emptyCobenefit = {
   cobenefit: '',
 };
 
-const emptyProject = {
+export const emptyProject = {
   currentRegistry: '',
   registryOfOrigin: '',
   originProjectId: '',
@@ -88,7 +88,7 @@ const emptyProject = {
   validationDate: null,
 };
 
-const emptyIssuance = {
+export const emptyIssuance = {
   startDate: '',
   endDate: '',
   verificationApproach: '',
