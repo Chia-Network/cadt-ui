@@ -5,12 +5,10 @@ import { Stepper, Step, StepLabel } from '@mui/material';
 import {
   Modal,
   TabPanel,
-  EstimationsRepeater,
   RatingsRepeater,
   modalTypeEnum,
   StyledFormContainer,
 } from '..';
-import ProjectLabelsRepeater from './ProjectLabelsRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
@@ -172,7 +170,7 @@ const EditProjectsForm = ({
                 /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
-                <EstimationsRepeater
+                {/* <EstimationsRepeater
                   useToolTip={intl.formatMessage({
                     id: 'estimations-optional',
                   })}
@@ -183,10 +181,10 @@ const EditProjectsForm = ({
                       estimations: value,
                     }))
                   }
-                />
+                /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
-                <ProjectLabelsRepeater
+                {/* <ProjectLabelsRepeater
                   useToolTip={intl.formatMessage({
                     id: 'labels-optional',
                   })}
@@ -197,7 +195,7 @@ const EditProjectsForm = ({
                       labels: value,
                     }))
                   }
-                />
+                /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={5}>
                 <RatingsRepeater

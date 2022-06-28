@@ -14,15 +14,34 @@ import {
   FormikRepeater,
   ProjectIssuanceForm,
   ProjectLocationForm,
+  ProjectEstimationForm,
+  ProjectLabelForm,
 } from '..';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { projectSchema } from '../../store/validations';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
+const emptyLabel = {
+  label: '',
+  labelType: '',
+  creditingPeriodStartDate: '',
+  creditingPeriodEndDate: '',
+  validityPeriodStartDate: '',
+  validityPeriodEndDate: '',
+  unitQuantity: 0,
+  labelLink: '',
+};
+
 const emptyLocation = {
   country: '',
   inCountryRegion: '',
   geographicIdentifier: '',
+};
+
+const emptyEstimation = {
+  creditingPeriodStart: '',
+  creditingPeriodEnd: '',
+  unitCount: 0,
 };
 
 const emptyProject = {
@@ -189,32 +208,28 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={3}>
-                  {/* <EstimationsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'estimations-optional',
-                  })}
-                  estimationsState={project?.estimations ?? []}
-                  setEstimationsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      estimations: value,
-                    }))
-                  }
-                /> */}
+                  <FormikRepeater
+                    empty={emptyEstimation}
+                    name="estimations"
+                    tooltip={intl.formatMessage({
+                      id: 'estimations-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectEstimationForm}
+                  />
                 </TabPanel>
                 <TabPanel value={tabValue} index={4}>
-                  {/* <ProjectLabelsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'labels-optional',
-                  })}
-                  labelsState={project?.labels ?? []}
-                  newLabelsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      labels: value,
-                    }))
-                  }
-                /> */}
+                  <FormikRepeater
+                    empty={emptyLabel}
+                    name="labels"
+                    tooltip={intl.formatMessage({
+                      id: 'labels-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectLabelForm}
+                  />
                 </TabPanel>
                 <TabPanel value={tabValue} index={5}>
                   {/* <RatingsRepeater

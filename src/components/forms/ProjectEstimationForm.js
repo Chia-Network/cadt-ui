@@ -1,7 +1,5 @@
-import u from 'updeep';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -21,25 +19,20 @@ import {
   StyledFieldContainer,
   InputContainer,
   DateVariantEnum,
+  FormikError,
 } from '..';
 
-import { estimationSchema } from '../../store/validations';
-import { setValidationErrors } from '../../utils/validationUtils';
-
-const CreateEstimationsForm = ({ value, onChange }) => {
+const ProjectEstimationForm = ({
+  index,
+  name,
+  errors,
+  touched,
+  value,
+  setFieldValue,
+  handleBlur,
+}) => {
   const intl = useIntl();
-  const { validateForm, formType } = useSelector(state => state.app);
-  const [errorEstimationMessage, setErrorEstimationMessage] = useState({});
-
-  const onInputChange = (field, changeValue) => {
-    onChange(u({ [field]: changeValue }, value));
-  };
-
-  useEffect(() => {
-    if (validateForm && formType === 'estimations') {
-      setValidationErrors(estimationSchema, value, setErrorEstimationMessage);
-    }
-  }, [value, validateForm, formType]);
+  const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
 
   return (
     <ModalFormContainerStyle>
@@ -63,21 +56,20 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             <InputContainer>
               <DateSelect
                 variant={
-                  errorEstimationMessage?.creditingPeriodStart &&
+                  errors?.creditingPeriodStart &&
+                  touched?.creditingPeriodStart &&
                   DateVariantEnum.error
                 }
                 size="large"
                 dateValue={value.creditingPeriodStart}
-                setDateValue={changeValue =>
-                  onInputChange('creditingPeriodStart', changeValue)
+                setDateValue={value =>
+                  setFieldValue(getFieldName('creditingPeriodStart'), value)
                 }
+                name={getFieldName('creditingPeriodStart')}
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorEstimationMessage?.creditingPeriodStart && (
-              <Body size="Small" color="red">
-                {errorEstimationMessage.creditingPeriodStart}
-              </Body>
-            )}
+            <FormikError name={getFieldName('creditingPeriodStart')} />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -97,21 +89,20 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             <InputContainer>
               <DateSelect
                 variant={
-                  errorEstimationMessage?.creditingPeriodEnd &&
+                  errors?.creditingPeriodEnd &&
+                  touched?.creditingPeriodEnd &&
                   DateVariantEnum.error
                 }
                 size="large"
                 dateValue={value.creditingPeriodEnd}
-                setDateValue={changeValue =>
-                  onInputChange('creditingPeriodEnd', changeValue)
+                setDateValue={value =>
+                  setFieldValue(getFieldName('creditingPeriodEnd'), value)
                 }
+                name={getFieldName('creditingPeriodEnd')}
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorEstimationMessage?.creditingPeriodEnd && (
-              <Body size="Small" color="red">
-                {errorEstimationMessage.creditingPeriodEnd}
-              </Body>
-            )}
+            <FormikError name={getFieldName('creditingPeriodEnd')} />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -131,7 +122,7 @@ const CreateEstimationsForm = ({ value, onChange }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorEstimationMessage?.unitCount
+                  errors?.unitCount && touched?.unitCount
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -142,16 +133,14 @@ const CreateEstimationsForm = ({ value, onChange }) => {
                 })}
                 state={InputStateEnum.default}
                 value={value.unitCount}
-                onChange={changeValue =>
-                  onInputChange('unitCount', changeValue)
+                onChange={value =>
+                  setFieldValue(getFieldName('unitCount'), value)
                 }
+                onBlur={handleBlur}
+                name={getFieldName('unitCount')}
               />
             </InputContainer>
-            {errorEstimationMessage?.unitCount && (
-              <Body size="Small" color="red">
-                {errorEstimationMessage.unitCount}
-              </Body>
-            )}
+            <FormikError name={getFieldName('unitCount')} />
           </StyledFieldContainer>
         </BodyContainer>
       </FormContainerStyle>
@@ -160,4 +149,4 @@ const CreateEstimationsForm = ({ value, onChange }) => {
   );
 };
 
-export { CreateEstimationsForm };
+export { ProjectEstimationForm };

@@ -18,7 +18,7 @@ import {
   modalTypeEnum,
   UnitIssuanceForm,
   UnitDetailsForm,
-  UnitLabelsForm,
+  UnitLabelForm,
   FormikRepeater,
 } from '..';
 import { unitsSchema } from '../../store/validations';
@@ -200,7 +200,7 @@ const UnitCreateModal = ({ onClose, modalSizeAndPosition }) => {
                     id: 'labels-units-optional',
                   })}
                   min={0}
-                  Component={UnitLabelsForm}
+                  Component={UnitLabelForm}
                 />
               </TabPanel>
             </StyledFormContainer>

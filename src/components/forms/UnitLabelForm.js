@@ -44,7 +44,7 @@ import { FormikError } from '../form/FormikError';
 import { SelectVariantEnum } from '../form/Select';
 
 // eslint-disable-next-line react/display-name
-const UnitLabelsForm = memo(
+const UnitLabelForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
     const { labels, myProjects } = useSelector(store => store.climateWarehouse);
@@ -652,4 +652,4 @@ const UnitLabelsForm = memo(
   },
 );
 
-export { UnitLabelsForm };
+export { UnitLabelForm };
