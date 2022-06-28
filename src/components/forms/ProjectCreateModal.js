@@ -2,6 +2,8 @@ import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
+import { useIntl } from 'react-intl';
+import { Formik, setNestedObjectValues } from 'formik';
 
 import {
   TabPanel,
@@ -9,13 +11,12 @@ import {
   modalTypeEnum,
   ProjectDetailsForm,
   StyledFormContainer,
+  FormikRepeater,
+  ProjectIssuancesForm,
 } from '..';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
-import { useIntl } from 'react-intl';
-
 import { projectSchema } from '../../store/validations';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
-import { Formik, setNestedObjectValues } from 'formik';
 
 const emptyProject = {
   currentRegistry: '',
@@ -38,6 +39,14 @@ const emptyProject = {
   validationBody: '',
   projectStatusDate: null,
   validationDate: null,
+};
+
+const emptyIssuance = {
+  startDate: '',
+  endDate: '',
+  verificationApproach: '',
+  verificationReportDate: '',
+  verificationBody: '',
 };
 
 const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
@@ -149,18 +158,15 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
                   <ProjectDetailsForm />
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
-                  {/* <ProjectIssuancesRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'issuances-optional',
-                  })}
-                  issuanceState={project?.issuances ?? []}
-                  newIssuanceState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      issuances: value,
-                    }))
-                  }
-                /> */}
+                  <FormikRepeater
+                    empty={emptyIssuance}
+                    name="issuances"
+                    tooltip={intl.formatMessage({
+                      id: 'issuances-optional',
+                    })}
+                    min={0}
+                    Component={ProjectIssuancesForm}
+                  />
                 </TabPanel>
                 <TabPanel value={tabValue} index={2}>
                   {/* <LocationsRepeater

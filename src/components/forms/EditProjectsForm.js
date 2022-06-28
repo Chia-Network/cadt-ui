@@ -11,7 +11,6 @@ import {
   StyledFormContainer,
 } from '..';
 import ProjectLabelsRepeater from './ProjectLabelsRepeater';
-import ProjectIssuancesRepeater from './ProjectIssuancesRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
 import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
@@ -146,7 +145,7 @@ const EditProjectsForm = ({
                 /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
-                <ProjectIssuancesRepeater
+                {/* <ProjectIssuancesRepeater
                   useToolTip={intl.formatMessage({
                     id: 'issuances-optional',
                   })}
@@ -157,7 +156,7 @@ const EditProjectsForm = ({
                       issuances: value,
                     }))
                   }
-                />
+                /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <LocationsRepeater

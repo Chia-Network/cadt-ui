@@ -379,6 +379,7 @@
   "yup-validation-integer": "数値は整数でなければなりません",
   "yup-validation-year": "有効な年を追加する",
   "yup-validation-date": "有効な日付を追加する",
+  "yup-validation-end-date-greater": "終了日は開始日よりも大きくする必要があります",
   "governance": "Governance",
   "initiate-governance": "ガバナンス",
   "governance-initiating-please-wait": "ガバナンス機関が開始しています。5分待ってから更新してください。",

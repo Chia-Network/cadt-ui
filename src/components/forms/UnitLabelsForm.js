@@ -365,7 +365,7 @@ const UnitLabelsForm = memo(
                       name={getFieldName('label')}
                     />
                   </InputContainer>
-                  <FormikError name={`${name}[${index}].label`} />
+                  <FormikError name={getFieldName('label')} />
                 </StyledFieldContainer>
                 <StyledFieldContainer>
                   <StyledLabelContainer>
