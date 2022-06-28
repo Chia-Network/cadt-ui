@@ -12,7 +12,7 @@ import {
 } from '.';
 import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { UnitEditModal, EditProjectsForm } from '..';
+import { UnitEditModal, ProjectEditModal } from '..';
 import {
   deleteProject,
   deleteUnit,
@@ -347,7 +347,7 @@ const APIDataTable = withTheme(
           />
         )}
         {actions === 'Projects' && editRecord && (
-          <EditProjectsForm
+          <ProjectEditModal
             onClose={() => {
               setEditRecord(null);
               dispatch(setForm(null));

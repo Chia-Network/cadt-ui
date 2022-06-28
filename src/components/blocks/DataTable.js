@@ -9,7 +9,7 @@ import constants from '../../constants';
 import { Pagination, TableDrawer } from './';
 import { BasicMenu } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { UnitEditModal, EditProjectsForm } from '..';
+import { UnitEditModal, ProjectEditModal } from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -239,7 +239,7 @@ const DataTable = withTheme(({ headings, data, actions }) => {
         />
       )}
       {editProjects && (
-        <EditProjectsForm
+        <ProjectEditModal
           onClose={() => {
             setEditProjects(false);
             setEditRecord(null);

@@ -8,7 +8,7 @@ export * from './ProjectDetailsForm';
 export * from './ProjectLabelForm';
 export * from './ProjectCoBenefitForm';
 export * from './ProjectRelatedProjectForm';
-export * from './EditProjectsForm';
+export * from './ProjectEditModal';
 export * from './UnitEditModal';
 export * from './UnitCreateModal';
 export * from './UnitDetailsForm';

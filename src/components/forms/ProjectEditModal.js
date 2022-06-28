@@ -13,7 +13,7 @@ import {
   cleanObjectFromEmptyFieldsOrArrays,
 } from '../../utils/formatData';
 
-const EditProjectsForm = ({
+const ProjectEditModal = ({
   onClose,
   record,
   modalSizeAndPosition = { modalSizeAndPosition },
@@ -241,4 +241,4 @@ const EditProjectsForm = ({
   );
 };
 
-export { EditProjectsForm };
+export { ProjectEditModal };
