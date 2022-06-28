@@ -1,9 +1,7 @@
 export * from './CreateEstimationsForm';
 export * from './CreateCoBenefitsForm';
-export * from './CreateLocationsForm';
 export * from './CreateRatingsForm';
 export * from './CreateRelatedProjectsForm';
-export * from './LocationsRepeater';
 export * from './CoBenefitsRepeater';
 export * from './RatingsRepeater';
 export * from './RelatedProjectsRepeater';
@@ -23,4 +21,5 @@ export * from './UnitIssuanceForm';
 export * from './UnitLabelsForm';
 export * from './FormikRepeater';
 export * from './ProjectCreateModal';
-export * from './ProjectIssuancesForm';
+export * from './ProjectIssuanceForm';
+export * from './ProjectLocationForm';

@@ -23,12 +23,10 @@ import {
 } from '..';
 
 // eslint-disable-next-line react/display-name
-const ProjectIssuancesForm = memo(
+const ProjectIssuanceForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
-
     const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
-
     const areFieldsDisabled = Boolean(value.id);
 
     return (
@@ -253,4 +251,4 @@ const ProjectIssuancesForm = memo(
   },
 );
 
-export { ProjectIssuancesForm };
+export { ProjectIssuanceForm };

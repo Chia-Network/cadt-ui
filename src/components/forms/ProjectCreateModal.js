@@ -12,11 +12,18 @@ import {
   ProjectDetailsForm,
   StyledFormContainer,
   FormikRepeater,
-  ProjectIssuancesForm,
+  ProjectIssuanceForm,
+  ProjectLocationForm,
 } from '..';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { projectSchema } from '../../store/validations';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
+
+const emptyLocation = {
+  country: '',
+  inCountryRegion: '',
+  geographicIdentifier: '',
+};
 
 const emptyProject = {
   currentRegistry: '',
@@ -75,6 +82,7 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
     // manually setting touched for error fields so errors are displayed
     formik.setTouched(setNestedObjectValues(errors, true));
 
+    console.log('values', formik.values);
     console.log('errors', errors);
 
     const isProjectValid = _.isEmpty(errors);
@@ -165,22 +173,20 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
                       id: 'issuances-optional',
                     })}
                     min={0}
-                    Component={ProjectIssuancesForm}
+                    Component={ProjectIssuanceForm}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={2}>
-                  {/* <LocationsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'locations-optional',
-                  })}
-                  locationsState={project?.projectLocations ?? []}
-                  setLocationsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      projectLocations: value,
-                    }))
-                  }
-                /> */}
+                  <FormikRepeater
+                    empty={emptyLocation}
+                    name="projectLocations"
+                    tooltip={intl.formatMessage({
+                      id: 'locations-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectLocationForm}
+                  />
                 </TabPanel>
                 <TabPanel value={tabValue} index={3}>
                   {/* <EstimationsRepeater

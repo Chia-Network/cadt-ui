@@ -12,7 +12,6 @@ import {
 } from '..';
 import ProjectLabelsRepeater from './ProjectLabelsRepeater';
 import CoBenefitsRepeater from './CoBenefitsRepeater';
-import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
@@ -159,7 +158,7 @@ const EditProjectsForm = ({
                 /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                <LocationsRepeater
+                {/* <LocationsRepeater
                   useToolTip={intl.formatMessage({
                     id: 'locations-optional',
                   })}
@@ -170,7 +169,7 @@ const EditProjectsForm = ({
                       projectLocations: value,
                     }))
                   }
-                />
+                /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={3}>
                 <EstimationsRepeater
