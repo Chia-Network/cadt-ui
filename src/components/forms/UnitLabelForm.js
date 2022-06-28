@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { FormikError } from '../form/FormikError';
 
 import {
   StandardInput,
@@ -40,7 +41,6 @@ import {
   SimpleSelect,
 } from '..';
 
-import { FormikError } from '../form/FormikError';
 import { SelectVariantEnum } from '../form/Select';
 
 // eslint-disable-next-line react/display-name

@@ -2,15 +2,7 @@ import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
-import {
-  Modal,
-  TabPanel,
-  RatingsRepeater,
-  modalTypeEnum,
-  StyledFormContainer,
-} from '..';
-import CoBenefitsRepeater from './CoBenefitsRepeater';
-import RelatedProjectsRepeater from './RelatedProjectsRepeater';
+import { Modal, TabPanel, modalTypeEnum, StyledFormContainer } from '..';
 import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
 
@@ -198,7 +190,7 @@ const EditProjectsForm = ({
                 /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={5}>
-                <RatingsRepeater
+                {/* <RatingsRepeater
                   useToolTip={intl.formatMessage({
                     id: 'ratings-optional',
                   })}
@@ -209,11 +201,11 @@ const EditProjectsForm = ({
                       projectRatings: value,
                     }))
                   }
-                />
+                /> */}
               </TabPanel>
 
               <TabPanel value={tabValue} index={6}>
-                <CoBenefitsRepeater
+                {/* <CoBenefitsRepeater
                   useToolTip={intl.formatMessage({
                     id: 'cobenefits-optional',
                   })}
@@ -224,11 +216,11 @@ const EditProjectsForm = ({
                       coBenefits: value,
                     }))
                   }
-                />
+                /> */}
               </TabPanel>
 
               <TabPanel value={tabValue} index={7}>
-                <RelatedProjectsRepeater
+                {/* <RelatedProjectsRepeater
                   useToolTip={intl.formatMessage({
                     id: 'relatedprojects-optional',
                   })}
@@ -239,7 +231,7 @@ const EditProjectsForm = ({
                       relatedProjects: value,
                     }))
                   }
-                />
+                /> */}
               </TabPanel>
             </div>
           </StyledFormContainer>

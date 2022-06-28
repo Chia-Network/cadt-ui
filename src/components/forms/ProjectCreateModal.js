@@ -16,10 +16,27 @@ import {
   ProjectLocationForm,
   ProjectEstimationForm,
   ProjectLabelForm,
+  ProjectRatingForm,
+  ProjectCoBenefitForm,
+  ProjectRelatedProjectForm,
 } from '..';
 import { postNewProject } from '../../store/actions/climateWarehouseActions';
 import { projectSchema } from '../../store/validations';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
+
+const emptyRating = {
+  ratingType: '',
+  ratingRangeHighest: '',
+  ratingRangeLowest: '',
+  rating: '',
+  ratingLink: '',
+};
+
+const emptyRelatedProject = {
+  relatedProjectId: '',
+  relationshipType: '',
+  registry: '',
+};
 
 const emptyLabel = {
   label: '',
@@ -42,6 +59,10 @@ const emptyEstimation = {
   creditingPeriodStart: '',
   creditingPeriodEnd: '',
   unitCount: 0,
+};
+
+const emptyCobenefit = {
+  cobenefit: '',
 };
 
 const emptyProject = {
@@ -82,8 +103,6 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
 
-  // const [project, setProject] = useState(emptyProject);
-
   const stepperStepsTranslationIds = [
     'project',
     'issuances',
@@ -100,9 +119,6 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
 
     // manually setting touched for error fields so errors are displayed
     formik.setTouched(setNestedObjectValues(errors, true));
-
-    console.log('values', formik.values);
-    console.log('errors', errors);
 
     const isProjectValid = _.isEmpty(errors);
 
@@ -232,46 +248,40 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={5}>
-                  {/* <RatingsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'ratings-optional',
-                  })}
-                  ratingsState={project?.projectRatings ?? []}
-                  setRatingsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      projectRatings: value,
-                    }))
-                  }
-                /> */}
+                  <FormikRepeater
+                    empty={emptyRating}
+                    name="projectRatings"
+                    tooltip={intl.formatMessage({
+                      id: 'ratings-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectRatingForm}
+                  />
                 </TabPanel>
                 <TabPanel value={tabValue} index={6}>
-                  {/* <CoBenefitsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'cobenefits-optional',
-                  })}
-                  coBenefitsState={project?.coBenefits ?? []}
-                  setNewCoBenefitsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      coBenefits: value,
-                    }))
-                  }
-                /> */}
+                  <FormikRepeater
+                    empty={emptyCobenefit}
+                    name="coBenefits"
+                    tooltip={intl.formatMessage({
+                      id: 'cobenefits-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectCoBenefitForm}
+                  />
                 </TabPanel>
                 <TabPanel value={tabValue} index={7}>
-                  {/* <RelatedProjectsRepeater
-                  useToolTip={intl.formatMessage({
-                    id: 'relatedprojects-optional',
-                  })}
-                  relatedProjectsState={project?.relatedProjects ?? []}
-                  setRelatedProjectsState={value =>
-                    setProject(prev => ({
-                      ...prev,
-                      relatedProjects: value,
-                    }))
-                  }
-                /> */}
+                  <FormikRepeater
+                    empty={emptyRelatedProject}
+                    name="relatedProjects"
+                    tooltip={intl.formatMessage({
+                      id: 'relatedprojects-optional',
+                    })}
+                    min={0}
+                    max={100}
+                    Component={ProjectRelatedProjectForm}
+                  />
                 </TabPanel>
               </div>
             </StyledFormContainer>
