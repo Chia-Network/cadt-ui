@@ -1,6 +1,8 @@
+import _ from 'lodash';
 import React, { useMemo, useEffect, useCallback, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
+import { useFormikContext } from 'formik';
 
 import {
   StandardInput,
@@ -36,8 +38,6 @@ import {
   SelectVariantEnum,
 } from '..';
 
-import { useFormikContext } from 'formik';
-
 const UnitDetailsForm = () => {
   const intl = useIntl();
   const { pickLists, myProjects, issuances } = useSelector(
@@ -48,7 +48,7 @@ const UnitDetailsForm = () => {
     useFormikContext();
 
   const hasUserInteractedWithForm = useMemo(
-    () => Object.keys(touched).length > 0,
+    () => !_.isEmpty(touched),
     [touched],
   );
 

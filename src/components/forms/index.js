@@ -1,4 +1,3 @@
-export * from './CreateProjectForm';
 export * from './CreateEstimationsForm';
 export * from './CreateCoBenefitsForm';
 export * from './CreateLocationsForm';
@@ -25,3 +24,4 @@ export * from './UnitDetailsForm';
 export * from './UnitIssuanceForm';
 export * from './UnitLabelsForm';
 export * from './FormikRepeater';
+export * from './ProjectCreateModal';

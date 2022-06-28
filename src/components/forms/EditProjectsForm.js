@@ -17,7 +17,6 @@ import LocationsRepeater from './LocationsRepeater';
 import RelatedProjectsRepeater from './RelatedProjectsRepeater';
 import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
 import { useIntl } from 'react-intl';
-import { ProjectDetailsForm } from '.';
 
 import { projectSchema } from '../../store/validations';
 import { setValidateForm, setForm } from '../../store/actions/app';
@@ -125,7 +124,8 @@ const EditProjectsForm = ({
                   <Step
                     key={index}
                     onClick={() => onChangeStep(index)}
-                    sx={{ cursor: 'pointer' }}>
+                    sx={{ cursor: 'pointer' }}
+                  >
                     <StepLabel>
                       {intl.formatMessage({
                         id: stepTranslationId,
@@ -138,11 +138,12 @@ const EditProjectsForm = ({
               <TabPanel
                 style={{ paddingTop: '1.25rem' }}
                 value={tabValue}
-                index={0}>
-                <ProjectDetailsForm
+                index={0}
+              >
+                {/* <ProjectDetailsFormOld
                   projectDetails={project}
                   setProjectDetails={setProject}
-                />
+                /> */}
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
                 <ProjectIssuancesRepeater

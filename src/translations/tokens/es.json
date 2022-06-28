@@ -378,6 +378,7 @@
   "yup-validation-positive-number": "El número debe ser positivo",
   "yup-validation-integer": "El número debe ser entero",
   "yup-validation-year": "Agregar un año válido",
+  "yup-validation-date": "Agregar una fecha válida",
   "governance": "Gobernancia",
   "initiate-governance": "Iniciar Gobernanza",
   "governance-initiating-please-wait": "Su órgano de gobierno está iniciando, espere 5 minutos y luego actualice.",
