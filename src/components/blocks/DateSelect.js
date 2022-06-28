@@ -89,6 +89,8 @@ const DateSelect = ({
   dateValue,
   setDateValue,
   variant,
+  onBlur,
+  name,
 }) => {
   const divElement = useRef(null);
 
@@ -122,6 +124,8 @@ const DateSelect = ({
                 {...inputProps}
                 placeholder="YYYY-MM-DD"
                 disabled={disabled}
+                onBlur={onBlur}
+                name={name}
               />
               {InputProps?.endAdornment}
             </InputContainer>

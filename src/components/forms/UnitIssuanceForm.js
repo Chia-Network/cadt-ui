@@ -1,7 +1,7 @@
-import u from 'updeep';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
+import { useFormikContext } from 'formik';
 
 import {
   StandardInput,
@@ -25,14 +25,19 @@ import {
   Select,
   SpanTwoColumnsContainer,
 } from '..';
+import { SelectVariantEnum } from '../form/Select';
 
-const CreateUnitIssuanceForm = ({ value, onChange }) => {
-  const { validateForm } = useSelector(state => state.app);
+const UnitIssuanceForm = () => {
   const { issuances } = useSelector(store => store.climateWarehouse);
   const [selectedWarehouseProjectId, setSelectedWarehouseProjectId] =
     useState(null);
   const [selectedIssuanceId, setSelectedIssuanceId] = useState(null);
   const intl = useIntl();
+  const {
+    values,
+    values: { issuance: value },
+    setValues,
+  } = useFormikContext();
 
   // if unit has issuance, infer project id
   useEffect(() => {
@@ -41,7 +46,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
       const projectId = issuances.filter(item => item.id)[0].warehouseProjectId;
       setSelectedWarehouseProjectId(projectId);
     }
-  }, [value, issuances]);
+  }, []);
 
   // if unit has no issuance yet, infer it from local storage from selected project at the beginning of the form
   useEffect(() => {
@@ -104,26 +109,26 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
         id,
         warehouseProjectId,
       } = selectedIssuance;
-      onChange({
-        endDate,
-        startDate,
-        verificationApproach,
-        verificationBody,
-        verificationReportDate,
-        id,
-        warehouseProjectId,
+      setValues({
+        ...values,
+        issuance: {
+          endDate,
+          startDate,
+          verificationApproach,
+          verificationBody,
+          verificationReportDate,
+          id,
+          warehouseProjectId,
+        },
       });
     }
-  };
-
-  const onInputChange = (field, changeValue) => {
-    onChange(u({ [field]: changeValue }, value));
   };
 
   return (
     <ModalFormContainerStyle>
       <FormContainerStyle>
         <BodyContainer>
+          {/* below input is not connected to formik */}
           <SpanTwoColumnsContainer>
             {selectedWarehouseProjectId && (
               <StyledFieldContainer>
@@ -147,6 +152,9 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                     type={SelectTypeEnum.basic}
                     options={issuancesSelectOptions}
                     state={SelectStateEnum.default}
+                    variant={
+                      selectedIssuanceId === null && SelectVariantEnum.error
+                    }
                     selected={
                       selectedIssuanceId
                         ? [
@@ -163,7 +171,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                     }}
                   />
                 </InputContainer>
-                {selectedIssuanceId === null && validateForm && (
+                {selectedIssuanceId === null && (
                   <Body size="Small" color="red">
                     {intl.formatMessage({
                       id: 'select-existing-issuance',
@@ -195,9 +203,6 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                   <DateSelect
                     size="large"
                     dateValue={value.startDate}
-                    setDateValue={changeValue =>
-                      onInputChange('startDate', changeValue)
-                    }
                     disabled
                   />
                 </InputContainer>
@@ -218,14 +223,7 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
-                  <DateSelect
-                    size="large"
-                    dateValue={value.endDate}
-                    setDateValue={changeValue =>
-                      onInputChange('endDate', changeValue)
-                    }
-                    disabled
-                  />
+                  <DateSelect size="large" dateValue={value.endDate} disabled />
                 </InputContainer>
               </StyledFieldContainer>
 
@@ -279,9 +277,6 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                     })}
                     state={InputStateEnum.disabled}
                     value={value.verificationBody}
-                    onChange={changeValue =>
-                      onInputChange('verificationBody', changeValue)
-                    }
                   />
                 </InputContainer>
               </StyledFieldContainer>
@@ -304,9 +299,6 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                   <DateSelect
                     size="large"
                     dateValue={value.verificationReportDate}
-                    setDateValue={changeValue =>
-                      onInputChange('verificationReportDate', changeValue)
-                    }
                     disabled
                   />
                 </InputContainer>
@@ -334,9 +326,6 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
                     })}
                     state={InputStateEnum.disabled}
                     value={value.verificationApproach}
-                    onChange={changeValue =>
-                      onInputChange('verificationApproach', changeValue)
-                    }
                   />
                 </InputContainer>
               </StyledFieldContainer>
@@ -349,4 +338,4 @@ const CreateUnitIssuanceForm = ({ value, onChange }) => {
   );
 };
 
-export { CreateUnitIssuanceForm };
+export { UnitIssuanceForm };
