@@ -1441,7 +1441,7 @@ export const uploadXLSXFile = (file, type) => {
               NotificationMessageTypeEnum.error,
               formatApiErrorResponse(
                 errorResponse,
-                'file-could-not-be-uploaded',
+                errorResponse.error,
               ),
             ),
           );
