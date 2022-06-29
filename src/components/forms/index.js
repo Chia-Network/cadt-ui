@@ -15,6 +15,6 @@ export * from './UnitDetailsForm';
 export * from './UnitIssuanceForm';
 export * from './UnitLabelForm';
 export * from './CreateOrgForm';
-export * from './SplitUnitFormik';
+export * from './UnitSplitFormModal';
 export * from './SubscriptionModal';
 export * from './FormikRepeater';
