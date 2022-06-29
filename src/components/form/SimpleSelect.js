@@ -282,7 +282,6 @@ const SimpleSelect = withTheme(
   }) => {
     const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [selectState, setSelectState] = useState(state);
-    const [optionsList] = useState(options);
     const [selectedOptions, setSelectedOptions] = useState(selected || null);
     const [searchInputValue, setSearchInputValue] = useState('');
     const [inputValue, setInputValue] = useState(false);
@@ -576,7 +575,7 @@ const SimpleSelect = withTheme(
                 <FormattedMessage id={`add-unlisted-${addInput}`} />
               </BasicMenuItem>
             )}
-            {optionsList.map(option => {
+            {options.map(option => {
               const isSelected =
                 selectedOptions != null &&
                 selectedOptions.length > 0 &&
@@ -601,7 +600,7 @@ const SimpleSelect = withTheme(
         {/* Menu for Search type */}
         {menuIsVisible && (type === SimpleSelectTypeEnum.search || inputValue) && (
           <StyledBasicMenu size={size} top={menuTopPosition}>
-            {optionsList.map(
+            {options.map(
               option =>
                 option
                   .toLowerCase()
