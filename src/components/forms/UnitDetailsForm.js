@@ -157,8 +157,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'select-existing-project',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -214,8 +213,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-project-location-id-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -259,8 +257,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-owner-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -294,8 +291,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-block-start-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -329,8 +325,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-block-end-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -364,8 +359,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-count-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -399,8 +393,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-in-country-jurisdiction-of-owner-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -437,8 +430,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-country-jurisdiction-of-owner-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -479,8 +471,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-type-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -514,8 +505,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-status-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -545,16 +535,12 @@ const UnitDetailsForm = () => {
               <StyledLabelContainer>
                 <Body color={'#262626'}>
                   <LabelContainer>
-                    {['cancelled', 'retired'].includes(
-                      values?.unitStatus?.toLowerCase(),
-                    ) && '*'}
                     <FormattedMessage id="unit-status-reason" />
                   </LabelContainer>
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-status-reason-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -588,8 +574,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-registry-link-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -622,8 +607,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-vintage-year-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -660,8 +644,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-marketplace-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -695,8 +678,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-marketplace-identifier-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -733,8 +715,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-marketplace-link-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -768,8 +749,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-corresponding-adjustment-declaration-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -810,8 +790,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-corresponding-adjustment-status-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -856,8 +835,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-tags-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>

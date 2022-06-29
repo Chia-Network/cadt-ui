@@ -28,12 +28,8 @@ export const unitsSchema = yup.object().shape({
   marketplaceLink: yup.string().optional(),
   marketplaceIdentifier: yup.string().optional(),
   unitTags: yup.string().optional(),
-  unitStatus: yup.string().required('yup-validation-field-required'),
-  unitStatusReason: yup.string().when('unitStatus', {
-    is: val => val && ['cancelled', 'retired'].includes(val.toLowerCase()),
-    then: yup.string().required('yup-validation-field-required'),
-    otherwise: yup.string().optional(),
-  }),
+ unitStatus: yup.string().required('yup-validation-field-required'),
+  unitStatusReason: yup.string().optional(),
   unitRegistryLink: yup.string().required('yup-validation-field-required'),
   correspondingAdjustmentDeclaration: yup
     .string()
