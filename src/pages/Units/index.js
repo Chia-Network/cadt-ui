@@ -19,11 +19,7 @@ import {
   getUnitData,
   clearUnitData,
 } from '../../store/actions/climateWarehouseActions';
-import {
-  setPendingError,
-  setForm,
-  setValidateForm,
-} from '../../store/actions/app';
+import { setPendingError, setForm } from '../../store/actions/app';
 
 import {
   H3,
@@ -353,7 +349,13 @@ const Units = () => {
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
-                icon={<AddIcon width="16.13" height="16.88" fill={theme.colors.default.onButton} />}
+                icon={
+                  <AddIcon
+                    width="16.13"
+                    height="16.88"
+                    fill={theme.colors.default.onButton}
+                  />
+                }
                 onClick={() => {
                   if (
                     _.isEmpty(stagingData.units.pending) &&
@@ -361,7 +363,6 @@ const Units = () => {
                   ) {
                     setCreate(true);
                     dispatch(setForm('unit'));
-                    dispatch(setValidateForm(false));
                   } else {
                     dispatch(setPendingError(true));
                   }
@@ -448,7 +449,6 @@ const Units = () => {
                           ) {
                             setCreate(true);
                             dispatch(setForm('unit'));
-                            dispatch(setValidateForm(false));
                           } else {
                             dispatch(setPendingError(true));
                           }
@@ -481,7 +481,6 @@ const Units = () => {
                 onClose={() => {
                   setCreate(false);
                   dispatch(setForm(null));
-                  dispatch(setValidateForm(false));
                 }}
                 modalSizeAndPosition={modalSizeAndPosition}
               />
