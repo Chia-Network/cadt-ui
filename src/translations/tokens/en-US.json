@@ -397,6 +397,8 @@
   "yup-validation-positive-number": "The number must be positive",
   "yup-validation-integer": "The number must be integer",
   "yup-validation-year": "Add a valid year",
+  "yup-validation-date": "Add a valid date",
+  "yup-validation-end-date-greater": "The end date should be greater than start date",
   "governance": "Governance",
   "initiate-governance": "Initiate Governance",
   "governance-initiating-please-wait": "Your governance body is initiating, please wait 5 minutes then refresh.",

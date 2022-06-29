@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { FormikError } from '../form/FormikError';
 
 import {
   StandardInput,
@@ -40,11 +41,10 @@ import {
   SimpleSelect,
 } from '..';
 
-import { FormikError } from '../form/FormikError';
 import { SelectVariantEnum } from '../form/Select';
 
 // eslint-disable-next-line react/display-name
-const UnitLabelsForm = memo(
+const UnitLabelForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
     const { labels, myProjects } = useSelector(store => store.climateWarehouse);
@@ -365,7 +365,7 @@ const UnitLabelsForm = memo(
                       name={getFieldName('label')}
                     />
                   </InputContainer>
-                  <FormikError name={`${name}[${index}].label`} />
+                  <FormikError name={getFieldName('label')} />
                 </StyledFieldContainer>
                 <StyledFieldContainer>
                   <StyledLabelContainer>
@@ -652,4 +652,4 @@ const UnitLabelsForm = memo(
   },
 );
 
-export { UnitLabelsForm };
+export { UnitLabelForm };

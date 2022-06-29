@@ -12,13 +12,13 @@ import {
 } from '.';
 import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { UnitEditModal, EditProjectsForm } from '..';
+import { UnitEditModal, ProjectEditModal } from '..';
 import {
   deleteProject,
   deleteUnit,
 } from '../../store/actions/climateWarehouseActions';
 import { setForm, setValidateForm } from '../../store/actions/app';
-import { SplitUnitFormik } from '../forms/SplitUnitFormik';
+import { UnitSplitFormModal } from '../forms/UnitSplitFormModal';
 
 const Table = styled('table')`
   box-sizing: border-box;
@@ -347,7 +347,7 @@ const APIDataTable = withTheme(
           />
         )}
         {actions === 'Projects' && editRecord && (
-          <EditProjectsForm
+          <ProjectEditModal
             onClose={() => {
               setEditRecord(null);
               dispatch(setForm(null));
@@ -358,7 +358,7 @@ const APIDataTable = withTheme(
           />
         )}
         {unitToBeSplit && (
-          <SplitUnitFormik
+          <UnitSplitFormModal
             organizations={organizations}
             onClose={() => setUnitToBeSplit(null)}
             record={unitToBeSplit}

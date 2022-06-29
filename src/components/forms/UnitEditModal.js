@@ -11,7 +11,7 @@ import {
   TabPanel,
   modalTypeEnum,
   UnitDetailsForm,
-  UnitLabelsForm,
+  UnitLabelForm,
   UnitIssuanceForm,
   FormikRepeater,
 } from '..';
@@ -193,7 +193,7 @@ const UnitEditModal = ({ onClose, record, modalSizeAndPosition }) => {
                     id: 'labels-units-optional',
                   })}
                   min={0}
-                  Component={UnitLabelsForm}
+                  Component={UnitLabelForm}
                 />
               </TabPanel>
             </StyledFormContainer>
