@@ -19,7 +19,6 @@ export const actions = keyMirror(
   'SET_READ_ONLY',
   'SIGN_USER_IN',
   'SIGN_USER_OUT',
-  'SET_FORM',
   'REFRESH_APP',
   'LOCK_APP',
 );
@@ -59,11 +58,6 @@ export const toggleTheme = {
 export const setGlobalErrorMessage = message => ({
   type: actions.SET_GLOBAL_ERROR_MESSAGE,
   payload: message,
-});
-
-export const setForm = formType => ({
-  type: actions.SET_FORM,
-  payload: formType,
 });
 
 export const clearGlobalErrorMessage = {
