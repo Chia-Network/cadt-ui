@@ -8,33 +8,33 @@ import { ratingSchema } from './ratings.validation';
 import { relatedProjectSchema } from './relatedProjects.validation';
 
 export const projectSchema = yup.object().shape({
-  currentRegistry: yup.string().required('Required Field'),
-  registryOfOrigin: yup.string().required('Required Field'),
-  originProjectId: yup.string().required('Required Field'),
+  currentRegistry: yup.string().required('yup-validation-field-required'),
+  registryOfOrigin: yup.string().required('yup-validation-field-required'),
+  originProjectId: yup.string().required('yup-validation-field-required'),
   program: yup.string().optional(),
-  projectId: yup.string().required('Required Field'),
-  projectName: yup.string().required('Required Field'),
+  projectId: yup.string().required('yup-validation-field-required'),
+  projectName: yup.string().required('yup-validation-field-required'),
   description: yup.string().optional(),
-  projectLink: yup.string().required('Required Field'),
-  projectDeveloper: yup.string().required('Required Field'),
-  sector: yup.string().required('Required Field'),
-  projectType: yup.string().required('Required Field'),
-  coveredByNDC: yup.string().required('Required Field'),
+  projectLink: yup.string().required('yup-validation-field-required'),
+  projectDeveloper: yup.string().required('yup-validation-field-required'),
+  sector: yup.string().required('yup-validation-field-required'),
+  projectType: yup.string().required('yup-validation-field-required'),
+  coveredByNDC: yup.string().required('yup-validation-field-required'),
   ndcInformation: yup.string().optional(),
-  projectStatus: yup.string().required('Required Field'),
-  unitMetric: yup.string().required('Required Field'),
-  methodology: yup.string().required('Required Field'),
+  projectStatus: yup.string().required('yup-validation-field-required'),
+  unitMetric: yup.string().required('yup-validation-field-required'),
+  methodology: yup.string().required('yup-validation-field-required'),
   projectTags: yup.string().optional(),
   validationBody: yup.string().optional(),
-  projectStatusDate: yup.date().typeError('Invalid Date'),
+  projectStatusDate: yup.date().typeError('yup-validation-date'),
   validationDate: yup.lazy(value => {
     if (value === null) {
       return yup.object().nullable();
     } else if (typeof value === 'object' && !isNaN(value.getTime())) {
       return yup
         .date()
-        .required('Required field')
-        .typeError('Enter valid date');
+        .required('yup-validation-field-required')
+        .typeError('yup-validation-date');
     } else {
       return yup.string().optional();
     }

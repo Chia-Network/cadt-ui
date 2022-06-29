@@ -1,3 +1,4 @@
+/* es-lint disable */
 import _ from 'lodash';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,7 +23,7 @@ import {
   SelectOrganizations,
   SelectSizeEnum,
   SelectTypeEnum,
-  CreateProjectForm,
+  ProjectCreateModal,
   H3,
   UploadXLSX,
   CommitModal,
@@ -386,9 +387,11 @@ const Projects = () => {
         )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label={`${intl.formatMessage({ id: 'committed' })} (${
-                  projects && projects?.length
-                })`} />
+            <Tab
+              label={`${intl.formatMessage({ id: 'committed' })} (${
+                projects && projects?.length
+              })`}
+            />
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
@@ -534,7 +537,7 @@ const Projects = () => {
         </StyledBodyContainer>
       </StyledSectionContainer>
       {createFormIsDisplayed && (
-        <CreateProjectForm
+        <ProjectCreateModal
           onClose={() => {
             setCreateFormIsDisplayed(false);
             dispatch(setForm(null));
