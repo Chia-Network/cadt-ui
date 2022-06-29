@@ -17,7 +17,7 @@ import {
   deleteProject,
   deleteUnit,
 } from '../../store/actions/climateWarehouseActions';
-import { setForm } from '../../store/actions/app';
+import {} from '../../store/actions/app';
 import { SplitUnitFormik } from '../forms/SplitUnitFormik';
 
 const Table = styled('table')`
@@ -295,7 +295,6 @@ const APIDataTable = withTheme(
                               }),
                               action: () => {
                                 setEditRecord(record);
-                                dispatch(setForm('project'));
                               },
                             },
                             {
@@ -338,7 +337,7 @@ const APIDataTable = withTheme(
           <UnitEditModal
             onClose={() => {
               setEditRecord(null);
-              dispatch(setForm(null));
+              dispatch(null);
             }}
             record={editRecord}
             modalSizeAndPosition={modalSizeAndPosition}
@@ -348,7 +347,7 @@ const APIDataTable = withTheme(
           <ProjectEditModal
             onClose={() => {
               setEditRecord(null);
-              dispatch(setForm(null));
+              dispatch(null);
             }}
             record={editRecord}
             modalSizeAndPosition={modalSizeAndPosition}
