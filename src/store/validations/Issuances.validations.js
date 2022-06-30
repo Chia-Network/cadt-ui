@@ -4,18 +4,23 @@ export const issuanceSchema = yup
   .object()
   .shape({
     id: yup.string().optional(),
-    startDate: yup.date().typeError('Invalid Date').required('Required Field'),
+    startDate: yup
+      .date()
+      .typeError('yup-validation-date')
+      .required('yup-validation-field-required'),
     endDate: yup
       .date()
-      .min(yup.ref('startDate'), 'End date should be greater than start date')
-      .typeError('Invalid Date')
-      .required('Required Field'),
-    verificationApproach: yup.string().required('Required Field'),
-    verificationBody: yup.string().required('Required Field'),
+      .min(yup.ref('startDate'), 'yup-validation-end-date-greater')
+      .typeError('yup-validation-date')
+      .required('yup-validation-field-required'),
+    verificationApproach: yup
+      .string()
+      .required('yup-validation-field-required'),
+    verificationBody: yup.string().required('yup-validation-field-required'),
     verificationReportDate: yup
       .date()
-      .typeError('Invalid Date')
-      .required('Required Field'),
+      .typeError('yup-validation-date')
+      .required('yup-validation-field-required'),
   })
   .optional()
   .nullable();

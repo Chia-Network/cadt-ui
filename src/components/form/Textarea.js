@@ -38,7 +38,7 @@ const StyledTextarea = styled('textarea')`
         font-style: normal;
         font-weight: 400;
         height: 4rem;
-        width:100%;
+        width: 100%;
         font-size: 1rem;
         line-height: 1.5rem;
       `;
@@ -86,6 +86,8 @@ const Textarea = withTheme(
     value,
     placeholder,
     onChange,
+    name,
+    onBlur,
   }) => {
     const [textareaState, setTextareaState] = useState(state);
     const appStore = useSelector(state => state.app);
@@ -104,11 +106,15 @@ const Textarea = withTheme(
         setTextareaState(TextareaStateEnum.default);
     }, [textareaState]);
 
-    const onBlur = useCallback(() => {
-      textareaState !== TextareaStateEnum.default &&
-        textareaState !== TextareaStateEnum.disabled &&
-        setTextareaState(TextareaStateEnum.default);
-    }, [textareaState]);
+    const onBlurCallback = useCallback(
+      e => {
+        textareaState !== TextareaStateEnum.default &&
+          textareaState !== TextareaStateEnum.disabled &&
+          setTextareaState(TextareaStateEnum.default);
+        onBlur && onBlur(e);
+      },
+      [textareaState, onBlur],
+    );
 
     const onFocus = useCallback(() => {
       textareaState !== TextareaStateEnum.disabled &&
@@ -119,7 +125,7 @@ const Textarea = withTheme(
       <StyledTextarea
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        onBlur={onBlur}
+        onBlur={onBlurCallback}
         onFocus={onFocus}
         value={value}
         state={textareaState}
@@ -128,6 +134,7 @@ const Textarea = withTheme(
         disabled={state === TextareaStateEnum.disabled}
         selectedTheme={appStore.theme}
         onChange={onChange}
+        name={name}
       />
     );
   },
