@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
-import { LocalizationProvider } from '@mui/lab';
+// import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDayjs';
-import DatePicker from '@mui/lab/DatePicker';
+// import DatePicker from '@mui/lab/DatePicker';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import styled, { css } from 'styled-components';
 import { formatDate, getISODate } from '../../utils/formatData';
 import { DateVariantEnum } from '.';
