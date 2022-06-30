@@ -1,3 +1,15 @@
+## [1.0.7](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.6...1.0.7) (2022-06-30)
+
+
+### Bug Fixes
+
+* forward error messages from api ([0434dd7](https://github.com/Chia-Network/climate-warehouse-ui/commit/0434dd7a5f60c93e7ae02ffd4ef67a92d143a7f4))
+* Unit Owner Optional in Unit Form ([c4a0c52](https://github.com/Chia-Network/climate-warehouse-ui/commit/c4a0c528cbc4c4b0f267e917bfe38edab0fb1734))
+* Unit Status Reason optional ([bd1c3dc](https://github.com/Chia-Network/climate-warehouse-ui/commit/bd1c3dc348eb3b462c916589ceaaa9fe7fe52842))
+* Update Excel Error Messages ([3ff1486](https://github.com/Chia-Network/climate-warehouse-ui/commit/3ff14863cc142e7a76e1e2fb9954ee00d03bc01d))
+
+
+
 ## [1.0.6](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.5...1.0.6) (2022-06-24)
 
 
