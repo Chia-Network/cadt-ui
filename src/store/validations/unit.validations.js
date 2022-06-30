@@ -3,7 +3,7 @@ import { labelSchema, issuanceSchema } from '.';
 
 export const unitsSchema = yup.object().shape({
   projectLocationId: yup.string().optional(),
-  unitOwner: yup.string().required('yup-validation-field-required'),
+  unitOwner: yup.string().optional(),
   countryJurisdictionOfOwner: yup
     .string()
     .required('yup-validation-field-required'),
