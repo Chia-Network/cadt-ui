@@ -14,6 +14,7 @@ const DateSelectVariantEnum = {
 
 const StyledTextField = styled(TextField)`
   width: 100%;
+
   // set height depending on props
   .MuiOutlinedInput-root,
   .MuiInputBase-root {
@@ -26,55 +27,51 @@ const StyledTextField = styled(TextField)`
     border: 0.0625rem solid #d9d9d9;
   }
 
-  // hover colors
-  .MuiOutlinedInput-root:hover,
-  .MuiInputBase-root:hover {
-    border: 1px solid #40a9ff;
-  }
+  ${props => {
+    if (props.disabled) {
+      // disabled background color
+      return css`
+        .MuiOutlinedInput-root,
+        .MuiInputBase-root {
+          background-color: #f5f5f5;
+        }
+      `;
+    } else if (props.dateselectvariant === DateSelectVariantEnum.error) {
+      // error variant borders
+      return css`
+        .MuiOutlinedInput-root,
+        .MuiInputBase-root {
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
+        }
 
-  // error variant border
-  ${props =>
-    props.dateselectvariant === DateSelectVariantEnum.error &&
-    css`
-      .MuiOutlinedInput-root,
-      .MuiInputBase-root {
-        border: 1px solid ${props.theme.colors.default.status.error.primary};
-      }
-    `}
+        .MuiOutlinedInput-root:focus-within,
+        .MuiInputBase-root:focus-within {
+          border: 1px solid #f5222d;
+          box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
+        }
+      `;
+    } else {
+      // default borders
+      return css`
+        .MuiOutlinedInput-root:hover,
+        .MuiInputBase-root:hover {
+          border: 1px solid #40a9ff;
+        }
 
-  // disabled background color
-      ${props =>
-    props.disabled &&
-    css`
-      .MuiOutlinedInput-root,
-      .MuiInputBase-root {
-        background-color: #f5f5f5;
-      }
-    `}
-        
+        .MuiOutlinedInput-root:focus-within,
+        .MuiInputBase-root:focus-within {
+          border: 1px solid #1890ff;
+          box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
+        }
+      `;
+    }
+  }}
+
   // remove inner mui border
   .MuiOutlinedInput-notchedOutline {
     border: 0;
   }
 `;
-
-// '& label.Mui-focused': {
-//   color: 'green',
-// },
-// '& .MuiInput-underline:after': {
-//   borderBottomColor: 'green',
-// },
-// '& .MuiOutlinedInput-root': {
-//   '& fieldset': {
-//     borderColor: 'red',
-//   },
-//   '&:hover fieldset': {
-//     borderColor: 'yellow',
-//   },
-//   '&.Mui-focused fieldset': {
-//     borderColor: 'green',
-//   },
-// },
 
 const DateSelect = withTheme(
   ({
