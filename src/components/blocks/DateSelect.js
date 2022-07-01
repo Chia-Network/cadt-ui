@@ -5,8 +5,7 @@ import styled, { css, withTheme } from 'styled-components';
 import TextField from '@mui/material/TextField';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-import { formatDate, getISODate } from '../../utils/formatData';
-import { getIsDateValid } from '../../utils/dateUtils';
+import { getIsDateValid, formatDate, getISODate } from '../../utils/dateUtils';
 
 const DateSelectVariantEnum = {
   error: 'error',
