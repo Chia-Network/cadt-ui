@@ -8,7 +8,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { formatDate, getISODate } from '../../utils/formatData';
 import { getIsDateValid } from '../../utils/dateUtils';
 
-export const DateSelectVariantEnum = {
+const DateSelectVariantEnum = {
   error: 'error',
 };
 
@@ -114,4 +114,4 @@ const DateSelect = withTheme(
   ),
 );
 
-export { DateSelect };
+export { DateSelect, DateSelectVariantEnum };
