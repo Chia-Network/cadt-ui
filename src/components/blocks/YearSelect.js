@@ -71,33 +71,29 @@ const StyledTextField = styled(TextField)`
 `;
 
 const YearSelect = withTheme(
-  ({ size, yearValue, onChange, disabled, variant, onBlur, name }) => {
-    console.log('yearValue', yearValue);
-
-    return (
-      <LocalizationProvider dateAdapter={DateAdapter}>
-        <DesktopDatePicker
-          inputFormat="YYYY"
-          mask="____"
-          RegExp="/^d{4}$/"
-          views={['year']}
-          value={yearValue ? `${yearValue}` : null}
-          onChange={onChange}
-          disabled={disabled}
-          renderInput={params => (
-            <StyledTextField
-              {...params}
-              disabled={disabled}
-              size={size}
-              dateselectvariant={variant}
-              name={name}
-              onBlur={onBlur}
-            />
-          )}
-        />
-      </LocalizationProvider>
-    );
-  },
+  ({ size, yearValue, onChange, disabled, variant, onBlur, name }) => (
+    <LocalizationProvider dateAdapter={DateAdapter}>
+      <DesktopDatePicker
+        inputFormat="YYYY"
+        mask="____"
+        RegExp="/^d{4}$/"
+        views={['year']}
+        value={yearValue ? `${yearValue}` : null}
+        onChange={onChange}
+        disabled={disabled}
+        renderInput={params => (
+          <StyledTextField
+            {...params}
+            disabled={disabled}
+            size={size}
+            dateselectvariant={variant}
+            name={name}
+            onBlur={onBlur}
+          />
+        )}
+      />
+    </LocalizationProvider>
+  ),
 );
 
 export { YearSelect, YearSelectVariantEnum };
