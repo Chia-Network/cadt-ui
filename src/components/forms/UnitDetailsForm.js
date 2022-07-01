@@ -634,11 +634,7 @@ const UnitDetailsForm = () => {
                 }
                 size="large"
                 yearValue={values.vintageYear}
-                onChange={value => {
-                  if (value) {
-                    setFieldValue('vintageYear', value.$y);
-                  }
-                }}
+                onChange={value => setFieldValue('vintageYear', value)}
                 name="vintageYear"
                 onBlur={handleBlur}
               />

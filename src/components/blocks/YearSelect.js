@@ -79,7 +79,9 @@ const YearSelect = withTheme(
         RegExp="/^d{4}$/"
         views={['year']}
         value={yearValue ? `${yearValue}` : null}
-        onChange={onChange}
+        onChange={newValue =>
+          newValue ? onChange(newValue.$y) : onChange(null)
+        }
         disabled={disabled}
         renderInput={params => (
           <StyledTextField
