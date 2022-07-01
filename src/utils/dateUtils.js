@@ -8,6 +8,7 @@ export const formatDate = date =>
 
 // function is applied to the dates the ui receives from the api
 export const getISODate = date => {
-  const isValidDate = !isNaN(Date.parse(date));
-  return isValidDate ? dayjs(date, 'YYYY-MM-DD').format('YYYY/MM/DD') : date;
+  return getIsDateValid(date)
+    ? dayjs(date, 'YYYY-MM-DD').format('YYYY/MM/DD')
+    : date;
 };

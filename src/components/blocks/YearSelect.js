@@ -1,123 +1,103 @@
 import React from 'react';
-import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDayjs';
-import DatePicker from '@mui/lab/DatePicker';
-import styled, { css } from 'styled-components';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import styled, { css, withTheme } from 'styled-components';
+import TextField from '@mui/material/TextField';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-const DateVariantEnum = {
+const YearSelectVariantEnum = {
   error: 'error',
 };
 
-const InputContainer = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #d9d9d9;
-  width: 160px;
-  border-radius: 2px;
-  background-color: white;
-  :hover {
-    border: 1px solid #40a9ff;
-    ${props =>
-      props.disabled &&
-      css`
-        border: 1px solid #d9d9d9;
-      `};
-  }
-  :focus-within,
-  ::selection {
-    outline: none;
-    box-shadow: ${props =>
-      props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
-    border: 1px solid #40a9ff;
+const StyledTextField = styled(TextField)`
+  width: 100%;
+
+  // set height depending on props
+  .MuiOutlinedInput-root,
+  .MuiInputBase-root {
+    height: ${props => {
+      if (props.size === 'large') return '40px';
+      if (props.size === 'small') return '24px';
+      return '32px';
+    }};
+    border-radius: 0.125rem;
+    border: 0.0625rem solid #d9d9d9;
   }
 
-  ${props =>
-    (props.size === 'large' &&
-      css`
-        height: 40px;
-      `) ||
-    (props.size === 'default' &&
-      css`
-        height: 32px;
-      `) ||
-    (props.size === 'small' &&
-      css`
-        height: 24px;
-      `)};
-
-  ${props =>
-    props.disabled &&
-    css`
-      background-color: #f5f5f5;
-    `};
   ${props => {
-    if (props.variant === DateVariantEnum.error) {
+    if (props.disabled) {
+      // disabled background color
       return css`
-        border: 1px solid ${props.theme.colors.default.status.error.primary};
-        :focus-within {
+        .MuiOutlinedInput-root,
+        .MuiInputBase-root {
+          background-color: #f5f5f5;
+        }
+      `;
+    } else if (props.dateselectvariant === YearSelectVariantEnum.error) {
+      // error variant borders
+      return css`
+        .MuiOutlinedInput-root,
+        .MuiInputBase-root {
           border: 1px solid ${props.theme.colors.default.status.error.primary};
+        }
+
+        .MuiOutlinedInput-root:focus-within,
+        .MuiInputBase-root:focus-within {
+          border: 1px solid #f5222d;
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         }
-        :hover {
-          border: 1px solid ${props.theme.colors.default.status.error.primary};
+      `;
+    } else {
+      // default borders
+      return css`
+        .MuiOutlinedInput-root:hover,
+        .MuiInputBase-root:hover {
+          border: 1px solid #40a9ff;
+        }
+
+        .MuiOutlinedInput-root:focus-within,
+        .MuiInputBase-root:focus-within {
+          border: 1px solid #1890ff;
+          box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
         }
       `;
     }
   }}
-`;
 
-const Input = styled('input')`
-  height: 22px;
-  width: 96px;
-  border: none;
-  :focus-visible {
-    outline: none;
+  // remove inner mui border
+  .MuiOutlinedInput-notchedOutline {
+    border: 0;
   }
-  ${props =>
-    props.disabled &&
-    css`
-      background-color: #f5f5f5;
-      color: ${props.theme.colors.default.onSurface}
-      cursor: default;
-    `};
 `;
 
-const YearSelect = ({
-  size,
-  yearValue,
-  onChange,
-  disabled,
-  variant,
-  onBlur,
-  name,
-}) => {
-  return (
-    <LocalizationProvider dateAdapter={DateAdapter}>
-      <DatePicker
-        views={['year']}
-        label="Year"
-        value={yearValue ? `${yearValue}` : yearValue}
-        onChange={onChange}
-        disabled={disabled}
-        renderInput={({ inputRef, inputProps, InputProps }) => {
-          return (
-            <InputContainer size={size} disabled={disabled} variant={variant}>
-              <Input
-                ref={inputRef}
-                {...inputProps}
-                helperText={null}
-                disabled={disabled}
-                onBlur={onBlur}
-                name={name}
-              />
-              {InputProps?.endAdornment}
-            </InputContainer>
-          );
-        }}
-      />
-    </LocalizationProvider>
-  );
-};
+const YearSelect = withTheme(
+  ({ size, yearValue, onChange, disabled, variant, onBlur, name }) => {
+    console.log('yearValue', yearValue);
 
-export { YearSelect, DateVariantEnum };
+    return (
+      <LocalizationProvider dateAdapter={DateAdapter}>
+        <DesktopDatePicker
+          inputFormat="YYYY"
+          mask="____"
+          RegExp="/^d{4}$/"
+          views={['year']}
+          value={yearValue ? `${yearValue}` : null}
+          onChange={onChange}
+          disabled={disabled}
+          renderInput={params => (
+            <StyledTextField
+              {...params}
+              disabled={disabled}
+              size={size}
+              dateselectvariant={variant}
+              name={name}
+              onBlur={onBlur}
+            />
+          )}
+        />
+      </LocalizationProvider>
+    );
+  },
+);
+
+export { YearSelect, YearSelectVariantEnum };
