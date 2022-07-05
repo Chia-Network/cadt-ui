@@ -1,12 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { getDiff } from '../../utils/objectUtils';
-import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon, ReloadIcon } from '..';
-import { modalTypeEnum, APIStagingPagination } from '.';
+import {
+  Modal,
+  RemoveIcon,
+  Body,
+  ErrorIcon,
+  SuccessIcon,
+  ReloadIcon,
+  EditIcon,
+  ProjectEditStagingModal,
+  DetailedViewStagingModal,
+  modalTypeEnum,
+  APIStagingPagination,
+} from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { DetailedViewStagingModal } from './DetailedViewStagingModal';
 
 const StyledPaginationContainer = styled('div')`
   box-sizing: border-box;
@@ -85,6 +96,9 @@ const StyledDeleteGroupIcon = styled('div')`
   top: 16px;
   right: 20px;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
 `;
 
 const StyledRetryGroupIcon = styled('div')`
@@ -134,9 +148,9 @@ const ChangeCard = ({
                 heading !== 'unitBlockEnd' && heading !== 'unitBlockStart',
             )
             .map((heading, index) => (
-              <>
+              <React.Fragment key={index}>
                 {!(typeof data[heading] === 'object') && (
-                  <StyledCardBodyItem key={index}>
+                  <StyledCardBodyItem>
                     <Body size="Small Bold">
                       {convertPascalCaseToSentenceCase(heading)}
                     </Body>
@@ -156,7 +170,7 @@ const ChangeCard = ({
                   </StyledCardBodyItem>
                 )}
                 {typeof data[heading] === 'object' && (
-                  <StyledCardBodyItem key={index}>
+                  <StyledCardBodyItem>
                     <Body size="Small Bold">
                       {convertPascalCaseToSentenceCase(heading)}
                     </Body>
@@ -177,7 +191,7 @@ const ChangeCard = ({
                     </StyledCardBodySubItem>
                   </StyledCardBodyItem>
                 )}
-              </>
+              </React.Fragment>
             ))}
       </StyledChangeCardBody>
     </StyledChangeCard>
@@ -210,14 +224,14 @@ const StagingDataGroups = withTheme(
     retryStagingData,
   }) => {
     const [detailedViewData, setDetailedViewData] = useState(null);
-    const [deleteFromStaging, setDeleteFromStaging] = useState(false);
-    const [deleteUUID, setDeleteUUID] = useState();
+    const [changeGroupToBeEdited, setChangeGroupToBeEdited] = useState(null);
+    const [uuidToBeDeleted, setUuidToBeDeleted] = useState(null);
     const ref = useRef(null);
     const [height, setHeight] = useState(0);
     const windowSize = useWindowSize();
     const intl = useIntl();
 
-    const changeGroupIsValid = changeGroup => {
+    const getIsChangeGroupValid = useCallback(changeGroup => {
       if (!changeGroup.diff) {
         return false;
       }
@@ -238,7 +252,7 @@ const StagingDataGroups = withTheme(
       }
 
       return true;
-    };
+    }, []);
 
     useEffect(() => {
       setHeight(
@@ -246,15 +260,18 @@ const StagingDataGroups = withTheme(
       );
     }, [ref.current, windowSize.height, data]);
 
-    const onDeleteStaging = uuid => {
-      if (!deleteStagingData) return null;
-      return () => {
-        deleteStagingData(uuid);
-        setDeleteFromStaging(false);
-      };
-    };
+    const onDeleteStaging = useCallback(
+      uuid => {
+        if (!deleteStagingData) return null;
+        return () => {
+          deleteStagingData(uuid);
+          setUuidToBeDeleted(null);
+        };
+      },
+      [deleteStagingData, setUuidToBeDeleted],
+    );
 
-    const getTranslatedCardTitle = changeGroup => {
+    const getTranslatedCardTitle = useCallback(changeGroup => {
       const table = changeGroup.table.toLowerCase();
       const action = changeGroup.action.toLowerCase();
       let translationId = 'record';
@@ -286,7 +303,9 @@ const StagingDataGroups = withTheme(
       return intl.formatMessage({
         id: translationId,
       });
-    };
+    }, []);
+
+    console.log('changeGroupToBeEdited', changeGroupToBeEdited);
 
     return (
       <StagingDataGroupsContainer ref={ref}>
@@ -295,18 +314,20 @@ const StagingDataGroups = withTheme(
             headings &&
             data.map((changeGroup, index) => (
               <React.Fragment key={index}>
-                {changeGroupIsValid(changeGroup) && (
+                {getIsChangeGroupValid(changeGroup) && (
                   <StyledChangeGroup>
                     {deleteStagingData && (
                       <StyledDeleteGroupIcon>
                         <div
-                          onClick={() => {
-                            setDeleteUUID(changeGroup.uuid);
-                            setDeleteFromStaging(true);
-                          }}
+                          onClick={() => setUuidToBeDeleted(changeGroup.uuid)}
                         >
-                          <MinusIcon width={20} height={20} />
+                          <RemoveIcon width={20} height={20} />
                         </div>
+                        <EditIcon
+                          width={20}
+                          height={20}
+                          onClick={() => setChangeGroupToBeEdited(changeGroup)}
+                        />
                       </StyledDeleteGroupIcon>
                     )}
                     {retryStagingData && (
@@ -367,34 +388,33 @@ const StagingDataGroups = withTheme(
                     )}
                     {changeGroup.action === 'UPDATE' &&
                       changeGroup.diff.change.map((change, index) => (
-                        <ChangeCard
-                          key={index}
-                          data={change}
-                          headings={getDiff(changeGroup.diff.original, change)}
-                          title={getTranslatedCardTitle(changeGroup)}
-                          onClick={() =>
-                            setDetailedViewData({
-                              record: changeGroup.diff.original,
-                              changes: changeGroup.diff.change,
-                              title: getTranslatedCardTitle(changeGroup),
-                              action: changeGroup.action,
-                            })
-                          }
-                          addedIsVisible
-                        />
+                        <React.Fragment key={index}>
+                          <ChangeCard
+                            data={change}
+                            headings={getDiff(
+                              changeGroup.diff.original,
+                              change,
+                            )}
+                            title={getTranslatedCardTitle(changeGroup)}
+                            onClick={() =>
+                              setDetailedViewData({
+                                record: changeGroup.diff.original,
+                                changes: changeGroup.diff.change,
+                                title: getTranslatedCardTitle(changeGroup),
+                                action: changeGroup.action,
+                              })
+                            }
+                            addedIsVisible
+                          />
+                        </React.Fragment>
                       ))}
                   </StyledChangeGroup>
                 )}
-                {!changeGroupIsValid(changeGroup) && (
+                {!getIsChangeGroupValid(changeGroup) && (
                   <StyledChangeGroup>
                     <StyledDeleteGroupIcon>
-                      <div
-                        onClick={() => {
-                          setDeleteUUID(changeGroup.uuid);
-                          setDeleteFromStaging(true);
-                        }}
-                      >
-                        <MinusIcon width={20} height={20} />
+                      <div onClick={() => setUuidToBeDeleted(changeGroup.uuid)}>
+                        <RemoveIcon width={20} height={20} />
                       </div>
                     </StyledDeleteGroupIcon>
                     <InvalidChangeCard
@@ -404,10 +424,9 @@ const StagingDataGroups = withTheme(
                             ? 'project'
                             : 'unit',
                       })}
-                      onDeleteChangeGroup={() => {
-                        setDeleteUUID(changeGroup.uuid);
-                        setDeleteFromStaging(true);
-                      }}
+                      onDeleteChangeGroup={() =>
+                        setUuidToBeDeleted(changeGroup.uuid)
+                      }
                     />
                   </StyledChangeGroup>
                 )}
@@ -432,7 +451,7 @@ const StagingDataGroups = withTheme(
               }
             />
           )}
-          {deleteFromStaging && (
+          {uuidToBeDeleted && (
             <Modal
               title={intl.formatMessage({
                 id: 'notification',
@@ -441,8 +460,15 @@ const StagingDataGroups = withTheme(
                 id: 'confirm-deletion',
               })}
               modalType={modalTypeEnum.confirmation}
-              onClose={() => setDeleteFromStaging(false)}
-              onOk={onDeleteStaging(deleteUUID)}
+              onClose={() => setUuidToBeDeleted(null)}
+              onOk={onDeleteStaging(uuidToBeDeleted)}
+            />
+          )}
+          {changeGroupToBeEdited && (
+            <ProjectEditStagingModal
+              changeGroup={changeGroupToBeEdited}
+              onClose={() => setChangeGroupToBeEdited(null)}
+              modalSizeAndPosition={modalSizeAndPosition}
             />
           )}
         </div>

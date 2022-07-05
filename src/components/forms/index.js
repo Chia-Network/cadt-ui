@@ -9,6 +9,7 @@ export * from './ProjectLabelForm';
 export * from './ProjectCoBenefitForm';
 export * from './ProjectRelatedProjectForm';
 export * from './ProjectEditModal';
+export * from './ProjectEditStagingModal';
 export * from './UnitEditModal';
 export * from './UnitCreateModal';
 export * from './UnitDetailsForm';

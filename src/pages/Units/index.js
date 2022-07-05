@@ -44,7 +44,7 @@ import {
   CommitModal,
   Modal,
   modalTypeEnum,
-  MinusIcon,
+  RemoveIcon,
   UnitsDetailViewModal,
 } from '../../components';
 import theme from '../../theme';
@@ -353,7 +353,13 @@ const Units = () => {
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
-                icon={<AddIcon width="16.13" height="16.88" fill={theme.colors.default.onButton} />}
+                icon={
+                  <AddIcon
+                    width="16.13"
+                    height="16.88"
+                    fill={theme.colors.default.onButton}
+                  />
+                }
                 onClick={() => {
                   if (
                     _.isEmpty(stagingData.units.pending) &&
@@ -419,11 +425,11 @@ const Units = () => {
               tabValue === 1 &&
               stagingData?.units?.staging?.length > 0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
-                  <MinusIcon width={20} height={20} />
+                  <RemoveIcon width={20} height={20} />
                 </span>
               )}
             <span onClick={() => downloadTxtFile('units', searchParams)}>
-              <DownloadIcon />
+              <DownloadIcon width={20} height={20} />
             </span>
             {pageIsMyRegistryPage && (
               <span>

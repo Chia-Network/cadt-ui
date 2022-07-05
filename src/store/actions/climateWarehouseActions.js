@@ -702,6 +702,53 @@ export const commitStagingData = (data, comment) => {
   };
 };
 
+export const editStagingData = (uuid, data) => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging`;
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uuid, data }),
+      };
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transactions-committed',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'transactions-not-committed'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transactions-not-committed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const updateGovernancePickLists = data => {
   return async dispatch => {
     try {
@@ -1439,10 +1486,7 @@ export const uploadXLSXFile = (file, type) => {
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.error,
-              formatApiErrorResponse(
-                errorResponse,
-                errorResponse.error,
-              ),
+              formatApiErrorResponse(errorResponse, errorResponse.error),
             ),
           );
         }

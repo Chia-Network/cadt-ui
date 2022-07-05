@@ -15,7 +15,6 @@ export * from './APIStagingPagination';
 export * from './TableDrawer';
 export * from './ComponentRepeater';
 export * from './Modal';
-export * from './StagingDataTable';
 export * from './APIDataTable';
 export * from './NotificationCard';
 export * from './BasicMenu';
