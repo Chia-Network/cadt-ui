@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
@@ -34,7 +34,7 @@ import { projectSchema } from '../../store/validations';
 const ProjectEditStagingModal = ({
   onClose,
   changeGroup,
-  modalSizeAndPosition = { modalSizeAndPosition },
+  modalSizeAndPosition,
 }) => {
   const [project, setProject] = useState(changeGroup?.diff?.change[0] ?? null);
   const [tabValue, setTabValue] = useState(0);
@@ -58,7 +58,7 @@ const ProjectEditStagingModal = ({
     'related-projects',
   ];
 
-  const onChangeStepTo = async ({ formik, desiredStep = null }) => {
+  const onChangeStepTo = useCallback(async ({ formik, desiredStep = null }) => {
     const errors = await formik.validateForm();
 
     // manually setting touched for error fields so errors are displayed
@@ -76,7 +76,7 @@ const ProjectEditStagingModal = ({
         setTabValue(desiredStep);
       }
     }
-  };
+  }, []);
 
   // if project was successfully edited, close modal
   const projectWasSuccessfullyEdited =

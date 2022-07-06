@@ -16,6 +16,7 @@ import {
   DetailedViewStagingModal,
   modalTypeEnum,
   APIStagingPagination,
+  UnitEditStagingModal,
 } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
@@ -469,6 +470,14 @@ const StagingDataGroups = withTheme(
           {changeGroupToBeEdited &&
             changeGroupToBeEdited.table.toLowerCase() === 'projects' && (
               <ProjectEditStagingModal
+                changeGroup={changeGroupToBeEdited}
+                onClose={() => setChangeGroupToBeEdited(null)}
+                modalSizeAndPosition={modalSizeAndPosition}
+              />
+            )}
+          {changeGroupToBeEdited &&
+            changeGroupToBeEdited.table.toLowerCase() === 'units' && (
+              <UnitEditStagingModal
                 changeGroup={changeGroupToBeEdited}
                 onClose={() => setChangeGroupToBeEdited(null)}
                 modalSizeAndPosition={modalSizeAndPosition}
