@@ -82,6 +82,7 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
       {!_.isEmpty(entry?.labels) &&
         _.map(entry?.labels, labelValue => (
           <TabPanel
+            key={labelValue.id}
             noHeight
             value={tabValue}
             index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
