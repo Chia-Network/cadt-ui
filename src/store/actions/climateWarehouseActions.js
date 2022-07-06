@@ -722,7 +722,7 @@ export const editStagingData = (uuid, data) => {
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.success,
-            'transactions-committed',
+            'staging-group-edited',
           ),
         );
         dispatch(getStagingData({ useMockedResponse: false }));
@@ -731,7 +731,10 @@ export const editStagingData = (uuid, data) => {
         dispatch(
           setNotificationMessage(
             NotificationMessageTypeEnum.error,
-            formatApiErrorResponse(errorResponse, 'transactions-not-committed'),
+            formatApiErrorResponse(
+              errorResponse,
+              'staging-group-could-not-be-edited',
+            ),
           ),
         );
       }
@@ -739,7 +742,7 @@ export const editStagingData = (uuid, data) => {
       dispatch(
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
-          'transactions-not-committed',
+          'staging-group-could-not-be-edited',
         ),
       );
       dispatch(setConnectionCheck(false));

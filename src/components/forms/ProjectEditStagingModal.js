@@ -80,7 +80,7 @@ const ProjectEditStagingModal = ({
 
   // if project was successfully edited, close modal
   const projectWasSuccessfullyEdited =
-    notification?.id === 'project-successfully-edited';
+    notification?.id === 'staging-group-edited';
   useEffect(() => {
     if (projectWasSuccessfullyEdited) {
       onClose();

@@ -305,8 +305,6 @@ const StagingDataGroups = withTheme(
       });
     }, []);
 
-    console.log('changeGroupToBeEdited', changeGroupToBeEdited);
-
     return (
       <StagingDataGroupsContainer ref={ref}>
         <div style={{ height: `${height}px`, overflow: 'auto' }}>
@@ -318,16 +316,20 @@ const StagingDataGroups = withTheme(
                   <StyledChangeGroup>
                     {deleteStagingData && (
                       <StyledDeleteGroupIcon>
-                        <div
-                          onClick={() => setUuidToBeDeleted(changeGroup.uuid)}
-                        >
-                          <RemoveIcon width={20} height={20} />
-                        </div>
-                        <EditIcon
+                        <RemoveIcon
                           width={20}
                           height={20}
-                          onClick={() => setChangeGroupToBeEdited(changeGroup)}
+                          onClick={() => setUuidToBeDeleted(changeGroup.uuid)}
                         />
+                        {changeGroup.action === 'UPDATE' && (
+                          <EditIcon
+                            width={20}
+                            height={20}
+                            onClick={() =>
+                              setChangeGroupToBeEdited(changeGroup)
+                            }
+                          />
+                        )}
                       </StyledDeleteGroupIcon>
                     )}
                     {retryStagingData && (
@@ -464,13 +466,14 @@ const StagingDataGroups = withTheme(
               onOk={onDeleteStaging(uuidToBeDeleted)}
             />
           )}
-          {changeGroupToBeEdited && (
-            <ProjectEditStagingModal
-              changeGroup={changeGroupToBeEdited}
-              onClose={() => setChangeGroupToBeEdited(null)}
-              modalSizeAndPosition={modalSizeAndPosition}
-            />
-          )}
+          {changeGroupToBeEdited &&
+            changeGroupToBeEdited.table.toLowerCase() === 'projects' && (
+              <ProjectEditStagingModal
+                changeGroup={changeGroupToBeEdited}
+                onClose={() => setChangeGroupToBeEdited(null)}
+                modalSizeAndPosition={modalSizeAndPosition}
+              />
+            )}
         </div>
       </StagingDataGroupsContainer>
     );
