@@ -36,16 +36,12 @@ const ProjectEditStagingModal = ({
   changeGroup,
   modalSizeAndPosition,
 }) => {
-  const [project, setProject] = useState(changeGroup?.diff?.change[0] ?? null);
+  const [project] = useState(changeGroup?.diff?.change[0] ?? null);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
-
-  useEffect(() => {
-    setProject(changeGroup?.diff?.change[0]);
-  }, [changeGroup]);
 
   const stepperStepsTranslationIds = [
     'project',

@@ -50,14 +50,10 @@ const UnitEditStagingModal = ({
   const { myOrgUid } = useSelector(store => store.climateWarehouse);
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
-  const [unit, setUnit] = useState(changeGroup?.diff?.change[0] ?? null);
+  const [unit] = useState(changeGroup?.diff?.change[0] ?? null);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-
-  useEffect(() => {
-    setUnit(changeGroup?.diff?.change[0]);
-  }, [changeGroup]);
 
   useEffect(() => {
     if (myOrgUid) {
