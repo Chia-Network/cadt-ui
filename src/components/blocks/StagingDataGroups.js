@@ -134,9 +134,9 @@ const ChangeCard = ({
                 heading !== 'unitBlockEnd' && heading !== 'unitBlockStart',
             )
             .map((heading, index) => (
-              <>
+              <React.Fragment key={index}>
                 {!(typeof data[heading] === 'object') && (
-                  <StyledCardBodyItem key={index}>
+                  <StyledCardBodyItem>
                     <Body size="Small Bold">
                       {convertPascalCaseToSentenceCase(heading)}
                     </Body>
@@ -156,7 +156,7 @@ const ChangeCard = ({
                   </StyledCardBodyItem>
                 )}
                 {typeof data[heading] === 'object' && (
-                  <StyledCardBodyItem key={index}>
+                  <StyledCardBodyItem>
                     <Body size="Small Bold">
                       {convertPascalCaseToSentenceCase(heading)}
                     </Body>
@@ -177,7 +177,7 @@ const ChangeCard = ({
                     </StyledCardBodySubItem>
                   </StyledCardBodyItem>
                 )}
-              </>
+              </React.Fragment>
             ))}
       </StyledChangeCardBody>
     </StyledChangeCard>
@@ -303,8 +303,7 @@ const StagingDataGroups = withTheme(
                           onClick={() => {
                             setDeleteUUID(changeGroup.uuid);
                             setDeleteFromStaging(true);
-                          }}
-                        >
+                          }}>
                           <MinusIcon width={20} height={20} />
                         </div>
                       </StyledDeleteGroupIcon>
@@ -392,8 +391,7 @@ const StagingDataGroups = withTheme(
                         onClick={() => {
                           setDeleteUUID(changeGroup.uuid);
                           setDeleteFromStaging(true);
-                        }}
-                      >
+                        }}>
                         <MinusIcon width={20} height={20} />
                       </div>
                     </StyledDeleteGroupIcon>

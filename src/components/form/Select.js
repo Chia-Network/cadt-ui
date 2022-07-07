@@ -513,7 +513,7 @@ const Select = withTheme(
         {/* Menu for Basic and Multiple type */}
         {menuIsVisible && type !== SelectTypeEnum.search && (
           <StyledBasicMenu size={size} top={menuTopPosition}>
-            {optionsList.map(option => {
+            {optionsList.map((option, index) => {
               const isSelected =
                 selectedOptions != null &&
                 selectedOptions.length > 0 &&
@@ -523,7 +523,7 @@ const Select = withTheme(
 
               return (
                 <StyledBasicMenuItem
-                  key={option.value}
+                  key={index}
                   isSelected={isSelected}
                   onClick={() =>
                     toggleOptionSelection({
