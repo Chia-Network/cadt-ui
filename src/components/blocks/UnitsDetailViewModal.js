@@ -85,10 +85,10 @@ const UnitsDetailViewModal = ({
           {!_.isEmpty(unitObject?.labels) &&
             _.map(unitObject?.labels, labelValue => (
               <TabPanel
+                key={labelValue.id}
                 noHeight
                 value={tabValue}
-                index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}
-              >
+                index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
                 <UnitsLabelsDetails data={labelValue} />
               </TabPanel>
             ))}
