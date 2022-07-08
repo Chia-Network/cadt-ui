@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ArrowDownIcon, ThreeDotsIcon } from '..';
 import { getPaginatedData } from '../../store/actions/climateWarehouseActions';
 import constants from '../../constants';
 
-const PaginationContainer = styled('div')`
+export const PaginationContainer = styled('div')`
   display: inline-flex;
   flex-direction: row;
   justify-content: center;
@@ -14,10 +14,10 @@ const PaginationContainer = styled('div')`
   gap: 8px;
   width: 100%;
   color: #8c8c8c;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
 `;
 
-const ControlsContainer = styled('div')`
+export const ControlsContainer = styled('div')`
   cursor: pointer;
   width: 32px;
   height: 32px;
@@ -40,7 +40,7 @@ const ControlsContainer = styled('div')`
     transform: rotate(270deg);`};
 `;
 
-const PagesContainer = styled(ControlsContainer)`
+export const PagesContainer = styled(ControlsContainer)`
   font-family: ${props => props.theme.typography.primary.regular};
   font-style: normal;
   font-weight: bold;
@@ -48,8 +48,8 @@ const PagesContainer = styled(ControlsContainer)`
   line-height: 150%;
   ${props => {
     if (props.isActive) {
-      return `border: 1px solid #3B8EE0;
-                    color: #3B8EE0;`;
+      return `border: 1px solid ${props.theme.colors.default.primary};
+                    color: ${props.theme.colors.default.primary};`;
     } else {
       return `border: 1px solid #D9D9D9;
                     color: #262626;`;
@@ -59,7 +59,7 @@ const PagesContainer = styled(ControlsContainer)`
 
 const APIPagination = withTheme(({ showLast = false, actions }) => {
   const dispatch = useDispatch();
-  const { location } = useHistory();
+  const location = useLocation();
   let searchParams = new URLSearchParams(location.search);
   const climateWarehouseStore = useSelector(store => store.climateWarehouse);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
@@ -72,7 +72,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
   useEffect(() => {
     setCurrentPageNumber(1);
     setNumberOfPages(climateWarehouseStore.pageCount || 1);
-  }, [climateWarehouseStore.pageCount]);
+  }, [climateWarehouseStore.pageCount, searchParams.get('myRegistry')]);
 
   const changeCurrentPageTo = newPage => {
     setCurrentPageNumber(newPage);

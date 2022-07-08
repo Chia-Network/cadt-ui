@@ -25,7 +25,7 @@ const MaskContainer = styled('div')`
 `;
 
 const ModalContainer = styled('div')`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.default.onButton};
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -147,13 +147,14 @@ const Modal = withTheme(
     modalSizeAndPosition,
     extraButtonLabel,
     extraButtonOnClick,
-    addComponent
+    addComponent,
   }) => {
     const intl = useIntl();
 
     return (
-      <MaskContainer>
+      <MaskContainer onClick={onClose}>
         <ModalContainer
+          onClick={e => e.stopPropagation()}
           modalType={modalType}
           top={modalSizeAndPosition?.top}
           left={modalSizeAndPosition?.left}

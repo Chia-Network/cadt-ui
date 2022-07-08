@@ -18,12 +18,15 @@ import {
 import {
   activateProgressIndicator,
   deactivateProgressIndicator,
+  lockApp,
   NotificationMessageTypeEnum,
   setConnectionCheck,
   setGlobalErrorMessage,
   setNotificationMessage,
   setReadOnly,
 } from './app';
+import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
+import { getMyOrgUid } from '../../utils/getMyOrgUid';
 
 export const actions = keyMirror(
   'GET_RATINGS',
@@ -32,8 +35,10 @@ export const actions = keyMirror(
   'GET_PROJECT_LOCATIONS',
   'GET_RELATED_PROJECTS',
   'GET_UNITS',
+  'GET_UNIT',
   'GET_UNITS_PAGE_COUNT',
   'GET_PROJECTS',
+  'GET_PROJECT',
   'GET_PROJECTS_PAGE_COUNT',
   'GET_VINTAGES',
   'GET_STAGING_DATA',
@@ -42,6 +47,16 @@ export const actions = keyMirror(
   'GET_ISSUANCES',
   'GET_LABELS',
   'GET_AUDIT',
+  'GET_CONFLICTS',
+  'GET_STAGING_PAGE_COUNT',
+  'GET_STAGING_PROJECTS_PAGES',
+  'GET_STAGING_UNITS_PAGES',
+  'GET_MY_PROJECTS',
+  'SET_MY_ORG_UID',
+  'GET_GOVERNANCE_ORG_LIST',
+  'SET_IS_GOVERNANCE',
+  'GET_IS_GOVERNANCE_CREATED',
+  'SET_IS_GOVERNANCE_INITIATED',
 );
 
 const getClimateWarehouseTable = (
@@ -128,6 +143,11 @@ export const mockGetStagingDataResponse = {
   ),
 };
 
+export const setMyOrgUid = uid => ({
+  type: actions.SET_MY_ORG_UID,
+  payload: uid,
+});
+
 export const getOrganizationData = () => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -141,6 +161,14 @@ export const getOrganizationData = () => {
         dispatch(setGlobalErrorMessage(null));
         dispatch(setConnectionCheck(true));
         const results = await response.json();
+
+        dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
+        dispatch(
+          setIsGovernance(response.headers.get('x-governance-body') === 'true'),
+        );
+
+        const myOrgUid = getMyOrgUid(results);
+        dispatch(setMyOrgUid(myOrgUid));
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
@@ -157,6 +185,173 @@ export const getOrganizationData = () => {
   };
 };
 
+export const setIsGovernance = isGovernance => ({
+  type: actions.SET_IS_GOVERNANCE,
+  payload: isGovernance,
+});
+
+export const getIsGovernanceCreated = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/governance/exists`,
+      );
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_IS_GOVERNANCE_CREATED,
+          payload: results.created,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getConflictsData = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/audit/findConflicts`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_CONFLICTS,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getProjectData = id => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/projects?warehouseProjectId=${id}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_PROJECT,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getMyProjects = myOrgUid => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/projects?orgUid=${myOrgUid}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_MY_PROJECTS,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const clearProjectData = () => {
+  return async dispatch => {
+    dispatch({
+      type: actions.GET_PROJECT,
+      payload: null,
+    });
+  };
+};
+
+export const getUnitData = id => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/units?warehouseUnitId=${id}`,
+      );
+
+      if (response.ok) {
+        dispatch(setGlobalErrorMessage(null));
+        dispatch(setConnectionCheck(true));
+        const results = await response.json();
+
+        dispatch({
+          type: actions.GET_UNIT,
+          payload: results,
+        });
+      } else {
+        dispatch(setConnectionCheck(false));
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const clearUnitData = () => {
+  return async dispatch => {
+    dispatch({
+      type: actions.GET_UNIT,
+      payload: null,
+    });
+  };
+};
+
 export const getPickLists = () => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -170,15 +365,23 @@ export const getPickLists = () => {
         });
       } else {
         dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'governance-data-failed',
+          ),
+        );
+        dispatch(lockApp(true));
       }
     };
 
     try {
       const response = await fetch(
-        `https://climate-warehouse.s3.us-west-2.amazonaws.com/public/picklists.json`,
+        `${constants.API_HOST}/governance/meta/pickList`,
       );
 
       if (response.ok) {
+        dispatch(lockApp(false));
         dispatch(setConnectionCheck(true));
 
         const results = await response.json();
@@ -194,6 +397,32 @@ export const getPickLists = () => {
     } catch {
       dispatch(setConnectionCheck(false));
       tryToGetPickListsFromStorage();
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getGovernanceOrgList = () => {
+  return async dispatch => {
+    dispatch(activateProgressIndicator);
+
+    try {
+      const response = await fetch(
+        `${constants.API_HOST}/governance/meta/orgList`,
+      );
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+
+        const results = await response.json();
+        dispatch({
+          type: actions.GET_GOVERNANCE_ORG_LIST,
+          payload: results,
+        });
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -218,6 +447,14 @@ export const getStagingData = ({ useMockedResponse = false }) => {
           dispatch({
             type: actions.GET_STAGING_DATA,
             payload: formatStagingData(results),
+          });
+          dispatch({
+            type: actions.GET_STAGING_PROJECTS_PAGES,
+            payload: formatStagingData(results).projects.staging.length,
+          });
+          dispatch({
+            type: actions.GET_STAGING_UNITS_PAGES,
+            payload: formatStagingData(results).units.staging.length,
           });
         }
       }
@@ -307,9 +544,18 @@ export const getPaginatedData = ({
         const response = await fetchWrapper(url);
 
         if (response.ok) {
-          dispatch(
-            setReadOnly(response.headers.get('cw-read-only') === 'true'),
-          );
+          if (
+            !areUiAndDataModelMajorVersionsAMatch(
+              response.headers.get('x-datamodel-version'),
+            )
+          ) {
+            dispatch(
+              setNotificationMessage(
+                NotificationMessageTypeEnum.error,
+                'ui-data-model-mismatch',
+              ),
+            );
+          }
 
           dispatch(setGlobalErrorMessage(null));
           dispatch(setConnectionCheck(true));
@@ -352,7 +598,59 @@ export const getPaginatedData = ({
   };
 };
 
-export const commitStagingData = data => {
+export const getStagingPaginatedData = ({
+  type,
+  formType,
+  page,
+  resultsLimit,
+}) => {
+  return async dispatch => {
+    const pageAndLimitAreValid =
+      typeof page === 'number' && typeof resultsLimit === 'number';
+
+    if (pageAndLimitAreValid) {
+      dispatch(activateProgressIndicator);
+      try {
+        let url = `${constants.API_HOST}/${type}?table=${formType}&page=${page}&limit=${resultsLimit}`;
+
+        const response = await fetchWrapper(url);
+
+        if (response.ok) {
+          dispatch(setGlobalErrorMessage(null));
+          dispatch(setConnectionCheck(true));
+          const results = await response.json();
+          let action = actions.GET_STAGING_DATA;
+          let paginationAction = actions.GET_STAGING_PAGE_COUNT;
+
+          dispatch({
+            type: action,
+            payload: formatStagingData(results.data.map(result => result)),
+          });
+
+          dispatch({
+            type: paginationAction,
+            payload: results.pageCount,
+          });
+        } else {
+          const errorResponse = await response.json();
+          dispatch(
+            setNotificationMessage(
+              NotificationMessageTypeEnum.error,
+              formatApiErrorResponse(errorResponse, 'something-went-wrong'),
+            ),
+          );
+        }
+      } catch {
+        dispatch(setGlobalErrorMessage('Something went wrong...'));
+        dispatch(setConnectionCheck(false));
+      } finally {
+        dispatch(deactivateProgressIndicator);
+      }
+    }
+  };
+};
+
+export const commitStagingData = (data, comment) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -366,6 +664,9 @@ export const commitStagingData = data => {
           'Content-Type': 'application/json',
         },
       };
+      if (comment?.length > 0) {
+        payload.body = JSON.stringify({ comment });
+      }
 
       const response = await fetchWrapper(url, payload);
 
@@ -392,6 +693,161 @@ export const commitStagingData = data => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'transactions-not-committed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const updateGovernancePickLists = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/governance/meta/pickList`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'governance-picklists-updated-successfully',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'governance-picklists-update-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'governance-picklists-update-failed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const setIsGovernanceInitiated = () => ({
+  type: actions.SET_IS_GOVERNANCE_INITIATED,
+  payload: true,
+});
+
+export const initiateGovernance = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/governance`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(setIsGovernanceInitiated());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'governance-initiating-please-wait',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'governance-initiating-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'governance-initiating-failed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const updateGovernanceOrgLists = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/governance/meta/orgList`;
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'governance-orglist-updated-successfully',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'governance-orglist-update-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'governance-orglist-update-failed',
         ),
       );
       dispatch(setConnectionCheck(false));
@@ -444,6 +900,53 @@ export const deleteStagingData = uuid => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'staging-group-could-not-be-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteAllStagingData = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging/clean`;
+      const payload = {
+        method: 'DELETE',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'delete-all-staging-data-success',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'delete-all-staging-data-error',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'delete-all-staging-data-error',
         ),
       );
     } finally {
@@ -704,13 +1207,59 @@ export const postNewOrg = data => {
       dispatch(activateProgressIndicator);
 
       const formData = new FormData();
-      formData.append('svg', data.svg);
+      formData.append('file', data.png);
       formData.append('name', data.name);
 
       const url = `${constants.API_HOST}/organizations/create`;
       const payload = {
         method: 'POST',
         body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-created',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'organization-not-created'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'organization-not-created',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const importHomeOrg = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations`;
+
+      const payload = {
+        method: 'PUT',
+        body: JSON.stringify({ orgUid }),
       };
 
       const response = await fetchWrapper(url, payload);
@@ -892,7 +1441,7 @@ export const uploadXLSXFile = (file, type) => {
               NotificationMessageTypeEnum.error,
               formatApiErrorResponse(
                 errorResponse,
-                'file-could-not-be-uploaded',
+                errorResponse.error,
               ),
             ),
           );
@@ -1234,9 +1783,14 @@ export const mockProjectsResponse = {
 };
 
 export const getProjects = options => {
-  const url = options.searchQuery
-    ? `${constants.API_HOST}/projects?search=${options.searchQuery}`
-    : `${constants.API_HOST}/projects`;
+  let url = `${constants.API_HOST}/projects?`;
+
+  if (options?.searchQuery) {
+    url += `search=${options.searchQuery}`;
+  }
+  if (options?.orgUid) {
+    url += `orgUid=${options.orgUid}`;
+  }
 
   return dispatch => {
     dispatch(

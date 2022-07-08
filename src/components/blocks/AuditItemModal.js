@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import { Modal, modalTypeEnum, Body } from '..';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
+import theme from '../../theme';
 
 const StyledContainer = styled('div')`
   padding: 16px 21px;
@@ -27,7 +28,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
   const intl = useIntl();
   const change = auditItem.change && JSON.parse(auditItem.change);
 
-  const bodyColor = auditItem.type === 'INSERT' ? '#52C41A' : '#F5222D';
+  const bodyColor = auditItem.type === 'INSERT' ? theme.colors.default.status.ok.primary : theme.colors.default.status.error.primary;
 
   return (
     <>
@@ -82,6 +83,16 @@ const AuditItemModal = ({ onClose, auditItem }) => {
                 </div>
                 <StyledTextContainer>
                   <Body>{auditItem.rootHash}</Body>
+                </StyledTextContainer>
+              </div>
+              <div>
+                <div>
+                  <Body size="Bold" color="#40A9FF">
+                    <FormattedMessage id="comment" />
+                  </Body>
+                </div>
+                <StyledTextContainer>
+                  <Body>{auditItem.comment}</Body>
                 </StyledTextContainer>
               </div>
             </StyledContainer>

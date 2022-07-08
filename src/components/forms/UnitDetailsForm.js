@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
+import React, { useMemo, useEffect, useCallback, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
-
-import { setValidationErrors } from '../../utils/validationUtils';
+import { useFormikContext } from 'formik';
 
 import {
   StandardInput,
@@ -21,7 +21,7 @@ import {
   StyledLabelContainer,
   InputVariantEnum,
   YearSelect,
-  DateVariantEnum,
+  YearSelectVariantEnum,
   RequiredContainer,
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
@@ -30,21 +30,114 @@ import {
   SimpleSelectStateEnum,
   SimpleSelectVariantEnum,
   SimpleSelect,
+  FormikError,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectStateEnum,
+  Select,
+  SelectVariantEnum,
 } from '..';
 
-import { unitsSchema } from '../../store/validations';
-
-const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
-  const [errorMessage, setErrorMessage] = useState({});
-  const { validateForm, formType } = useSelector(state => state.app);
+const UnitDetailsForm = () => {
   const intl = useIntl();
-  const { pickLists } = useSelector(store => store.climateWarehouse);
+  const { pickLists, myProjects, issuances } = useSelector(
+    store => store.climateWarehouse,
+  );
+
+  const { values, setFieldValue, handleBlur, errors, touched } =
+    useFormikContext();
+
+  const hasUserInteractedWithForm = useMemo(
+    () => !_.isEmpty(touched),
+    [touched],
+  );
+
+  const [selectedWarehouseProjectOption, setSelectedWarehouseProjectOption] =
+    useState(null);
+
+  const projectsSelectOptions = useMemo(() => {
+    if (myProjects) {
+      return myProjects.map(projectItem => ({
+        value: projectItem,
+        label: projectItem.projectName,
+      }));
+    }
+    return [];
+  }, [myProjects]);
+
+  const projectLocationIdOptions = useMemo(() => {
+    if (selectedWarehouseProjectOption?.value?.projectLocations?.length > 0) {
+      return selectedWarehouseProjectOption?.value?.projectLocations?.map(
+        item => item.country,
+      );
+    }
+    return [];
+  }, [selectedWarehouseProjectOption]);
 
   useEffect(() => {
-    if (validateForm && formType === 'unit') {
-      setValidationErrors(unitsSchema, unitDetails, setErrorMessage);
+    if (
+      values?.issuance &&
+      issuances?.length > 0 &&
+      selectedWarehouseProjectOption === null &&
+      projectsSelectOptions
+    ) {
+      const currentUnitIssuanceId = values.issuance.id;
+
+      const inferredProjectIdOfTheCurrentUnit = issuances.filter(
+        issuanceItem => issuanceItem?.id === currentUnitIssuanceId,
+      )[0]?.warehouseProjectId;
+
+      const inferredProjectOption = inferredProjectIdOfTheCurrentUnit
+        ? projectsSelectOptions.filter(
+            item =>
+              item.value.warehouseProjectId ===
+              inferredProjectIdOfTheCurrentUnit,
+          )[0]
+        : null;
+
+      if (inferredProjectOption) {
+        setSelectedWarehouseProjectOption(inferredProjectOption);
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          inferredProjectOption.value.warehouseProjectId,
+        );
+      }
     }
-  }, [unitDetails, validateForm, formType]);
+  }, [values, issuances, projectsSelectOptions]);
+
+  const changeSelectedProjectOption = useCallback(
+    selectedProjectOption => {
+      setSelectedWarehouseProjectOption(selectedProjectOption);
+
+      localStorage.removeItem('unitSelectedWarehouseProjectId');
+      const selectedProjectHasIssuances =
+        selectedProjectOption.value?.issuances?.length > 0;
+      if (selectedProjectHasIssuances) {
+        localStorage.setItem(
+          'unitSelectedWarehouseProjectId',
+          selectedProjectOption.value.warehouseProjectId,
+        );
+      }
+
+      const isCurrentSavedIssuanceOnTheSelectedProject =
+        selectedProjectOption?.value?.issuances.some(
+          issuanceItem => issuanceItem?.id === values?.issuance?.id,
+        );
+      if (!isCurrentSavedIssuanceOnTheSelectedProject) {
+        setFieldValue('projectLocationId', '');
+        setFieldValue('issuance', null);
+      }
+    },
+    [
+      selectedWarehouseProjectOption,
+      setSelectedWarehouseProjectOption,
+      setFieldValue,
+    ],
+  );
+
+  if (!pickLists) {
+    return null;
+  }
 
   return (
     <ModalFormContainerStyle>
@@ -53,11 +146,70 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
       </RequiredContainer>
       <FormContainerStyle>
         <BodyContainer>
+          {/* the input below is not connected to formik */}
+          {projectsSelectOptions && (
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    *<FormattedMessage id="select-existing-project" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'select-existing-project',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <Select
+                  size={SelectSizeEnum.large}
+                  type={SelectTypeEnum.basic}
+                  options={projectsSelectOptions}
+                  state={SelectStateEnum.default}
+                  variant={
+                    ((hasUserInteractedWithForm &&
+                      !selectedWarehouseProjectOption) ||
+                      (selectedWarehouseProjectOption &&
+                        selectedWarehouseProjectOption?.value?.issuances
+                          ?.length === 0)) &&
+                    SelectVariantEnum.error
+                  }
+                  selected={
+                    selectedWarehouseProjectOption
+                      ? [selectedWarehouseProjectOption]
+                      : undefined
+                  }
+                  onChange={selectedOptions =>
+                    changeSelectedProjectOption(selectedOptions[0])
+                  }
+                />
+              </InputContainer>
+              {/* display error if form validation is on and user didn't select any project */}
+              {hasUserInteractedWithForm && !selectedWarehouseProjectOption && (
+                <Body size="Small" color="red">
+                  <FormattedMessage id="select-existing-project" />
+                </Body>
+              )}
+              {/* display error if user selected a project with no issuances */}
+              {selectedWarehouseProjectOption &&
+                selectedWarehouseProjectOption?.value?.issuances?.length ===
+                  0 && (
+                  <Body size="Small" color="red">
+                    {intl.formatMessage({
+                      id: 'select-another-project',
+                    })}
+                  </Body>
+                )}
+            </StyledFieldContainer>
+          )}
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="project-location-id" />
+                  <FormattedMessage id="project-location-id" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -69,37 +221,40 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <StandardInput
-                variant={
-                  errorMessage?.projectLocationId
-                    ? InputVariantEnum.error
+              <SimpleSelect
+                size={SimpleSelectSizeEnum.large}
+                type={SimpleSelectTypeEnum.basic}
+                options={projectLocationIdOptions}
+                state={
+                  projectLocationIdOptions.length === 0
+                    ? SimpleSelectStateEnum.disabled
+                    : SimpleSelectStateEnum.default
+                }
+                selected={
+                  values.projectLocationId
+                    ? [values.projectLocationId]
                     : undefined
                 }
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'project-location-id',
-                })}
-                state={InputStateEnum.default}
-                value={unitDetails.projectLocationId}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    projectLocationId: value,
-                  }))
+                onChange={selectedOptions =>
+                  setFieldValue('projectLocationId', selectedOptions[0])
                 }
+                name="projectLocationId"
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorMessage?.projectLocationId && (
-              <Body size="Small" color="red">
-                {errorMessage.projectLocationId}
-              </Body>
-            )}
+            <FormikError name="projectLocationId" />
+            {selectedWarehouseProjectOption &&
+              projectLocationIdOptions.length === 0 && (
+                <Body size="Small">
+                  <FormattedMessage id="project-has-no-locations" />
+                </Body>
+              )}
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="unit-owner" />
+                  <FormattedMessage id="unit-owner" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
@@ -113,37 +268,32 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorMessage?.unitOwner ? InputVariantEnum.error : undefined
+                  errors.unitOwner && touched.unitOwner
+                    ? InputVariantEnum.error
+                    : undefined
                 }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'unit-owner',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.unitOwner}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitOwner: value,
-                  }))
-                }
+                value={values.unitOwner}
+                onChange={value => setFieldValue('unitOwner', value)}
+                onBlur={handleBlur}
+                name="unitOwner"
               />
             </InputContainer>
-            {errorMessage?.unitOwner && (
-              <Body size="Small" color="red">
-                {errorMessage.unitOwner}
-              </Body>
-            )}
+            <FormikError name="unitOwner" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="serial-number-pattern" />
+                  *<FormattedMessage id="unit-block-start" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'units-serial-number-pattern-description',
+                    id: 'units-unit-block-start-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />
@@ -153,39 +303,32 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorMessage?.serialNumberPattern
+                  errors.unitBlockStart && touched.unitBlockStart
                     ? InputVariantEnum.error
                     : undefined
                 }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'serial-number-pattern',
+                  id: 'unit-block-start',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.serialNumberPattern}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    serialNumberPattern: value,
-                  }))
-                }
+                value={values.unitBlockStart}
+                onChange={value => setFieldValue('unitBlockStart', value)}
+                onBlur={handleBlur}
+                name="unitBlockStart"
               />
             </InputContainer>
-            {errorMessage?.serialNumberPattern && (
-              <Body size="Small" color="red">
-                {errorMessage.serialNumberPattern}
-              </Body>
-            )}
+            <FormikError name="unitBlockStart" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
                 <LabelContainer>
-                  *<FormattedMessage id="serial-number-block" />
+                  *<FormattedMessage id="unit-block-end" />
                 </LabelContainer>
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
-                    id: 'units-serial-number-block-description',
+                    id: 'units-unit-block-end-description',
                   })}
                 >
                   <DescriptionIcon height="14" width="14" />
@@ -195,29 +338,57 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorMessage?.serialNumberBlock
+                  errors.unitBlockEnd && touched.unitBlockEnd
                     ? InputVariantEnum.error
                     : undefined
                 }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
-                  id: 'serial-number-block',
+                  id: 'unit-block-end',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.serialNumberBlock}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    serialNumberBlock: value,
-                  }))
-                }
+                value={values.unitBlockEnd}
+                onChange={value => setFieldValue('unitBlockEnd', value)}
+                onBlur={handleBlur}
+                name="unitBlockEnd"
               />
             </InputContainer>
-            {errorMessage?.serialNumberBlock && (
-              <Body size="Small" color="red">
-                {errorMessage.serialNumberBlock}
+            <FormikError name="unitBlockEnd" />
+          </StyledFieldContainer>
+          <StyledFieldContainer>
+            <StyledLabelContainer>
+              <Body>
+                <LabelContainer>
+                  *<FormattedMessage id="unit-count" />
+                </LabelContainer>
+                <ToolTipContainer
+                  tooltip={intl.formatMessage({
+                    id: 'units-unit-count-description',
+                  })}
+                >
+                  <DescriptionIcon height="14" width="14" />
+                </ToolTipContainer>
               </Body>
-            )}
+            </StyledLabelContainer>
+            <InputContainer>
+              <StandardInput
+                variant={
+                  errors.unitCount && touched.unitCount
+                    ? InputVariantEnum.error
+                    : undefined
+                }
+                size={InputSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'unit-count',
+                })}
+                state={InputStateEnum.default}
+                value={values.unitCount}
+                onChange={value => setFieldValue('unitCount', value)}
+                onBlur={handleBlur}
+                name="unitCount"
+              />
+            </InputContainer>
+            <FormikError name="unitCount" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -237,7 +408,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorMessage?.inCountryJurisdictionOfOwner
+                  errors.inCountryJurisdictionOfOwner &&
+                  touched.inCountryJurisdictionOfOwner
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -246,20 +418,15 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   id: 'in-country-jurisdiction-of-owner',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.inCountryJurisdictionOfOwner}
+                value={values.inCountryJurisdictionOfOwner}
                 onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    inCountryJurisdictionOfOwner: value,
-                  }))
+                  setFieldValue('inCountryJurisdictionOfOwner', value)
                 }
+                onBlur={handleBlur}
+                name="inCountryJurisdictionOfOwner"
               />
             </InputContainer>
-            {errorMessage?.inCountryJurisdictionOfOwner && (
-              <Body size="Small" color="red">
-                {errorMessage.inCountryJurisdictionOfOwner}
-              </Body>
-            )}
+            <FormikError name="inCountryJurisdictionOfOwner" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -279,7 +446,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorMessage?.countryJurisdictionOfOwner &&
+                  errors.countryJurisdictionOfOwner &&
+                  touched.countryJurisdictionOfOwner &&
                   SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
@@ -287,23 +455,20 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 options={pickLists.countries}
                 state={SimpleSelectStateEnum.default}
                 selected={
-                  unitDetails.countryJurisdictionOfOwner
-                    ? [unitDetails.countryJurisdictionOfOwner]
+                  values.countryJurisdictionOfOwner
+                    ? [values.countryJurisdictionOfOwner]
                     : undefined
                 }
                 onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    countryJurisdictionOfOwner: selectedOptions[0],
-                  }))
+                  setFieldValue(
+                    'countryJurisdictionOfOwner',
+                    selectedOptions[0],
+                  )
                 }
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorMessage?.countryJurisdictionOfOwner && (
-              <Body size="Small" color="red">
-                {errorMessage.countryJurisdictionOfOwner}
-              </Body>
-            )}
+            <FormikError name="countryJurisdictionOfOwner" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -323,28 +488,22 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorMessage?.unitType && SimpleSelectVariantEnum.error
+                  errors.unitType &&
+                  touched.unitType &&
+                  SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.unitType}
                 state={SimpleSelectStateEnum.default}
-                selected={
-                  unitDetails.unitType ? [unitDetails.unitType] : undefined
-                }
+                selected={values.unitType ? [values.unitType] : undefined}
                 onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitType: selectedOptions[0],
-                  }))
+                  setFieldValue('unitType', selectedOptions[0])
                 }
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorMessage?.unitType && (
-              <Body size="Small" color="red">
-                {errorMessage.unitType}
-              </Body>
-            )}
+            <FormikError name="unitType" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -364,37 +523,28 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorMessage?.unitStatus && SimpleSelectVariantEnum.error
+                  errors.unitStatus &&
+                  touched.unitStatus &&
+                  SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.unitStatus}
                 state={SimpleSelectStateEnum.default}
-                selected={
-                  unitDetails.unitStatus ? [unitDetails.unitStatus] : undefined
-                }
+                selected={values.unitStatus ? [values.unitStatus] : undefined}
                 onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitStatus: selectedOptions[0],
-                  }))
+                  setFieldValue('unitStatus', selectedOptions[0])
                 }
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorMessage?.unitStatus && (
-              <Body size="Small" color="red">
-                {errorMessage.unitStatus}
-              </Body>
-            )}
+            <FormikError name="unitStatus" />
           </StyledFieldContainer>
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
                 <Body color={'#262626'}>
                   <LabelContainer>
-                    {['cancelled', 'retired'].includes(
-                      unitDetails?.unitStatus?.toLowerCase(),
-                    ) && '*'}
                     <FormattedMessage id="unit-status-reason" />
                   </LabelContainer>
                   <ToolTipContainer
@@ -408,7 +558,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </StyledLabelContainer>
               <StandardInput
                 variant={
-                  errorMessage?.unitStatusReason
+                  errors.unitStatusReason && touched.unitStatusReason
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -417,19 +567,12 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   id: 'unit-status-reason',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.unitStatusReason}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitStatusReason: value,
-                  }))
-                }
+                value={values.unitStatusReason}
+                onChange={value => setFieldValue('unitStatusReason', value)}
+                onBlur={handleBlur}
+                name="unitStatusReason"
               />
-              {errorMessage?.unitStatusReason && (
-                <Body size="Small" color="red">
-                  {errorMessage.unitStatusReason}
-                </Body>
-              )}
+              <FormikError name="unitStatusReason" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
           <SpanTwoColumnsContainer>
@@ -450,7 +593,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </StyledLabelContainer>
               <StandardInput
                 variant={
-                  errorMessage?.unitRegistryLink
+                  errors.unitRegistryLink && touched.unitRegistryLink
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -459,19 +602,12 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   id: 'unit-registry-link',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.unitRegistryLink}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitRegistryLink: value,
-                  }))
-                }
+                value={values.unitRegistryLink}
+                onChange={value => setFieldValue('unitRegistryLink', value)}
+                onBlur={handleBlur}
+                name="unitRegistryLink"
               />
-              {errorMessage.unitRegistryLink && (
-                <Body size="Small" color="red">
-                  {errorMessage.unitRegistryLink}
-                </Body>
-              )}
+              <FormikError name="unitRegistryLink" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
           <StyledFieldContainer>
@@ -492,25 +628,18 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <YearSelect
                 variant={
-                  errorMessage?.vintageYear ? DateVariantEnum.error : undefined
+                  errors.vintageYear && touched.vintageYear
+                    ? YearSelectVariantEnum.error
+                    : undefined
                 }
                 size="large"
-                yearValue={unitDetails.vintageYear}
-                onChange={value => {
-                  if (value) {
-                    setUnitDetails(prev => ({
-                      ...prev,
-                      vintageYear: value.$y,
-                    }));
-                  }
-                }}
+                yearValue={values.vintageYear}
+                onChange={value => setFieldValue('vintageYear', value)}
+                name="vintageYear"
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorMessage?.vintageYear && (
-              <Body size="Small" color="red">
-                {errorMessage.vintageYear}
-              </Body>
-            )}
+            <FormikError name="vintageYear" />
           </StyledFieldContainer>
           <HrSpanTwoColumnsContainer>
             <hr />
@@ -533,27 +662,22 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorMessage?.marketplace ? InputVariantEnum.error : undefined
+                  errors.marketplace && touched.marketplace
+                    ? InputVariantEnum.error
+                    : undefined
                 }
                 size={InputSizeEnum.large}
                 placeholderText={intl.formatMessage({
                   id: 'marketplace',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.marketplace}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    marketplace: value,
-                  }))
-                }
+                value={values.marketplace}
+                onChange={value => setFieldValue('marketplace', value)}
+                onBlur={handleBlur}
+                name="marketplace"
               />
             </InputContainer>
-            {errorMessage?.marketplace && (
-              <Body size="Small" color="red">
-                {errorMessage.marketplace}
-              </Body>
-            )}
+            <FormikError name="marketplace" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -573,7 +697,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorMessage?.marketplaceIdentifier
+                  errors.marketplaceIdentifier && touched.marketplaceIdentifier
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -582,20 +706,15 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   id: 'marketplace-identifier',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.marketplaceIdentifier}
+                value={values.marketplaceIdentifier}
                 onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    marketplaceIdentifier: value,
-                  }))
+                  setFieldValue('marketplaceIdentifier', value)
                 }
+                onBlur={handleBlur}
+                name="marketplaceIdentifier"
               />
             </InputContainer>
-            {errorMessage?.marketplaceIdentifier && (
-              <Body size="Small" color="red">
-                {errorMessage.marketplaceIdentifier}
-              </Body>
-            )}
+            <FormikError name="marketplaceIdentifier" />
           </StyledFieldContainer>
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
@@ -615,7 +734,7 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
               </StyledLabelContainer>
               <StandardInput
                 variant={
-                  errorMessage?.marketplaceLink
+                  errors.marketplaceLink && touched.marketplaceLink
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -624,19 +743,12 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   id: 'marketplace-link',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.marketplaceLink}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    marketplaceLink: value,
-                  }))
-                }
+                value={values.marketplaceLink}
+                onChange={value => setFieldValue('marketplaceLink', value)}
+                onBlur={handleBlur}
+                name="marketplaceLink"
               />
-              {errorMessage?.marketplaceLink && (
-                <Body size="Small" color="red">
-                  {errorMessage.marketplaceLink}
-                </Body>
-              )}
+              <FormikError name="marketplaceLink" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
           <StyledFieldContainer>
@@ -658,7 +770,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorMessage?.correspondingAdjustmentDeclaration &&
+                  errors.correspondingAdjustmentDeclaration &&
+                  touched.correspondingAdjustmentDeclaration &&
                   SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
@@ -666,23 +779,20 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 options={pickLists.correspondingAdjustmentDeclaration}
                 state={SimpleSelectStateEnum.default}
                 selected={
-                  unitDetails.correspondingAdjustmentDeclaration
-                    ? [unitDetails.correspondingAdjustmentDeclaration]
+                  values.correspondingAdjustmentDeclaration
+                    ? [values.correspondingAdjustmentDeclaration]
                     : undefined
                 }
                 onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    correspondingAdjustmentDeclaration: selectedOptions[0],
-                  }))
+                  setFieldValue(
+                    'correspondingAdjustmentDeclaration',
+                    selectedOptions[0],
+                  )
                 }
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorMessage?.correspondingAdjustmentDeclaration && (
-              <Body size="Small" color="red">
-                {errorMessage.correspondingAdjustmentDeclaration}
-              </Body>
-            )}
+            <FormikError name="correspondingAdjustmentDeclaration" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -702,7 +812,8 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorMessage?.correspondingAdjustmentStatus &&
+                  errors.correspondingAdjustmentStatus &&
+                  touched.correspondingAdjustmentStatus &&
                   SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
@@ -710,23 +821,20 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                 options={pickLists.correspondingAdjustmentStatus}
                 state={SimpleSelectStateEnum.default}
                 selected={
-                  unitDetails.correspondingAdjustmentStatus
-                    ? [unitDetails.correspondingAdjustmentStatus]
+                  values.correspondingAdjustmentStatus
+                    ? [values.correspondingAdjustmentStatus]
                     : undefined
                 }
                 onChange={selectedOptions =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    correspondingAdjustmentStatus: selectedOptions[0],
-                  }))
+                  setFieldValue(
+                    'correspondingAdjustmentStatus',
+                    selectedOptions[0],
+                  )
                 }
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorMessage?.correspondingAdjustmentStatus && (
-              <Body size="Small" color="red">
-                {errorMessage.correspondingAdjustmentStatus}
-              </Body>
-            )}
+            <FormikError name="correspondingAdjustmentStatus" />
           </StyledFieldContainer>
           <HrSpanTwoColumnsContainer>
             <hr />
@@ -753,14 +861,12 @@ const UnitDetailsForm = ({ unitDetails, setUnitDetails }) => {
                   id: 'unit-tags',
                 })}
                 state={InputStateEnum.default}
-                value={unitDetails.unitTags}
-                onChange={value =>
-                  setUnitDetails(prev => ({
-                    ...prev,
-                    unitTags: value,
-                  }))
-                }
+                value={values.unitTags}
+                onChange={value => setFieldValue('unitTags', value)}
+                onBlur={handleBlur}
+                name="unitTags"
               />
+              <FormikError name="unitTags" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
         </BodyContainer>

@@ -39,7 +39,7 @@ const StyledSelect = styled('div')`
   color: #262626;
   box-sizing: border-box;
   border: 0.0625rem solid #d9d9d9;
-  background: #ffffff;
+  background: ${props => props.theme.colors.default.onButton};
   z-index: 5;
   user-select: none;
   align-items: center;
@@ -75,7 +75,7 @@ const StyledSelect = styled('div')`
       return `border: 1px solid #40A9FF;`;
     } else if (props.state === SelectStateEnum.focused) {
       return `
-        border: 1px solid #3B8EE0;
+        border: 1px solid ${props.theme.colors.default.primary};
         box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
       `;
     } else if (props.state === SelectStateEnum.disabled) {
@@ -95,7 +95,7 @@ const StyledBasicMenu = styled(ScrollContainer)`
   position: absolute;
   padding: 0.25rem 0rem 0.25rem 0rem;
   top: ${props => (props.top ? props.top + 10 + 'px' : '10px')};
-  background: #ffffff;
+  background: ${props => props.theme.colors.default.onButton};
   box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
     0px 6px 16px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12);
   border-radius: 0.125rem;
@@ -121,7 +121,7 @@ const StyledBasicMenuItem = styled('div')`
   ${props => {
     if (props.isSelected) {
       return `
-        background-color: #E6F7FF;
+        background-color: ${props.theme.colors.default.status.info.secondary};
         font-style: normal;
         font-weight: 600;
       `;
@@ -248,19 +248,32 @@ const SelectOrganizations = withTheme(
     };
 
     const organizationsList = useMemo(() => {
-      const list = Object.keys(organizations)
-        .filter(orgKey => organizations[orgKey]?.subscribed)
-        .map(orgUid => ({
-          orgUid: orgUid,
-          name: organizations[orgUid].name,
-          icon: organizations[orgUid].icon,
-        }));
+      if (organizations) {
+        const list = Object.keys(organizations)
+          .filter(orgKey => organizations[orgKey]?.subscribed)
+          .map(orgUid => ({
+            orgUid: orgUid,
+            name: organizations[orgUid].name,
+            icon: organizations[orgUid].icon,
+          }));
 
-      if (displayAllOrganizations) {
-        list.unshift(allOrganizationsItem);
+        if (displayAllOrganizations) {
+          list.unshift(allOrganizationsItem);
+        }
+        return list.sort(function (a, b) {
+          const orgA = a.orgUid != 'all' && a.name.toUpperCase();
+          const orgB = b.orgUid != 'all' && b.name.toUpperCase();
+          if (orgA < orgB) {
+            return -1;
+          }
+          if (orgA > orgB) {
+            return 1;
+          }
+
+          return 0;
+        });
       }
-
-      return list;
+      return [];
     }, [organizations]);
 
     const noChangeOrganization = {
@@ -417,8 +430,7 @@ const SelectOrganizations = withTheme(
             state={selectState}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0].name
@@ -441,8 +453,7 @@ const SelectOrganizations = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -456,8 +467,7 @@ const SelectOrganizations = withTheme(
                             name: option.name,
                             icon: option.icon,
                           })
-                        }
-                      >
+                        }>
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -482,8 +492,7 @@ const SelectOrganizations = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             {selectState !== SelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -541,15 +550,17 @@ const SelectOrganizations = withTheme(
                       name: option.name,
                       icon: option.icon,
                     })
-                  }
-                >
+                  }>
                   {option.name}
                   {option.icon && (
                     <StyledIconContainer>
+                      {option.icon.includes('data:image/png;base64') && (
+                        <img src={option.icon} width={17} height={17} />
+                      )}
                       {validateUrl(option.icon) && (
                         <img src={option.icon} width={17} height={17} />
                       )}
-                      {!validateUrl(option.icon) && (
+                      {option.icon.includes('<svg') && (
                         <StyledSvgContainer
                           dangerouslySetInnerHTML={createMarkup(option.icon)}
                         />
@@ -584,8 +595,7 @@ const SelectOrganizations = withTheme(
                         name: option.name,
                         icon: option.icon,
                       })
-                    }
-                  >
+                    }>
                     {option.name}
                   </StyledBasicMenuItem>
                 ),

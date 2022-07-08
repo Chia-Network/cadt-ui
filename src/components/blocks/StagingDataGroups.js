@@ -4,12 +4,26 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { getDiff } from '../../utils/objectUtils';
 import { Modal, MinusIcon, Body, ErrorIcon, SuccessIcon, ReloadIcon } from '..';
-import { modalTypeEnum } from '.';
+import { modalTypeEnum, APIStagingPagination } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
 import { DetailedViewStagingModal } from './DetailedViewStagingModal';
 
+const StyledPaginationContainer = styled('div')`
+  box-sizing: border-box;
+  background-color: white;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70px;
+  width: 100%;
+  max-height: 70px;
+  margin: 25px 0px 25px 0px;
+`;
+
 const StyledChangeGroup = styled('div')`
-  background: #f0f2f5;
+  background: ${props => props.theme.colors.default.background};
   margin: 20px 20px 20px 20px;
   border-radius: 20px;
   display: flex;
@@ -36,15 +50,15 @@ const StyledChangeCard = styled('div')`
 const StyledChangeCardTitle = styled('div')`
   ${props =>
     props.displayInRed
-      ? ` background-color: #ffebee;
-      border: 2px solid #f5222d;
+      ? ` background-color: ${props.theme.colors.default.status.error.secondary};
+      border: 2px solid ${props.theme.colors.default.status.error.primary};
       body {
-        color: #f5222d;
+        color: ${props.theme.colors.default.status.error.primary};
       }`
-      : ` background-color: #ECF8E6;
-      border: 2px solid #52C41A;
+      : ` background-color: ${props.theme.colors.default.status.ok.secondary};
+      border: 2px solid ${props.theme.colors.default.status.ok.primary};
       body {
-        color: #52C41A;
+        color: ${props.theme.colors.default.status.ok.primary};
       }`}
   padding: 15px 5px 8px 17px;
   border-top-left-radius: 5px;
@@ -120,9 +134,9 @@ const ChangeCard = ({
                 heading !== 'unitBlockEnd' && heading !== 'unitBlockStart',
             )
             .map((heading, index) => (
-              <>
+              <React.Fragment key={index}>
                 {!(typeof data[heading] === 'object') && (
-                  <StyledCardBodyItem key={index}>
+                  <StyledCardBodyItem>
                     <Body size="Small Bold">
                       {convertPascalCaseToSentenceCase(heading)}
                     </Body>
@@ -142,7 +156,7 @@ const ChangeCard = ({
                   </StyledCardBodyItem>
                 )}
                 {typeof data[heading] === 'object' && (
-                  <StyledCardBodyItem key={index}>
+                  <StyledCardBodyItem>
                     <Body size="Small Bold">
                       {convertPascalCaseToSentenceCase(heading)}
                     </Body>
@@ -163,7 +177,7 @@ const ChangeCard = ({
                     </StyledCardBodySubItem>
                   </StyledCardBodyItem>
                 )}
-              </>
+              </React.Fragment>
             ))}
       </StyledChangeCardBody>
     </StyledChangeCard>
@@ -289,8 +303,7 @@ const StagingDataGroups = withTheme(
                           onClick={() => {
                             setDeleteUUID(changeGroup.uuid);
                             setDeleteFromStaging(true);
-                          }}
-                        >
+                          }}>
                           <MinusIcon width={20} height={20} />
                         </div>
                       </StyledDeleteGroupIcon>
@@ -378,8 +391,7 @@ const StagingDataGroups = withTheme(
                         onClick={() => {
                           setDeleteUUID(changeGroup.uuid);
                           setDeleteFromStaging(true);
-                        }}
-                      >
+                        }}>
                         <MinusIcon width={20} height={20} />
                       </div>
                     </StyledDeleteGroupIcon>
@@ -399,6 +411,9 @@ const StagingDataGroups = withTheme(
                 )}
               </React.Fragment>
             ))}
+          <StyledPaginationContainer>
+            <APIStagingPagination actions="staging" formType={data} />
+          </StyledPaginationContainer>
           {detailedViewData && (
             <DetailedViewStagingModal
               onClose={() => setDetailedViewData(null)}

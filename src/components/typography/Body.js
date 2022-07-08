@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme, css } from 'styled-components';
 
 const Text = styled('div')`
-  color: ${props => props.color || '#000000'};
+  color: ${props => props.color || props.theme.colors.default.onSurface};
   font-size: 16px;
   font-family: ${props => props.theme.typography.primary.regular};
   font-weight: 400;
-  width:100%;
+  width: 100%;
   line-height: 150%;
   ${props =>
     props.size === 'Big' &&
@@ -43,10 +43,15 @@ const Text = styled('div')`
     `}
 `;
 
-const Body = withTheme(({ children, color, size }) => {
+const Body = withTheme(({ children, color, size, onClick }) => {
   const appStore = useSelector(state => state.app);
   return (
-    <Text color={color} selectedTheme={appStore.theme} size={size}>
+    <Text
+      color={color}
+      selectedTheme={appStore.theme}
+      size={size}
+      onClick={onClick}
+    >
       {children}
     </Text>
   );

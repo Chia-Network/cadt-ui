@@ -20,6 +20,7 @@ const UploadXLSX = ({ type }) => {
         const file = e.target.files[0];
         dispatch(uploadXLSXFile(file, type));
       }
+      e.target.value = '';
     }
   };
 

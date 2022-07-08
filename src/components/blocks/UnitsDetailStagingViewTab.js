@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Tab, Tabs, TabPanel } from '..';
 import styled from 'styled-components';
 import { UnitsDetails, UnitsIssuanceDetails, UnitsLabelsDetails } from '.';
+import theme from '../../theme';
 
 export const StyledDetailedViewTabItem = styled('div')`
   display: flex;
@@ -35,13 +36,13 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
   const getOriginalColorForKey = (entryProp, action) => {
     if (entryProp) {
       if (action === 'DELETE') {
-        return '#f5222d';
+        return theme.colors.default.status.error.primary;
       }
       if (action === 'INSERT') {
-        return '#52C41A';
+        return theme.colors.default.status.ok.primary;
       }
     }
-    return '#000000';
+    return theme.colors.default.onSurface;
   };
 
   const issuanceTab = () => {
@@ -81,6 +82,7 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
       {!_.isEmpty(entry?.labels) &&
         _.map(entry?.labels, labelValue => (
           <TabPanel
+            key={labelValue.id.original}
             noHeight
             value={tabValue}
             index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>

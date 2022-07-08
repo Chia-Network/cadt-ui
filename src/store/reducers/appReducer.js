@@ -13,20 +13,22 @@ const initialState = {
   connectionCheck: true,
   updateAvailablePleaseRefesh: false,
   notification: null,
-  commit: false,
   pendingError: false,
   readOnlyMode: true,
   apiKey: null,
   serverAddress: null,
   validateForm: false,
-  formType: null,
   refresh: false,
+  isAppLocked: false,
 };
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case appActions.REFRESH_APP:
       return u({ refresh: action.payload }, state);
+
+    case appActions.LOCK_APP:
+      return u({ isAppLocked: action.payload }, state);
 
     case appActions.SET_READ_ONLY:
       return u({ readOnlyMode: action.payload }, state);
@@ -45,9 +47,6 @@ const appReducer = (state = initialState, action) => {
     case appActions.DEACTIVATE_PROGRESS_INDICATOR:
       return u({ showProgressOverlay: false }, state);
 
-    case appActions.COMMIT:
-      return u({ commit: action.payload }, state);
-
     case appActions.SET_GLOBAL_ERROR_MESSAGE:
       return u({ errorMessage: action.payload }, state);
 
@@ -59,12 +58,6 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.PENDING_ERROR:
       return u({ pendingError: action.payload }, state);
-
-    case appActions.SET_VALIDATION:
-      return u({ validateForm: action.payload }, state);
-
-    case appActions.SET_FORM:
-      return u({ formType: action.payload }, state);
 
     case appActions.SET_THEME:
       if (

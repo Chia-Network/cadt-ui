@@ -1,8 +1,12 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
+import { v4 as generateUUID } from '@lukeed/uuid';
 import _ from 'lodash';
+
 import { Body } from '../typography';
 import { FormattedMessage } from 'react-intl';
+import { ToolTipContainer } from '.';
+import { DescriptionIcon } from '..';
 
 const StyledRepeatedComponentContainer = styled('div')`
   display: flex;
@@ -20,7 +24,9 @@ const ComponentRepeater = ({
   initialValue,
   addIcon,
   removeIcon,
+  useToolTip,
   maxRepetitions = 2,
+  minRepetitions = 0,
 }) => {
   const addNewInstance = useCallback(() => {
     if (values.length < maxRepetitions) {
@@ -29,6 +35,13 @@ const ComponentRepeater = ({
           ? [..._.cloneDeep(values), _.cloneDeep(initialValue)]
           : [_.cloneDeep(initialValue)],
       );
+    }
+  }, [values]);
+
+  useEffect(() => {
+    const currentNumberOfRepetitions = values.length;
+    if (currentNumberOfRepetitions < minRepetitions) {
+      addNewInstance();
     }
   }, [values]);
 
@@ -44,7 +57,12 @@ const ComponentRepeater = ({
         newValues.splice(index, 1);
         updateValues(newValues);
       };
-      const key = index;
+
+      if (!value?.id && !value?.tempId) {
+        value.tempId = generateUUID();
+      }
+      const key = value?.id || value.tempId;
+
       return (
         <StyledRepeatedComponentContainer key={key}>
           {component && React.cloneElement(component, { value, onChange })}
@@ -61,6 +79,11 @@ const ComponentRepeater = ({
           {addIcon}
           <Body color="#1890ff">
             <FormattedMessage id="click-to-add" />
+            {useToolTip && (
+              <ToolTipContainer tooltip={useToolTip}>
+                <DescriptionIcon height="14" width="20" />
+              </ToolTipContainer>
+            )}
           </Body>
         </StyledRepeatedComponentContainer>
       )}

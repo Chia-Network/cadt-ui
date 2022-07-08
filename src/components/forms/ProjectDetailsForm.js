@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
-
-import { setValidationErrors } from '../../utils/validationUtils';
+import { useFormikContext } from 'formik';
 
 import {
   StandardInput,
@@ -14,7 +13,7 @@ import {
   BodyContainer,
   Body,
   DateSelect,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   DescriptionIcon,
   ToolTipContainer,
   LabelContainer,
@@ -30,25 +29,17 @@ import {
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
   RequiredContainer,
+  Textarea,
+  TextareaSizeEnum,
+  TextareaStateEnum,
+  FormikError,
 } from '..';
 
-import { projectSchema } from '../../store/validations';
-
-const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
-  const [errorProjectMessage, setErrorProjectMessage] = useState({});
+const ProjectDetailsForm = () => {
   const intl = useIntl();
   const { pickLists } = useSelector(store => store.climateWarehouse);
-  const { validateForm, formType } = useSelector(state => state.app);
-
-  useEffect(() => {
-    if (validateForm && formType === 'project') {
-      setValidationErrors(
-        projectSchema,
-        projectDetails,
-        setErrorProjectMessage,
-      );
-    }
-  }, [projectDetails, validateForm]);
+  const { values, setFieldValue, handleBlur, errors, touched } =
+    useFormikContext();
 
   return (
     <ModalFormContainerStyle>
@@ -66,7 +57,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-name-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -74,7 +66,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorProjectMessage?.projectName
+                  errors.projectName && touched.projectName
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -83,20 +75,13 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   id: 'project-name',
                 })}
                 state={InputStateEnum.default}
-                value={projectDetails.projectName}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    projectName: value,
-                  }))
-                }
+                value={values.projectName}
+                onChange={value => setFieldValue('projectName', value)}
+                onBlur={handleBlur}
+                name="projectName"
               />
             </InputContainer>
-            {errorProjectMessage?.projectName && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.projectName}
-              </Body>
-            )}
+            <FormikError name="projectName" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -107,14 +92,15 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-id-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <StandardInput
               variant={
-                errorProjectMessage?.projectId
+                errors.projectId && touched.projectId
                   ? InputVariantEnum.error
                   : undefined
               }
@@ -123,20 +109,45 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 id: 'project-id',
               })}
               state={InputStateEnum.default}
-              value={projectDetails.projectId}
-              onChange={value =>
-                setProjectDetails(prev => ({
-                  ...prev,
-                  projectId: value,
-                }))
-              }
+              value={values.projectId}
+              onChange={value => setFieldValue('projectId', value)}
+              onBlur={handleBlur}
+              name="projectId"
             />
-            {errorProjectMessage?.projectId && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.projectId}
-              </Body>
-            )}
+            <FormikError name="projectId" />
           </StyledFieldContainer>
+          <SpanTwoColumnsContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    <FormattedMessage id="project-description" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'projects-description-description',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <Textarea
+                size={TextareaSizeEnum.large}
+                placeholderText={intl.formatMessage({
+                  id: 'project-description',
+                })}
+                value={values.description}
+                state={TextareaStateEnum.default}
+                onChange={event =>
+                  setFieldValue('description', event.target.value)
+                }
+                onBlur={handleBlur}
+                name="description"
+              />
+              <FormikError name="description" />
+            </StyledFieldContainer>
+          </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
               <Body>
@@ -146,7 +157,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-developer-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -154,7 +166,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorProjectMessage?.projectDeveloper
+                  errors.projectDeveloper && touched.projectDeveloper
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -163,20 +175,13 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   id: 'project-developer',
                 })}
                 state={InputStateEnum.default}
-                value={projectDetails.projectDeveloper}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    projectDeveloper: value,
-                  }))
-                }
+                value={values.projectDeveloper}
+                onChange={value => setFieldValue('projectDeveloper', value)}
+                onBlur={handleBlur}
+                name="projectDeveloper"
               />
             </InputContainer>
-            {errorProjectMessage?.projectDeveloper && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.projectDeveloper}
-              </Body>
-            )}
+            <FormikError name="projectDeveloper" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -187,7 +192,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-program-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -199,20 +205,13 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   id: 'program',
                 })}
                 state={InputStateEnum.default}
-                value={projectDetails.program}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    program: value,
-                  }))
-                }
+                value={values.program}
+                onChange={value => setFieldValue('program', value)}
+                onBlur={handleBlur}
+                name="program"
               />
             </InputContainer>
-            {errorProjectMessage?.program && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.program}
-              </Body>
-            )}
+            <FormikError name="program" />
           </StyledFieldContainer>
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
@@ -224,14 +223,15 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-project-link-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
               <StandardInput
                 variant={
-                  errorProjectMessage?.projectLink
+                  errors.projectLink && touched.projectLink
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -240,19 +240,12 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   id: 'project-link',
                 })}
                 state={InputStateEnum.default}
-                value={projectDetails.projectLink}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    projectLink: value,
-                  }))
-                }
+                value={values.projectLink}
+                onChange={value => setFieldValue('projectLink', value)}
+                onBlur={handleBlur}
+                name="projectLink"
               />
-              {errorProjectMessage?.projectLink && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.projectLink}
-                </Body>
-              )}
+              <FormikError name="projectLink" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
           <StyledFieldContainer>
@@ -264,7 +257,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-sector-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -272,28 +266,22 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorProjectMessage?.sector && SimpleSelectVariantEnum.error
+                  errors.sector &&
+                  touched.sector &&
+                  SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
                 type={SimpleSelectTypeEnum.basic}
                 options={pickLists.projectSector}
                 state={SimpleSelectStateEnum.default}
-                selected={
-                  projectDetails.sector ? [projectDetails.sector] : undefined
-                }
+                selected={values.sector ? [values.sector] : undefined}
                 onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    sector: selectedOptions[0],
-                  }))
+                  setFieldValue('sector', selectedOptions[0])
                 }
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorProjectMessage?.sector && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.sector}
-              </Body>
-            )}
+            <FormikError name="sector" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -304,37 +292,29 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <SimpleSelect
               variant={
-                errorProjectMessage?.projectType &&
+                errors.projectType &&
+                touched.projectType &&
                 SimpleSelectVariantEnum.error
               }
               size={SimpleSelectSizeEnum.large}
               type={SimpleSelectTypeEnum.basic}
               options={pickLists.projectType}
               state={SimpleSelectStateEnum.default}
-              selected={
-                projectDetails.projectType
-                  ? [projectDetails.projectType]
-                  : undefined
-              }
+              selected={values.projectType ? [values.projectType] : undefined}
               onChange={selectedOptions =>
-                setProjectDetails(prev => ({
-                  ...prev,
-                  projectType: selectedOptions[0],
-                }))
+                setFieldValue('projectType', selectedOptions[0])
               }
+              onBlur={handleBlur}
             />
-            {errorProjectMessage?.projectType && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.projectType}
-              </Body>
-            )}
+            <FormikError name="projectType" />
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
@@ -345,7 +325,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-status-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -353,7 +334,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorProjectMessage?.projectStatus &&
+                  errors.projectStatus &&
+                  touched.projectStatus &&
                   SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
@@ -361,22 +343,14 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 options={pickLists.projectStatusValues}
                 state={SimpleSelectStateEnum.default}
                 selected={
-                  projectDetails.projectStatus
-                    ? [projectDetails.projectStatus]
-                    : undefined
+                  values.projectStatus ? [values.projectStatus] : undefined
                 }
                 onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    projectStatus: selectedOptions[0],
-                  }))
+                  setFieldValue('projectStatus', selectedOptions[0])
                 }
+                onBlur={handleBlur}
               />
-              {errorProjectMessage?.projectStatus && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.projectStatus}
-                </Body>
-              )}
+              <FormikError name="projectStatus" />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
@@ -388,7 +362,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-status-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -396,23 +371,19 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <DateSelect
                 variant={
-                  errorProjectMessage?.projectStatusDate &&
-                  DateVariantEnum.error
+                  errors.projectStatusDate &&
+                  touched.projectStatusDate &&
+                  DateSelectVariantEnum.error
                 }
                 size="large"
-                dateValue={projectDetails.projectStatusDate}
-                setDateValue={date =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    projectStatusDate: date,
-                  }))
+                dateValue={values.projectStatusDate}
+                setDateValue={value =>
+                  setFieldValue('projectStatusDate', value)
                 }
+                name={'projectStatusDate'}
+                onBlur={handleBlur}
               />
-              {errorProjectMessage?.projectStatusDate && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.projectStatusDate}
-                </Body>
-              )}
+              <FormikError name="projectStatusDate" />
             </InputContainer>
           </StyledFieldContainer>
           <HrSpanTwoColumnsContainer>
@@ -427,7 +398,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-covered-by-ndc-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -435,7 +407,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorProjectMessage?.coveredByNDC &&
+                  errors.coveredByNDC &&
+                  touched.coveredByNDC &&
                   SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
@@ -443,36 +416,28 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 options={pickLists.coveredByNDC}
                 state={SimpleSelectStateEnum.default}
                 selected={
-                  projectDetails.coveredByNDC
-                    ? [projectDetails.coveredByNDC]
-                    : undefined
+                  values.coveredByNDC ? [values.coveredByNDC] : undefined
                 }
                 onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    coveredByNDC: selectedOptions[0],
-                  }))
+                  setFieldValue('coveredByNDC', selectedOptions[0])
                 }
+                onBlur={handleBlur}
               />
             </InputContainer>
-            {errorProjectMessage?.coveredByNDC && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.coveredByNDC}
-              </Body>
-            )}
+            <FormikError name="coveredByNDC" />
           </StyledFieldContainer>
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
                 <Body>
                   <LabelContainer>
-                    {projectDetails.coveredByNDC === 'Inside NDC' && '*'}
                     <FormattedMessage id="ndc-information" />
                   </LabelContainer>
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-ndc-information-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -480,7 +445,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
 
               <StandardInput
                 variant={
-                  errorProjectMessage?.ndcInformation
+                  errors.ndcInformation && touched.ndcInformation
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -489,19 +454,12 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   id: 'ndc-information',
                 })}
                 state={InputStateEnum.default}
-                value={projectDetails.ndcInformation}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    ndcInformation: value,
-                  }))
-                }
+                value={values.ndcInformation}
+                onChange={value => setFieldValue('ndcInformation', value)}
+                onBlur={handleBlur}
+                name="ndcInformation"
               />
-              {errorProjectMessage?.ndcInformation && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.ndcInformation}
-                </Body>
-              )}
+              <FormikError name="ndcInformation" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
           <SpanTwoColumnsContainer>
@@ -514,40 +472,55 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-current-registry-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                <SimpleSelect
-                  addInput="current-registry"
-                  variant={
-                    errorProjectMessage?.currentRegistry &&
-                    SimpleSelectVariantEnum.error
-                  }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
-                  options={pickLists.registries}
-                  state={SimpleSelectStateEnum.default}
-                  selected={
-                    projectDetails.currentRegistry
-                      ? [projectDetails.currentRegistry]
-                      : undefined
-                  }
-                  onChange={selectedOptions =>
-                    setProjectDetails(prev => ({
-                      ...prev,
-                      currentRegistry: selectedOptions[0],
-                    }))
-                  }
-                />
+                {pickLists?.registries ? (
+                  <SimpleSelect
+                    addInput="current-registry"
+                    variant={
+                      errors.currentRegistry &&
+                      touched.currentRegistry &&
+                      SimpleSelectVariantEnum.error
+                    }
+                    size={SimpleSelectSizeEnum.large}
+                    type={SimpleSelectTypeEnum.basic}
+                    options={pickLists.registries}
+                    state={SimpleSelectStateEnum.default}
+                    selected={
+                      values.currentRegistry
+                        ? [values.currentRegistry]
+                        : undefined
+                    }
+                    onChange={selectedOptions =>
+                      setFieldValue('currentRegistry', selectedOptions[0])
+                    }
+                    onBlur={handleBlur}
+                  />
+                ) : (
+                  <StandardInput
+                    variant={
+                      errors.currentRegistry && touched.currentRegistry
+                        ? InputVariantEnum.error
+                        : undefined
+                    }
+                    size={InputSizeEnum.large}
+                    placeholderText={intl.formatMessage({
+                      id: 'current-registry',
+                    })}
+                    state={InputStateEnum.default}
+                    value={values.currentRegistry}
+                    onChange={value => setFieldValue('currentRegistry', value)}
+                    onBlur={handleBlur}
+                    name="currentRegistry"
+                  />
+                )}
               </InputContainer>
-              {errorProjectMessage?.currentRegistry && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.currentRegistry}
-                </Body>
-              )}
+              <FormikError name="currentRegistry" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
           <StyledFieldContainer>
@@ -559,40 +532,55 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-registry-of-origin-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
-                addInput="registry-of-origin"
-                variant={
-                  errorProjectMessage?.registryOfOrigin &&
-                  SimpleSelectVariantEnum.error
-                }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={pickLists.registries}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  projectDetails.registryOfOrigin
-                    ? [projectDetails.registryOfOrigin]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    registryOfOrigin: selectedOptions[0],
-                  }))
-                }
-              />
+              {pickLists?.registries ? (
+                <SimpleSelect
+                  addInput="registry-of-origin"
+                  variant={
+                    errors.registryOfOrigin &&
+                    touched.registryOfOrigin &&
+                    SimpleSelectVariantEnum.error
+                  }
+                  size={SimpleSelectSizeEnum.large}
+                  type={SimpleSelectTypeEnum.basic}
+                  options={pickLists.registries}
+                  state={SimpleSelectStateEnum.default}
+                  selected={
+                    values.registryOfOrigin
+                      ? [values.registryOfOrigin]
+                      : undefined
+                  }
+                  onChange={selectedOptions =>
+                    setFieldValue('registryOfOrigin', selectedOptions[0])
+                  }
+                  onBlur={handleBlur}
+                />
+              ) : (
+                <StandardInput
+                  variant={
+                    errors.registryOfOrigin && touched.registryOfOrigin
+                      ? InputVariantEnum.error
+                      : undefined
+                  }
+                  size={InputSizeEnum.large}
+                  placeholderText={intl.formatMessage({
+                    id: 'registry-of-origin',
+                  })}
+                  state={InputStateEnum.default}
+                  value={values.registryOfOrigin}
+                  onChange={value => setFieldValue('registryOfOrigin', value)}
+                  onBlur={handleBlur}
+                  name="registryOfOrigin"
+                />
+              )}
             </InputContainer>
-            {errorProjectMessage?.registryOfOrigin && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.registryOfOrigin}
-              </Body>
-            )}
+            <FormikError name="registryOfOrigin" />
           </StyledFieldContainer>
 
           <StyledFieldContainer>
@@ -604,7 +592,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-origin-project-id-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -612,7 +601,7 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <StandardInput
                 variant={
-                  errorProjectMessage?.originProjectId
+                  errors.originProjectId && touched.originProjectId
                     ? InputVariantEnum.error
                     : undefined
                 }
@@ -621,20 +610,13 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   id: 'origin-project-id',
                 })}
                 state={InputStateEnum.default}
-                value={projectDetails.originProjectId}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    originProjectId: value,
-                  }))
-                }
+                value={values.originProjectId}
+                onChange={value => setFieldValue('originProjectId', value)}
+                onBlur={handleBlur}
+                name="originProjectId"
               />
             </InputContainer>
-            {errorProjectMessage?.originProjectId && (
-              <Body size="Small" color="red">
-                {errorProjectMessage.originProjectId}
-              </Body>
-            )}
+            <FormikError name="originProjectId" />
           </StyledFieldContainer>
           <HrSpanTwoColumnsContainer>
             <hr />
@@ -648,7 +630,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-unit-metric-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -656,7 +639,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
             <InputContainer>
               <SimpleSelect
                 variant={
-                  errorProjectMessage?.unitMetric &&
+                  errors.unitMetric &&
+                  touched.unitMetric &&
                   SimpleSelectVariantEnum.error
                 }
                 size={SimpleSelectSizeEnum.large}
@@ -664,22 +648,16 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 options={pickLists.unitMetric}
                 state={SimpleSelectStateEnum.default}
                 selected={
-                  projectDetails.unitMetric
-                    ? [projectDetails.unitMetric]
+                  values.unitMetric
+                    ? [values.unitMetric]
                     : [pickLists.unitMetric[0]]
                 }
                 onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    unitMetric: selectedOptions[0],
-                  }))
+                  setFieldValue('unitMetric', selectedOptions[0])
                 }
+                onBlur={handleBlur}
               />
-              {errorProjectMessage?.unitMetric && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.unitMetric}
-                </Body>
-              )}
+              <FormikError name="unitMetric" />
             </InputContainer>
           </StyledFieldContainer>
           <SpanTwoColumnsContainer>
@@ -692,39 +670,52 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-methodology-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
-              <SimpleSelect
-                width="100%"
-                addInput="methodology"
-                variant={
-                  errorProjectMessage?.methodology &&
-                  SimpleSelectVariantEnum.error
-                }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={pickLists.methodology}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  projectDetails.methodology
-                    ? [projectDetails.methodology]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    methodology: selectedOptions[0],
-                  }))
-                }
-              />
-              {errorProjectMessage?.methodology && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.methodology}
-                </Body>
+              {pickLists?.methodology ? (
+                <SimpleSelect
+                  width="100%"
+                  addInput="methodology"
+                  variant={
+                    errors.methodology &&
+                    touched.methodology &&
+                    SimpleSelectVariantEnum.error
+                  }
+                  size={SimpleSelectSizeEnum.large}
+                  type={SimpleSelectTypeEnum.basic}
+                  options={pickLists.methodology}
+                  state={SimpleSelectStateEnum.default}
+                  selected={
+                    values.methodology ? [values.methodology] : undefined
+                  }
+                  onChange={selectedOptions =>
+                    setFieldValue('methodology', selectedOptions[0])
+                  }
+                  onBlur={handleBlur}
+                />
+              ) : (
+                <StandardInput
+                  variant={
+                    errors.methodology && touched.methodology
+                      ? InputVariantEnum.error
+                      : undefined
+                  }
+                  size={InputSizeEnum.large}
+                  placeholderText={intl.formatMessage({
+                    id: 'methodology',
+                  })}
+                  state={InputStateEnum.default}
+                  value={values.methodology}
+                  onChange={value => setFieldValue('methodology', value)}
+                  onBlur={handleBlur}
+                  name="methodology"
+                />
               )}
+              <FormikError name="methodology" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
           <StyledFieldContainer>
@@ -736,7 +727,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-validation-body-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -748,22 +740,14 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 options={pickLists.validationBody}
                 state={SimpleSelectStateEnum.default}
                 selected={
-                  projectDetails.validationBody
-                    ? [projectDetails.validationBody]
-                    : undefined
+                  values.validationBody ? [values.validationBody] : undefined
                 }
                 onChange={selectedOptions =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    validationBody: selectedOptions[0],
-                  }))
+                  setFieldValue('validationBody', selectedOptions[0])
                 }
+                onBlur={handleBlur}
               />
-              {errorProjectMessage?.validationBody && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.validationBody}
-                </Body>
-              )}
+              <FormikError name="validationBody" />
             </InputContainer>
           </StyledFieldContainer>
           <StyledFieldContainer>
@@ -775,27 +759,26 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-validation-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
               <DateSelect
-                size="large"
-                dateValue={projectDetails.validationDate}
-                setDateValue={date =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    validationDate: date,
-                  }))
+                variant={
+                  errors.validationDate &&
+                  touched.validationDate &&
+                  DateSelectVariantEnum.error
                 }
+                size="large"
+                dateValue={values.validationDate}
+                setDateValue={value => setFieldValue('validationDate', value)}
+                name="validationDate"
+                onBlur={handleBlur}
               />
-              {errorProjectMessage?.validationDate && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.validationDate}
-                </Body>
-              )}
+              <FormikError name="validationDate" />
             </InputContainer>
           </StyledFieldContainer>
           <HrSpanTwoColumnsContainer>
@@ -811,7 +794,8 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-project-tags-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -823,19 +807,12 @@ const ProjectDetailsForm = ({ projectDetails, setProjectDetails }) => {
                   id: 'project-tags',
                 })}
                 state={InputStateEnum.default}
-                value={projectDetails.projectTags}
-                onChange={value =>
-                  setProjectDetails(prev => ({
-                    ...prev,
-                    projectTags: value,
-                  }))
-                }
+                value={values.projectTags}
+                onChange={value => setFieldValue('projectTags', value)}
+                onBlur={handleBlur}
+                name="projectTags"
               />
-              {errorProjectMessage?.projectTags && (
-                <Body size="Small" color="red">
-                  {errorProjectMessage.projectTags}
-                </Body>
-              )}
+              <FormikError name="projectTags" />
             </StyledFieldContainer>
           </SpanTwoColumnsContainer>
         </BodyContainer>

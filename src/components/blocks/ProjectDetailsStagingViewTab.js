@@ -12,6 +12,7 @@ import {
   CoBenefitsDetails,
   RelatedProjectsDetails,
 } from '.';
+import theme from '../../theme';
 
 const ProjectDetailsStagingViewTab = ({ entry }) => {
   const [tabValue, setTabValue] = useState(0);
@@ -23,13 +24,13 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
   const getOriginalColorForKey = (entryProp, action) => {
     if (entryProp) {
       if (action === 'DELETE') {
-        return '#f5222d';
+        return theme.colors.default.status.error.primary;
       }
       if (action === 'INSERT') {
-        return '#52C41A';
+        return theme.colors.default.status.ok.primary;
       }
     }
-    return '#000000';
+    return theme.colors.default.onSurface;
   };
 
   const estimationTabIndexAdjustment = _.remove(
@@ -114,7 +115,7 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
       </TabPanel>
       {!_.isEmpty(entry?.issuances) &&
         _.map(entry.issuances, issuance => (
-          <TabPanel noHeight value={tabValue} index={1}>
+          <TabPanel key={issuance.id} noHeight value={tabValue} index={1}>
             <ProjectIssuanceDetails
               stagingData={issuance}
               changeColor={getOriginalColorForKey}
@@ -124,6 +125,7 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
       {!_.isEmpty(entry?.projectLocations) &&
         _.map(entry.projectLocations, locations => (
           <TabPanel
+            key={locations.id}
             noHeight
             value={tabValue}
             index={_.isEmpty(entry?.issuances) ? 1 : 2}>
@@ -136,6 +138,7 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
       {!_.isEmpty(entry?.estimations) &&
         _.map(entry.estimations, estimate => (
           <TabPanel
+            key={estimate.id}
             noHeight
             value={tabValue}
             index={
@@ -153,6 +156,7 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
       {!_.isEmpty(entry?.labels) &&
         _.map(entry.labels, labelValue => (
           <TabPanel
+            key={labelValue.id}
             noHeight
             value={tabValue}
             index={
@@ -169,6 +173,7 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
       {!_.isEmpty(entry?.projectRatings) &&
         _.map(entry.projectRatings, rating => (
           <TabPanel
+            key={rating.id}
             noHeight
             value={tabValue}
             index={
@@ -185,6 +190,7 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
       {!_.isEmpty(entry?.coBenefits) &&
         _.map(entry.coBenefits, coBenefit => (
           <TabPanel
+            key={coBenefit.id}
             noHeight
             value={tabValue}
             index={
@@ -201,6 +207,7 @@ const ProjectDetailsStagingViewTab = ({ entry }) => {
       {!_.isEmpty(entry?.relatedProjects) &&
         _.map(entry.relatedProjects, project => (
           <TabPanel
+            key={project.id}
             noHeight
             value={tabValue}
             index={

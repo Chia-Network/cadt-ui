@@ -8,14 +8,14 @@ import {
   Modal,
   Body,
 } from '../../components';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
 import { CreateOrgForm } from '../forms';
 import { modalTypeEnum } from '.';
 import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
 import { OrganizationIcon } from '../icons';
+import { getHomeOrg } from '../../store/view/organization.view';
 
 const Container = styled('div')`
   display: flex;
@@ -33,7 +33,7 @@ const NavContainer = styled('div')`
   width: 16rem;
   min-width: 16rem;
   height: 100%;
-  background-color: #3b8ee0;
+  background-color: ${props => props.theme.colors.default.primary};
 `;
 
 const MenuItem = styled(Link)`
@@ -41,7 +41,8 @@ const MenuItem = styled(Link)`
   ${props =>
     !props.selected && !props.disabled && `:hover {background: #40a9ff;}`};
   padding: 0.5625rem 0rem 0.75rem 4.25rem;
-  ${props => (props.disabled ? 'color: #BFBFBF;' : 'color: white;')}
+  ${props =>
+    props.disabled ? 'color: #BFBFBF; pointer-events: none;' : 'color: white;'}
   font-family: ${props => props.theme.typography.primary.bold};
   cursor: pointer;
   display: block;
@@ -66,36 +67,36 @@ const StyledTitleContainer = styled('div')`
 `;
 
 const LeftNav = withTheme(({ children }) => {
-  const history = useHistory();
+  const location = useLocation();
   const [confirmCreateOrgIsVisible, setConfirmCreateOrgIsVisible] =
     useState(false);
   const [createOrgIsVisible, setCreateOrgIsVisible] = useState(false);
   const intl = useIntl();
   const { readOnlyMode } = useSelector(state => state.app);
+  const { isGovernance } = useSelector(state => state.climateWarehouse);
   const dispatch = useDispatch();
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = getMyOrgUid(organizations);
-  const myOrgIsNotCreated = myOrgUid === 'none';
-  const myOrgIsCreatedButNotSubscribed =
-    !myOrgIsNotCreated && organizations && !organizations[myOrgUid].subscribed;
+  const [myOrgUid, isMyOrgPending] = useSelector(store => getHomeOrg(store));
+
+  const myOrgIsNotCreated = !myOrgUid;
 
   useEffect(() => {
     let intervalId;
-    if (!createOrgIsVisible && myOrgIsCreatedButNotSubscribed) {
+    if (!createOrgIsVisible && isMyOrgPending) {
       intervalId = setInterval(
         () => dispatch(getOrganizationData()),
         30 * 1000,
       );
     }
     return () => clearTimeout(intervalId);
-  }, [myOrgIsNotCreated, myOrgIsCreatedButNotSubscribed, createOrgIsVisible]);
+  }, [myOrgIsNotCreated, isMyOrgPending, createOrgIsVisible]);
 
-  const isUnitsPage = history.location.pathname.includes('/units');
-  const isProjectsPage = history.location.pathname.includes('/projects');
-  const isAuditPage = history.location.pathname.includes('/audit');
-  const isMyRegistryPage = history.location.search.includes('myRegistry=true');
-  const isOrganizationPage =
-    history.location.pathname.includes('/organization');
+  const isUnitsPage = location.pathname.includes('/units');
+  const isProjectsPage = location.pathname.includes('/projects');
+  const isAuditPage = location.pathname.includes('/audit');
+  const isMyRegistryPage = location.search.includes('myRegistry=true');
+  const isOrganizationPage = location.pathname.includes('/organization');
+  const isConflictsPage = location.pathname.includes('/conflicts');
+  const isGovernancePage = location.pathname.includes('/governance');
 
   return (
     <Container>
@@ -116,6 +117,9 @@ const LeftNav = withTheme(({ children }) => {
         <MenuItem selected={isAuditPage} to="/audit">
           <FormattedMessage id="audit" />
         </MenuItem>
+        <MenuItem selected={isConflictsPage} to="/conflicts">
+          <FormattedMessage id="conflicts" />
+        </MenuItem>
 
         {!readOnlyMode && (
           <>
@@ -125,17 +129,19 @@ const LeftNav = withTheme(({ children }) => {
                 <FormattedMessage id="registry" />
               </ButtonText>
             </StyledTitleContainer>
-            {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (
+            {!myOrgIsNotCreated && !isMyOrgPending && (
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
-                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}>
+                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
+                >
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   selected={isUnitsPage && isMyRegistryPage}
-                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}>
+                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
+                >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>
@@ -145,45 +151,49 @@ const LeftNav = withTheme(({ children }) => {
                 <MenuItem
                   to={window.location}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled>
+                  disabled
+                >
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   to={window.location}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled>
+                  disabled
+                >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>
             )}
 
             <StyledTitleContainer>
-              {myOrgIsCreatedButNotSubscribed && (
-                <CircularProgress size={20} thickness={5} />
-              )}
-              {!myOrgIsCreatedButNotSubscribed && (
-                <OrganizationIcon height={20} width={20} />
-              )}
+              {isMyOrgPending && <CircularProgress size={20} thickness={5} />}
+              {!isMyOrgPending && <OrganizationIcon height={20} width={20} />}
               <ButtonText>
                 <FormattedMessage id="organization" />
               </ButtonText>
             </StyledTitleContainer>
-            {!myOrgIsNotCreated && !myOrgIsCreatedButNotSubscribed && (
+            {!myOrgIsNotCreated && !isMyOrgPending && (
               <MenuItem selected={isOrganizationPage} to="/organization">
                 <FormattedMessage id="my-organization" />
+              </MenuItem>
+            )}
+            {!myOrgIsNotCreated && !isMyOrgPending && isGovernance && (
+              <MenuItem selected={isGovernancePage} to="/governance">
+                <FormattedMessage id="governance" />
               </MenuItem>
             )}
             {myOrgIsNotCreated && (
               <MenuItem
                 selected={createOrgIsVisible}
                 to={window.location}
-                onClick={() => setCreateOrgIsVisible(true)}>
+                onClick={() => setCreateOrgIsVisible(true)}
+              >
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
-            {myOrgIsCreatedButNotSubscribed && (
-              <MenuItem to={window.location}>
+            {isMyOrgPending && (
+              <MenuItem to={window.location} disabled>
                 <FormattedMessage id="creating-organization" />
               </MenuItem>
             )}

@@ -15,19 +15,22 @@ export const actions = keyMirror(
   'SET_LOCALE',
   'CONNECTION_CHECK',
   'SET_NOTIFICATION',
-  'COMMIT',
   'PENDING_ERROR',
   'SET_READ_ONLY',
   'SIGN_USER_IN',
   'SIGN_USER_OUT',
-  'SET_VALIDATION',
-  'SET_FORM',
   'REFRESH_APP',
+  'LOCK_APP',
 );
 
 export const refreshApp = render => ({
   type: actions.REFRESH_APP,
   payload: render,
+});
+
+export const lockApp = isLocked => ({
+  type: actions.LOCK_APP,
+  payload: isLocked,
 });
 
 export const setReadOnly = isReadOnly => ({
@@ -57,27 +60,12 @@ export const setGlobalErrorMessage = message => ({
   payload: message,
 });
 
-export const setValidateForm = bool => ({
-  type: actions.SET_VALIDATION,
-  payload: bool,
-});
-
-export const setForm = formType => ({
-  type: actions.SET_FORM,
-  payload: formType,
-});
-
 export const clearGlobalErrorMessage = {
   type: actions.CLEAR_GLOBAL_ERROR_MESSAGE,
 };
 
 export const setConnectionCheck = bool => ({
   type: actions.CONNECTION_CHECK,
-  payload: bool,
-});
-
-export const setCommit = bool => ({
-  type: actions.COMMIT,
   payload: bool,
 });
 

@@ -45,7 +45,7 @@ const StyledSelect = styled('div')`
   color: #262626;
   box-sizing: border-box;
   border: 0.0625rem solid #d9d9d9;
-  background: #ffffff;
+  background: ${props => props.theme.colors.default.onButton};
   z-index: 5;
   user-select: none;
   align-items: center;
@@ -81,13 +81,13 @@ const StyledSelect = styled('div')`
       return `border: 1px solid #40A9FF;`;
     } else if (props.state === SelectStateEnum.focused) {
       return `
-        border: 1px solid #3B8EE0;
+        border: 1px solid ${props.theme.colors.default.primary};
         box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
       `;
     } else if (props.state === SelectStateEnum.disabled) {
       return css`
         background: #f5f5f5;
-        color: #000000;
+        color: ${props.theme.colors.default.onSurface};
         cursor: default;
       `;
     }
@@ -115,7 +115,7 @@ const StyledBasicMenu = styled(ScrollContainer)`
   position: absolute;
   padding: 0.25rem 0rem 0.25rem 0rem;
   top: ${props => (props.top ? props.top + 10 + 'px' : '10px')};
-  background: #ffffff;
+  background: ${props => props.theme.colors.default.onButton};
   box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
     0px 6px 16px rgba(0, 0, 0, 0.08), 0px 3px 6px -4px rgba(0, 0, 0, 0.12);
   border-radius: 0.125rem;
@@ -141,7 +141,7 @@ const StyledBasicMenuItem = styled('div')`
   ${props => {
     if (props.isSelected) {
       return `
-        background-color: #E6F7FF;
+        background-color: ${props.theme.colors.default.status.info.secondary};
         font-style: normal;
         font-weight: 600;
       `;
@@ -513,7 +513,7 @@ const Select = withTheme(
         {/* Menu for Basic and Multiple type */}
         {menuIsVisible && type !== SelectTypeEnum.search && (
           <StyledBasicMenu size={size} top={menuTopPosition}>
-            {optionsList.map(option => {
+            {optionsList.map((option, index) => {
               const isSelected =
                 selectedOptions != null &&
                 selectedOptions.length > 0 &&
@@ -523,7 +523,7 @@ const Select = withTheme(
 
               return (
                 <StyledBasicMenuItem
-                  key={option.value}
+                  key={index}
                   isSelected={isSelected}
                   onClick={() =>
                     toggleOptionSelection({

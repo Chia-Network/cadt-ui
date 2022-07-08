@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { getMyOrgUid } from '../../utils/getMyOrgUid';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import QRCode from 'qrcode.react';
-import { useDispatch } from 'react-redux';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { validateUrl } from '../../utils/urlUtils';
 import {
@@ -14,8 +13,6 @@ import {
   PrimaryButton,
   SubscriptionModal,
 } from '../../components';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
 
 const StyledOrganizationContainer = styled('div')`
   padding: 30px 63px;
@@ -64,23 +61,27 @@ const StyledCopyIconContainer = styled('div')`
 
 const Organization = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
-  const { organizations } = useSelector(store => store.climateWarehouse);
-  const myOrgUid = organizations && getMyOrgUid(organizations);
-  const myOrganzation = organizations && organizations[myOrgUid];
+  const { myOrgUid, organizations } = useSelector(
+    store => store.climateWarehouse,
+  );
+
+  if (!organizations || !myOrgUid) {
+    return null;
+  }
+
+  const myOrganization = organizations && organizations[myOrgUid];
+
+  const isLogoPngType = myOrganization?.icon?.includes('data:image/png;base64');
+  const isLogoSvgType = myOrganization?.icon?.includes('<svg');
+  const isLogoUrlType = myOrganization?.icon
+    ? validateUrl(myOrganization.icon)
+    : false;
+
   const createMarkup = icon => {
     return { __html: icon };
   };
-
-  useEffect(() => {
-    dispatch(getOrganizationData());
-  }, []);
-
-  if (!organizations || myOrgUid === 'none') {
-    return null;
-  }
 
   return (
     <StyledOrganizationContainer>
@@ -94,13 +95,13 @@ const Organization = () => {
             <FormattedMessage id="organization-name" />
           </H4>
           <Body size="Big">
-            {myOrganzation.name}
+            {myOrganization.name}
             <StyledCopyIconContainer>
               <CopyIcon
                 height={18}
                 width={18}
                 onClick={() => {
-                  navigator.clipboard.writeText(myOrganzation.name);
+                  navigator.clipboard.writeText(myOrganization.name);
                 }}
               />
             </StyledCopyIconContainer>
@@ -130,13 +131,13 @@ const Organization = () => {
             <FormattedMessage id="public-address" />
           </H4>
           <Body size="Big">
-            {myOrganzation.xchAddress}
+            {myOrganization.xchAddress}
             <StyledCopyIconContainer>
               <CopyIcon
                 height={18}
                 width={18}
                 onClick={() => {
-                  navigator.clipboard.writeText(myOrganzation.xchAddress);
+                  navigator.clipboard.writeText(myOrganization.xchAddress);
                 }}
               />
             </StyledCopyIconContainer>
@@ -147,7 +148,7 @@ const Organization = () => {
           <H4>
             <FormattedMessage id="address-qr-code" />
           </H4>
-          <QRCode value={myOrganzation.xchAddress} />
+          <QRCode value={myOrganization.xchAddress} />
         </StyledItemContainer>
 
         <StyledItemContainer>
@@ -169,13 +170,16 @@ const Organization = () => {
       )}
 
       <StyledLogoContainer>
-        {validateUrl(myOrganzation.icon) && (
-          <img src={myOrganzation.icon} width={100} height={100} />
-        )}
-        {!validateUrl(myOrganzation.icon) && (
+        {isLogoSvgType && (
           <StyledSvgContainer
-            dangerouslySetInnerHTML={createMarkup(myOrganzation.icon)}
+            dangerouslySetInnerHTML={createMarkup(myOrganization.icon)}
           />
+        )}
+        {isLogoUrlType && (
+          <img src={myOrganization.icon} width={100} height={100} />
+        )}
+        {isLogoPngType && (
+          <img src={myOrganization.icon} width={100} height={100} />
         )}
       </StyledLogoContainer>
     </StyledOrganizationContainer>

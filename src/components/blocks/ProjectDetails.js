@@ -43,6 +43,22 @@ const ProjectDetails = ({ data, stagingData, changeColor }) => {
                 changeColor,
               )}
           </StyledItem>
+          <SpanTwoColumnsContainer>
+            <StyledItem>
+              <Body size="Bold" width="100%">
+                <FormattedMessage id="project-description" />
+              </Body>
+              {data &&
+                detailsViewData('data', data, 'description', changeColor)}
+              {stagingData &&
+                detailsViewData(
+                  'stagingData',
+                  stagingData,
+                  'description',
+                  changeColor,
+                )}
+            </StyledItem>
+          </SpanTwoColumnsContainer>
           <StyledItem>
             <Body size="Bold" width="100%">
               <FormattedMessage id="project-developer" />

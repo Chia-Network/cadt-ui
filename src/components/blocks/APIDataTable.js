@@ -5,19 +5,23 @@ import styled, { withTheme, css } from 'styled-components';
 
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import { APIPagination, DetailedViewModal } from '.';
+import {
+  APIPagination,
+  ProjectDetailedViewModal,
+  UnitsDetailViewModal,
+} from '.';
 import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { EditUnitsForm, EditProjectsForm, SplitUnitForm } from '..';
+import { UnitEditModal, ProjectEditModal } from '..';
 import {
   deleteProject,
   deleteUnit,
 } from '../../store/actions/climateWarehouseActions';
-import { setForm, setValidateForm } from '../../store/actions/app';
+import { UnitSplitFormModal } from '../forms/UnitSplitFormModal';
 
 const Table = styled('table')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   width: 100%;
   display: table;
   border-spacing: 0;
@@ -64,17 +68,16 @@ const Th = styled('th')`
 
 const Tr = styled('tr')`
   color: ${props => props.theme.colors[props.selectedTheme].onSurface};
-  background-color: ${props =>
-    props.theme.hexToRgba(
-      props.theme.colors[props.selectedTheme].secondary,
-      0.3,
-    )};
+  background-color: ${props => props.theme.colors.default.onButton};
 
-  ${props =>
-    props.index % 2 !== 0 &&
-    `
-  background-color: white;
-  `}
+  :hover {
+    cursor: zoom-in;
+    background-color: ${props =>
+      props.theme.hexToRgba(
+        props.theme.colors[props.selectedTheme].secondary,
+        0.3,
+      )};
+  }
 `;
 
 const Td = styled('td')`
@@ -93,7 +96,7 @@ const Td = styled('td')`
     css`
       position: sticky;
       right: 0px;
-      background-color: white;
+      background-color: ${props.theme.colors.default.onButton};
     `}
 
   ${props =>
@@ -103,9 +106,9 @@ const Td = styled('td')`
   `}
 `;
 
-const StyledPaginationContainer = styled('div')`
+export const StyledPaginationContainer = styled('div')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,11 +136,14 @@ const StyledScalableContainer = styled('div')`
 
 const APIDataTable = withTheme(
   ({ headings, data, actions, modalSizeAndPosition, actionsAreDisplayed }) => {
-    const [getRecord, setRecord] = useState(null);
+    const [unitOrProjectFullRecord, setUnitOrProjectFullRecord] =
+      useState(null);
     const [editRecord, setEditRecord] = useState(null);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
     const { theme } = useSelector(state => state.app);
-    const climateWarehouseStore = useSelector(state => state.climateWarehouse);
+    const { organizations, projects, units } = useSelector(
+      state => state.climateWarehouse,
+    );
     const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
     const ref = React.useRef(null);
     const [height, setHeight] = React.useState(0);
@@ -150,6 +156,25 @@ const APIDataTable = withTheme(
         windowSize.height - ref.current.getBoundingClientRect().top - 20,
       );
     }, [ref.current, windowSize.height]);
+
+    const getFullRecord = partialRecord => {
+      let fullRecord = null;
+
+      if (actions === 'Projects') {
+        fullRecord = projects.filter(
+          project =>
+            project.warehouseProjectId === partialRecord.warehouseProjectId,
+        )[0];
+      }
+
+      if (actions === 'Units') {
+        fullRecord = units.filter(
+          unit => unit.warehouseUnitId === partialRecord.warehouseUnitId,
+        )[0];
+      }
+
+      setUnitOrProjectFullRecord(fullRecord);
+    };
 
     return (
       <>
@@ -188,7 +213,7 @@ const APIDataTable = withTheme(
                   <Tr index={index} selectedTheme={theme} key={index}>
                     {Object.keys(record).map((key, index) => (
                       <Td
-                        onClick={() => setRecord(record)}
+                        onClick={() => getFullRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
                         key={index}
@@ -201,18 +226,9 @@ const APIDataTable = withTheme(
                             ].toString()}`
                           }
                         >
-                          {key === 'orgUid' &&
-                            climateWarehouseStore.organizations[
-                              record[key]
-                            ] && (
-                              <img
-                                src={
-                                  climateWarehouseStore.organizations[
-                                    record[key]
-                                  ].icon
-                                }
-                              />
-                            )}
+                          {key === 'orgUid' && organizations[record[key]] && (
+                            <img src={organizations[record[key]].icon} />
+                          )}
 
                           {key !== 'orgUid' &&
                             record[key] &&
@@ -278,8 +294,6 @@ const APIDataTable = withTheme(
                               }),
                               action: () => {
                                 setEditRecord(record);
-                                dispatch(setForm('project'));
-                                dispatch(setValidateForm(false));
                               },
                             },
                             {
@@ -304,39 +318,41 @@ const APIDataTable = withTheme(
             </StyledPaginationContainer>
           </StyledScalableContainer>
         </StyledRefContainer>
-        {getRecord && (actions === 'Units' || actions === 'Projects') && (
-          <DetailedViewModal
-            onClose={() => setRecord(null)}
+        {unitOrProjectFullRecord && actions === 'Projects' && (
+          <ProjectDetailedViewModal
+            onClose={() => setUnitOrProjectFullRecord(null)}
             modalSizeAndPosition={modalSizeAndPosition}
-            type={actions.toLowerCase()}
-            record={getRecord}
+            projectObject={unitOrProjectFullRecord}
+          />
+        )}
+        {unitOrProjectFullRecord && actions === 'Units' && (
+          <UnitsDetailViewModal
+            onClose={() => setUnitOrProjectFullRecord(null)}
+            modalSizeAndPosition={modalSizeAndPosition}
+            unitObject={unitOrProjectFullRecord}
           />
         )}
         {actions === 'Units' && editRecord && (
-          <EditUnitsForm
+          <UnitEditModal
             onClose={() => {
               setEditRecord(null);
-              dispatch(setForm(null));
-              dispatch(setValidateForm(false));
             }}
             record={editRecord}
             modalSizeAndPosition={modalSizeAndPosition}
           />
         )}
         {actions === 'Projects' && editRecord && (
-          <EditProjectsForm
+          <ProjectEditModal
             onClose={() => {
               setEditRecord(null);
-              dispatch(setForm(null));
-              dispatch(setValidateForm(false));
             }}
             record={editRecord}
             modalSizeAndPosition={modalSizeAndPosition}
           />
         )}
         {unitToBeSplit && (
-          <SplitUnitForm
-            organizations={climateWarehouseStore.organizations}
+          <UnitSplitFormModal
+            organizations={organizations}
             onClose={() => setUnitToBeSplit(null)}
             record={unitToBeSplit}
           />

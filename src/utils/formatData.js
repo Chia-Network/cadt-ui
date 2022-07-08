@@ -1,8 +1,4 @@
 import _ from 'lodash';
-import dayjs from 'dayjs';
-
-export const formatDate = date =>
-  dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
 export const formatAPIData = unformattedData => {
   const result = {};
@@ -11,9 +7,12 @@ export const formatAPIData = unformattedData => {
     // format arrays
     if (Array.isArray(unformattedData[key])) {
       // take out fields invalidated by the API
-      let cleanArray = unformattedData[key].map(item =>
-        _.omit(item, ['warehouseProjectId', 'orgUid']),
-      );
+      let cleanArray =
+        key === 'labels'
+          ? unformattedData[key].map(item => _.omit(item, ['orgUid']))
+          : unformattedData[key].map(item =>
+              _.omit(item, ['warehouseProjectId', 'orgUid']),
+            );
       // reformat fields data type
       cleanArray = cleanArray.map(subObject => {
         const transformedToString = [
@@ -49,15 +48,7 @@ export const formatAPIData = unformattedData => {
     }
 
     // if none of the above and key name is valid for API requests
-    else if (
-      ![
-        'orgUid',
-        'unitBlockStart',
-        'unitBlockEnd',
-        'unitCount',
-        'issuanceId',
-      ].includes(key)
-    ) {
+    else if (!['orgUid', 'issuanceId'].includes(key)) {
       result[key] = unformattedData[key];
     }
   });
@@ -78,12 +69,14 @@ export const cleanObjectFromEmptyFieldsOrArrays = dataToSend => {
     }
 
     // clean empty strings within arrays
+    // clean tempId used for Ui key iteration purpose
     if (Array.isArray(dataToSend[el])) {
       dataToSend[el].forEach(individualArrayItem =>
         Object.keys(individualArrayItem).forEach(key => {
           if (
             individualArrayItem[key] === '' ||
-            individualArrayItem[key] === null
+            individualArrayItem[key] === null ||
+            key === 'tempId'
           ) {
             delete individualArrayItem[key];
           }

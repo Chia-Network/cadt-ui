@@ -1,133 +1,113 @@
-import React, { useRef } from 'react';
-import { LocalizationProvider } from '@mui/lab';
+import React from 'react';
 import DateAdapter from '@mui/lab/AdapterDayjs';
-import DatePicker from '@mui/lab/DatePicker';
-import styled, { css } from 'styled-components';
-import { formatDate } from '../../utils/formatData';
-import { DateVariantEnum } from '.';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import styled, { css, withTheme } from 'styled-components';
+import TextField from '@mui/material/TextField';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-const InputContainer = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #d9d9d9;
-  width: 160px;
-  border-radius: 2px;
-  background-color: white;
-  :hover {
-    border: 1px solid #40a9ff;
-    ${props =>
-      props.disabled &&
-      css`
-        border: 1px solid #d9d9d9;
-      `};
+import { getIsDateValid, formatDate, getISODate } from '../../utils/dateUtils';
+
+const DateSelectVariantEnum = {
+  error: 'error',
+};
+
+const StyledTextField = styled(TextField)`
+  width: 100%;
+
+  // set height depending on props
+  .MuiOutlinedInput-root,
+  .MuiInputBase-root {
+    height: ${props => {
+      if (props.size === 'large') return '40px';
+      if (props.size === 'small') return '24px';
+      return '32px';
+    }};
+    border-radius: 0.125rem;
+    border: 0.0625rem solid #d9d9d9;
   }
-  :focus-within,
-  ::selection {
-    outline: none;
-    box-shadow: ${props =>
-      props.disabled ? 'none' : '0px 0px 4px rgba(24, 144, 255, 0.5)'};
-    border: ${props =>
-      props.disabled ? '1px solid #d9d9d9;' : '1px solid #40a9ff'};
-  }
-
-  ${props =>
-    (props.size === 'large' &&
-      css`
-        height: 40px;
-      `) ||
-    (props.size === 'default' &&
-      css`
-        height: 32px;
-      `) ||
-    (props.size === 'small' &&
-      css`
-        height: 24px;
-      `)};
-
-  ${props =>
-    props.disabled &&
-    css`
-      background-color: #f5f5f5;
-    `};
 
   ${props => {
-    if (props.variant === DateVariantEnum.error) {
+    if (props.disabled) {
+      // disabled background color
       return css`
-        border: 1px solid #f5222d;
-        :focus-within {
+        .MuiOutlinedInput-root,
+        .MuiInputBase-root {
+          background-color: #f5f5f5;
+        }
+      `;
+    } else if (props.dateselectvariant === DateSelectVariantEnum.error) {
+      // error variant borders
+      return css`
+        .MuiOutlinedInput-root,
+        .MuiInputBase-root {
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
+        }
+
+        .MuiOutlinedInput-root:focus-within,
+        .MuiInputBase-root:focus-within {
           border: 1px solid #f5222d;
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         }
-        :hover {
-          border: 1px solid #f5222d;
+      `;
+    } else {
+      // default borders
+      return css`
+        .MuiOutlinedInput-root:hover,
+        .MuiInputBase-root:hover {
+          border: 1px solid #40a9ff;
+        }
+
+        .MuiOutlinedInput-root:focus-within,
+        .MuiInputBase-root:focus-within {
+          border: 1px solid #1890ff;
+          box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
         }
       `;
     }
   }}
-`;
 
-const Input = styled('input')`
-  height: 22px;
-  width: 96px;
-  border: none;
-  :focus-visible {
-    outline: none;
+  // remove inner mui border
+  .MuiOutlinedInput-notchedOutline {
+    border: 0;
   }
-  ${props =>
-    props.disabled &&
-    css`
-      background-color: #f5f5f5;
-      color: #000000;
-      cursor: default;
-    `};
 `;
 
-const DateSelect = ({
-  size = 'default',
-  disabled,
-  dateValue,
-  setDateValue,
-  variant,
-}) => {
-  const divElement = useRef(null);
-
-  return (
+const DateSelect = withTheme(
+  ({
+    size = 'default',
+    disabled,
+    dateValue,
+    setDateValue,
+    variant,
+    onBlur,
+    name,
+  }) => (
     <LocalizationProvider dateAdapter={DateAdapter}>
-      <DatePicker
-        disableOpenPicker={disabled}
-        label="Select time"
-        value={dateValue}
-        onChange={newValue => {
-          if (newValue) {
-            setDateValue(formatDate(newValue));
-          } else {
-            setDateValue(null);
-          }
-        }}
+      <DesktopDatePicker
+        inputFormat="YYYY-MM-DD"
+        mask="____-__-__"
+        RegExp="/^d{4}-d{2}-d{2}$/"
+        views={['year', 'month', 'day']}
+        value={getIsDateValid(dateValue) ? getISODate(dateValue) : null}
+        onChange={newValue =>
+          getIsDateValid(newValue)
+            ? setDateValue(formatDate(newValue))
+            : setDateValue(newValue)
+        }
         disabled={disabled}
-        renderInput={({ inputRef, inputProps, InputProps }) => {
-          return (
-            <InputContainer
-              size={size}
-              ref={divElement}
-              disabled={disabled}
-              tabIndex={0}
-              variant={variant}
-            >
-              <Input
-                ref={inputRef}
-                {...inputProps}
-                placeholder="Select Date"
-                disabled={disabled}
-              />
-              {InputProps?.endAdornment}
-            </InputContainer>
-          );
-        }}
+        renderInput={params => (
+          <StyledTextField
+            {...params}
+            disabled={disabled}
+            size={size}
+            dateselectvariant={variant}
+            name={name}
+            onBlur={onBlur}
+          />
+        )}
       />
     </LocalizationProvider>
-  );
-};
+  ),
+);
 
-export { DateSelect };
+export { DateSelect, DateSelectVariantEnum };

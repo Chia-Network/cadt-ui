@@ -1,13 +1,14 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import { Body } from '..';
 import {
   StyledDetailedViewTab,
   StyledDetailedViewTabItem,
   StyledItem,
 } from '.';
-
 import { detailsViewData } from '../../utils/functionUtils';
+import { DetailedViewIssuanceUnitTable } from './DetailedViewIssuanceUnitTable';
 
 const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
   return (
@@ -73,6 +74,7 @@ const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
                 changeColor,
               )}
           </StyledItem>
+          {data && <DetailedViewIssuanceUnitTable issuance={data} />}
         </StyledDetailedViewTab>
       </div>
     </StyledDetailedViewTabItem>
