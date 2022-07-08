@@ -13,7 +13,7 @@ import {
   BodyContainer,
   Body,
   DateSelect,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   DescriptionIcon,
   ToolTipContainer,
   LabelContainer,
@@ -373,7 +373,7 @@ const ProjectDetailsForm = () => {
                 variant={
                   errors.projectStatusDate &&
                   touched.projectStatusDate &&
-                  DateVariantEnum.error
+                  DateSelectVariantEnum.error
                 }
                 size="large"
                 dateValue={values.projectStatusDate}
@@ -770,7 +770,7 @@ const ProjectDetailsForm = () => {
                 variant={
                   errors.validationDate &&
                   touched.validationDate &&
-                  DateVariantEnum.error
+                  DateSelectVariantEnum.error
                 }
                 size="large"
                 dateValue={values.validationDate}

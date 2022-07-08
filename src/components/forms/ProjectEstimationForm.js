@@ -18,7 +18,7 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   FormikError,
 } from '..';
 
@@ -58,7 +58,7 @@ const ProjectEstimationForm = ({
                 variant={
                   errors?.creditingPeriodStart &&
                   touched?.creditingPeriodStart &&
-                  DateVariantEnum.error
+                  DateSelectVariantEnum.error
                 }
                 size="large"
                 dateValue={value.creditingPeriodStart}
@@ -91,7 +91,7 @@ const ProjectEstimationForm = ({
                 variant={
                   errors?.creditingPeriodEnd &&
                   touched?.creditingPeriodEnd &&
-                  DateVariantEnum.error
+                  DateSelectVariantEnum.error
                 }
                 size="large"
                 dateValue={value.creditingPeriodEnd}
