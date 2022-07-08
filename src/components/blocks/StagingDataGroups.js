@@ -17,6 +17,7 @@ import {
   modalTypeEnum,
   APIStagingPagination,
   UnitEditStagingModal,
+  UnitSplitEditStagingFormModal,
 } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 
@@ -478,11 +479,20 @@ const StagingDataGroups = withTheme(
               />
             )}
           {changeGroupToBeEdited &&
-            changeGroupToBeEdited.table.toLowerCase() === 'units' && (
+            changeGroupToBeEdited.table.toLowerCase() === 'units' &&
+            changeGroupToBeEdited.diff.change.length === 1 && (
               <UnitEditStagingModal
                 changeGroup={changeGroupToBeEdited}
                 onClose={() => setChangeGroupToBeEdited(null)}
                 modalSizeAndPosition={modalSizeAndPosition}
+              />
+            )}
+          {changeGroupToBeEdited &&
+            changeGroupToBeEdited.table.toLowerCase() === 'units' &&
+            changeGroupToBeEdited.diff.change.length === 2 && (
+              <UnitSplitEditStagingFormModal
+                changeGroup={changeGroupToBeEdited}
+                onClose={() => setChangeGroupToBeEdited(null)}
               />
             )}
         </div>

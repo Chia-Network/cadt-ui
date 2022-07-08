@@ -20,3 +20,4 @@ export * from './UnitSplitFormModal';
 export * from './SubscriptionModal';
 export * from './FormikRepeater';
 export * from './UnitEditStagingModal';
+export * from './UnitSplitEditStagingFormModal';
