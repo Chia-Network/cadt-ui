@@ -33,11 +33,7 @@ import {
   ProjectDetailedViewModal,
 } from '../../components';
 
-import {
-  setPendingError,
-  setValidateForm,
-  setForm,
-} from '../../store/actions/app';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   deleteStagingData,
@@ -354,15 +350,19 @@ const Projects = () => {
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
-                icon={<AddIcon width="16.13" height="16.88" fill={theme.colors.default.onButton} />}
+                icon={
+                  <AddIcon
+                    width="16.13"
+                    height="16.88"
+                    fill={theme.colors.default.onButton}
+                  />
+                }
                 onClick={() => {
                   if (
                     _.isEmpty(stagingData.units.pending) &&
                     _.isEmpty(stagingData.projects.pending)
                   ) {
                     setCreateFormIsDisplayed(true);
-                    dispatch(setForm('project'));
-                    dispatch(setValidateForm(false));
                   } else {
                     dispatch(setPendingError(true));
                   }
@@ -447,8 +447,6 @@ const Projects = () => {
                             _.isEmpty(stagingData.projects.pending)
                           ) {
                             setCreateFormIsDisplayed(true);
-                            dispatch(setForm('project'));
-                            dispatch(setValidateForm(false));
                           } else {
                             dispatch(setPendingError(true));
                           }
@@ -540,8 +538,6 @@ const Projects = () => {
         <ProjectCreateModal
           onClose={() => {
             setCreateFormIsDisplayed(false);
-            dispatch(setForm(null));
-            dispatch(setValidateForm(false));
           }}
           modalSizeAndPosition={modalSizeAndPosition}
         />
