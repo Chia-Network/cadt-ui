@@ -12,7 +12,6 @@ import {
   H4,
   PrimaryButton,
   SubscriptionModal,
-  SelectCreatable,
 } from '../../components';
 
 const StyledOrganizationContainer = styled('div')`
@@ -107,13 +106,6 @@ const Organization = () => {
               />
             </StyledCopyIconContainer>
           </Body>
-        </StyledItemContainer>
-
-        <StyledItemContainer>
-          <SelectCreatable
-            options={['Micky', 'Mouse', 'In the house']}
-            onChange={val => console.log(val)}
-          />
         </StyledItemContainer>
 
         <StyledItemContainer>
