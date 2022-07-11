@@ -1,0 +1,60 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - deploy-to-s3-automation
+
+jobs:
+  build-and-deploy:
+    name: Build Linux Installer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '16.x'
+
+      - name: npm install
+        run: |
+          node --version
+          npm install
+
+      - name: Vault Login
+        uses: Chia-Network/actions/vault/login@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          role_name: github
+
+      - name: Get ephemeral aws credentials
+        uses: Chia-Network/actions/vault/aws-sts@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          vault_token: ${{ env.VAULT_TOKEN }}
+          backend_name: aws-carbon
+          role_name: terraform
+
+  deploy:
+    name: Deploy to S3
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - name: Vault Login
+        uses: Chia-Network/actions/vault/login@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          role_name: github
+
+      - name: Get ephemeral aws credentials
+        uses: Chia-Network/actions/vault/aws-sts@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          vault_token: ${{ env.VAULT_TOKEN }}
+          backend_name: aws-carbon
+          role_name: cw-s3
+
+
