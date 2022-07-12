@@ -12,6 +12,7 @@ import {
   H4,
   PrimaryButton,
   SubscriptionModal,
+  OrgEditFormModal,
 } from '../../components';
 
 const StyledOrganizationContainer = styled('div')`
@@ -63,6 +64,7 @@ const Organization = () => {
   const intl = useIntl();
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { myOrgUid, organizations } = useSelector(
     store => store.climateWarehouse,
   );
@@ -152,6 +154,14 @@ const Organization = () => {
         </StyledItemContainer>
 
         <StyledItemContainer>
+          <PrimaryButton
+            label={intl.formatMessage({ id: 'edit-organization' })}
+            size="large"
+            onClick={() => setIsEditModalOpen(true)}
+          />
+        </StyledItemContainer>
+
+        <StyledItemContainer>
           <H4>
             <FormattedMessage id="organization-subscriptions" />
           </H4>
@@ -167,6 +177,9 @@ const Organization = () => {
         <SubscriptionModal
           onClose={() => setIsSubscriptionsModalDisplayed(false)}
         />
+      )}
+      {isEditModalOpen && (
+        <OrgEditFormModal onClose={() => setIsEditModalOpen(false)} />
       )}
 
       <StyledLogoContainer>

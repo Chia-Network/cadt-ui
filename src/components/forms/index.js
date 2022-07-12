@@ -18,3 +18,4 @@ export * from './CreateOrgForm';
 export * from './UnitSplitFormModal';
 export * from './SubscriptionModal';
 export * from './FormikRepeater';
+export * from './OrgEditFormModal';
