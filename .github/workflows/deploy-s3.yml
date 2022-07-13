@@ -7,9 +7,13 @@ on:
 
 jobs:
   build-and-deploy:
-    name: Build Linux Installer
+    name: Build Climate Warehouse App and Upload to S3
     runs-on: ubuntu-latest
     steps:
+      - name: Install AWS CLI
+        run: |
+            sudo apt-get install -y awscli
+
       - name: Checkout Code
         uses: actions/checkout@v2
 
@@ -18,10 +22,11 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: npm install
+      - name: npm install and build
         run: |
           node --version
           npm install
+          npm run build
 
       - name: Vault Login
         uses: Chia-Network/actions/vault/login@main
@@ -35,26 +40,8 @@ jobs:
           vault_url: ${{ secrets.VAULT_URL }}
           vault_token: ${{ env.VAULT_TOKEN }}
           backend_name: aws-carbon
-          role_name: terraform
+          role_name: cw-s3-deploy
 
-  deploy:
-    name: Deploy to S3
-    runs-on: ubuntu-latest
-    needs:
-      - build
-    steps:
-      - name: Vault Login
-        uses: Chia-Network/actions/vault/login@main
-        with:
-          vault_url: ${{ secrets.VAULT_URL }}
-          role_name: github
-
-      - name: Get ephemeral aws credentials
-        uses: Chia-Network/actions/vault/aws-sts@main
-        with:
-          vault_url: ${{ secrets.VAULT_URL }}
-          vault_token: ${{ env.VAULT_TOKEN }}
-          backend_name: aws-carbon
-          role_name: cw-s3
-
-
+      - name: Upload build folder to S3
+        run: |
+          aws s3 sync --dryrun --delete --no-progress ./build/* s3://climatewarehouse/
