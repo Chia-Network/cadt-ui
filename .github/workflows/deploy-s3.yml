@@ -5,6 +5,10 @@ on:
     branches:
       - deploy-to-s3-automation
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-deploy:
     name: Build Climate Warehouse App and Upload to S3
