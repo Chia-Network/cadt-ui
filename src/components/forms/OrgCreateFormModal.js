@@ -14,8 +14,7 @@ import {
   StyledFieldContainer,
   StyledLabelContainer,
   ModalFormContainerStyle,
-  UploadIcon,
-  SuccessIcon,
+  UploadPngInput,
   TabPanel,
   Tab,
   Tabs,
@@ -24,23 +23,6 @@ import {
   importHomeOrg,
   postNewOrg,
 } from '../../store/actions/climateWarehouseActions';
-
-const StyledInput = styled('input')`
-  visibility: hidden;
-  width: 0px;
-  height: 0px;
-`;
-
-const StyledDiv = styled('div')`
-  border: 1px dotted #d9d9d9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 3.5rem;
-  & label {
-    cursor: pointer;
-  }
-`;
 
 const StyledTabsHeader = styled('div')`
   width: 100%;
@@ -51,7 +33,7 @@ const StyledTabsHeader = styled('div')`
   padding-bottom: 30px;
 `;
 
-const CreateOrgForm = ({ onClose }) => {
+const OrgCreateFormModal = ({ onClose }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
   const { notification } = useSelector(state => state.app);
@@ -63,7 +45,6 @@ const CreateOrgForm = ({ onClose }) => {
   const [tabValue, setTabValue] = useState(0);
 
   const nameIsValid = formData?.name?.length > 0;
-  const pngIsValid = formData?.png != null;
   const isOrgUidValid = importedOrgUid?.length > 4;
 
   const handleTabChange = (event, newValue) => {
@@ -76,19 +57,6 @@ const CreateOrgForm = ({ onClose }) => {
     }
     if (tabValue === 0 && nameIsValid) {
       dispatch(postNewOrg(formData));
-    }
-  };
-
-  const onPngInputChange = e => {
-    if (e.target.value && e.target.value !== '') {
-      const fileNameIsValid = /\.png$/.test(e.target.value);
-      if (fileNameIsValid) {
-        const file = e.target.files[0];
-        setFormData(prevState => ({
-          ...prevState,
-          png: file,
-        }));
-      }
     }
   };
 
@@ -152,18 +120,15 @@ const CreateOrgForm = ({ onClose }) => {
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
-                  <StyledDiv>
-                    <label htmlFor="png">
-                      {!pngIsValid && <UploadIcon width="20" height="20" />}
-                      {pngIsValid && <SuccessIcon width="20" height="20" />}
-                    </label>
-                    <StyledInput
-                      type="file"
-                      id="png"
-                      accept=".png"
-                      onChange={onPngInputChange}
-                    />
-                  </StyledDiv>
+                  <UploadPngInput
+                    onChange={file =>
+                      setFormData(prevState => ({
+                        ...prevState,
+                        png: file,
+                      }))
+                    }
+                    icon={formData.png}
+                  />
                 </InputContainer>
               </StyledFieldContainer>
             </TabPanel>
@@ -198,4 +163,4 @@ const CreateOrgForm = ({ onClose }) => {
   );
 };
 
-export { CreateOrgForm };
+export { OrgCreateFormModal };

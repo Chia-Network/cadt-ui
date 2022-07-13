@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 
 import {
   Modal,
@@ -14,56 +13,25 @@ import {
   StyledFieldContainer,
   StyledLabelContainer,
   ModalFormContainerStyle,
-  UploadIcon,
-  SuccessIcon,
+  UploadPngInput,
 } from '..';
 import { postNewOrg } from '../../store/actions/climateWarehouseActions';
 
-const StyledInput = styled('input')`
-  visibility: hidden;
-  width: 0px;
-  height: 0px;
-`;
-
-const StyledDiv = styled('div')`
-  border: 1px dotted #d9d9d9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 3.5rem;
-  & label {
-    cursor: pointer;
-  }
-`;
-
-const OrgEditFormModal = ({ onClose }) => {
+const OrgEditFormModal = ({ onClose, name, icon }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
   const { notification } = useSelector(state => state.app);
   const [formData, setFormData] = useState({
-    name: '',
-    png: null,
+    name,
+    png: icon,
   });
 
   const nameIsValid = formData?.name?.length > 0;
   const pngIsValid = formData?.png != null;
 
   const onSubmit = async () => {
-    if (nameIsValid) {
+    if (nameIsValid && pngIsValid) {
       dispatch(postNewOrg(formData));
-    }
-  };
-
-  const onPngInputChange = e => {
-    if (e.target.value && e.target.value !== '') {
-      const fileNameIsValid = /\.png$/.test(e.target.value);
-      if (fileNameIsValid) {
-        const file = e.target.files[0];
-        setFormData(prevState => ({
-          ...prevState,
-          png: file,
-        }));
-      }
     }
   };
 
@@ -120,18 +88,15 @@ const OrgEditFormModal = ({ onClose }) => {
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                <StyledDiv>
-                  <label htmlFor="png">
-                    {!pngIsValid && <UploadIcon width="20" height="20" />}
-                    {pngIsValid && <SuccessIcon width="20" height="20" />}
-                  </label>
-                  <StyledInput
-                    type="file"
-                    id="png"
-                    accept=".png"
-                    onChange={onPngInputChange}
-                  />
-                </StyledDiv>
+                <UploadPngInput
+                  onChange={file =>
+                    setFormData(prevState => ({
+                      ...prevState,
+                      png: file,
+                    }))
+                  }
+                  icon={formData.png}
+                />
               </InputContainer>
             </StyledFieldContainer>
           </ModalFormContainerStyle>
