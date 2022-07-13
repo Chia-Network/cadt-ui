@@ -8,7 +8,9 @@ on:
 jobs:
   build-and-deploy:
     name: Build Climate Warehouse App and Upload to S3
-    runs-on: ubuntu-latest
+    runs-on: [k8s-public]
+    container:
+      image: ubuntu:latest
     steps:
       - name: Install AWS CLI
         run: |
