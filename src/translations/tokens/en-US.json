@@ -412,5 +412,7 @@
   "governance-picklists-update-failed": "The governance pick lists could not be updated.",
   "governance-orglist-updated-successfully": "The governance organization list was updated successfully.",
   "governance-orglist-update-failed": "The governance organization list could not be updated.",
-  "edit-organization": "Edit Organization"
+  "edit-organization": "Edit Organization",
+  "organization-edited": "Your organization was successfully edited.",
+  "organization-not-edited": "Your organization could not be edited."
 }
