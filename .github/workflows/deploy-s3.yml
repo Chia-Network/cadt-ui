@@ -49,4 +49,4 @@ jobs:
 
       - name: Upload build folder to S3
         run: |
-          aws s3 sync --dryrun --delete --no-progress ./build/* s3://climatewarehouse/
+          aws s3 sync --dryrun --delete --no-progress ./build/ s3://climatewarehouse/
