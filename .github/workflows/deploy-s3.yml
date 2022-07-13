@@ -15,6 +15,8 @@ jobs:
       - name: Install AWS CLI
         run: |
             apt-get update
+            export DEBIAN_FRONTEND=noninteractive
+            export TZ=Etc/UTC
             apt-get install -y awscli
 
       - name: Checkout Code
