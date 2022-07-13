@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   Modal,
@@ -15,10 +15,8 @@ import {
   ModalFormContainerStyle,
   UploadPngInput,
 } from '..';
-import { postNewOrg } from '../../store/actions/climateWarehouseActions';
 
 const OrgEditFormModal = ({ onClose, name, icon }) => {
-  const dispatch = useDispatch();
   const intl = useIntl();
   const { notification } = useSelector(state => state.app);
   const [formData, setFormData] = useState({
@@ -31,7 +29,8 @@ const OrgEditFormModal = ({ onClose, name, icon }) => {
 
   const onSubmit = async () => {
     if (nameIsValid && pngIsValid) {
-      dispatch(postNewOrg(formData));
+      // dispatch(postNewOrg(formData));
+      console.log('dispatch edit organization');
     }
   };
 

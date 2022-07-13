@@ -51,7 +51,7 @@ const OrganizationLogo = ({ logo }) => {
   if (logoType === LogoTypeEnum.pngObject)
     return <StyledImg src={URL.createObjectURL(logo)} />;
 
-  if (logoType === LogoTypeEnum.pngBase64 && logoType === LogoTypeEnum.url)
+  if (logoType === LogoTypeEnum.pngBase64 || logoType === LogoTypeEnum.url)
     return <StyledImg src={logo} />;
 
   if (logoType === LogoTypeEnum.svg)
