@@ -91,27 +91,17 @@ const UnitIssuanceForm = () => {
     return [];
   }, [issuances, selectedWarehouseProjectId]);
 
-  const updateIssuanceById = id => {
-    const issuanceIsAvailable = issuances?.some(
-      issuance => issuance?.id === id,
-    );
-    const selectedIssuance =
-      issuanceIsAvailable &&
-      issuances.filter(issuance => issuance?.id === id)[0];
+  const updateIssuanceById = useCallback(
+    id => {
+      const issuanceIsAvailable = issuances?.some(
+        issuance => issuance?.id === id,
+      );
+      const selectedIssuance =
+        issuanceIsAvailable &&
+        issuances.filter(issuance => issuance?.id === id)[0];
 
-    if (selectedIssuance) {
-      const {
-        endDate,
-        startDate,
-        verificationApproach,
-        verificationBody,
-        verificationReportDate,
-        id,
-        warehouseProjectId,
-      } = selectedIssuance;
-      setValues({
-        ...values,
-        issuance: {
+      if (selectedIssuance) {
+        const {
           endDate,
           startDate,
           verificationApproach,
@@ -119,10 +109,23 @@ const UnitIssuanceForm = () => {
           verificationReportDate,
           id,
           warehouseProjectId,
-        },
-      });
-    }
-  };
+        } = selectedIssuance;
+        setValues({
+          ...values,
+          issuance: {
+            endDate,
+            startDate,
+            verificationApproach,
+            verificationBody,
+            verificationReportDate,
+            id,
+            warehouseProjectId,
+          },
+        });
+      }
+    },
+    [issuances, values, setValues],
+  );
 
   return (
     <ModalFormContainerStyle>

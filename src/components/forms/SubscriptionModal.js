@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -81,7 +81,7 @@ const SubscriptionModal = ({ onClose }) => {
     return false;
   }, [orgUid]);
 
-  const submitCustomOrganization = () => {
+  const submitCustomOrganization = useCallback(() => {
     if (!isValidationOn) {
       setIsValidation(true);
     }
@@ -100,7 +100,20 @@ const SubscriptionModal = ({ onClose }) => {
     } else {
       setTimeout(() => setIsValidation(false), 3000);
     }
-  };
+  }, [
+    isValidationOn,
+    setIsValidation,
+    isOrgUidValid,
+    isIpValid,
+    isPortValid,
+    isUserAlreadySubscribedToOrgUid,
+    orgUid,
+    setOrgUid,
+    ip,
+    setIp,
+    port,
+    setPort,
+  ]);
 
   return (
     <>
