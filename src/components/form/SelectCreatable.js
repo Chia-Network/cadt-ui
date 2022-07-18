@@ -52,8 +52,30 @@ const StyledCreatableSelect = styled(CreatableSelect)`
   }}
 `;
 
+/* implementation example
+  <SelectCreatable
+    variant={
+      errors.sector &&
+      touched.sector &&
+      SelectCreatableVariantEnum.error
+    }
+    size={SimpleSelectSizeEnum.large}
+    onChange={val => setFieldValue('sector', val)}
+    options={pickLists.projectSector}
+    onBlur={handleBlur}
+  />
+*/
+
 const SelectCreatable = withTheme(
-  ({ variant, options, onChange, onBlur, isMulti, size }) => {
+  ({
+    variant,
+    options,
+    onChange,
+    onBlur,
+    isMulti = false,
+    isCreatable = true,
+    size,
+  }) => {
     const optionsList = useMemo(
       () =>
         options?.map(optionItem => ({
@@ -78,6 +100,7 @@ const SelectCreatable = withTheme(
       <Body>
         <StyledCreatableSelect
           isMulti={isMulti}
+          isCreatable={isCreatable}
           onChange={handleChange}
           options={optionsList}
           variant={variant}
