@@ -47,3 +47,4 @@ export * from './UnitsLabelsDetails';
 export * from './AuditItemModal';
 export * from './CommitModal';
 export * from './DetailedViewIssuanceUnitTable';
+export * from './OrganizationLogo';
