@@ -59,9 +59,9 @@ const UnitSplitEditStagingFormModal = ({ onClose, changeGroup }) => {
     [fullRecord],
   );
 
-  // if unit was successfully split, close modal
+  // if staging unit split was successfully edited, close modal
   const unitWasSuccessfullySplit =
-    notification && notification.id === 'unit-successfully-split';
+    notification && notification.id === 'staging-group-edited';
   useEffect(() => {
     if (unitWasSuccessfullySplit) {
       onClose();
