@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select';
 import styled, { css, withTheme } from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import { Body } from '../typography';
 
@@ -50,7 +51,39 @@ const StyledCreatableSelect = styled(CreatableSelect)`
         }
       `;
     }
-  }}
+  }};
+
+  ${props => {
+    if (props.size === SelectCreatableSizeEnum.large) {
+      return css`
+        div[class*='control'] {
+          height: ${props => (props.isMulti ? 'auto' : '2.5rem')};
+          font-size: 1rem;
+          line-height: 1.5rem;
+        }
+      `;
+    } else if (props.size === SelectCreatableSizeEnum.small) {
+      return css`
+        div[class*='control'] {
+          height: ${props => (props.isMulti ? 'auto' : '1.5rem')};
+          font-size: 0.875rem;
+          line-height: 1.375rem;
+        }
+      `;
+    } else {
+      return css`
+        div[class*='control'] {
+          height: ${props => (props.isMulti ? 'auto' : '2rem')};
+          font-size: 0.875rem;
+          line-height: 1.375rem;
+        }
+      `;
+    }
+  }};
+
+  ::placeholder {
+    color: #8c8c8c;
+  }
 `;
 
 const StyledSelect = styled(Select)`
@@ -86,7 +119,39 @@ const StyledSelect = styled(Select)`
         }
       `;
     }
-  }}
+  }};
+
+  ${props => {
+    if (props.size === SelectCreatableSizeEnum.large) {
+      return css`
+        div[class*='control'] {
+          height: ${props => (props.isMulti ? 'auto' : '2.5rem')};
+          font-size: 1rem;
+          line-height: 1.5rem;
+        }
+      `;
+    } else if (props.size === SelectCreatableSizeEnum.small) {
+      return css`
+        div[class*='control'] {
+          height: ${props => (props.isMulti ? 'auto' : '1.5rem')};
+          font-size: 0.875rem;
+          line-height: 1.375rem;
+        }
+      `;
+    } else {
+      return css`
+        div[class*='control'] {
+          height: ${props => (props.isMulti ? 'auto' : '2rem')};
+          font-size: 0.875rem;
+          line-height: 1.375rem;
+        }
+      `;
+    }
+  }};
+
+  ::placeholder {
+    color: #8c8c8c;
+  }
 `;
 
 /* implementation example
@@ -96,12 +161,12 @@ const StyledSelect = styled(Select)`
       touched.sector &&
       SelectCreatableVariantEnum.error
     }
-    isCreatable={true}
     size={SelectCreatableSizeEnum.large}
     onChange={val => setFieldValue('sector', val)}
     options={pickLists.projectSector}
     selected={values.sector}
     onBlur={handleBlur}
+    isCreatable
   />
 */
 
@@ -114,9 +179,20 @@ const SelectCreatable = withTheme(
     isMulti = false,
     isCreatable = true,
     isClearable = true,
+    placeholder,
     selected,
     size,
   }) => {
+    const intl = useIntl();
+    const placeholderText = useMemo(
+      () =>
+        placeholder ||
+        ` -- ${intl.formatMessage({
+          id: 'select',
+        })} -- `,
+      [placeholder],
+    );
+
     const optionsList = useMemo(
       () =>
         options?.map(optionItem => ({
@@ -158,6 +234,7 @@ const SelectCreatable = withTheme(
             size={size}
             isMulti={isMulti}
             isClearable={isClearable}
+            placeholder={placeholderText}
           />
         )}
         {!isCreatable && (
@@ -172,6 +249,7 @@ const SelectCreatable = withTheme(
             size={size}
             onBlur={onBlur}
             variant={variant}
+            placeholder={placeholderText}
           />
         )}
       </Body>
