@@ -323,17 +323,15 @@ const StagingDataGroups = withTheme(
                           height={20}
                           onClick={() => setUuidToBeDeleted(changeGroup.uuid)}
                         />
-                        {/* edit only inserts or non split updates */}
-                        {changeGroup.action !== 'DELETE' &&
-                          changeGroup.diff.change.length === 1 && (
-                            <EditIcon
-                              width={20}
-                              height={20}
-                              onClick={() =>
-                                setChangeGroupToBeEdited(changeGroup)
-                              }
-                            />
-                          )}
+                        {changeGroup.action !== 'DELETE' && (
+                          <EditIcon
+                            width={20}
+                            height={20}
+                            onClick={() =>
+                              setChangeGroupToBeEdited(changeGroup)
+                            }
+                          />
+                        )}
                       </StyledDeleteGroupIcon>
                     )}
                     {retryStagingData && (

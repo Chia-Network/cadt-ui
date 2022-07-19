@@ -68,10 +68,23 @@ const UnitSplitEditStagingFormModal = ({ onClose, changeGroup }) => {
     }
   }, [notification]);
 
+  const submitForm = useCallback(
+    values => {
+      if (
+        getIsUnitSumValid(values[0].unitCount, values[1].unitCount) &&
+        !apiResponseIsPending
+      ) {
+        dispatch(editStagingData(changeGroup.uuid, values));
+      }
+    },
+    [getIsUnitSumValid, changeGroup, apiResponseIsPending],
+  );
+
   return (
     <Formik
       validationSchema={splitUnitValidationSchema}
       initialValues={changeGroup.diff.change.map(unitItem => ({
+        ...unitItem,
         unitCount: unitItem?.unitCount ?? 0,
         unitOwner: unitItem?.unitOwner ?? '',
         countryJurisdictionOfOwner: unitItem?.countryJurisdictionOfOwner ?? '',
@@ -80,44 +93,7 @@ const UnitSplitEditStagingFormModal = ({ onClose, changeGroup }) => {
         unitBlockStart: unitItem?.unitBlockStart ?? '',
         unitBlockEnd: unitItem?.unitBlockEnd ?? '',
       }))}
-      onSubmit={values => {
-        if (
-          getIsUnitSumValid(values[0].unitCount, values[1].unitCount) &&
-          !apiResponseIsPending
-        ) {
-          const dataToBeSubmitted = {
-            warehouseUnitId: fullRecord.warehouseUnitId,
-            records: values.map(splittedUnit => {
-              const newUnit = {};
-              newUnit.unitCount = splittedUnit.unitCount;
-              newUnit.unitBlockStart = splittedUnit.unitBlockStart;
-              newUnit.unitBlockEnd = splittedUnit.unitBlockEnd;
-
-              if (splittedUnit.unitOwner !== '') {
-                newUnit.unitOwner = splittedUnit.unitOwner;
-              }
-
-              if (splittedUnit.countryJurisdictionOfOwner !== '') {
-                newUnit.countryJurisdictionOfOwner =
-                  splittedUnit.countryJurisdictionOfOwner;
-              }
-
-              if (splittedUnit.inCountryJurisdictionOfOwner !== '') {
-                newUnit.inCountryJurisdictionOfOwner =
-                  splittedUnit.inCountryJurisdictionOfOwner;
-              }
-
-              return newUnit;
-            }),
-          };
-
-          console.log('submit split unit data', dataToBeSubmitted);
-          // remove the below if and leave only the code after staging api is fit for split units
-          if (changeGroup.diff.change.length > 3) {
-            dispatch(editStagingData(changeGroup.uuid, dataToBeSubmitted));
-          }
-        }
-      }}
+      onSubmit={submitForm}
     >
       {formik => (
         <Modal
