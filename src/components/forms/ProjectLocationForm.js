@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -30,7 +30,10 @@ import {
 const ProjectLocationForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
-    const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+    const getFieldName = useCallback(
+      fieldName => `${name}[${index}].${fieldName}`,
+      [index, name],
+    );
     const { pickLists } = useSelector(store => store.climateWarehouse);
 
     return (

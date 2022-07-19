@@ -1,6 +1,12 @@
 /* es-lint disable */
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -149,9 +155,12 @@ const Projects = () => {
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
+  const handleTabChange = useCallback(
+    (event, newValue) => {
+      setTabValue(newValue);
+    },
+    [setTabValue],
+  );
 
   useEffect(() => {
     const projectId = searchParams.get('projectId');
@@ -212,17 +221,20 @@ const Projects = () => {
   const pageIsMyRegistryPage =
     searchParams.has('myRegistry') && searchParams.get('myRegistry') === 'true';
 
-  const onOrganizationSelect = selectedOption => {
-    const orgUid = selectedOption[0].orgUid;
-    setSelectedOrganization(orgUid);
-    navigate(
-      `${location.pathname}?${getUpdatedUrl(location.search, {
-        param: 'orgUid',
-        value: orgUid,
-      })}`,
-      { replace: true },
-    );
-  };
+  const onOrganizationSelect = useCallback(
+    selectedOption => {
+      const orgUid = selectedOption[0].orgUid;
+      setSelectedOrganization(orgUid);
+      navigate(
+        `${location.pathname}?${getUpdatedUrl(location.search, {
+          param: 'orgUid',
+          value: orgUid,
+        })}`,
+        { replace: true },
+      );
+    },
+    [location, setSelectedOrganization],
+  );
 
   const onSearch = useMemo(
     () =>

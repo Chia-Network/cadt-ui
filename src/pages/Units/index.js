@@ -1,5 +1,11 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -145,9 +151,12 @@ const Units = () => {
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
+  const handleTabChange = useCallback(
+    (event, newValue) => {
+      setTabValue(newValue);
+    },
+    [setTabValue],
+  );
 
   useEffect(() => {
     const unitId = searchParams.get('unitId');
@@ -157,7 +166,7 @@ const Units = () => {
     return () => dispatch(clearUnitData());
   }, [searchParams.get('unitId')]);
 
-  const closeProjectOpenedInDetailedView = () => {
+  const closeProjectOpenedInDetailedView = useCallback(() => {
     dispatch(clearUnitData());
     navigate(
       `${location.pathname}?${getUpdatedUrl(location.search, {
@@ -166,7 +175,7 @@ const Units = () => {
       })}`,
       { replace: true },
     );
-  };
+  }, [location]);
 
   useEffect(() => {
     const switchTabBySuccessfulRequest = {
@@ -303,21 +312,24 @@ const Units = () => {
     );
   }, [units]);
 
+  const onOrganizationSelect = useCallback(
+    selectedOption => {
+      const orgUid = selectedOption[0].orgUid;
+      setSelectedOrganization(orgUid);
+      navigate(
+        `${location.pathname}?${getUpdatedUrl(location.search, {
+          param: 'orgUid',
+          value: orgUid,
+        })}`,
+        { replace: true },
+      );
+    },
+    [location, setSelectedOrganization],
+  );
+
   if (!filteredColumnsTableData) {
     return null;
   }
-
-  const onOrganizationSelect = selectedOption => {
-    const orgUid = selectedOption[0].orgUid;
-    setSelectedOrganization(orgUid);
-    navigate(
-      `${location.pathname}?${getUpdatedUrl(location.search, {
-        param: 'orgUid',
-        value: orgUid,
-      })}`,
-      { replace: true },
-    );
-  };
 
   return (
     <>

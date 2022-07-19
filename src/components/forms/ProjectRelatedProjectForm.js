@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { FormikError } from '../form/FormikError';
 
@@ -23,7 +23,10 @@ import {
 const ProjectRelatedProjectForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
-    const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+    const getFieldName = useCallback(
+      fieldName => `${name}[${index}].${fieldName}`,
+      [name, index],
+    );
 
     return (
       <ModalFormContainerStyle>
