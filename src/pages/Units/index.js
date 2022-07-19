@@ -19,11 +19,7 @@ import {
   getUnitData,
   clearUnitData,
 } from '../../store/actions/climateWarehouseActions';
-import {
-  setPendingError,
-  setForm,
-  setValidateForm,
-} from '../../store/actions/app';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   H3,
@@ -366,8 +362,6 @@ const Units = () => {
                     _.isEmpty(stagingData.projects.pending)
                   ) {
                     setCreate(true);
-                    dispatch(setForm('unit'));
-                    dispatch(setValidateForm(false));
                   } else {
                     dispatch(setPendingError(true));
                   }
@@ -453,8 +447,6 @@ const Units = () => {
                             _.isEmpty(stagingData.projects.pending)
                           ) {
                             setCreate(true);
-                            dispatch(setForm('unit'));
-                            dispatch(setValidateForm(false));
                           } else {
                             dispatch(setPendingError(true));
                           }
@@ -486,8 +478,6 @@ const Units = () => {
               <UnitCreateModal
                 onClose={() => {
                   setCreate(false);
-                  dispatch(setForm(null));
-                  dispatch(setValidateForm(false));
                 }}
                 modalSizeAndPosition={modalSizeAndPosition}
               />

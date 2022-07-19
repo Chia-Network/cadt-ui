@@ -122,31 +122,31 @@ const ProjectDetailedViewModal = ({
           </TabPanel>
           {!_.isEmpty(projectObject?.issuances) &&
             _.map(projectObject.issuances, issuance => (
-              <TabPanel noHeight value={tabValue} index={1}>
+              <TabPanel key={issuance.id} noHeight value={tabValue} index={1}>
                 <ProjectIssuanceDetails data={issuance} />
               </TabPanel>
             ))}
           {!_.isEmpty(projectObject?.projectLocations) &&
             _.map(projectObject.projectLocations, locations => (
               <TabPanel
+                key={locations.id}
                 noHeight
                 value={tabValue}
-                index={_.isEmpty(projectObject?.issuances) ? 1 : 2}
-              >
+                index={_.isEmpty(projectObject?.issuances) ? 1 : 2}>
                 <ProjectLocationsDetails data={locations} />
               </TabPanel>
             ))}
           {!_.isEmpty(projectObject?.estimations) &&
             _.map(projectObject.estimations, estimate => (
               <TabPanel
+                key={estimate.id}
                 noHeight
                 value={tabValue}
                 index={
                   !_.isEmpty(estimationTabIndexAdjustment)
                     ? 3 - estimationTabIndexAdjustment.length
                     : 3
-                }
-              >
+                }>
                 <EstimationsDetails data={estimate} />
               </TabPanel>
             ))}
@@ -154,56 +154,56 @@ const ProjectDetailedViewModal = ({
           {!_.isEmpty(projectObject?.labels) &&
             _.map(projectObject.labels, labelValue => (
               <TabPanel
+                key={labelValue.id}
                 noHeight
                 value={tabValue}
                 index={
                   !_.isEmpty(labelsTabIndexAdjustment)
                     ? 4 - labelsTabIndexAdjustment.length
                     : 4
-                }
-              >
+                }>
                 <ProjectLabelsDetails data={labelValue} />
               </TabPanel>
             ))}
           {!_.isEmpty(projectObject?.projectRatings) &&
             _.map(projectObject.projectRatings, rating => (
               <TabPanel
+                key={rating.id}
                 noHeight
                 value={tabValue}
                 index={
                   !_.isEmpty(ratingsTabIndexAdjustment)
                     ? 5 - ratingsTabIndexAdjustment.length
                     : 5
-                }
-              >
+                }>
                 <ProjectRatingsDetails data={rating} />
               </TabPanel>
             ))}
           {!_.isEmpty(projectObject?.coBenefits) &&
             _.map(projectObject.coBenefits, coBenefit => (
               <TabPanel
+                key={coBenefit.id}
                 noHeight
                 value={tabValue}
                 index={
                   !_.isEmpty(coBenefitsTabIndexAdjustment)
                     ? 6 - coBenefitsTabIndexAdjustment.length
                     : 6
-                }
-              >
+                }>
                 <CoBenefitsDetails data={coBenefit} />
               </TabPanel>
             ))}
           {!_.isEmpty(projectObject?.relatedProjects) &&
             _.map(projectObject.relatedProjects, project => (
               <TabPanel
+                key={project.id}
                 noHeight
                 value={tabValue}
                 index={
                   !_.isEmpty(relatedProjectsTabIndexAdjustment)
                     ? 7 - relatedProjectsTabIndexAdjustment.length
                     : 7
-                }
-              >
+                }>
                 <RelatedProjectsDetails data={project} />
               </TabPanel>
             ))}

@@ -396,5 +396,8 @@
   "governance-orglist-update-failed": "ガバナンス組織リストを更新できませんでした。",
   "edit-staged-project": "段階的なプロジェクトを編集する",
   "staging-group-could-not-be-edited": "ステージンググループを編集できませんでした。",
-  "staging-group-edited": "ステージンググループは正常に編集されました。"
+  "staging-group-edited": "ステージンググループは正常に編集されました。",
+  "edit-organization": "組織の編集",
+  "organization-edited": "組織は正常に編集されました。",
+  "organization-not-edited": "組織を編集できませんでした。"
 }

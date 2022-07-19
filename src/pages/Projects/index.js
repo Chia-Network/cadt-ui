@@ -33,11 +33,7 @@ import {
   ProjectDetailedViewModal,
 } from '../../components';
 
-import {
-  setPendingError,
-  setValidateForm,
-  setForm,
-} from '../../store/actions/app';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   deleteStagingData,
@@ -367,8 +363,6 @@ const Projects = () => {
                     _.isEmpty(stagingData.projects.pending)
                   ) {
                     setCreateFormIsDisplayed(true);
-                    dispatch(setForm('project'));
-                    dispatch(setValidateForm(false));
                   } else {
                     dispatch(setPendingError(true));
                   }
@@ -453,8 +447,6 @@ const Projects = () => {
                             _.isEmpty(stagingData.projects.pending)
                           ) {
                             setCreateFormIsDisplayed(true);
-                            dispatch(setForm('project'));
-                            dispatch(setValidateForm(false));
                           } else {
                             dispatch(setPendingError(true));
                           }
@@ -546,8 +538,6 @@ const Projects = () => {
         <ProjectCreateModal
           onClose={() => {
             setCreateFormIsDisplayed(false);
-            dispatch(setForm(null));
-            dispatch(setValidateForm(false));
           }}
           modalSizeAndPosition={modalSizeAndPosition}
         />

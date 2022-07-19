@@ -18,7 +18,7 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   FormikError,
 } from '..';
 
@@ -53,7 +53,7 @@ const ProjectIssuanceForm = memo(
                   variant={
                     errors?.startDate &&
                     touched?.startDate &&
-                    DateVariantEnum.error
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.startDate}
@@ -85,7 +85,9 @@ const ProjectIssuanceForm = memo(
               <InputContainer>
                 <DateSelect
                   variant={
-                    errors?.endDate && touched?.endDate && DateVariantEnum.error
+                    errors?.endDate &&
+                    touched?.endDate &&
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.endDate}
@@ -160,7 +162,7 @@ const ProjectIssuanceForm = memo(
                   variant={
                     errors?.verificationReportDate &&
                     touched?.verificationReportDate &&
-                    DateVariantEnum.error
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.verificationReportDate}
