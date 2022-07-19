@@ -3,7 +3,7 @@ name: Deploy to S3
 on:
   push:
     branches:
-      - deploy-to-s3-automation
+      - main
 
 permissions:
   id-token: write
