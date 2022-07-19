@@ -394,5 +394,8 @@
   "governance-picklists-update-failed": "ガバナンス選択リストを更新できませんでした。",
   "governance-orglist-updated-successfully": "ガバナンス組織リストが正常に更新されました。",
   "governance-orglist-update-failed": "ガバナンス組織リストを更新できませんでした。",
-  "select": "選択する"
+  "select": "選択する",
+  "edit-organization": "組織の編集",
+  "organization-edited": "組織は正常に編集されました。",
+  "organization-not-edited": "組織を編集できませんでした。"
 }

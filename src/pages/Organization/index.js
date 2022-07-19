@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import QRCode from 'qrcode.react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { validateUrl } from '../../utils/urlUtils';
 import {
   Body,
   CopyIcon,
@@ -12,6 +11,8 @@ import {
   H4,
   PrimaryButton,
   SubscriptionModal,
+  OrgEditFormModal,
+  OrganizationLogo,
 } from '../../components';
 
 const StyledOrganizationContainer = styled('div')`
@@ -34,18 +35,6 @@ const StyledItemContainer = styled('div')`
   }
 `;
 
-const StyledSvgContainer = styled('div')`
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & svg {
-    width: 100px;
-    height: 100px;
-  }
-`;
-
 const StyledCopyIconContainer = styled('div')`
   display: inline-block;
   cursor: pointer;
@@ -63,6 +52,7 @@ const Organization = () => {
   const intl = useIntl();
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { myOrgUid, organizations } = useSelector(
     store => store.climateWarehouse,
   );
@@ -72,16 +62,6 @@ const Organization = () => {
   }
 
   const myOrganization = organizations && organizations[myOrgUid];
-
-  const isLogoPngType = myOrganization?.icon?.includes('data:image/png;base64');
-  const isLogoSvgType = myOrganization?.icon?.includes('<svg');
-  const isLogoUrlType = myOrganization?.icon
-    ? validateUrl(myOrganization.icon)
-    : false;
-
-  const createMarkup = icon => {
-    return { __html: icon };
-  };
 
   return (
     <StyledOrganizationContainer>
@@ -152,6 +132,14 @@ const Organization = () => {
         </StyledItemContainer>
 
         <StyledItemContainer>
+          <PrimaryButton
+            label={intl.formatMessage({ id: 'edit-organization' })}
+            size="large"
+            onClick={() => setIsEditModalOpen(true)}
+          />
+        </StyledItemContainer>
+
+        <StyledItemContainer>
           <H4>
             <FormattedMessage id="organization-subscriptions" />
           </H4>
@@ -168,18 +156,17 @@ const Organization = () => {
           onClose={() => setIsSubscriptionsModalDisplayed(false)}
         />
       )}
+      {isEditModalOpen && (
+        <OrgEditFormModal
+          onClose={() => setIsEditModalOpen(false)}
+          name={myOrganization?.name}
+          icon={myOrganization?.icon}
+        />
+      )}
 
       <StyledLogoContainer>
-        {isLogoSvgType && (
-          <StyledSvgContainer
-            dangerouslySetInnerHTML={createMarkup(myOrganization.icon)}
-          />
-        )}
-        {isLogoUrlType && (
-          <img src={myOrganization.icon} width={100} height={100} />
-        )}
-        {isLogoPngType && (
-          <img src={myOrganization.icon} width={100} height={100} />
+        {myOrganization?.icon && (
+          <OrganizationLogo logo={myOrganization.icon} />
         )}
       </StyledLogoContainer>
     </StyledOrganizationContainer>
