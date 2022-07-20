@@ -702,6 +702,56 @@ export const commitStagingData = (data, comment) => {
   };
 };
 
+export const editStagingData = (uuid, data) => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging`;
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uuid, data }),
+      };
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'staging-group-edited',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'staging-group-could-not-be-edited',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'staging-group-could-not-be-edited',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const updateGovernancePickLists = data => {
   return async dispatch => {
     try {
@@ -1250,6 +1300,55 @@ export const postNewOrg = data => {
   };
 };
 
+export const editExistingOrg = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const formData = new FormData();
+      formData.append('file', data.png);
+      formData.append('name', data.name);
+
+      const url = `${constants.API_HOST}/organizations/edit`;
+      const payload = {
+        method: 'PUT',
+        body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-edited',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'organization-not-edited'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'organization-not-edited',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const importHomeOrg = orgUid => {
   return async dispatch => {
     try {
@@ -1439,10 +1538,7 @@ export const uploadXLSXFile = (file, type) => {
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.error,
-              formatApiErrorResponse(
-                errorResponse,
-                errorResponse.error,
-              ),
+              formatApiErrorResponse(errorResponse, errorResponse.error),
             ),
           );
         }

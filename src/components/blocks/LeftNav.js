@@ -11,7 +11,7 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { CreateOrgForm } from '../forms';
+import { OrgCreateFormModal } from '../forms';
 import { modalTypeEnum } from '.';
 import { getOrganizationData } from '../../store/actions/climateWarehouseActions';
 import { OrganizationIcon } from '../icons';
@@ -202,7 +202,7 @@ const LeftNav = withTheme(({ children }) => {
       </NavContainer>
       {children}
       {createOrgIsVisible && (
-        <CreateOrgForm onClose={() => setCreateOrgIsVisible(false)} />
+        <OrgCreateFormModal onClose={() => setCreateOrgIsVisible(false)} />
       )}
       {myOrgIsNotCreated && confirmCreateOrgIsVisible && (
         <Modal
