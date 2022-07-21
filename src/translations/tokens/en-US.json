@@ -418,5 +418,9 @@
   "staging-group-edited": "The staging group was successfully edited.",
   "edit-organization": "Edit Organization",
   "organization-edited": "Your organization was successfully edited.",
-  "organization-not-edited": "Your organization could not be edited."
+  "organization-not-edited": "Your organization could not be edited.",
+  "spendable-balance": "Spendable Balance",
+  "wallet-sync-status": "Wallet Sync Status",
+  "syncing": "Syncing...",
+  "synced": "Synced!"
 }

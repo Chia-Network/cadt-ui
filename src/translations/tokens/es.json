@@ -400,5 +400,9 @@
   "staging-group-edited": "El grupo de ensayo se editó correctamente.",
   "edit-organization": "Editar organización",
   "organization-edited": "Su organización fue editada con éxito.",
-  "organization-not-edited": "No se pudo editar su organización."
+  "organization-not-edited": "No se pudo editar su organización.",
+  "spendable-balance": "Saldo disponible",
+  "wallet-sync-status": "Estado de sincronización de billetera",
+  "syncing": "Sincronizando...",
+  "synced": "Está sincronizado!"
 }
