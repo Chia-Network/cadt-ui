@@ -31,6 +31,7 @@ const initialState = {
   isGovernanceCreated: null,
   isGovernanceInitiated: null,
   walletBalance: null,
+  isWalletSynced: false,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -55,6 +56,9 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.SET_WALLET_BALANCE:
       return u({ walletBalance: action.payload }, state);
+
+    case climateWarehouseActions.SET_WALLET_STATUS:
+      return u({ isWalletSynced: action.payload }, state);
 
     case climateWarehouseActions.GET_PICKLISTS:
       return u({ pickLists: action.payload }, state);

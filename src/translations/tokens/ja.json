@@ -400,5 +400,8 @@
   "edit-organization": "組織の編集",
   "organization-edited": "組織は正常に編集されました。",
   "organization-not-edited": "組織を編集できませんでした。",
-  "spendable-balance": "支出可能な残高"
+  "spendable-balance": "支出可能な残高",
+  "wallet-sync-status": "ウォレットの同期ステータス",
+  "syncing": "同期...",
+  "synced": "同期されます!"
 }

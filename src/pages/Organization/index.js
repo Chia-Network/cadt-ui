@@ -53,9 +53,8 @@ const Organization = () => {
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const { myOrgUid, organizations, walletBalance } = useSelector(
-    store => store.climateWarehouse,
-  );
+  const { myOrgUid, organizations, walletBalance, isWalletSynced } =
+    useSelector(store => store.climateWarehouse);
 
   if (!organizations || !myOrgUid) {
     return null;
@@ -109,6 +108,19 @@ const Organization = () => {
             <FormattedMessage id="spendable-balance" />
           </H4>
           <Body size="Big">{walletBalance} xch</Body>
+        </StyledItemContainer>
+
+        <StyledItemContainer>
+          <H4>
+            <FormattedMessage id="wallet-sync-status" />
+          </H4>
+          <Body size="Big">
+            {isWalletSynced ? (
+              <FormattedMessage id="synced" />
+            ) : (
+              <FormattedMessage id="syncing" />
+            )}
+          </Body>
         </StyledItemContainer>
 
         <StyledItemContainer>

@@ -58,6 +58,7 @@ export const actions = keyMirror(
   'GET_IS_GOVERNANCE_CREATED',
   'SET_IS_GOVERNANCE_INITIATED',
   'SET_WALLET_BALANCE',
+  'SET_WALLET_STATUS',
 );
 
 const getClimateWarehouseTable = (
@@ -154,6 +155,11 @@ export const setWalletBalance = balance => ({
   payload: balance,
 });
 
+export const setWalletStatus = isWalletSynced => ({
+  type: actions.SET_WALLET_STATUS,
+  payload: isWalletSynced,
+});
+
 export const getOrganizationData = () => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -178,6 +184,10 @@ export const getOrganizationData = () => {
 
         const spendableBalance = results[myOrgUid]?.balance ?? null;
         dispatch(setWalletBalance(spendableBalance));
+
+        const isWalletSynced =
+          response.headers.get('x-wallet-synced') === 'true';
+        dispatch(setWalletStatus(isWalletSynced));
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
