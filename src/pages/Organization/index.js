@@ -53,7 +53,7 @@ const Organization = () => {
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const { myOrgUid, organizations } = useSelector(
+  const { myOrgUid, organizations, walletBalance } = useSelector(
     store => store.climateWarehouse,
   );
 
@@ -69,7 +69,6 @@ const Organization = () => {
         <H2>
           <FormattedMessage id="organization-information" />
         </H2>
-
         <StyledItemContainer>
           <H4>
             <FormattedMessage id="organization-name" />
@@ -87,7 +86,6 @@ const Organization = () => {
             </StyledCopyIconContainer>
           </Body>
         </StyledItemContainer>
-
         <StyledItemContainer>
           <H4>
             <FormattedMessage id="org-uid" />
@@ -108,6 +106,13 @@ const Organization = () => {
 
         <StyledItemContainer>
           <H4>
+            <FormattedMessage id="spendable-balance" />
+          </H4>
+          <Body size="Big">{walletBalance} xch</Body>
+        </StyledItemContainer>
+
+        <StyledItemContainer>
+          <H4>
             <FormattedMessage id="public-address" />
           </H4>
           <Body size="Big">
@@ -123,14 +128,12 @@ const Organization = () => {
             </StyledCopyIconContainer>
           </Body>
         </StyledItemContainer>
-
         <StyledItemContainer>
           <H4>
             <FormattedMessage id="address-qr-code" />
           </H4>
           <QRCode value={myOrganization.xchAddress} />
         </StyledItemContainer>
-
         <StyledItemContainer>
           <PrimaryButton
             label={intl.formatMessage({ id: 'edit-organization' })}
@@ -138,7 +141,6 @@ const Organization = () => {
             onClick={() => setIsEditModalOpen(true)}
           />
         </StyledItemContainer>
-
         <StyledItemContainer>
           <H4>
             <FormattedMessage id="organization-subscriptions" />

@@ -57,6 +57,7 @@ export const actions = keyMirror(
   'SET_IS_GOVERNANCE',
   'GET_IS_GOVERNANCE_CREATED',
   'SET_IS_GOVERNANCE_INITIATED',
+  'SET_WALLET_BALANCE',
 );
 
 const getClimateWarehouseTable = (
@@ -148,6 +149,11 @@ export const setMyOrgUid = uid => ({
   payload: uid,
 });
 
+export const setWalletBalance = balance => ({
+  type: actions.SET_WALLET_BALANCE,
+  payload: balance,
+});
+
 export const getOrganizationData = () => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -169,6 +175,9 @@ export const getOrganizationData = () => {
 
         const myOrgUid = getMyOrgUid(results);
         dispatch(setMyOrgUid(myOrgUid));
+
+        const spendableBalance = results[myOrgUid]?.balance ?? null;
+        dispatch(setWalletBalance(spendableBalance));
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
