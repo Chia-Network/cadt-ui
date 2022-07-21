@@ -126,7 +126,6 @@ const Organization = () => {
               </>
             ) : (
               <>
-                <FormattedMessage id="synced" />
                 <FormattedMessage id="syncing" />
                 <StyledCopyIconContainer>
                   <WarningIcon height={18} width={18} />
