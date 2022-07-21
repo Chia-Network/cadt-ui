@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -35,7 +35,10 @@ const ProjectLabelForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
     const { pickLists } = useSelector(store => store.climateWarehouse);
-    const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+    const getFieldName = useCallback(
+      fieldName => `${name}[${index}].${fieldName}`,
+      [name, index],
+    );
     const areFieldsDisabled = Boolean(value.id);
 
     return (

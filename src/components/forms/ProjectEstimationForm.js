@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
@@ -32,7 +32,10 @@ const ProjectEstimationForm = ({
   handleBlur,
 }) => {
   const intl = useIntl();
-  const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+  const getFieldName = useCallback(
+    fieldName => `${name}[${index}].${fieldName}`,
+    [name, index],
+  );
 
   return (
     <ModalFormContainerStyle>
