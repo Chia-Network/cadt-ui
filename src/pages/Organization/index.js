@@ -13,6 +13,8 @@ import {
   SubscriptionModal,
   OrgEditFormModal,
   OrganizationLogo,
+  SuccessIcon,
+  WarningIcon,
 } from '../../components';
 
 const StyledOrganizationContainer = styled('div')`
@@ -116,9 +118,20 @@ const Organization = () => {
           </H4>
           <Body size="Big">
             {isWalletSynced ? (
-              <FormattedMessage id="synced" />
+              <>
+                <FormattedMessage id="synced" />
+                <StyledCopyIconContainer>
+                  <SuccessIcon height={18} width={18} />
+                </StyledCopyIconContainer>
+              </>
             ) : (
-              <FormattedMessage id="syncing" />
+              <>
+                <FormattedMessage id="synced" />
+                <FormattedMessage id="syncing" />
+                <StyledCopyIconContainer>
+                  <WarningIcon height={18} width={18} />
+                </StyledCopyIconContainer>
+              </>
             )}
           </Body>
         </StyledItemContainer>
