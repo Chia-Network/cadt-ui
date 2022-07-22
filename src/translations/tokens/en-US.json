@@ -104,7 +104,7 @@
   "units-unit-status-reason-description": "Enter the appropriate reason for the status. If no reason is needed, simply enter 'N/A'.",
   "units-unit-registry-link-description": "Enter the URL which links to the registry which hosts the units.",
   "units-corresponding-adjustment-declaration-description": "Select whether the units have a corresponding adjustment capability or not.",
-  "units-corresponding-adjustment-status-description": "Select the corresponding status of the corresponding adjustment that has been performed.",
+  "units-corresponding-adjustment-status-description": "If this is a first time transfer, select the corresponding status of the corresponding adjustment that has been performed.",
   "issuances-warehouse-project-id-description": "Unique identifier for projects within the Climate Warehouse.",
   "issuances-issuance-id-description": "Unique identifier for a specific issuance of units.",
   "issuances-start-date-description": "Enter the date for which units began to be issued under a single issuance.",
