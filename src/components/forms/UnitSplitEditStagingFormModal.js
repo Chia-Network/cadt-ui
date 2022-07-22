@@ -113,7 +113,12 @@ const UnitSplitEditStagingFormModal = ({ onClose, changeGroup }) => {
                 <FormattedMessage id="total-units-available" />:{' '}
                 {fullRecord.unitCount}
               </Body>
+              <Body size="Small">
+                <FormattedMessage id="serial-number-block" />:{' '}
+                {fullRecord.serialNumberBlock}
+              </Body>
               <FormContainerStyle>
+                <StyledFieldContainer></StyledFieldContainer>
                 {formik.values.map((unit, index) => (
                   <React.Fragment key={index}>
                     {index === 1 && <StyledFieldRequired />}
