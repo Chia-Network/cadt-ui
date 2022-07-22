@@ -102,10 +102,10 @@ const UnitSplitEditStagingFormModal = ({ onClose, changeGroup }) => {
           modalType={modalTypeEnum.basic}
           hideButtons={!isUnitDivisible}
           title={intl.formatMessage({
-            id: 'split',
+            id: 'edit-split-unit',
           })}
           label={intl.formatMessage({
-            id: 'split',
+            id: 'update',
           })}
           body={
             <ModalFormContainerStyle>
