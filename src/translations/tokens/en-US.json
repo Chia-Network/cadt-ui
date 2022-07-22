@@ -36,7 +36,7 @@
   "add-unlisted-registry-of-origin": "Add Unlisted Registry Of Origin",
   "add-unlisted-current-registry": "Add Unlisted Registry",
   "projects-warehouse-project-id-description": "Unique identifier for projects within the Climate Warehouse.",
-  "projects-current-registry-description": "Name of the reigstry that currently hosts the project.",
+  "projects-current-registry-description": "Name of the registry that currently hosts the project.",
   "projects-project-id-description": "Identifier used to track the project in the current registry.",
   "projects-registry-of-origin-description": "The registry that originally hosted the project. If it is the same as the current registry, please list the registry again.",
   "projects-origin-project-id-description": "Identifier used to track the project in the registry that first held this project.",
