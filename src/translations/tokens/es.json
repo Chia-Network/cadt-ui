@@ -403,5 +403,10 @@
   "spendable-balance": "Saldo disponible",
   "wallet-sync-status": "Estado de sincronización de billetera",
   "syncing": "Sincronizando...",
-  "synced": "Está sincronizado!"
+  "synced": "Está sincronizado!",
+  "my-files": "Mis archivos",
+  "filter-by-filename": "Filtrar por nombre de archivo",
+  "upload": "Subir",
+  "browse": "Navegar",
+  "submit": "Enviar"
 }

@@ -421,5 +421,10 @@
   "spendable-balance": "Spendable Balance",
   "wallet-sync-status": "Wallet Sync Status",
   "syncing": "Syncing...",
-  "synced": "Synced!"
+  "synced": "Synced!",
+  "my-files": "My Files",
+  "filter-by-filename": "Filter by filename",
+  "upload": "Upload",
+  "browse": "Browser",
+  "submit": "Submit"
 }
