@@ -23,3 +23,8 @@ export const formatValidationError = error => {
 
   return errorStringArray.join(' ');
 };
+
+export const isValidFileName = fileName => {
+  const expression = /^[0-9a-zA-Z_-]+$/;
+  return expression.test(fileName);
+};

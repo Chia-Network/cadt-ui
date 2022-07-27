@@ -9,3 +9,4 @@ export * from './SimpleSelect';
 export * from './FormikError';
 export * from './SelectCreatable';
 export * from './UploadPngInput';
+export * from './UploadFileInput';

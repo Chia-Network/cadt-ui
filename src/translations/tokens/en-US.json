@@ -426,10 +426,16 @@
   "filter-by-filename": "Filter by filename",
   "filename": "Filename",
   "upload": "Upload",
-  "browse": "Browser",
+  "browse": "Browse",
   "submit": "Submit",
   "no-files-found": "No files have been found",
   "could-not-retrieve-file-list": "The file list could not be retrieved.",
   "sort-a-to-z": "Sort A to Z",
-  "sort-z-to-a": "Sort Z to A"
+  "sort-z-to-a": "Sort Z to A",
+  "file": "File",
+  "file-upload": "File upload",
+  "file-uploaded": "Your file was uploaded successfully.",
+  "file-not-uploaded": "Your file could not be uploaded.",
+  "add-valid-filename": "Add a valid filename",
+  "add-valid-file": "Add a valid file"
 }

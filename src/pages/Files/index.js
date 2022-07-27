@@ -12,6 +12,7 @@ import {
   H3,
   DownloadIcon,
   UploadIcon,
+  FileUploadModal,
 } from '../../components';
 import { getFileList } from '../../store/actions/climateWarehouseActions';
 
@@ -97,6 +98,8 @@ const Files = () => {
   const { fileList } = useSelector(store => store.climateWarehouse);
   const [filteredFileList, setFilteredFileList] = useState(fileList ?? []);
   const [sortOrder, setSortOrder] = useState(SortEnum.aToZ);
+  const [shaToDownload, setShaToDownload] = useState(null);
+  const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
 
   useEffect(() => dispatch(getFileList()), []);
   useEffect(() => setFilteredFileList(fileList), [fileList]);
@@ -143,6 +146,19 @@ const Files = () => {
     });
   }, [setSortOrder, filteredFileList]);
 
+  useEffect(() => {
+    if (shaToDownload) {
+      //TO DO IMPLEMENT FILE DOWNLOAD HERE
+      console.log(shaToDownload);
+    }
+    setShaToDownload(null);
+  }, [shaToDownload]);
+
+  const toggleUploadModal = useCallback(
+    () => setIsUploadModalVisible(prev => !prev),
+    [setIsUploadModalVisible],
+  );
+
   if (!fileList) {
     return null;
   }
@@ -174,7 +190,7 @@ const Files = () => {
           )}
         </StyledSortButtonContainer>
 
-        <StyledUploadIcon width="20" height="20" />
+        <StyledUploadIcon width="20" height="20" onClick={toggleUploadModal} />
       </StyledHeaderContainer>
       {filteredFileList?.length === 0 && (
         <StyledBodyNoDataFound>
@@ -204,9 +220,7 @@ const Files = () => {
                 <StyledTr key={file.SHA256}>
                   <StyledTd>
                     <StyledIconContainer
-                      onClick={() => {
-                        console.log('click');
-                      }}
+                      onClick={() => setShaToDownload(file.SHA256)}
                     >
                       <DownloadIcon width={20} height={20} />
                     </StyledIconContainer>
@@ -223,6 +237,7 @@ const Files = () => {
           </StyledTable>
         </StyledBodyContainer>
       )}
+      {isUploadModalVisible && <FileUploadModal onClose={toggleUploadModal} />}
     </StyledSectionContainer>
   );
 };
