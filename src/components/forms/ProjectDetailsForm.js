@@ -469,6 +469,7 @@ const ProjectDetailsForm = () => {
               <InputContainer>
                 {pickLists?.registries ? (
                   <SelectCreatable
+                    selected={values.currentRegistry}
                     variant={
                       errors.currentRegistry &&
                       touched.currentRegistry &&
@@ -516,6 +517,7 @@ const ProjectDetailsForm = () => {
             <InputContainer>
               {pickLists?.registries ? (
                 <SelectCreatable
+                  selected={values.registryOfOrigin}
                   variant={
                     errors.registryOfOrigin &&
                     touched.registryOfOrigin &&
@@ -638,6 +640,7 @@ const ProjectDetailsForm = () => {
               </StyledLabelContainer>
               {pickLists?.methodology ? (
                 <SelectCreatable
+                  selected={values.methodology}
                   variant={
                     errors.methodology &&
                     touched.methodology &&
