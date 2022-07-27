@@ -469,6 +469,7 @@ const ProjectDetailsForm = () => {
               <InputContainer>
                 {pickLists?.registries ? (
                   <SelectCreatable
+                    onBlur={handleBlur}
                     selected={values.currentRegistry}
                     variant={
                       errors.currentRegistry &&
@@ -517,6 +518,7 @@ const ProjectDetailsForm = () => {
             <InputContainer>
               {pickLists?.registries ? (
                 <SelectCreatable
+                  onBlur={handleBlur}
                   selected={values.registryOfOrigin}
                   variant={
                     errors.registryOfOrigin &&
@@ -641,6 +643,7 @@ const ProjectDetailsForm = () => {
               {pickLists?.methodology ? (
                 <SelectCreatable
                   selected={values.methodology}
+                  onBlur={handleBlur}
                   variant={
                     errors.methodology &&
                     touched.methodology &&
