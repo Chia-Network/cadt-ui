@@ -154,22 +154,6 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-/* implementation example
-  <SelectCreatable
-    variant={
-      errors.sector &&
-      touched.sector &&
-      SelectCreatableVariantEnum.error
-    }
-    size={SelectCreatableSizeEnum.large}
-    onChange={val => setFieldValue('sector', val)}
-    options={pickLists.projectSector}
-    selected={values.sector}
-    onBlur={handleBlur}
-    isCreatable
-  />
-*/
-
 const SelectCreatable = withTheme(
   ({
     variant,
