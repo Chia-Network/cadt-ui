@@ -13,6 +13,7 @@ import {
   vintagesResponseStub,
   stagingDataResponseStub,
   auditResponseStub,
+  fileListResponseStub,
 } from '../../mocks';
 
 import {
@@ -59,6 +60,7 @@ export const actions = keyMirror(
   'SET_IS_GOVERNANCE_INITIATED',
   'SET_WALLET_BALANCE',
   'SET_WALLET_STATUS',
+  'GET_FILE_LIST',
 );
 
 const getClimateWarehouseTable = (
@@ -712,6 +714,55 @@ export const commitStagingData = (data, comment) => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'transactions-not-committed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getFileList = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      // const url = `${constants.API_HOST}/staging`;
+      // const payload = {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ uuid, data }),
+      // };
+      // const response = await fetchWrapper(url, payload);
+      const response = { ok: true };
+
+      if (response.ok) {
+        const results = fileListResponseStub;
+        dispatch(setConnectionCheck(true));
+        dispatch({
+          type: actions.GET_FILE_LIST,
+          payload: results,
+        });
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'could-not-retrieve-file-list',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'could-not-retrieve-file-list',
         ),
       );
       dispatch(setConnectionCheck(false));

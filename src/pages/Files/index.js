@@ -1,26 +1,23 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import _ from 'lodash';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
 import {
   Body,
-  MagnifyGlassIcon,
-  SelectOrganizations,
-  SelectSizeEnum,
-  SelectTypeEnum,
-  AuditItemModal,
   DescendingClockIcon,
   AscendingClockIcon,
+  SearchInput,
   H3,
-  Pagination,
+  DownloadIcon,
+  UploadIcon,
 } from '../../components';
-import {
-  getAudit,
-  getOrganizationData,
-} from '../../store/actions/climateWarehouseActions';
-import constants from '../../constants';
+import { getFileList } from '../../store/actions/climateWarehouseActions';
+
+const StyledUploadIcon = styled(UploadIcon)`
+  margin-left: auto;
+`;
 
 const StyledSectionContainer = styled('div')`
   display: flex;
@@ -86,137 +83,100 @@ const StyledSortButtonContainer = styled.div`
 
 const StyledIconContainer = styled('div')`
   color: ${props => props.theme.colors.default.primary};
-  cursor: zoom-in;
+  cursor: pointer;
 `;
 
 const Files = () => {
   const dispatch = useDispatch();
-  const intl = useIntl();
+  const { fileList } = useSelector(store => store.climateWarehouse);
+  const [filteredFileList, setFilteredFileList] = useState(fileList ?? []);
+  const [sortOrder, setSortOrder] = useState('A to Z');
 
-  const { audit, organizations } = useSelector(store => store.climateWarehouse);
-  const [selectedOrgUid, setSelectedOrgUid] = useState(null);
-  const [selectedAuditItem, setSelectedAuditItem] = useState(null);
-  const [auditSortOrder, setAuditSortOrder] = useState('DESC');
+  useEffect(() => dispatch(getFileList()), []);
+  useEffect(() => setFilteredFileList(fileList), [fileList]);
+
+  const onSearch = useMemo(
+    () =>
+      _.debounce(event => {
+        if (event.target.value !== '') {
+          setFilteredFileList(
+            fileList.filter(file =>
+              file.fileName
+                .toLowerCase()
+                .includes(event.target.value.toLowerCase()),
+            ),
+          );
+        } else {
+          setFilteredFileList(fileList);
+        }
+      }, 300),
+    [fileList],
+  );
 
   useEffect(() => {
-    dispatch(getOrganizationData());
-    const storageAuditSortOrder = localStorage.getItem('auditSortOrder');
-    if (storageAuditSortOrder) {
-      setAuditSortOrder(storageAuditSortOrder);
-    }
+    return () => {
+      onSearch.cancel();
+    };
   }, []);
 
+  const getArraySortedAlphabetically = (arr, order) => {
+    const sortAToZ = (a, b) => a.fileName.localeCompare(b.fileName);
+    const sortZToA = (a, b) => b.fileName.localeCompare(a.fileName);
+    const sortFunction = order === 'A to Z' ? sortAToZ : sortZToA;
+    return [...arr].sort(sortFunction);
+  };
+
   const changeSortOrder = useCallback(() => {
-    const newSortOrder = auditSortOrder === 'DESC' ? 'ASC' : 'DESC';
-    localStorage.setItem('auditSortOrder', newSortOrder);
-    setAuditSortOrder(newSortOrder);
-    dispatch(
-      getAudit({
-        orgUid: selectedOrgUid,
-        page: 1,
-        limit: constants.MAX_AUDIT_TABLE_SIZE,
-        useMockedResponse: false,
-        order: newSortOrder,
-      }),
-    );
-  }, [auditSortOrder, setAuditSortOrder, selectedOrgUid]);
-
-  const onOrganizationSelect = useCallback(
-    selectedOption => {
-      const orgUid = selectedOption[0].orgUid;
-      setSelectedOrgUid(orgUid);
-      dispatch(
-        getAudit({
-          orgUid,
-          page: 1,
-          limit: constants.MAX_AUDIT_TABLE_SIZE,
-          useMockedResponse: false,
-          order: auditSortOrder,
-        }),
+    setSortOrder(prevOrder => {
+      const newOrder = prevOrder === 'A to Z' ? 'Z to A' : 'A to Z';
+      setFilteredFileList(
+        getArraySortedAlphabetically(filteredFileList, newOrder),
       );
-    },
-    [setSelectedOrgUid, auditSortOrder],
-  );
+      return newOrder;
+    });
+  }, [setSortOrder, filteredFileList]);
 
-  const closeAuditItemModal = useCallback(
-    () => setSelectedAuditItem(null),
-    [setSelectedAuditItem],
-  );
-
-  if (!organizations) {
+  if (!fileList) {
     return null;
   }
 
   return (
     <StyledSectionContainer>
       <StyledHeaderContainer>
-        <SelectOrganizations
-          size={SelectSizeEnum.large}
-          type={SelectTypeEnum.basic}
-          placeholder={intl.formatMessage({ id: 'select-organization' })}
-          width="200px"
-          onChange={onOrganizationSelect}
-        />
+        <SearchInput size="large" onChange={onSearch} outline />
 
-        {selectedOrgUid && (
-          <>
-            <StyledSortButtonContainer onClick={changeSortOrder}>
-              {auditSortOrder === 'ASC' ? (
-                <>
-                  <Body>
-                    <FormattedMessage id="sort-descending" />
-                  </Body>
-                  <StyledIconContainer>
-                    <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
-                  </StyledIconContainer>
-                </>
-              ) : (
-                <>
-                  <Body>
-                    <FormattedMessage id="sort-ascending" />
-                  </Body>
-                  <StyledIconContainer>
-                    <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
-                  </StyledIconContainer>
-                </>
-              )}
-            </StyledSortButtonContainer>
-
-            {selectedOrgUid && audit?.page && audit?.pageCount && (
-              <Pagination
-                current={audit.page - 1}
-                pages={audit.pageCount}
-                callback={val =>
-                  dispatch(
-                    getAudit({
-                      orgUid: selectedOrgUid,
-                      page: val + 1,
-                      limit: constants.MAX_AUDIT_TABLE_SIZE,
-                      useMockedResponse: false,
-                      order: auditSortOrder,
-                    }),
-                  )
-                }
-                showLast
-              />
-            )}
-
-            <div>
+        <StyledSortButtonContainer onClick={changeSortOrder}>
+          {sortOrder === 'A to Z' ? (
+            <>
               <Body>
-                {intl.formatMessage({ id: 'org-uid' })}: {selectedOrgUid}
+                <FormattedMessage id="sort-z-to-a" />
               </Body>
-            </div>
-          </>
-        )}
+              <StyledIconContainer>
+                <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
+              </StyledIconContainer>
+            </>
+          ) : (
+            <>
+              <Body>
+                <FormattedMessage id="sort-a-to-z" />
+              </Body>
+              <StyledIconContainer>
+                <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
+              </StyledIconContainer>
+            </>
+          )}
+        </StyledSortButtonContainer>
+
+        <StyledUploadIcon width="20" height="20" />
       </StyledHeaderContainer>
-      {!audit?.data && (
+      {filteredFileList?.length === 0 && (
         <StyledBodyNoDataFound>
           <H3>
-            <FormattedMessage id="no-audit-data" />
+            <FormattedMessage id="no-files-found" />
           </H3>
         </StyledBodyNoDataFound>
       )}
-      {selectedOrgUid && audit?.data?.length > 0 && (
+      {filteredFileList?.length > 0 && (
         <StyledBodyContainer>
           <StyledTable>
             <thead>
@@ -224,74 +184,37 @@ const Files = () => {
                 <StyledTh></StyledTh>
                 <StyledTh>
                   <Body size="Bold">
-                    <FormattedMessage id="table" />
+                    <FormattedMessage id="filename" />
                   </Body>
                 </StyledTh>
                 <StyledTh>
-                  <Body size="Bold">
-                    <FormattedMessage id="timestamp" />
-                  </Body>
-                </StyledTh>
-                <StyledTh>
-                  <Body size="Bold">
-                    <FormattedMessage id="type" />
-                  </Body>
-                </StyledTh>
-                <StyledTh>
-                  <Body size="Bold">
-                    <FormattedMessage id="root-hash" />
-                  </Body>
-                </StyledTh>
-                <StyledTh>
-                  <Body size="Bold">
-                    <FormattedMessage id="comment" />
-                  </Body>
+                  <Body size="Bold">SHA256</Body>
                 </StyledTh>
               </StyledTr>
             </thead>
             <tbody>
-              {audit?.data?.length &&
-                audit?.data.map(auditItem => (
-                  <StyledTr key={auditItem.id}>
-                    <StyledTd>
-                      {auditItem.change && (
-                        <StyledIconContainer
-                          onClick={() => setSelectedAuditItem(auditItem)}
-                        >
-                          <MagnifyGlassIcon />
-                        </StyledIconContainer>
-                      )}
-                    </StyledTd>
-                    <StyledTd>
-                      <Body>{auditItem.table}</Body>
-                    </StyledTd>
-                    <StyledTd>
-                      <Body>
-                        {dayjs(
-                          auditItem.onchainConfirmationTimeStamp * 1000,
-                        ).format('YYYY-MM-DD HH:mm:ss')}
-                      </Body>
-                    </StyledTd>
-                    <StyledTd>
-                      <Body>{auditItem.type}</Body>
-                    </StyledTd>
-                    <StyledTd>
-                      <Body>{auditItem.rootHash}</Body>
-                    </StyledTd>
-                    <StyledTd>
-                      <Body>{auditItem.comment}</Body>
-                    </StyledTd>
-                  </StyledTr>
-                ))}
+              {filteredFileList.map(file => (
+                <StyledTr key={file.SHA256}>
+                  <StyledTd>
+                    <StyledIconContainer
+                      onClick={() => {
+                        console.log('click');
+                      }}
+                    >
+                      <DownloadIcon width={20} height={20} />
+                    </StyledIconContainer>
+                  </StyledTd>
+                  <StyledTd>
+                    <Body>{file.fileName}</Body>
+                  </StyledTd>
+                  <StyledTd>
+                    <Body>{file.SHA256}</Body>
+                  </StyledTd>
+                </StyledTr>
+              ))}
             </tbody>
           </StyledTable>
         </StyledBodyContainer>
-      )}
-      {selectedAuditItem && (
-        <AuditItemModal
-          onClose={closeAuditItemModal}
-          auditItem={selectedAuditItem}
-        />
       )}
     </StyledSectionContainer>
   );

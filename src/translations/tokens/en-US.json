@@ -423,8 +423,13 @@
   "syncing": "Syncing...",
   "synced": "Synced!",
   "my-files": "My Files",
+  "filename": "Filename",
   "filter-by-filename": "Filter by filename",
+  "no-files-found": "No files have been found",
+  "could-not-retrieve-file-list": "File list could not be retrieved.",
   "upload": "Upload",
   "browse": "Browser",
-  "submit": "Submit"
+  "submit": "Submit",
+  "sort-a-to-z": "Sort A to Z",
+  "sort-z-to-a": "Sort Z to A"
 }
