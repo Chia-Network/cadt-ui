@@ -408,5 +408,9 @@
   "filter-by-filename": "ファイル名でフィルタリング",
   "upload": "アップロード",
   "browse": "ブラウズ",
-  "submit": "送信"
+  "submit": "送信",
+  "no-files-found": "ファイルが見つかりません",
+  "could-not-retrieve-file-list": "ファイルリストを取得できませんでした。",
+  "sort-a-to-z": "AからZに並べ替え",
+  "sort-z-to-a": "ZをAに並べ替える"
 }

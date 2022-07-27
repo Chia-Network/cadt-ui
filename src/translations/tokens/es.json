@@ -408,5 +408,9 @@
   "filter-by-filename": "Filtrar por nombre de archivo",
   "upload": "Subir",
   "browse": "Navegar",
-  "submit": "Enviar"
+  "submit": "Enviar",
+  "no-files-found": "No se han encontrado archivos",
+  "could-not-retrieve-file-list": "No se pudo recuperar la lista de archivos.",
+  "sort-a-to-z": "Ordenar de la A a la Z",
+  "sort-z-to-a": "Ordenar de Z a A"
 }
