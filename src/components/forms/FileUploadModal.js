@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -22,20 +22,22 @@ const FileUploadModal = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const { notification } = useSelector(state => state.app);
+  const [isValidationOn, setIsValidationOn] = useState(false);
   const [formData, setFormData] = useState({
     fileName: '',
     file: null,
   });
 
-  const fileNameIsValid = isValidFileName(formData.fileName);
-  const fileIsValid = formData?.file != null;
+  const isFileNameValid = isValidFileName(formData.fileName);
+  const isFileValid = formData?.file != null;
 
-  const onSubmit = async () => {
-    if (fileNameIsValid && fileIsValid) {
+  const onSubmit = useCallback(async () => {
+    setIsValidationOn(true);
+    if (isFileNameValid && isFileValid) {
       // TO DO IMPLEMENT STORE ACTION
       // dispatch(editExistingOrg(formData));
     }
-  };
+  }, [isFileNameValid, isFileValid]);
 
   const orgWasSuccessfullyCreated =
     notification && notification.id === 'file-uploaded';
@@ -78,7 +80,7 @@ const FileUploadModal = ({ onClose }) => {
                   }
                 />
               </InputContainer>
-              {!fileNameIsValid && (
+              {isValidationOn && !isFileNameValid && (
                 <Body size="Small" color="red">
                   {intl.formatMessage({
                     id: 'add-valid-filename',
@@ -103,7 +105,7 @@ const FileUploadModal = ({ onClose }) => {
                   file={formData.file}
                 />
               </InputContainer>
-              {!fileIsValid && (
+              {isValidationOn && !isFileValid && (
                 <Body size="Small" color="red">
                   {intl.formatMessage({
                     id: 'add-valid-file',
