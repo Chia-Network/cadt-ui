@@ -17,6 +17,7 @@ import { getFileList } from '../../store/actions/climateWarehouseActions';
 
 const StyledUploadIcon = styled(UploadIcon)`
   margin-left: auto;
+  cursor: pointer;
 `;
 
 const StyledSectionContainer = styled('div')`
@@ -86,11 +87,16 @@ const StyledIconContainer = styled('div')`
   cursor: pointer;
 `;
 
+const SortEnum = {
+  aToZ: 'aToZ',
+  zToA: 'zToA',
+};
+
 const Files = () => {
   const dispatch = useDispatch();
   const { fileList } = useSelector(store => store.climateWarehouse);
   const [filteredFileList, setFilteredFileList] = useState(fileList ?? []);
-  const [sortOrder, setSortOrder] = useState('A to Z');
+  const [sortOrder, setSortOrder] = useState(SortEnum.aToZ);
 
   useEffect(() => dispatch(getFileList()), []);
   useEffect(() => setFilteredFileList(fileList), [fileList]);
@@ -119,16 +125,17 @@ const Files = () => {
     };
   }, []);
 
-  const getArraySortedAlphabetically = (arr, order) => {
+  const getArraySortedAlphabetically = useCallback((arr, order) => {
     const sortAToZ = (a, b) => a.fileName.localeCompare(b.fileName);
     const sortZToA = (a, b) => b.fileName.localeCompare(a.fileName);
-    const sortFunction = order === 'A to Z' ? sortAToZ : sortZToA;
+    const sortFunction = order === SortEnum.aToZ ? sortAToZ : sortZToA;
     return [...arr].sort(sortFunction);
-  };
+  }, []);
 
   const changeSortOrder = useCallback(() => {
     setSortOrder(prevOrder => {
-      const newOrder = prevOrder === 'A to Z' ? 'Z to A' : 'A to Z';
+      const newOrder =
+        prevOrder === SortEnum.aToZ ? SortEnum.zToA : SortEnum.aToZ;
       setFilteredFileList(
         getArraySortedAlphabetically(filteredFileList, newOrder),
       );
@@ -146,7 +153,7 @@ const Files = () => {
         <SearchInput size="large" onChange={onSearch} outline />
 
         <StyledSortButtonContainer onClick={changeSortOrder}>
-          {sortOrder === 'A to Z' ? (
+          {sortOrder === SortEnum.aToZ ? (
             <>
               <Body>
                 <FormattedMessage id="sort-z-to-a" />
