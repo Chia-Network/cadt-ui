@@ -103,7 +103,7 @@ const FileUploadModal = ({ onClose }) => {
                   file={formData.file}
                 />
               </InputContainer>
-              {!fileNameIsValid && (
+              {!fileIsValid && (
                 <Body size="Small" color="red">
                   {intl.formatMessage({
                     id: 'add-valid-file',

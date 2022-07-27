@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
-import { UploadIcon, SuccessIcon } from '..';
+import { UploadIcon, SuccessIcon, Body } from '..';
 
 const StyledDiv = styled('div')`
   border: 1px dotted #d9d9d9;
@@ -20,6 +20,14 @@ const StyledInput = styled('input')`
   height: 0px;
 `;
 
+const StyledNameContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+`;
+
 const UploadFileInput = ({ file, onChange }) => {
   const onFileInputChange = useCallback(e => {
     if (e.target.value && e.target.value !== '') {
@@ -32,7 +40,12 @@ const UploadFileInput = ({ file, onChange }) => {
     <StyledDiv>
       <label htmlFor="file">
         {!file && <UploadIcon width="20" height="20" />}
-        {file && <SuccessIcon width="20" height="20" />}
+        {file && (
+          <StyledNameContainer>
+            <SuccessIcon width="20" height="20" />
+            <Body>{file.name}</Body>
+          </StyledNameContainer>
+        )}
       </label>
       <StyledInput type="file" id="file" onChange={onFileInputChange} />
     </StyledDiv>
