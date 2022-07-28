@@ -109,7 +109,7 @@
   "units-unit-status-reason-description": "Introduzca el motivo apropiado para el estado. Si no se necesita ninguna razón, simplemente ingrese 'N / A'.",
   "units-unit-link-registry-description": "Introduzca la dirección URL que enlaza con el registro que aloja las unidades.",
   "units-corresponding-adjustment-declaration-description": "Seleccione si las unidades tienen o no la capacidad de ajuste correspondiente.",
-  "units-corresponding-adjustment-status-description": "Seleccione el estado correspondiente del ajuste correspondiente que se ha realizado.",
+  "units-corresponding-adjustment-status-description": "Si se trata de una transferencia por primera vez, seleccione el estado correspondiente del ajuste correspondiente que se ha realizado.",
   "issuances-warehouse-project-id-description": "Identificador único para proyectos dentro del Almacén Climático.",
   "issuances-issuance-id-description": "Identificador único para una emisión específica de unidades.",
   "issuances-start-date-description": "Ingrese la fecha para la cual las unidades comenzaron a emitirse bajo una sola emisión.",
@@ -271,6 +271,7 @@
   "confirm-deletion": "Por favor, confirme la eliminación",
   "my-units": "Mis Unidades",
   "my-projects": "Mis proyectos",
+  "basic-registry": "registro básico",
   "create-organization": "Crear organización",
   "you-need-to-create-organization": "Debe crear su Organización para tener acceso completo al Registro.",
   "organization-name": "Nombre de la Organización",
@@ -394,6 +395,7 @@
   "governance-picklists-update-failed": "Las listas de selección de gobernanza no se pudieron actualizar.",
   "governance-orglist-updated-successfully": "La lista de organizaciones de gobierno se actualizó correctamente.",
   "governance-orglist-update-failed": "No se pudo actualizar la lista de organizaciones de gobierno.",
+  "select": "Seleccione",
   "edit-staged-project": "Editar proyecto en etapas",
   "staging-group-could-not-be-edited": "No se pudo editar el grupo de ensayo.",
   "staging-group-edited": "El grupo de ensayo se editó correctamente.",
@@ -404,5 +406,7 @@
   "wallet-sync-status": "Estado de sincronización de billetera",
   "syncing": "Sincronizando...",
   "synced": "Está sincronizado!",
-  "author": "Autor"
+  "author": "Autor",
+  "edit-split-unit": "Editar puesta en escena de unidad dividida",
+  "update": "Actualizar"
 }
