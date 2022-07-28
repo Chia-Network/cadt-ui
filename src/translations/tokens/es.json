@@ -406,6 +406,7 @@
   "wallet-sync-status": "Estado de sincronización de billetera",
   "syncing": "Sincronizando...",
   "synced": "Está sincronizado!",
+  "author": "Autor",
   "edit-split-unit": "Editar puesta en escena de unidad dividida",
   "update": "Actualizar"
 }

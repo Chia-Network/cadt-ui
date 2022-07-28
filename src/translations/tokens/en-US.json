@@ -423,6 +423,7 @@
   "wallet-sync-status": "Wallet Sync Status",
   "syncing": "Syncing...",
   "synced": "Synced!",
+  "author": "Author",
   "edit-split-unit": "Edit split unit staging",
   "update": "Update"
 }

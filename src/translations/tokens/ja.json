@@ -406,6 +406,7 @@
   "wallet-sync-status": "ウォレットの同期ステータス",
   "syncing": "同期...",
   "synced": "同期されます!",
+  "author": "著者",
   "edit-split-unit": "分割ユニットのステージングを編集する",
   "update": "アップデート"
 }
