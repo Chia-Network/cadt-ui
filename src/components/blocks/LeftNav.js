@@ -77,7 +77,7 @@ const LeftNav = withTheme(({ children }) => {
   const dispatch = useDispatch();
   const [myOrgUid, isMyOrgPending] = useSelector(store => getHomeOrg(store));
 
-  const isMyOrgNotCreated = !myOrgUid;
+  const isMyOrgCreated = !!myOrgUid;
 
   useEffect(() => {
     let intervalId;
@@ -88,7 +88,7 @@ const LeftNav = withTheme(({ children }) => {
       );
     }
     return () => clearTimeout(intervalId);
-  }, [isMyOrgNotCreated, isMyOrgPending, createOrgIsVisible]);
+  }, [isMyOrgCreated, isMyOrgPending, createOrgIsVisible]);
 
   const currentLocation = window.location.hash.slice(1);
 
@@ -125,21 +125,27 @@ const LeftNav = withTheme(({ children }) => {
 
         {!readOnlyMode && (
           <>
-            <StyledTitleContainer
-              disabled={isMyOrgNotCreated || isMyOrgPending}
-            >
+            <StyledTitleContainer disabled={!isMyOrgCreated || isMyOrgPending}>
               {isMyOrgPending && <CircularProgress size={20} thickness={5} />}
               {!isMyOrgPending && <RegistryIcon height={20} width={20} />}
               <ButtonText>
                 <FormattedMessage id="basic-registry" />
               </ButtonText>
             </StyledTitleContainer>
+            {!isMyOrgCreated && (
+              <MenuItem
+                to={currentLocation}
+                onClick={() => setCreateOrgIsVisible(true)}
+              >
+                <FormattedMessage id="create-organization" />
+              </MenuItem>
+            )}
             {isMyOrgPending && (
               <MenuItem to={currentLocation} disabled>
                 <FormattedMessage id="creating-organization" />
               </MenuItem>
             )}
-            {!isMyOrgNotCreated && !isMyOrgPending ? (
+            {isMyOrgCreated && !isMyOrgPending ? (
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
@@ -167,12 +173,6 @@ const LeftNav = withTheme(({ children }) => {
               <>
                 <MenuItem
                   to={currentLocation}
-                  onClick={() => setCreateOrgIsVisible(true)}
-                >
-                  <FormattedMessage id="create-organization" />
-                </MenuItem>
-                <MenuItem
-                  to={currentLocation}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
                   disabled
                 >
@@ -195,7 +195,7 @@ const LeftNav = withTheme(({ children }) => {
       {createOrgIsVisible && (
         <OrgCreateFormModal onClose={() => setCreateOrgIsVisible(false)} />
       )}
-      {isMyOrgNotCreated && confirmCreateOrgIsVisible && (
+      {!isMyOrgCreated && confirmCreateOrgIsVisible && (
         <Modal
           title={intl.formatMessage({ id: 'create-organization' })}
           body={intl.formatMessage({ id: 'you-need-to-create-organization' })}
