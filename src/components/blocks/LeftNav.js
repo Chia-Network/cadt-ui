@@ -77,7 +77,7 @@ const LeftNav = withTheme(({ children }) => {
   const dispatch = useDispatch();
   const [myOrgUid, isMyOrgPending] = useSelector(store => getHomeOrg(store));
 
-  const myOrgIsNotCreated = !myOrgUid;
+  const isMyOrgNotCreated = !myOrgUid;
 
   useEffect(() => {
     let intervalId;
@@ -88,7 +88,7 @@ const LeftNav = withTheme(({ children }) => {
       );
     }
     return () => clearTimeout(intervalId);
-  }, [myOrgIsNotCreated, isMyOrgPending, createOrgIsVisible]);
+  }, [isMyOrgNotCreated, isMyOrgPending, createOrgIsVisible]);
 
   const isUnitsPage = location.pathname.includes('/units');
   const isProjectsPage = location.pathname.includes('/projects');
@@ -123,14 +123,21 @@ const LeftNav = withTheme(({ children }) => {
 
         {!readOnlyMode && (
           <>
-            <StyledTitleContainer disabled={myOrgIsNotCreated}>
+            <StyledTitleContainer
+              disabled={isMyOrgNotCreated || isMyOrgPending}
+            >
               {isMyOrgPending && <CircularProgress size={20} thickness={5} />}
               {!isMyOrgPending && <RegistryIcon height={20} width={20} />}
               <ButtonText>
                 <FormattedMessage id="basic-registry" />
               </ButtonText>
             </StyledTitleContainer>
-            {!myOrgIsNotCreated && !isMyOrgPending && (
+            {isMyOrgPending && (
+              <MenuItem to={window.location} disabled>
+                <FormattedMessage id="creating-organization" />
+              </MenuItem>
+            )}
+            {!isMyOrgNotCreated && !isMyOrgPending ? (
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
@@ -145,34 +152,23 @@ const LeftNav = withTheme(({ children }) => {
                 >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
+                <MenuItem selected={isOrganizationPage} to="/organization">
+                  <FormattedMessage id="my-organization" />
+                </MenuItem>
+                {isGovernance && (
+                  <MenuItem selected={isGovernancePage} to="/governance">
+                    <FormattedMessage id="governance" />
+                  </MenuItem>
+                )}
               </>
-            )}
-            {!myOrgIsNotCreated && !isMyOrgPending && (
-              <MenuItem selected={isOrganizationPage} to="/organization">
-                <FormattedMessage id="my-organization" />
-              </MenuItem>
-            )}
-            {!myOrgIsNotCreated && !isMyOrgPending && isGovernance && (
-              <MenuItem selected={isGovernancePage} to="/governance">
-                <FormattedMessage id="governance" />
-              </MenuItem>
-            )}
-            {myOrgIsNotCreated && (
-              <MenuItem
-                selected={createOrgIsVisible}
-                to={window.location}
-                onClick={() => setCreateOrgIsVisible(true)}
-              >
-                <FormattedMessage id="create-organization" />
-              </MenuItem>
-            )}
-            {isMyOrgPending && (
-              <MenuItem to={window.location} disabled>
-                <FormattedMessage id="creating-organization" />
-              </MenuItem>
-            )}
-            {myOrgIsNotCreated && (
+            ) : (
               <>
+                <MenuItem
+                  to={window.location.hash.slice(1)}
+                  onClick={() => setCreateOrgIsVisible(true)}
+                >
+                  <FormattedMessage id="create-organization" />
+                </MenuItem>
                 <MenuItem
                   to={window.location}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
@@ -197,7 +193,7 @@ const LeftNav = withTheme(({ children }) => {
       {createOrgIsVisible && (
         <OrgCreateFormModal onClose={() => setCreateOrgIsVisible(false)} />
       )}
-      {myOrgIsNotCreated && confirmCreateOrgIsVisible && (
+      {isMyOrgNotCreated && confirmCreateOrgIsVisible && (
         <Modal
           title={intl.formatMessage({ id: 'create-organization' })}
           body={intl.formatMessage({ id: 'you-need-to-create-organization' })}
