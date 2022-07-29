@@ -131,6 +131,23 @@ const LeftNav = withTheme(({ children }) => {
               </ButtonText>
             </StyledTitleContainer>
             {!myOrgIsNotCreated && !isMyOrgPending && (
+              <>
+                <MenuItem
+                  selected={isProjectsPage && isMyRegistryPage}
+                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
+                >
+                  <FormattedMessage id="my-projects" />
+                </MenuItem>
+                <div></div>
+                <MenuItem
+                  selected={isUnitsPage && isMyRegistryPage}
+                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
+                >
+                  <FormattedMessage id="my-units" />
+                </MenuItem>
+              </>
+            )}
+            {!myOrgIsNotCreated && !isMyOrgPending && (
               <MenuItem selected={isOrganizationPage} to="/organization">
                 <FormattedMessage id="my-organization" />
               </MenuItem>
@@ -153,23 +170,6 @@ const LeftNav = withTheme(({ children }) => {
               <MenuItem to={window.location} disabled>
                 <FormattedMessage id="creating-organization" />
               </MenuItem>
-            )}
-            {!myOrgIsNotCreated && !isMyOrgPending && (
-              <>
-                <MenuItem
-                  selected={isProjectsPage && isMyRegistryPage}
-                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
-                >
-                  <FormattedMessage id="my-projects" />
-                </MenuItem>
-                <div></div>
-                <MenuItem
-                  selected={isUnitsPage && isMyRegistryPage}
-                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
-                >
-                  <FormattedMessage id="my-units" />
-                </MenuItem>
-              </>
             )}
             {myOrgIsNotCreated && (
               <>
