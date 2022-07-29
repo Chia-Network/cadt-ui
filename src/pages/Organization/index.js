@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import QRCode from 'qrcode.react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -15,12 +15,21 @@ import {
   OrganizationLogo,
   SuccessIcon,
   WarningIcon,
+  modalTypeEnum,
+  Modal,
 } from '../../components';
+import { deleteMyOrg } from '../../store/actions/climateWarehouseActions';
 
 const StyledOrganizationContainer = styled('div')`
   padding: 30px 63px;
   display: flex;
   flex-direction: row;
+`;
+
+const StyledRowContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
 `;
 
 const StyledLogoContainer = styled('div')`
@@ -55,8 +64,10 @@ const Organization = () => {
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { myOrgUid, organizations, walletBalance, isWalletSynced } =
     useSelector(store => store.climateWarehouse);
+  const dispatch = useDispatch();
 
   if (!organizations || !myOrgUid) {
     return null;
@@ -159,13 +170,6 @@ const Organization = () => {
           <QRCode value={myOrganization.xchAddress} />
         </StyledItemContainer>
         <StyledItemContainer>
-          <PrimaryButton
-            label={intl.formatMessage({ id: 'edit-organization' })}
-            size="large"
-            onClick={() => setIsEditModalOpen(true)}
-          />
-        </StyledItemContainer>
-        <StyledItemContainer>
           <H4>
             <FormattedMessage id="organization-subscriptions" />
           </H4>
@@ -174,6 +178,23 @@ const Organization = () => {
             size="large"
             onClick={() => setIsSubscriptionsModalDisplayed(true)}
           />
+        </StyledItemContainer>
+        <StyledItemContainer>
+          <H4>
+            <FormattedMessage id="actions" />
+          </H4>
+          <StyledRowContainer>
+            <PrimaryButton
+              label={intl.formatMessage({ id: 'edit-organization' })}
+              size="large"
+              onClick={() => setIsEditModalOpen(true)}
+            />
+            <PrimaryButton
+              label={intl.formatMessage({ id: 'delete-organization' })}
+              size="large"
+              onClick={() => setIsDeleteModalOpen(true)}
+            />
+          </StyledRowContainer>
         </StyledItemContainer>
       </div>
 
@@ -187,6 +208,22 @@ const Organization = () => {
           onClose={() => setIsEditModalOpen(false)}
           name={myOrganization?.name}
           icon={myOrganization?.icon}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <Modal
+          title={intl.formatMessage({
+            id: 'notification',
+          })}
+          body={intl.formatMessage({
+            id: 'confirm-organization-deletion',
+          })}
+          modalType={modalTypeEnum.confirmation}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onOk={() => {
+            dispatch(deleteMyOrg());
+            setIsDeleteModalOpen(false);
+          }}
         />
       )}
 
