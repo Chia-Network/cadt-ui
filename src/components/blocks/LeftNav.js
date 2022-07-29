@@ -90,6 +90,8 @@ const LeftNav = withTheme(({ children }) => {
     return () => clearTimeout(intervalId);
   }, [isMyOrgNotCreated, isMyOrgPending, createOrgIsVisible]);
 
+  const currentLocation = window.location.hash.slice(1);
+
   const isUnitsPage = location.pathname.includes('/units');
   const isProjectsPage = location.pathname.includes('/projects');
   const isAuditPage = location.pathname.includes('/audit');
@@ -133,7 +135,7 @@ const LeftNav = withTheme(({ children }) => {
               </ButtonText>
             </StyledTitleContainer>
             {isMyOrgPending && (
-              <MenuItem to={window.location} disabled>
+              <MenuItem to={currentLocation} disabled>
                 <FormattedMessage id="creating-organization" />
               </MenuItem>
             )}
@@ -164,13 +166,13 @@ const LeftNav = withTheme(({ children }) => {
             ) : (
               <>
                 <MenuItem
-                  to={window.location.hash.slice(1)}
+                  to={currentLocation}
                   onClick={() => setCreateOrgIsVisible(true)}
                 >
                   <FormattedMessage id="create-organization" />
                 </MenuItem>
                 <MenuItem
-                  to={window.location}
+                  to={currentLocation}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
                   disabled
                 >
@@ -178,7 +180,7 @@ const LeftNav = withTheme(({ children }) => {
                 </MenuItem>
                 <div></div>
                 <MenuItem
-                  to={window.location}
+                  to={currentLocation}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
                   disabled
                 >
