@@ -408,5 +408,11 @@
   "synced": "Está sincronizado!",
   "author": "Autor",
   "edit-split-unit": "Editar puesta en escena de unidad dividida",
-  "update": "Actualizar"
+  "update": "Actualizar",
+  "delete-organization": "Eliminar organización",
+  "confirm-organization-deletion": "¿Está seguro de que desea eliminar su organización?",
+  "actions": "¿Está seguro de que desea eliminar su organización?",
+  "organization-deleted": "La organización se eliminó con éxito.",
+  "organization-not-deleted": "No se pudo eliminar la organización.",
+  "my-registry": "Mi Registro"
 }

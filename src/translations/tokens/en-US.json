@@ -425,5 +425,11 @@
   "synced": "Synced!",
   "author": "Author",
   "edit-split-unit": "Edit split unit staging",
-  "update": "Update"
+  "update": "Update",
+  "delete-organization": "Delete organization",
+  "confirm-organization-deletion": "Are you sure you want to delete your organization?",
+  "actions": "Actions",
+  "organization-deleted": "The organization was deleted successfully.",
+  "organization-not-deleted": "The organization could not be deleted.",
+  "my-registry": "My Registry"
 }
