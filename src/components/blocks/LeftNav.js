@@ -129,7 +129,7 @@ const LeftNav = withTheme(({ children }) => {
               {isMyOrgPending && <CircularProgress size={20} thickness={5} />}
               {!isMyOrgPending && <RegistryIcon height={20} width={20} />}
               <ButtonText>
-                <FormattedMessage id="basic-registry" />
+                <FormattedMessage id="my-registry" />
               </ButtonText>
             </StyledTitleContainer>
             {!isMyOrgCreated && (
