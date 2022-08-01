@@ -413,5 +413,6 @@
   "confirm-organization-deletion": "¿Está seguro de que desea eliminar su organización?",
   "actions": "¿Está seguro de que desea eliminar su organización?",
   "organization-deleted": "La organización se eliminó con éxito.",
-  "organization-not-deleted": "No se pudo eliminar la organización."
+  "organization-not-deleted": "No se pudo eliminar la organización.",
+  "my-registry": "Mi Registro"
 }

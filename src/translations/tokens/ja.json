@@ -413,5 +413,6 @@
   "confirm-organization-deletion": "組織を削除してもよろしいですか？",
   "actions": "組織を削除してもよろしいですか?",
   "organization-deleted": "組織は正常に削除されました。",
-  "organization-not-deleted": "組織を削除できませんでした。"
+  "organization-not-deleted": "組織を削除できませんでした。",
+  "my-registry": "マイレジストリ"
 }
