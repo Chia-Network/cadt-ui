@@ -1599,7 +1599,10 @@ export const uploadXLSXFile = (file, type) => {
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.error,
-              formatApiErrorResponse(errorResponse, errorResponse.error),
+              formatApiErrorResponse(
+                errorResponse,
+                'file-could-not-be-uploaded',
+              ),
             ),
           );
         }
@@ -2013,13 +2016,19 @@ const fetchWrapper = async (url, payload) => {
   return fetch(url, payload);
 };
 
-const formatApiErrorResponse = ({ errors, message }, alternativeResponseId) => {
+const formatApiErrorResponse = (
+  { errors, message, error },
+  alternativeResponseId,
+) => {
   if (!_.isEmpty(errors) && !_.isEmpty(message)) {
     let notificationToDisplay = message + ': ';
     errors.forEach(item => {
       notificationToDisplay = notificationToDisplay.concat(item, ' ; ');
     });
     return notificationToDisplay;
+  }
+  if (error) {
+    return error;
   }
   return alternativeResponseId;
 };
