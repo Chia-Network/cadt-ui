@@ -22,3 +22,4 @@ export * from './FormikRepeater';
 export * from './UnitEditStagingModal';
 export * from './UnitSplitEditStagingFormModal';
 export * from './OrgEditFormModal';
+export * from './UnitSplitForm';
