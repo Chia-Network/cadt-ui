@@ -146,6 +146,7 @@ const UnitSplitFormModal = ({ onClose, record }) => {
                   empty={emptyUnit}
                   name="units"
                   min={2}
+                  max={4}
                   Component={UnitSplitForm}
                 />
               </FormContainerStyle>
