@@ -13,7 +13,6 @@ import {
   vintagesResponseStub,
   stagingDataResponseStub,
   auditResponseStub,
-  fileListResponseStub,
 } from '../../mocks';
 
 import {
@@ -728,19 +727,13 @@ export const getFileList = () => {
     try {
       dispatch(activateProgressIndicator);
 
-      // const url = `${constants.API_HOST}/staging`;
-      // const payload = {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ uuid, data }),
-      // };
-      // const response = await fetchWrapper(url, payload);
-      const response = { ok: true };
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/filestore/get_file_list`,
+      );
 
       if (response.ok) {
-        const results = fileListResponseStub;
+        const results = await response.json();
+        // const results = fileListResponseStub;
         dispatch(setConnectionCheck(true));
         dispatch({
           type: actions.GET_FILE_LIST,
