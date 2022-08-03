@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { memo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
@@ -16,13 +15,11 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  SimpleSelect,
-  SimpleSelectSizeEnum,
-  SimpleSelectTypeEnum,
-  SimpleSelectStateEnum,
   StandardInput,
   InputStateEnum,
   InputSizeEnum,
+  SelectCreatable,
+  SimpleSelectVariantEnum,
 } from '..';
 
 // eslint-disable-next-line react/display-name
@@ -44,29 +41,23 @@ const ProjectCoBenefitForm = memo(
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'cobenefits-cobenefit-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              {!_.isEmpty(pickLists?.cobenefits) ? (
-                <SimpleSelect
-                  width="100%"
-                  addInput={intl.formatMessage({ id: 'co-benefit' })}
+              {!pickLists?.cobenefits ? (
+                <SelectCreatable
                   variant={
                     errors?.cobenefit && touched?.cobenefit
-                      ? InputVariantEnum.error
+                      ? SimpleSelectVariantEnum.error
                       : undefined
                   }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
                   options={pickLists?.cobenefits}
-                  state={SimpleSelectStateEnum.default}
-                  selected={value.cobenefit ? [value.cobenefit] : undefined}
-                  onChange={selectedOptions =>
-                    setFieldValue(getFieldName('cobenefit'), selectedOptions[0])
+                  selected={value.cobenefit}
+                  onChange={val =>
+                    setFieldValue(getFieldName('cobenefit'), val)
                   }
                   onBlur={handleBlur}
                 />
