@@ -36,6 +36,7 @@ import {
   SelectStateEnum,
   Select,
   SelectVariantEnum,
+  SelectCreatable,
 } from '..';
 
 const UnitDetailsForm = () => {
@@ -157,8 +158,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'select-existing-project',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -214,8 +214,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-project-location-id-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -259,8 +258,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-owner-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -294,8 +292,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-block-start-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -329,8 +326,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-block-end-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -364,8 +360,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-count-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -399,8 +394,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-in-country-jurisdiction-of-owner-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -437,33 +431,22 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-country-jurisdiction-of-owner-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.countryJurisdictionOfOwner &&
                   touched.countryJurisdictionOfOwner &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.countries}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.countryJurisdictionOfOwner
-                    ? [values.countryJurisdictionOfOwner]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue(
-                    'countryJurisdictionOfOwner',
-                    selectedOptions[0],
-                  )
+                selected={values.countryJurisdictionOfOwner}
+                onChange={val =>
+                  setFieldValue('countryJurisdictionOfOwner', val)
                 }
                 onBlur={handleBlur}
               />
@@ -479,27 +462,21 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-type-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.unitType &&
                   touched.unitType &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.unitType}
-                state={SimpleSelectStateEnum.default}
-                selected={values.unitType ? [values.unitType] : undefined}
-                onChange={selectedOptions =>
-                  setFieldValue('unitType', selectedOptions[0])
-                }
+                selected={values.unitType}
+                onChange={val => setFieldValue('unitType', val)}
                 onBlur={handleBlur}
               />
             </InputContainer>
@@ -514,27 +491,21 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-unit-status-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.unitStatus &&
                   touched.unitStatus &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.unitStatus}
-                state={SimpleSelectStateEnum.default}
-                selected={values.unitStatus ? [values.unitStatus] : undefined}
-                onChange={selectedOptions =>
-                  setFieldValue('unitStatus', selectedOptions[0])
-                }
+                selected={values.unitStatus}
+                onChange={val => setFieldValue('unitStatus', val)}
                 onBlur={handleBlur}
               />
             </InputContainer>
@@ -550,8 +521,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-status-reason-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -585,8 +555,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-registry-link-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -619,8 +588,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-vintage-year-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -653,8 +621,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-marketplace-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -688,8 +655,7 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-marketplace-identifier-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -726,8 +692,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-marketplace-link-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -761,33 +726,22 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-corresponding-adjustment-declaration-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.correspondingAdjustmentDeclaration &&
                   touched.correspondingAdjustmentDeclaration &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.correspondingAdjustmentDeclaration}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.correspondingAdjustmentDeclaration
-                    ? [values.correspondingAdjustmentDeclaration]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue(
-                    'correspondingAdjustmentDeclaration',
-                    selectedOptions[0],
-                  )
+                selected={values.correspondingAdjustmentDeclaration}
+                onChange={val =>
+                  setFieldValue('correspondingAdjustmentDeclaration', val)
                 }
                 onBlur={handleBlur}
               />
@@ -803,33 +757,22 @@ const UnitDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'units-corresponding-adjustment-status-description',
-                  })}
-                >
+                  })}>
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.correspondingAdjustmentStatus &&
                   touched.correspondingAdjustmentStatus &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.correspondingAdjustmentStatus}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.correspondingAdjustmentStatus
-                    ? [values.correspondingAdjustmentStatus]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue(
-                    'correspondingAdjustmentStatus',
-                    selectedOptions[0],
-                  )
+                selected={values.correspondingAdjustmentStatus}
+                onChange={val =>
+                  setFieldValue('correspondingAdjustmentStatus', val)
                 }
                 onBlur={handleBlur}
               />
@@ -849,8 +792,7 @@ const UnitDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'units-unit-tags-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
