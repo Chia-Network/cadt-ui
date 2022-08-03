@@ -13,7 +13,7 @@ import {
   FormikRepeater,
   UnitSplitForm,
 } from '..';
-import { splitUnitValidationSchema } from '../../store/validations';
+import { splitUnitsValidationSchema } from '../../store/validations';
 import { editStagingData } from '../../store/actions/climateWarehouseActions';
 
 const UnitSplitEditStagingFormModal = ({ onClose, changeGroup }) => {
@@ -84,7 +84,7 @@ const UnitSplitEditStagingFormModal = ({ onClose, changeGroup }) => {
 
   return (
     <Formik
-      validationSchema={splitUnitValidationSchema}
+      validationSchema={splitUnitsValidationSchema}
       initialValues={initialValues}
       onSubmit={submitForm}
     >
