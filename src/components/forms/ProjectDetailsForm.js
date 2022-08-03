@@ -753,16 +753,16 @@ const ProjectDetailsForm = () => {
                 </Body>
               </StyledLabelContainer>
 
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'project-tags',
-                })}
-                state={InputStateEnum.default}
-                value={values.projectTags}
+              <SelectCreatable
+                isMulti
+                variant={
+                  errors?.projectTags && touched?.projectTags
+                    ? SimpleSelectVariantEnum.error
+                    : undefined
+                }
+                selected={[...values?.projectTags]}
                 onChange={value => setFieldValue('projectTags', value)}
                 onBlur={handleBlur}
-                name="projectTags"
               />
               <FormikError name="projectTags" />
             </StyledFieldContainer>

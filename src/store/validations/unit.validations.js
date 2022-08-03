@@ -27,8 +27,8 @@ export const unitsSchema = yup.object().shape({
   marketplace: yup.string().optional(),
   marketplaceLink: yup.string().optional(),
   marketplaceIdentifier: yup.string().optional(),
-  unitTags: yup.string().optional(),
- unitStatus: yup.string().required('yup-validation-field-required'),
+  unitTags: yup.mixed().optional(),
+  unitStatus: yup.string().required('yup-validation-field-required'),
   unitStatusReason: yup.string().optional(),
   unitRegistryLink: yup.string().required('yup-validation-field-required'),
   correspondingAdjustmentDeclaration: yup
