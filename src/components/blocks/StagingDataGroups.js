@@ -487,7 +487,7 @@ const StagingDataGroups = withTheme(
             )}
           {changeGroupToBeEdited &&
             changeGroupToBeEdited.table.toLowerCase() === 'units' &&
-            changeGroupToBeEdited.diff.change.length === 2 && (
+            changeGroupToBeEdited.diff.change.length >= 2 && (
               <UnitSplitEditStagingFormModal
                 changeGroup={changeGroupToBeEdited}
                 onClose={() => setChangeGroupToBeEdited(null)}

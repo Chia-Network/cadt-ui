@@ -10,7 +10,7 @@ import {
   ModalFormContainerStyle,
   modalTypeEnum,
   FormContainerStyle,
-  UnitSplitForM,
+  UnitSplitForm,
   FormikRepeater,
 } from '..';
 import { splitUnitsValidationSchema } from '../../store/validations';
@@ -57,37 +57,40 @@ const UnitSplitFormModal = ({ onClose, record }) => {
     [fullRecord],
   );
 
-  const submitValues = useCallback(values => {
-    if (getIsUnitSumValid(values.units) && !apiResponseIsPending) {
-      const dataToBeSubmitted = {
-        warehouseUnitId: fullRecord.warehouseUnitId,
-        records: values.units.map(splittedUnit => {
-          const newUnit = {};
-          newUnit.unitCount = splittedUnit.unitCount;
-          newUnit.unitBlockStart = splittedUnit.unitBlockStart;
-          newUnit.unitBlockEnd = splittedUnit.unitBlockEnd;
+  const submitValues = useCallback(
+    values => {
+      if (getIsUnitSumValid(values.units) && !apiResponseIsPending) {
+        const dataToBeSubmitted = {
+          warehouseUnitId: fullRecord.warehouseUnitId,
+          records: values.units.map(splittedUnit => {
+            const newUnit = {};
+            newUnit.unitCount = splittedUnit.unitCount;
+            newUnit.unitBlockStart = splittedUnit.unitBlockStart;
+            newUnit.unitBlockEnd = splittedUnit.unitBlockEnd;
 
-          if (splittedUnit.unitOwner !== '') {
-            newUnit.unitOwner = splittedUnit.unitOwner;
-          }
+            if (splittedUnit.unitOwner !== '') {
+              newUnit.unitOwner = splittedUnit.unitOwner;
+            }
 
-          if (splittedUnit.countryJurisdictionOfOwner !== '') {
-            newUnit.countryJurisdictionOfOwner =
-              splittedUnit.countryJurisdictionOfOwner;
-          }
+            if (splittedUnit.countryJurisdictionOfOwner !== '') {
+              newUnit.countryJurisdictionOfOwner =
+                splittedUnit.countryJurisdictionOfOwner;
+            }
 
-          if (splittedUnit.inCountryJurisdictionOfOwner !== '') {
-            newUnit.inCountryJurisdictionOfOwner =
-              splittedUnit.inCountryJurisdictionOfOwner;
-          }
+            if (splittedUnit.inCountryJurisdictionOfOwner !== '') {
+              newUnit.inCountryJurisdictionOfOwner =
+                splittedUnit.inCountryJurisdictionOfOwner;
+            }
 
-          return newUnit;
-        }),
-      };
+            return newUnit;
+          }),
+        };
 
-      dispatch(splitUnits(dataToBeSubmitted));
-    }
-  }, []);
+        dispatch(splitUnits(dataToBeSubmitted));
+      }
+    },
+    [apiResponseIsPending],
+  );
 
   // if unit was successfully split, close modal
   const unitWasSuccessfullySplit =
@@ -143,7 +146,7 @@ const UnitSplitFormModal = ({ onClose, record }) => {
                   empty={emptyUnit}
                   name="units"
                   min={2}
-                  Component={UnitSplitForM}
+                  Component={UnitSplitForm}
                 />
               </FormContainerStyle>
             </ModalFormContainerStyle>

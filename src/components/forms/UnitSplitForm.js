@@ -23,7 +23,7 @@ import {
 
 import { StandardInput } from '../form/StandardInput';
 
-const UnitSplitForM = ({
+const UnitSplitForm = ({
   index,
   name,
   errors,
@@ -264,4 +264,4 @@ const UnitSplitForM = ({
   );
 };
 
-export { UnitSplitForM };
+export { UnitSplitForm };
