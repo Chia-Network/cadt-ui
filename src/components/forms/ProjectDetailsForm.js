@@ -13,7 +13,7 @@ import {
   BodyContainer,
   Body,
   DateSelect,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   DescriptionIcon,
   ToolTipContainer,
   LabelContainer,
@@ -33,6 +33,7 @@ import {
   TextareaSizeEnum,
   TextareaStateEnum,
   FormikError,
+  SelectCreatable,
 } from '..';
 
 const ProjectDetailsForm = () => {
@@ -373,7 +374,7 @@ const ProjectDetailsForm = () => {
                 variant={
                   errors.projectStatusDate &&
                   touched.projectStatusDate &&
-                  DateVariantEnum.error
+                  DateSelectVariantEnum.error
                 }
                 size="large"
                 dateValue={values.projectStatusDate}
@@ -480,26 +481,16 @@ const ProjectDetailsForm = () => {
               </StyledLabelContainer>
               <InputContainer>
                 {pickLists?.registries ? (
-                  <SimpleSelect
-                    addInput="current-registry"
+                  <SelectCreatable
+                    onBlur={handleBlur}
+                    selected={values.currentRegistry}
                     variant={
                       errors.currentRegistry &&
                       touched.currentRegistry &&
                       SimpleSelectVariantEnum.error
                     }
-                    size={SimpleSelectSizeEnum.large}
-                    type={SimpleSelectTypeEnum.basic}
                     options={pickLists.registries}
-                    state={SimpleSelectStateEnum.default}
-                    selected={
-                      values.currentRegistry
-                        ? [values.currentRegistry]
-                        : undefined
-                    }
-                    onChange={selectedOptions =>
-                      setFieldValue('currentRegistry', selectedOptions[0])
-                    }
-                    onBlur={handleBlur}
+                    onChange={val => setFieldValue('currentRegistry', val)}
                   />
                 ) : (
                   <StandardInput
@@ -540,26 +531,16 @@ const ProjectDetailsForm = () => {
             </StyledLabelContainer>
             <InputContainer>
               {pickLists?.registries ? (
-                <SimpleSelect
-                  addInput="registry-of-origin"
+                <SelectCreatable
+                  onBlur={handleBlur}
+                  selected={values.registryOfOrigin}
                   variant={
                     errors.registryOfOrigin &&
                     touched.registryOfOrigin &&
                     SimpleSelectVariantEnum.error
                   }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
                   options={pickLists.registries}
-                  state={SimpleSelectStateEnum.default}
-                  selected={
-                    values.registryOfOrigin
-                      ? [values.registryOfOrigin]
-                      : undefined
-                  }
-                  onChange={selectedOptions =>
-                    setFieldValue('registryOfOrigin', selectedOptions[0])
-                  }
-                  onBlur={handleBlur}
+                  onChange={val => setFieldValue('registryOfOrigin', val)}
                 />
               ) : (
                 <StandardInput
@@ -677,25 +658,16 @@ const ProjectDetailsForm = () => {
                 </Body>
               </StyledLabelContainer>
               {pickLists?.methodology ? (
-                <SimpleSelect
-                  width="100%"
-                  addInput="methodology"
+                <SelectCreatable
+                  selected={values.methodology}
+                  onBlur={handleBlur}
                   variant={
                     errors.methodology &&
                     touched.methodology &&
                     SimpleSelectVariantEnum.error
                   }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
                   options={pickLists.methodology}
-                  state={SimpleSelectStateEnum.default}
-                  selected={
-                    values.methodology ? [values.methodology] : undefined
-                  }
-                  onChange={selectedOptions =>
-                    setFieldValue('methodology', selectedOptions[0])
-                  }
-                  onBlur={handleBlur}
+                  onChange={val => setFieldValue('methodology', val)}
                 />
               ) : (
                 <StandardInput
@@ -770,7 +742,7 @@ const ProjectDetailsForm = () => {
                 variant={
                   errors.validationDate &&
                   touched.validationDate &&
-                  DateVariantEnum.error
+                  DateSelectVariantEnum.error
                 }
                 size="large"
                 dateValue={values.validationDate}

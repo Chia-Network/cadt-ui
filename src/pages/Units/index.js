@@ -1,5 +1,11 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -19,11 +25,7 @@ import {
   getUnitData,
   clearUnitData,
 } from '../../store/actions/climateWarehouseActions';
-import {
-  setPendingError,
-  setForm,
-  setValidateForm,
-} from '../../store/actions/app';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   H3,
@@ -44,7 +46,7 @@ import {
   CommitModal,
   Modal,
   modalTypeEnum,
-  MinusIcon,
+  RemoveIcon,
   UnitsDetailViewModal,
 } from '../../components';
 import theme from '../../theme';
@@ -149,9 +151,12 @@ const Units = () => {
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
+  const handleTabChange = useCallback(
+    (event, newValue) => {
+      setTabValue(newValue);
+    },
+    [setTabValue],
+  );
 
   useEffect(() => {
     const unitId = searchParams.get('unitId');
@@ -161,7 +166,7 @@ const Units = () => {
     return () => dispatch(clearUnitData());
   }, [searchParams.get('unitId')]);
 
-  const closeProjectOpenedInDetailedView = () => {
+  const closeProjectOpenedInDetailedView = useCallback(() => {
     dispatch(clearUnitData());
     navigate(
       `${location.pathname}?${getUpdatedUrl(location.search, {
@@ -170,7 +175,7 @@ const Units = () => {
       })}`,
       { replace: true },
     );
-  };
+  }, [location]);
 
   useEffect(() => {
     const switchTabBySuccessfulRequest = {
@@ -293,8 +298,6 @@ const Units = () => {
         'unitOwner',
         'countryJurisdictionOfOwner',
         'serialNumberBlock',
-        'unitBlockStart',
-        'unitBlockEnd',
         'unitCount',
         'vintageYear',
         'unitType',
@@ -307,21 +310,24 @@ const Units = () => {
     );
   }, [units]);
 
+  const onOrganizationSelect = useCallback(
+    selectedOption => {
+      const orgUid = selectedOption[0].orgUid;
+      setSelectedOrganization(orgUid);
+      navigate(
+        `${location.pathname}?${getUpdatedUrl(location.search, {
+          param: 'orgUid',
+          value: orgUid,
+        })}`,
+        { replace: true },
+      );
+    },
+    [location, setSelectedOrganization],
+  );
+
   if (!filteredColumnsTableData) {
     return null;
   }
-
-  const onOrganizationSelect = selectedOption => {
-    const orgUid = selectedOption[0].orgUid;
-    setSelectedOrganization(orgUid);
-    navigate(
-      `${location.pathname}?${getUpdatedUrl(location.search, {
-        param: 'orgUid',
-        value: orgUid,
-      })}`,
-      { replace: true },
-    );
-  };
 
   return (
     <>
@@ -353,15 +359,19 @@ const Units = () => {
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
-                icon={<AddIcon width="16.13" height="16.88" fill={theme.colors.default.onButton} />}
+                icon={
+                  <AddIcon
+                    width="16.13"
+                    height="16.88"
+                    fill={theme.colors.default.onButton}
+                  />
+                }
                 onClick={() => {
                   if (
                     _.isEmpty(stagingData.units.pending) &&
                     _.isEmpty(stagingData.projects.pending)
                   ) {
                     setCreate(true);
-                    dispatch(setForm('unit'));
-                    dispatch(setValidateForm(false));
                   } else {
                     dispatch(setPendingError(true));
                   }
@@ -419,11 +429,11 @@ const Units = () => {
               tabValue === 1 &&
               stagingData?.units?.staging?.length > 0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
-                  <MinusIcon width={20} height={20} />
+                  <RemoveIcon width={20} height={20} />
                 </span>
               )}
             <span onClick={() => downloadTxtFile('units', searchParams)}>
-              <DownloadIcon />
+              <DownloadIcon width={20} height={20} />
             </span>
             {pageIsMyRegistryPage && (
               <span>
@@ -447,8 +457,6 @@ const Units = () => {
                             _.isEmpty(stagingData.projects.pending)
                           ) {
                             setCreate(true);
-                            dispatch(setForm('unit'));
-                            dispatch(setValidateForm(false));
                           } else {
                             dispatch(setPendingError(true));
                           }
@@ -480,8 +488,6 @@ const Units = () => {
               <UnitCreateModal
                 onClose={() => {
                   setCreate(false);
-                  dispatch(setForm(null));
-                  dispatch(setValidateForm(false));
                 }}
                 modalSizeAndPosition={modalSizeAndPosition}
               />

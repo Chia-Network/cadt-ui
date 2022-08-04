@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Body, LinkIcon } from '../components';
-import { getISODate } from './formatData';
+import { getISODate } from './dateUtils';
 
 export const handleClickLink = link => {
   if (link) {
@@ -179,7 +179,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             <a
               href={handleClickLink(info?.original)}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               {info?.original}
               {info?.original && <LinkIcon height="15" width="30" />}
             </a>
@@ -196,7 +197,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             style={{ color: 'red' }}
             href={handleClickLink(info?.original)}
             target="_blank"
-            rel="noreferrer noopener">
+            rel="noreferrer noopener"
+          >
             {info?.original}
             {info?.original && <LinkIcon height="15" width="30" />}
           </a>
@@ -209,7 +211,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
           <a
             href={handleClickLink(info?.original)}
             target="_blank"
-            rel="noreferrer noopener">
+            rel="noreferrer noopener"
+          >
             {info?.original}
             {info?.original && <LinkIcon height="15" width="30" />}
           </a>
@@ -223,7 +226,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             <a
               href={handleClickLink(info?.changes[0] || info?.original)}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               {info.changes[0] ? info.changes[0] : '---'}
               {(info.changes[0] && <LinkIcon height="15" width="30" />) ||
                 (info.original && <LinkIcon height="15" width="30" />)}
@@ -235,7 +239,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
                 style={{ color: 'red' }}
                 href={handleClickLink(info?.original)}
                 target="_blank"
-                rel="noreferrer noopener">
+                rel="noreferrer noopener"
+              >
                 {info?.original}
                 {info?.original && <LinkIcon height="15" width="30" />}
               </a>
@@ -250,7 +255,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             style={{ color: 'red' }}
             href={handleClickLink(info?.changes[0] || info?.original)}
             target="_blank"
-            rel="noreferrer noopener">
+            rel="noreferrer noopener"
+          >
             {info?.changes[0]}
             {info?.changes[0] && <LinkIcon height="15" width="30" />}
           </a>
@@ -263,7 +269,8 @@ const stagingDetailsViewLinkInfo = (info, dataType, changeColor) => {
             <a
               href={handleClickLink(info?.changes[0])}
               target="_blank"
-              rel="noreferrer noopener">
+              rel="noreferrer noopener"
+            >
               {info?.changes[0]}
               {info?.changes[0] && <LinkIcon height="15" width="30" />}
             </a>
@@ -318,7 +325,8 @@ export const detailsViewData = (type, detailData, dataType, changeColor) => {
         <a
           href={handleClickLink(detailData[dataType])}
           target="_blank"
-          rel="noreferrer noopener">
+          rel="noreferrer noopener"
+        >
           {detailData[dataType] ? detailData[dataType] : '---'}
           {detailData[dataType] && <LinkIcon height="15" width="30" />}
         </a>

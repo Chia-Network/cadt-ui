@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
@@ -18,7 +18,7 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   FormikError,
 } from '..';
 
@@ -26,7 +26,10 @@ import {
 const ProjectIssuanceForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
-    const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+    const getFieldName = useCallback(
+      fieldName => `${name}[${index}].${fieldName}`,
+      [name, index],
+    );
     const areFieldsDisabled = Boolean(value.id);
 
     return (
@@ -53,7 +56,7 @@ const ProjectIssuanceForm = memo(
                   variant={
                     errors?.startDate &&
                     touched?.startDate &&
-                    DateVariantEnum.error
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.startDate}
@@ -85,7 +88,9 @@ const ProjectIssuanceForm = memo(
               <InputContainer>
                 <DateSelect
                   variant={
-                    errors?.endDate && touched?.endDate && DateVariantEnum.error
+                    errors?.endDate &&
+                    touched?.endDate &&
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.endDate}
@@ -160,7 +165,7 @@ const ProjectIssuanceForm = memo(
                   variant={
                     errors?.verificationReportDate &&
                     touched?.verificationReportDate &&
-                    DateVariantEnum.error
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.verificationReportDate}

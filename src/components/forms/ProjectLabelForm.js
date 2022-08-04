@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -19,7 +19,7 @@ import {
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
   SimpleSelectVariantEnum,
@@ -35,7 +35,10 @@ const ProjectLabelForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
     const { pickLists } = useSelector(store => store.climateWarehouse);
-    const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+    const getFieldName = useCallback(
+      fieldName => `${name}[${index}].${fieldName}`,
+      [name, index],
+    );
     const areFieldsDisabled = Boolean(value.id);
 
     return (
@@ -184,7 +187,7 @@ const ProjectLabelForm = memo(
                   variant={
                     errors?.validityPeriodStartDate &&
                     touched?.validityPeriodStartDate &&
-                    DateVariantEnum.error
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.validityPeriodStartDate}
@@ -221,7 +224,7 @@ const ProjectLabelForm = memo(
                   variant={
                     errors?.validityPeriodEndDate &&
                     touched?.validityPeriodEndDate &&
-                    DateVariantEnum.error
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.validityPeriodEndDate}
@@ -255,7 +258,7 @@ const ProjectLabelForm = memo(
                   variant={
                     errors?.creditingPeriodStartDate &&
                     touched?.creditingPeriodStartDate &&
-                    DateVariantEnum.error
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.creditingPeriodStartDate}
@@ -292,7 +295,7 @@ const ProjectLabelForm = memo(
                   variant={
                     errors?.creditingPeriodEndDate &&
                     touched?.creditingPeriodEndDate &&
-                    DateVariantEnum.error
+                    DateSelectVariantEnum.error
                   }
                   size="large"
                   dateValue={value.creditingPeriodEndDate}

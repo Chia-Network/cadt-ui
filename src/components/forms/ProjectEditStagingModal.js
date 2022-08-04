@@ -1,17 +1,17 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { Formik, setNestedObjectValues } from 'formik';
 
 import {
-  TabPanel,
   Modal,
+  TabPanel,
   modalTypeEnum,
-  ProjectDetailsForm,
   StyledFormContainer,
   FormikRepeater,
+  ProjectDetailsForm,
   ProjectIssuanceForm,
   ProjectLocationForm,
   ProjectEstimationForm,
@@ -19,144 +19,82 @@ import {
   ProjectRatingForm,
   ProjectCoBenefitForm,
   ProjectRelatedProjectForm,
+  emptyIssuance,
+  emptyCobenefit,
+  emptyEstimation,
+  emptyLocation,
+  emptyLabel,
+  emptyRelatedProject,
+  emptyRating,
 } from '..';
-import { postNewProject } from '../../store/actions/climateWarehouseActions';
-import { projectSchema } from '../../store/validations';
+import { editStagingData } from '../../store/actions/climateWarehouseActions';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
+import { projectSchema } from '../../store/validations';
 
-export const emptyRating = {
-  ratingType: '',
-  ratingRangeHighest: '',
-  ratingRangeLowest: '',
-  rating: '',
-  ratingLink: '',
-};
-
-export const emptyRelatedProject = {
-  relatedProjectId: '',
-  relationshipType: '',
-  registry: '',
-};
-
-export const emptyLabel = {
-  label: '',
-  labelType: '',
-  creditingPeriodStartDate: '',
-  creditingPeriodEndDate: '',
-  validityPeriodStartDate: '',
-  validityPeriodEndDate: '',
-  unitQuantity: 0,
-  labelLink: '',
-};
-
-export const emptyLocation = {
-  country: '',
-  inCountryRegion: '',
-  geographicIdentifier: '',
-};
-
-export const emptyEstimation = {
-  creditingPeriodStart: '',
-  creditingPeriodEnd: '',
-  unitCount: 0,
-};
-
-export const emptyCobenefit = {
-  cobenefit: '',
-};
-
-export const emptyProject = {
-  currentRegistry: '',
-  registryOfOrigin: '',
-  originProjectId: '',
-  program: '',
-  projectId: '',
-  projectName: '',
-  projectLink: '',
-  projectDeveloper: '',
-  description: '',
-  sector: '',
-  projectType: '',
-  coveredByNDC: '',
-  ndcInformation: '',
-  projectStatus: '',
-  unitMetric: '',
-  methodology: '',
-  projectTags: '',
-  validationBody: '',
-  projectStatusDate: null,
-  validationDate: null,
-};
-
-export const emptyIssuance = {
-  startDate: '',
-  endDate: '',
-  verificationApproach: '',
-  verificationReportDate: '',
-  verificationBody: '',
-};
-
-const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
+const ProjectEditStagingModal = ({
+  onClose,
+  changeGroup,
+  modalSizeAndPosition,
+}) => {
+  const [project] = useState(changeGroup?.diff?.change[0] ?? null);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
 
-  const stepperStepsTranslationIds = useMemo(
-    () => [
-      'project',
-      'issuances',
-      'project-locations',
-      'estimations',
-      'labels',
-      'ratings',
-      'co-benefits',
-      'related-projects',
-    ],
-    [],
-  );
+  const stepperStepsTranslationIds = [
+    'project',
+    'issuances',
+    'project-locations',
+    'estimations',
+    'labels',
+    'ratings',
+    'co-benefits',
+    'related-projects',
+  ];
 
-  const onChangeStepTo = useCallback(
-    async ({ formik, desiredStep = null }) => {
-      const errors = await formik.validateForm();
+  const onChangeStepTo = useCallback(async ({ formik, desiredStep = null }) => {
+    const errors = await formik.validateForm();
 
-      // manually setting touched for error fields so errors are displayed
-      formik.setTouched(setNestedObjectValues(errors, true));
+    // manually setting touched for error fields so errors are displayed
+    formik.setTouched(setNestedObjectValues(errors, true));
 
-      const isProjectValid = _.isEmpty(errors);
+    const isProjectValid = _.isEmpty(errors);
 
-      if (isProjectValid) {
-        if (
-          desiredStep >= stepperStepsTranslationIds.length &&
-          !apiResponseIsPending
-        ) {
-          formik.submitForm();
-        } else {
-          setTabValue(desiredStep);
-        }
+    if (isProjectValid) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !apiResponseIsPending
+      ) {
+        formik.submitForm();
+      } else {
+        setTabValue(desiredStep);
       }
-    },
-    [setTabValue, apiResponseIsPending],
-  );
+    }
+  }, []);
 
-  // if project was successfully created, close modal
-  const projectWasSuccessfullyCreated =
-    notification?.id === 'project-successfully-created';
+  // if project was successfully edited, close modal
+  const projectWasSuccessfullyEdited =
+    notification?.id === 'staging-group-edited';
   useEffect(() => {
-    if (projectWasSuccessfullyCreated) {
+    if (projectWasSuccessfullyEdited) {
       onClose();
     }
   }, [notification]);
 
+  if (!project) {
+    return null;
+  }
+
   return (
     <Formik
       validationSchema={projectSchema}
-      initialValues={emptyProject}
+      initialValues={project}
       onSubmit={values => {
         const dataToSend = _.cloneDeep(values);
         cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-        dispatch(postNewProject(dataToSend));
+        dispatch(editStagingData(changeGroup.uuid, dataToSend));
       }}
     >
       {formik => (
@@ -166,12 +104,18 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
           onClose={onClose}
           modalType={modalTypeEnum.basic}
           title={intl.formatMessage({
-            id: 'create-project',
+            id: 'edit-staged-project',
           })}
           label={intl.formatMessage({
-            id: tabValue < 7 ? 'next' : 'create-project',
+            id: tabValue < 7 ? 'next' : 'update-project',
           })}
-          extraButtonLabel={tabValue > 0 ? 'Back' : undefined}
+          extraButtonLabel={
+            tabValue > 0
+              ? intl.formatMessage({
+                  id: 'back',
+                })
+              : undefined
+          }
           extraButtonOnClick={() =>
             onChangeStepTo({
               formik,
@@ -265,6 +209,7 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
                     Component={ProjectRatingForm}
                   />
                 </TabPanel>
+
                 <TabPanel value={tabValue} index={6}>
                   <FormikRepeater
                     empty={emptyCobenefit}
@@ -277,6 +222,7 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
                     Component={ProjectCoBenefitForm}
                   />
                 </TabPanel>
+
                 <TabPanel value={tabValue} index={7}>
                   <FormikRepeater
                     empty={emptyRelatedProject}
@@ -298,4 +244,4 @@ const ProjectCreateModal = ({ onClose, modalSizeAndPosition }) => {
   );
 };
 
-export { ProjectCreateModal };
+export { ProjectEditStagingModal };

@@ -68,10 +68,6 @@ const Conflicts = withTheme(() => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setTimeout(() => setInfo(false), 20000);
-  }, []);
-
   const { organizations, conflicts } = useSelector(
     store => store.climateWarehouse,
   );

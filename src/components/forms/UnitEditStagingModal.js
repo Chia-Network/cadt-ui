@@ -1,27 +1,27 @@
 import _ from 'lodash';
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stepper, Step, StepLabel } from '@mui/material';
+import { useIntl } from 'react-intl';
 import { Formik, setNestedObjectValues } from 'formik';
 
 import {
-  postNewUnits,
-  getIssuances,
-  getPaginatedData,
-  getMyProjects,
-} from '../../store/actions/climateWarehouseActions';
-import {
-  TabPanel,
   Modal,
+  TabPanel,
   modalTypeEnum,
-  UnitIssuanceForm,
   UnitDetailsForm,
   UnitLabelForm,
+  UnitIssuanceForm,
   FormikRepeater,
 } from '..';
 import { unitsSchema } from '../../store/validations';
+import {
+  getIssuances,
+  getPaginatedData,
+  editStagingData,
+  getMyProjects,
+} from '../../store/actions/climateWarehouseActions';
 import { cleanObjectFromEmptyFieldsOrArrays } from '../../utils/formatData';
 
 const StyledFormContainer = styled('div')`
@@ -30,29 +30,6 @@ const StyledFormContainer = styled('div')`
   gap: 10px;
   padding-top: 10px;
 `;
-
-const emptyUnit = {
-  projectLocationId: '',
-  unitOwner: '',
-  countryJurisdictionOfOwner: '',
-  inCountryJurisdictionOfOwner: '',
-  unitCount: 0,
-  unitBlockEnd: '',
-  unitBlockStart: '',
-  marketplace: '',
-  marketplaceLink: '',
-  marketplaceIdentifier: '',
-  unitTags: '',
-  unitStatusReason: '',
-  vintageYear: '',
-  unitRegistryLink: '',
-  unitType: '',
-  unitStatus: '',
-  correspondingAdjustmentDeclaration: '',
-  correspondingAdjustmentStatus: '',
-  labels: [],
-  issuance: null,
-};
 
 const emptyLabel = {
   label: '',
@@ -65,14 +42,18 @@ const emptyLabel = {
   labelLink: '',
 };
 
-const UnitCreateModal = ({ onClose, modalSizeAndPosition }) => {
+const UnitEditStagingModal = ({
+  onClose,
+  changeGroup,
+  modalSizeAndPosition,
+}) => {
+  const { myOrgUid } = useSelector(store => store.climateWarehouse);
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
+  const [unit] = useState(changeGroup?.diff?.change[0] ?? null);
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch();
   const intl = useIntl();
-  const stepperStepsTranslationIds = ['unit', 'issuance', 'labels'];
-  const { myOrgUid } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
     if (myOrgUid) {
@@ -83,71 +64,71 @@ const UnitCreateModal = ({ onClose, modalSizeAndPosition }) => {
     }
   }, []);
 
-  const onChangeStepTo = useCallback(
-    async ({ formik, desiredStep = null }) => {
-      const errors = await formik.validateForm();
+  const stepperStepsTranslationIds = ['unit', 'issuance', 'labels'];
 
-      // manually setting touched for error fields so errors are displayed
-      formik.setTouched(setNestedObjectValues(errors, true));
+  const onChangeStep = useCallback(async ({ formik, desiredStep = null }) => {
+    const errors = await formik.validateForm();
 
-      const isUnitValid = _.isEmpty(errors);
+    // manually setting touched for error fields so errors are displayed
+    formik.setTouched(setNestedObjectValues(errors, true));
 
-      const isIssuanceSelected =
-        desiredStep > 1 ? !_.isEmpty(formik.values?.issuance) : true;
+    const isUnitValid = _.isEmpty(errors);
 
-      const isProjectSelected = Boolean(
-        localStorage.getItem('unitSelectedWarehouseProjectId'),
-      );
+    const isIssuanceSelected =
+      desiredStep > 1 ? !_.isEmpty(formik.values?.issuance) : true;
 
-      if (isUnitValid && isProjectSelected && isIssuanceSelected) {
-        if (
-          desiredStep >= stepperStepsTranslationIds.length &&
-          !apiResponseIsPending
-        ) {
-          formik.submitForm();
-        } else {
-          setTabValue(desiredStep);
-        }
+    const isProjectSelected = Boolean(
+      localStorage.getItem('unitSelectedWarehouseProjectId'),
+    );
+
+    if (isUnitValid && isProjectSelected && isIssuanceSelected) {
+      if (
+        desiredStep >= stepperStepsTranslationIds.length &&
+        !apiResponseIsPending
+      ) {
+        formik.submitForm();
+      } else {
+        setTabValue(desiredStep);
       }
-    },
-    [setTabValue, apiResponseIsPending],
-  );
+    }
+  }, []);
 
-  // if unit was successfully created, close modal
-  const unitWasSuccessfullyCreated =
-    notification?.id === 'unit-successfully-created';
+  // if unit was successfully edited, close modal
+  const unitWasSuccessfullyEdited = notification?.id === 'staging-group-edited';
   useEffect(() => {
-    if (unitWasSuccessfullyCreated) {
+    if (unitWasSuccessfullyEdited) {
       onClose();
     }
   }, [notification]);
 
+  if (!unit) {
+    return null;
+  }
+
   return (
     <Formik
-      initialValues={emptyUnit}
+      initialValues={unit}
       validationSchema={unitsSchema}
       onSubmit={values => {
         const dataToSend = _.cloneDeep(values);
+        if (dataToSend.serialNumberBlock) {
+          delete dataToSend.serialNumberBlock;
+        }
         cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-        dispatch(postNewUnits(dataToSend));
+        dispatch(editStagingData(changeGroup.uuid, dataToSend));
       }}
     >
       {formik => (
         <Modal
           modalSizeAndPosition={modalSizeAndPosition}
-          onOk={() =>
-            onChangeStepTo({
-              formik,
-              desiredStep: tabValue + 1,
-            })
-          }
+          onOk={() => onChangeStep({ formik, desiredStep: tabValue + 1 })}
           onClose={onClose}
           modalType={modalTypeEnum.basic}
           title={intl.formatMessage({
-            id: 'create-unit',
+            id: 'edit-unit',
           })}
           label={intl.formatMessage({
-            id: tabValue < 2 ? 'next' : 'create',
+            id: tabValue < 2 ? 'next' : 'update-unit',
           })}
           extraButtonLabel={
             tabValue > 0
@@ -157,7 +138,7 @@ const UnitCreateModal = ({ onClose, modalSizeAndPosition }) => {
               : undefined
           }
           extraButtonOnClick={() =>
-            onChangeStepTo({
+            onChangeStep({
               formik,
               desiredStep: tabValue > 0 ? tabValue - 1 : tabValue,
             })
@@ -170,10 +151,7 @@ const UnitCreateModal = ({ onClose, modalSizeAndPosition }) => {
                     <Step
                       key={index}
                       onClick={() =>
-                        onChangeStepTo({
-                          formik,
-                          desiredStep: index,
-                        })
+                        onChangeStep({ formik, desiredStep: index })
                       }
                       sx={{ cursor: 'pointer' }}
                     >
@@ -214,4 +192,4 @@ const UnitCreateModal = ({ onClose, modalSizeAndPosition }) => {
   );
 };
 
-export { UnitCreateModal };
+export { UnitEditStagingModal };

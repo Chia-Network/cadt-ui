@@ -30,6 +30,9 @@ const initialState = {
   isGovernance: null,
   isGovernanceCreated: null,
   isGovernanceInitiated: null,
+  walletBalance: null,
+  isWalletSynced: false,
+  fileList: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -49,8 +52,17 @@ const climateWarehouseReducer = (state = initialState, action) => {
     case climateWarehouseActions.GET_GOVERNANCE_ORG_LIST:
       return u({ governanceOrgList: action.payload }, state);
 
+    case climateWarehouseActions.GET_FILE_LIST:
+      return u({ fileList: action.payload }, state);
+
     case climateWarehouseActions.SET_MY_ORG_UID:
       return u({ myOrgUid: action.payload }, state);
+
+    case climateWarehouseActions.SET_WALLET_BALANCE:
+      return u({ walletBalance: action.payload }, state);
+
+    case climateWarehouseActions.SET_WALLET_STATUS:
+      return u({ isWalletSynced: action.payload }, state);
 
     case climateWarehouseActions.GET_PICKLISTS:
       return u({ pickLists: action.payload }, state);

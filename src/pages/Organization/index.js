@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import QRCode from 'qrcode.react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { validateUrl } from '../../utils/urlUtils';
 import {
   Body,
   CopyIcon,
@@ -12,12 +11,25 @@ import {
   H4,
   PrimaryButton,
   SubscriptionModal,
+  OrgEditFormModal,
+  OrganizationLogo,
+  SuccessIcon,
+  WarningIcon,
+  modalTypeEnum,
+  Modal,
 } from '../../components';
+import { deleteMyOrg } from '../../store/actions/climateWarehouseActions';
 
 const StyledOrganizationContainer = styled('div')`
   padding: 30px 63px;
   display: flex;
   flex-direction: row;
+`;
+
+const StyledRowContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
 `;
 
 const StyledLogoContainer = styled('div')`
@@ -31,18 +43,6 @@ const StyledItemContainer = styled('div')`
   gap: 5px;
   button {
     width: fit-content;
-  }
-`;
-
-const StyledSvgContainer = styled('div')`
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & svg {
-    width: 100px;
-    height: 100px;
   }
 `;
 
@@ -63,9 +63,11 @@ const Organization = () => {
   const intl = useIntl();
   const [isSubscriptionsModalDisplayed, setIsSubscriptionsModalDisplayed] =
     useState(false);
-  const { myOrgUid, organizations } = useSelector(
-    store => store.climateWarehouse,
-  );
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { myOrgUid, organizations, walletBalance, isWalletSynced } =
+    useSelector(store => store.climateWarehouse);
+  const dispatch = useDispatch();
 
   if (!organizations || !myOrgUid) {
     return null;
@@ -73,23 +75,12 @@ const Organization = () => {
 
   const myOrganization = organizations && organizations[myOrgUid];
 
-  const isLogoPngType = myOrganization?.icon?.includes('data:image/png;base64');
-  const isLogoSvgType = myOrganization?.icon?.includes('<svg');
-  const isLogoUrlType = myOrganization?.icon
-    ? validateUrl(myOrganization.icon)
-    : false;
-
-  const createMarkup = icon => {
-    return { __html: icon };
-  };
-
   return (
     <StyledOrganizationContainer>
       <div>
         <H2>
           <FormattedMessage id="organization-information" />
         </H2>
-
         <StyledItemContainer>
           <H4>
             <FormattedMessage id="organization-name" />
@@ -107,7 +98,6 @@ const Organization = () => {
             </StyledCopyIconContainer>
           </Body>
         </StyledItemContainer>
-
         <StyledItemContainer>
           <H4>
             <FormattedMessage id="org-uid" />
@@ -128,6 +118,36 @@ const Organization = () => {
 
         <StyledItemContainer>
           <H4>
+            <FormattedMessage id="spendable-balance" />
+          </H4>
+          <Body size="Big">{walletBalance} xch</Body>
+        </StyledItemContainer>
+
+        <StyledItemContainer>
+          <H4>
+            <FormattedMessage id="wallet-sync-status" />
+          </H4>
+          <Body size="Big">
+            {isWalletSynced ? (
+              <>
+                <FormattedMessage id="synced" />
+                <StyledCopyIconContainer>
+                  <SuccessIcon height={18} width={18} />
+                </StyledCopyIconContainer>
+              </>
+            ) : (
+              <>
+                <FormattedMessage id="syncing" />
+                <StyledCopyIconContainer>
+                  <WarningIcon height={18} width={18} />
+                </StyledCopyIconContainer>
+              </>
+            )}
+          </Body>
+        </StyledItemContainer>
+
+        <StyledItemContainer>
+          <H4>
             <FormattedMessage id="public-address" />
           </H4>
           <Body size="Big">
@@ -143,14 +163,12 @@ const Organization = () => {
             </StyledCopyIconContainer>
           </Body>
         </StyledItemContainer>
-
         <StyledItemContainer>
           <H4>
             <FormattedMessage id="address-qr-code" />
           </H4>
           <QRCode value={myOrganization.xchAddress} />
         </StyledItemContainer>
-
         <StyledItemContainer>
           <H4>
             <FormattedMessage id="organization-subscriptions" />
@@ -161,6 +179,23 @@ const Organization = () => {
             onClick={() => setIsSubscriptionsModalDisplayed(true)}
           />
         </StyledItemContainer>
+        <StyledItemContainer>
+          <H4>
+            <FormattedMessage id="actions" />
+          </H4>
+          <StyledRowContainer>
+            <PrimaryButton
+              label={intl.formatMessage({ id: 'edit-organization' })}
+              size="large"
+              onClick={() => setIsEditModalOpen(true)}
+            />
+            <PrimaryButton
+              label={intl.formatMessage({ id: 'delete-organization' })}
+              size="large"
+              onClick={() => setIsDeleteModalOpen(true)}
+            />
+          </StyledRowContainer>
+        </StyledItemContainer>
       </div>
 
       {isSubscriptionsModalDisplayed && (
@@ -168,18 +203,33 @@ const Organization = () => {
           onClose={() => setIsSubscriptionsModalDisplayed(false)}
         />
       )}
+      {isEditModalOpen && (
+        <OrgEditFormModal
+          onClose={() => setIsEditModalOpen(false)}
+          name={myOrganization?.name}
+          icon={myOrganization?.icon}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <Modal
+          title={intl.formatMessage({
+            id: 'notification',
+          })}
+          body={intl.formatMessage({
+            id: 'confirm-organization-deletion',
+          })}
+          modalType={modalTypeEnum.confirmation}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onOk={() => {
+            dispatch(deleteMyOrg());
+            setIsDeleteModalOpen(false);
+          }}
+        />
+      )}
 
       <StyledLogoContainer>
-        {isLogoSvgType && (
-          <StyledSvgContainer
-            dangerouslySetInnerHTML={createMarkup(myOrganization.icon)}
-          />
-        )}
-        {isLogoUrlType && (
-          <img src={myOrganization.icon} width={100} height={100} />
-        )}
-        {isLogoPngType && (
-          <img src={myOrganization.icon} width={100} height={100} />
+        {myOrganization?.icon && (
+          <OrganizationLogo logo={myOrganization.icon} />
         )}
       </StyledLogoContainer>
     </StyledOrganizationContainer>

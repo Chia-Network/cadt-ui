@@ -27,7 +27,7 @@ const UploadXLSX = ({ type }) => {
   return (
     <>
       <label htmlFor="xlsx">
-        <UploadIcon width="16" height="16" />
+        <UploadIcon width="20" height="20" />
       </label>
       <StyledInput type="file" id="xlsx" accept=".xlsx" onChange={onChange} />
     </>

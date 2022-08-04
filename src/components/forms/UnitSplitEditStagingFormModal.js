@@ -10,34 +10,25 @@ import {
   ModalFormContainerStyle,
   modalTypeEnum,
   FormContainerStyle,
-  UnitSplitForm,
   FormikRepeater,
+  UnitSplitForm,
 } from '..';
 import { splitUnitsValidationSchema } from '../../store/validations';
-import { splitUnits } from '../../store/actions/climateWarehouseActions';
+import { editStagingData } from '../../store/actions/climateWarehouseActions';
 
-const UnitSplitFormModal = ({ onClose, record }) => {
+const UnitSplitEditStagingFormModal = ({ onClose, changeGroup }) => {
   const { units } = useSelector(store => store.climateWarehouse);
   const intl = useIntl();
   const { notification, showProgressOverlay: apiResponseIsPending } =
     useSelector(state => state.app);
   const dispatch = useDispatch();
-  const initialValues = useMemo(() => ({ units: [] }), []);
-  const emptyUnit = useMemo(
-    () => ({
-      unitCount: 0,
-      unitOwner: '',
-      countryJurisdictionOfOwner: '',
-      inCountryJurisdictionOfOwner: '',
-      unitBlockStart: '',
-      unitBlockEnd: '',
-    }),
-    [],
-  );
 
   const fullRecord = useMemo(
     () =>
-      units.filter(unit => unit.warehouseUnitId === record.warehouseUnitId)[0],
+      units.filter(
+        unit =>
+          unit.warehouseUnitId === changeGroup.diff.original.warehouseUnitId,
+      )[0],
     [units],
   );
 
@@ -57,55 +48,45 @@ const UnitSplitFormModal = ({ onClose, record }) => {
     [fullRecord],
   );
 
-  const submitValues = useCallback(
-    values => {
-      if (getIsUnitSumValid(values.units) && !apiResponseIsPending) {
-        const dataToBeSubmitted = {
-          warehouseUnitId: fullRecord.warehouseUnitId,
-          records: values.units.map(splittedUnit => {
-            const newUnit = {};
-            newUnit.unitCount = splittedUnit.unitCount;
-            newUnit.unitBlockStart = splittedUnit.unitBlockStart;
-            newUnit.unitBlockEnd = splittedUnit.unitBlockEnd;
-
-            if (splittedUnit.unitOwner !== '') {
-              newUnit.unitOwner = splittedUnit.unitOwner;
-            }
-
-            if (splittedUnit.countryJurisdictionOfOwner !== '') {
-              newUnit.countryJurisdictionOfOwner =
-                splittedUnit.countryJurisdictionOfOwner;
-            }
-
-            if (splittedUnit.inCountryJurisdictionOfOwner !== '') {
-              newUnit.inCountryJurisdictionOfOwner =
-                splittedUnit.inCountryJurisdictionOfOwner;
-            }
-
-            return newUnit;
-          }),
-        };
-
-        dispatch(splitUnits(dataToBeSubmitted));
-      }
-    },
-    [apiResponseIsPending],
+  const initialValues = useMemo(
+    () => ({
+      units: changeGroup.diff.change.map(unitItem => ({
+        ...unitItem,
+        unitCount: unitItem?.unitCount ?? 0,
+        unitOwner: unitItem?.unitOwner ?? '',
+        countryJurisdictionOfOwner: unitItem?.countryJurisdictionOfOwner ?? '',
+        inCountryJurisdictionOfOwner:
+          unitItem?.inCountryJurisdictionOfOwner ?? '',
+        unitBlockStart: unitItem?.unitBlockStart ?? '',
+        unitBlockEnd: unitItem?.unitBlockEnd ?? '',
+      })),
+    }),
+    [changeGroup],
   );
 
-  // if unit was successfully split, close modal
+  // if staging unit split was successfully edited, close modal
   const unitWasSuccessfullySplit =
-    notification && notification.id === 'unit-successfully-split';
+    notification && notification.id === 'staging-group-edited';
   useEffect(() => {
     if (unitWasSuccessfullySplit) {
       onClose();
     }
   }, [notification]);
 
+  const submitForm = useCallback(
+    values => {
+      if (getIsUnitSumValid(values.units) && !apiResponseIsPending) {
+        dispatch(editStagingData(changeGroup.uuid, values.units));
+      }
+    },
+    [changeGroup, apiResponseIsPending],
+  );
+
   return (
     <Formik
       validationSchema={splitUnitsValidationSchema}
       initialValues={initialValues}
-      onSubmit={submitValues}
+      onSubmit={submitForm}
     >
       {formik => (
         <Modal
@@ -114,10 +95,10 @@ const UnitSplitFormModal = ({ onClose, record }) => {
           modalType={modalTypeEnum.basic}
           hideButtons={!isUnitDivisible}
           title={intl.formatMessage({
-            id: 'split',
+            id: 'edit-split-unit',
           })}
           label={intl.formatMessage({
-            id: 'split',
+            id: 'update',
           })}
           body={
             <ModalFormContainerStyle>
@@ -143,11 +124,11 @@ const UnitSplitFormModal = ({ onClose, record }) => {
               </Body>
               <FormContainerStyle>
                 <FormikRepeater
-                  empty={emptyUnit}
+                  empty={{}}
                   name="units"
-                  min={2}
-                  max={4}
+                  min={formik.values.units.length}
                   Component={UnitSplitForm}
+                  isControlVisible={false}
                 />
               </FormContainerStyle>
             </ModalFormContainerStyle>
@@ -158,4 +139,4 @@ const UnitSplitFormModal = ({ onClose, record }) => {
   );
 };
 
-export { UnitSplitFormModal };
+export { UnitSplitEditStagingFormModal };

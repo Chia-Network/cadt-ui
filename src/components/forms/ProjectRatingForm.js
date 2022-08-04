@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { FormikError } from '../form/FormikError';
@@ -32,7 +32,10 @@ const ProjectRatingForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
     const { pickLists } = useSelector(store => store.climateWarehouse);
-    const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+    const getFieldName = useCallback(
+      fieldName => `${name}[${index}].${fieldName}`,
+      [index, name],
+    );
 
     return (
       <ModalFormContainerStyle>

@@ -57,6 +57,9 @@ export const actions = keyMirror(
   'SET_IS_GOVERNANCE',
   'GET_IS_GOVERNANCE_CREATED',
   'SET_IS_GOVERNANCE_INITIATED',
+  'SET_WALLET_BALANCE',
+  'SET_WALLET_STATUS',
+  'GET_FILE_LIST',
 );
 
 const getClimateWarehouseTable = (
@@ -148,6 +151,16 @@ export const setMyOrgUid = uid => ({
   payload: uid,
 });
 
+export const setWalletBalance = balance => ({
+  type: actions.SET_WALLET_BALANCE,
+  payload: balance,
+});
+
+export const setWalletStatus = isWalletSynced => ({
+  type: actions.SET_WALLET_STATUS,
+  payload: isWalletSynced,
+});
+
 export const getOrganizationData = () => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -169,6 +182,13 @@ export const getOrganizationData = () => {
 
         const myOrgUid = getMyOrgUid(results);
         dispatch(setMyOrgUid(myOrgUid));
+
+        const spendableBalance = results[myOrgUid]?.balance ?? null;
+        dispatch(setWalletBalance(spendableBalance));
+
+        const isWalletSynced =
+          response.headers.get('x-wallet-synced') === 'true';
+        dispatch(setWalletStatus(isWalletSynced));
 
         dispatch({
           type: actions.GET_ORGANIZATIONS,
@@ -650,7 +670,7 @@ export const getStagingPaginatedData = ({
   };
 };
 
-export const commitStagingData = (data, comment) => {
+export const commitStagingData = (data, comment, author) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -664,8 +684,16 @@ export const commitStagingData = (data, comment) => {
           'Content-Type': 'application/json',
         },
       };
-      if (comment?.length > 0) {
-        payload.body = JSON.stringify({ comment });
+
+      const body = {};
+      if (comment?.length) {
+        body.comment = comment;
+      }
+      if (author?.length) {
+        body.author = author;
+      }
+      if (body?.author || body?.comment) {
+        payload.body = JSON.stringify(body);
       }
 
       const response = await fetchWrapper(url, payload);
@@ -693,6 +721,193 @@ export const commitStagingData = (data, comment) => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'transactions-not-committed',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getFileList = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/filestore/get_file_list`,
+      );
+
+      if (response.ok) {
+        const results = await response.json();
+        // const results = fileListResponseStub;
+        dispatch(setConnectionCheck(true));
+        dispatch({
+          type: actions.GET_FILE_LIST,
+          payload: results,
+        });
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'could-not-retrieve-file-list',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'could-not-retrieve-file-list',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const postNewFile = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const formData = new FormData();
+      formData.append('file', data.file);
+      formData.append('fileName', data.fileName);
+
+      const url = `${constants.API_HOST}/filestore/add_file`;
+      const payload = {
+        method: 'POST',
+        body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getFileList());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'file-uploaded',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'file-not-uploaded'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'file-not-uploaded',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteFile = SHA256 => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/filestore/delete_file`;
+      const payload = {
+        method: 'DELETE',
+        body: JSON.stringify({ fileId: SHA256 }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getFileList());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'file-deleted',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'file-not-deleted'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'file-not-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const editStagingData = (uuid, data) => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/staging`;
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uuid, data }),
+      };
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'staging-group-edited',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'staging-group-could-not-be-edited',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'staging-group-could-not-be-edited',
         ),
       );
       dispatch(setConnectionCheck(false));
@@ -1250,6 +1465,99 @@ export const postNewOrg = data => {
   };
 };
 
+export const editExistingOrg = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const formData = new FormData();
+      formData.append('file', data.png);
+      formData.append('name', data.name);
+
+      const url = `${constants.API_HOST}/organizations/edit`;
+      const payload = {
+        method: 'PUT',
+        body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-edited',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'organization-not-edited'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'organization-not-edited',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteMyOrg = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations`;
+      const payload = {
+        method: 'DELETE',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-deleted',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'organization-not-deleted'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'organization-not-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const importHomeOrg = orgUid => {
   return async dispatch => {
     try {
@@ -1441,7 +1749,7 @@ export const uploadXLSXFile = (file, type) => {
               NotificationMessageTypeEnum.error,
               formatApiErrorResponse(
                 errorResponse,
-                errorResponse.error,
+                'file-could-not-be-uploaded',
               ),
             ),
           );
@@ -1856,13 +2164,19 @@ const fetchWrapper = async (url, payload) => {
   return fetch(url, payload);
 };
 
-const formatApiErrorResponse = ({ errors, message }, alternativeResponseId) => {
+const formatApiErrorResponse = (
+  { errors, message, error },
+  alternativeResponseId,
+) => {
   if (!_.isEmpty(errors) && !_.isEmpty(message)) {
     let notificationToDisplay = message + ': ';
     errors.forEach(item => {
       notificationToDisplay = notificationToDisplay.concat(item, ' ; ');
     });
     return notificationToDisplay;
+  }
+  if (error) {
+    return error;
   }
   return alternativeResponseId;
 };

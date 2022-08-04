@@ -1,6 +1,12 @@
 /* es-lint disable */
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -29,15 +35,11 @@ import {
   CommitModal,
   Modal,
   modalTypeEnum,
-  MinusIcon,
+  RemoveIcon,
   ProjectDetailedViewModal,
 } from '../../components';
 
-import {
-  setPendingError,
-  setValidateForm,
-  setForm,
-} from '../../store/actions/app';
+import { setPendingError } from '../../store/actions/app';
 
 import {
   deleteStagingData,
@@ -153,9 +155,12 @@ const Projects = () => {
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
+  const handleTabChange = useCallback(
+    (event, newValue) => {
+      setTabValue(newValue);
+    },
+    [setTabValue],
+  );
 
   useEffect(() => {
     const projectId = searchParams.get('projectId');
@@ -216,17 +221,20 @@ const Projects = () => {
   const pageIsMyRegistryPage =
     searchParams.has('myRegistry') && searchParams.get('myRegistry') === 'true';
 
-  const onOrganizationSelect = selectedOption => {
-    const orgUid = selectedOption[0].orgUid;
-    setSelectedOrganization(orgUid);
-    navigate(
-      `${location.pathname}?${getUpdatedUrl(location.search, {
-        param: 'orgUid',
-        value: orgUid,
-      })}`,
-      { replace: true },
-    );
-  };
+  const onOrganizationSelect = useCallback(
+    selectedOption => {
+      const orgUid = selectedOption[0].orgUid;
+      setSelectedOrganization(orgUid);
+      navigate(
+        `${location.pathname}?${getUpdatedUrl(location.search, {
+          param: 'orgUid',
+          value: orgUid,
+        })}`,
+        { replace: true },
+      );
+    },
+    [location, setSelectedOrganization],
+  );
 
   const onSearch = useMemo(
     () =>
@@ -354,15 +362,19 @@ const Projects = () => {
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
-                icon={<AddIcon width="16.13" height="16.88" fill={theme.colors.default.onButton} />}
+                icon={
+                  <AddIcon
+                    width="16.13"
+                    height="16.88"
+                    fill={theme.colors.default.onButton}
+                  />
+                }
                 onClick={() => {
                   if (
                     _.isEmpty(stagingData.units.pending) &&
                     _.isEmpty(stagingData.projects.pending)
                   ) {
                     setCreateFormIsDisplayed(true);
-                    dispatch(setForm('project'));
-                    dispatch(setValidateForm(false));
                   } else {
                     dispatch(setPendingError(true));
                   }
@@ -419,11 +431,11 @@ const Projects = () => {
               tabValue === 1 &&
               stagingData?.projects?.staging?.length > 0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
-                  <MinusIcon width={20} height={20} />
+                  <RemoveIcon width={20} height={20} />
                 </span>
               )}
             <span onClick={() => downloadTxtFile('projects', searchParams)}>
-              <DownloadIcon />
+              <DownloadIcon width={20} height={20} />
             </span>
             {pageIsMyRegistryPage && (
               <span>
@@ -447,8 +459,6 @@ const Projects = () => {
                             _.isEmpty(stagingData.projects.pending)
                           ) {
                             setCreateFormIsDisplayed(true);
-                            dispatch(setForm('project'));
-                            dispatch(setValidateForm(false));
                           } else {
                             dispatch(setPendingError(true));
                           }
@@ -540,8 +550,6 @@ const Projects = () => {
         <ProjectCreateModal
           onClose={() => {
             setCreateFormIsDisplayed(false);
-            dispatch(setForm(null));
-            dispatch(setValidateForm(false));
           }}
           modalSizeAndPosition={modalSizeAndPosition}
         />

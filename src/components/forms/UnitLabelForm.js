@@ -32,7 +32,7 @@ import {
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   SpanTwoColumnsContainer,
   SimpleSelectSizeEnum,
   SimpleSelectTypeEnum,
@@ -470,7 +470,7 @@ const UnitLabelForm = memo(
                       variant={
                         errors?.validityPeriodStartDate &&
                         touched?.validityPeriodStartDate &&
-                        DateVariantEnum.error
+                        DateSelectVariantEnum.error
                       }
                       size="large"
                       dateValue={value.validityPeriodStartDate}
@@ -507,7 +507,7 @@ const UnitLabelForm = memo(
                       variant={
                         errors?.validityPeriodEndDate &&
                         touched?.validityPeriodEndDate &&
-                        DateVariantEnum.error
+                        DateSelectVariantEnum.error
                       }
                       size="large"
                       dateValue={value.validityPeriodEndDate}
@@ -544,7 +544,7 @@ const UnitLabelForm = memo(
                       variant={
                         errors?.creditingPeriodStartDate &&
                         touched?.creditingPeriodStartDate &&
-                        DateVariantEnum.error
+                        DateSelectVariantEnum.error
                       }
                       size="large"
                       dateValue={value.creditingPeriodStartDate}
@@ -583,7 +583,7 @@ const UnitLabelForm = memo(
                       variant={
                         errors?.creditingPeriodEndDate &&
                         touched?.creditingPeriodEndDate &&
-                        DateVariantEnum.error
+                        DateSelectVariantEnum.error
                       }
                       size="large"
                       dateValue={value.creditingPeriodEndDate}

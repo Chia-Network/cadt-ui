@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 
 import {
@@ -18,7 +18,7 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  DateVariantEnum,
+  DateSelectVariantEnum,
   FormikError,
 } from '..';
 
@@ -32,7 +32,10 @@ const ProjectEstimationForm = ({
   handleBlur,
 }) => {
   const intl = useIntl();
-  const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+  const getFieldName = useCallback(
+    fieldName => `${name}[${index}].${fieldName}`,
+    [name, index],
+  );
 
   return (
     <ModalFormContainerStyle>
@@ -58,7 +61,7 @@ const ProjectEstimationForm = ({
                 variant={
                   errors?.creditingPeriodStart &&
                   touched?.creditingPeriodStart &&
-                  DateVariantEnum.error
+                  DateSelectVariantEnum.error
                 }
                 size="large"
                 dateValue={value.creditingPeriodStart}
@@ -91,7 +94,7 @@ const ProjectEstimationForm = ({
                 variant={
                   errors?.creditingPeriodEnd &&
                   touched?.creditingPeriodEnd &&
-                  DateVariantEnum.error
+                  DateSelectVariantEnum.error
                 }
                 size="large"
                 dateValue={value.creditingPeriodEnd}
