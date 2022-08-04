@@ -765,6 +765,55 @@ export const getFileList = () => {
   };
 };
 
+export const postNewFile = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const formData = new FormData();
+      formData.append('file', data.file);
+      formData.append('fileName', data.fileName);
+
+      const url = `${constants.API_HOST}/filestore/add_file`;
+      const payload = {
+        method: 'POST',
+        body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getFileList());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'file-uploaded',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'file-not-uploaded'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'file-not-uploaded',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const editStagingData = (uuid, data) => {
   return async dispatch => {
     try {

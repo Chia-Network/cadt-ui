@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
+import constants from '../../constants';
 import {
   Body,
   DescendingClockIcon,
@@ -98,7 +99,7 @@ const Files = () => {
   const { fileList } = useSelector(store => store.climateWarehouse);
   const [filteredFileList, setFilteredFileList] = useState(fileList ?? []);
   const [sortOrder, setSortOrder] = useState(SortEnum.aToZ);
-  const [shaToDownload, setShaToDownload] = useState(null);
+  const [fileToDownload, setFileToDownload] = useState(null);
   const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
 
   useEffect(() => dispatch(getFileList()), []);
@@ -146,13 +147,33 @@ const Files = () => {
     });
   }, [setSortOrder, filteredFileList]);
 
+  const downloadFile = useCallback(async () => {
+    await fetch(`${constants.API_HOST}/filestore/get_file`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ fileId: fileToDownload.SHA256 }),
+    })
+      .then(async result => await result.blob())
+      .then(async response => {
+        const filename = await response;
+        console.log('filename:', filename);
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(new Blob([filename]));
+        link.href = url;
+        link.download = `${fileToDownload.fileName}`;
+        document.body.appendChild(link); // Required for this to work in FireFox
+        link.click();
+      });
+  }, [fileToDownload]);
+
   useEffect(() => {
-    if (shaToDownload) {
-      //TO DO IMPLEMENT FILE DOWNLOAD HERE
-      console.log(shaToDownload);
+    if (fileToDownload) {
+      downloadFile();
     }
-    setShaToDownload(null);
-  }, [shaToDownload]);
+    setFileToDownload(null);
+  }, [fileToDownload]);
 
   const toggleUploadModal = useCallback(
     () => setIsUploadModalVisible(prev => !prev),
@@ -220,7 +241,7 @@ const Files = () => {
                 <StyledTr key={file.SHA256}>
                   <StyledTd>
                     <StyledIconContainer
-                      onClick={() => setShaToDownload(file.SHA256)}
+                      onClick={() => setFileToDownload(file)}
                     >
                       <DownloadIcon width={20} height={20} />
                     </StyledIconContainer>

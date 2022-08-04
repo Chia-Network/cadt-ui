@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,9 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   Modal,
   Body,
-  InputSizeEnum,
-  StandardInput,
-  InputVariantEnum,
   modalTypeEnum,
   InputContainer,
   StyledFieldContainer,
@@ -16,7 +12,7 @@ import {
   ModalFormContainerStyle,
   UploadFileInput,
 } from '..';
-import { isValidFileName } from '../../utils/stringUtils';
+import { postNewFile } from '../../store/actions/climateWarehouseActions';
 
 const FileUploadModal = ({ onClose }) => {
   const intl = useIntl();
@@ -28,16 +24,14 @@ const FileUploadModal = ({ onClose }) => {
     file: null,
   });
 
-  const isFileNameValid = isValidFileName(formData.fileName);
   const isFileValid = formData?.file != null;
 
   const onSubmit = useCallback(async () => {
     setIsValidationOn(true);
-    if (isFileNameValid && isFileValid) {
-      // TO DO IMPLEMENT STORE ACTION
-      // dispatch(editExistingOrg(formData));
+    if (isFileValid) {
+      dispatch(postNewFile(formData));
     }
-  }, [isFileNameValid, isFileValid]);
+  }, [isFileValid, formData, setIsValidationOn]);
 
   const orgWasSuccessfullyCreated =
     notification && notification.id === 'file-uploaded';
@@ -64,33 +58,6 @@ const FileUploadModal = ({ onClose }) => {
             <StyledFieldContainer>
               <StyledLabelContainer>
                 <Body>
-                  *<FormattedMessage id="filename" />
-                </Body>
-              </StyledLabelContainer>
-              <InputContainer>
-                <StandardInput
-                  size={InputSizeEnum.large}
-                  variant={InputVariantEnum.default}
-                  value={formData.fileName}
-                  onChange={value =>
-                    setFormData(prevState => ({
-                      ...prevState,
-                      fileName: value,
-                    }))
-                  }
-                />
-              </InputContainer>
-              {isValidationOn && !isFileNameValid && (
-                <Body size="Small" color="red">
-                  {intl.formatMessage({
-                    id: 'add-valid-filename',
-                  })}
-                </Body>
-              )}
-            </StyledFieldContainer>
-            <StyledFieldContainer>
-              <StyledLabelContainer>
-                <Body>
                   *<FormattedMessage id="file" />
                 </Body>
               </StyledLabelContainer>
@@ -100,6 +67,7 @@ const FileUploadModal = ({ onClose }) => {
                     setFormData(prevState => ({
                       ...prevState,
                       file: file,
+                      fileName: file.name,
                     }))
                   }
                   file={formData.file}
