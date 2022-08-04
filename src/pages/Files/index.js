@@ -14,6 +14,7 @@ import {
   DownloadIcon,
   UploadIcon,
   FileUploadModal,
+  RemoveIcon,
 } from '../../components';
 import { getFileList } from '../../store/actions/climateWarehouseActions';
 
@@ -225,7 +226,16 @@ const Files = () => {
           <StyledTable>
             <thead>
               <StyledTr>
-                <StyledTh></StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="delete" />
+                  </Body>
+                </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="download" />
+                  </Body>
+                </StyledTh>
                 <StyledTh>
                   <Body size="Bold">
                     <FormattedMessage id="filename" />
@@ -239,6 +249,13 @@ const Files = () => {
             <tbody>
               {filteredFileList.map(file => (
                 <StyledTr key={file.SHA256}>
+                  <StyledTd>
+                    <StyledIconContainer
+                      onClick={() => setFileToDownload(file)}
+                    >
+                      <RemoveIcon width={20} height={20} />
+                    </StyledIconContainer>
+                  </StyledTd>
                   <StyledTd>
                     <StyledIconContainer
                       onClick={() => setFileToDownload(file)}
