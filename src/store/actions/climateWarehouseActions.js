@@ -670,7 +670,7 @@ export const getStagingPaginatedData = ({
   };
 };
 
-export const commitStagingData = (data, comment) => {
+export const commitStagingData = (data, comment, author) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -683,10 +683,8 @@ export const commitStagingData = (data, comment) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ comment, author }),
       };
-      if (comment?.length > 0) {
-        payload.body = JSON.stringify({ comment });
-      }
 
       const response = await fetchWrapper(url, payload);
 
@@ -1461,6 +1459,50 @@ export const editExistingOrg = data => {
   };
 };
 
+export const deleteMyOrg = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/organizations`;
+      const payload = {
+        method: 'DELETE',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'organization-deleted',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'organization-not-deleted'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'organization-not-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const importHomeOrg = orgUid => {
   return async dispatch => {
     try {
@@ -1650,7 +1692,10 @@ export const uploadXLSXFile = (file, type) => {
           dispatch(
             setNotificationMessage(
               NotificationMessageTypeEnum.error,
-              formatApiErrorResponse(errorResponse, errorResponse.error),
+              formatApiErrorResponse(
+                errorResponse,
+                'file-could-not-be-uploaded',
+              ),
             ),
           );
         }
@@ -2064,13 +2109,19 @@ const fetchWrapper = async (url, payload) => {
   return fetch(url, payload);
 };
 
-const formatApiErrorResponse = ({ errors, message }, alternativeResponseId) => {
+const formatApiErrorResponse = (
+  { errors, message, error },
+  alternativeResponseId,
+) => {
   if (!_.isEmpty(errors) && !_.isEmpty(message)) {
     let notificationToDisplay = message + ': ';
     errors.forEach(item => {
       notificationToDisplay = notificationToDisplay.concat(item, ' ; ');
     });
     return notificationToDisplay;
+  }
+  if (error) {
+    return error;
   }
   return alternativeResponseId;
 };
