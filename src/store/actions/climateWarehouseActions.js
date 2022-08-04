@@ -683,8 +683,18 @@ export const commitStagingData = (data, comment, author) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ comment, author }),
       };
+
+      const body = {};
+      if (comment?.length) {
+        body.comment = comment;
+      }
+      if (author?.length) {
+        body.author = author;
+      }
+      if (body?.author || body?.comment) {
+        payload.body = JSON.stringify(body);
+      }
 
       const response = await fetchWrapper(url, payload);
 
