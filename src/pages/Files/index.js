@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import styled from 'styled-components';
 
 import constants from '../../constants';
@@ -15,8 +15,13 @@ import {
   UploadIcon,
   FileUploadModal,
   RemoveIcon,
+  Modal,
+  modalTypeEnum,
 } from '../../components';
-import { getFileList } from '../../store/actions/climateWarehouseActions';
+import {
+  deleteFile,
+  getFileList,
+} from '../../store/actions/climateWarehouseActions';
 
 const StyledUploadIcon = styled(UploadIcon)`
   margin-left: auto;
@@ -72,6 +77,13 @@ const StyledTr = styled('tr')`
   }
 `;
 
+const StyledCenteredChildren = styled('div')`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const StyledSortButtonContainer = styled.div`
   margin-left: 10px;
   border: 0.0625rem solid #d9d9d9;
@@ -96,12 +108,14 @@ const SortEnum = {
 };
 
 const Files = () => {
+  const intl = useIntl();
   const dispatch = useDispatch();
   const { fileList } = useSelector(store => store.climateWarehouse);
   const [filteredFileList, setFilteredFileList] = useState(fileList ?? []);
   const [sortOrder, setSortOrder] = useState(SortEnum.aToZ);
   const [fileToDownload, setFileToDownload] = useState(null);
   const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState();
 
   useEffect(() => dispatch(getFileList()), []);
   useEffect(() => setFilteredFileList(fileList), [fileList]);
@@ -228,12 +242,16 @@ const Files = () => {
               <StyledTr>
                 <StyledTh>
                   <Body size="Bold">
-                    <FormattedMessage id="delete" />
+                    <StyledCenteredChildren>
+                      <FormattedMessage id="delete" />
+                    </StyledCenteredChildren>
                   </Body>
                 </StyledTh>
                 <StyledTh>
                   <Body size="Bold">
-                    <FormattedMessage id="download" />
+                    <StyledCenteredChildren>
+                      <FormattedMessage id="download" />
+                    </StyledCenteredChildren>
                   </Body>
                 </StyledTh>
                 <StyledTh>
@@ -250,18 +268,22 @@ const Files = () => {
               {filteredFileList.map(file => (
                 <StyledTr key={file.SHA256}>
                   <StyledTd>
-                    <StyledIconContainer
-                      onClick={() => setFileToDownload(file)}
-                    >
-                      <RemoveIcon width={20} height={20} />
-                    </StyledIconContainer>
+                    <StyledCenteredChildren>
+                      <StyledIconContainer
+                        onClick={() => setFileToDelete(file)}
+                      >
+                        <RemoveIcon width={20} height={20} />
+                      </StyledIconContainer>
+                    </StyledCenteredChildren>
                   </StyledTd>
                   <StyledTd>
-                    <StyledIconContainer
-                      onClick={() => setFileToDownload(file)}
-                    >
-                      <DownloadIcon width={20} height={20} />
-                    </StyledIconContainer>
+                    <StyledCenteredChildren>
+                      <StyledIconContainer
+                        onClick={() => setFileToDownload(file)}
+                      >
+                        <DownloadIcon width={20} height={20} />
+                      </StyledIconContainer>
+                    </StyledCenteredChildren>
                   </StyledTd>
                   <StyledTd>
                     <Body>{file.fileName}</Body>
@@ -276,6 +298,23 @@ const Files = () => {
         </StyledBodyContainer>
       )}
       {isUploadModalVisible && <FileUploadModal onClose={toggleUploadModal} />}
+      {fileToDelete && (
+        <Modal
+          title={intl.formatMessage({
+            id: 'confirm-file-deletion',
+          })}
+          body={fileToDelete.fileName}
+          label={intl.formatMessage({
+            id: 'delete',
+          })}
+          modalType={modalTypeEnum.confirmation}
+          onClose={() => setFileToDelete(null)}
+          onOk={() => {
+            dispatch(deleteFile(fileToDelete.SHA256));
+            setFileToDelete(null);
+          }}
+        />
+      )}
     </StyledSectionContainer>
   );
 };

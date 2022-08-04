@@ -812,6 +812,51 @@ export const postNewFile = data => {
   };
 };
 
+export const deleteFile = SHA256 => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/filestore/delete_file`;
+      const payload = {
+        method: 'DELETE',
+        body: JSON.stringify({ fileId: SHA256 }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getFileList());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'file-deleted',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'file-not-deleted'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'file-not-deleted',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const editStagingData = (uuid, data) => {
   return async dispatch => {
     try {
