@@ -33,8 +33,6 @@ const AuditItemModal = ({ onClose, auditItem }) => {
       ? theme.colors.default.status.ok.primary
       : theme.colors.default.status.error.primary;
 
-  console.log('auditItem', auditItem);
-
   return (
     <>
       <Modal
