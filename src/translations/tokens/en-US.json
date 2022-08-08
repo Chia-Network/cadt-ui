@@ -454,5 +454,6 @@
   "my-registry": "My Registry",
   "glossary": "Glossary",
   "term": "Term",
-  "description": "Description"
+  "description": "Description",
+  "no-glossary-terms-found": "No glossary terms have been found"
 }

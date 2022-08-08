@@ -437,5 +437,6 @@
   "my-registry": "Mi Registro",
   "glossary": "Glosario",
   "term": "Palabra",
-  "description": "Descripción"
+  "description": "Descripción",
+  "no-glossary-terms-found": "No se han encontrado términos del glosario"
 }

@@ -437,5 +437,6 @@
   "my-registry": "マイレジストリ",
   "glossary": "用語集",
   "term": "語",
-  "description": "説明"
+  "description": "説明",
+  "no-glossary-terms-found": "用語集の用語が見つかりませんでした"
 }

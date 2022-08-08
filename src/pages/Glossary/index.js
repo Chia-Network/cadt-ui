@@ -170,7 +170,7 @@ const Glossary = () => {
       {filteredFileList?.length === 0 && (
         <StyledBodyNoDataFound>
           <H3>
-            <FormattedMessage id="no-files-found" />
+            <FormattedMessage id="no-glossary-terms-found" />
           </H3>
         </StyledBodyNoDataFound>
       )}
