@@ -92,6 +92,7 @@ const AppNavigator = () => {
               <Route path="/conflicts" element={<Pages.Conflicts />} />
               <Route path="/governance" element={<Pages.Governance />} />
               <Route path="/files" element={<Pages.Files />} />
+              <Route path="/glossary" element={<Pages.Glossary />} />
               <Route path="*" element={<Navigate to="/projects" />} />
             </Routes>
           </Suspense>

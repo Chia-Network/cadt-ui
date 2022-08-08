@@ -451,5 +451,8 @@
   "actions": "Actions",
   "organization-deleted": "The organization was deleted successfully.",
   "organization-not-deleted": "The organization could not be deleted.",
-  "my-registry": "My Registry"
+  "my-registry": "My Registry",
+  "glossary": "Glossary",
+  "term": "Term",
+  "description": "Description"
 }

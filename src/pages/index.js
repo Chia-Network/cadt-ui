@@ -6,3 +6,4 @@ export * from './Audit';
 export * from './Conflicts';
 export * from './Governance';
 export * from './Files';
+export * from './Glossary';
