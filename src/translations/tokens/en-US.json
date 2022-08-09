@@ -453,6 +453,6 @@
   "organization-not-deleted": "The organization could not be deleted.",
   "my-registry": "My Registry",
   "subscribe-to-files": "Include files",
-  "import-organization": "Importar una organización",
-  "existing-organizations": "Organizaciones existentes"
+  "import-organization": "Import organization",
+  "existing-organizations": "Existing organizations"
 }
