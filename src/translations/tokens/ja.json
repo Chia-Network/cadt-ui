@@ -436,6 +436,6 @@
   "organization-not-deleted": "組織を削除できませんでした。",
   "my-registry": "マイレジストリ",
   "subscribe-to-files": "インクルード ファイル",
-  "import-organization": "Import organization",
-  "existing-organizations": "Import organization"
+  "import-organization": "インポート組織",
+  "existing-organizations": "既存の組織"
 }
