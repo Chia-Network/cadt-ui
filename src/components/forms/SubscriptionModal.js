@@ -12,9 +12,9 @@ import {
   InputVariantEnum,
   modalTypeEnum,
   InputContainer,
-  StyledFieldContainer,
   StyledLabelContainer,
   ModalFormContainerStyle,
+  LabelContainer,
 } from '..';
 import {
   getOrganizationData,
@@ -25,17 +25,19 @@ import {
 import { PrimaryButton } from '../form/PrimaryButton';
 import { validateIp, validatePort } from '../../utils/urlUtils';
 
-const StyledSubscriptionsListContainer = styled('div')`
-  width: 100%;
+const StyledImportOrgContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  width: 100%;
+  gap: 2px;
+  padding: 5px 0 35px 0;
 `;
 
 const StyledIpPortContainer = styled('div')`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 11.5px;
 
   & div:first-child {
     width: 9.8rem;
@@ -46,11 +48,28 @@ const StyledIpPortContainer = styled('div')`
   }
 `;
 
-const StyledSubscriptionContainer = styled('div')`
-  border: 1px solid #d9d9d9;
-  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+const StyledSubscriptionsListContainer = styled('div')`
+  width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 9px;
+`;
+
+const StyleSubscriptionsItemContainer = styled('div')`
+  border: 1px solid #d9d9d9;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-basis: 40%;
+  flex-shrink: 0;
+  flex-grow: 0;
+  justify-content: space-around;
+`;
+
+const StyledToggleContainer = styled('div')`
+  display: flex;
+  flex-basis: 40%;
+  flex-shrink: 0;
+  flex-grow: 0;
   justify-content: space-between;
   align-items: center;
 `;
@@ -125,7 +144,14 @@ const SubscriptionModal = ({ onClose }) => {
         })}
         body={
           <ModalFormContainerStyle>
-            <StyledFieldContainer>
+            <StyledImportOrgContainer>
+              <StyledLabelContainer>
+                <Body size="Bold">
+                  <LabelContainer>
+                    <FormattedMessage id="import-organization" />
+                  </LabelContainer>
+                </Body>
+              </StyledLabelContainer>
               <InputContainer>
                 <StandardInput
                   size={InputSizeEnum.large}
@@ -205,38 +231,75 @@ const SubscriptionModal = ({ onClose }) => {
                   </div>
                 </Body>
               )}
-            </StyledFieldContainer>
+            </StyledImportOrgContainer>
 
             <StyledSubscriptionsListContainer>
+              <StyledLabelContainer>
+                <Body size="Bold">
+                  <LabelContainer>
+                    <FormattedMessage id="existing-organizations" />
+                  </LabelContainer>
+                </Body>
+              </StyledLabelContainer>
               {organizations &&
                 Object.keys(organizations)?.length > 0 &&
                 Object.keys(organizations).map(
                   organizationKey =>
                     !organizations[organizationKey]?.isHome && (
-                      <StyledSubscriptionContainer key={organizationKey}>
-                        <Body>{organizations[organizationKey]?.name}</Body>
-                        <Switch
-                          checked={
-                            organizations[organizationKey]?.subscribed ?? false
-                          }
-                          onChange={() => {
-                            if (organizations[organizationKey]?.subscribed) {
-                              dispatch(
-                                unsubscribeFromOrg(
-                                  organizations[organizationKey]?.orgUid,
-                                ),
-                              );
-                            } else {
-                              dispatch(
-                                subscribeToOrg(
-                                  organizations[organizationKey]?.orgUid,
-                                ),
-                              );
+                      <StyleSubscriptionsItemContainer key={organizationKey}>
+                        <StyledToggleContainer>
+                          <Body>{organizations[organizationKey]?.name}</Body>
+                          <Switch
+                            checked={
+                              organizations[organizationKey]?.subscribed ??
+                              false
                             }
-                          }}
-                          inputProps={{ 'aria-label': 'controlled' }}
-                        />
-                      </StyledSubscriptionContainer>
+                            onChange={() => {
+                              if (organizations[organizationKey]?.subscribed) {
+                                dispatch(
+                                  unsubscribeFromOrg(
+                                    organizations[organizationKey]?.orgUid,
+                                  ),
+                                );
+                              } else {
+                                dispatch(
+                                  subscribeToOrg(
+                                    organizations[organizationKey]?.orgUid,
+                                  ),
+                                );
+                              }
+                            }}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                          />
+                        </StyledToggleContainer>
+                        <StyledToggleContainer>
+                          <Body>
+                            <FormattedMessage id="subscribe-to-files" />
+                          </Body>
+                          <Switch
+                            checked={
+                              organizations[organizationKey]?.subscribed ??
+                              false
+                            }
+                            onChange={() => {
+                              if (organizations[organizationKey]?.subscribed) {
+                                dispatch(
+                                  unsubscribeFromOrg(
+                                    organizations[organizationKey]?.orgUid,
+                                  ),
+                                );
+                              } else {
+                                dispatch(
+                                  subscribeToOrg(
+                                    organizations[organizationKey]?.orgUid,
+                                  ),
+                                );
+                              }
+                            }}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                          />
+                        </StyledToggleContainer>
+                      </StyleSubscriptionsItemContainer>
                     ),
                 )}
             </StyledSubscriptionsListContainer>

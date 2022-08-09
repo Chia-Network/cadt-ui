@@ -434,5 +434,8 @@
   "actions": "組織を削除してもよろしいですか?",
   "organization-deleted": "組織は正常に削除されました。",
   "organization-not-deleted": "組織を削除できませんでした。",
-  "my-registry": "マイレジストリ"
+  "my-registry": "マイレジストリ",
+  "subscribe-to-files": "インクルード ファイル",
+  "import-organization": "Import organization",
+  "existing-organizations": "Import organization"
 }
