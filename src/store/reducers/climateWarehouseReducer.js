@@ -33,6 +33,7 @@ const initialState = {
   walletBalance: null,
   isWalletSynced: false,
   fileList: null,
+  totalNumberOfEntries: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
@@ -114,6 +115,9 @@ const climateWarehouseReducer = (state = initialState, action) => {
 
     case climateWarehouseActions.GET_STAGING_DATA:
       return u({ stagingData: action.payload }, state);
+
+    case climateWarehouseActions.GET_TOTAL_NR_OF_STAGED_ENTRIES:
+      return u({ totalNumberOfEntries: action.payload }, state);
 
     case climateWarehouseActions.GET_STAGING_PROJECTS_PAGES:
       return u({ totalProjectsPages: action.payload }, state);
