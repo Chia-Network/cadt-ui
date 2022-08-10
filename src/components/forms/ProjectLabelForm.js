@@ -25,6 +25,7 @@ import {
   SimpleSelectVariantEnum,
   SelectCreatable,
   FormikError,
+  SimpleSelectStateEnum,
 } from '..';
 
 // eslint-disable-next-line react/display-name
@@ -97,9 +98,12 @@ const ProjectLabelForm = memo(
               <InputContainer>
                 <SelectCreatable
                   variant={
-                    errors?.labelType &&
-                    touched?.labelType &&
-                    SimpleSelectVariantEnum.error
+                    (errors?.labelType &&
+                      touched?.labelType &&
+                      SimpleSelectVariantEnum.error) ||
+                    (areFieldsDisabled
+                      ? SimpleSelectStateEnum.disabled
+                      : SimpleSelectStateEnum.default)
                   }
                   options={pickLists.labelType}
                   selected={value.labelType}

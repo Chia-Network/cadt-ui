@@ -25,11 +25,7 @@ import {
   RequiredContainer,
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
-  SimpleSelectSizeEnum,
-  SimpleSelectTypeEnum,
-  SimpleSelectStateEnum,
   SimpleSelectVariantEnum,
-  SimpleSelect,
   FormikError,
   SelectSizeEnum,
   SelectTypeEnum,
@@ -37,6 +33,7 @@ import {
   Select,
   SelectVariantEnum,
   SelectCreatable,
+  SimpleSelectStateEnum,
 } from '..';
 
 const UnitDetailsForm = () => {
@@ -220,24 +217,18 @@ const UnitDetailsForm = () => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={projectLocationIdOptions}
-                state={
-                  projectLocationIdOptions.length === 0
+              <SelectCreatable
+                variant={
+                  (errors?.projectLocationId &&
+                    touched?.projectLocationId &&
+                    SimpleSelectVariantEnum.error) ||
+                  (projectLocationIdOptions.length === 0
                     ? SimpleSelectStateEnum.disabled
-                    : SimpleSelectStateEnum.default
+                    : SimpleSelectStateEnum.default)
                 }
-                selected={
-                  values.projectLocationId
-                    ? [values.projectLocationId]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue('projectLocationId', selectedOptions[0])
-                }
-                name="projectLocationId"
+                options={projectLocationIdOptions}
+                selected={values.projectLocationId}
+                onChange={val => setFieldValue('projectLocationId', val)}
                 onBlur={handleBlur}
               />
             </InputContainer>
