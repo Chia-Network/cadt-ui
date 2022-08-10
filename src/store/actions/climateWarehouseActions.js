@@ -867,6 +867,78 @@ export const deleteFile = SHA256 => {
   };
 };
 
+export const subscribeToFileStore = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/filestore/subscribe`;
+
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const unsubscribeFromFileStore = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/filestore/unsubscribe`;
+
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const editStagingData = (uuid, data) => {
   return async dispatch => {
     try {

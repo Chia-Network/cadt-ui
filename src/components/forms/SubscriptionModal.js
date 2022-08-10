@@ -19,7 +19,9 @@ import {
 import {
   getOrganizationData,
   subscribeImportOrg,
+  subscribeToFileStore,
   subscribeToOrg,
+  unsubscribeFromFileStore,
   unsubscribeFromOrg,
 } from '../../store/actions/climateWarehouseActions';
 import { PrimaryButton } from '../form/PrimaryButton';
@@ -278,19 +280,22 @@ const SubscriptionModal = ({ onClose }) => {
                           </Body>
                           <Switch
                             checked={
-                              organizations[organizationKey]?.subscribed ??
-                              false
+                              organizations[organizationKey]
+                                ?.fileStoreSubscribed ?? false
                             }
                             onChange={() => {
-                              if (organizations[organizationKey]?.subscribed) {
+                              if (
+                                organizations[organizationKey]
+                                  ?.fileStoreSubscribed
+                              ) {
                                 dispatch(
-                                  unsubscribeFromOrg(
+                                  unsubscribeFromFileStore(
                                     organizations[organizationKey]?.orgUid,
                                   ),
                                 );
                               } else {
                                 dispatch(
-                                  subscribeToOrg(
+                                  subscribeToFileStore(
                                     organizations[organizationKey]?.orgUid,
                                   ),
                                 );
