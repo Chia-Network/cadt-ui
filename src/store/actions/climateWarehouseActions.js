@@ -59,6 +59,7 @@ export const actions = keyMirror(
   'SET_IS_GOVERNANCE_INITIATED',
   'SET_WALLET_BALANCE',
   'SET_WALLET_STATUS',
+  'GET_FILE_LIST',
 );
 
 const getClimateWarehouseTable = (
@@ -682,8 +683,18 @@ export const commitStagingData = (data, comment, author) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ comment, author }),
       };
+
+      const body = {};
+      if (comment?.length) {
+        body.comment = comment;
+      }
+      if (author?.length) {
+        body.author = author;
+      }
+      if (body?.author || body?.comment) {
+        payload.body = JSON.stringify(body);
+      }
 
       const response = await fetchWrapper(url, payload);
 
@@ -713,6 +724,143 @@ export const commitStagingData = (data, comment, author) => {
         ),
       );
       dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getFileList = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/filestore/get_file_list`,
+      );
+
+      if (response.ok) {
+        const results = await response.json();
+        // const results = fileListResponseStub;
+        dispatch(setConnectionCheck(true));
+        dispatch({
+          type: actions.GET_FILE_LIST,
+          payload: results,
+        });
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'could-not-retrieve-file-list',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'could-not-retrieve-file-list',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const postNewFile = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const formData = new FormData();
+      formData.append('file', data.file);
+      formData.append('fileName', data.fileName);
+
+      const url = `${constants.API_HOST}/filestore/add_file`;
+      const payload = {
+        method: 'POST',
+        body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getFileList());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'file-uploaded',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'file-not-uploaded'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'file-not-uploaded',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const deleteFile = SHA256 => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/filestore/delete_file`;
+      const payload = {
+        method: 'DELETE',
+        body: JSON.stringify({ fileId: SHA256 }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getFileList());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'file-deleted',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'file-not-deleted'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'file-not-deleted',
+        ),
+      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
