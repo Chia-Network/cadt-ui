@@ -752,7 +752,6 @@ const ProjectDetailsForm = () => {
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
-
               <SelectCreatable
                 isMulti
                 variant={
@@ -760,6 +759,7 @@ const ProjectDetailsForm = () => {
                     ? SimpleSelectVariantEnum.error
                     : undefined
                 }
+                options={pickLists?.projectTags}
                 selected={[...values?.projectTags]}
                 onChange={value => setFieldValue('projectTags', value)}
                 onBlur={handleBlur}

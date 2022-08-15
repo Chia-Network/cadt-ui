@@ -1,0 +1,56 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    name: Build Climate Warehouse App and Upload to S3
+    runs-on: [k8s-public]
+    container:
+      image: ubuntu:latest
+    steps:
+      - name: Install AWS CLI
+        run: |
+            apt-get update
+            export DEBIAN_FRONTEND=noninteractive
+            export TZ=Etc/UTC
+            apt-get install -y awscli
+
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: '16.x'
+
+      - name: npm install and build
+        run: |
+          node --version
+          npm install
+          npm run build
+
+      - name: Vault Login
+        uses: Chia-Network/actions/vault/login@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          role_name: github
+
+      - name: Get ephemeral aws credentials
+        uses: Chia-Network/actions/vault/aws-sts@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          vault_token: ${{ env.VAULT_TOKEN }}
+          backend_name: aws-carbon
+          role_name: cw-s3-deploy
+
+      - name: Upload build folder to S3
+        run: |
+          aws s3 sync --delete --no-progress ./build/ s3://climatewarehouse/

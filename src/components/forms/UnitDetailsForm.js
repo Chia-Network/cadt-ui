@@ -839,6 +839,7 @@ const UnitDetailsForm = () => {
               </StyledLabelContainer>
               <SelectCreatable
                 isMulti
+                options={pickLists?.unitTags}
                 variant={
                   errors?.unitTags && touched?.unitTags
                     ? SimpleSelectVariantEnum.error

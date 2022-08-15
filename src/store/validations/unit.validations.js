@@ -41,30 +41,35 @@ export const unitsSchema = yup.object().shape({
   labels: yup.array().of(labelSchema).optional(),
 });
 
-export const splitUnitValidationSchema = yup.array().of(
-  yup.object().shape({
-    unitCount: yup
-      .number()
-      .required('yup-validation-field-required')
-      .positive('yup-validation-positive-number')
-      .integer('yup-validation-integer')
-      .typeError('yup-validation-valid-number'),
-    unitOwner: yup.string().optional().typeError('yup-validation-valid-string'),
-    unitBlockStart: yup
-      .string()
-      .required('yup-validation-field-required')
-      .typeError('yup-validation-valid-string'),
-    unitBlockEnd: yup
-      .string()
-      .required('yup-validation-field-required')
-      .typeError('yup-validation-valid-string'),
-    countryJurisdictionOfOwner: yup
-      .string()
-      .optional()
-      .typeError('yup-validation-valid-string'),
-    inCountryJurisdictionOfOwner: yup
-      .string()
-      .optional()
-      .typeError('yup-validation-valid-string'),
-  }),
-);
+export const splitUnitsValidationSchema = yup.object().shape({
+  units: yup.array().of(
+    yup.object().shape({
+      unitCount: yup
+        .number()
+        .required('yup-validation-field-required')
+        .positive('yup-validation-positive-number')
+        .integer('yup-validation-integer')
+        .typeError('yup-validation-valid-number'),
+      unitOwner: yup
+        .string()
+        .optional()
+        .typeError('yup-validation-valid-string'),
+      unitBlockStart: yup
+        .string()
+        .required('yup-validation-field-required')
+        .typeError('yup-validation-valid-string'),
+      unitBlockEnd: yup
+        .string()
+        .required('yup-validation-field-required')
+        .typeError('yup-validation-valid-string'),
+      countryJurisdictionOfOwner: yup
+        .string()
+        .optional()
+        .typeError('yup-validation-valid-string'),
+      inCountryJurisdictionOfOwner: yup
+        .string()
+        .optional()
+        .typeError('yup-validation-valid-string'),
+    }),
+  ),
+});
