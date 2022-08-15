@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { FormikError } from '../form/FormikError';
 
 import {
-  InputVariantEnum,
   Divider,
   ModalFormContainerStyle,
   FormContainerStyle,
@@ -15,9 +14,6 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  StandardInput,
-  InputStateEnum,
-  InputSizeEnum,
   SelectCreatable,
   SimpleSelectVariantEnum,
 } from '..';
@@ -47,38 +43,17 @@ const ProjectCoBenefitForm = memo(
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              {!pickLists?.cobenefits ? (
-                <SelectCreatable
-                  variant={
-                    errors?.cobenefit && touched?.cobenefit
-                      ? SimpleSelectVariantEnum.error
-                      : undefined
-                  }
-                  options={pickLists?.cobenefits}
-                  selected={value.cobenefit}
-                  onChange={val =>
-                    setFieldValue(getFieldName('cobenefit'), val)
-                  }
-                  onBlur={handleBlur}
-                />
-              ) : (
-                <StandardInput
-                  variant={
-                    errors?.cobenefit && touched?.cobenefit
-                      ? InputVariantEnum.error
-                      : undefined
-                  }
-                  size={InputSizeEnum.large}
-                  placeholderText={intl.formatMessage({ id: 'co-benefit' })}
-                  state={InputStateEnum.default}
-                  value={value.cobenefit}
-                  onChange={value =>
-                    setFieldValue(getFieldName('cobenefit'), value)
-                  }
-                  onBlur={handleBlur}
-                  name={getFieldName('cobenefit')}
-                />
-              )}
+              <SelectCreatable
+                variant={
+                  errors?.cobenefit && touched?.cobenefit
+                    ? SimpleSelectVariantEnum.error
+                    : undefined
+                }
+                options={pickLists?.cobenefits}
+                selected={value.cobenefit}
+                onChange={val => setFieldValue(getFieldName('cobenefit'), val)}
+                onBlur={handleBlur}
+              />
               <FormikError name={getFieldName('cobenefit')} />
             </InputContainer>
           </StyledFieldContainer>
