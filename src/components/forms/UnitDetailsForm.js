@@ -25,11 +25,7 @@ import {
   RequiredContainer,
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
-  SimpleSelectSizeEnum,
-  SimpleSelectTypeEnum,
-  SimpleSelectStateEnum,
   SimpleSelectVariantEnum,
-  SimpleSelect,
   FormikError,
   SelectSizeEnum,
   SelectTypeEnum,
@@ -37,6 +33,7 @@ import {
   Select,
   SelectVariantEnum,
   SelectCreatable,
+  SimpleSelectStateEnum,
 } from '..';
 
 const UnitDetailsForm = () => {
@@ -220,24 +217,18 @@ const UnitDetailsForm = () => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
-                options={projectLocationIdOptions}
-                state={
-                  projectLocationIdOptions.length === 0
+              <SelectCreatable
+                variant={
+                  (errors?.projectLocationId &&
+                    touched?.projectLocationId &&
+                    SimpleSelectVariantEnum.error) ||
+                  (projectLocationIdOptions.length === 0
                     ? SimpleSelectStateEnum.disabled
-                    : SimpleSelectStateEnum.default
+                    : SimpleSelectStateEnum.default)
                 }
-                selected={
-                  values.projectLocationId
-                    ? [values.projectLocationId]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue('projectLocationId', selectedOptions[0])
-                }
-                name="projectLocationId"
+                options={projectLocationIdOptions}
+                selected={values.projectLocationId}
+                onChange={val => setFieldValue('projectLocationId', val)}
                 onBlur={handleBlur}
               />
             </InputContainer>
@@ -437,26 +428,16 @@ const UnitDetailsForm = () => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.countryJurisdictionOfOwner &&
                   touched.countryJurisdictionOfOwner &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.countries}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.countryJurisdictionOfOwner
-                    ? [values.countryJurisdictionOfOwner]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue(
-                    'countryJurisdictionOfOwner',
-                    selectedOptions[0],
-                  )
+                selected={values.countryJurisdictionOfOwner}
+                onChange={val =>
+                  setFieldValue('countryJurisdictionOfOwner', val)
                 }
                 onBlur={handleBlur}
               />
@@ -478,20 +459,15 @@ const UnitDetailsForm = () => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.unitType &&
                   touched.unitType &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.unitType}
-                state={SimpleSelectStateEnum.default}
-                selected={values.unitType ? [values.unitType] : undefined}
-                onChange={selectedOptions =>
-                  setFieldValue('unitType', selectedOptions[0])
-                }
+                selected={values.unitType}
+                onChange={val => setFieldValue('unitType', val)}
                 onBlur={handleBlur}
               />
             </InputContainer>
@@ -512,20 +488,15 @@ const UnitDetailsForm = () => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.unitStatus &&
                   touched.unitStatus &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.unitStatus}
-                state={SimpleSelectStateEnum.default}
-                selected={values.unitStatus ? [values.unitStatus] : undefined}
-                onChange={selectedOptions =>
-                  setFieldValue('unitStatus', selectedOptions[0])
-                }
+                selected={values.unitStatus}
+                onChange={val => setFieldValue('unitStatus', val)}
                 onBlur={handleBlur}
               />
             </InputContainer>
@@ -752,26 +723,16 @@ const UnitDetailsForm = () => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.correspondingAdjustmentDeclaration &&
                   touched.correspondingAdjustmentDeclaration &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.correspondingAdjustmentDeclaration}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.correspondingAdjustmentDeclaration
-                    ? [values.correspondingAdjustmentDeclaration]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue(
-                    'correspondingAdjustmentDeclaration',
-                    selectedOptions[0],
-                  )
+                selected={values.correspondingAdjustmentDeclaration}
+                onChange={val =>
+                  setFieldValue('correspondingAdjustmentDeclaration', val)
                 }
                 onBlur={handleBlur}
               />
@@ -793,26 +754,16 @@ const UnitDetailsForm = () => {
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.correspondingAdjustmentStatus &&
                   touched.correspondingAdjustmentStatus &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.correspondingAdjustmentStatus}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.correspondingAdjustmentStatus
-                    ? [values.correspondingAdjustmentStatus]
-                    : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue(
-                    'correspondingAdjustmentStatus',
-                    selectedOptions[0],
-                  )
+                selected={values.correspondingAdjustmentStatus}
+                onChange={val =>
+                  setFieldValue('correspondingAdjustmentStatus', val)
                 }
                 onBlur={handleBlur}
               />
