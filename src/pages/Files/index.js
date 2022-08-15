@@ -173,7 +173,6 @@ const Files = () => {
       .then(async result => await result.blob())
       .then(async response => {
         const filename = await response;
-        console.log('filename:', filename);
         const link = document.createElement('a');
         const url = window.URL.createObjectURL(new Blob([filename]));
         link.href = url;

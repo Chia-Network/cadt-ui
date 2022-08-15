@@ -60,6 +60,7 @@ export const actions = keyMirror(
   'SET_WALLET_BALANCE',
   'SET_WALLET_STATUS',
   'GET_FILE_LIST',
+  'GET_TOTAL_NR_OF_STAGED_ENTRIES',
 );
 
 const getClimateWarehouseTable = (
@@ -449,6 +450,35 @@ export const getGovernanceOrgList = () => {
   };
 };
 
+const getStagingTotalNrOfEntries = results => {
+  const totalNrOfEntries = {
+    units: {
+      staging: 0,
+      pending: 0,
+      failed: 0,
+    },
+    projects: {
+      staging: 0,
+      pending: 0,
+      failed: 0,
+    },
+  };
+  results.forEach(entry => {
+    const table = entry.table.toLowerCase();
+
+    if (entry?.failedCommit) {
+      totalNrOfEntries[table].failed += 1;
+    } else {
+      if (entry?.commited) {
+        totalNrOfEntries[table].pending += 1;
+      } else {
+        totalNrOfEntries[table].staging += 1;
+      }
+    }
+  });
+  return totalNrOfEntries;
+};
+
 export const getStagingData = ({ useMockedResponse = false }) => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -464,6 +494,10 @@ export const getStagingData = ({ useMockedResponse = false }) => {
           dispatch(setGlobalErrorMessage(null));
           const results = await response.json();
 
+          dispatch({
+            type: actions.GET_TOTAL_NR_OF_STAGED_ENTRIES,
+            payload: getStagingTotalNrOfEntries(results),
+          });
           dispatch({
             type: actions.GET_STAGING_DATA,
             payload: formatStagingData(results),
