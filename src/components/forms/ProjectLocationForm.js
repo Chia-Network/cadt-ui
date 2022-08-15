@@ -19,10 +19,7 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  SimpleSelect,
-  SimpleSelectSizeEnum,
-  SimpleSelectTypeEnum,
-  SimpleSelectStateEnum,
+  SelectCreatable,
   FormikError,
 } from '..';
 
@@ -49,27 +46,21 @@ const ProjectLocationForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'locations-country-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                <SimpleSelect
+                <SelectCreatable
                   variant={
                     errors?.country &&
                     touched?.country &&
                     SimpleSelectVariantEnum.error
                   }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
                   options={pickLists.countries}
-                  state={SimpleSelectStateEnum.default}
-                  selected={value.country ? [value.country] : undefined}
-                  onChange={selectedOptions =>
-                    setFieldValue(getFieldName('country'), selectedOptions[0])
-                  }
+                  selected={value.country}
+                  onChange={val => setFieldValue(getFieldName('country'), val)}
                   onBlur={handleBlur}
                 />
                 <FormikError name={getFieldName('country')} />
@@ -84,8 +75,7 @@ const ProjectLocationForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'locations-in-country-region-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -116,8 +106,7 @@ const ProjectLocationForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'locations-geographic-identifier-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>

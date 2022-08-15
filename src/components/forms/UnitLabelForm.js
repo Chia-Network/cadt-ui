@@ -34,11 +34,9 @@ import {
   StyledLabelContainer,
   DateSelectVariantEnum,
   SpanTwoColumnsContainer,
-  SimpleSelectSizeEnum,
-  SimpleSelectTypeEnum,
   SimpleSelectStateEnum,
   SimpleSelectVariantEnum,
-  SimpleSelect,
+  SelectCreatable,
 } from '..';
 
 import { SelectVariantEnum } from '../form/Select';
@@ -203,8 +201,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'way-to-add-label',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -245,8 +242,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'select-existing-label',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -287,8 +283,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'select-label-by-project',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -335,8 +330,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-label-description',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -376,33 +370,25 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-label-type-description',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
                   </StyledLabelContainer>
                   <InputContainer>
-                    <SimpleSelect
+                    <SelectCreatable
                       variant={
-                        errors?.labelType &&
-                        touched?.labelType &&
-                        SimpleSelectVariantEnum.error
-                      }
-                      size={SimpleSelectSizeEnum.large}
-                      type={SimpleSelectTypeEnum.basic}
-                      options={pickLists.labelType}
-                      state={
-                        areFieldsDisabled
+                        (errors?.labelType &&
+                          touched?.labelType &&
+                          SimpleSelectVariantEnum.error) ||
+                        (areFieldsDisabled
                           ? SimpleSelectStateEnum.disabled
-                          : SimpleSelectStateEnum.default
+                          : SimpleSelectStateEnum.default)
                       }
-                      selected={value.labelType ? [value.labelType] : undefined}
-                      onChange={selectedOptions =>
-                        setFieldValue(
-                          getFieldName('labelType'),
-                          selectedOptions[0],
-                        )
+                      options={pickLists.labelType}
+                      selected={value.labelType}
+                      onChange={val =>
+                        setFieldValue(getFieldName('labelType'), val)
                       }
                       onBlur={handleBlur}
                     />
@@ -419,8 +405,7 @@ const UnitLabelForm = memo(
                         <ToolTipContainer
                           tooltip={intl.formatMessage({
                             id: 'labels-label-link-description',
-                          })}
-                        >
+                          })}>
                           <DescriptionIcon height="14" width="14" />
                         </ToolTipContainer>
                       </Body>
@@ -459,8 +444,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-validity-period-start-date-description',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -496,8 +480,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-validity-period-end-date-description',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -533,8 +516,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-crediting-period-start-date-description',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -572,8 +554,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-crediting-period-end-date-description',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
@@ -609,8 +590,7 @@ const UnitLabelForm = memo(
                       <ToolTipContainer
                         tooltip={intl.formatMessage({
                           id: 'labels-unit-quantity-description',
-                        })}
-                      >
+                        })}>
                         <DescriptionIcon height="14" width="14" />
                       </ToolTipContainer>
                     </Body>
