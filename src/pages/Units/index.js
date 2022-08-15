@@ -140,9 +140,8 @@ const Units = () => {
   const intl = useIntl();
   let location = useLocation();
   let navigate = useNavigate();
-  const { stagingData, units, unit, totalUnitsPages } = useSelector(
-    store => store.climateWarehouse,
-  );
+  const { stagingData, units, unit, totalUnitsPages, totalNumberOfEntries } =
+    useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
@@ -397,29 +396,25 @@ const Units = () => {
         </StyledHeaderContainer>
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab
-              label={`${intl.formatMessage({ id: 'committed' })} (${
-                units && units?.length
-              })`}
-            />
+            <Tab label={intl.formatMessage({ id: 'committed' })} />
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
-                  stagingData && totalUnitsPages
+                  totalNumberOfEntries && totalNumberOfEntries.units.staging
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  stagingData && stagingData.units.pending.length
+                  totalNumberOfEntries && totalNumberOfEntries.units.pending
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'failed' })} (${
-                  stagingData && stagingData.units.failed.length
+                  totalNumberOfEntries && totalNumberOfEntries.units.failed
                 })`}
               />
             )}

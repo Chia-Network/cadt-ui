@@ -9,3 +9,4 @@ export * as projectsResponseStub from './projects.json';
 export * as vintagesResponseStub from './vintages.json';
 export * as stagingDataResponseStub from './staging-data.json';
 export * as auditResponseStub from './audit.json';
+export * as fileListResponseStub from './file-list.json';

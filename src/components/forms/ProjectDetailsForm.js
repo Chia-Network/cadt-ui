@@ -18,14 +18,10 @@ import {
   ToolTipContainer,
   LabelContainer,
   FieldRequired,
-  SimpleSelectSizeEnum,
-  SimpleSelectTypeEnum,
-  SimpleSelectStateEnum,
   SimpleSelectVariantEnum,
   InputContainer,
   StyledFieldContainer,
   StyledLabelContainer,
-  SimpleSelect,
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
   RequiredContainer,
@@ -58,7 +54,8 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-name-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -92,7 +89,8 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-id-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -125,7 +123,8 @@ const ProjectDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-description-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -155,7 +154,8 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-developer-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -189,7 +189,8 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-program-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -219,7 +220,8 @@ const ProjectDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-project-link-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -252,26 +254,22 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-sector-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.sector &&
                   touched.sector &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.projectSector}
-                state={SimpleSelectStateEnum.default}
-                selected={values.sector ? [values.sector] : undefined}
-                onChange={selectedOptions =>
-                  setFieldValue('sector', selectedOptions[0])
-                }
+                selected={values.sector}
+                onChange={val => setFieldValue('sector', val)}
                 onBlur={handleBlur}
               />
             </InputContainer>
@@ -286,25 +284,21 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-type-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
-            <SimpleSelect
+            <SelectCreatable
               variant={
                 errors.projectType &&
                 touched.projectType &&
                 SimpleSelectVariantEnum.error
               }
-              size={SimpleSelectSizeEnum.large}
-              type={SimpleSelectTypeEnum.basic}
               options={pickLists.projectType}
-              state={SimpleSelectStateEnum.default}
-              selected={values.projectType ? [values.projectType] : undefined}
-              onChange={selectedOptions =>
-                setFieldValue('projectType', selectedOptions[0])
-              }
+              selected={values.projectType}
+              onChange={val => setFieldValue('projectType', val)}
               onBlur={handleBlur}
             />
             <FormikError name="projectType" />
@@ -318,28 +312,22 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-status-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.projectStatus &&
                   touched.projectStatus &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.projectStatusValues}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.projectStatus ? [values.projectStatus] : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue('projectStatus', selectedOptions[0])
-                }
+                selected={values.projectStatus}
+                onChange={val => setFieldValue('projectStatus', val)}
                 onBlur={handleBlur}
               />
               <FormikError name="projectStatus" />
@@ -354,7 +342,8 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-project-status-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -389,28 +378,22 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-covered-by-ndc-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.coveredByNDC &&
                   touched.coveredByNDC &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.coveredByNDC}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.coveredByNDC ? [values.coveredByNDC] : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue('coveredByNDC', selectedOptions[0])
-                }
+                selected={values.coveredByNDC}
+                onChange={val => setFieldValue('coveredByNDC', val)}
                 onBlur={handleBlur}
               />
             </InputContainer>
@@ -426,7 +409,8 @@ const ProjectDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-ndc-information-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -461,7 +445,8 @@ const ProjectDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-current-registry-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -510,7 +495,8 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-registry-of-origin-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -559,7 +545,8 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-origin-project-id-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -596,30 +583,22 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-unit-metric-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
+              <SelectCreatable
                 variant={
                   errors.unitMetric &&
                   touched.unitMetric &&
                   SimpleSelectVariantEnum.error
                 }
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
                 options={pickLists.unitMetric}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.unitMetric
-                    ? [values.unitMetric]
-                    : [pickLists.unitMetric[0]]
-                }
-                onChange={selectedOptions =>
-                  setFieldValue('unitMetric', selectedOptions[0])
-                }
+                selected={values.unitMetric}
+                onChange={val => setFieldValue('unitMetric', val)}
                 onBlur={handleBlur}
               />
               <FormikError name="unitMetric" />
@@ -635,7 +614,8 @@ const ProjectDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-methodology-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -682,23 +662,22 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-validation-body-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
             </StyledLabelContainer>
             <InputContainer>
-              <SimpleSelect
-                size={SimpleSelectSizeEnum.large}
-                type={SimpleSelectTypeEnum.basic}
+              <SelectCreatable
+                variant={
+                  errors.validationBody &&
+                  touched.validationBody &&
+                  SimpleSelectVariantEnum.error
+                }
                 options={pickLists.validationBody}
-                state={SimpleSelectStateEnum.default}
-                selected={
-                  values.validationBody ? [values.validationBody] : undefined
-                }
-                onChange={selectedOptions =>
-                  setFieldValue('validationBody', selectedOptions[0])
-                }
+                selected={values.validationBody}
+                onChange={val => setFieldValue('validationBody', val)}
                 onBlur={handleBlur}
               />
               <FormikError name="validationBody" />
@@ -713,7 +692,8 @@ const ProjectDetailsForm = () => {
                 <ToolTipContainer
                   tooltip={intl.formatMessage({
                     id: 'projects-validation-date-description',
-                  })}>
+                  })}
+                >
                   <DescriptionIcon height="14" width="14" />
                 </ToolTipContainer>
               </Body>
@@ -747,7 +727,8 @@ const ProjectDetailsForm = () => {
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'projects-project-tags-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>

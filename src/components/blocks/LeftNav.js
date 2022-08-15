@@ -99,6 +99,7 @@ const LeftNav = withTheme(({ children }) => {
   const isOrganizationPage = location.pathname.includes('/organization');
   const isConflictsPage = location.pathname.includes('/conflicts');
   const isGovernancePage = location.pathname.includes('/governance');
+  const isFilesPage = location.pathname.includes('/files');
 
   return (
     <Container>
@@ -160,6 +161,12 @@ const LeftNav = withTheme(({ children }) => {
                 >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
+
+                <div></div>
+                <MenuItem selected={isFilesPage} to={`/files`}>
+                  <FormattedMessage id="my-files" />
+                </MenuItem>
+
                 <MenuItem selected={isOrganizationPage} to="/organization">
                   <FormattedMessage id="my-organization" />
                 </MenuItem>

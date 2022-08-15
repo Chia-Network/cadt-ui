@@ -30,6 +30,7 @@ const FormikRepeater = ({
   name,
   Component,
   tooltip,
+  isControlVisible = true,
 }) => {
   const { values, setFieldValue, handleBlur, errors, touched } =
     useFormikContext();
@@ -62,7 +63,7 @@ const FormikRepeater = ({
         name={name}
         render={arrayHelpers => (
           <div>
-            {entriesNumber < max ? (
+            {entriesNumber < max && isControlVisible && (
               <>
                 <StyledRepeatedComponentContainer
                   onClick={() => arrayHelpers.push(_.cloneDeep(empty))}
@@ -78,7 +79,8 @@ const FormikRepeater = ({
                   </Body>
                 </StyledRepeatedComponentContainer>
               </>
-            ) : (
+            )}
+            {!(entriesNumber < max) && isControlVisible && (
               <StyledRepeatedComponentContainer disabled>
                 <AddIcon height={14} width={14} fill={'#d9d9d9'} />
                 <Body color="#d9d9d9">
@@ -98,9 +100,11 @@ const FormikRepeater = ({
                     touched={_.get(touched, `${name}[${index}]`, null)}
                     errors={_.get(errors, `${name}[${index}]`, null)}
                   />
-                  <div onClick={() => arrayHelpers.remove(index)}>
-                    <CloseIcon height={12} width={12} fill={'#1890FF'} />
-                  </div>
+                  {isControlVisible && (
+                    <div onClick={() => arrayHelpers.remove(index)}>
+                      <CloseIcon height={12} width={12} fill={'#1890FF'} />
+                    </div>
+                  )}
                 </StyledRepeatedComponentContainer>
               ))}
           </div>
