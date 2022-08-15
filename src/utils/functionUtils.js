@@ -43,6 +43,9 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
     : getISODate(info?.changes[0]);
   const initialValue = !isDate ? info?.original : getISODate(info?.original);
 
+  const changedValuesArray = info?.changes;
+  const getChangedValue = value => (!isDate ? value : getISODate(value));
+
   if (dataType === 'creditingPeriodStart') {
     if (!_.isNull(changedValue)) {
       localStorage.setItem('addUnitCount', true);
@@ -101,9 +104,12 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
       //Staging Detail View Changes (Number)
       return (
         <>
-          <Body color={changeColor(dataType, 'INSERT')}>
-            {changedValue || 0}
-          </Body>
+          {changedValuesArray?.length &&
+            changedValuesArray.map((x, index) => (
+              <Body color={changeColor(dataType, 'INSERT')} key={index}>
+                {getChangedValue(x) || 0}
+              </Body>
+            ))}
           <Body color={changeColor(dataType, 'DELETE')}>{initialValue}</Body>
         </>
       );
@@ -132,6 +138,20 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
           {initialValue || '---'}
         </Body>
       );
+    } else if (dataType === 'unitOwner' && changedValuesArray?.length > 2) {
+      return (
+        <>
+          {changedValuesArray?.length &&
+            changedValuesArray.map((x, index) => (
+              <Body color={changeColor(dataType, 'INSERT')} key={index}>
+                {getChangedValue(x) || initialValue}
+              </Body>
+            ))}
+          <Body color={changeColor(dataType, 'DELETE')}>
+            {initialValue || '---'}
+          </Body>
+        </>
+      );
     } else if (_.isNull(changedValue) && initialValue) {
       return (
         <Body color={changeColor(dataType, 'DELETE')}>{initialValue}</Body>
@@ -146,9 +166,12 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
       //Staging Detail View Changes
       return (
         <>
-          <Body color={changeColor(dataType, 'INSERT')}>
-            {changedValue || '---'}
-          </Body>
+          {changedValuesArray?.length &&
+            changedValuesArray.map((x, index) => (
+              <Body color={changeColor(dataType, 'INSERT')} key={index}>
+                {getChangedValue(x) || '---'}
+              </Body>
+            ))}
           <Body color={changeColor(dataType, 'DELETE')}>
             {initialValue || '---'}
           </Body>
@@ -156,7 +179,14 @@ const stagingDetailsViewInfo = (info, dataType, changeColor) => {
       );
     } else if (_.isNull(initialValue) && !_.isEmpty(info?.changes)) {
       return (
-        <Body color={changeColor(dataType, 'INSERT')}>{changedValue}</Body>
+        <>
+          {changedValuesArray?.length &&
+            changedValuesArray.map((x, index) => (
+              <Body color={changeColor(dataType, 'INSERT')} key={index}>
+                {getChangedValue(x) || '---'}
+              </Body>
+            ))}
+        </>
       );
     }
   } else if (_.isNull(initialValue) && _.isNull(changedValue)) {
