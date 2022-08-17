@@ -21,6 +21,7 @@ export const actions = keyMirror(
   'SIGN_USER_OUT',
   'REFRESH_APP',
   'LOCK_APP',
+  'SET_USER',
 );
 
 export const refreshApp = render => ({
@@ -36,6 +37,11 @@ export const lockApp = isLocked => ({
 export const setReadOnly = isReadOnly => ({
   type: actions.SET_READ_ONLY,
   payload: isReadOnly,
+});
+
+export const setUser = user => ({
+  type: actions.SET_USER,
+  payload: user,
 });
 
 export const activateProgressIndicator = {

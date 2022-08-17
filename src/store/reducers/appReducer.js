@@ -20,6 +20,7 @@ const initialState = {
   validateForm: false,
   refresh: false,
   isAppLocked: false,
+  user: null,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -32,6 +33,9 @@ const appReducer = (state = initialState, action) => {
 
     case appActions.SET_READ_ONLY:
       return u({ readOnlyMode: action.payload }, state);
+
+    case appActions.SET_USER:
+      return u({ user: action.payload }, state);
 
     case socketActions.SOCKET_STATUS:
       return u({ socketStatus: action.payload }, state);

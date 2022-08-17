@@ -24,6 +24,7 @@ import {
   setGlobalErrorMessage,
   setNotificationMessage,
   setReadOnly,
+  setUser,
 } from './app';
 import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
@@ -176,6 +177,7 @@ export const getOrganizationData = () => {
         dispatch(setConnectionCheck(true));
         const results = await response.json();
 
+        dispatch(setUser(response.headers.get('x-user')));
         dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
         dispatch(
           setIsGovernance(response.headers.get('x-governance-body') === 'true'),
@@ -704,8 +706,8 @@ export const getStagingPaginatedData = ({
   };
 };
 
-export const commitStagingData = (data, comment, author) => {
-  return async dispatch => {
+export const commitStagingData = (data, comment) => {
+  return async (dispatch, getState) => {
     try {
       dispatch(activateProgressIndicator);
 
@@ -723,8 +725,8 @@ export const commitStagingData = (data, comment, author) => {
       if (comment?.length) {
         body.comment = comment;
       }
-      if (author?.length) {
-        body.author = author;
+      if (getState()?.app?.user) {
+        body.author = getState()?.app?.user;
       }
       if (body?.author || body?.comment) {
         payload.body = JSON.stringify(body);
