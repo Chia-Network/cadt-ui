@@ -435,6 +435,8 @@
   "sort-z-to-a": "Sort Z to A",
   "file": "File",
   "file-upload": "File upload",
+  "file-upload-confirmation": "File Upload Confirmation",
+  "file-upload-confirmation-message": "Are you sure you would like to upload",
   "file-uploaded": "Your file was uploaded successfully.",
   "file-not-uploaded": "Your file could not be uploaded.",
   "file-deleted": "Your file was deleted successfully.",
