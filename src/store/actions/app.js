@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
+import constants from '../../constants';
 import { keyMirror } from '../store-functions';
 import { LANGUAGE_CODES } from '../../translations';
-
 import { getOrganizationData } from './climateWarehouseActions';
 
 export const actions = keyMirror(
@@ -84,6 +84,23 @@ export const NotificationMessageTypeEnum = {
   error: 'error',
   success: 'success',
   null: 'null',
+};
+
+export const getUser = () => {
+  return async dispatch => {
+    try {
+      const req = new XMLHttpRequest();
+      req.open('GET', constants.APP_URL, false);
+      req.send(null);
+
+      if (req.getAllResponseHeaders().indexOf('x-user') >= 0) {
+        const xUser = req.getResponseHeader('x-user');
+        dispatch(setUser(xUser));
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
 };
 
 export const setNotificationMessage = (type, id) => {

@@ -24,7 +24,6 @@ import {
   setGlobalErrorMessage,
   setNotificationMessage,
   setReadOnly,
-  setUser,
 } from './app';
 import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
@@ -177,7 +176,6 @@ export const getOrganizationData = () => {
         dispatch(setConnectionCheck(true));
         const results = await response.json();
 
-        dispatch(setUser(response.headers.get('x-user')));
         dispatch(setReadOnly(response.headers.get('cw-read-only') === 'true'));
         dispatch(
           setIsGovernance(response.headers.get('x-governance-body') === 'true'),
