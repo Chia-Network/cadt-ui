@@ -1,5 +1,5 @@
-import React, { memo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -22,6 +22,7 @@ import {
   SelectCreatable,
   FormikError,
 } from '..';
+import { getFileList } from '../../store/actions/climateWarehouseActions';
 
 // eslint-disable-next-line react/display-name
 const ProjectLocationForm = memo(
@@ -31,7 +32,35 @@ const ProjectLocationForm = memo(
       fieldName => `${name}[${index}].${fieldName}`,
       [index, name],
     );
-    const { pickLists } = useSelector(store => store.climateWarehouse);
+    const { pickLists, fileList } = useSelector(
+      store => store.climateWarehouse,
+    );
+    const dispatch = useDispatch();
+
+    const fileListPickList = useMemo(
+      () => fileList?.map(item => item.fileName) ?? [],
+      [fileList],
+    );
+
+    const fileNameToSha256 = useMemo(
+      () =>
+        fileList?.reduce(
+          (acc, cur) => ({ ...acc, [cur.fileName]: cur.SHA256 }),
+          {},
+        ) ?? [],
+      [fileList],
+    );
+
+    const sha256ToFileName = useMemo(
+      () =>
+        fileList?.reduce(
+          (acc, cur) => ({ ...acc, [cur.SHA256]: cur.fileName }),
+          {},
+        ) ?? [],
+      [fileList],
+    );
+
+    useEffect(() => dispatch(getFileList()), []);
 
     return (
       <ModalFormContainerStyle>
@@ -46,7 +75,8 @@ const ProjectLocationForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'locations-country-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -75,7 +105,8 @@ const ProjectLocationForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'locations-in-country-region-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -106,7 +137,8 @@ const ProjectLocationForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'locations-geographic-identifier-description',
-                    })}>
+                    })}
+                  >
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -132,6 +164,42 @@ const ProjectLocationForm = memo(
                   name={getFieldName('geographicIdentifier')}
                 />
                 <FormikError name={getFieldName('geographicIdentifier')} />
+              </InputContainer>
+            </StyledFieldContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    <FormattedMessage id="gis-file" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'gis-file-description',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <SelectCreatable
+                  variant={
+                    errors?.country &&
+                    touched?.country &&
+                    SimpleSelectVariantEnum.error
+                  }
+                  options={fileListPickList}
+                  selected={sha256ToFileName[value.fileId] ?? ''}
+                  onChange={fileName =>
+                    setFieldValue(
+                      getFieldName('fileId'),
+                      fileNameToSha256[fileName],
+                    )
+                  }
+                  onBlur={handleBlur}
+                  isCreatable={false}
+                />
+                <FormikError name={getFieldName('fileId')} />
               </InputContainer>
             </StyledFieldContainer>
           </BodyContainer>

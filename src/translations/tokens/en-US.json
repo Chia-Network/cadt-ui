@@ -451,5 +451,7 @@
   "actions": "Actions",
   "organization-deleted": "The organization was deleted successfully.",
   "organization-not-deleted": "The organization could not be deleted.",
-  "my-registry": "My Registry"
+  "my-registry": "My Registry",
+  "gis-file": "GIS file",
+  "gis-file-description": "GIS file format is a standard of encoding geographical information into a computer file."
 }
