@@ -49,7 +49,7 @@ const ProjectCoBenefitForm = memo(
                     ? SimpleSelectVariantEnum.error
                     : undefined
                 }
-                options={pickLists?.cobenefits}
+                options={pickLists?.coBenefits}
                 selected={value.cobenefit}
                 onChange={val => setFieldValue(getFieldName('cobenefit'), val)}
                 onBlur={handleBlur}
