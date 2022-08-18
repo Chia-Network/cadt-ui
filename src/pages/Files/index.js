@@ -17,6 +17,9 @@ import {
   RemoveIcon,
   Modal,
   modalTypeEnum,
+  SelectSizeEnum,
+  SelectTypeEnum,
+  SelectOrganizations,
 } from '../../components';
 import {
   deleteFile,
@@ -85,7 +88,7 @@ const StyledCenteredChildren = styled('div')`
 `;
 
 const StyledSortButtonContainer = styled.div`
-  margin-left: 10px;
+  margin: 0 10px;
   border: 0.0625rem solid #d9d9d9;
   height: 2.5rem;
   padding: 0.5rem 0.75rem 0.5rem 0.75rem;
@@ -110,8 +113,12 @@ const SortEnum = {
 const Files = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
-  const { fileList } = useSelector(store => store.climateWarehouse);
+  const { fileList, organizations } = useSelector(
+    store => store.climateWarehouse,
+  );
   const [filteredFileList, setFilteredFileList] = useState(fileList ?? []);
+  const [selectedOrgUid, setSelectedOrgUid] = useState(null);
+  const [fileNameFilter, setFileNameFilter] = useState(null);
   const [sortOrder, setSortOrder] = useState(SortEnum.aToZ);
   const [fileToDownload, setFileToDownload] = useState(null);
   const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
@@ -123,17 +130,7 @@ const Files = () => {
   const onSearch = useMemo(
     () =>
       _.debounce(event => {
-        if (event.target.value !== '') {
-          setFilteredFileList(
-            fileList.filter(file =>
-              file.fileName
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase()),
-            ),
-          );
-        } else {
-          setFilteredFileList(fileList);
-        }
+        setFileNameFilter(event.target.value?.toLowerCase() ?? '');
       }, 300),
     [fileList],
   );
@@ -143,6 +140,37 @@ const Files = () => {
       onSearch.cancel();
     };
   }, []);
+
+  const onOrganizationSelect = useCallback(
+    selectedOption => {
+      const orgUid = selectedOption[0]?.orgUid;
+      if (orgUid) {
+        setSelectedOrgUid(orgUid);
+      }
+    },
+    [organizations],
+  );
+
+  useEffect(() => {
+    if (fileList) {
+      setFilteredFileList(
+        fileList.filter(file => {
+          if (
+            fileNameFilter &&
+            !file.fileName.toLowerCase().includes(fileNameFilter)
+          ) {
+            return false;
+          }
+
+          if (selectedOrgUid && selectedOrgUid !== file.orgUid) {
+            return false;
+          }
+
+          return true;
+        }),
+      );
+    }
+  }, [selectedOrgUid, fileList, fileNameFilter]);
 
   const getArraySortedAlphabetically = useCallback((arr, order) => {
     const sortAToZ = (a, b) => a.fileName.localeCompare(b.fileName);
@@ -194,7 +222,7 @@ const Files = () => {
     [setIsUploadModalVisible],
   );
 
-  if (!fileList) {
+  if (!fileList || !organizations) {
     return null;
   }
 
@@ -224,6 +252,14 @@ const Files = () => {
             </>
           )}
         </StyledSortButtonContainer>
+
+        <SelectOrganizations
+          size={SelectSizeEnum.large}
+          type={SelectTypeEnum.basic}
+          placeholder={intl.formatMessage({ id: 'select-organization' })}
+          width="200px"
+          onChange={onOrganizationSelect}
+        />
 
         <StyledUploadIcon width="20" height="20" onClick={toggleUploadModal} />
       </StyledHeaderContainer>
@@ -261,6 +297,11 @@ const Files = () => {
                 <StyledTh>
                   <Body size="Bold">SHA256</Body>
                 </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
+                    <FormattedMessage id="organization-name" />
+                  </Body>
+                </StyledTh>
               </StyledTr>
             </thead>
             <tbody>
@@ -289,6 +330,9 @@ const Files = () => {
                   </StyledTd>
                   <StyledTd>
                     <Body>{file.SHA256}</Body>
+                  </StyledTd>
+                  <StyledTd>
+                    <Body>{organizations[file.orgUid]?.name}</Body>
                   </StyledTd>
                 </StyledTr>
               ))}
