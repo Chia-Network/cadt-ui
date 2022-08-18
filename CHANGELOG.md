@@ -1,3 +1,26 @@
+## [1.0.11](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.10...1.0.11) (2022-08-18)
+
+
+### Bug Fixes
+
+* displays total number of entries per tab for projects and units ([0779962](https://github.com/Chia-Network/climate-warehouse-ui/commit/07799629f6e0f3bc95f5ee044c927d899ef2870d))
+* remove spanish translations ([9933158](https://github.com/Chia-Network/climate-warehouse-ui/commit/9933158782887448cb3a8a457c2db7cd8002a7d9))
+* split unit detailed staging not all changes visible ([5e878e1](https://github.com/Chia-Network/climate-warehouse-ui/commit/5e878e12e88fb195dce5b26efb7c9517204d96bc))
+
+
+### Features
+
+* add filter by org dropdown select and org name column to file store ([b7580bc](https://github.com/Chia-Network/climate-warehouse-ui/commit/b7580bc40c0ece9780099ff671802deb49802dfa))
+* add subscribe to file store toggle to organization subscriptions ([799fe18](https://github.com/Chia-Network/climate-warehouse-ui/commit/799fe18e1e248e5169ab497768f64493ed615097))
+* add subscribe to file store toggle to organization subscriptions ([48215ea](https://github.com/Chia-Network/climate-warehouse-ui/commit/48215eae879a28c3595e527f653a65ca224d3b8d))
+* add subscribe to file store toggle to organization subscriptions ([bfeb32f](https://github.com/Chia-Network/climate-warehouse-ui/commit/bfeb32fead0c5543cf08e107648b4f92bea847b1))
+* add subscribe to file store toggle to organization subscriptions ([f778eda](https://github.com/Chia-Network/climate-warehouse-ui/commit/f778eda73f4f7c5439d8bb9d25b43b235cc46b6b))
+* add subscribe to file store toggle to organization subscriptions ([6e5c1d3](https://github.com/Chia-Network/climate-warehouse-ui/commit/6e5c1d332c6b69869960b9ffc169174bed3885f9))
+* added file upload confirmation ([1be7475](https://github.com/Chia-Network/climate-warehouse-ui/commit/1be74757a6148d01f5a6ecca7dbed23f1edbba55))
+* Change Select to Dynamic Picklist ([74c1ec7](https://github.com/Chia-Network/climate-warehouse-ui/commit/74c1ec736b92b8085066b2f8abe9da3be1b51573))
+
+
+
 ## [1.0.10](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.9...1.0.10) (2022-08-04)
 
 
