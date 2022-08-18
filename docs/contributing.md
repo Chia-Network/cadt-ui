@@ -408,24 +408,6 @@ Example JSON files:
 }
 ```
 
-- es.JSON - Spanish
-
-```
-{
-  "hello-world": "Hola Mundo",
-  "app-title": "Aplicación Super Cool",
-}
-```
-
-- ja.JSON - Japanese
-
-```
-{
-  "hello-world": "こんにちは世界",
-  "app-title": "超クールなアプリ",
-}
-```
-
 ```
 NOTE: If a specific language file that is requested from the browser isn't specified, the system just defaults to the English-US language file.
 ```

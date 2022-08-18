@@ -140,9 +140,13 @@ const Projects = () => {
   const [isDeleteAllStagingVisible, setIsDeleteAllStagingVisible] =
     useState(false);
   const { notification } = useSelector(store => store.app);
-  const { project, projects, stagingData, totalProjectsPages } = useSelector(
-    store => store.climateWarehouse,
-  );
+  const {
+    project,
+    projects,
+    stagingData,
+    totalProjectsPages,
+    totalNumberOfEntries,
+  } = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -399,29 +403,25 @@ const Projects = () => {
         )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab
-              label={`${intl.formatMessage({ id: 'committed' })} (${
-                projects && projects?.length
-              })`}
-            />
+            <Tab label={intl.formatMessage({ id: 'committed' })} />
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
-                  stagingData && totalProjectsPages
+                  totalNumberOfEntries && totalNumberOfEntries.projects.staging
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  stagingData && stagingData.projects.pending.length
+                  totalNumberOfEntries && totalNumberOfEntries.projects.pending
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'failed' })} (${
-                  stagingData && stagingData.projects.failed.length
+                  totalNumberOfEntries && totalNumberOfEntries.projects.failed
                 })`}
               />
             )}
