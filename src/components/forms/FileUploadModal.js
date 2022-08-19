@@ -19,6 +19,7 @@ const FileUploadModal = ({ onClose }) => {
   const dispatch = useDispatch();
   const { notification } = useSelector(state => state.app);
   const [isValidationOn, setIsValidationOn] = useState(false);
+  const [userConfirmation, setUserConfirmation] = useState(false);
   const [formData, setFormData] = useState({
     fileName: '',
     file: null,
@@ -29,7 +30,7 @@ const FileUploadModal = ({ onClose }) => {
   const onSubmit = useCallback(async () => {
     setIsValidationOn(true);
     if (isFileValid) {
-      dispatch(postNewFile(formData));
+      setUserConfirmation(true);
     }
   }, [isFileValid, formData, setIsValidationOn]);
 
@@ -84,6 +85,25 @@ const FileUploadModal = ({ onClose }) => {
           </ModalFormContainerStyle>
         }
       />
+      {userConfirmation && (
+        <Modal
+          title={intl.formatMessage({
+            id: 'file-upload-confirmation',
+          })}
+          body={`${intl.formatMessage({
+            id: 'file-upload-confirmation-message',
+          })} ${formData.fileName}?`}
+          modalType={modalTypeEnum.basic}
+          label={intl.formatMessage({
+            id: 'upload',
+          })}
+          onOk={() => {
+            dispatch(postNewFile(formData));
+            setUserConfirmation(false);
+          }}
+          onClose={() => setUserConfirmation(false)}
+        />
+      )}
     </>
   );
 };

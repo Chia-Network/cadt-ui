@@ -435,6 +435,8 @@
   "sort-z-to-a": "Sort Z to A",
   "file": "File",
   "file-upload": "File upload",
+  "file-upload-confirmation": "File Upload Confirmation",
+  "file-upload-confirmation-message": "Are you sure you would like to upload",
   "file-uploaded": "Your file was uploaded successfully.",
   "file-not-uploaded": "Your file could not be uploaded.",
   "file-deleted": "Your file was deleted successfully.",
@@ -453,5 +455,8 @@
   "organization-not-deleted": "The organization could not be deleted.",
   "my-registry": "My Registry",
   "gis-file": "GIS file",
-  "gis-file-description": "GIS file format is a standard of encoding geographical information into a computer file."
+  "gis-file-description": "GIS file format is a standard of encoding geographical information into a computer file.",
+  "subscribe-to-files": "Include files",
+  "import-organization": "Import organization",
+  "existing-organizations": "Existing organizations"
 }
