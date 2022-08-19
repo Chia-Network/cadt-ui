@@ -38,16 +38,9 @@ const ProjectLocationForm = memo(
     const dispatch = useDispatch();
 
     const fileListPickList = useMemo(
-      () => fileList?.map(item => item.fileName) ?? [],
-      [fileList],
-    );
-
-    const fileNameToSha256 = useMemo(
       () =>
-        fileList?.reduce(
-          (acc, cur) => ({ ...acc, [cur.fileName]: cur.SHA256 }),
-          {},
-        ) ?? [],
+        fileList?.map(item => ({ label: item.fileName, value: item.SHA256 })) ??
+        [],
       [fileList],
     );
 
@@ -189,15 +182,20 @@ const ProjectLocationForm = memo(
                     SimpleSelectVariantEnum.error
                   }
                   options={fileListPickList}
-                  selected={sha256ToFileName[value.fileId] ?? ''}
-                  onChange={fileName =>
-                    setFieldValue(
-                      getFieldName('fileId'),
-                      fileNameToSha256[fileName],
-                    )
+                  selected={
+                    value.fileId
+                      ? {
+                          value: value.fileId,
+                          label: sha256ToFileName[value.fileId],
+                        }
+                      : null
+                  }
+                  onChange={selected =>
+                    setFieldValue(getFieldName('fileId'), selected.value)
                   }
                   onBlur={handleBlur}
                   isCreatable={false}
+                  isOfValueLabelType={true}
                 />
                 <FormikError name={getFieldName('fileId')} />
               </InputContainer>
