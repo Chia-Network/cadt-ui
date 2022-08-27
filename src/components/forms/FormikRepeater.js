@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { FieldArray, useFormikContext } from 'formik';
-import styled, { useTheme, withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -111,7 +111,11 @@ const FormikRepeater = withTheme(
                     />
                     {isControlVisible && (
                       <div onClick={() => arrayHelpers.remove(index)}>
-                        <CloseIcon height={12} width={12} fill={theme.colors.default.onDate} />
+                        <CloseIcon
+                          height={12}
+                          width={12}
+                          fill={theme.colors.default.onDate}
+                        />
                       </div>
                     )}
                   </StyledRepeatedComponentContainer>

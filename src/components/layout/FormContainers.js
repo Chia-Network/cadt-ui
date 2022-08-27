@@ -46,7 +46,7 @@ export const RequiredContainer = styled('div')`
 export const StyledLabelContainer = styled('div')`
   margin-bottom: 0.5rem;
   body {
-    color: ${props => props.theme.colors.default.onText};
+    color:${props => props.theme.colors.default.onText};
   }
 `;
 

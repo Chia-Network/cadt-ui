@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
@@ -51,7 +51,6 @@ import {
   clearProjectData,
   getProjectData,
 } from '../../store/actions/climateWarehouseActions';
-import theme from '../../theme';
 
 const headings = [
   'currentRegistry',
@@ -134,7 +133,7 @@ const StyledCSVOperationsContainer = styled('div')`
   }
 `;
 
-const Projects = () => {
+const Projects = withTheme(({ theme }) => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
   const [isDeleteAllStagingVisible, setIsDeleteAllStagingVisible] =
@@ -462,8 +461,7 @@ const Projects = () => {
                           } else {
                             dispatch(setPendingError(true));
                           }
-                        }}
-                      >
+                        }}>
                         <FormattedMessage id="create-one-now" />
                       </StyledCreateOneNowContainer>
                     </>
@@ -579,6 +577,6 @@ const Projects = () => {
       )}
     </>
   );
-};
+});
 
 export { Projects };
