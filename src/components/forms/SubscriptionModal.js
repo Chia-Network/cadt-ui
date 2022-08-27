@@ -58,7 +58,7 @@ const StyledSubscriptionsListContainer = styled('div')`
 `;
 
 const StyleSubscriptionsItemContainer = styled('div')`
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${props => props.theme.colors.default.onBorder};
   padding: 0.5rem 0;
   display: flex;
   flex-basis: 40%;

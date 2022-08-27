@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 import {
   Body,
@@ -73,7 +73,7 @@ const StyledTr = styled('tr')`
 
 const StyledSortButtonContainer = styled.div`
   margin-left: 10px;
-  border: 0.0625rem solid #d9d9d9;
+  border: 0.0625rem solid ${props => props.theme.colors.default.onBorder};
   height: 2.5rem;
   padding: 0.5rem 0.75rem 0.5rem 0.75rem;
   box-sizing: border-box;
@@ -89,7 +89,7 @@ const StyledIconContainer = styled('div')`
   cursor: zoom-in;
 `;
 
-const Audit = () => {
+const Audit = withTheme(() => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
@@ -261,8 +261,7 @@ const Audit = () => {
                     <StyledTd>
                       {auditItem.change && (
                         <StyledIconContainer
-                          onClick={() => setSelectedAuditItem(auditItem)}
-                        >
+                          onClick={() => setSelectedAuditItem(auditItem)}>
                           <MagnifyGlassIcon />
                         </StyledIconContainer>
                       )}
@@ -303,6 +302,6 @@ const Audit = () => {
       )}
     </StyledSectionContainer>
   );
-};
+});
 
 export { Audit };

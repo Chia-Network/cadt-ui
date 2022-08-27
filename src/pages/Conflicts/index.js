@@ -34,7 +34,8 @@ const StyledTable = styled('table')`
 const StyledTh = styled('th')`
   text-align: start;
   padding: 17px;
-  background-color: ${props => props.theme.colors.default.status.info.secondary};
+  background-color: ${props =>
+    props.theme.colors.default.status.info.secondary};
   position: sticky;
   top: 0;
 `;
@@ -61,8 +62,7 @@ const StyledCursor = styled('div')`
   cursor: zoom-in;
 `;
 
-const Conflicts = withTheme(() => {
-  const { theme } = useSelector(state => state.app);
+const Conflicts = withTheme(({ theme }) => {
   const [info, setInfo] = useState(true);
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -204,7 +204,7 @@ const Conflicts = withTheme(() => {
                                       `/projects?projectId=${conflictItem.firstProjectId}`,
                                     );
                                 }}
-                                color="#1890ff">
+                                color={theme.colors.default.onDate}>
                                 <FormattedMessage id="project-one" />
                                 <MagnifyGlassIcon height="15" width="30" />
                               </Body>
@@ -221,7 +221,7 @@ const Conflicts = withTheme(() => {
                                       `/projects?projectId=${conflictItem.secondProjectId}`,
                                     );
                                 }}
-                                color="#1890ff">
+                                color={theme.colors.default.onDate}>
                                 <FormattedMessage id="project-two" />
                                 <MagnifyGlassIcon height="15" width="30" />
                               </Body>

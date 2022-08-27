@@ -38,7 +38,7 @@ const ConfirmButton = styled('button')`
   margin-right: 1.5rem;
   margin-bottom: 1rem;
   align-self: flex-end;
-  background-color: #1890ff;
+  background-color: ${props => props.theme.colors.default.onDate};
   border-radius: 0.125rem;
   border: none;
   color: ${props => props.theme.colors.default.onButton};

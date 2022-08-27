@@ -35,8 +35,9 @@ import {
   SelectCreatable,
   SimpleSelectStateEnum,
 } from '..';
+import { withTheme } from 'styled-components';
 
-const UnitDetailsForm = () => {
+const UnitDetailsForm = withTheme(({ theme }) => {
   const intl = useIntl();
   const { pickLists, myProjects, issuances } = useSelector(
     store => store.climateWarehouse,
@@ -505,7 +506,7 @@ const UnitDetailsForm = () => {
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
-                <Body color={'#262626'}>
+                <Body color={theme.colors.default.onText}>
                   <LabelContainer>
                     <FormattedMessage id="unit-status-reason" />
                   </LabelContainer>
@@ -572,7 +573,7 @@ const UnitDetailsForm = () => {
           </SpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body style={{ color: '#262626' }}>
+              <Body style={{ color: theme.colors.default.onText }}>
                 <LabelContainer>
                   *<FormattedMessage id="vintage-year" />
                 </LabelContainer>
@@ -605,7 +606,7 @@ const UnitDetailsForm = () => {
           </HrSpanTwoColumnsContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>
+              <Body color={theme.colors.default.onText}>
                 <LabelContainer>
                   <FormattedMessage id="marketplace" />
                 </LabelContainer>
@@ -639,7 +640,7 @@ const UnitDetailsForm = () => {
           </StyledFieldContainer>
           <StyledFieldContainer>
             <StyledLabelContainer>
-              <Body color={'#262626'}>
+              <Body color={theme.colors.default.onText}>
                 <LabelContainer>
                   <FormattedMessage id="marketplace-identifier" />
                 </LabelContainer>
@@ -676,7 +677,7 @@ const UnitDetailsForm = () => {
           <SpanTwoColumnsContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
-                <Body color={'#262626'}>
+                <Body color={theme.colors.default.onText}>
                   <LabelContainer>
                     <FormattedMessage id="marketplace-link" />
                   </LabelContainer>
@@ -806,6 +807,6 @@ const UnitDetailsForm = () => {
       </FormContainerStyle>
     </ModalFormContainerStyle>
   );
-};
+});
 
 export { UnitDetailsForm };

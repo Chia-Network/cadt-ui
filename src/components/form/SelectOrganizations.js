@@ -36,9 +36,9 @@ const StyledSelect = styled('div')`
   align-items: center;
   cursor: pointer;
   border-radius: 0.125rem;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
   box-sizing: border-box;
-  border: 0.0625rem solid #d9d9d9;
+  border: 0.0625rem solid ${props => props.theme.colors.default.onBorder};
   background: ${props => props.theme.colors.default.onButton};
   z-index: 5;
   user-select: none;
@@ -136,7 +136,7 @@ const StyledArrowDownContainer = styled('div')`
     if (props.state === SelectStateEnum.disabled) {
       return `color: #BFBFBF;`;
     } else if (props.state === SelectStateEnum.focused) {
-      return `color: #262626;`;
+      return `color: ${props.theme.colors.default.onText};`;
     } else {
       return `color: #BFBFBF;`;
     }
@@ -166,7 +166,7 @@ const StyledMultipleSelectItem = styled('div')`
   font-weight: normal;
   font-size: 0.75rem;
   line-height: 1.25rem;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
 `;
 
 const StyledSearchInput = styled('input')`
@@ -176,7 +176,7 @@ const StyledSearchInput = styled('input')`
   box-sizing: border-box;
   font-style: normal;
   font-weight: normal;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
   ${props => {
     if (props.size === SelectSizeEnum.large) {
       return css`
@@ -196,7 +196,7 @@ const StyledSearchInput = styled('input')`
     outline: none;
   }
   ::placeholder {
-    color: #8c8c8c;
+    color: ${props => props.theme.colors.default.onPlaceholder};
   }
 `;
 

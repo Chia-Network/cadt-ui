@@ -89,7 +89,7 @@ const StyledCenteredChildren = styled('div')`
 
 const StyledSortButtonContainer = styled.div`
   margin: 0 10px;
-  border: 0.0625rem solid #d9d9d9;
+  border: 0.0625rem solid ${props => props.theme.colors.default.onBorder};
   height: 2.5rem;
   padding: 0.5rem 0.75rem 0.5rem 0.75rem;
   box-sizing: border-box;

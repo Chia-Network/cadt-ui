@@ -33,7 +33,7 @@ const StyledInputContainer = styled('div')`
   flex-direction: row;
   align-items: center;
   background-color: white;
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${props => props.theme.colors.default.onBorder};
   box-sizing: border-box;
   border-radius: 0.125rem;
   ${props => {
@@ -80,7 +80,7 @@ const StyledInputContainer = styled('div')`
     } else if (props.variant === InputVariantEnum.error) {
       if (props.inputState === InputStateEnum.default) {
         return css`
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
         `;
       } else if (props.inputState === InputStateEnum.hover) {
         return css`
@@ -91,7 +91,7 @@ const StyledInputContainer = styled('div')`
         props.inputState === InputStateEnum.typing
       ) {
         return css`
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         `;
       } else if (props.inputState === InputStateEnum.disabled) {
@@ -110,7 +110,7 @@ const StyledInputContainer = styled('div')`
         props.inputState === InputStateEnum.typing
       ) {
         return css`
-          border: 1px solid #1890ff;
+          border: 1px solid ${props.theme.colors.default.onDate};
           box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
         `;
       } else if (props.inputState === InputStateEnum.disabled) {
@@ -132,12 +132,12 @@ const StyledInput = styled('input')`
   box-sizing: border-box;
   font-style: normal;
   font-weight: normal;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
   :focus {
     outline: none;
   }
   ::placeholder {
-    color: #8c8c8c;
+    color: ${props => props.theme.colors.default.onPlaceholder};
   }
   :disabled {
     background: #f5f5f5;
@@ -219,8 +219,7 @@ const StandardInput = withTheme(
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onBlur={onContainerBlur}
-        onFocus={onFocus}
-      >
+        onFocus={onFocus}>
         {prefix && (
           <StyledSuffixPrefixContainer>{prefix}</StyledSuffixPrefixContainer>
         )}

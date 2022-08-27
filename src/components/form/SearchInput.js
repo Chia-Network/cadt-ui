@@ -11,7 +11,7 @@ const Input = styled('input')`
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   background-color: transparent;
   display: flex;
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${props => props.theme.colors.default.onBorder};
   justify-content: center;
   border-top-left-radius: 0.1rem;
   border-bottom-left-radius: 0.1rem;
@@ -46,7 +46,9 @@ const SearchIconContainer = styled('div')`
   border-top-right-radius: 0.1rem;
   border-bottom-right-radius: 0.1rem;
 
-  ${props => props.outline && 'border: 0.0625rem solid #d9d9d9;'};
+  ${props =>
+    props.outline &&
+    `border: 0.0625rem solid ${props.theme.colors.default.onBorder};`};
   border-left-style: none;
   ${props =>
     (props.size === 'large' && 'width: 2.6875rem;height:2.5rem') ||
@@ -61,16 +63,18 @@ const SearchIconContainer = styled('div')`
   ${props =>
     (props.usePrimaryButton &&
       props.size === 'large' &&
-      'background-color: #1890FF;') ||
+      `background-color: ${props.theme.colors.default.onDate}`) ||
     (props.usePrimaryButton &&
       props.size === 'default' &&
-      'background-color: #1890FF;') ||
+      `background-color: ${props.theme.colors.default.onDate}`) ||
     (props.usePrimaryButton &&
       props.size === 'small' &&
-      'background-color: #1890FF;')};
+      `background-color: ${props.theme.colors.default.onDate}`)};
 
   box-sizing: border-box;
-  ${props => props.disabled && `cursor: default; color: #d9d9d9;`}
+  ${props =>
+    props.disabled &&
+    `cursor: default; color: ${props.theme.colors.default.onBorder};`}
 `;
 
 const SearchContainer = styled('div')`
@@ -89,7 +93,10 @@ const ButtonSearchText = styled('p')`
   align-items: center;
   font-size: 1rem;
   width: 3.125rem;
-  color: ${props => (props.usePrimaryButton ? props.theme.colors.default.onButton : props.theme.colors.default.onSurface)};
+  color: ${props =>
+    props.usePrimaryButton
+      ? props.theme.colors.default.onButton
+      : props.theme.colors.default.onSurface};
   box-sizing: border-box;
 `;
 

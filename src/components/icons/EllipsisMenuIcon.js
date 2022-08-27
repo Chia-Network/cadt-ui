@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { EllipseIcon } from '..';
 
 const StyledElipseContainer = styled('div')`
@@ -9,14 +9,14 @@ const StyledElipseContainer = styled('div')`
   justify-content: space-evenly;
 `;
 
-const EllipsisMenuIcon = () => {
-    return (
-      <StyledElipseContainer>
-        <EllipseIcon height="6" width="6" fill="#1890FF" />
-        <EllipseIcon height="6" width="6" fill="#1890FF" />
-        <EllipseIcon height="6" width="6" fill="#1890FF" />
-      </StyledElipseContainer>
-    );
-}
+const EllipsisMenuIcon = withTheme(theme => {
+  return (
+    <StyledElipseContainer>
+      <EllipseIcon height="6" width="6" fill={theme.colors.default.onDate} />
+      <EllipseIcon height="6" width="6" fill={theme.colors.default.onDate} />
+      <EllipseIcon height="6" width="6" fill={theme.colors.default.onDate} />
+    </StyledElipseContainer>
+  );
+});
 
 export { EllipsisMenuIcon };

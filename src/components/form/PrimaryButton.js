@@ -10,7 +10,8 @@ const Button = styled('button')`
   align-items: center;
   flex-direction: row;
   max-width: 100%;
-  background-color: ${props => (props.danger ? '#FF4D4F' : '#1890FF')};
+  background-color: ${props =>
+    props.danger ? '#FF4D4F' : props.theme.colors.default.onDate};
   border: none;
   border-radius: 2px;
   padding: 10px;
@@ -28,7 +29,10 @@ const Button = styled('button')`
   }
 
   &:active {
-    background-color: ${props => (props.danger ? '#F5222D' : '#096DD9')};
+    background-color: ${props =>
+      props.danger
+        ? props.theme.colors.default.status.error.primary
+        : '#096DD9'};
   }
 
   ${props =>
@@ -40,7 +44,7 @@ const Button = styled('button')`
 
   &:disabled {
     background-color: #f5f5f5;
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${props => props.theme.colors.default.onBorder};
     box-sizing: border-box;
     cursor: default;
   }
@@ -70,7 +74,7 @@ const Button = styled('button')`
         }
 
         h4 {
-          color: #262626;
+          color: ${props.theme.colors.default.onText};
         }
         h4:hover {
           color: #40a9ff;
@@ -103,8 +107,7 @@ const PrimaryButton = withTheme(
         danger={danger}
         type={type}
         selectedTheme={appStore.theme}
-        onClick={onClick}
-      >
+        onClick={onClick}>
         {loading && (
           <>
             <CircularProgress size={15} thickness={5} />

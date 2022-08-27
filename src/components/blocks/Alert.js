@@ -59,7 +59,7 @@ const CloseTextButton = styled('button')`
   height: 1.125rem;
   background-color: unset;
   border: none;
-  color: #8c8c8c;
+  color: ${props => props.theme.colors.default.onPlaceholder};
   cursor: pointer;
   ${props =>
     props.alertBody
@@ -169,7 +169,7 @@ const Alert = withTheme(
       } else if (cardRef && cardRef.current) {
         cardRef.current.remove();
       }
-    }
+    };
 
     return (
       <AlertCard

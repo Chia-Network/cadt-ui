@@ -13,8 +13,8 @@ const AddTag = styled('div')`
   border-radius: 0.125rem;
   ${props =>
     props.body === null
-      ? 'border: 0.0625rem dashed #D9D9D9 ; width:4.375rem;background-color: unset'
-      : 'border: 0.0625rem solid #D9D9D9'};
+      ? `border: 0.0625rem dashed ${props.theme.colors.default.onBorder} ; width:4.375rem;background-color: unset`
+      : `border: 0.0625rem solid ${props.theme.colors.default.onBorder}`};
   ${props => props.closeable && 'width:4.25rem'};
 `;
 
@@ -28,13 +28,17 @@ const TagButton = styled('div')`
 `;
 
 const Tag = withTheme(
-  ({ closeable, body = null, addNew = _.noop, onClose = _.noop }) => {
+  ({ closeable, body = null, addNew = _.noop, onClose = _.noop, theme }) => {
     return (
       <>
         <AddTag body={body} closeable={closeable}>
           {addNew && (
             <TagButton onClick={addNew}>
-              <AddIcon width="8.06" height="8.44" fill="#262626" />
+              <AddIcon
+                width="8.06"
+                height="8.44"
+                fill={theme.colors.default.onText}
+              />
             </TagButton>
           )}
           <TagBody>{body === null ? 'New Tag' : body}</TagBody>

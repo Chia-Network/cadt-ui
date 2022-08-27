@@ -42,9 +42,9 @@ const StyledSelect = styled('div')`
   align-items: center;
   cursor: pointer;
   border-radius: 0.125rem;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
   box-sizing: border-box;
-  border: 0.0625rem solid #d9d9d9;
+  border: 0.0625rem solid ${props => props.theme.colors.default.onBorder};
   background: ${props => props.theme.colors.default.onButton};
   z-index: 5;
   user-select: none;
@@ -95,16 +95,16 @@ const StyledSelect = styled('div')`
     if (props.variant === SimpleSelectVariantEnum.error) {
       if (props.state === SimpleSelectStateEnum.focused) {
         return css`
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         `;
       } else if (props.state === SimpleSelectStateEnum.hover) {
         return css`
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
         `;
       }
       return css`
-        border: 1px solid #f5222d;
+        border: 1px solid ${props.theme.colors.default.status.error.primary};
       `;
     }
   }}
@@ -173,7 +173,7 @@ const StyledArrowDownContainer = styled('div')`
     if (props.state === SimpleSelectStateEnum.disabled) {
       return `color: #BFBFBF;`;
     } else if (props.state === SimpleSelectStateEnum.focused) {
-      return `color: #262626;`;
+      return `color: ${props.theme.colors.default.onText};`;
     } else {
       return `color: #BFBFBF;`;
     }
@@ -203,7 +203,7 @@ const StyledMultipleSelectItem = styled('div')`
   font-weight: normal;
   font-size: 0.75rem;
   line-height: 1.25rem;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
 `;
 
 const StyledSearchInput = styled('input')`
@@ -213,7 +213,7 @@ const StyledSearchInput = styled('input')`
   box-sizing: border-box;
   font-style: normal;
   font-weight: normal;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
   ${props => {
     if (props.size === SimpleSelectSizeEnum.large) {
       return css`
@@ -233,7 +233,7 @@ const StyledSearchInput = styled('input')`
     outline: none;
   }
   ::placeholder {
-    color: #8c8c8c;
+    color: ${props => props.theme.colors.default.onPlaceholder};
   }
 `;
 
@@ -259,8 +259,7 @@ const BasicMenuItem = ({ children, isSelected, onClick, width }) => {
       isSelected={isSelected}
       onClick={onClick}
       width={width}
-      scrollWidth={scrollWidth}
-    >
+      scrollWidth={scrollWidth}>
       {children}
     </StyledBasicMenuItem>
   );
@@ -456,8 +455,7 @@ const SimpleSelect = withTheme(
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             variant={variant}
-            onBlur={onBlur}
-          >
+            onBlur={onBlur}>
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0]
@@ -481,8 +479,7 @@ const SimpleSelect = withTheme(
             state={selectState}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            onBlur={onBlur}
-          >
+            onBlur={onBlur}>
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -490,8 +487,7 @@ const SimpleSelect = withTheme(
                       {option}
                       <div
                         style={{ marginLeft: '5px' }}
-                        onClick={() => toggleOptionSelection(option)}
-                      >
+                        onClick={() => toggleOptionSelection(option)}>
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -517,8 +513,7 @@ const SimpleSelect = withTheme(
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            onBlur={onBlur}
-          >
+            onBlur={onBlur}>
             {selectState !== SimpleSelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -570,8 +565,7 @@ const SimpleSelect = withTheme(
               <BasicMenuItem
                 isSelected={inputValue}
                 onClick={() => addInputField()}
-                width={dropdownWidth}
-              >
+                width={dropdownWidth}>
                 <FormattedMessage id={`add-unlisted-${addInput}`} />
               </BasicMenuItem>
             )}
@@ -586,8 +580,7 @@ const SimpleSelect = withTheme(
                   key={option}
                   isSelected={isSelected}
                   onClick={() => toggleOptionSelection(option)}
-                  width={dropdownWidth}
-                >
+                  width={dropdownWidth}>
                   {option}
                   {isSelected && type === SimpleSelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
@@ -613,8 +606,7 @@ const SimpleSelect = withTheme(
                       selectedOptions.find(selected => selected === option)
                     }
                     onClick={() => toggleOptionSelection(option)}
-                    width={dropdownWidth}
-                  >
+                    width={dropdownWidth}>
                     {option}
                   </BasicMenuItem>
                 ),

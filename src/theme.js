@@ -28,6 +28,10 @@ const colors = {
     primary: '#3B8EE0',
     secondary: '#F2F2F2',
     background: '#F0F2F5',
+    onDate: '#1890ff',
+    onText: '#262626',
+    onPlacholder: '#8c8c8c',
+    onBorder: '#d9d9d9',
     onSurface: '#000000',
     onButton: '#FFFFFF',
     status: {

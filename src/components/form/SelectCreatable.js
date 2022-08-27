@@ -29,7 +29,7 @@ const StyledCreatableSelect = styled(CreatableSelect)`
         }
 
         div[class*='control']:focus-within {
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         }
       `;
@@ -38,7 +38,8 @@ const StyledCreatableSelect = styled(CreatableSelect)`
       return css`
         div[class*='control'] {
           border-radius: 0.125rem;
-          border: 0.0625rem solid #d9d9d9;
+          border: 0.0625rem solid
+            ${props => props.theme.colors.default.onBorder};
         }
 
         div[class*='control']:hover {
@@ -46,7 +47,7 @@ const StyledCreatableSelect = styled(CreatableSelect)`
         }
 
         div[class*='control']:focus-within {
-          border: 1px solid #1890ff;
+          border: 1px solid ${props => props.theme.colors.default.onDate};
           box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
         }
       `;
@@ -82,7 +83,7 @@ const StyledCreatableSelect = styled(CreatableSelect)`
   }};
 
   ::placeholder {
-    color: #8c8c8c;
+    color: ${props => props.theme.colors.default.onPlaceholder};
   }
 `;
 
@@ -97,7 +98,7 @@ const StyledSelect = styled(Select)`
         }
 
         div[class*='control']:focus-within {
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         }
       `;
@@ -106,7 +107,8 @@ const StyledSelect = styled(Select)`
       return css`
         div[class*='control'] {
           border-radius: 0.125rem;
-          border: 0.0625rem solid #d9d9d9;
+          border: 0.0625rem solid
+            ${props => props.theme.colors.default.onBorder};
         }
 
         div[class*='control']:hover {
@@ -114,7 +116,7 @@ const StyledSelect = styled(Select)`
         }
 
         div[class*='control']:focus-within {
-          border: 1px solid #1890ff;
+          border: 1px solid ${props => props.theme.colors.default.onDate};
           box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
         }
       `;
@@ -150,7 +152,7 @@ const StyledSelect = styled(Select)`
   }};
 
   ::placeholder {
-    color: #8c8c8c;
+    color: ${props => props.theme.colors.default.onPlaceholder};
   }
 `;
 

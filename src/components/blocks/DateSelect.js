@@ -23,7 +23,7 @@ const StyledTextField = styled(TextField)`
       return '32px';
     }};
     border-radius: 0.125rem;
-    border: 0.0625rem solid #d9d9d9;
+    border: 0.0625rem solid ${props => props.theme.colors.default.onBorder};
   }
 
   ${props => {
@@ -45,7 +45,7 @@ const StyledTextField = styled(TextField)`
 
         .MuiOutlinedInput-root:focus-within,
         .MuiInputBase-root:focus-within {
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         }
       `;
@@ -59,7 +59,7 @@ const StyledTextField = styled(TextField)`
 
         .MuiOutlinedInput-root:focus-within,
         .MuiInputBase-root:focus-within {
-          border: 1px solid #1890ff;
+          border: 1px solid ${props.theme.colors.default.onDate};
           box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
         }
       `;

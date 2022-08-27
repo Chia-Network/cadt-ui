@@ -39,7 +39,7 @@ const StyledPopoverDivider = styled('div')`
   border-bottom: 1px solid #F0F0F0;
 `;
 
-const Popover = withTheme(({ children, body, placement, title }) => {
+const Popover = withTheme(({ children, body, placement, title, theme }) => {
   const popoverContent = (
     <React.Fragment>
       <StyledPopoverTitle>{title}</StyledPopoverTitle>
@@ -61,7 +61,7 @@ const Popover = withTheme(({ children, body, placement, title }) => {
             [`& .${tooltipClasses.tooltip}`]: {
               maxWidth: '12.5rem',
               backgroundColor: 'white',
-              color: '#262626',
+              color: `${theme.colors.default.onText}`,
               padding: '0',
               borderRadius: '0.125rem',
               boxShadow:

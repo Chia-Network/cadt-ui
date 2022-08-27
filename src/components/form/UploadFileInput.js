@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { UploadIcon, SuccessIcon, Body } from '..';
 
 const StyledDiv = styled('div')`
-  border: 1px dotted #d9d9d9;
+  border: 1px dotted ${props => props.theme.colors.default.onBorder};
   display: flex;
   justify-content: center;
   align-items: center;

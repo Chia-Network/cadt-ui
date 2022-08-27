@@ -17,7 +17,7 @@ const ToolTipPlacement = {
   RightBottom: 'right-end',
 };
 
-const ToolTip = withTheme(({ children, body, placement }) => {
+const ToolTip = withTheme(({ children, body, placement, theme }) => {
   return (
     <Tooltip
       title={body}
@@ -26,11 +26,11 @@ const ToolTip = withTheme(({ children, body, placement }) => {
         popper: {
           sx: {
             [`& .${tooltipClasses.arrow}`]: {
-              color: '#262626',
+              color: `${theme.colors.default.onText}`,
             },
             [`& .${tooltipClasses.tooltip}`]: {
               maxWidth: '12.5rem',
-              backgroundColor: '#262626',
+              backgroundColor: `${theme.colors.default.onText}`,
               padding: '0.375rem 0.5rem',
               fontSize: '0.875rem',
               lineHeight: '1.3125rem',

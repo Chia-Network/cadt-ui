@@ -13,7 +13,7 @@ export const PaginationContainer = styled('div')`
   align-items: center;
   gap: 8px;
   width: 100%;
-  color: #8c8c8c;
+  color: ${props => props.theme.colors.default.onPlaceholder};
   background-color: ${props => props.theme.colors.default.onButton};
 `;
 
@@ -24,12 +24,12 @@ export const ControlsContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${props => props.theme.colors.default.onBorder};
   box-sizing: border-box;
   border-radius: 2px;
   ${props =>
     props.isDisabled &&
-    `background: #F5F5F5; color: #D9D9D9; cursor: default;`};
+    `background: #F5F5F5; color: ${props.theme.colors.default.onBorder}; cursor: default;`};
   ${props =>
     props.isBackButton &&
     `transform-origin: center;   
@@ -51,8 +51,8 @@ export const PagesContainer = styled(ControlsContainer)`
       return `border: 1px solid ${props.theme.colors.default.primary};
                     color: ${props.theme.colors.default.primary};`;
     } else {
-      return `border: 1px solid #D9D9D9;
-                    color: #262626;`;
+      return `border: 1px solid ${props.theme.colors.default.onBorder};
+                    color: ${props.theme.colors.default.onText};`;
     }
   }};
 `;
@@ -115,8 +115,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
         isBackButton={true}
         onClick={() =>
           !backButtonIsDisabled && changeCurrentPageTo(currentPageNumber - 1)
-        }
-      >
+        }>
         <ArrowDownIcon height={12} width={12} />
       </ControlsContainer>
       {displayedPages &&
@@ -126,8 +125,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
             isActive={currentPageNumber === element}
             onClick={() =>
               currentPageNumber !== element && changeCurrentPageTo(element)
-            }
-          >
+            }>
             {element}
           </PagesContainer>
         ))}
@@ -144,8 +142,7 @@ const APIPagination = withTheme(({ showLast = false, actions }) => {
         isNextButton
         onClick={() =>
           !nextButtonIsDisabled && changeCurrentPageTo(currentPageNumber + 1)
-        }
-      >
+        }>
         <ArrowDownIcon height={12} width={12} />
       </ControlsContainer>
     </PaginationContainer>

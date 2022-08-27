@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styledComponents from 'styled-components';
+import { withTheme } from 'styled-components';
 
 import { Body, SpanTwoDetailColumnsContainer } from '..';
 import {
@@ -19,7 +20,7 @@ const StyledCursor = styledComponents('div')`
   cursor: zoom-in;
 `;
 
-const UnitsDetails = ({ data, stagingData, changeColor }) => {
+const UnitsDetails = withTheme(({ data, stagingData, changeColor, theme }) => {
   const { issuances, projects } = useSelector(store => store.climateWarehouse);
   const navigate = useNavigate();
   let location = useLocation();
@@ -55,7 +56,9 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
                   <FormattedMessage id="project-name" />
                 </Body>
                 <StyledCursor>
-                  <Body onClick={() => navigate(projectUrl)} color="#1890ff">
+                  <Body
+                    onClick={() => navigate(projectUrl)}
+                    color={theme.colors.default.onDate}>
                     {unitBelongsToProjectName
                       ? unitBelongsToProjectName
                       : '---'}
@@ -365,6 +368,6 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
       </div>
     </StyledDetailedViewTabItem>
   );
-};
+});
 
 export { UnitsDetails };

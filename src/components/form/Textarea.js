@@ -19,13 +19,13 @@ const TextareaSizeEnum = {
 
 const StyledTextarea = styled('textarea')`
   box-sizing: border-box;
-  border: 0.0625rem solid #d9d9d9;
+  border: 0.0625rem solid ${props => props.theme.colors.default.onBorder};
   resize: none;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
   border-radius: 0.125rem;
   ::placeholder {
     font-family: ${props => props.theme.typography.primary.regular};
-    color: #8c8c8c;
+    color: ${props => props.theme.colors.default.onPlaceholder};
   }
   :focus {
     outline: none;
@@ -72,7 +72,7 @@ const StyledTextarea = styled('textarea')`
       props.state === TextareaStateEnum.focused
     ) {
       return `
-                border: 1px solid #1890FF;
+                border: 1px solid ${props.theme.colors.default.onDate};
                 box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
             `;
     }

@@ -42,9 +42,9 @@ const StyledSelect = styled('div')`
   align-items: center;
   cursor: pointer;
   border-radius: 0.125rem;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
   box-sizing: border-box;
-  border: 0.0625rem solid #d9d9d9;
+  border: 0.0625rem solid ${props => props.theme.colors.default.onBorder};
   background: ${props => props.theme.colors.default.onButton};
   z-index: 5;
   user-select: none;
@@ -96,13 +96,13 @@ const StyledSelect = styled('div')`
     if (props.variant === SelectVariantEnum.error) {
       if (props.state === SelectStateEnum.focused) {
         return css`
-          border: 1px solid #f5222d;
+          border: 1px solid ${props.theme.colors.default.status.error.primary};
           box-shadow: 0px 0px 4px rgba(245, 34, 45, 0.5);
         `;
       } else if (props.state === SelectStateEnum.hover) {
-        return `border: 1px solid #f5222d;`;
+        return `border: 1px solid ${props.theme.colors.default.status.error.primary};`;
       }
-      return `border: 1px solid #f5222d;`;
+      return `border: 1px solid ${props.theme.colors.default.status.error.primary};`;
     }
   }}
   ${props => props.type === SelectTypeEnum.multiple && `height: 100%;`};
@@ -157,7 +157,7 @@ const StyledArrowDownContainer = styled('div')`
     if (props.state === SelectStateEnum.disabled) {
       return `color: #BFBFBF;`;
     } else if (props.state === SelectStateEnum.focused) {
-      return `color: #262626;`;
+      return `color: ${props.theme.colors.default.onText};`;
     } else {
       return `color: #BFBFBF;`;
     }
@@ -187,7 +187,7 @@ const StyledMultipleSelectItem = styled('div')`
   font-weight: normal;
   font-size: 0.75rem;
   line-height: 1.25rem;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
 `;
 
 const StyledSearchInput = styled('input')`
@@ -197,7 +197,7 @@ const StyledSearchInput = styled('input')`
   box-sizing: border-box;
   font-style: normal;
   font-weight: normal;
-  color: #262626;
+  color: ${props => props.theme.colors.default.onText};
   ${props => {
     if (props.size === SelectSizeEnum.large) {
       return css`
@@ -217,7 +217,7 @@ const StyledSearchInput = styled('input')`
     outline: none;
   }
   ::placeholder {
-    color: #8c8c8c;
+    color: ${props => props.theme.colors.default.onPlaceholder};
   }
 `;
 
@@ -408,8 +408,7 @@ const Select = withTheme(
             state={selectState}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledSelectLabel>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions[0].label
@@ -432,8 +431,7 @@ const Select = withTheme(
             type={type}
             state={selectState}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             <StyledMultipleSelect>
               {selectedOptions != null && selectedOptions.length > 0
                 ? selectedOptions.map(option => (
@@ -446,8 +444,7 @@ const Select = withTheme(
                             value: option.value,
                             label: option.label,
                           })
-                        }
-                      >
+                        }>
                         <CloseIcon height={8} width={8} />
                       </div>
                     </StyledMultipleSelectItem>
@@ -472,8 +469,7 @@ const Select = withTheme(
             state={selectState}
             onClick={onSearchClick}
             onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
+            onMouseLeave={onMouseLeave}>
             {selectState !== SelectStateEnum.focused && (
               <>
                 <StyledSelectLabel>
@@ -531,8 +527,7 @@ const Select = withTheme(
                       label: option.label,
                     })
                   }
-                  width={dropdownWidth}
-                >
+                  width={dropdownWidth}>
                   {option.label}
                   {isSelected && type === SelectTypeEnum.multiple && (
                     <CheckIcon width={12} height={12} />
@@ -565,8 +560,7 @@ const Select = withTheme(
                         label: option.label,
                       })
                     }
-                    width={dropdownWidth}
-                  >
+                    width={dropdownWidth}>
                     {option.label}
                   </StyledBasicMenuItem>
                 ),

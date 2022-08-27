@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 import { validateUrl } from '../../utils/urlUtils';
 
@@ -32,7 +32,7 @@ const StyledMyAccountContainer = styled('div')`
   cursor: pointer;
 `;
 
-const MyAccount = () => {
+const MyAccount = withTheme(({ theme }) => {
   const [apiKey, setApiKey] = useState(null);
   const [serverAddress, setServerAddress] = useState(null);
   const [isLogInModalOpen, setIsLogInModalOpen] = useState(false);
@@ -64,16 +64,15 @@ const MyAccount = () => {
           onClick={() => {
             dispatch(signOut());
             dispatch(refreshApp(true));
-          }}
-        >
-          <Body color="#1890ff">
+          }}>
+          <Body color={theme.colors.default.onDate}>
             <FormattedMessage id="sign-out" />
           </Body>
         </div>
       )}
       {!isUserLoggedIn && (
         <div onClick={() => setIsLogInModalOpen(true)}>
-          <Body color="#1890ff">
+          <Body color={theme.colors.default.onDate}>
             <FormattedMessage id="sign-in" />
           </Body>
         </div>
@@ -144,6 +143,6 @@ const MyAccount = () => {
       )}
     </StyledMyAccountContainer>
   );
-};
+});
 
 export { MyAccount };
