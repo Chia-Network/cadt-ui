@@ -86,7 +86,6 @@ const AppNavigator = () => {
               <Route exact path="" element={<Navigate to="/projects" />} />
               <Route path="/units" element={<Pages.Units />} />
               <Route path="/projects" element={<Pages.Projects />} />
-              <Route path="/storybook" element={<Pages.StoryBook />} />
               <Route path="/organization" element={<Pages.Organization />} />
               <Route path="/audit" element={<Pages.Audit />} />
               <Route path="/conflicts" element={<Pages.Conflicts />} />
