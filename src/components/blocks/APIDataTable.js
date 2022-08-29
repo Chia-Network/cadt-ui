@@ -11,9 +11,15 @@ import {
   ProjectDetailedViewModal,
   UnitsDetailViewModal,
 } from '.';
-import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { UnitEditModal, ProjectEditModal } from '..';
+import {
+  BasicMenu,
+  Modal,
+  modalTypeEnum,
+  ProjectTransferModal,
+  UnitEditModal,
+  ProjectEditModal,
+} from '../../components';
 import {
   deleteProject,
   deleteUnit,
@@ -442,7 +448,7 @@ const APIDataTable = withTheme(
           />
         )}
         {isProjectTransferConfirmed && projectToTransfer && (
-          <ProjectEditModal
+          <ProjectTransferModal
             onClose={() => {
               setIsProjectTransferConfirmed(false);
               setProjectToTransfer(null);
