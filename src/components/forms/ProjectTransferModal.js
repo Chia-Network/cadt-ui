@@ -124,10 +124,10 @@ const ProjectTransferModal = ({
           onClose={onClose}
           modalType={modalTypeEnum.basic}
           title={intl.formatMessage({
-            id: 'edit-project',
+            id: 'transfer-project',
           })}
           label={intl.formatMessage({
-            id: tabValue < 7 ? 'next' : 'update-project',
+            id: tabValue < 7 ? 'next' : 'transfer-project',
           })}
           extraButtonLabel={
             tabValue > 0
