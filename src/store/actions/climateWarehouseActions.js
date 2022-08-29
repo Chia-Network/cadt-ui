@@ -704,8 +704,8 @@ export const getStagingPaginatedData = ({
   };
 };
 
-export const commitStagingData = (data, comment, author) => {
-  return async dispatch => {
+export const commitStagingData = (data, comment) => {
+  return async (dispatch, getState) => {
     try {
       dispatch(activateProgressIndicator);
 
@@ -723,8 +723,8 @@ export const commitStagingData = (data, comment, author) => {
       if (comment?.length) {
         body.comment = comment;
       }
-      if (author?.length) {
-        body.author = author;
+      if (getState()?.app?.user) {
+        body.author = getState()?.app?.user;
       }
       if (body?.author || body?.comment) {
         payload.body = JSON.stringify(body);

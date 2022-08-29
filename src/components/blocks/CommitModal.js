@@ -18,7 +18,6 @@ const CommitModal = ({ onClose, modalFor }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const [commitMessage, setCommitMessage] = useState('');
-  const [commitAuthor, setCommitAuthor] = useState('');
 
   const onCommit = () => {
     if (modalFor === 'projects') {
@@ -30,7 +29,7 @@ const CommitModal = ({ onClose, modalFor }) => {
   };
 
   const onCommitAll = () => {
-    dispatch(commitStagingData('all', commitMessage, commitAuthor));
+    dispatch(commitStagingData('all', commitMessage));
     onClose();
   };
 
@@ -54,19 +53,6 @@ const CommitModal = ({ onClose, modalFor }) => {
                 state={TextareaStateEnum.default}
                 value={commitMessage}
                 onChange={event => setCommitMessage(event.target.value)}
-              />
-            </InputContainer>
-          </StyledFieldContainer>
-          <StyledFieldContainer>
-            <InputContainer>
-              <Textarea
-                size={TextareaSizeEnum.large}
-                placeholder={intl.formatMessage({
-                  id: 'author',
-                })}
-                state={TextareaStateEnum.default}
-                value={commitAuthor}
-                onChange={event => setCommitAuthor(event.target.value)}
               />
             </InputContainer>
           </StyledFieldContainer>
