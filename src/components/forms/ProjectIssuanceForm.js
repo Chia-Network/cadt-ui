@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useLocation } from 'react-router-dom';
 
 import {
   StandardInput,
@@ -26,11 +27,17 @@ import {
 const ProjectIssuanceForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
+    const location = useLocation();
     const getFieldName = useCallback(
       fieldName => `${name}[${index}].${fieldName}`,
       [name, index],
     );
-    const areFieldsDisabled = Boolean(value.id);
+
+    const isUserOnWarehouseProjectsPage =
+      location.pathname.includes('/projects') &&
+      !location.search.includes('myRegistry=true');
+    const areFieldsDisabled =
+      Boolean(value.id) || isUserOnWarehouseProjectsPage;
 
     return (
       <ModalFormContainerStyle>
