@@ -27,7 +27,7 @@ import {
   emptyRelatedProject,
   emptyRating,
 } from '..';
-import { updateProjectRecord } from '../../store/actions/climateWarehouseActions';
+import { transferProject } from '../../store/actions/climateWarehouseActions';
 import {
   formatAPIData,
   cleanObjectFromEmptyFieldsOrArrays,
@@ -39,7 +39,7 @@ const ProjectTransferModal = ({
   record,
   modalSizeAndPosition = { modalSizeAndPosition },
 }) => {
-  const projectToBeEdited = useSelector(
+  const projectToBeTransferred = useSelector(
     state =>
       state.climateWarehouse.projects.filter(
         project => project.warehouseProjectId === record.warehouseProjectId,
@@ -53,9 +53,9 @@ const ProjectTransferModal = ({
     useSelector(state => state.app);
 
   useEffect(() => {
-    const formattedProjectData = formatAPIData(projectToBeEdited);
+    const formattedProjectData = formatAPIData(projectToBeTransferred);
     setProject(formattedProjectData);
-  }, [projectToBeEdited]);
+  }, [projectToBeTransferred]);
 
   const stepperStepsTranslationIds = useMemo(
     () => [
@@ -94,11 +94,11 @@ const ProjectTransferModal = ({
     [setTabValue, apiResponseIsPending],
   );
 
-  // if project was successfully edited, close modal
-  const projectWasSuccessfullyEdited =
-    notification?.id === 'project-successfully-edited';
+  // if project was successfully transferred, close modal
+  const projectWasSuccessfullyTransferred =
+    notification?.id === 'project-successfully-transferred';
   useEffect(() => {
-    if (projectWasSuccessfullyEdited) {
+    if (projectWasSuccessfullyTransferred) {
       onClose();
     }
   }, [notification]);
@@ -114,7 +114,7 @@ const ProjectTransferModal = ({
       onSubmit={values => {
         const dataToSend = _.cloneDeep(values);
         cleanObjectFromEmptyFieldsOrArrays(dataToSend);
-        dispatch(updateProjectRecord(dataToSend));
+        dispatch(transferProject(dataToSend));
       }}
     >
       {formik => (
