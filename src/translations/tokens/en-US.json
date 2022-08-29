@@ -456,5 +456,10 @@
   "my-registry": "My Registry",
   "subscribe-to-files": "Include files",
   "import-organization": "Import organization",
-  "existing-organizations": "Existing organizations"
+  "existing-organizations": "Existing organizations",
+  "transfer-project": "Transfer Project",
+  "transfer-not-possible": "Transfer is not possible",
+  "clear-staging-pending-table": "Please clear the staging and pending tables from your registry to proceed with the requested project transfer.",
+  "confirm-transfer": "Confirm transfer",
+  "confirm-transfer-details": "Please confirm the project transfer."
 }

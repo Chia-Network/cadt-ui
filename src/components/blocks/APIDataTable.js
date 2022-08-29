@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
@@ -16,6 +17,7 @@ import { UnitEditModal, ProjectEditModal } from '..';
 import {
   deleteProject,
   deleteUnit,
+  getStagingData,
 } from '../../store/actions/climateWarehouseActions';
 import { UnitSplitFormModal } from '../forms/UnitSplitFormModal';
 
@@ -139,9 +141,12 @@ const APIDataTable = withTheme(
     const [unitOrProjectFullRecord, setUnitOrProjectFullRecord] =
       useState(null);
     const [editRecord, setEditRecord] = useState(null);
+    const [projectToTransfer, setProjectToTransfer] = useState(null);
+    const [isProjectTransferConfirmed, setIsProjectTransferConfirmed] =
+      useState(false);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
     const { theme } = useSelector(state => state.app);
-    const { organizations, projects, units } = useSelector(
+    const { organizations, projects, units, stagingData } = useSelector(
       state => state.climateWarehouse,
     );
     const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
@@ -175,6 +180,19 @@ const APIDataTable = withTheme(
 
       setUnitOrProjectFullRecord(fullRecord);
     };
+
+    useEffect(() => {
+      if (!actionsAreDisplayed && actions === 'Projects') {
+        dispatch(getStagingData({ useMockedResponse: false }));
+      }
+    }, [actionsAreDisplayed, actions]);
+
+    const isTransferPossible = useMemo(
+      () =>
+        _.isEmpty(stagingData?.projects?.staging) &&
+        _.isEmpty(stagingData?.projects?.pending),
+      [stagingData],
+    );
 
     return (
       <>
@@ -309,6 +327,27 @@ const APIDataTable = withTheme(
                         />
                       </Td>
                     )}
+
+                    {!actionsAreDisplayed && actions === 'Projects' && (
+                      <Td
+                        stick
+                        style={{ cursor: 'pointer' }}
+                        selectedTheme={theme}
+                      >
+                        <BasicMenu
+                          options={[
+                            {
+                              label: intl.formatMessage({
+                                id: 'transfer-project',
+                              }),
+                              action: () => {
+                                setProjectToTransfer(record);
+                              },
+                            },
+                          ]}
+                        />
+                      </Td>
+                    )}
                   </Tr>
                 ))}
               </tbody>
@@ -377,6 +416,39 @@ const APIDataTable = withTheme(
               }
               setConfirmDeletionModal(null);
             }}
+          />
+        )}
+        {projectToTransfer && (
+          <Modal
+            title={intl.formatMessage({
+              id: isTransferPossible
+                ? 'confirm-transfer'
+                : 'transfer-not-possible',
+            })}
+            body={intl.formatMessage({
+              id: isTransferPossible
+                ? 'confirm-transfer-details'
+                : 'clear-staging-pending-table',
+            })}
+            modalType={modalTypeEnum.confirmation}
+            onClose={() => setProjectToTransfer(null)}
+            onOk={() => {
+              if (isTransferPossible) {
+                setIsProjectTransferConfirmed(true);
+              } else {
+                setProjectToTransfer(null);
+              }
+            }}
+          />
+        )}
+        {isProjectTransferConfirmed && projectToTransfer && (
+          <ProjectEditModal
+            onClose={() => {
+              setIsProjectTransferConfirmed(false);
+              setProjectToTransfer(null);
+            }}
+            record={editRecord}
+            modalSizeAndPosition={modalSizeAndPosition}
           />
         )}
       </>
