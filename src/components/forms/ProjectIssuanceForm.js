@@ -1,6 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import {
   StandardInput,
@@ -21,6 +22,7 @@ import {
   InputContainer,
   DateSelectVariantEnum,
   FormikError,
+  SelectCreatable,
 } from '..';
 
 // eslint-disable-next-line react/display-name
@@ -28,6 +30,7 @@ const ProjectIssuanceForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
     const location = useLocation();
+    const { pickLists } = useSelector(store => store.climateWarehouse);
     const getFieldName = useCallback(
       fieldName => `${name}[${index}].${fieldName}`,
       [name, index],
@@ -57,8 +60,7 @@ const ProjectIssuanceForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'issuances-start-date-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -91,8 +93,7 @@ const ProjectIssuanceForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'issuances-end-date-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -125,34 +126,27 @@ const ProjectIssuanceForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'issuances-verification-body-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                <StandardInput
+                <SelectCreatable
                   variant={
-                    errors?.verificationBody &&
-                    touched?.verificationBody &&
-                    InputVariantEnum.error
-                  }
-                  size={InputSizeEnum.large}
-                  placeholderText={intl.formatMessage({
-                    id: 'verification-body',
-                  })}
-                  state={
-                    areFieldsDisabled
+                    (errors?.verificationBody &&
+                      touched?.verificationBody &&
+                      InputVariantEnum.error) ||
+                    (areFieldsDisabled
                       ? InputStateEnum.disabled
-                      : InputStateEnum.default
+                      : InputStateEnum.default)
                   }
-                  value={value.verificationBody}
+                  options={pickLists?.verificationBody}
+                  selected={value.verificationBody}
                   onChange={value =>
                     setFieldValue(getFieldName('verificationBody'), value)
                   }
                   onBlur={handleBlur}
-                  name={getFieldName('verificationBody')}
                 />
               </InputContainer>
               <FormikError name={getFieldName('verificationBody')} />
@@ -166,8 +160,7 @@ const ProjectIssuanceForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'issuances-verification-report-date-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -201,8 +194,7 @@ const ProjectIssuanceForm = memo(
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'id',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -228,8 +220,7 @@ const ProjectIssuanceForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'issuances-verification-approach-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>

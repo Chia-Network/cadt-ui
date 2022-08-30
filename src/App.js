@@ -3,7 +3,11 @@ import { ThemeProvider } from 'styled-components';
 import { IntlProvider } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setLocale, setThemeFromLocalStorage } from './store/actions/app';
+import {
+  getUser,
+  setLocale,
+  setThemeFromLocalStorage,
+} from './store/actions/app';
 import {
   getOrganizationData,
   getPickLists,
@@ -14,11 +18,14 @@ import { loadLocaleData } from './translations';
 import { AppNavigator } from './navigation';
 import theme from './theme';
 
-import { IndeterminateProgressOverlay, SocketStatusContainer } from './components';
+import {
+  IndeterminateProgressOverlay,
+  SocketStatusContainer,
+} from './components';
 
 const App = () => {
   const dispatch = useDispatch();
-  const {socketStatus} = useSelector(state => state.app);
+  const { socketStatus } = useSelector(state => state.app);
   const appStore = useSelector(state => state.app);
   const [translationTokens, setTranslationTokens] = useState();
 
@@ -26,6 +33,7 @@ const App = () => {
     dispatch(initiateSocket(appStore.serverAddress));
     dispatch(getOrganizationData());
     dispatch(getPickLists());
+    dispatch(getUser());
   }, [dispatch, appStore.serverAddress]);
 
   useEffect(
@@ -54,7 +62,8 @@ const App = () => {
       <IntlProvider
         locale="en"
         defaultLocale="en"
-        messages={translationTokens.default}>
+        messages={translationTokens.default}
+      >
         <AppNavigator />
       </IntlProvider>
       <SocketStatusContainer socketStatus={socketStatus} />
