@@ -221,15 +221,14 @@ const APIDataTable = withTheme(
                       </TableCellHeaderText>
                     </Th>
                   ))}
-                  {actionsAreDisplayed && actions && (
-                    <Th
-                      stick
-                      start={0}
-                      end={1}
-                      selectedTheme={theme}
-                      key={'action'}
-                    ></Th>
-                  )}
+
+                  <Th
+                    stick
+                    start={0}
+                    end={1}
+                    selectedTheme={theme}
+                    key={'action'}
+                  ></Th>
                 </tr>
               </THead>
               <tbody style={{ position: 'relative' }}>
@@ -453,7 +452,7 @@ const APIDataTable = withTheme(
               setIsProjectTransferConfirmed(false);
               setProjectToTransfer(null);
             }}
-            record={editRecord}
+            record={projectToTransfer}
             modalSizeAndPosition={modalSizeAndPosition}
           />
         )}

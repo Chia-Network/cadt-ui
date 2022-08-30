@@ -179,6 +179,7 @@ const ProjectTransferModal = ({
                     })}
                     min={0}
                     Component={ProjectIssuanceForm}
+                    isControlVisible={false}
                   />
                 </TabPanel>
                 <TabPanel value={tabValue} index={2}>

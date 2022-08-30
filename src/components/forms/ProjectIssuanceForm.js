@@ -42,6 +42,11 @@ const ProjectIssuanceForm = memo(
     return (
       <ModalFormContainerStyle>
         <FormContainerStyle>
+          <StyledFieldContainer>
+            <Body size="Bold">
+              <FormattedMessage id="transfer-project-issuances-not-editable" />
+            </Body>
+          </StyledFieldContainer>
           <BodyContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>
