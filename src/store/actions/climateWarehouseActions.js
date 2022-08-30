@@ -1782,7 +1782,7 @@ export const unsubscribeFromOrg = orgUid => {
   };
 };
 
-export const subscribeImportOrg = ({ orgUid, ip, port }) => {
+export const subscribeImportOrg = ({ orgUid }) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -1794,7 +1794,7 @@ export const subscribeImportOrg = ({ orgUid, ip, port }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ orgUid, ip, port }),
+        body: JSON.stringify({ orgUid }),
       };
 
       const response = await fetchWrapper(url, payload);
