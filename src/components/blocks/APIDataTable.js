@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
@@ -152,9 +152,8 @@ const APIDataTable = withTheme(
       useState(false);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
     const { theme } = useSelector(state => state.app);
-    const { organizations, projects, units, stagingData } = useSelector(
-      state => state.climateWarehouse,
-    );
+    const { organizations, projects, units, stagingData, myOrgUid } =
+      useSelector(state => state.climateWarehouse);
     const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
     const ref = React.useRef(null);
     const [height, setHeight] = React.useState(0);
@@ -168,24 +167,27 @@ const APIDataTable = withTheme(
       );
     }, [ref.current, windowSize.height]);
 
-    const getFullRecord = partialRecord => {
-      let fullRecord = null;
+    const getFullRecord = useCallback(
+      partialRecord => {
+        let fullRecord = null;
 
-      if (actions === 'Projects') {
-        fullRecord = projects.filter(
-          project =>
-            project.warehouseProjectId === partialRecord.warehouseProjectId,
-        )[0];
-      }
+        if (actions === 'Projects') {
+          fullRecord = projects.filter(
+            project =>
+              project.warehouseProjectId === partialRecord.warehouseProjectId,
+          )[0];
+        }
 
-      if (actions === 'Units') {
-        fullRecord = units.filter(
-          unit => unit.warehouseUnitId === partialRecord.warehouseUnitId,
-        )[0];
-      }
+        if (actions === 'Units') {
+          fullRecord = units.filter(
+            unit => unit.warehouseUnitId === partialRecord.warehouseUnitId,
+          )[0];
+        }
 
-      setUnitOrProjectFullRecord(fullRecord);
-    };
+        return fullRecord;
+      },
+      [units, projects],
+    );
 
     useEffect(() => {
       if (!actionsAreDisplayed && actions === 'Projects') {
@@ -236,7 +238,9 @@ const APIDataTable = withTheme(
                   <Tr index={index} selectedTheme={theme} key={index}>
                     {Object.keys(record).map((key, index) => (
                       <Td
-                        onClick={() => getFullRecord(record)}
+                        onClick={() =>
+                          setUnitOrProjectFullRecord(getFullRecord(record))
+                        }
                         selectedTheme={theme}
                         columnId={key}
                         key={index}
@@ -333,26 +337,28 @@ const APIDataTable = withTheme(
                       </Td>
                     )}
 
-                    {!actionsAreDisplayed && actions === 'Projects' && (
-                      <Td
-                        stick
-                        style={{ cursor: 'pointer' }}
-                        selectedTheme={theme}
-                      >
-                        <BasicMenu
-                          options={[
-                            {
-                              label: intl.formatMessage({
-                                id: 'transfer-project',
-                              }),
-                              action: () => {
-                                setProjectToTransfer(record);
+                    {!actionsAreDisplayed &&
+                      actions === 'Projects' &&
+                      myOrgUid !== getFullRecord(record)?.orgUid && (
+                        <Td
+                          stick
+                          style={{ cursor: 'pointer' }}
+                          selectedTheme={theme}
+                        >
+                          <BasicMenu
+                            options={[
+                              {
+                                label: intl.formatMessage({
+                                  id: 'transfer-project',
+                                }),
+                                action: () => {
+                                  setProjectToTransfer(record);
+                                },
                               },
-                            },
-                          ]}
-                        />
-                      </Td>
-                    )}
+                            ]}
+                          />
+                        </Td>
+                      )}
                   </Tr>
                 ))}
               </tbody>
