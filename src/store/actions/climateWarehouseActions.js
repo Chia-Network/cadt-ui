@@ -60,6 +60,7 @@ export const actions = keyMirror(
   'SET_WALLET_BALANCE',
   'SET_WALLET_STATUS',
   'GET_FILE_LIST',
+  'GET_TOTAL_NR_OF_STAGED_ENTRIES',
 );
 
 const getClimateWarehouseTable = (
@@ -449,6 +450,35 @@ export const getGovernanceOrgList = () => {
   };
 };
 
+const getStagingTotalNrOfEntries = results => {
+  const totalNrOfEntries = {
+    units: {
+      staging: 0,
+      pending: 0,
+      failed: 0,
+    },
+    projects: {
+      staging: 0,
+      pending: 0,
+      failed: 0,
+    },
+  };
+  results.forEach(entry => {
+    const table = entry.table.toLowerCase();
+
+    if (entry?.failedCommit) {
+      totalNrOfEntries[table].failed += 1;
+    } else {
+      if (entry?.commited) {
+        totalNrOfEntries[table].pending += 1;
+      } else {
+        totalNrOfEntries[table].staging += 1;
+      }
+    }
+  });
+  return totalNrOfEntries;
+};
+
 export const getStagingData = ({ useMockedResponse = false }) => {
   return async dispatch => {
     dispatch(activateProgressIndicator);
@@ -464,6 +494,10 @@ export const getStagingData = ({ useMockedResponse = false }) => {
           dispatch(setGlobalErrorMessage(null));
           const results = await response.json();
 
+          dispatch({
+            type: actions.GET_TOTAL_NR_OF_STAGED_ENTRIES,
+            payload: getStagingTotalNrOfEntries(results),
+          });
           dispatch({
             type: actions.GET_STAGING_DATA,
             payload: formatStagingData(results),
@@ -670,8 +704,8 @@ export const getStagingPaginatedData = ({
   };
 };
 
-export const commitStagingData = (data, comment, author) => {
-  return async dispatch => {
+export const commitStagingData = (data, comment) => {
+  return async (dispatch, getState) => {
     try {
       dispatch(activateProgressIndicator);
 
@@ -689,8 +723,8 @@ export const commitStagingData = (data, comment, author) => {
       if (comment?.length) {
         body.comment = comment;
       }
-      if (author?.length) {
-        body.author = author;
+      if (getState()?.app?.user) {
+        body.author = getState()?.app?.user;
       }
       if (body?.author || body?.comment) {
         payload.body = JSON.stringify(body);
@@ -861,6 +895,78 @@ export const deleteFile = SHA256 => {
           'file-not-deleted',
         ),
       );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const subscribeToFileStore = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/filestore/subscribe`;
+
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const unsubscribeFromFileStore = orgUid => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/filestore/unsubscribe`;
+
+      const payload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orgUid }),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getOrganizationData());
+      } else {
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            'something-went-wrong',
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
     } finally {
       dispatch(deactivateProgressIndicator);
     }
@@ -1676,7 +1782,7 @@ export const unsubscribeFromOrg = orgUid => {
   };
 };
 
-export const subscribeImportOrg = ({ orgUid, ip, port }) => {
+export const subscribeImportOrg = ({ orgUid }) => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -1688,7 +1794,7 @@ export const subscribeImportOrg = ({ orgUid, ip, port }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ orgUid, ip, port }),
+        body: JSON.stringify({ orgUid }),
       };
 
       const response = await fetchWrapper(url, payload);

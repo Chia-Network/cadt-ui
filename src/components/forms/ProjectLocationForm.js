@@ -1,5 +1,5 @@
-import React, { memo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -19,12 +19,10 @@ import {
   StyledLabelContainer,
   StyledFieldContainer,
   InputContainer,
-  SimpleSelect,
-  SimpleSelectSizeEnum,
-  SimpleSelectTypeEnum,
-  SimpleSelectStateEnum,
+  SelectCreatable,
   FormikError,
 } from '..';
+import { getFileList } from '../../store/actions/climateWarehouseActions';
 
 // eslint-disable-next-line react/display-name
 const ProjectLocationForm = memo(
@@ -34,7 +32,28 @@ const ProjectLocationForm = memo(
       fieldName => `${name}[${index}].${fieldName}`,
       [index, name],
     );
-    const { pickLists } = useSelector(store => store.climateWarehouse);
+    const { pickLists, fileList } = useSelector(
+      store => store.climateWarehouse,
+    );
+    const dispatch = useDispatch();
+
+    const fileListPickList = useMemo(
+      () =>
+        fileList?.map(item => ({ label: item.fileName, value: item.SHA256 })) ??
+        [],
+      [fileList],
+    );
+
+    const sha256ToFileName = useMemo(
+      () =>
+        fileList?.reduce(
+          (acc, cur) => ({ ...acc, [cur.SHA256]: cur.fileName }),
+          {},
+        ) ?? [],
+      [fileList],
+    );
+
+    useEffect(() => dispatch(getFileList()), []);
 
     return (
       <ModalFormContainerStyle>
@@ -56,20 +75,15 @@ const ProjectLocationForm = memo(
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                <SimpleSelect
+                <SelectCreatable
                   variant={
                     errors?.country &&
                     touched?.country &&
                     SimpleSelectVariantEnum.error
                   }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
                   options={pickLists.countries}
-                  state={SimpleSelectStateEnum.default}
-                  selected={value.country ? [value.country] : undefined}
-                  onChange={selectedOptions =>
-                    setFieldValue(getFieldName('country'), selectedOptions[0])
-                  }
+                  selected={value.country}
+                  onChange={val => setFieldValue(getFieldName('country'), val)}
                   onBlur={handleBlur}
                 />
                 <FormikError name={getFieldName('country')} />
@@ -143,6 +157,47 @@ const ProjectLocationForm = memo(
                   name={getFieldName('geographicIdentifier')}
                 />
                 <FormikError name={getFieldName('geographicIdentifier')} />
+              </InputContainer>
+            </StyledFieldContainer>
+            <StyledFieldContainer>
+              <StyledLabelContainer>
+                <Body>
+                  <LabelContainer>
+                    <FormattedMessage id="gis-file" />
+                  </LabelContainer>
+                  <ToolTipContainer
+                    tooltip={intl.formatMessage({
+                      id: 'gis-file-description',
+                    })}
+                  >
+                    <DescriptionIcon height="14" width="14" />
+                  </ToolTipContainer>
+                </Body>
+              </StyledLabelContainer>
+              <InputContainer>
+                <SelectCreatable
+                  variant={
+                    errors?.country &&
+                    touched?.country &&
+                    SimpleSelectVariantEnum.error
+                  }
+                  options={fileListPickList}
+                  selected={
+                    value.fileId
+                      ? {
+                          value: value.fileId,
+                          label: sha256ToFileName[value.fileId],
+                        }
+                      : null
+                  }
+                  onChange={selected =>
+                    setFieldValue(getFieldName('fileId'), selected.value)
+                  }
+                  onBlur={handleBlur}
+                  isCreatable={false}
+                  isOfValueLabelType={true}
+                />
+                <FormikError name={getFieldName('fileId')} />
               </InputContainer>
             </StyledFieldContainer>
           </BodyContainer>
