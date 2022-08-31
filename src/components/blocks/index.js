@@ -3,6 +3,7 @@ export * from './LocaleSwitcher';
 export * from './ToolTip';
 export * from './Alert';
 export * from './LeftNav';
+export * from './Notifications';
 export * from './Pagination';
 export * from './APIPagination';
 export * from './APIStagingPagination';
