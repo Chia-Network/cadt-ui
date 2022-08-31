@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled, { css, withTheme } from 'styled-components';
 import { CircularProgress } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,12 +41,21 @@ const MenuItem = styled(Link)`
   ${props =>
     !props.selected &&
     !props.disabled &&
-    `:hover {background: ${props.theme.colors.default.onInput}}`};
+    css`
+      :hover {
+        background: ${props.theme.colors.default.onInput};
+      }
+    `};
   padding: 0.5625rem 0rem 0.75rem 4.25rem;
   ${props =>
     props.disabled
-      ? `color: ${props.theme.colors.default.onDisable}; pointer-events: none;`
-      : `color: ${props.theme.colors.default.onButton}`}
+      ? css`
+          color: ${props.theme.colors.default.onDisable};
+          pointer-events: none;
+        `
+      : css`
+          color: ${props.theme.colors.default.onButton};
+        `}
   font-family: ${props => props.theme.typography.primary.bold};
   cursor: pointer;
   display: block;
@@ -70,7 +79,7 @@ const StyledTitleContainer = styled('div')`
     text-transform: uppercase;
     ${props =>
       !props.disabled
-        ? `color: ${props => props.theme.colors.default.onButton}`
+        ? `color: ${props.theme.colors.default.onButton}`
         : `color: ${props.theme.colors.default.onDisable}`};
   }
   margin: 46px 0px 1.3125rem 1.7813rem;

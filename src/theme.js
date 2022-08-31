@@ -31,6 +31,8 @@ const colors = {
     onSelect: '#F5F5F5',
     onModal: '#e5e5e5',
     onTab: '#fafafa',
+    onActive: '#003A8C',
+    onDanger: '#FF7875',
     onDivider: '#F0F0F0',
     onDisable: '#BFBFBF',
     onInput: '#40A9FF',
@@ -40,6 +42,7 @@ const colors = {
     onBorder: '#d9d9d9',
     onSurface: '#000000',
     onButton: '#FFFFFF',
+    onDefaultButton: '#096DD9',
     status: {
       info: {
         primary: '#91D5FF',

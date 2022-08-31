@@ -26,21 +26,25 @@ const Button = styled('button')`
 
   &:hover {
     background-color: ${props =>
-      props.danger ? '#FF7875' : props.theme.colors.default.onInput};
+      props.danger
+        ? props.theme.colors.default.onDanger
+        : props.theme.colors.default.onInput};
   }
 
   &:active {
     background-color: ${props =>
       props.danger
         ? props.theme.colors.default.status.error.primary
-        : '#096DD9'};
+        : props.theme.colors.default.onDefaultButton};
   }
 
   ${props =>
     props.loading &&
     `
       background-color: ${props =>
-        props.danger ? '#FF7875' : props.theme.colors.default.onInput};
+        props.danger
+          ? props.theme.colors.default.onDanger
+          : props.theme.colors.default.onInput};
     opacity: 0.65;
   `}
 
@@ -72,7 +76,7 @@ const Button = styled('button')`
 
         border: 1px solid ${props.theme.colors.default.onModal};
         :active {
-          border: 1px solid #096dd9;
+          border: 1px solid ${props.theme.colors.default.onDefaultButton};
         }
 
         h4 {
@@ -82,7 +86,7 @@ const Button = styled('button')`
           color: ${props.theme.colors.default.onInput};
         }
         h4:active {
-          color: #096dd9;
+          color: ${props.theme.colors.default.onDefaultButton};
         }
       `;
     }

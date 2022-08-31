@@ -55,7 +55,7 @@ const StyledCopyIconContainer = styled('div')`
     color: ${props => props.theme.colors.default.onDisable};
   }
   :active {
-    color: #096dd9;
+    color: ${props => props.theme.colors.default.onDefaultButton};
   }
 `;
 
