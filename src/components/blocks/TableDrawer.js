@@ -14,7 +14,7 @@ const IconContainer = styled('div')`
   top: 17px;
   right: 24px;
   position: absolute;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   cursor: pointer;
 `;
 const TableContentContainer = styled('div')`

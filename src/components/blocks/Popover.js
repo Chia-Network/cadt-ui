@@ -56,11 +56,11 @@ const Popover = withTheme(({ children, body, placement, title, theme }) => {
         popper: {
           sx: {
             [`& .${tooltipClasses.arrow}`]: {
-              color: 'white',
+              color: `${theme.colors.default.onButton}`,
             },
             [`& .${tooltipClasses.tooltip}`]: {
               maxWidth: '12.5rem',
-              backgroundColor: 'white',
+              backgroundColor: `${theme.colors.default.onButton}`,
               color: `${theme.colors.default.onText}`,
               padding: '0',
               borderRadius: '0.125rem',

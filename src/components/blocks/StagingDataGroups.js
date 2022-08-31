@@ -50,7 +50,7 @@ const StyledChangeGroup = styled('div')`
 `;
 
 const StyledChangeCard = styled('div')`
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   width: 30%;
   min-width: 300px;
   max-width: 500px;

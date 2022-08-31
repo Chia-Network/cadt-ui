@@ -55,19 +55,19 @@ const Button = styled('button')`
     if (props.type === 'default') {
       if (props.loading) {
         return `
-          background-color: white;
+          background-color: ${props.theme.colors.default.onButton};
           :hover, :active {
-            background-color: white;
+            background-color: ${props.theme.colors.default.onButton};
           };
           h4 { color: ${props.theme.colors.default.onBorder} };
           border: 1px solid ${props.theme.colors.default.onModal};
         `;
       }
       return css`
-        background-color: white;
+        background-color: ${props.theme.colors.default.onButton};
         :hover,
         :active {
-          background-color: white;
+          background-color: ${props.theme.colors.default.onButton};
         }
 
         border: 1px solid ${props.theme.colors.default.onModal};

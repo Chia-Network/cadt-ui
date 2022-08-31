@@ -10,7 +10,7 @@ const PaginationContainer = styled('div')`
   gap: 8px;
   width: 100%;
   color: ${props => props.theme.colors.default.onPlaceholder};
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
 `;
 
 const ControlsContainer = styled('div')`

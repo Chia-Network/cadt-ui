@@ -32,7 +32,7 @@ const StyledInputContainer = styled('div')`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   border: 1px solid ${props => props.theme.colors.default.onBorder};
   box-sizing: border-box;
   border-radius: 0.125rem;
@@ -123,7 +123,7 @@ const StyledInputContainer = styled('div')`
 `;
 
 const StyledInput = styled('input')`
-  border-color: white;
+  border-color: ${props => props.theme.colors.default.onButton};
   width: 100%;
   height: 100%;
   border-style: none;
