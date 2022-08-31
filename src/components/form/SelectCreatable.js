@@ -157,15 +157,16 @@ const StyledSelect = styled(Select)`
 const SelectCreatable = withTheme(
   ({
     variant,
+    size,
     options,
+    isOfValueLabelType = false,
+    selected,
     onChange,
     onBlur,
+    placeholder,
     isMulti = false,
     isCreatable = true,
     isClearable = true,
-    placeholder,
-    selected,
-    size,
   }) => {
     const intl = useIntl();
     const placeholderText = useMemo(
@@ -177,32 +178,44 @@ const SelectCreatable = withTheme(
       [placeholder],
     );
 
-    const optionsList = useMemo(
-      () =>
+    const optionsList = useMemo(() => {
+      if (isOfValueLabelType) {
+        return options || [];
+      }
+
+      return (
         options?.map(optionItem => ({
           value: optionItem,
           label: optionItem,
-        })) ?? [],
-      [options],
-    );
+        })) ?? []
+      );
+    }, [options, isOfValueLabelType]);
 
     const value = useMemo(() => {
+      if (isOfValueLabelType) {
+        return selected;
+      }
+
       if (isMulti) {
         return selected?.map(item => ({ value: item, label: item })) ?? [];
       } else {
         return selected ? { value: selected, label: selected } : '';
       }
-    }, [selected]);
+    }, [selected, isOfValueLabelType]);
 
     const handleChange = useCallback(
       newValue => {
-        if (isMulti) {
-          onChange(newValue?.map(selectedItem => selectedItem.value) ?? []);
+        if (isOfValueLabelType) {
+          onChange(newValue);
         } else {
-          onChange(newValue?.value ?? '');
+          if (isMulti) {
+            onChange(newValue?.map(selectedItem => selectedItem.value) ?? []);
+          } else {
+            onChange(newValue?.value ?? '');
+          }
         }
       },
-      [onChange],
+      [onChange, isOfValueLabelType],
     );
 
     return (
