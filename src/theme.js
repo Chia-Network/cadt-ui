@@ -36,6 +36,7 @@ const colors = {
     onDivider: '#F0F0F0',
     onDisable: '#BFBFBF',
     onInput: '#40A9FF',
+    onInputBorder: '#FF4D4F',
     onDate: '#1890ff',
     onText: '#262626',
     onPlacholder: '#8c8c8c',

@@ -84,7 +84,7 @@ const StyledInputContainer = styled('div')`
         `;
       } else if (props.inputState === InputStateEnum.hover) {
         return css`
-          border: 1px solid #ff4d4f;
+          border: 1px solid ${props.theme.colors.default.onInputBorder};
         `;
       } else if (
         props.inputState === InputStateEnum.focused ||

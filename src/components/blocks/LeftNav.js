@@ -37,7 +37,8 @@ const NavContainer = styled('div')`
 `;
 
 const MenuItem = styled(Link)`
-  background: ${props => (props.selected ? '#003A8C' : 'transparent')};
+  background: ${props =>
+    props.selected ? props.theme.colors.default.onActive : 'transparent'};
   ${props =>
     !props.selected &&
     !props.disabled &&

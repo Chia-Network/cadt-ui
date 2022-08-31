@@ -11,7 +11,9 @@ const Button = styled('button')`
   flex-direction: row;
   max-width: 100%;
   background-color: ${props =>
-    props.danger ? '#FF4D4F' : props.theme.colors.default.onDate};
+    props.danger
+      ? props.theme.colors.default.onInputBorder
+      : props.theme.colors.default.onDate};
   border: none;
   border-radius: 2px;
   padding: 10px;
@@ -103,7 +105,7 @@ const PrimaryButton = withTheme(
     disabled,
     onClick,
     type = 'primary',
-    theme
+    theme,
   }) => {
     const appStore = useSelector(state => state.app);
     return (
