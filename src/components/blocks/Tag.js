@@ -9,7 +9,7 @@ const AddTag = styled('div')`
   align-items: center;
   height: 1.375rem;
   width: 2.3125rem;
-  background-color: #fafafa;
+  background-color: ${props => props.theme.colors.default.onTab};
   border-radius: 0.125rem;
   ${props =>
     props.body === null

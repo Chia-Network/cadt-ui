@@ -14,7 +14,7 @@ import {
 export const StyledDetailedViewTabItem = styled('div')`
   display: flex;
   justify-content: center;
-  background: #fafafa;
+  background: ${props => props.theme.colors.default.onTab};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   padding: 16px 21px;

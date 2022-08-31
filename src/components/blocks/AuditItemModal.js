@@ -1,11 +1,10 @@
 import React from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import dayjs from 'dayjs';
 
 import { Modal, modalTypeEnum, Body } from '..';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import theme from '../../theme';
 
 const StyledContainer = styled('div')`
   padding: 16px 21px;
@@ -16,7 +15,7 @@ const StyledContainer = styled('div')`
 `;
 
 const StyledDivider = styled('div')`
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid ${props => props.theme.colors.default.onModal};
   width: 100%;
 `;
 
@@ -24,7 +23,7 @@ const StyledTextContainer = styled('div')`
   overflow-wrap: break-word;
 `;
 
-const AuditItemModal = ({ onClose, auditItem }) => {
+const AuditItemModal = withTheme(({ onClose, auditItem, theme }) => {
   const intl = useIntl();
   const change = auditItem.change && JSON.parse(auditItem.change);
 
@@ -46,7 +45,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
             <StyledContainer>
               <div>
                 <div>
-                  <Body size="Bold" color="#40A9FF">
+                  <Body size="Bold" color={theme.colors.default.onInput}>
                     <FormattedMessage id="table" />
                   </Body>
                 </div>
@@ -56,7 +55,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
               </div>
               <div>
                 <div>
-                  <Body size="Bold" color="#40A9FF">
+                  <Body size="Bold" color={theme.colors.default.onInput}>
                     <FormattedMessage id="timestamp" />
                   </Body>
                 </div>
@@ -70,7 +69,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
               </div>
               <div>
                 <div>
-                  <Body size="Bold" color="#40A9FF">
+                  <Body size="Bold" color={theme.colors.default.onInput}>
                     <FormattedMessage id="type" />
                   </Body>
                 </div>
@@ -80,7 +79,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
               </div>
               <div>
                 <div>
-                  <Body size="Bold" color="#40A9FF">
+                  <Body size="Bold" color={theme.colors.default.onInput}>
                     <FormattedMessage id="root-hash" />
                   </Body>
                 </div>
@@ -90,7 +89,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
               </div>
               <div>
                 <div>
-                  <Body size="Bold" color="#40A9FF">
+                  <Body size="Bold" color={theme.colors.default.onInput}>
                     <FormattedMessage id="author" />
                   </Body>
                 </div>
@@ -100,7 +99,7 @@ const AuditItemModal = ({ onClose, auditItem }) => {
               </div>
               <div>
                 <div>
-                  <Body size="Bold" color="#40A9FF">
+                  <Body size="Bold" color={theme.colors.default.onInput}>
                     <FormattedMessage id="comment" />
                   </Body>
                 </div>
@@ -130,6 +129,6 @@ const AuditItemModal = ({ onClose, auditItem }) => {
       />
     </>
   );
-};
+});
 
 export { AuditItemModal };

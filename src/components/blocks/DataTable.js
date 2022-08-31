@@ -13,7 +13,7 @@ import { UnitEditModal, ProjectEditModal } from '..';
 
 const Table = styled('table')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   width: 100%;
   display: table;
   border-spacing: 0;
@@ -60,7 +60,7 @@ const Tr = styled('tr')`
   ${props =>
     props.index % 2 !== 0 &&
     `
-  background-color: white;
+  background-color: ${props.theme.colors.default.onButton};
   `}
 `;
 
@@ -76,7 +76,7 @@ const Td = styled('td')`
 
 const StyledPaginationContainer = styled('div')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   display: flex;
   justify-content: center;
   align-items: center;

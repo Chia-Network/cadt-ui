@@ -25,7 +25,8 @@ const Button = styled('button')`
   ${props => props.size === 'small' && `padding: 3px !important;`};
 
   &:hover {
-    background-color: ${props => (props.danger ? '#FF7875' : '#40A9FF')};
+    background-color: ${props =>
+      props.danger ? '#FF7875' : props.theme.colors.default.onInput};
   }
 
   &:active {
@@ -38,12 +39,13 @@ const Button = styled('button')`
   ${props =>
     props.loading &&
     `
-      background-color: ${props => (props.danger ? '#FF7875' : '#40A9FF')};
+      background-color: ${props =>
+        props.danger ? '#FF7875' : props.theme.colors.default.onInput};
     opacity: 0.65;
   `}
 
   &:disabled {
-    background-color: #f5f5f5;
+    background-color: ${props => props.theme.colors.default.onSelect};
     border: 1px solid ${props => props.theme.colors.default.onBorder};
     box-sizing: border-box;
     cursor: default;
@@ -57,8 +59,8 @@ const Button = styled('button')`
           :hover, :active {
             background-color: white;
           };
-          h4 { color: #BFBFBF };
-          border: 1px solid #e5e5e5;
+          h4 { color: ${props.theme.colors.default.onBorder} };
+          border: 1px solid ${props.theme.colors.default.onModal};
         `;
       }
       return css`
@@ -68,7 +70,7 @@ const Button = styled('button')`
           background-color: white;
         }
 
-        border: 1px solid #e5e5e5;
+        border: 1px solid ${props.theme.colors.default.onModal};
         :active {
           border: 1px solid #096dd9;
         }
@@ -77,7 +79,7 @@ const Button = styled('button')`
           color: ${props.theme.colors.default.onText};
         }
         h4:hover {
-          color: #40a9ff;
+          color: ${props.theme.colors.default.onInput};
         }
         h4:active {
           color: #096dd9;
@@ -97,6 +99,7 @@ const PrimaryButton = withTheme(
     disabled,
     onClick,
     type = 'primary',
+    theme
   }) => {
     const appStore = useSelector(state => state.app);
     return (
@@ -120,7 +123,14 @@ const PrimaryButton = withTheme(
             <span style={{ width: size === 'small' ? 2 : 5 }}></span>
           </>
         )}
-        <ButtonText color={disabled ? '#BFBFBF' : 'white'}>{label}</ButtonText>
+        <ButtonText
+          color={
+            disabled
+              ? theme.colors.default.onDisable
+              : theme.colors.default.onButton
+          }>
+          {label}
+        </ButtonText>
       </Button>
     );
   },

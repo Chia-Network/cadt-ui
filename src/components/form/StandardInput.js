@@ -74,7 +74,7 @@ const StyledInputContainer = styled('div')`
         `;
       } else if (props.inputState === InputStateEnum.disabled) {
         return css`
-          background: #f5f5f5;
+          background: ${props.theme.colors.default.onSelect};
         `;
       }
     } else if (props.variant === InputVariantEnum.error) {
@@ -96,14 +96,14 @@ const StyledInputContainer = styled('div')`
         `;
       } else if (props.inputState === InputStateEnum.disabled) {
         return css`
-          background: #f5f5f5;
+          background: ${props.theme.colors.default.onSelect};
         `;
       }
     } else {
       // else for InputVariantEnum.default
       if (props.inputState === InputStateEnum.hover) {
         return css`
-          border: 1px solid #40a9ff;
+          border: 1px solid ${props.theme.colors.default.onInput};
         `;
       } else if (
         props.inputState === InputStateEnum.focused ||
@@ -115,7 +115,7 @@ const StyledInputContainer = styled('div')`
         `;
       } else if (props.inputState === InputStateEnum.disabled) {
         return css`
-          background: #f5f5f5;
+          background: ${props.theme.colors.default.onSelect};
         `;
       }
     }
@@ -140,7 +140,7 @@ const StyledInput = styled('input')`
     color: ${props => props.theme.colors.default.onPlaceholder};
   }
   :disabled {
-    background: #f5f5f5;
+    background: ${props => props.theme.colors.default.onSelect};
   }
   ${props => {
     if (props.size == InputSizeEnum.large) {

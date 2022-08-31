@@ -32,7 +32,7 @@ const StyledTextField = styled(TextField)`
       return css`
         .MuiOutlinedInput-root,
         .MuiInputBase-root {
-          background-color: #f5f5f5;
+          background-color: ${props.theme.colors.default.onSelect};
         }
       `;
     } else if (props.dateselectvariant === DateSelectVariantEnum.error) {
@@ -54,7 +54,7 @@ const StyledTextField = styled(TextField)`
       return css`
         .MuiOutlinedInput-root:hover,
         .MuiInputBase-root:hover {
-          border: 1px solid #40a9ff;
+          border: 1px solid ${props.theme.colors.default.onInput};
         }
 
         .MuiOutlinedInput-root:focus-within,

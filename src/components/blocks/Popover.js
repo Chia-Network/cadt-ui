@@ -36,7 +36,7 @@ const StyledPopoverContent = styled('div')`
 `;
 
 const StyledPopoverDivider = styled('div')`
-  border-bottom: 1px solid #F0F0F0;
+  border-bottom: 1px solid ${props => props.theme.colors.default.onDivider};
 `;
 
 const Popover = withTheme(({ children, body, placement, title, theme }) => {

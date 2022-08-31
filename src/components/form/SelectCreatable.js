@@ -43,7 +43,7 @@ const StyledCreatableSelect = styled(CreatableSelect)`
         }
 
         div[class*='control']:hover {
-          border: 1px solid #40a9ff;
+          border: 1px solid ${props => props.theme.colors.default.onInput};
         }
 
         div[class*='control']:focus-within {
@@ -108,15 +108,15 @@ const StyledSelect = styled(Select)`
         div[class*='control'] {
           border-radius: 0.125rem;
           border: 0.0625rem solid
-            ${props => props.theme.colors.default.onBorder};
+            ${props.theme.colors.default.onBorder};
         }
 
         div[class*='control']:hover {
-          border: 1px solid #40a9ff;
+          border: 1px solid ${props.theme.colors.default.onInput};
         }
 
         div[class*='control']:focus-within {
-          border: 1px solid ${props => props.theme.colors.default.onDate};
+          border: 1px solid ${props.theme.colors.default.onDate};
           box-shadow: 0px 0px 4px rgba(24, 144, 255, 0.5);
         }
       `;

@@ -68,7 +68,7 @@ const ButtonsContainer = styled('div')`
   flex-shrink: 0;
   ${props => {
     if (props.modalType === modalTypeEnum.basic) {
-      return `border-top: 1px solid #e5e5e5; padding-right: 1rem; height: 3.25rem;`;
+      return `border-top: 1px solid ${props.theme.colors.default.onModal}; padding-right: 1rem; height: 3.25rem;`;
     }
     if (
       props.modalType === modalTypeEnum.information ||
@@ -110,7 +110,7 @@ const TitleContainer = styled('div')`
           align-items: center;
           height: 3.5rem;
           align-self: center;
-          border-bottom: 1px solid #e5e5e5;
+          border-bottom: 1px solid ${props.theme.colors.default.onModal};
           padding: 16px 24px;
         `;
     }

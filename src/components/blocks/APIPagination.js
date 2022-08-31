@@ -29,7 +29,7 @@ export const ControlsContainer = styled('div')`
   border-radius: 2px;
   ${props =>
     props.isDisabled &&
-    `background: #F5F5F5; color: ${props.theme.colors.default.onBorder}; cursor: default;`};
+    `background: ${props.theme.colors.default.onSelect}; color: ${props.theme.colors.default.onBorder}; cursor: default;`};
   ${props =>
     props.isBackButton &&
     `transform-origin: center;   

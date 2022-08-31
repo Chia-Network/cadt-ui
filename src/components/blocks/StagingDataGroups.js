@@ -23,7 +23,7 @@ import { useWindowSize } from '../hooks/useWindowSize';
 
 const StyledPaginationContainer = styled('div')`
   box-sizing: border-box;
-  background-color: white;
+  background-color: ${props => props.theme.colors.default.onButton};
   position: sticky;
   bottom: 0;
   display: flex;
@@ -82,7 +82,7 @@ const StyledChangeCardBody = styled('div')`
   padding: 8px 17px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  border: 2px solid #e5e5e5;
+  border: 2px solid ${props => props.theme.colors.default.onModal};
   border-top: none;
 `;
 

@@ -39,10 +39,14 @@ const NavContainer = styled('div')`
 const MenuItem = styled(Link)`
   background: ${props => (props.selected ? '#003A8C' : 'transparent')};
   ${props =>
-    !props.selected && !props.disabled && `:hover {background: #40a9ff;}`};
+    !props.selected &&
+    !props.disabled &&
+    `:hover {background: ${props.theme.colors.default.onInput}}`};
   padding: 0.5625rem 0rem 0.75rem 4.25rem;
   ${props =>
-    props.disabled ? 'color: #BFBFBF; pointer-events: none;' : 'color: white;'}
+    props.disabled
+      ? `color: ${props.theme.colors.default.onDisable}; pointer-events: none;`
+      : `color: ${props.theme.colors.default.onButton}`}
   font-family: ${props => props.theme.typography.primary.bold};
   cursor: pointer;
   display: block;
@@ -56,17 +60,23 @@ const MenuItem = styled(Link)`
 `;
 
 const StyledTitleContainer = styled('div')`
-  ${props => (!props.disabled ? `color: white;` : `color: #BFBFBF;`)};
+  ${props =>
+    !props.disabled
+      ? `color: ${props.theme.colors.default.onButton};`
+      : `color: ${props.theme.colors.default.onDisable}`};
   display: flex;
   gap: 0.8438rem;
   & h4 {
     text-transform: uppercase;
-    ${props => (!props.disabled ? `color: white;` : `color: #BFBFBF;`)};
+    ${props =>
+      !props.disabled
+        ? `color: ${props => props.theme.colors.default.onButton}`
+        : `color: ${props.theme.colors.default.onDisable}`};
   }
   margin: 46px 0px 1.3125rem 1.7813rem;
 `;
 
-const LeftNav = withTheme(({ children }) => {
+const LeftNav = withTheme(({ children, theme }) => {
   const location = useLocation();
   const [confirmCreateOrgIsVisible, setConfirmCreateOrgIsVisible] =
     useState(false);
@@ -136,8 +146,7 @@ const LeftNav = withTheme(({ children }) => {
             {!isMyOrgCreated && (
               <MenuItem
                 to={projectsPageUrl}
-                onClick={() => setCreateOrgIsVisible(true)}
-              >
+                onClick={() => setCreateOrgIsVisible(true)}>
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
@@ -150,15 +159,13 @@ const LeftNav = withTheme(({ children }) => {
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
-                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
-                >
+                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}>
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   selected={isUnitsPage && isMyRegistryPage}
-                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
-                >
+                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}>
                   <FormattedMessage id="my-units" />
                 </MenuItem>
 
@@ -181,16 +188,14 @@ const LeftNav = withTheme(({ children }) => {
                 <MenuItem
                   to={projectsPageUrl}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled
-                >
+                  disabled>
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   to={projectsPageUrl}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled
-                >
+                  disabled>
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>
@@ -215,7 +220,7 @@ const LeftNav = withTheme(({ children }) => {
         />
       )}
       <StyledAppVersion>
-        <Body size="X-Small" color="white">
+        <Body size="X-Small" color={theme.colors.default.onButton}>
           {process?.env?.REACT_APP_VERSION &&
             `v${process.env.REACT_APP_VERSION}`}
         </Body>

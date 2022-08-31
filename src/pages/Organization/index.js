@@ -50,9 +50,9 @@ const StyledCopyIconContainer = styled('div')`
   display: inline-block;
   cursor: pointer;
   margin-left: 2px;
-  color: #d9d9d9;
+  color: ${props => props.theme.colors.default.onBorder};
   :hover {
-    color: #bfbfbf;
+    color: ${props => props.theme.colors.default.onDisable};
   }
   :active {
     color: #096dd9;

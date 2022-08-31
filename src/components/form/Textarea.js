@@ -66,7 +66,7 @@ const StyledTextarea = styled('textarea')`
   }};
   ${props => {
     if (props.state === TextareaStateEnum.hover) {
-      return `border: 1px solid #40A9FF;`;
+      return `border: 1px solid ${props.theme.colors.default.onInput};`;
     } else if (
       props.state === TextareaStateEnum.typing ||
       props.state === TextareaStateEnum.focused

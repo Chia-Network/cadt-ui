@@ -78,7 +78,7 @@ const StyledSelect = styled('div')`
   }};
   ${props => {
     if (props.state === SelectStateEnum.hover) {
-      return `border: 1px solid #40A9FF;`;
+      return `border: 1px solid ${props.theme.colors.default.onInput};`;
     } else if (props.state === SelectStateEnum.focused) {
       return `
         border: 1px solid ${props.theme.colors.default.primary};
@@ -86,7 +86,7 @@ const StyledSelect = styled('div')`
       `;
     } else if (props.state === SelectStateEnum.disabled) {
       return css`
-        background: #f5f5f5;
+        background: ${props.theme.colors.default.onSelect};
         color: ${props.theme.colors.default.onSurface};
         cursor: default;
       `;
@@ -155,11 +155,11 @@ const StyledBasicMenuItem = styled('div')`
 const StyledArrowDownContainer = styled('div')`
   ${props => {
     if (props.state === SelectStateEnum.disabled) {
-      return `color: #BFBFBF;`;
+      return `color: ${props.theme.colors.default.onDisable}`;
     } else if (props.state === SelectStateEnum.focused) {
       return `color: ${props.theme.colors.default.onText};`;
     } else {
-      return `color: #BFBFBF;`;
+      return `color: ${props.theme.colors.default.onDisable}`;
     }
   }};
   margin-left: 0.625rem;
@@ -176,7 +176,7 @@ const StyledMultipleSelect = styled(ScrollContainer)`
 `;
 
 const StyledMultipleSelectItem = styled('div')`
-  background: #f5f5f5;
+  background: ${props => props.theme.colors.default.onSelect};
   border-radius: 2px;
   display: flex;
   flex-direction: row;
