@@ -37,6 +37,7 @@ const colors = {
     onDisable: '#BFBFBF',
     onInput: '#40A9FF',
     onInputBorder: '#FF4D4F',
+    onInputHover: '#ffc53d',
     onDate: '#1890ff',
     onText: '#262626',
     onPlacholder: '#8c8c8c',
@@ -44,6 +45,15 @@ const colors = {
     onSurface: '#000000',
     onButton: '#FFFFFF',
     onDefaultButton: '#096DD9',
+    onLogo: {
+      fill_one: '#00845F',
+      fill_two: '#662841',
+      fill_three: '#FF595D',
+      fill_four: '#018EE7',
+      fill_five: '#004586',
+      fill_six: '#FFBE00',
+      fill_seven: '#000000',
+    },
     status: {
       info: {
         primary: '#91D5FF',
