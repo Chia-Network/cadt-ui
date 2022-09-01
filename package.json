@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.3.0",
     "@lukeed/uuid": "^2.0.0",
     "@mui/lab": "*",
-    "@mui/material": "^5.0.6",
+    "@mui/material": "^5.10.0",
     "@mui/x-date-pickers": "*",
     "dayjs": "^1.10.7",
     "formik": "^2.2.9",
