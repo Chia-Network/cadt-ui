@@ -468,5 +468,8 @@
   "project-could-not-be-transferred": "The Project could not be transferred.",
   "project-could-not-be-edited": "The Project could not be edited.",
   "transfer-project-issuances-not-editable": "The issuances cannot be edited while transferring a project.",
-  "download-offer": "Download Offer"
+  "download-offer": "Download Offer",
+  "transfer-cancelled-error": "The transfer could not be cancelled.",
+  "transfer-cancelled": "The transfer offer has been cancelled.",
+  "cancel-offer": "Cancel Offer"
 }
