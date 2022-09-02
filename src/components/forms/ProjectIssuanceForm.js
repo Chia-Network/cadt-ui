@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import {
@@ -28,16 +29,27 @@ import {
 const ProjectIssuanceForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
+    const location = useLocation();
     const { pickLists } = useSelector(store => store.climateWarehouse);
     const getFieldName = useCallback(
       fieldName => `${name}[${index}].${fieldName}`,
       [name, index],
     );
-    const areFieldsDisabled = Boolean(value.id);
+
+    const isUserOnWarehouseProjectsPage =
+      location.pathname.includes('/projects') &&
+      !location.search.includes('myRegistry=true');
+    const areFieldsDisabled =
+      Boolean(value.id) || isUserOnWarehouseProjectsPage;
 
     return (
       <ModalFormContainerStyle>
         <FormContainerStyle>
+          <StyledFieldContainer>
+            <Body size="Bold">
+              <FormattedMessage id="transfer-project-issuances-not-editable" />
+            </Body>
+          </StyledFieldContainer>
           <BodyContainer>
             <StyledFieldContainer>
               <StyledLabelContainer>

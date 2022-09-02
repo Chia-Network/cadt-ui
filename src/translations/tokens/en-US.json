@@ -458,5 +458,18 @@
   "gis-file-description": "GIS file format is a standard of encoding geographical information into a computer file.",
   "subscribe-to-files": "Include files",
   "import-organization": "Import organization",
-  "existing-organizations": "Existing organizations"
+  "existing-organizations": "Existing organizations",
+  "transfer-project": "Transfer Project",
+  "transfer-not-possible": "Transfer is not possible",
+  "clear-staging-pending-table": "Please clear the staging and pending tables from your registry to proceed with the requested project transfer.",
+  "confirm-transfer": "Confirm transfer",
+  "confirm-transfer-details": "Please confirm the project transfer.",
+  "project-successfully-transferred": "Project Successfully Transferred!",
+  "project-could-not-be-transferred": "The Project could not be transferred.",
+  "project-could-not-be-edited": "The Project could not be edited.",
+  "transfer-project-issuances-not-editable": "The issuances cannot be edited while transferring a project.",
+  "download-offer": "Download Offer",
+  "transfer-cancelled-error": "The transfer could not be cancelled.",
+  "transfer-cancelled": "The transfer offer has been cancelled.",
+  "cancel-offer": "Cancel Offer"
 }

@@ -50,6 +50,7 @@ import {
   deleteAllStagingData,
   clearProjectData,
   getProjectData,
+  cancelTransferOffer,
 } from '../../store/actions/climateWarehouseActions';
 import theme from '../../theme';
 
@@ -96,6 +97,8 @@ const StyledFiltersContainer = styled('div')`
 `;
 
 const StyledButtonContainer = styled('div')`
+  display: flex;
+  gap: 10px;
   margin-left: auto;
 `;
 
@@ -332,6 +335,28 @@ const Projects = () => {
     );
   }, [projects, stagingData]);
 
+  const isDownloadOfferButtonVisible = useMemo(
+    () =>
+      stagingData?.projects?.pending?.some(
+        projectChangeItem => projectChangeItem?.isTransfer,
+      ),
+    [tabValue],
+  );
+
+  const downloadTransferOffer = useCallback(async () => {
+    await fetch(`${constants.API_HOST}/offer`)
+      .then(async result => await result.blob())
+      .then(async response => {
+        const filename = await response;
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(new Blob([filename]));
+        link.href = url;
+        link.download = `offer.txt`;
+        document.body.appendChild(link); // Required for this to work in FireFox
+        link.click();
+      });
+  }, []);
+
   if (!filteredColumnsTableData) {
     return null;
   }
@@ -392,6 +417,22 @@ const Projects = () => {
                 size="large"
                 onClick={() => setIsCommitModalVisible(true)}
               />
+            )}
+
+            {tabValue === 2 && isDownloadOfferButtonVisible && (
+              <>
+                <PrimaryButton
+                  label={intl.formatMessage({ id: 'download-offer' })}
+                  size="large"
+                  onClick={downloadTransferOffer}
+                />
+                <PrimaryButton
+                  label={intl.formatMessage({ id: 'cancel-offer' })}
+                  size="large"
+                  onClick={() => dispatch(cancelTransferOffer())}
+                  danger
+                />
+              </>
             )}
           </StyledButtonContainer>
         </StyledHeaderContainer>

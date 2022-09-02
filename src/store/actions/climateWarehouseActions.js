@@ -1522,6 +1522,101 @@ export const updateProjectRecord = data => {
   };
 };
 
+export const transferProject = data => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/projects/transfer`;
+      const payload = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'project-successfully-transferred',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'project-could-not-be-transferred',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'project-could-not-be-transferred',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const cancelTransferOffer = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/offer`;
+      const payload = {
+        method: 'DELETE',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transfer-cancelled',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'transfer-cancelled-error'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transfer-cancelled-error',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const postNewOrg = data => {
   return async dispatch => {
     try {
