@@ -22,15 +22,18 @@ import {
   DownloadOfferIcon,
   ToolTip,
   ToolTipPlacement,
+  AcceptOfferIcon,
 } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
 import {
-  cancelTransferOffer,
-  downloadTransferOffer,
+  makerDownloadTransferOffer,
+  makerCancelTransferOffer,
+  takerAcceptTransferOffer,
+  takerCancelTransferOffer,
 } from '../../store/actions/climateWarehouseActions';
 
 const StyledPaginationContainer = styled('div')`
-  ng: border-box;
+  box-sizing: border-box;
   background-color: white;
   position: sticky;
   bottom: 0;
@@ -354,7 +357,7 @@ const StagingDataGroups = withTheme(
                           <DownloadOfferIcon
                             height={25}
                             width={25}
-                            onClick={downloadTransferOffer}
+                            onClick={makerDownloadTransferOffer}
                           />
                         </ToolTip>
                         <ToolTip
@@ -366,7 +369,31 @@ const StagingDataGroups = withTheme(
                           <RemoveIcon
                             width={22}
                             height={22}
-                            onClick={() => dispatch(cancelTransferOffer())}
+                            onClick={() => dispatch(makerCancelTransferOffer())}
+                          />
+                        </ToolTip>
+                        <ToolTip
+                          body={intl.formatMessage({
+                            id: 'accept-offer',
+                          })}
+                          placement={ToolTipPlacement.Top}
+                        >
+                          <AcceptOfferIcon
+                            width={27}
+                            height={27}
+                            onClick={() => dispatch(takerAcceptTransferOffer())}
+                          />
+                        </ToolTip>
+                        <ToolTip
+                          body={intl.formatMessage({
+                            id: 'cancel-offer',
+                          })}
+                          placement={ToolTipPlacement.Top}
+                        >
+                          <RemoveIcon
+                            width={22}
+                            height={22}
+                            onClick={() => dispatch(takerCancelTransferOffer())}
                           />
                         </ToolTip>
                       </StyledDeleteGroupIcon>

@@ -471,5 +471,8 @@
   "download-offer": "Download Offer",
   "transfer-cancelled-error": "The transfer could not be cancelled.",
   "transfer-cancelled": "The transfer offer has been cancelled.",
-  "cancel-offer": "Cancel Offer"
+  "transfer-accepted-error": "The transfer offer could not be accepted.",
+  "transfer-accepted": "The transfer offer has been accepted.",
+  "cancel-offer": "Cancel Offer",
+  "accept-offer": "Accept Offer"
 }
