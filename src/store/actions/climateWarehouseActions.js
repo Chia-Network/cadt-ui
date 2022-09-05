@@ -2285,6 +2285,20 @@ export const getUnits = options => {
   };
 };
 
+export const downloadTransferOffer = async () => {
+  await fetch(`${constants.API_HOST}/offer`)
+    .then(async result => await result.blob())
+    .then(async response => {
+      const filename = await response;
+      const link = document.createElement('a');
+      const url = window.URL.createObjectURL(new Blob([filename]));
+      link.href = url;
+      link.download = `offer.txt`;
+      document.body.appendChild(link); // Required for this to work in FireFox
+      link.click();
+    });
+};
+
 export const mockProjectsResponse = {
   type: actions.GET_PROJECTS,
   // Different envs import this differently

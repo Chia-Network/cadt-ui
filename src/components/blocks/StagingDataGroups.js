@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useDispatch } from 'react-redux';
 
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
 import { getDiff } from '../../utils/objectUtils';
@@ -18,11 +19,18 @@ import {
   APIStagingPagination,
   UnitEditStagingModal,
   UnitSplitEditStagingFormModal,
+  DownloadOfferIcon,
+  ToolTip,
+  ToolTipPlacement,
 } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
+import {
+  cancelTransferOffer,
+  downloadTransferOffer,
+} from '../../store/actions/climateWarehouseActions';
 
 const StyledPaginationContainer = styled('div')`
-  box-sizing: border-box;
+  ng: border-box;
   background-color: white;
   position: sticky;
   bottom: 0;
@@ -232,6 +240,7 @@ const StagingDataGroups = withTheme(
     const [height, setHeight] = useState(0);
     const windowSize = useWindowSize();
     const intl = useIntl();
+    const dispatch = useDispatch();
 
     const getIsChangeGroupValid = useCallback(changeGroup => {
       if (!changeGroup.diff) {
@@ -332,6 +341,34 @@ const StagingDataGroups = withTheme(
                             }
                           />
                         )}
+                      </StyledDeleteGroupIcon>
+                    )}
+                    {changeGroup?.isTransfer && (
+                      <StyledDeleteGroupIcon>
+                        <ToolTip
+                          body={intl.formatMessage({
+                            id: 'download-offer',
+                          })}
+                          placement={ToolTipPlacement.Top}
+                        >
+                          <DownloadOfferIcon
+                            height={25}
+                            width={25}
+                            onClick={downloadTransferOffer}
+                          />
+                        </ToolTip>
+                        <ToolTip
+                          body={intl.formatMessage({
+                            id: 'cancel-offer',
+                          })}
+                          placement={ToolTipPlacement.Top}
+                        >
+                          <RemoveIcon
+                            width={22}
+                            height={22}
+                            onClick={() => dispatch(cancelTransferOffer())}
+                          />
+                        </ToolTip>
                       </StyledDeleteGroupIcon>
                     )}
                     {retryStagingData && (
