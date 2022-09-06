@@ -1631,6 +1631,57 @@ export const makerDownloadTransferOffer = async () => {
     });
 };
 
+export const takerImportOffer = file => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const url = `${constants.API_HOST}/offer/accept/import`;
+      const payload = {
+        method: 'POST',
+        body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getFileList());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transfer-offer-import-successful',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'transfer-offer-import-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transfer-offer-import-failed',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
 export const takerCancelTransferOffer = () => {
   return async dispatch => {
     try {

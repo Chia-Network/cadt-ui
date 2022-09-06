@@ -36,6 +36,7 @@ import {
   modalTypeEnum,
   RemoveIcon,
   ProjectDetailedViewModal,
+  OfferUploadModal,
 } from '../../components';
 
 import { setPendingError } from '../../store/actions/app';
@@ -158,6 +159,7 @@ const Projects = () => {
   let searchParams = new URLSearchParams(location.search);
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
+  const [isImportOfferModalVisible, setIsImportModalVisible] = useState(false);
   const windowSize = useWindowSize();
 
   const handleTabChange = useCallback(
@@ -363,6 +365,12 @@ const Projects = () => {
             </StyledFiltersContainer>
           )}
           <StyledButtonContainer>
+            <PrimaryButton
+              label={intl.formatMessage({ id: 'import-offer' })}
+              size="large"
+              onClick={() => setIsImportModalVisible(true)}
+            />
+
             {tabValue === 0 && pageIsMyRegistryPage && (
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
@@ -576,6 +584,13 @@ const Projects = () => {
           onClose={closeProjectOpenedInDetailedView}
           modalSizeAndPosition={modalSizeAndPosition}
           projectObject={project}
+        />
+      )}
+      {isImportOfferModalVisible && (
+        <OfferUploadModal
+          onClose={() => {
+            setIsImportModalVisible(false);
+          }}
         />
       )}
     </>
