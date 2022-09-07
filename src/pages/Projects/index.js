@@ -346,13 +346,12 @@ const Projects = () => {
 
   const pendingProjects = useMemo(
     () =>
-      stagingData?.projects?.pending?.filter(item => !item.isTransfer) ?? null,
+      stagingData?.projects?.pending?.filter(item => !item.isTransfer) ?? [],
     [stagingData],
   );
 
   const pendingOffers = useMemo(
-    () =>
-      stagingData?.projects?.pending?.filter(item => item.isTransfer) ?? null,
+    () => stagingData?.projects?.pending?.filter(item => item.isTransfer) ?? [],
     [stagingData],
   );
 
@@ -446,7 +445,7 @@ const Projects = () => {
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  pendingProjects && pendingProjects.length
+                  pendingProjects.length
                 })`}
               />
             )}
@@ -460,7 +459,7 @@ const Projects = () => {
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'offers' })} (${
-                  pendingOffers && pendingOffers.length
+                  pendingOffers.length
                 })`}
               />
             )}
@@ -546,14 +545,14 @@ const Projects = () => {
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                {!pendingProjects && (
+                {pendingProjects.length === 0 && (
                   <NoDataMessageContainer>
                     <H3>
                       <FormattedMessage id="no-pending" />
                     </H3>
                   </NoDataMessageContainer>
                 )}
-                {pendingProjects && (
+                {pendingProjects.length > 0 && (
                   <StagingDataGroups
                     headings={headings}
                     data={pendingProjects}
@@ -582,14 +581,14 @@ const Projects = () => {
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
-                {!pendingOffers && (
+                {pendingOffers.length === 0 && (
                   <NoDataMessageContainer>
                     <H3>
                       <FormattedMessage id="no-pending-offers" />
                     </H3>
                   </NoDataMessageContainer>
                 )}
-                {pendingOffers && (
+                {pendingOffers.length > 0 && (
                   <StagingDataGroups
                     headings={headings}
                     data={pendingOffers}

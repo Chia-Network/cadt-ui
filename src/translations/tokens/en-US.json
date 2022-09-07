@@ -480,6 +480,6 @@
   "transfer-offer-import-successful": "The transfer offer was imported successfully",
   "transfer-offer-import-failed": "The transfer offer could not be imported.",
   "offers": "Offers",
-  "no-pending-offers": "There are no pending transfer offers at this time.",
+  "no-pending-offers": "No pending transfer offers at this time",
   "download-uploaded-offer-failed": "Could not download your uploaded transfer offer."
 }
