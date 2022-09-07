@@ -50,6 +50,7 @@ import {
   deleteAllStagingData,
   clearProjectData,
   getProjectData,
+  takerGetUploadedOffer,
 } from '../../store/actions/climateWarehouseActions';
 import theme from '../../theme';
 
@@ -148,6 +149,7 @@ const Projects = () => {
     stagingData,
     totalProjectsPages,
     totalNumberOfEntries,
+    processedTransferOffer,
   } = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -334,6 +336,13 @@ const Projects = () => {
       ]),
     );
   }, [projects, stagingData]);
+
+  useEffect(() => {
+    takerGetUploadedOffer();
+  }, [tabValue, isImportOfferModalVisible]);
+
+  // TODO need to implement passing the processedTransferOffer to the offers tab
+  console.log('processedTransferOffer', processedTransferOffer);
 
   const pendingProjects = useMemo(
     () =>

@@ -61,6 +61,7 @@ export const actions = keyMirror(
   'SET_WALLET_STATUS',
   'GET_FILE_LIST',
   'GET_TOTAL_NR_OF_STAGED_ENTRIES',
+  'GET_TRANSFER_OFFER',
 );
 
 const getClimateWarehouseTable = (
@@ -1674,6 +1675,47 @@ export const takerImportOffer = file => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'transfer-offer-import-failed',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const takerGetUploadedOffer = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/offer/accept`;
+      const response = await fetchWrapper(url);
+
+      if (response.ok) {
+        const results = await response.json();
+        dispatch(setConnectionCheck(true));
+        dispatch({
+          type: actions.GET_TRANSFER_OFFER,
+          payload: results,
+        });
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'download-uploaded-offer-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'download-uploaded-offer-failed',
         ),
       );
     } finally {
