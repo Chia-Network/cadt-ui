@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from 'react';
 import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -319,6 +325,11 @@ const StagingDataGroups = withTheme(
       });
     }, []);
 
+    const hasDataTransferOffers = useMemo(
+      () => data?.some(changeGroupItem => changeGroupItem?.isTransfer) ?? false,
+      [data],
+    );
+
     return (
       <StagingDataGroupsContainer ref={ref}>
         <div style={{ height: `${height}px`, overflow: 'auto' }}>
@@ -500,9 +511,11 @@ const StagingDataGroups = withTheme(
                 )}
               </React.Fragment>
             ))}
-          <StyledPaginationContainer>
-            <APIStagingPagination actions="staging" formType={data} />
-          </StyledPaginationContainer>
+          {!hasDataTransferOffers && (
+            <StyledPaginationContainer>
+              <APIStagingPagination actions="staging" formType={data} />
+            </StyledPaginationContainer>
+          )}
           {detailedViewData && (
             <DetailedViewStagingModal
               onClose={() => setDetailedViewData(null)}
