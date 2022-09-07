@@ -335,6 +335,18 @@ const Projects = () => {
     );
   }, [projects, stagingData]);
 
+  const pendingProjects = useMemo(
+    () =>
+      stagingData?.projects?.pending?.filter(item => !item.isTransfer) ?? null,
+    [stagingData],
+  );
+
+  const pendingOffers = useMemo(
+    () =>
+      stagingData?.projects?.pending?.filter(item => item.isTransfer) ?? null,
+    [stagingData],
+  );
+
   if (!filteredColumnsTableData) {
     return null;
   }
@@ -365,11 +377,13 @@ const Projects = () => {
             </StyledFiltersContainer>
           )}
           <StyledButtonContainer>
-            <PrimaryButton
-              label={intl.formatMessage({ id: 'import-offer' })}
-              size="large"
-              onClick={() => setIsImportModalVisible(true)}
-            />
+            {tabValue === 4 && pageIsMyRegistryPage && (
+              <PrimaryButton
+                label={intl.formatMessage({ id: 'import-offer' })}
+                size="large"
+                onClick={() => setIsImportModalVisible(true)}
+              />
+            )}
 
             {tabValue === 0 && pageIsMyRegistryPage && (
               <PrimaryButton
@@ -423,7 +437,7 @@ const Projects = () => {
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  totalNumberOfEntries && totalNumberOfEntries.projects.pending
+                  pendingProjects && pendingProjects.length
                 })`}
               />
             )}
@@ -431,6 +445,13 @@ const Projects = () => {
               <Tab
                 label={`${intl.formatMessage({ id: 'failed' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.projects.failed
+                })`}
+              />
+            )}
+            {pageIsMyRegistryPage && (
+              <Tab
+                label={`${intl.formatMessage({ id: 'offers' })} (${
+                  pendingOffers && pendingOffers.length
                 })`}
               />
             )}
@@ -516,17 +537,17 @@ const Projects = () => {
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                {stagingData && stagingData.projects.pending.length === 0 && (
+                {!pendingProjects && (
                   <NoDataMessageContainer>
                     <H3>
                       <FormattedMessage id="no-pending" />
                     </H3>
                   </NoDataMessageContainer>
                 )}
-                {stagingData && (
+                {pendingProjects && (
                   <StagingDataGroups
                     headings={headings}
-                    data={stagingData.projects.pending}
+                    data={pendingProjects}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
@@ -547,6 +568,22 @@ const Projects = () => {
                       dispatch(deleteStagingData(uuid))
                     }
                     retryStagingData={uuid => dispatch(retryStagingData(uuid))}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                  />
+                )}
+              </TabPanel>
+              <TabPanel value={tabValue} index={4}>
+                {!pendingOffers && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-pending-offers" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {pendingOffers && (
+                  <StagingDataGroups
+                    headings={headings}
+                    data={pendingOffers}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
