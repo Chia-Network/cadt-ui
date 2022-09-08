@@ -61,6 +61,7 @@ export const actions = keyMirror(
   'SET_WALLET_STATUS',
   'GET_FILE_LIST',
   'GET_TOTAL_NR_OF_STAGED_ENTRIES',
+  'GET_GLOSSARY',
 );
 
 const getClimateWarehouseTable = (
@@ -798,6 +799,49 @@ export const getFileList = () => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'could-not-retrieve-file-list',
+        ),
+      );
+      dispatch(setConnectionCheck(false));
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const getGlossary = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const response = await fetchWrapper(
+        `${constants.API_HOST}/governance/meta/glossary`,
+      );
+
+      if (response.ok) {
+        const results = await response.json();
+        // const results = fileListResponseStub;
+        dispatch(setConnectionCheck(true));
+        dispatch({
+          type: actions.GET_GLOSSARY,
+          payload: results,
+        });
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'could-not-retrieve-glossary',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'could-not-retrieve-glossary',
         ),
       );
       dispatch(setConnectionCheck(false));

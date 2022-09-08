@@ -431,6 +431,7 @@
   "submit": "Submit",
   "no-files-found": "No files have been found",
   "could-not-retrieve-file-list": "The file list could not be retrieved.",
+  "could-not-retrieve-glossary": "The glossary could not be retrieved.",
   "sort-a-to-z": "Sort A to Z",
   "sort-z-to-a": "Sort Z to A",
   "file": "File",

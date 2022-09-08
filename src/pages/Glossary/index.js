@@ -10,12 +10,14 @@ import {
   AscendingClockIcon,
   SearchInput,
   H3,
+  H4,
 } from '../../components';
-import { getFileList } from '../../store/actions/climateWarehouseActions';
+import { getGlossary } from '../../store/actions/climateWarehouseActions';
 
 const StyledSectionContainer = styled('div')`
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
   height: 100%;
 `;
 
@@ -80,6 +82,10 @@ const StyledIconContainer = styled('div')`
   cursor: pointer;
 `;
 
+const DescriptionContainer = styled('div')`
+  margin-bottom: 0.9375rem;
+`;
+
 const SortEnum = {
   aToZ: 'aToZ',
   zToA: 'zToA',
@@ -87,29 +93,29 @@ const SortEnum = {
 
 const Glossary = () => {
   const dispatch = useDispatch();
-  const { fileList } = useSelector(store => store.climateWarehouse);
-  const [filteredFileList, setFilteredFileList] = useState(fileList ?? []);
+  const { glossary } = useSelector(store => store.climateWarehouse);
+  const [filteredFileList, setFilteredFileList] = useState(glossary ?? []);
   const [sortOrder, setSortOrder] = useState(SortEnum.aToZ);
 
-  useEffect(() => dispatch(getFileList()), []);
-  useEffect(() => setFilteredFileList(fileList), [fileList]);
+  useEffect(() => dispatch(getGlossary()), []);
+  useEffect(() => setFilteredFileList(glossary), [glossary]);
 
   const onSearch = useMemo(
     () =>
       _.debounce(event => {
         if (event.target.value !== '') {
           setFilteredFileList(
-            fileList.filter(file =>
+            glossary.filter(file =>
               file.fileName
                 .toLowerCase()
                 .includes(event.target.value.toLowerCase()),
             ),
           );
         } else {
-          setFilteredFileList(fileList);
+          setFilteredFileList(glossary);
         }
       }, 300),
-    [fileList],
+    [glossary],
   );
 
   useEffect(() => {
@@ -136,7 +142,7 @@ const Glossary = () => {
     });
   }, [setSortOrder, filteredFileList]);
 
-  if (!fileList) {
+  if (!glossary) {
     return null;
   }
 
@@ -174,7 +180,7 @@ const Glossary = () => {
           </H3>
         </StyledBodyNoDataFound>
       )}
-      {filteredFileList?.length > 0 && (
+      {filteredFileList && (
         <StyledBodyContainer>
           <StyledTable>
             <thead>
@@ -192,13 +198,20 @@ const Glossary = () => {
               </StyledTr>
             </thead>
             <tbody>
-              {filteredFileList.map(file => (
-                <StyledTr key={file.SHA256}>
+              {Object.entries(glossary).map(file => (
+                <StyledTr key={file.id}>
                   <StyledTd>
-                    <Body>{file.fileName}</Body>
+                    <Body>{file[0]}</Body>
                   </StyledTd>
                   <StyledTd>
-                    <Body>{file.SHA256}</Body>
+                    {file[1].map(term => (
+                      <DescriptionContainer key={term.id}>
+                        <H4>
+                          <u>{term.split(';')[0]}</u>
+                        </H4>
+                        <Body>{term.split(';')[1]}</Body>
+                      </DescriptionContainer>
+                    ))}
                   </StyledTd>
                 </StyledTr>
               ))}
