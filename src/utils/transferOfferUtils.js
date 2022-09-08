@@ -21,7 +21,7 @@ const buildChangeGroupFromMakerAndTakerItems = (maker, taker) => {
 
 export const convertProcessedOfferToStagingChangeGroups = processedOffer => {
   const makerItems = processedOffer.changes.maker;
-  const takerItems = processedOffer.changes.maker;
+  const takerItems = processedOffer.changes.taker;
 
   const pendingChangeGroupsArray = makerItems.map(makerItem => {
     const takerCorrespondingItem = getTakerElementWithId(
