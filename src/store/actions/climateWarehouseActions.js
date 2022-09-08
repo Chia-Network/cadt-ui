@@ -61,6 +61,7 @@ export const actions = keyMirror(
   'SET_WALLET_STATUS',
   'GET_FILE_LIST',
   'GET_TOTAL_NR_OF_STAGED_ENTRIES',
+  'GET_TRANSFER_OFFER',
 );
 
 const getClimateWarehouseTable = (
@@ -1573,7 +1574,7 @@ export const transferProject = data => {
   };
 };
 
-export const cancelTransferOffer = () => {
+export const makerCancelTransferOffer = () => {
   return async dispatch => {
     try {
       dispatch(activateProgressIndicator);
@@ -1609,6 +1610,200 @@ export const cancelTransferOffer = () => {
         setNotificationMessage(
           NotificationMessageTypeEnum.error,
           'transfer-cancelled-error',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const makerDownloadTransferOffer = async () => {
+  await fetch(`${constants.API_HOST}/offer`)
+    .then(async result => await result.blob())
+    .then(async response => {
+      const filename = await response;
+      const link = document.createElement('a');
+      const url = window.URL.createObjectURL(new Blob([filename]));
+      link.href = url;
+      link.download = `offer.txt`;
+      document.body.appendChild(link); // Required for this to work in FireFox
+      link.click();
+    });
+};
+
+export const takerImportOffer = file => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const url = `${constants.API_HOST}/offer/accept/import`;
+      const payload = {
+        method: 'POST',
+        body: formData,
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(getFileList());
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transfer-offer-import-successful',
+          ),
+        );
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'transfer-offer-import-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transfer-offer-import-failed',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const takerGetUploadedOffer = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/offer/accept`;
+      const response = await fetchWrapper(url);
+
+      if (response.ok) {
+        const results = await response.json();
+        dispatch(setConnectionCheck(true));
+        dispatch({
+          type: actions.GET_TRANSFER_OFFER,
+          payload: results,
+        });
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(
+              errorResponse,
+              'download-uploaded-offer-failed',
+            ),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'download-uploaded-offer-failed',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const takerCancelTransferOffer = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/offer/accept/cancel`;
+      const payload = {
+        method: 'DELETE',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transfer-cancelled',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'transfer-cancelled-error'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transfer-cancelled-error',
+        ),
+      );
+    } finally {
+      dispatch(deactivateProgressIndicator);
+    }
+  };
+};
+
+export const takerAcceptTransferOffer = () => {
+  return async dispatch => {
+    try {
+      dispatch(activateProgressIndicator);
+
+      const url = `${constants.API_HOST}/offer/accept/commit`;
+      const payload = {
+        method: 'POST',
+      };
+
+      const response = await fetchWrapper(url, payload);
+
+      if (response.ok) {
+        dispatch(setConnectionCheck(true));
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.success,
+            'transfer-accepted',
+          ),
+        );
+        dispatch(getStagingData({ useMockedResponse: false }));
+      } else {
+        const errorResponse = await response.json();
+        dispatch(
+          setNotificationMessage(
+            NotificationMessageTypeEnum.error,
+            formatApiErrorResponse(errorResponse, 'transfer-accepted-error'),
+          ),
+        );
+      }
+    } catch {
+      dispatch(setConnectionCheck(false));
+      dispatch(
+        setNotificationMessage(
+          NotificationMessageTypeEnum.error,
+          'transfer-accepted-error',
         ),
       );
     } finally {

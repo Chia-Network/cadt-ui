@@ -1,4 +1,3 @@
-/* es-lint disable */
 import _ from 'lodash';
 import React, {
   useEffect,
@@ -15,6 +14,10 @@ import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
+import {
+  addIsMakerPropToChangeGroups,
+  convertProcessedOfferToStagingChangeGroups,
+} from '../../utils/transferOfferUtils';
 
 import {
   APIDataTable,
@@ -37,6 +40,7 @@ import {
   modalTypeEnum,
   RemoveIcon,
   ProjectDetailedViewModal,
+  OfferUploadModal,
 } from '../../components';
 
 import { setPendingError } from '../../store/actions/app';
@@ -50,7 +54,7 @@ import {
   deleteAllStagingData,
   clearProjectData,
   getProjectData,
-  cancelTransferOffer,
+  takerGetUploadedOffer,
 } from '../../store/actions/climateWarehouseActions';
 import theme from '../../theme';
 
@@ -149,6 +153,7 @@ const Projects = () => {
     stagingData,
     totalProjectsPages,
     totalNumberOfEntries,
+    processedTransferOffer,
   } = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -160,6 +165,7 @@ const Projects = () => {
   let searchParams = new URLSearchParams(location.search);
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
+  const [isImportOfferModalVisible, setIsImportModalVisible] = useState(false);
   const windowSize = useWindowSize();
 
   const handleTabChange = useCallback(
@@ -335,27 +341,37 @@ const Projects = () => {
     );
   }, [projects, stagingData]);
 
-  const isDownloadOfferButtonVisible = useMemo(
+  const pendingProjects = useMemo(
     () =>
-      stagingData?.projects?.pending?.some(
-        projectChangeItem => projectChangeItem?.isTransfer,
-      ),
-    [tabValue],
+      stagingData?.projects?.pending?.filter(item => !item.isTransfer) ?? [],
+    [stagingData],
   );
 
-  const downloadTransferOffer = useCallback(async () => {
-    await fetch(`${constants.API_HOST}/offer`)
-      .then(async result => await result.blob())
-      .then(async response => {
-        const filename = await response;
-        const link = document.createElement('a');
-        const url = window.URL.createObjectURL(new Blob([filename]));
-        link.href = url;
-        link.download = `offer.txt`;
-        document.body.appendChild(link); // Required for this to work in FireFox
-        link.click();
-      });
-  }, []);
+  const pendingMakerOfferChangeGroups = useMemo(() => {
+    const makerChangeGroupsWithoutIsMakerProp =
+      stagingData?.projects?.pending?.filter(item => item.isTransfer) ?? [];
+    const makerChangeGroupsWithIsMakerProp = addIsMakerPropToChangeGroups(
+      makerChangeGroupsWithoutIsMakerProp,
+    );
+    return makerChangeGroupsWithIsMakerProp;
+  }, [stagingData]);
+
+  useEffect(() => {
+    dispatch(takerGetUploadedOffer());
+  }, [isImportOfferModalVisible]);
+
+  const pendingTakerOfferChangeGroups = useMemo(
+    () =>
+      processedTransferOffer !== null
+        ? convertProcessedOfferToStagingChangeGroups(processedTransferOffer)
+        : [],
+    [processedTransferOffer],
+  );
+
+  const pendingTransferOffers = useMemo(
+    () => [...pendingMakerOfferChangeGroups, ...pendingTakerOfferChangeGroups],
+    [stagingData],
+  );
 
   if (!filteredColumnsTableData) {
     return null;
@@ -387,6 +403,14 @@ const Projects = () => {
             </StyledFiltersContainer>
           )}
           <StyledButtonContainer>
+            {tabValue === 4 && pageIsMyRegistryPage && (
+              <PrimaryButton
+                label={intl.formatMessage({ id: 'import-offer' })}
+                size="large"
+                onClick={() => setIsImportModalVisible(true)}
+              />
+            )}
+
             {tabValue === 0 && pageIsMyRegistryPage && (
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
@@ -418,22 +442,6 @@ const Projects = () => {
                 onClick={() => setIsCommitModalVisible(true)}
               />
             )}
-
-            {tabValue === 2 && isDownloadOfferButtonVisible && (
-              <>
-                <PrimaryButton
-                  label={intl.formatMessage({ id: 'download-offer' })}
-                  size="large"
-                  onClick={downloadTransferOffer}
-                />
-                <PrimaryButton
-                  label={intl.formatMessage({ id: 'cancel-offer' })}
-                  size="large"
-                  onClick={() => dispatch(cancelTransferOffer())}
-                  danger
-                />
-              </>
-            )}
           </StyledButtonContainer>
         </StyledHeaderContainer>
         {isCommitModalVisible && (
@@ -455,7 +463,7 @@ const Projects = () => {
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  totalNumberOfEntries && totalNumberOfEntries.projects.pending
+                  pendingProjects.length
                 })`}
               />
             )}
@@ -463,6 +471,13 @@ const Projects = () => {
               <Tab
                 label={`${intl.formatMessage({ id: 'failed' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.projects.failed
+                })`}
+              />
+            )}
+            {pageIsMyRegistryPage && (
+              <Tab
+                label={`${intl.formatMessage({ id: 'offers' })} (${
+                  pendingTransferOffers.length
                 })`}
               />
             )}
@@ -548,17 +563,17 @@ const Projects = () => {
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                {stagingData && stagingData.projects.pending.length === 0 && (
+                {pendingProjects.length === 0 && (
                   <NoDataMessageContainer>
                     <H3>
                       <FormattedMessage id="no-pending" />
                     </H3>
                   </NoDataMessageContainer>
                 )}
-                {stagingData && (
+                {pendingProjects.length > 0 && (
                   <StagingDataGroups
                     headings={headings}
-                    data={stagingData.projects.pending}
+                    data={pendingProjects}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
@@ -579,6 +594,22 @@ const Projects = () => {
                       dispatch(deleteStagingData(uuid))
                     }
                     retryStagingData={uuid => dispatch(retryStagingData(uuid))}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                  />
+                )}
+              </TabPanel>
+              <TabPanel value={tabValue} index={4}>
+                {pendingTransferOffers.length === 0 && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-pending-offers" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {pendingTransferOffers.length > 0 && (
+                  <StagingDataGroups
+                    headings={headings}
+                    data={pendingTransferOffers}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
@@ -616,6 +647,13 @@ const Projects = () => {
           onClose={closeProjectOpenedInDetailedView}
           modalSizeAndPosition={modalSizeAndPosition}
           projectObject={project}
+        />
+      )}
+      {isImportOfferModalVisible && (
+        <OfferUploadModal
+          onClose={() => {
+            setIsImportModalVisible(false);
+          }}
         />
       )}
     </>
