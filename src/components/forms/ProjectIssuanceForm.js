@@ -55,7 +55,7 @@ const ProjectIssuanceForm = memo(
               <StyledLabelContainer>
                 <Body>
                   <LabelContainer>
-                    *<FormattedMessage id="start-date" />
+                    *<FormattedMessage id="verification-period-start" />
                   </LabelContainer>
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
@@ -88,7 +88,7 @@ const ProjectIssuanceForm = memo(
               <StyledLabelContainer>
                 <Body>
                   <LabelContainer>
-                    *<FormattedMessage id="end-date" />
+                    *<FormattedMessage id="verification-period-end" />
                   </LabelContainer>
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
