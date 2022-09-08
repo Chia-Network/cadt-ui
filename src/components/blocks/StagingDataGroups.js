@@ -359,54 +359,68 @@ const StagingDataGroups = withTheme(
                     )}
                     {changeGroup?.isTransfer && (
                       <StyledDeleteGroupIcon>
-                        <ToolTip
-                          body={intl.formatMessage({
-                            id: 'download-offer',
-                          })}
-                          placement={ToolTipPlacement.Top}
-                        >
-                          <DownloadOfferIcon
-                            height={25}
-                            width={25}
-                            onClick={makerDownloadTransferOffer}
-                          />
-                        </ToolTip>
-                        <ToolTip
-                          body={intl.formatMessage({
-                            id: 'cancel-offer',
-                          })}
-                          placement={ToolTipPlacement.Top}
-                        >
-                          <RemoveIcon
-                            width={22}
-                            height={22}
-                            onClick={() => dispatch(makerCancelTransferOffer())}
-                          />
-                        </ToolTip>
-                        <ToolTip
-                          body={intl.formatMessage({
-                            id: 'accept-offer',
-                          })}
-                          placement={ToolTipPlacement.Top}
-                        >
-                          <AcceptOfferIcon
-                            width={27}
-                            height={27}
-                            onClick={() => dispatch(takerAcceptTransferOffer())}
-                          />
-                        </ToolTip>
-                        <ToolTip
-                          body={intl.formatMessage({
-                            id: 'cancel-offer',
-                          })}
-                          placement={ToolTipPlacement.Top}
-                        >
-                          <RemoveIcon
-                            width={22}
-                            height={22}
-                            onClick={() => dispatch(takerCancelTransferOffer())}
-                          />
-                        </ToolTip>
+                        {changeGroup?.isMaker && (
+                          <>
+                            <ToolTip
+                              body={intl.formatMessage({
+                                id: 'download-offer',
+                              })}
+                              placement={ToolTipPlacement.Top}
+                            >
+                              <DownloadOfferIcon
+                                height={25}
+                                width={25}
+                                onClick={makerDownloadTransferOffer}
+                              />
+                            </ToolTip>
+                            <ToolTip
+                              body={intl.formatMessage({
+                                id: 'cancel-offer',
+                              })}
+                              placement={ToolTipPlacement.Top}
+                            >
+                              <RemoveIcon
+                                width={22}
+                                height={22}
+                                onClick={() =>
+                                  dispatch(makerCancelTransferOffer())
+                                }
+                              />
+                            </ToolTip>
+                          </>
+                        )}
+                        {changeGroup?.isTaker && (
+                          <>
+                            <ToolTip
+                              body={intl.formatMessage({
+                                id: 'accept-offer',
+                              })}
+                              placement={ToolTipPlacement.Top}
+                            >
+                              <AcceptOfferIcon
+                                width={27}
+                                height={27}
+                                onClick={() =>
+                                  dispatch(takerAcceptTransferOffer())
+                                }
+                              />
+                            </ToolTip>
+                            <ToolTip
+                              body={intl.formatMessage({
+                                id: 'cancel-offer',
+                              })}
+                              placement={ToolTipPlacement.Top}
+                            >
+                              <RemoveIcon
+                                width={22}
+                                height={22}
+                                onClick={() =>
+                                  dispatch(takerCancelTransferOffer())
+                                }
+                              />
+                            </ToolTip>
+                          </>
+                        )}
                       </StyledDeleteGroupIcon>
                     )}
                     {retryStagingData && (
@@ -445,27 +459,29 @@ const StagingDataGroups = withTheme(
                         }
                       />
                     )}
-                    {changeGroup.action === 'UPDATE' && (
-                      <ChangeCard
-                        data={changeGroup.diff.original}
-                        headings={getDiff(
-                          changeGroup.diff.original,
-                          changeGroup.diff.change[0],
-                        )}
-                        onClick={() =>
-                          setDetailedViewData({
-                            record: changeGroup.diff.original,
-                            changes: changeGroup.diff.change,
-                            title: getTranslatedCardTitle(changeGroup),
-                            action: changeGroup.action,
-                          })
-                        }
-                        title={getTranslatedCardTitle(changeGroup)}
-                        deletedIsVsible
-                        displayInRed
-                      />
-                    )}
                     {changeGroup.action === 'UPDATE' &&
+                      !changeGroup.isTransfer && (
+                        <ChangeCard
+                          data={changeGroup.diff.original}
+                          headings={getDiff(
+                            changeGroup.diff.original,
+                            changeGroup.diff.change[0],
+                          )}
+                          onClick={() =>
+                            setDetailedViewData({
+                              record: changeGroup.diff.original,
+                              changes: changeGroup.diff.change,
+                              title: getTranslatedCardTitle(changeGroup),
+                              action: changeGroup.action,
+                            })
+                          }
+                          title={getTranslatedCardTitle(changeGroup)}
+                          deletedIsVsible
+                          displayInRed
+                        />
+                      )}
+                    {changeGroup.action === 'UPDATE' &&
+                      !changeGroup.isTransfer &&
                       changeGroup.diff.change.map((change, index) => (
                         <React.Fragment key={index}>
                           <ChangeCard
@@ -487,6 +503,39 @@ const StagingDataGroups = withTheme(
                           />
                         </React.Fragment>
                       ))}
+                    {changeGroup.action === 'UPDATE' && changeGroup.isTransfer && (
+                      <ChangeCard
+                        data={changeGroup.diff.original}
+                        headings={Object.keys(changeGroup.diff.original)}
+                        onClick={() =>
+                          setDetailedViewData({
+                            record: changeGroup.diff.original,
+                            changes: changeGroup.diff.change,
+                            title: getTranslatedCardTitle(changeGroup),
+                            action: changeGroup.action,
+                          })
+                        }
+                        title={getTranslatedCardTitle(changeGroup)}
+                        deletedIsVsible
+                        displayInRed
+                      />
+                    )}
+                    {changeGroup.action === 'UPDATE' && changeGroup.isTransfer && (
+                      <ChangeCard
+                        data={changeGroup.diff.change[0]}
+                        headings={Object.keys(changeGroup.diff.change[0])}
+                        title={getTranslatedCardTitle(changeGroup)}
+                        onClick={() =>
+                          setDetailedViewData({
+                            record: changeGroup.diff.original,
+                            changes: changeGroup.diff.change,
+                            title: getTranslatedCardTitle(changeGroup),
+                            action: changeGroup.action,
+                          })
+                        }
+                        addedIsVisible
+                      />
+                    )}
                   </StyledChangeGroup>
                 )}
                 {!getIsChangeGroupValid(changeGroup) && (

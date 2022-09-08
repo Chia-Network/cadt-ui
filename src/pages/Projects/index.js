@@ -14,6 +14,10 @@ import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
+import {
+  addIsMakerPropToChangeGroups,
+  convertProcessedOfferToStagingChangeGroups,
+} from '../../utils/transferOfferUtils';
 
 import {
   APIDataTable,
@@ -337,21 +341,35 @@ const Projects = () => {
     );
   }, [projects, stagingData]);
 
-  useEffect(() => {
-    takerGetUploadedOffer();
-  }, [tabValue, isImportOfferModalVisible]);
-
-  // TODO need to implement passing the processedTransferOffer to the offers tab
-  console.log('processedTransferOffer', processedTransferOffer);
-
   const pendingProjects = useMemo(
     () =>
       stagingData?.projects?.pending?.filter(item => !item.isTransfer) ?? [],
     [stagingData],
   );
 
-  const pendingOffers = useMemo(
-    () => stagingData?.projects?.pending?.filter(item => item.isTransfer) ?? [],
+  const pendingMakerOfferChangeGroups = useMemo(() => {
+    const makerChangeGroupsWithoutIsMakerProp =
+      stagingData?.projects?.pending?.filter(item => item.isTransfer) ?? [];
+    const makerChangeGroupsWithIsMakerProp = addIsMakerPropToChangeGroups(
+      makerChangeGroupsWithoutIsMakerProp,
+    );
+    return makerChangeGroupsWithIsMakerProp;
+  }, [stagingData]);
+
+  useEffect(() => {
+    dispatch(takerGetUploadedOffer());
+  }, [isImportOfferModalVisible]);
+
+  const pendingTakerOfferChangeGroups = useMemo(
+    () =>
+      processedTransferOffer !== null
+        ? convertProcessedOfferToStagingChangeGroups(processedTransferOffer)
+        : [],
+    [processedTransferOffer],
+  );
+
+  const pendingTransferOffers = useMemo(
+    () => [...pendingMakerOfferChangeGroups, ...pendingTakerOfferChangeGroups],
     [stagingData],
   );
 
@@ -459,7 +477,7 @@ const Projects = () => {
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'offers' })} (${
-                  pendingOffers.length
+                  pendingTransferOffers.length
                 })`}
               />
             )}
@@ -581,17 +599,17 @@ const Projects = () => {
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={4}>
-                {pendingOffers.length === 0 && (
+                {pendingTransferOffers.length === 0 && (
                   <NoDataMessageContainer>
                     <H3>
                       <FormattedMessage id="no-pending-offers" />
                     </H3>
                   </NoDataMessageContainer>
                 )}
-                {pendingOffers.length > 0 && (
+                {pendingTransferOffers.length > 0 && (
                   <StagingDataGroups
                     headings={headings}
-                    data={pendingOffers}
+                    data={pendingTransferOffers}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
