@@ -368,6 +368,11 @@ const Projects = () => {
     [processedTransferOffer],
   );
 
+  const isImportTransferOfferButtonDisabled = useMemo(
+    () => pendingTakerOfferChangeGroups.length > 0,
+    [pendingTakerOfferChangeGroups],
+  );
+
   const pendingTransferOffers = useMemo(
     () => [...pendingMakerOfferChangeGroups, ...pendingTakerOfferChangeGroups],
     [stagingData],
@@ -408,6 +413,7 @@ const Projects = () => {
                 label={intl.formatMessage({ id: 'import-offer' })}
                 size="large"
                 onClick={() => setIsImportModalVisible(true)}
+                disabled={isImportTransferOfferButtonDisabled}
               />
             )}
 
