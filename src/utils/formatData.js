@@ -69,7 +69,7 @@ export const cleanObjectFromEmptyFieldsOrArrays = dataToSend => {
     }
 
     // join project tags array
-    if (el === 'projectTags') {
+    if (el === 'projectTags' || el === 'unitTags') {
       dataToSend[el] = dataToSend[el]?.join(',');
     }
 
