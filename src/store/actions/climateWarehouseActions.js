@@ -62,6 +62,7 @@ export const actions = keyMirror(
   'GET_FILE_LIST',
   'GET_TOTAL_NR_OF_STAGED_ENTRIES',
   'GET_TRANSFER_OFFER',
+  'SET_HAS_TAKER_IMPORTED_OFFER',
 );
 
 const getClimateWarehouseTable = (
@@ -1657,6 +1658,10 @@ export const takerImportOffer = file => {
             'transfer-offer-import-successful',
           ),
         );
+        dispatch({
+          type: actions.SET_HAS_TAKER_IMPORTED_OFFER,
+          payload: true,
+        });
       } else {
         const errorResponse = await response.json();
         dispatch(
