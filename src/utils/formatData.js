@@ -68,6 +68,11 @@ export const cleanObjectFromEmptyFieldsOrArrays = dataToSend => {
       delete dataToSend[el];
     }
 
+    // join project tags array
+    if (el === 'projectTags') {
+      dataToSend[el] = dataToSend[el]?.join(',');
+    }
+
     // clean empty strings within arrays
     // clean tempId used for Ui key iteration purpose
     if (Array.isArray(dataToSend[el])) {
