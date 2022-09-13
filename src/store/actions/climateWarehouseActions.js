@@ -1698,17 +1698,6 @@ export const takerGetUploadedOffer = () => {
           type: actions.GET_TRANSFER_OFFER,
           payload: results,
         });
-      } else {
-        const errorResponse = await response.json();
-        dispatch(
-          setNotificationMessage(
-            NotificationMessageTypeEnum.error,
-            formatApiErrorResponse(
-              errorResponse,
-              'download-uploaded-offer-failed',
-            ),
-          ),
-        );
       }
     } catch {
       dispatch(setConnectionCheck(false));
