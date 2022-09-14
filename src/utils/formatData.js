@@ -51,6 +51,14 @@ export const formatAPIData = unformattedData => {
     else if (!['orgUid', 'issuanceId'].includes(key)) {
       result[key] = unformattedData[key];
     }
+
+    // create array for tags
+    if (
+      (key === 'projectTags' || key === 'unitTags') &&
+      !_.isArray(result[key])
+    ) {
+      result[key] = unformattedData[key]?.split(',');
+    }
   });
 
   return result;
@@ -69,7 +77,7 @@ export const cleanObjectFromEmptyFieldsOrArrays = dataToSend => {
     }
 
     // join project tags array
-    if (el === 'projectTags') {
+    if (el === 'projectTags' || el === 'unitTags') {
       dataToSend[el] = dataToSend[el]?.join(',');
     }
 
