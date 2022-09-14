@@ -154,7 +154,6 @@ const Projects = () => {
     totalProjectsPages,
     totalNumberOfEntries,
     processedTransferOffer,
-    hasTakerImportedOffer,
   } = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
@@ -358,10 +357,8 @@ const Projects = () => {
   }, [stagingData]);
 
   useEffect(() => {
-    if (hasTakerImportedOffer) {
-      dispatch(takerGetUploadedOffer());
-    }
-  }, [hasTakerImportedOffer, tabValue]);
+    dispatch(takerGetUploadedOffer());
+  }, [tabValue]);
 
   const pendingTakerOfferChangeGroups = useMemo(
     () =>
@@ -372,7 +369,7 @@ const Projects = () => {
   );
 
   const isImportTransferOfferButtonDisabled = useMemo(
-    () => pendingTakerOfferChangeGroups.length > 0 || hasTakerImportedOffer,
+    () => pendingTakerOfferChangeGroups.length > 0,
     [pendingTakerOfferChangeGroups],
   );
 
