@@ -470,7 +470,7 @@
   "project-could-not-be-transferred": "The Project could not be transferred.",
   "project-could-not-be-edited": "The Project could not be edited.",
   "transfer-project-issuances-not-editable": "The issuances cannot be edited while transferring a project.",
-  "download-offer": "Download Offer",
+  "download-offer": "Download Transfer Offer",
   "transfer-cancelled-error": "The transfer could not be cancelled.",
   "transfer-cancelled": "The transfer offer has been cancelled.",
   "transfer-accepted-error": "The transfer offer could not be accepted.",
@@ -481,7 +481,7 @@
   "import": "Import",
   "transfer-offer-import-successful": "The transfer offer was imported successfully",
   "transfer-offer-import-failed": "The transfer offer could not be imported.",
-  "offers": "Offers",
+  "offers": "Transfers",
   "no-pending-offers": "No pending transfer offers at this time",
   "download-uploaded-offer-failed": "Could not download your uploaded transfer offer."
 }
