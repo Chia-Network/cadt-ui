@@ -339,7 +339,9 @@ const APIDataTable = withTheme(
 
                     {!actionsAreDisplayed &&
                       actions === 'Projects' &&
-                      myOrgUid !== getFullRecord(record)?.orgUid && (
+                      myOrgUid !== getFullRecord(record)?.orgUid &&
+                      getFullRecord(record)?.projectStatus !==
+                        'Transitioned' && (
                         <Td
                           stick
                           style={{ cursor: 'pointer' }}
