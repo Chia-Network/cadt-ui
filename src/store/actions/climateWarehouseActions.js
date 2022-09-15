@@ -62,7 +62,6 @@ export const actions = keyMirror(
   'GET_FILE_LIST',
   'GET_TOTAL_NR_OF_STAGED_ENTRIES',
   'GET_TRANSFER_OFFER',
-  'SET_HAS_TAKER_IMPORTED_OFFER',
 );
 
 const getClimateWarehouseTable = (
@@ -1627,7 +1626,7 @@ export const makerDownloadTransferOffer = async () => {
       const link = document.createElement('a');
       const url = window.URL.createObjectURL(new Blob([filename]));
       link.href = url;
-      link.download = `offer.txt`;
+      link.download = `transfer-offer.txt`;
       document.body.appendChild(link); // Required for this to work in FireFox
       link.click();
     });
@@ -1658,10 +1657,6 @@ export const takerImportOffer = file => {
             'transfer-offer-import-successful',
           ),
         );
-        dispatch({
-          type: actions.SET_HAS_TAKER_IMPORTED_OFFER,
-          payload: true,
-        });
       } else {
         const errorResponse = await response.json();
         dispatch(
@@ -1706,12 +1701,6 @@ export const takerGetUploadedOffer = () => {
       }
     } catch {
       dispatch(setConnectionCheck(false));
-      dispatch(
-        setNotificationMessage(
-          NotificationMessageTypeEnum.error,
-          'download-uploaded-offer-failed',
-        ),
-      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
