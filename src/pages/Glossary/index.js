@@ -105,10 +105,29 @@ const Glossary = () => {
       _.debounce(event => {
         if (event.target.value !== '') {
           setFilteredFileList(
-            glossary.filter(file =>
-              file.fileName
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase()),
+            Object.fromEntries(
+              Object.entries(glossary).filter(value => {
+                if (
+                  _.includes(
+                    value[0].toLowerCase(),
+                    event.target.value.toLowerCase(),
+                  )
+                ) {
+                  return _.includes(
+                    value[0].toLowerCase(),
+                    event.target.value.toLowerCase(),
+                  );
+                } else {
+                  const descriptionSearch = value[1].filter(description =>
+                    _.includes(
+                      description.toLowerCase(),
+                      event.target.value.toLowerCase(),
+                    ),
+                  );
+
+                  return !_.isEmpty(descriptionSearch);
+                }
+              }),
             ),
           );
         } else {
@@ -124,20 +143,24 @@ const Glossary = () => {
     };
   }, []);
 
-  const getArraySortedAlphabetically = useCallback((arr, order) => {
-    const sortAToZ = (a, b) => a.fileName.localeCompare(b.fileName);
-    const sortZToA = (a, b) => b.fileName.localeCompare(a.fileName);
+  const getArraySortedAlphabetically = useCallback(order => {
+    const sortAToZ = object =>
+      Object.fromEntries(
+        Object.entries(object).sort(([k1], [k2]) => (k1 < k2 ? -1 : 1)),
+      );
+    const sortZToA = object =>
+      Object.fromEntries(
+        Object.entries(object).sort(([k1], [k2]) => (k1 > k2 ? -1 : 1)),
+      );
     const sortFunction = order === SortEnum.aToZ ? sortAToZ : sortZToA;
-    return [...arr].sort(sortFunction);
+    return sortFunction;
   }, []);
 
   const changeSortOrder = useCallback(() => {
     setSortOrder(prevOrder => {
       const newOrder =
         prevOrder === SortEnum.aToZ ? SortEnum.zToA : SortEnum.aToZ;
-      setFilteredFileList(
-        getArraySortedAlphabetically(filteredFileList, newOrder),
-      );
+      setFilteredFileList(getArraySortedAlphabetically(newOrder));
       return newOrder;
     });
   }, [setSortOrder, filteredFileList]);
@@ -198,7 +221,7 @@ const Glossary = () => {
               </StyledTr>
             </thead>
             <tbody>
-              {Object.entries(glossary).map(file => (
+              {Object.entries(filteredFileList).map(file => (
                 <StyledTr key={file.id}>
                   <StyledTd>
                     <Body>{file[0]}</Body>
