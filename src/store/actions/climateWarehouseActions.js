@@ -1706,12 +1706,6 @@ export const takerGetUploadedOffer = () => {
       }
     } catch {
       dispatch(setConnectionCheck(false));
-      dispatch(
-        setNotificationMessage(
-          NotificationMessageTypeEnum.error,
-          'download-uploaded-offer-failed',
-        ),
-      );
     } finally {
       dispatch(deactivateProgressIndicator);
     }
