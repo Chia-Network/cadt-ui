@@ -18,6 +18,12 @@ const BodyText = styled('div')`
   overflow: hidden;
   box-sizing: border-box;
   padding: 0;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const InnerContainer = styled('div')`

@@ -36,12 +36,16 @@ const initialState = {
   fileList: null,
   totalNumberOfEntries: null,
   processedTransferOffer: null,
+  hasTakerImportedOffer: false,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case climateWarehouseActions.GET_ORGANIZATIONS:
       return u({ organizations: action.payload }, state);
+
+    case climateWarehouseActions.SET_HAS_TAKER_IMPORTED_OFFER:
+      return u({ hasTakerImportedOffer: action.payload }, state);
 
     case climateWarehouseActions.GET_TRANSFER_OFFER:
       return u({ processedTransferOffer: action.payload }, state);

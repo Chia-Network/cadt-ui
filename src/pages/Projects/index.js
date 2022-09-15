@@ -358,7 +358,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(takerGetUploadedOffer());
-  }, [isImportOfferModalVisible]);
+  }, [tabValue]);
 
   const pendingTakerOfferChangeGroups = useMemo(
     () =>
@@ -366,6 +366,11 @@ const Projects = () => {
         ? convertProcessedOfferToStagingChangeGroups(processedTransferOffer)
         : [],
     [processedTransferOffer],
+  );
+
+  const isImportTransferOfferButtonDisabled = useMemo(
+    () => pendingTakerOfferChangeGroups.length > 0,
+    [pendingTakerOfferChangeGroups],
   );
 
   const pendingTransferOffers = useMemo(
@@ -408,6 +413,7 @@ const Projects = () => {
                 label={intl.formatMessage({ id: 'import-offer' })}
                 size="large"
                 onClick={() => setIsImportModalVisible(true)}
+                disabled={isImportTransferOfferButtonDisabled}
               />
             )}
 
