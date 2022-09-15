@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
@@ -10,12 +11,19 @@ import {
   ProjectDetailedViewModal,
   UnitsDetailViewModal,
 } from '.';
-import { BasicMenu, Modal, modalTypeEnum } from '..';
 import { useWindowSize } from '../hooks/useWindowSize';
-import { UnitEditModal, ProjectEditModal } from '..';
+import {
+  BasicMenu,
+  Modal,
+  modalTypeEnum,
+  ProjectTransferModal,
+  UnitEditModal,
+  ProjectEditModal,
+} from '../../components';
 import {
   deleteProject,
   deleteUnit,
+  getStagingData,
 } from '../../store/actions/climateWarehouseActions';
 import { UnitSplitFormModal } from '../forms/UnitSplitFormModal';
 
@@ -139,11 +147,13 @@ const APIDataTable = withTheme(
     const [unitOrProjectFullRecord, setUnitOrProjectFullRecord] =
       useState(null);
     const [editRecord, setEditRecord] = useState(null);
+    const [projectToTransfer, setProjectToTransfer] = useState(null);
+    const [isProjectTransferConfirmed, setIsProjectTransferConfirmed] =
+      useState(false);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
     const { theme } = useSelector(state => state.app);
-    const { organizations, projects, units } = useSelector(
-      state => state.climateWarehouse,
-    );
+    const { organizations, projects, units, stagingData, myOrgUid } =
+      useSelector(state => state.climateWarehouse);
     const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
     const ref = React.useRef(null);
     const [height, setHeight] = React.useState(0);
@@ -157,24 +167,40 @@ const APIDataTable = withTheme(
       );
     }, [ref.current, windowSize.height]);
 
-    const getFullRecord = partialRecord => {
-      let fullRecord = null;
+    const getFullRecord = useCallback(
+      partialRecord => {
+        let fullRecord = null;
 
-      if (actions === 'Projects') {
-        fullRecord = projects.filter(
-          project =>
-            project.warehouseProjectId === partialRecord.warehouseProjectId,
-        )[0];
+        if (actions === 'Projects') {
+          fullRecord = projects.filter(
+            project =>
+              project.warehouseProjectId === partialRecord.warehouseProjectId,
+          )[0];
+        }
+
+        if (actions === 'Units') {
+          fullRecord = units.filter(
+            unit => unit.warehouseUnitId === partialRecord.warehouseUnitId,
+          )[0];
+        }
+
+        return fullRecord;
+      },
+      [units, projects],
+    );
+
+    useEffect(() => {
+      if (!actionsAreDisplayed && actions === 'Projects') {
+        dispatch(getStagingData({ useMockedResponse: false }));
       }
+    }, [actionsAreDisplayed, actions]);
 
-      if (actions === 'Units') {
-        fullRecord = units.filter(
-          unit => unit.warehouseUnitId === partialRecord.warehouseUnitId,
-        )[0];
-      }
-
-      setUnitOrProjectFullRecord(fullRecord);
-    };
+    const isTransferPossible = useMemo(
+      () =>
+        _.isEmpty(stagingData?.projects?.staging) &&
+        _.isEmpty(stagingData?.projects?.pending),
+      [stagingData],
+    );
 
     return (
       <>
@@ -197,15 +223,14 @@ const APIDataTable = withTheme(
                       </TableCellHeaderText>
                     </Th>
                   ))}
-                  {actionsAreDisplayed && actions && (
-                    <Th
-                      stick
-                      start={0}
-                      end={1}
-                      selectedTheme={theme}
-                      key={'action'}
-                    ></Th>
-                  )}
+
+                  <Th
+                    stick
+                    start={0}
+                    end={1}
+                    selectedTheme={theme}
+                    key={'action'}
+                  ></Th>
                 </tr>
               </THead>
               <tbody style={{ position: 'relative' }}>
@@ -213,7 +238,9 @@ const APIDataTable = withTheme(
                   <Tr index={index} selectedTheme={theme} key={index}>
                     {Object.keys(record).map((key, index) => (
                       <Td
-                        onClick={() => getFullRecord(record)}
+                        onClick={() =>
+                          setUnitOrProjectFullRecord(getFullRecord(record))
+                        }
                         selectedTheme={theme}
                         columnId={key}
                         key={index}
@@ -309,6 +336,29 @@ const APIDataTable = withTheme(
                         />
                       </Td>
                     )}
+
+                    {!actionsAreDisplayed &&
+                      actions === 'Projects' &&
+                      myOrgUid !== getFullRecord(record)?.orgUid && (
+                        <Td
+                          stick
+                          style={{ cursor: 'pointer' }}
+                          selectedTheme={theme}
+                        >
+                          <BasicMenu
+                            options={[
+                              {
+                                label: intl.formatMessage({
+                                  id: 'transfer-project',
+                                }),
+                                action: () => {
+                                  setProjectToTransfer(record);
+                                },
+                              },
+                            ]}
+                          />
+                        </Td>
+                      )}
                   </Tr>
                 ))}
               </tbody>
@@ -377,6 +427,39 @@ const APIDataTable = withTheme(
               }
               setConfirmDeletionModal(null);
             }}
+          />
+        )}
+        {projectToTransfer && (
+          <Modal
+            title={intl.formatMessage({
+              id: isTransferPossible
+                ? 'confirm-transfer'
+                : 'transfer-not-possible',
+            })}
+            body={intl.formatMessage({
+              id: isTransferPossible
+                ? 'confirm-transfer-details'
+                : 'clear-staging-pending-table',
+            })}
+            modalType={modalTypeEnum.confirmation}
+            onClose={() => setProjectToTransfer(null)}
+            onOk={() => {
+              if (isTransferPossible) {
+                setIsProjectTransferConfirmed(true);
+              } else {
+                setProjectToTransfer(null);
+              }
+            }}
+          />
+        )}
+        {isProjectTransferConfirmed && projectToTransfer && (
+          <ProjectTransferModal
+            onClose={() => {
+              setIsProjectTransferConfirmed(false);
+              setProjectToTransfer(null);
+            }}
+            record={projectToTransfer}
+            modalSizeAndPosition={modalSizeAndPosition}
           />
         )}
       </>
