@@ -25,7 +25,6 @@ import {
   unsubscribeFromOrg,
 } from '../../store/actions/climateWarehouseActions';
 import { PrimaryButton } from '../form/PrimaryButton';
-import { validateIp, validatePort } from '../../utils/urlUtils';
 
 const StyledImportOrgContainer = styled('div')`
   display: flex;
@@ -33,21 +32,6 @@ const StyledImportOrgContainer = styled('div')`
   width: 100%;
   gap: 2px;
   padding: 5px 0 35px 0;
-`;
-
-const StyledIpPortContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 11.5px;
-
-  & div:first-child {
-    width: 9.8rem;
-  }
-
-  & div:nth-child(2) {
-    width: 5rem;
-  }
 `;
 
 const StyledSubscriptionsListContainer = styled('div')`
@@ -79,8 +63,6 @@ const StyledToggleContainer = styled('div')`
 const SubscriptionModal = ({ onClose }) => {
   const dispatch = useDispatch();
   const [orgUid, setOrgUid] = useState('');
-  const [ip, setIp] = useState('');
-  const [port, setPort] = useState('');
   const intl = useIntl();
   const { organizations } = useSelector(store => store.climateWarehouse);
   const [isValidationOn, setIsValidation] = useState(false);
@@ -90,8 +72,6 @@ const SubscriptionModal = ({ onClose }) => {
   }, []);
 
   const isOrgUidValid = Boolean(orgUid.length > 4);
-  const isIpValid = useMemo(() => validateIp(ip), [ip]);
-  const isPortValid = useMemo(() => validatePort(port), [port]);
 
   const isUserAlreadySubscribedToOrgUid = useMemo(() => {
     for (const orgUidKey in organizations) {
@@ -107,16 +87,9 @@ const SubscriptionModal = ({ onClose }) => {
       setIsValidation(true);
     }
 
-    if (
-      isOrgUidValid &&
-      isIpValid &&
-      isPortValid &&
-      !isUserAlreadySubscribedToOrgUid
-    ) {
-      dispatch(subscribeImportOrg({ orgUid, ip, port }));
+    if (isOrgUidValid && !isUserAlreadySubscribedToOrgUid) {
+      dispatch(subscribeImportOrg({ orgUid }));
       setOrgUid('');
-      setIp('');
-      setPort('');
       setIsValidation(false);
     } else {
       setTimeout(() => setIsValidation(false), 3000);
@@ -125,15 +98,9 @@ const SubscriptionModal = ({ onClose }) => {
     isValidationOn,
     setIsValidation,
     isOrgUidValid,
-    isIpValid,
-    isPortValid,
     isUserAlreadySubscribedToOrgUid,
     orgUid,
     setOrgUid,
-    ip,
-    setIp,
-    port,
-    setPort,
   ]);
 
   return (
@@ -171,57 +138,17 @@ const SubscriptionModal = ({ onClose }) => {
               </InputContainer>
               <StyledLabelContainer />
 
-              <StyledIpPortContainer>
-                <StandardInput
-                  size={InputSizeEnum.large}
-                  variant={
-                    isValidationOn && !isIpValid
-                      ? InputVariantEnum.error
-                      : InputVariantEnum.default
-                  }
-                  value={ip}
-                  onChange={value => setIp(value)}
-                  placeholderText={intl.formatMessage({
-                    id: 'server-address',
-                  })}
-                />
-
-                <StandardInput
-                  size={InputSizeEnum.large}
-                  variant={
-                    isValidationOn && !isPortValid
-                      ? InputVariantEnum.error
-                      : InputVariantEnum.default
-                  }
-                  value={port}
-                  onChange={value => setPort(value)}
-                  placeholderText={intl.formatMessage({
-                    id: 'port',
-                  })}
-                />
-
-                <PrimaryButton
-                  label={intl.formatMessage({ id: 'add' })}
-                  size="large"
-                  onClick={submitCustomOrganization}
-                />
-              </StyledIpPortContainer>
+              <PrimaryButton
+                label={intl.formatMessage({ id: 'add' })}
+                size="large"
+                onClick={submitCustomOrganization}
+              />
 
               {isValidationOn && !isUserAlreadySubscribedToOrgUid && (
                 <Body size="Small" color="red">
                   {!isOrgUidValid && (
                     <div>
                       <FormattedMessage id="invalid-uid" />
-                    </div>
-                  )}
-                  {!isIpValid && (
-                    <div>
-                      <FormattedMessage id="invalid-ip" />
-                    </div>
-                  )}
-                  {!isPortValid && (
-                    <div>
-                      <FormattedMessage id="invalid-port" />
                     </div>
                   )}
                 </Body>

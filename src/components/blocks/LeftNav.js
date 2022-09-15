@@ -120,6 +120,7 @@ const LeftNav = withTheme(({ children, theme }) => {
   const isConflictsPage = location.pathname.includes('/conflicts');
   const isGovernancePage = location.pathname.includes('/governance');
   const isFilesPage = location.pathname.includes('/files');
+  const isGlossaryPage = location.pathname.includes('/glossary');
 
   return (
     <Container>
@@ -182,6 +183,11 @@ const LeftNav = withTheme(({ children, theme }) => {
                 <div></div>
                 <MenuItem selected={isFilesPage} to={`/files`}>
                   <FormattedMessage id="my-files" />
+                </MenuItem>
+
+                <div></div>
+                <MenuItem selected={isGlossaryPage} to={`/glossary`}>
+                  <FormattedMessage id="glossary" />
                 </MenuItem>
 
                 <MenuItem selected={isOrganizationPage} to="/organization">

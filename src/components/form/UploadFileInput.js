@@ -22,6 +22,8 @@ const StyledInput = styled('input')`
 
 const StyledNameContainer = styled('div')`
   display: flex;
+  word-break: break-word;
+  text-align: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
