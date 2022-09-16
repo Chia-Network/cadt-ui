@@ -788,16 +788,17 @@ const UnitDetailsForm = () => {
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
-              <StandardInput
-                size={InputSizeEnum.large}
-                placeholderText={intl.formatMessage({
-                  id: 'unit-tags',
-                })}
-                state={InputStateEnum.default}
-                value={values.unitTags}
+              <SelectCreatable
+                isMulti
+                options={pickLists?.unitTags}
+                variant={
+                  errors?.unitTags && touched?.unitTags
+                    ? SimpleSelectVariantEnum.error
+                    : undefined
+                }
+                selected={[...values?.unitTags]}
                 onChange={value => setFieldValue('unitTags', value)}
                 onBlur={handleBlur}
-                name="unitTags"
               />
               <FormikError name="unitTags" />
             </StyledFieldContainer>

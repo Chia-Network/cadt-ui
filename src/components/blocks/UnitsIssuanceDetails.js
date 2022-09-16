@@ -16,12 +16,12 @@ const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
         <StyledDetailedViewTab>
           <StyledItem>
             <Body size="Bold" width="100%">
-              <FormattedMessage id="start-date" />
+              <FormattedMessage id="verification-period-start" />
             </Body>
             {data && detailsViewData('data', data, 'startDate', changeColor)}
             {stagingData &&
               detailsViewData(
-                "issuanceStagingData",
+                'issuanceStagingData',
                 stagingData,
                 'startDate',
                 changeColor,
@@ -29,12 +29,12 @@ const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
-              <FormattedMessage id="end-date" />
+              <FormattedMessage id="verification-period-end" />
             </Body>
             {data && detailsViewData('data', data, 'endDate', changeColor)}
             {stagingData &&
               detailsViewData(
-                "issuanceStagingData",
+                'issuanceStagingData',
                 stagingData,
                 'endDate',
                 changeColor,
@@ -48,7 +48,7 @@ const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
               detailsViewData('data', data, 'verificationBody', changeColor)}
             {stagingData &&
               detailsViewData(
-                "issuanceStagingData",
+                'issuanceStagingData',
                 stagingData,
                 'verificationBody',
                 changeColor,
@@ -67,7 +67,7 @@ const UnitsIssuanceDetails = ({ data, stagingData, changeColor }) => {
               )}
             {stagingData &&
               detailsViewData(
-                "issuanceStagingData",
+                'issuanceStagingData',
                 stagingData,
                 'verificationApproach',
                 changeColor,
