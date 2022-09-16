@@ -29,6 +29,9 @@ jobs:
         uses: actions/setup-node@v2.4.1
         with:
           node-version: '16.x'
+          
+      - name: install dmg-license 
+        run: npm i dmg-license
 
       - name: npm install
         run: |
