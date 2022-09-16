@@ -1,3 +1,62 @@
+## [1.0.12](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.11...1.0.12) (2022-09-16)
+
+
+### Bug Fixes
+
+* added glossary terms/descriptions ([176082a](https://github.com/Chia-Network/climate-warehouse-ui/commit/176082a7fab98a0033d0190e8cb5bd7b61b02c1b))
+* added necessary components ([cbaf40a](https://github.com/Chia-Network/climate-warehouse-ui/commit/cbaf40ae6eaf5d572a57b79482539b32ba872e64))
+* clean hasTransfer boolean out ([a3edc1e](https://github.com/Chia-Network/climate-warehouse-ui/commit/a3edc1ed14f6078bd4c9fe162cfb1063f4d98112))
+* Combine Unit Tags Array ([27c07ff](https://github.com/Chia-Network/climate-warehouse-ui/commit/27c07ff02cd3a6d9d0b09b65dc44a03e704b6973))
+* create array from tags ([66d8f54](https://github.com/Chia-Network/climate-warehouse-ui/commit/66d8f54926e2423c4933ec7052f5c00c23edfacd))
+* display no pending offers ([8952d3c](https://github.com/Chia-Network/climate-warehouse-ui/commit/8952d3ce72a96b3691b2e7de8fd98f9fd76704d2))
+* edit project crashes app ([546e834](https://github.com/Chia-Network/climate-warehouse-ui/commit/546e83447e866af17575fbfef823ef86abe9ca2c))
+* join project tags array ([03525ff](https://github.com/Chia-Network/climate-warehouse-ui/commit/03525ff8d1a7856481274a3f0cd873ab107bb64e))
+* make org page scrollable ([567e2ec](https://github.com/Chia-Network/climate-warehouse-ui/commit/567e2ecec3a1663c2886dab5ad73e13cdbf1fc1b))
+* not being able to see imported offers # ([c0e1eeb](https://github.com/Chia-Network/climate-warehouse-ui/commit/c0e1eeb1d93b50a9d75237c44e123cffc3b2ef08))
+* removed extra unused components ([4fd417b](https://github.com/Chia-Network/climate-warehouse-ui/commit/4fd417b710302ace8a5a6807f9604d0ae17ece62))
+* removed unused components ([a1086d8](https://github.com/Chia-Network/climate-warehouse-ui/commit/a1086d893dee72ef305d306aabcc13ade5f3aa71))
+* replace transfer offer translations ([e08d32e](https://github.com/Chia-Network/climate-warehouse-ui/commit/e08d32e8936df1c62e9889df839a24d2c4d68c41))
+* send taker get offer error ([107ed7b](https://github.com/Chia-Network/climate-warehouse-ui/commit/107ed7b20fdde7fab2ba6eedb55266877fa46b47))
+* send taker get offer error ([ffaddc2](https://github.com/Chia-Network/climate-warehouse-ui/commit/ffaddc25b8de665fc0a945b5b1ea3f476d0d12d8))
+
+
+### Features
+
+* Add Dynamic Picklist to Verification Body ([6dab2e6](https://github.com/Chia-Network/climate-warehouse-ui/commit/6dab2e6950f5cff8ca4a48ebc27029db440ed261))
+* add file to location ([0215488](https://github.com/Chia-Network/climate-warehouse-ui/commit/02154888afe651733569ddcf1692979e4c3b67a0))
+* add file to location ([5b9fcdc](https://github.com/Chia-Network/climate-warehouse-ui/commit/5b9fcdcf2d8c8b6f8696f58a60e6a387eac1a05a))
+* add file to location ([fa13262](https://github.com/Chia-Network/climate-warehouse-ui/commit/fa13262207356cded4f502869528d60e74367561))
+* add glossary page ([edc8faa](https://github.com/Chia-Network/climate-warehouse-ui/commit/edc8faafdaecb3afa179b5aeeaeac9eb84437c34))
+* add glossary page ([dbd9003](https://github.com/Chia-Network/climate-warehouse-ui/commit/dbd9003ea60d611f9c8024f178939fbc45db42de))
+* add import offer ([c6ab38e](https://github.com/Chia-Network/climate-warehouse-ui/commit/c6ab38e3ed6b03623fde13ebd16eb769119dbe55))
+* add taker accept and cancel offer ([04c88ee](https://github.com/Chia-Network/climate-warehouse-ui/commit/04c88ee5ab6b752c211825831ecd34a4dd17b149))
+* added search/sort feature ([a31444e](https://github.com/Chia-Network/climate-warehouse-ui/commit/a31444e0444bf06a7f7a4abe3c42eef168de8c94))
+* cancel offer ([23af422](https://github.com/Chia-Network/climate-warehouse-ui/commit/23af422cb82945b7b90b50b7117880f8e3482e7f))
+* Change co-benefits to dynamic picklist ([46f2a37](https://github.com/Chia-Network/climate-warehouse-ui/commit/46f2a378827439a95d5f458be7dea3e920995e17))
+* disable import offer button if taker offer available ([8447ff7](https://github.com/Chia-Network/climate-warehouse-ui/commit/8447ff7ec396d9dfd1f513757bacc9a5e3ef7c20))
+* download offer ([3dbb5d6](https://github.com/Chia-Network/climate-warehouse-ui/commit/3dbb5d6c7ef245844511cfde330125590fa34949))
+* get and display uploaded transfer offer ([3c96bba](https://github.com/Chia-Network/climate-warehouse-ui/commit/3c96bba0b74c0127b6291ba11fed35f4f808a764))
+* get and display uploaded transfer offer ([93d20e5](https://github.com/Chia-Network/climate-warehouse-ui/commit/93d20e55a774a2d1fa296884b600bde526f70c67))
+* get and display uploaded transfer offer ([3ecf3ad](https://github.com/Chia-Network/climate-warehouse-ui/commit/3ecf3ad931f166998f56d604abe52f43f083e6c1))
+* hide transfer dots if project in Transitioned status ([982a01b](https://github.com/Chia-Network/climate-warehouse-ui/commit/982a01be46f439de11b06af31b1c45efb600e574))
+* manual/picklist entry for project/unit tags ([f06d11d](https://github.com/Chia-Network/climate-warehouse-ui/commit/f06d11d901158af0a6bbfd2e0cf2356fc3bd98b5))
+* move cancel and download offer to change card ([617fc96](https://github.com/Chia-Network/climate-warehouse-ui/commit/617fc9651a377b3815a941fffbcff49c3bc6223e))
+* move transfer offers to their own tab ([e7756ba](https://github.com/Chia-Network/climate-warehouse-ui/commit/e7756baa3411e5e296a7078d8fb66528b509a210))
+* move transfer offers to their own tab ([0fc7efd](https://github.com/Chia-Network/climate-warehouse-ui/commit/0fc7efd96c8be1d8528a0f5c6d6bce7b83851b80))
+* remove author field from the UI ([2989dc8](https://github.com/Chia-Network/climate-warehouse-ui/commit/2989dc866fbcff11f099e7743105e58f9dca4977))
+* remove author from the UI ([0beb66d](https://github.com/Chia-Network/climate-warehouse-ui/commit/0beb66dedbedf79248d55d77166202f210afc100))
+* remove ip and port from import org ([6cf7f18](https://github.com/Chia-Network/climate-warehouse-ui/commit/6cf7f180eeb1703331aa4e52a5f245f1301c22cb))
+* replace offer with transfer offer ([1c44246](https://github.com/Chia-Network/climate-warehouse-ui/commit/1c442465a11437c90da93f1da37f51550ab0e379))
+* transfer projects ([42a77c6](https://github.com/Chia-Network/climate-warehouse-ui/commit/42a77c626a1454d6f66d787be93e6fc045142307))
+* transfer projects ([463791f](https://github.com/Chia-Network/climate-warehouse-ui/commit/463791f0e1293c4f74d569ee070cf65cf272c07f))
+* transfer projects ([aea65f2](https://github.com/Chia-Network/climate-warehouse-ui/commit/aea65f2740d1ee2d57937a778915795164c4e10d))
+* transfer projects ([61d8438](https://github.com/Chia-Network/climate-warehouse-ui/commit/61d8438cac63bad5b46ca24595dc57f1fcbd632f))
+* transfer projects ([c449635](https://github.com/Chia-Network/climate-warehouse-ui/commit/c449635f542b859d2d99517fb847e1eedc927007))
+* transfer projects ([edeb1b2](https://github.com/Chia-Network/climate-warehouse-ui/commit/edeb1b2675864a6a7d2c7bae296b84ed263005e1))
+* transfer projects ([e678ce2](https://github.com/Chia-Network/climate-warehouse-ui/commit/e678ce2e71fc17dfe90acb206b7f4000da18b483))
+
+
+
 ## [1.0.11](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.10...1.0.11) (2022-08-18)
 
 
