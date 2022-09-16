@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 
 import { styled } from '@mui/material/styles';
@@ -17,6 +17,7 @@ import TableRow from '@mui/material/TableRow';
 import { Body } from '..';
 import { StyledItem } from '.';
 import { getUpdatedUrl } from '../../utils/urlUtils';
+import { getUnits } from '../../store/actions/climateWarehouseActions';
 
 const StyledTableRow = styled(TableRow)(() => ({
   '& td, & th': {
@@ -29,6 +30,7 @@ const Spacing = styled('div')({
 });
 
 const DetailedViewIssuanceUnitTable = ({ issuance }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { units } = useSelector(store => store.climateWarehouse);
   const intl = useIntl();
@@ -57,6 +59,10 @@ const DetailedViewIssuanceUnitTable = ({ issuance }) => {
     },
   ]);
 
+  useEffect(() => {
+    dispatch(getUnits({ useMockedResponse: false, useApiMock: false }));
+  }, []);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -70,7 +76,12 @@ const DetailedViewIssuanceUnitTable = ({ issuance }) => {
     () =>
       units
         ?.reduce((accumulator, currentUnit) => {
-          if (currentUnit.issuanceId === issuance.id) {
+          const isStagingCurrentlyDisplayed =
+            typeof issuance?.id?.original === 'string';
+          const issuanceId = isStagingCurrentlyDisplayed
+            ? issuance.id?.original
+            : issuance.id;
+          if (currentUnit.issuanceId === issuanceId) {
             return [...accumulator, currentUnit];
           }
           return accumulator;
