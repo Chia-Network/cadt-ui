@@ -291,6 +291,11 @@ const StagingDataGroups = withTheme(
       [deleteStagingData, setUuidToBeDeleted],
     );
 
+    const hasDataTransferOffers = useMemo(
+      () => data?.some(changeGroupItem => changeGroupItem?.isTransfer) ?? false,
+      [data],
+    );
+
     const getTranslatedCardTitle = useCallback(changeGroup => {
       const table = changeGroup.table.toLowerCase();
       const action = changeGroup.action.toLowerCase();
@@ -320,15 +325,19 @@ const StagingDataGroups = withTheme(
           }
         }
       }
+
+      if (hasDataTransferOffers) {
+        if (table === 'projects') {
+          translationId = 'transfer-project';
+        } else if (table === 'units') {
+          translationId = 'transfer-unit';
+        }
+      }
+
       return intl.formatMessage({
         id: translationId,
       });
     }, []);
-
-    const hasDataTransferOffers = useMemo(
-      () => data?.some(changeGroupItem => changeGroupItem?.isTransfer) ?? false,
-      [data],
-    );
 
     return (
       <StagingDataGroupsContainer ref={ref}>

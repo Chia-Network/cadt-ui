@@ -75,6 +75,9 @@ const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
               )}
           </StyledItem>
           {data && <DetailedViewIssuanceUnitTable issuance={data} />}
+          {stagingData && (
+            <DetailedViewIssuanceUnitTable issuance={stagingData} />
+          )}
         </StyledDetailedViewTab>
       </div>
     </StyledDetailedViewTabItem>
