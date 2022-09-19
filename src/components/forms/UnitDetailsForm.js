@@ -796,7 +796,7 @@ const UnitDetailsForm = () => {
                     ? SimpleSelectVariantEnum.error
                     : undefined
                 }
-                selected={[...values?.unitTags]}
+                selected={values?.unitTags ? [...values?.unitTags] : []}
                 onChange={value => setFieldValue('unitTags', value)}
                 onBlur={handleBlur}
               />
