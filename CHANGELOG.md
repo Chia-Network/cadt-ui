@@ -1,3 +1,18 @@
+## [1.0.13](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.12...1.0.13) (2022-09-19)
+
+
+### Bug Fixes
+
+* unit tag crash ([bdce3fe](https://github.com/Chia-Network/climate-warehouse-ui/commit/bdce3fe4ec7290ad8983cd130aa62a9b1c20ce93))
+
+
+### Features
+
+* add transfer title for staging groups and cards ([aac5dee](https://github.com/Chia-Network/climate-warehouse-ui/commit/aac5dee7018b6675d2dd3ed83e9a5db425a919ec))
+* show units in the issuance tab for transfers ([8526801](https://github.com/Chia-Network/climate-warehouse-ui/commit/8526801672d891f0863d293b7570a50475bf7130))
+
+
+
 ## [1.0.12](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.11...1.0.12) (2022-09-16)
 
 
