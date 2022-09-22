@@ -1,3 +1,12 @@
+## [1.0.14](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.13...1.0.14) (2022-09-22)
+
+
+### Features
+
+* add deeplinks to projects and units ([9f496c8](https://github.com/Chia-Network/climate-warehouse-ui/commit/9f496c845f5abb6ee51e23404c18f3a77015c0d3))
+
+
+
 ## [1.0.13](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.12...1.0.13) (2022-09-19)
 
 
