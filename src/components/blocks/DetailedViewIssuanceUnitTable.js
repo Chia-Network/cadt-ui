@@ -117,10 +117,17 @@ const DetailedViewIssuanceUnitTable = ({ issuance }) => {
                       key={unitItem.warehouseUnitId}
                       onClick={() =>
                         navigate(
-                          `/units?${getUpdatedUrl(location.search, {
-                            param: 'unitId',
-                            value: unitItem.warehouseUnitId,
-                          })}`,
+                          `/units?${getUpdatedUrl(
+                            location.search,
+                            {
+                              param: 'unitId',
+                              value: unitItem.warehouseUnitId,
+                            },
+                            {
+                              param: 'projectId',
+                              value: null,
+                            },
+                          )}`,
                           { replace: true },
                         )
                       }
