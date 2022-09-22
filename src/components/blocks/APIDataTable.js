@@ -3,14 +3,12 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import styled, { withTheme, css } from 'styled-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import { getUpdatedUrl } from '../../utils/urlUtils';
 import { TableCellHeaderText, TableCellText } from '../typography';
 import { convertPascalCaseToSentenceCase } from '../../utils/stringUtils';
-import {
-  APIPagination,
-  ProjectDetailedViewModal,
-  UnitsDetailViewModal,
-} from '.';
+import { APIPagination } from '.';
 import { useWindowSize } from '../hooks/useWindowSize';
 import {
   BasicMenu,
@@ -144,8 +142,8 @@ const StyledScalableContainer = styled('div')`
 
 const APIDataTable = withTheme(
   ({ headings, data, actions, modalSizeAndPosition, actionsAreDisplayed }) => {
-    const [unitOrProjectFullRecord, setUnitOrProjectFullRecord] =
-      useState(null);
+    let navigate = useNavigate();
+    let location = useLocation();
     const [editRecord, setEditRecord] = useState(null);
     const [projectToTransfer, setProjectToTransfer] = useState(null);
     const [isProjectTransferConfirmed, setIsProjectTransferConfirmed] =
@@ -187,6 +185,32 @@ const APIDataTable = withTheme(
         return fullRecord;
       },
       [units, projects],
+    );
+
+    const openDetailedViewModalForRecord = useCallback(
+      record => {
+        let urlParam = null;
+        let urlParamValue = null;
+
+        if (actions === 'Projects') {
+          urlParam = 'projectId';
+          urlParamValue = record.warehouseProjectId;
+        } else if (actions === 'Units') {
+          urlParam = 'unitId';
+          urlParamValue = record.warehouseUnitId;
+        }
+
+        if (urlParam && urlParamValue) {
+          navigate(
+            `${location.pathname}?${getUpdatedUrl(location.search, {
+              param: urlParam,
+              value: urlParamValue,
+            })}`,
+            { replace: true },
+          );
+        }
+      },
+      [location, navigate],
     );
 
     useEffect(() => {
@@ -238,9 +262,7 @@ const APIDataTable = withTheme(
                   <Tr index={index} selectedTheme={theme} key={index}>
                     {Object.keys(record).map((key, index) => (
                       <Td
-                        onClick={() =>
-                          setUnitOrProjectFullRecord(getFullRecord(record))
-                        }
+                        onClick={() => openDetailedViewModalForRecord(record)}
                         selectedTheme={theme}
                         columnId={key}
                         key={index}
@@ -370,20 +392,6 @@ const APIDataTable = withTheme(
             </StyledPaginationContainer>
           </StyledScalableContainer>
         </StyledRefContainer>
-        {unitOrProjectFullRecord && actions === 'Projects' && (
-          <ProjectDetailedViewModal
-            onClose={() => setUnitOrProjectFullRecord(null)}
-            modalSizeAndPosition={modalSizeAndPosition}
-            projectObject={unitOrProjectFullRecord}
-          />
-        )}
-        {unitOrProjectFullRecord && actions === 'Units' && (
-          <UnitsDetailViewModal
-            onClose={() => setUnitOrProjectFullRecord(null)}
-            modalSizeAndPosition={modalSizeAndPosition}
-            unitObject={unitOrProjectFullRecord}
-          />
-        )}
         {actions === 'Units' && editRecord && (
           <UnitEditModal
             onClose={() => {
