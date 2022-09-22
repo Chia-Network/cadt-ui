@@ -165,7 +165,7 @@ const Units = () => {
     return () => dispatch(clearUnitData());
   }, [searchParams.get('unitId')]);
 
-  const closeProjectOpenedInDetailedView = useCallback(() => {
+  const closeUnitOpenedInDetailedView = useCallback(() => {
     dispatch(clearUnitData());
     navigate(
       `${location.pathname}?${getUpdatedUrl(location.search, {
@@ -567,7 +567,7 @@ const Units = () => {
       )}
       {unit && (
         <UnitsDetailViewModal
-          onClose={closeProjectOpenedInDetailedView}
+          onClose={closeUnitOpenedInDetailedView}
           modalSizeAndPosition={modalSizeAndPosition}
           unitObject={unit}
         />

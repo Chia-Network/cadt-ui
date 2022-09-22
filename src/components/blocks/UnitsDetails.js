@@ -37,10 +37,17 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
 
   const projectUrl =
     data &&
-    `/projects?${getUpdatedUrl(location.search, {
-      param: 'projectId',
-      value: unitBelongsToProjectId,
-    })}`;
+    `/projects?${getUpdatedUrl(
+      location.search,
+      {
+        param: 'projectId',
+        value: unitBelongsToProjectId,
+      },
+      {
+        param: 'unitId',
+        value: null,
+      },
+    )}`;
 
   return (
     <StyledDetailedViewTabItem>
