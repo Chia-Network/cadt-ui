@@ -97,7 +97,6 @@ const LeftNav = withTheme(({ children }) => {
   const isAuditPage = location.pathname.includes('/audit');
   const isMyRegistryPage = location.search.includes('myRegistry=true');
   const isOrganizationPage = location.pathname.includes('/organization');
-  const isConflictsPage = location.pathname.includes('/conflicts');
   const isGovernancePage = location.pathname.includes('/governance');
   const isFilesPage = location.pathname.includes('/files');
   const isGlossaryPage = location.pathname.includes('/glossary');
@@ -121,9 +120,6 @@ const LeftNav = withTheme(({ children }) => {
         <MenuItem selected={isAuditPage} to="/audit">
           <FormattedMessage id="audit" />
         </MenuItem>
-        <MenuItem selected={isConflictsPage} to="/conflicts">
-          <FormattedMessage id="conflicts" />
-        </MenuItem>
 
         {!readOnlyMode && (
           <>
@@ -137,8 +133,7 @@ const LeftNav = withTheme(({ children }) => {
             {!isMyOrgCreated && (
               <MenuItem
                 to={projectsPageUrl}
-                onClick={() => setCreateOrgIsVisible(true)}
-              >
+                onClick={() => setCreateOrgIsVisible(true)}>
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
@@ -151,15 +146,13 @@ const LeftNav = withTheme(({ children }) => {
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
-                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
-                >
+                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}>
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   selected={isUnitsPage && isMyRegistryPage}
-                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
-                >
+                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}>
                   <FormattedMessage id="my-units" />
                 </MenuItem>
 
@@ -187,16 +180,14 @@ const LeftNav = withTheme(({ children }) => {
                 <MenuItem
                   to={projectsPageUrl}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled
-                >
+                  disabled>
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   to={projectsPageUrl}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled
-                >
+                  disabled>
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>
