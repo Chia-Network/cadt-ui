@@ -15,6 +15,6 @@
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "notarize-cli": "^0.2.0",
-    "prettier": "^2.4.1"
+    "prettier": "^2.7.1"
   }
 }
