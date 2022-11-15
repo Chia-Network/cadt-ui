@@ -37,9 +37,12 @@ const NavContainer = styled('div')`
 `;
 
 const MenuItem = styled(Link)`
-  background: ${props => (props.selected ? '#003A8C' : 'transparent')};
+  background: ${props =>
+    props.selected ? props.theme.colors.default.secondaryDark : 'transparent'};
   ${props =>
-    !props.selected && !props.disabled && `:hover {background: #40a9ff;}`};
+    !props.selected &&
+    !props.disabled &&
+    `:hover {background: ${props.theme.colors.default.secondary};}`};
   padding: 0.5625rem 0rem 0.75rem 4.25rem;
   ${props =>
     props.disabled ? 'color: #BFBFBF; pointer-events: none;' : 'color: white;'}
@@ -133,7 +136,8 @@ const LeftNav = withTheme(({ children }) => {
             {!isMyOrgCreated && (
               <MenuItem
                 to={projectsPageUrl}
-                onClick={() => setCreateOrgIsVisible(true)}>
+                onClick={() => setCreateOrgIsVisible(true)}
+              >
                 <FormattedMessage id="create-organization" />
               </MenuItem>
             )}
@@ -146,13 +150,15 @@ const LeftNav = withTheme(({ children }) => {
               <>
                 <MenuItem
                   selected={isProjectsPage && isMyRegistryPage}
-                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}>
+                  to={`/projects?orgUid=${myOrgUid}&myRegistry=true`}
+                >
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   selected={isUnitsPage && isMyRegistryPage}
-                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}>
+                  to={`/units?orgUid=${myOrgUid}&myRegistry=true`}
+                >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
 
@@ -180,14 +186,16 @@ const LeftNav = withTheme(({ children }) => {
                 <MenuItem
                   to={projectsPageUrl}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled>
+                  disabled
+                >
                   <FormattedMessage id="my-projects" />
                 </MenuItem>
                 <div></div>
                 <MenuItem
                   to={projectsPageUrl}
                   onClick={() => setConfirmCreateOrgIsVisible(true)}
-                  disabled>
+                  disabled
+                >
                   <FormattedMessage id="my-units" />
                 </MenuItem>
               </>

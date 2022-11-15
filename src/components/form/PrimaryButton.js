@@ -10,7 +10,8 @@ const Button = styled('button')`
   align-items: center;
   flex-direction: row;
   max-width: 100%;
-  background-color: ${props => (props.danger ? '#FF4D4F' : '#1890FF')};
+  background-color: ${props =>
+    props.danger ? '#FF4D4F' : props.theme.colors.default.secondaryDark};
   border: none;
   border-radius: 2px;
   padding: 10px;
@@ -24,17 +25,20 @@ const Button = styled('button')`
   ${props => props.size === 'small' && `padding: 3px !important;`};
 
   &:hover {
-    background-color: ${props => (props.danger ? '#FF7875' : '#40A9FF')};
+    background-color: ${props =>
+      props.danger ? '#FF7875' : props.theme.colors.default.secondary};
   }
 
   &:active {
-    background-color: ${props => (props.danger ? '#F5222D' : '#096DD9')};
+    background-color: ${props =>
+      props.danger ? '#F5222D' : props.theme.colors.default.secondaryDark};
   }
 
   ${props =>
     props.loading &&
     `
-      background-color: ${props => (props.danger ? '#FF7875' : '#40A9FF')};
+      background-color: ${props =>
+        props.danger ? '#FF7875' : props.theme.colors.default.secondary};
     opacity: 0.65;
   `}
 
@@ -70,13 +74,13 @@ const Button = styled('button')`
         }
 
         h4 {
-          color: #262626;
+          color: ${props.theme.colors.default.secondaryDark};
         }
         h4:hover {
-          color: #40a9ff;
+          color: ${props.theme.colors.default.secondary};
         }
         h4:active {
-          color: #096dd9;
+          color: ${props.theme.colors.default.secondary};
         }
       `;
     }
