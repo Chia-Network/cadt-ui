@@ -1,5 +1,5 @@
 {
-  "name": "climate-warehouse",
+  "name": "climate-action-data-trust",
   "version": "1.0.15",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
@@ -99,7 +99,7 @@
     "standard-version": "^9.3.2"
   },
   "build": {
-    "appId": "org.worldbank.climate-warehouse",
+    "appId": "org.worldbank.climate-action-data-trust",
     "productName": "Climate Warehouse",
     "files": [
       "build/**/*",

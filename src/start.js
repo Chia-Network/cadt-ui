@@ -14,7 +14,7 @@ function createWindow() {
       nodeIntegration: true,
     },
     icon: path.join(__dirname, '/../public/favicon.ico'),
-    title: 'Climate Warehouse',
+    title: 'Climate Action Data Trust',
   });
 
   mainWindow.loadURL(

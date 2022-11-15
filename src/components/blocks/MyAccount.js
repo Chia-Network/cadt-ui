@@ -16,6 +16,7 @@ import {
   StyledFieldContainer,
   StyledLabelContainer,
   ModalFormContainerStyle,
+  Link,
 } from '../../components';
 
 import {
@@ -73,9 +74,9 @@ const MyAccount = () => {
       )}
       {!isUserLoggedIn && (
         <div onClick={() => setIsLogInModalOpen(true)}>
-          <Body color="#1890ff">
+          <Link>
             <FormattedMessage id="sign-in" />
-          </Body>
+          </Link>
         </div>
       )}
       {isLogInModalOpen && (

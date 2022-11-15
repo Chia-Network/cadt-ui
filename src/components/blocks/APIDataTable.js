@@ -36,8 +36,8 @@ const Table = styled('table')`
 
 const THead = styled('thead')`
   font-weight: 500;
-  background-color: ${props =>
-    props.theme.colors[props.selectedTheme].secondary};
+  background-color: ${props => props.theme.colors[props.selectedTheme].shade4};
+  color: white;
 `;
 
 const Th = styled('th')`
@@ -80,7 +80,7 @@ const Tr = styled('tr')`
     cursor: zoom-in;
     background-color: ${props =>
       props.theme.hexToRgba(
-        props.theme.colors[props.selectedTheme].secondary,
+        props.theme.colors[props.selectedTheme].shade6,
         0.3,
       )};
   }
