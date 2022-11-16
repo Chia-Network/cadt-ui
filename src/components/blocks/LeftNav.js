@@ -33,7 +33,7 @@ const NavContainer = styled('div')`
   width: 16rem;
   min-width: 16rem;
   height: 100%;
-  background-color: ${props => props.theme.colors.default.primary};
+  background-color: ${props => props.theme.colors.default.shade1};
 `;
 
 const MenuItem = styled(Link)`

@@ -67,9 +67,9 @@ const MyAccount = () => {
             dispatch(refreshApp(true));
           }}
         >
-          <Body color="#1890ff">
+          <Link>
             <FormattedMessage id="sign-out" />
-          </Body>
+          </Link>
         </div>
       )}
       {!isUserLoggedIn && (

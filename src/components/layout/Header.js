@@ -6,9 +6,12 @@ import styled from 'styled-components';
 import { LocaleSwitcher, Body, AppLogo, MyAccount } from '..';
 
 const Headline = styled('div')`
+  border-top: 8px solid ${props => props.theme.colors.default.secondary};
+  padding-top: 5px;
+  padding-bottom: 5px;
   width: 100%;
   height: 4rem;
-  background-color: ${props => props.theme.colors.default.onButton};
+  background-color: ${props => props.theme.colors.default.primary};
 `;
 
 const LogoContainer = styled('div')`
