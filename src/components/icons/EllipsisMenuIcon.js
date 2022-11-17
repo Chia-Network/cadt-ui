@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { EllipseIcon } from '..';
-import theme from '../../theme';
+import { EllipseIcon, IconColorsWrapper } from '../../components';
 
 const StyledElipseContainer = styled('div')`
   height: 29px;
@@ -13,11 +12,13 @@ const StyledElipseContainer = styled('div')`
 
 const EllipsisMenuIcon = () => {
   return (
-    <StyledElipseContainer>
-      <EllipseIcon height="6" width="6" fill={theme.colors.default.secondary} />
-      <EllipseIcon height="6" width="6" fill={theme.colors.default.secondary} />
-      <EllipseIcon height="6" width="6" fill={theme.colors.default.secondary} />
-    </StyledElipseContainer>
+    <IconColorsWrapper>
+      <StyledElipseContainer>
+        <EllipseIcon height="6" width="6" />
+        <EllipseIcon height="6" width="6" />
+        <EllipseIcon height="6" width="6" />
+      </StyledElipseContainer>
+    </IconColorsWrapper>
   );
 };
 
