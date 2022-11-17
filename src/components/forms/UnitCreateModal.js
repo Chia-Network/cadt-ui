@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stepper, Step, StepLabel } from '@mui/material';
+import { Step, StepLabel } from '@mui/material';
 import { Formik, setNestedObjectValues } from 'formik';
 
 import {
@@ -13,6 +13,7 @@ import {
   getMyProjects,
 } from '../../store/actions/climateWarehouseActions';
 import {
+  Stepper,
   TabPanel,
   Modal,
   modalTypeEnum,
