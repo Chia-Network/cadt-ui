@@ -32,3 +32,4 @@ export * from './RemoveIcon';
 export * from './DownloadOfferIcon';
 export * from './AcceptOfferIcon';
 export * from './AppLogo';
+export * from './IconColorsWrapper';

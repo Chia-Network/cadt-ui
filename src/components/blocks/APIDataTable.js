@@ -42,7 +42,7 @@ const THead = styled('thead')`
 
 const Th = styled('th')`
   padding: 1rem;
-  color: ${props => props.theme.colors[props.selectedTheme].onSurface};
+  color: ${props => props.theme.colors[props.selectedTheme].shade4};
   display: table-cell;
   text-align: left;
   border-bottom: 1px solid rgba(224, 224, 224, 1);
@@ -56,7 +56,7 @@ const Th = styled('th')`
     css`
       position: sticky;
       right: 0px;
-      background-color: rgba(242, 242, 242);
+      background-color: ${props.theme.colors[props.selectedTheme].shade4};
     `}
 
   ${props =>
