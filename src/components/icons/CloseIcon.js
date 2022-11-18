@@ -4,7 +4,7 @@ import { IconColorsWrapper } from './IconColorsWrapper';
 
 const CloseIcon = withTheme(({ width, height, fill }) => {
   return (
-    <IconColorsWrapper>
+    <IconColorsWrapper type="red">
       <svg
         width={`${width}px`}
         height={`${height}px`}

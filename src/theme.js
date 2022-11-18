@@ -35,6 +35,7 @@ const colors = {
     shade5: '#dee6eb',
     shade6: '#ecf3f7',
     red: '#ff5c53',
+    redDark: '#c64740',
     blue: '#47b2fa',
     background: '#F0F2F5',
     onSurface: '#000000',
