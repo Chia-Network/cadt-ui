@@ -14,6 +14,10 @@ const StyledStepper = styled(MuiStepper)`
   svg.Mui-active:hover {
     color: ${props => props.theme.colors.default.secondaryDark};
   }
+
+  svg.Mui-completed {
+    color: ${props => props.theme.colors.default.secondaryDark};
+  }
 `;
 
 const Stepper = ({ ...props }) => {
