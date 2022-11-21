@@ -123,6 +123,9 @@ const LeftNav = withTheme(({ children }) => {
         <MenuItem selected={isAuditPage} to="/audit">
           <FormattedMessage id="audit" />
         </MenuItem>
+        <MenuItem selected={isGlossaryPage} to={`/glossary`}>
+          <FormattedMessage id="glossary" />
+        </MenuItem>
 
         {!readOnlyMode && (
           <>
@@ -165,11 +168,6 @@ const LeftNav = withTheme(({ children }) => {
                 <div></div>
                 <MenuItem selected={isFilesPage} to={`/files`}>
                   <FormattedMessage id="my-files" />
-                </MenuItem>
-
-                <div></div>
-                <MenuItem selected={isGlossaryPage} to={`/glossary`}>
-                  <FormattedMessage id="glossary" />
                 </MenuItem>
 
                 <MenuItem selected={isOrganizationPage} to="/organization">
