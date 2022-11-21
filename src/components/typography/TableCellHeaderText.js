@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 
 const Text = styled('h1')`
-  color: ${props => props.color || props.theme.colors.default.onSurface};
+  color: ${props => props.color || props.theme.colors.default.primary};
   font-size: 0.875rem;
   font-family: ${props => props.theme.typography.primary.semiBold};
   font-style: normal;
