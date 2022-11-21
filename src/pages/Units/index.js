@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
@@ -129,7 +129,7 @@ const StyledCSVOperationsContainer = styled('div')`
   }
 `;
 
-const Units = () => {
+const Units = withTheme(({ theme }) => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
@@ -357,7 +357,13 @@ const Units = () => {
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
                 size="large"
-                icon={<AddIcon width="16.13" height="16.88" />}
+                icon={
+                  <AddIcon
+                    width="16.13"
+                    height="16.88"
+                    fill={theme.colors.default.white}
+                  />
+                }
                 onClick={() => {
                   if (
                     _.isEmpty(stagingData.units.pending) &&
@@ -567,6 +573,6 @@ const Units = () => {
       )}
     </>
   );
-};
+});
 
 export { Units };
