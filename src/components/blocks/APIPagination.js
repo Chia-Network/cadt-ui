@@ -13,8 +13,8 @@ export const PaginationContainer = styled('div')`
   align-items: center;
   gap: 8px;
   width: 100%;
-  color: #8c8c8c;
-  background-color: ${props => props.theme.colors.default.onButton};
+  background-color: ${props => props.theme.colors.default.white};
+  color: ${props => props.theme.colors.default.secondary};
 `;
 
 export const ControlsContainer = styled('div')`
@@ -24,12 +24,12 @@ export const ControlsContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${props => props.theme.colors.default.shade5};
   box-sizing: border-box;
   border-radius: 2px;
   ${props =>
     props.isDisabled &&
-    `background: #F5F5F5; color: #D9D9D9; cursor: default;`};
+    `background: ${props.theme.colors.default.shade6}; color: ${props.theme.colors.default.shade5}; cursor: default;`};
   ${props =>
     props.isBackButton &&
     `transform-origin: center;   
@@ -38,6 +38,12 @@ export const ControlsContainer = styled('div')`
     props.isNextButton &&
     `transform-origin: center;   
     transform: rotate(270deg);`};
+  :hover {
+    color: ${props =>
+      !props.isDisabled &&
+      (props.isNextButton || props.isBackButton) &&
+      props.theme.colors.default.secondaryDark};
+  }
 `;
 
 export const PagesContainer = styled(ControlsContainer)`
@@ -48,13 +54,25 @@ export const PagesContainer = styled(ControlsContainer)`
   line-height: 150%;
   ${props => {
     if (props.isActive) {
-      return `border: 1px solid ${props.theme.colors.default.primary};
-                    color: ${props.theme.colors.default.primary};`;
+      return `border: 1px solid ${props.theme.colors.default.secondaryDark};
+                    color: ${props.theme.colors.default.secondaryDark};`;
     } else {
-      return `border: 1px solid #D9D9D9;
-                    color: #262626;`;
+      return `border: 1px solid ${props.theme.colors.default.shade5};
+                    color: ${props.theme.colors.default.secondary};`;
     }
   }};
+
+  :hover {
+    ${props => {
+      if (props.isActive) {
+        return `border: 1px solid ${props.theme.colors.default.secondaryDark};
+                    color: ${props.theme.colors.default.secondaryDark};`;
+      } else {
+        return `border: 1px solid ${props.theme.colors.default.secondaryDark};
+                    color: ${props.theme.colors.default.secondaryDark};`;
+      }
+    }};
+  }
 `;
 
 const APIPagination = withTheme(({ showLast = false, actions }) => {
