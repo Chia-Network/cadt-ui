@@ -36,8 +36,9 @@ const colors = {
     shade6: '#ecf3f7',
     red: '#ff5c53',
     redDark: '#c64740',
+    white: '#FFFFFF',
     blue: '#47b2fa',
-    background: '#F0F2F5',
+    background: '#c8d0d5',
     onSurface: '#000000',
     onButton: '#FFFFFF',
     status: {

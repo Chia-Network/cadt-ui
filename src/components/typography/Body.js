@@ -10,6 +10,12 @@ const Text = styled('div')`
   width: 100%;
   line-height: 150%;
   ${props =>
+    props.size === 'Big Bold' &&
+    css`
+      font-size: 18px;
+      font-weight: 700;
+    `}
+  ${props =>
     props.size === 'Big' &&
     css`
       font-size: 18px;

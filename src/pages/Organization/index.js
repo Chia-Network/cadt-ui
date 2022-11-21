@@ -8,7 +8,6 @@ import {
   Body,
   CopyIcon,
   H2,
-  H4,
   PrimaryButton,
   SubscriptionModal,
   OrgEditFormModal,
@@ -82,9 +81,9 @@ const Organization = () => {
           <FormattedMessage id="organization-information" />
         </H2>
         <StyledItemContainer>
-          <H4>
+          <Body size="Big Bold">
             <FormattedMessage id="organization-name" />
-          </H4>
+          </Body>
           <Body size="Big">
             {myOrganization.name}
             <StyledCopyIconContainer>
@@ -99,9 +98,9 @@ const Organization = () => {
           </Body>
         </StyledItemContainer>
         <StyledItemContainer>
-          <H4>
+          <Body size="Big Bold">
             <FormattedMessage id="org-uid" />
-          </H4>
+          </Body>
           <Body size="Big">
             {myOrgUid}
             <StyledCopyIconContainer>
@@ -117,16 +116,16 @@ const Organization = () => {
         </StyledItemContainer>
 
         <StyledItemContainer>
-          <H4>
+          <Body size="Big Bold">
             <FormattedMessage id="spendable-balance" />
-          </H4>
+          </Body>
           <Body size="Big">{walletBalance} xch</Body>
         </StyledItemContainer>
 
         <StyledItemContainer>
-          <H4>
+          <Body size="Big Bold">
             <FormattedMessage id="wallet-sync-status" />
-          </H4>
+          </Body>
           <Body size="Big">
             {isWalletSynced ? (
               <>
@@ -147,9 +146,9 @@ const Organization = () => {
         </StyledItemContainer>
 
         <StyledItemContainer>
-          <H4>
+          <Body size="Big Bold">
             <FormattedMessage id="public-address" />
-          </H4>
+          </Body>
           <Body size="Big">
             {myOrganization.xchAddress}
             <StyledCopyIconContainer>
@@ -164,15 +163,15 @@ const Organization = () => {
           </Body>
         </StyledItemContainer>
         <StyledItemContainer>
-          <H4>
+          <Body size="Big Bold">
             <FormattedMessage id="address-qr-code" />
-          </H4>
+          </Body>
           <QRCode value={myOrganization.xchAddress} />
         </StyledItemContainer>
         <StyledItemContainer>
-          <H4>
+          <Body size="Big Bold">
             <FormattedMessage id="organization-subscriptions" />
-          </H4>
+          </Body>
           <PrimaryButton
             label={intl.formatMessage({ id: 'manage' })}
             size="large"
@@ -180,9 +179,9 @@ const Organization = () => {
           />
         </StyledItemContainer>
         <StyledItemContainer>
-          <H4>
+          <Body size="Big Bold">
             <FormattedMessage id="actions" />
-          </H4>
+          </Body>
           <StyledRowContainer>
             <PrimaryButton
               label={intl.formatMessage({ id: 'edit-organization' })}

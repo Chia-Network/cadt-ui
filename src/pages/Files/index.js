@@ -57,14 +57,15 @@ const StyledBodyNoDataFound = styled('div')`
 `;
 
 const StyledTable = styled('table')`
+  border-spacing: 0;
+  border-collapse: collapse;
   width: 100%;
 `;
 
 const StyledTh = styled('th')`
   text-align: start;
   padding: 17px;
-  background-color: ${props =>
-    props.theme.colors.default.status.info.secondary};
+  background-color: ${props => props.theme.colors.default.shade4};
   position: sticky;
   top: 0;
 `;
@@ -76,7 +77,7 @@ const StyledTd = styled('td')`
 
 const StyledTr = styled('tr')`
   :nth-child(even) {
-    background-color: ${props => props.theme.colors.default.background};
+    background-color: ${props => props.theme.colors.default.shade6};
   }
 `;
 
