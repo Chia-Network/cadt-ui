@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled, { withTheme, css } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { ArrowDownIcon, ThreeDotsIcon } from '..';
@@ -38,12 +38,16 @@ export const ControlsContainer = styled('div')`
     props.isNextButton &&
     `transform-origin: center;   
     transform: rotate(270deg);`};
-  :hover {
-    color: ${props =>
-      !props.isDisabled &&
-      (props.isNextButton || props.isBackButton) &&
-      props.theme.colors.default.secondaryDark};
-  }
+
+  ${props =>
+    !props.isDisabled &&
+    (props.isNextButton || props.isBackButton) &&
+    css`
+      :hover {
+        color: ${props => props.theme.colors.default.secondaryDark};
+        border: 1px solid ${props => props.theme.colors.default.secondaryDark};
+      }
+    `}
 `;
 
 export const PagesContainer = styled(ControlsContainer)`
