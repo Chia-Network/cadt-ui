@@ -7,8 +7,6 @@ import styled from 'styled-components';
 import constants from '../../constants';
 import {
   Body,
-  DescendingClockIcon,
-  AscendingClockIcon,
   SearchInput,
   H3,
   DownloadIcon,
@@ -20,11 +18,13 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectOrganizations,
+  AZIcon,
 } from '../../components';
 import {
   deleteFile,
   getFileList,
 } from '../../store/actions/climateWarehouseActions';
+import { ZAIcon } from '../../components/icons/ZAIcon';
 
 const StyledUploadIcon = styled(UploadIcon)`
   margin-left: auto;
@@ -239,7 +239,7 @@ const Files = () => {
                 <FormattedMessage id="sort-z-to-a" />
               </Body>
               <StyledIconContainer>
-                <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
+                <ZAIcon />
               </StyledIconContainer>
             </>
           ) : (
@@ -248,7 +248,7 @@ const Files = () => {
                 <FormattedMessage id="sort-a-to-z" />
               </Body>
               <StyledIconContainer>
-                <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
+                <AZIcon />
               </StyledIconContainer>
             </>
           )}

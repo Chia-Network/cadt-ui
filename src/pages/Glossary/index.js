@@ -4,14 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
-import {
-  Body,
-  DescendingClockIcon,
-  AscendingClockIcon,
-  SearchInput,
-  H3,
-} from '../../components';
+import { Body, SearchInput, H3, AZIcon } from '../../components';
 import { getGlossary } from '../../store/actions/climateWarehouseActions';
+import { ZAIcon } from '../../components/icons/ZAIcon';
 
 const StyledSectionContainer = styled('div')`
   display: flex;
@@ -181,7 +176,7 @@ const Glossary = () => {
                 <FormattedMessage id="sort-z-to-a" />
               </Body>
               <StyledIconContainer>
-                <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
+                <ZAIcon />
               </StyledIconContainer>
             </>
           ) : (
@@ -190,7 +185,7 @@ const Glossary = () => {
                 <FormattedMessage id="sort-a-to-z" />
               </Body>
               <StyledIconContainer>
-                <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
+                <AZIcon />
               </StyledIconContainer>
             </>
           )}
