@@ -34,3 +34,4 @@ export * from './AcceptOfferIcon';
 export * from './AppLogo';
 export * from './IconColorsWrapper';
 export * from './AZIcon';
+export * from './ZAIcon';

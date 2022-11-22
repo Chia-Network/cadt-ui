@@ -4,9 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
-import { Body, SearchInput, H3, AZIcon } from '../../components';
+import { Body, SearchInput, H3, AZIcon, ZAIcon } from '../../components';
 import { getGlossary } from '../../store/actions/climateWarehouseActions';
-import { ZAIcon } from '../../components/icons/ZAIcon';
 
 const StyledSectionContainer = styled('div')`
   display: flex;

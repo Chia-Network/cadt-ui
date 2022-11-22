@@ -19,14 +19,14 @@ import {
   SelectTypeEnum,
   SelectOrganizations,
   AZIcon,
+  ZAIcon,
 } from '../../components';
 import {
-  deleteFile,
   getFileList,
+  deleteFile,
 } from '../../store/actions/climateWarehouseActions';
-import { ZAIcon } from '../../components/icons/ZAIcon';
 
-const StyledUploadIcon = styled(UploadIcon)`
+const StyledUploadIconContainer = styled('div')`
   margin-left: auto;
   cursor: pointer;
 `;
@@ -40,7 +40,7 @@ const StyledSectionContainer = styled('div')`
 const StyledHeaderContainer = styled('div')`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   padding: 30px 24px 30px 16px;
 `;
 
@@ -261,8 +261,9 @@ const Files = () => {
           width="200px"
           onChange={onOrganizationSelect}
         />
-
-        <StyledUploadIcon width="20" height="20" onClick={toggleUploadModal} />
+        <StyledUploadIconContainer>
+          <UploadIcon width="20" height="20" onClick={toggleUploadModal} />
+        </StyledUploadIconContainer>
       </StyledHeaderContainer>
       {filteredFileList?.length === 0 && (
         <StyledBodyNoDataFound>
