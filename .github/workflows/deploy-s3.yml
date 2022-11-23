@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - create-blue-green-deployment-cadt
 
 permissions:
   id-token: write
