@@ -53,4 +53,4 @@ jobs:
 
       - name: Upload build folder to S3 (green)
         run: |
-          aws s3 sync --delete --no-progress --dryrun ./build/ s3://green-cw-ui/
+          aws s3 sync --delete --no-progress ./build/ s3://green-cw-ui/
