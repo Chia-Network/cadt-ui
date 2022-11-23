@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 1.0.14
 
 permissions:
   id-token: write
@@ -51,6 +53,12 @@ jobs:
           backend_name: aws-carbon
           role_name: cw-s3-deploy
 
-      - name: Upload build folder to S3
+      - name: Upload build folder to S3 (green)
+        if: github.ref == 'refs/heads/main'
         run: |
-          aws s3 sync --delete --no-progress ./build/ s3://climatewarehouse/
+          aws s3 sync --delete --no-progress --dry-run ./build/ s3://green-cw-ui/
+
+      - name: Upload build folder to S3 (blue)
+        if: github.ref == 'refs/tags/1.0.14'
+        run: |
+          aws s3 sync --delete --no-progress --dry-run ./build/ s3://climatewarehouse/
