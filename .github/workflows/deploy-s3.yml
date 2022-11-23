@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - create-blue-green-deployment-cadt
     tags:
       - 1.0.14
 
@@ -54,7 +55,8 @@ jobs:
           role_name: cw-s3-deploy
 
       - name: Upload build folder to S3 (green)
-        if: github.ref == 'refs/heads/main'
+#        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/create-blue-green-deployment-cadt'
         run: |
           aws s3 sync --delete --no-progress --dry-run ./build/ s3://green-cw-ui/
 
