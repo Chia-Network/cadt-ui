@@ -42,7 +42,7 @@ jobs:
         uses: Chia-Network/actions/vault/login@main
         with:
           vault_url: ${{ secrets.VAULT_URL }}
-          role_name: github
+          role_name: github-climate-warehouse-ui
 
       - name: Get ephemeral aws credentials
         uses: Chia-Network/actions/vault/aws-sts@main
