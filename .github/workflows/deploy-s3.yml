@@ -41,7 +41,7 @@ jobs:
         uses: Chia-Network/actions/vault/login@main
         with:
           vault_url: ${{ secrets.VAULT_URL }}
-          role_name: github
+          role_name: github-climate-warehouse-ui
 
       - name: Get ephemeral aws credentials
         uses: Chia-Network/actions/vault/aws-sts@main
@@ -51,6 +51,6 @@ jobs:
           backend_name: aws-carbon
           role_name: cw-s3-deploy
 
-      - name: Upload build folder to S3
+      - name: Upload build folder to S3 (green)
         run: |
-          aws s3 sync --delete --no-progress ./build/ s3://climatewarehouse/
+          aws s3 sync --delete --no-progress ./build/ s3://green-cw-ui/
