@@ -1,3 +1,37 @@
+## [1.0.15](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.14...1.0.15) (2022-11-23)
+
+
+### Bug Fixes
+
+* my units create button plus icon ([ec8ff21](https://github.com/Chia-Network/climate-warehouse-ui/commit/ec8ff21fe90ca262bae2676b0c19dc722c26c959))
+* remove conflicts page ([a29ba04](https://github.com/Chia-Network/climate-warehouse-ui/commit/a29ba04f69fe16c0213b97648012c338d987f36b))
+
+
+### Features
+
+* make all table headers look the same ([fa18a3f](https://github.com/Chia-Network/climate-warehouse-ui/commit/fa18a3f6475b69a84110a79d3468ff2657550182))
+* move glossary to warehouse ([9285451](https://github.com/Chia-Network/climate-warehouse-ui/commit/9285451528b14dd81d172af6290eb4fdf3cbb995))
+* sort button icon and colors ([69e1f5c](https://github.com/Chia-Network/climate-warehouse-ui/commit/69e1f5c7cb19246751cc8eb058784c4ba2f53e44))
+* sort button icon and colors ([dbd1ed1](https://github.com/Chia-Network/climate-warehouse-ui/commit/dbd1ed1757f473f5b2f06baf6a11db0b63158708))
+* update app name ([63694c7](https://github.com/Chia-Network/climate-warehouse-ui/commit/63694c70ea2feb9125e7fc7605fc79010d3795b3))
+* update app name ([16e2553](https://github.com/Chia-Network/climate-warehouse-ui/commit/16e2553902eafc29889844b0734576e0ace6c52e))
+* update audit page rebranding ([7399d6e](https://github.com/Chia-Network/climate-warehouse-ui/commit/7399d6e2fe69840f6ddd0000349683556a0feb0f))
+* update colors ([17d98a1](https://github.com/Chia-Network/climate-warehouse-ui/commit/17d98a153dbb0bd1f80d1cfeac3d7875ed5f8a88))
+* update colors ([5880c1d](https://github.com/Chia-Network/climate-warehouse-ui/commit/5880c1dec283df6618edc4a86dabb0e54df0d8be))
+* update colors ([3717d57](https://github.com/Chia-Network/climate-warehouse-ui/commit/3717d57e4e480e3b0d3b16463efc85ef7c09398c))
+* update colors ([72c10d2](https://github.com/Chia-Network/climate-warehouse-ui/commit/72c10d2b1e9d7e072d41df2657612fc9e6317f8e))
+* update colors ([9c29a70](https://github.com/Chia-Network/climate-warehouse-ui/commit/9c29a70800a8f4d3d4da1598b38b7d722f4d403d))
+* update colors ([1d59bcc](https://github.com/Chia-Network/climate-warehouse-ui/commit/1d59bcc48302ff5f6753d07ddb31e507a11db8a9))
+* update colors ([ab825a6](https://github.com/Chia-Network/climate-warehouse-ui/commit/ab825a6b016d6b476324bda89be9ebe2d34a22b8))
+* update colors ([c49be98](https://github.com/Chia-Network/climate-warehouse-ui/commit/c49be9845a25925ab974f123eeeb7d97d4f28ca5))
+* update colors ([f38837e](https://github.com/Chia-Network/climate-warehouse-ui/commit/f38837e719ac3564c2d3c6461a22b3a01447b4c9))
+* update colors ([fe2949b](https://github.com/Chia-Network/climate-warehouse-ui/commit/fe2949b43ce20544771799f55e0750485031eab7))
+* update fonts ([d142c28](https://github.com/Chia-Network/climate-warehouse-ui/commit/d142c2859386b3664425e535f612a78fbc90eb08))
+* update icons ([2a51b98](https://github.com/Chia-Network/climate-warehouse-ui/commit/2a51b982db8bcd86e125664809133962f8a2c97e))
+* update icons ([fe3865f](https://github.com/Chia-Network/climate-warehouse-ui/commit/fe3865fb347bee7cea6a1a4f33c4eb6f1497c8ec))
+
+
+
 ## [1.0.14](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.13...1.0.14) (2022-09-22)
 
 
