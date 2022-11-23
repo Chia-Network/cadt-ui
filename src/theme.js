@@ -64,11 +64,11 @@ const colors = {
 
 const typography = {
   primary: {
-    regular: 'NunitoSans',
-    semiBold: 'NunitoSansSemiBold',
-    bold: 'NunitoSansBold',
-    extraBold: 'NunitoSansExtraBold',
-    light: 'NunitoSansLight',
+    regular: 'Arial, sans-serif',
+    semiBold: 'LucidaSemiBold',
+    bold: 'LucidaBold',
+    extraBold: 'LucidaExtraBold',
+    light: 'Arial, sans-serif',
   },
 };
 

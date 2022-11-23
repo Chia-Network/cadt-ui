@@ -43,7 +43,7 @@ const MenuItem = styled(Link)`
     !props.selected &&
     !props.disabled &&
     `:hover {background: ${props.theme.colors.default.secondary};}`};
-  padding: 0.5625rem 0rem 0.75rem 4.25rem;
+  padding: 0.5625rem 0rem 0.75rem 2.75rem;
   ${props =>
     props.disabled ? 'color: #BFBFBF; pointer-events: none;' : 'color: white;'}
   font-family: ${props => props.theme.typography.primary.bold};
@@ -66,7 +66,7 @@ const StyledTitleContainer = styled('div')`
     text-transform: uppercase;
     ${props => (!props.disabled ? `color: white;` : `color: #BFBFBF;`)};
   }
-  margin: 46px 0px 1.3125rem 1.7813rem;
+  margin: 46px 0px 1.3125rem 1.3rem;
 `;
 
 const LeftNav = withTheme(({ children }) => {
