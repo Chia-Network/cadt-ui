@@ -25,9 +25,20 @@ const headings = {
  */
 const colors = {
   default: {
-    primary: '#3B8EE0',
-    secondary: '#F2F2F2',
-    background: '#F0F2F5',
+    primary: '#00242C',
+    secondary: '#2dec7c',
+    secondaryDark: '#1b9b5c',
+    shade1: '#4d5c62',
+    shade2: '#7f8b90',
+    shade3: '#a5adb1',
+    shade4: '#c8d0d5',
+    shade5: '#dee6eb',
+    shade6: '#ecf3f7',
+    red: '#ff5c53',
+    redDark: '#c64740',
+    white: '#FFFFFF',
+    blue: '#47b2fa',
+    background: '#c8d0d5',
     onSurface: '#000000',
     onButton: '#FFFFFF',
     status: {
@@ -53,11 +64,11 @@ const colors = {
 
 const typography = {
   primary: {
-    regular: 'NunitoSans',
-    semiBold: 'NunitoSansSemiBold',
-    bold: 'NunitoSansBold',
-    extraBold: 'NunitoSansExtraBold',
-    light: 'NunitoSansLight',
+    regular: 'Arial, sans-serif',
+    semiBold: 'LucidaSemiBold',
+    bold: 'LucidaBold',
+    extraBold: 'LucidaExtraBold',
+    light: 'Arial, sans-serif',
   },
 };
 

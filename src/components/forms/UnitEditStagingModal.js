@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stepper, Step, StepLabel } from '@mui/material';
+import { Step, StepLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { Formik, setNestedObjectValues } from 'formik';
 
@@ -14,6 +14,7 @@ import {
   UnitLabelForm,
   UnitIssuanceForm,
   FormikRepeater,
+  Stepper,
 } from '..';
 import { unitsSchema } from '../../store/validations';
 import {

@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
@@ -49,7 +49,6 @@ import {
   RemoveIcon,
   UnitsDetailViewModal,
 } from '../../components';
-import theme from '../../theme';
 
 const headings = [
   'projectLocationId',
@@ -130,7 +129,7 @@ const StyledCSVOperationsContainer = styled('div')`
   }
 `;
 
-const Units = () => {
+const Units = withTheme(({ theme }) => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
@@ -362,7 +361,7 @@ const Units = () => {
                   <AddIcon
                     width="16.13"
                     height="16.88"
-                    fill={theme.colors.default.onButton}
+                    fill={theme.colors.default.white}
                   />
                 }
                 onClick={() => {
@@ -574,6 +573,6 @@ const Units = () => {
       )}
     </>
   );
-};
+});
 
 export { Units };

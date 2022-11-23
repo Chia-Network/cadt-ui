@@ -1,9 +1,10 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
+import { IconColorsWrapper } from './IconColorsWrapper';
 
 const AddIcon = withTheme(({ width, height, fill }) => {
   return (
-    <>
+    <IconColorsWrapper>
       <svg
         width={`${width}px`}
         height={`${height}px`}
@@ -20,7 +21,7 @@ const AddIcon = withTheme(({ width, height, fill }) => {
           fill={fill || 'currentColor'}
         />
       </svg>
-    </>
+    </IconColorsWrapper>
   );
 });
 

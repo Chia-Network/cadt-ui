@@ -1,39 +1,23 @@
 @font-face {
-  font-family: 'NunitoSans';
-  src: url('./assets/fonts/NunitoSans-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: auto;
-}
-
-@font-face {
-  font-family: 'NunitoSansBold';
-  src: url('./assets/fonts/NunitoSans-Bold.ttf') format('truetype');
+  font-family: 'LucidaBold';
+  src: url('./assets/fonts/Lucida-Console-Regular.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: auto;
 }
 
 @font-face {
-  font-family: 'NunitoSansExtraBold';
-  src: url('./assets/fonts/NunitoSans-ExtraBold.ttf') format('truetype');
+  font-family: 'LucidaExtraBold';
+  src: url('./assets/fonts/Lucida-Console-Regular.ttf') format('truetype');
   font-weight: 800;
   font-style: normal;
   font-display: auto;
 }
 
 @font-face {
-  font-family: 'NunitoSansSemiBold';
-  src: url('./assets/fonts/NunitoSans-SemiBold.ttf') format('truetype');
+  font-family: 'LucidaSemiBold';
+    src: url('./assets/fonts/Lucida-Console-Regular.ttf') format('truetype');
   font-weight: 600;
-  font-style: normal;
-  font-display: auto;
-}
-
-@font-face {
-  font-family: 'NunitoSansLight';
-  src: url('./assets/fonts/NunitoSans-Light.ttf') format('truetype');
-  font-weight: 300;
   font-style: normal;
   font-display: auto;
 }
@@ -43,5 +27,5 @@ body {
 }
 
 .notification {
-  font-family: 'NunitoSans' !important;
+  font-family: 'Arial, sans-serif' !important;
 }

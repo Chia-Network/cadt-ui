@@ -3,17 +3,22 @@ import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { LocaleSwitcher, Body, ClimateWarehouseLogo, MyAccount } from '..';
+import { LocaleSwitcher, Body, AppLogo, MyAccount } from '..';
 
 const Headline = styled('div')`
+  border-top: 8px solid ${props => props.theme.colors.default.secondary};
+  padding-top: 5px;
+  padding-bottom: 5px;
   width: 100%;
   height: 4rem;
-  background-color: ${props => props.theme.colors.default.onButton};
+  background-color: ${props => props.theme.colors.default.primary};
 `;
 
 const LogoContainer = styled('div')`
-  align-self: center;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledLocalContainer = styled('div')`
@@ -39,7 +44,7 @@ const Header = () => {
     <Headline>
       <StyledLocalContainer>
         <LogoContainer>
-          <ClimateWarehouseLogo width="100%" height="100%" />
+          <AppLogo width="100%" height="80%" />
         </LogoContainer>
         <HomeOrgUidContainer>
           {serverAddress && (

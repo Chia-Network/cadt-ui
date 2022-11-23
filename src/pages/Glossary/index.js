@@ -4,14 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
-import {
-  Body,
-  DescendingClockIcon,
-  AscendingClockIcon,
-  SearchInput,
-  H3,
-  H4,
-} from '../../components';
+import { Body, SearchInput, H3, AZIcon, ZAIcon } from '../../components';
 import { getGlossary } from '../../store/actions/climateWarehouseActions';
 
 const StyledSectionContainer = styled('div')`
@@ -41,14 +34,15 @@ const StyledBodyNoDataFound = styled('div')`
 `;
 
 const StyledTable = styled('table')`
+  border-spacing: 0;
+  border-collapse: collapse;
   width: 100%;
 `;
 
 const StyledTh = styled('th')`
   text-align: start;
   padding: 17px;
-  background-color: ${props =>
-    props.theme.colors.default.status.info.secondary};
+  background-color: ${props => props.theme.colors.default.shade4};
   position: sticky;
   top: 0;
 `;
@@ -60,7 +54,7 @@ const StyledTd = styled('td')`
 
 const StyledTr = styled('tr')`
   :nth-child(even) {
-    background-color: ${props => props.theme.colors.default.background};
+    background-color: ${props => props.theme.colors.default.shade6};
   }
 `;
 
@@ -181,7 +175,7 @@ const Glossary = () => {
                 <FormattedMessage id="sort-z-to-a" />
               </Body>
               <StyledIconContainer>
-                <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
+                <ZAIcon />
               </StyledIconContainer>
             </>
           ) : (
@@ -190,7 +184,7 @@ const Glossary = () => {
                 <FormattedMessage id="sort-a-to-z" />
               </Body>
               <StyledIconContainer>
-                <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
+                <AZIcon />
               </StyledIconContainer>
             </>
           )}
@@ -221,17 +215,15 @@ const Glossary = () => {
               </StyledTr>
             </thead>
             <tbody>
-              {Object.entries(filteredFileList).map(file => (
-                <StyledTr key={file.id}>
+              {Object.entries(filteredFileList).map((file, index) => (
+                <StyledTr key={index}>
                   <StyledTd>
                     <Body>{file[0]}</Body>
                   </StyledTd>
                   <StyledTd>
-                    {file[1].map(term => (
-                      <DescriptionContainer key={term.id}>
-                        <H4>
-                          <u>{term.split(';')[0]}</u>
-                        </H4>
+                    {file[1].map((term, index) => (
+                      <DescriptionContainer key={index}>
+                        <Body size="Bold">{term.split(';')[0]}</Body>
                         <Body>{term.split(';')[1]}</Body>
                       </DescriptionContainer>
                     ))}
