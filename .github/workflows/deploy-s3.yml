@@ -58,9 +58,9 @@ jobs:
 #        if: github.ref == 'refs/heads/main'
         if: github.ref == 'refs/heads/create-blue-green-deployment-cadt'
         run: |
-          aws s3 sync --delete --no-progress --dry-run ./build/ s3://green-cw-ui/
+          aws s3 sync --delete --no-progress --dryrun ./build/ s3://green-cw-ui/
 
       - name: Upload build folder to S3 (blue)
         if: github.ref == 'refs/tags/1.0.14'
         run: |
-          aws s3 sync --delete --no-progress --dry-run ./build/ s3://climatewarehouse/
+          aws s3 sync --delete --no-progress --dryrun ./build/ s3://climatewarehouse/
