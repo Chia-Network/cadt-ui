@@ -1,13 +1,13 @@
 import * as en from './tokens/en-US.json';
 
 const LANGUAGE_CODES = Object.freeze({
-  ENGLISH: 'en-US',
+  English: 'en-US',
 });
 
 const loadLocaleData = locale => {
   switch (locale) {
     case LANGUAGE_CODES.ENGLISH_US:
-    case LANGUAGE_CODES.ENGLISH:
+    case LANGUAGE_CODES.English:
     default:
       return en;
   }

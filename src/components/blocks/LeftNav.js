@@ -33,14 +33,17 @@ const NavContainer = styled('div')`
   width: 16rem;
   min-width: 16rem;
   height: 100%;
-  background-color: ${props => props.theme.colors.default.primary};
+  background-color: ${props => props.theme.colors.default.shade1};
 `;
 
 const MenuItem = styled(Link)`
-  background: ${props => (props.selected ? '#003A8C' : 'transparent')};
+  background: ${props =>
+    props.selected ? props.theme.colors.default.secondaryDark : 'transparent'};
   ${props =>
-    !props.selected && !props.disabled && `:hover {background: #40a9ff;}`};
-  padding: 0.5625rem 0rem 0.75rem 4.25rem;
+    !props.selected &&
+    !props.disabled &&
+    `:hover {background: ${props.theme.colors.default.secondary};}`};
+  padding: 0.5625rem 0rem 0.75rem 2.75rem;
   ${props =>
     props.disabled ? 'color: #BFBFBF; pointer-events: none;' : 'color: white;'}
   font-family: ${props => props.theme.typography.primary.bold};
@@ -63,7 +66,7 @@ const StyledTitleContainer = styled('div')`
     text-transform: uppercase;
     ${props => (!props.disabled ? `color: white;` : `color: #BFBFBF;`)};
   }
-  margin: 46px 0px 1.3125rem 1.7813rem;
+  margin: 46px 0px 1.3125rem 1.3rem;
 `;
 
 const LeftNav = withTheme(({ children }) => {
@@ -97,7 +100,6 @@ const LeftNav = withTheme(({ children }) => {
   const isAuditPage = location.pathname.includes('/audit');
   const isMyRegistryPage = location.search.includes('myRegistry=true');
   const isOrganizationPage = location.pathname.includes('/organization');
-  const isConflictsPage = location.pathname.includes('/conflicts');
   const isGovernancePage = location.pathname.includes('/governance');
   const isFilesPage = location.pathname.includes('/files');
   const isGlossaryPage = location.pathname.includes('/glossary');
@@ -121,8 +123,8 @@ const LeftNav = withTheme(({ children }) => {
         <MenuItem selected={isAuditPage} to="/audit">
           <FormattedMessage id="audit" />
         </MenuItem>
-        <MenuItem selected={isConflictsPage} to="/conflicts">
-          <FormattedMessage id="conflicts" />
+        <MenuItem selected={isGlossaryPage} to={`/glossary`}>
+          <FormattedMessage id="glossary" />
         </MenuItem>
 
         {!readOnlyMode && (
@@ -166,11 +168,6 @@ const LeftNav = withTheme(({ children }) => {
                 <div></div>
                 <MenuItem selected={isFilesPage} to={`/files`}>
                   <FormattedMessage id="my-files" />
-                </MenuItem>
-
-                <div></div>
-                <MenuItem selected={isGlossaryPage} to={`/glossary`}>
-                  <FormattedMessage id="glossary" />
                 </MenuItem>
 
                 <MenuItem selected={isOrganizationPage} to="/organization">

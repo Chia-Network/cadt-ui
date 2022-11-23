@@ -11,6 +11,7 @@ import {
   Body,
   DescriptionIcon,
   ToolTipContainer,
+  Link,
 } from '..';
 import { getLabels } from '../../store/actions/climateWarehouseActions';
 
@@ -68,15 +69,15 @@ const FormikRepeater = ({
                 <StyledRepeatedComponentContainer
                   onClick={() => arrayHelpers.push(_.cloneDeep(empty))}
                 >
-                  <AddIcon height={14} width={14} fill={'#1890FF'} />
-                  <Body color="#1890ff">
+                  <AddIcon height={14} width={14} />
+                  <Link>
                     <FormattedMessage id="click-to-add" />
                     {tooltip && (
                       <ToolTipContainer tooltip={tooltip}>
                         <DescriptionIcon height="14" width="20" />
                       </ToolTipContainer>
                     )}
-                  </Body>
+                  </Link>
                 </StyledRepeatedComponentContainer>
               </>
             )}
@@ -102,7 +103,7 @@ const FormikRepeater = ({
                   />
                   {isControlVisible && (
                     <div onClick={() => arrayHelpers.remove(index)}>
-                      <CloseIcon height={12} width={12} fill={'#1890FF'} />
+                      <CloseIcon height={12} width={12} />
                     </div>
                   )}
                 </StyledRepeatedComponentContainer>

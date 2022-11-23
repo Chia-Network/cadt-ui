@@ -1,6 +1,6 @@
 {
-  "name": "climate-warehouse",
-  "version": "1.0.14",
+  "name": "climate-action-data-trust",
+  "version": "1.0.15",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
   "homepage": "./",
@@ -99,7 +99,7 @@
     "standard-version": "^9.3.2"
   },
   "build": {
-    "appId": "org.worldbank.climate-warehouse",
+    "appId": "org.worldbank.climate-action-data-trust",
     "productName": "Climate Warehouse",
     "files": [
       "build/**/*",
@@ -115,15 +115,18 @@
           "universal"
         ]
       },
-      "publish": null
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png"
     },
     "win": {
       "target": "nsis",
-      "publish": null
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png"
     },
     "linux": {
       "target": "deb",
-      "publish": null
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png"
     }
   },
   "standard-version": {

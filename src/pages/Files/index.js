@@ -7,8 +7,6 @@ import styled from 'styled-components';
 import constants from '../../constants';
 import {
   Body,
-  DescendingClockIcon,
-  AscendingClockIcon,
   SearchInput,
   H3,
   DownloadIcon,
@@ -20,13 +18,15 @@ import {
   SelectSizeEnum,
   SelectTypeEnum,
   SelectOrganizations,
+  AZIcon,
+  ZAIcon,
 } from '../../components';
 import {
-  deleteFile,
   getFileList,
+  deleteFile,
 } from '../../store/actions/climateWarehouseActions';
 
-const StyledUploadIcon = styled(UploadIcon)`
+const StyledUploadIconContainer = styled('div')`
   margin-left: auto;
   cursor: pointer;
 `;
@@ -40,7 +40,7 @@ const StyledSectionContainer = styled('div')`
 const StyledHeaderContainer = styled('div')`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   padding: 30px 24px 30px 16px;
 `;
 
@@ -57,14 +57,15 @@ const StyledBodyNoDataFound = styled('div')`
 `;
 
 const StyledTable = styled('table')`
+  border-spacing: 0;
+  border-collapse: collapse;
   width: 100%;
 `;
 
 const StyledTh = styled('th')`
   text-align: start;
   padding: 17px;
-  background-color: ${props =>
-    props.theme.colors.default.status.info.secondary};
+  background-color: ${props => props.theme.colors.default.shade4};
   position: sticky;
   top: 0;
 `;
@@ -76,7 +77,7 @@ const StyledTd = styled('td')`
 
 const StyledTr = styled('tr')`
   :nth-child(even) {
-    background-color: ${props => props.theme.colors.default.background};
+    background-color: ${props => props.theme.colors.default.shade6};
   }
 `;
 
@@ -238,7 +239,7 @@ const Files = () => {
                 <FormattedMessage id="sort-z-to-a" />
               </Body>
               <StyledIconContainer>
-                <AscendingClockIcon width={'1.5em'} height={'1.5em'} />
+                <ZAIcon />
               </StyledIconContainer>
             </>
           ) : (
@@ -247,7 +248,7 @@ const Files = () => {
                 <FormattedMessage id="sort-a-to-z" />
               </Body>
               <StyledIconContainer>
-                <DescendingClockIcon width={'1.5em'} height={'1.5em'} />
+                <AZIcon />
               </StyledIconContainer>
             </>
           )}
@@ -260,8 +261,9 @@ const Files = () => {
           width="200px"
           onChange={onOrganizationSelect}
         />
-
-        <StyledUploadIcon width="20" height="20" onClick={toggleUploadModal} />
+        <StyledUploadIconContainer>
+          <UploadIcon width="20" height="20" onClick={toggleUploadModal} />
+        </StyledUploadIconContainer>
       </StyledHeaderContainer>
       {filteredFileList?.length === 0 && (
         <StyledBodyNoDataFound>

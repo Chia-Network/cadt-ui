@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stepper, Step, StepLabel } from '@mui/material';
+import { Step, StepLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { Formik, setNestedObjectValues } from 'formik';
 
 import {
+  Stepper,
   TabPanel,
   Modal,
   modalTypeEnum,

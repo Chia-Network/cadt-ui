@@ -6,3 +6,4 @@ export * from './TableCellHeaderText';
 export * from './TableCellText';
 export * from './ButtonText';
 export * from './Body';
+export * from './Link';
