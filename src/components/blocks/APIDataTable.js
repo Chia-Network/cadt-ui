@@ -149,7 +149,7 @@ const APIDataTable = withTheme(
     const [isProjectTransferConfirmed, setIsProjectTransferConfirmed] =
       useState(false);
     const [unitToBeSplit, setUnitToBeSplit] = useState(null);
-    const { theme } = useSelector(state => state.app);
+    const { theme, readOnlyMode } = useSelector(state => state.app);
     const { organizations, projects, units, stagingData, myOrgUid } =
       useSelector(state => state.climateWarehouse);
     const [confirmDeletionModal, setConfirmDeletionModal] = useState(null);
@@ -362,6 +362,7 @@ const APIDataTable = withTheme(
                     {!actionsAreDisplayed &&
                       actions === 'Projects' &&
                       myOrgUid !== getFullRecord(record)?.orgUid &&
+                      !readOnlyMode &&
                       getFullRecord(record)?.projectStatus !==
                         'Transitioned' && (
                         <Td
