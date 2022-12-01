@@ -23,14 +23,14 @@ jobs:
       - uses: Chia-Network/actions/clean-workspace@main
 
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node 16.x
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-          
-      - name: install dmg-license 
+
+      - name: install dmg-license
         run: npm i dmg-license
 
       - name: npm install
@@ -58,7 +58,7 @@ jobs:
             --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
 
       - name: Upload Mac Installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: mac-installer
           path: ${{ github.workspace }}/dist/*.dmg
@@ -68,10 +68,10 @@ jobs:
     runs-on: windows-2019
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node 16.x
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
@@ -87,7 +87,7 @@ jobs:
         run: npm run electron:package:win
 
       - name: Upload Windows Installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: windows-installer
           path: ${{ github.workspace }}/dist/*.exe
@@ -97,10 +97,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node 16.x
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
@@ -113,10 +113,37 @@ jobs:
         run: npm run electron:package:linux
 
       - name: Upload Linux Installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: linux-installer
           path: ${{ github.workspace }}/dist/*.deb
+
+  build_web:
+    name: Build Climate Warehouse Web App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: npm install and build
+        run: |
+          node --version
+          npm install
+          npm run build
+
+      - name: Create .tar.gz of the web build
+        run: tar -cvzf web-build.tar.gz build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: web-build.tar.gz
 
   release:
     runs-on: ubuntu-latest
@@ -125,34 +152,43 @@ jobs:
       - build_mac
       - build_windows
       - build_linux
+      - build_web
     steps:
       - name: Download Windows artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: windows-installer
           path: windows-installer
 
       - name: Download MacOS artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: mac-installer
           path: mac-installer
 
       - name: Download Linux artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: linux-installer
           path: linux-installer
+
+      - name: Download Web artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: web-build
 
       - name: Get Filenames
         run: |
           DMG_FILE=$(find ${{ github.workspace }}/mac-installer/ -type f -name '*.dmg')
           DEB_FILE=$(find ${{ github.workspace }}/linux-installer/ -type f -name '*.deb')
           EXE_FILE=$(find ${{ github.workspace }}/windows-installer/ -type f -name '*.exe')
+          WEB_FILE=$(find ${{ github.workspace }}/web-build/ -type f -name '*.tar.gz')
 
           echo "DMG_FILE=$DMG_FILE" >>$GITHUB_ENV
           echo "DEB_FILE=$DEB_FILE" >>$GITHUB_ENV
           echo "EXE_FILE=$EXE_FILE" >>$GITHUB_ENV
+          echo "WEB_FILE=$WEB_FILE" >>$GITHUB_ENV
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -161,3 +197,4 @@ jobs:
             ${{ env.DMG_FILE }}
             ${{ env.DEB_FILE }}
             ${{ env.EXE_FILE }}
+            ${{ env.WEB_FILE }}
