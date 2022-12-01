@@ -9,6 +9,11 @@ permissions:
   id-token: write
   contents: read
 
+concurrency:
+  # SHA is added to the end if on `main` to let all main workflows run
+  group: ${{ github.ref }}-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref == 'refs/heads/main' && github.sha || '' }}
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
     name: Build Climate Warehouse App and Upload to S3
@@ -24,10 +29,10 @@ jobs:
             apt-get install -y awscli
 
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node 16.x
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
