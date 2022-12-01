@@ -1,0 +1,56 @@
+name: Build Web
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  # SHA is added to the end if on `main` to let all main workflows run
+  group: ${{ github.ref }}-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref == 'refs/heads/main' && github.sha || '' }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build Climate Warehouse Web App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Common Job Env
+        uses: Chia-Network/actions/setjobenv@main
+
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: npm install and build
+        run: |
+          node --version
+          npm install
+          npm run build
+
+      - name: Create .tar.gz of the web build
+        run: tar -cvzf web-build.tar.gz build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: web-build.tar.gz
+
+      - name: Upload artifact to release
+        if: env.RELEASE == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload \
+            $RELEASE_TAG \
+            web-build.tar.gz
