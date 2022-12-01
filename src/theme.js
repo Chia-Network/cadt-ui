@@ -65,9 +65,9 @@ const colors = {
 const typography = {
   primary: {
     regular: 'Arial, sans-serif',
-    semiBold: 'LucidaSemiBold',
-    bold: 'LucidaBold',
-    extraBold: 'LucidaExtraBold',
+    semiBold: 'ArialSemiBold',
+    bold: 'ArialBold',
+    extraBold: 'ArialExtraBold',
     light: 'Arial, sans-serif',
   },
 };
