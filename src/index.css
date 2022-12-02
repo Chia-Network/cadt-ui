@@ -1,22 +1,22 @@
 @font-face {
-  font-family: 'LucidaBold';
-  src: url('./assets/fonts/Lucida-Console-Regular.ttf') format('truetype');
+  font-family: 'ArialBold';
+  src: url('./assets/fonts/arial.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: auto;
 }
 
 @font-face {
-  font-family: 'LucidaExtraBold';
-  src: url('./assets/fonts/Lucida-Console-Regular.ttf') format('truetype');
+  font-family: 'ArialExtraBold';
+  src: url('./assets/fonts/arial.ttf') format('truetype');
   font-weight: 800;
   font-style: normal;
   font-display: auto;
 }
 
 @font-face {
-  font-family: 'LucidaSemiBold';
-    src: url('./assets/fonts/Lucida-Console-Regular.ttf') format('truetype');
+  font-family: 'ArialSemiBold';
+    src: url('./assets/fonts/arial.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: auto;
