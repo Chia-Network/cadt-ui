@@ -1,13 +1,14 @@
 import _ from 'lodash';
 
 const hostName = String(_.get(window, 'location.hostname', ''));
+const protocol = String(_.get(window, 'location.protocol', 'http'));
 
 export default {
   // if running locally use localhost api, otherwise use observer node api
   API_HOST:
     _.isEmpty(hostName) || hostName.includes('localhost')
       ? 'http://localhost:31310/v1'
-      : 'https://api-green.climatewarehouse.chia.net/v1',
+      : `${protocol}//${hostName}/api/v1`,
   APP_URL: 'https://app.climatewarehouse.chia.net/',
   MAX_TABLE_SIZE: 7,
   MAX_AUDIT_TABLE_SIZE: 20,
