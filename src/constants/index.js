@@ -9,7 +9,9 @@ export default {
     _.isEmpty(hostName) || hostName.includes('localhost')
       ? 'http://localhost:31310/v1'
       : `${protocol}//${hostName}/api/v1`,
-  APP_URL: 'https://app.climatewarehouse.chia.net/',
+  APP_URL: _.isEmpty(hostName) || hostName.includes('localhost')
+      ? 'https://app.climatewarehouse.chia.net/'
+      : `${protocol}//${hostName}/`,
   MAX_TABLE_SIZE: 7,
   MAX_AUDIT_TABLE_SIZE: 20,
   HEADER_HEIGHT: 64, // Needed to be used to calculate max height for body components
