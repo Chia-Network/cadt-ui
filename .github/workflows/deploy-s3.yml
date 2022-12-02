@@ -37,6 +37,9 @@ jobs:
           node-version: '16.x'
 
       - name: npm install and build
+        env:
+          REACT_APP_API_HOST: "https://api-green.climatewarehouse.chia.net/v1"
+          REACT_APP_APP_URL: "http://green-cw-ui.s3-website-us-west-2.amazonaws.com/"
         run: |
           node --version
           npm install
