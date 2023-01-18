@@ -1,3 +1,18 @@
+## [1.0.18](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.17...1.0.18) (2022-12-02)
+
+
+
+## [1.0.17](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.16...1.0.17) (2022-12-02)
+
+
+### Features
+
+* hide transfer for read only and update api url ([9fcbfe7](https://github.com/Chia-Network/climate-warehouse-ui/commit/9fcbfe7e430961b1259b23f42888d89003158111))
+* update body fonts ([7d20ac6](https://github.com/Chia-Network/climate-warehouse-ui/commit/7d20ac614584fc689ce99833415ec80cc28de004))
+* update headings to arial ([86b2bdc](https://github.com/Chia-Network/climate-warehouse-ui/commit/86b2bdc434809b6345e195e7c1f556ce62fb19bf))
+
+
+
 ## [1.0.16](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.15...1.0.16) (2022-11-23)
 
 
