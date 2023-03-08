@@ -9,7 +9,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "electron-builder": "^22.14.13",
+    "electron-builder": "^24.0.0",
     "foreman": "^3.0.1",
     "git-authors-cli": "^1.0.36",
     "husky": "^7.0.4",
