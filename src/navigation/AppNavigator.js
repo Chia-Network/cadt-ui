@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import {
@@ -7,7 +7,11 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import { IndeterminateProgressOverlay, Dashboard } from '../components/';
+import {
+  IndeterminateProgressOverlay,
+  Dashboard,
+  MyAccount,
+} from '../components/';
 import { NotificationContainer } from 'react-notifications';
 
 import { signOut } from '../store/actions/app';
@@ -22,6 +26,7 @@ import { getOrganizationData } from '../store/actions/climateWarehouseActions';
 const AppNavigator = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
+  const [showConnectionModal, setShowConnectionModal] = useState(false);
 
   const {
     showProgressOverlay,
@@ -45,29 +50,47 @@ const AppNavigator = () => {
   return (
     <AppContainer>
       {showProgressOverlay && <IndeterminateProgressOverlay />}
-      {isAppLocked && (
-        <Modal
-          informationType="error"
-          modalType={modalTypeEnum.information}
-          title={intl.formatMessage({ id: 'something-went-wrong' })}
-          body={intl.formatMessage({ id: 'governance-data-failed' })}
-          hideButtons
-        />
+      {!connectionCheck ? (
+        <>
+          {showConnectionModal ? (
+            <MyAccount
+              openModal={true}
+              onClose={() => setShowConnectionModal(false)}
+              isHeader={false}
+            />
+          ) : (
+            <Modal
+              informationType="error"
+              modalType={modalTypeEnum.information}
+              label="Try Again"
+              onOk={() => dispatch(getOrganizationData())}
+              title={intl.formatMessage({ id: 'network-error' })}
+              body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
+              extraButtonLabel={
+                apiKey != null
+                  ? intl.formatMessage({ id: 'sign-out' })
+                  : intl.formatMessage({ id: 'sign-in' })
+              }
+              extraButtonOnClick={
+                apiKey
+                  ? () => dispatch(signOut())
+                  : () => setShowConnectionModal(true)
+              }
+            />
+          )}
+        </>
+      ) : (
+        isAppLocked && (
+          <Modal
+            informationType="error"
+            modalType={modalTypeEnum.information}
+            title={intl.formatMessage({ id: 'something-went-wrong' })}
+            body={intl.formatMessage({ id: 'governance-data-failed' })}
+            hideButtons
+          />
+        )
       )}
-      {!connectionCheck && (
-        <Modal
-          informationType="error"
-          modalType={modalTypeEnum.information}
-          label="Try Again"
-          onOk={() => dispatch(getOrganizationData())}
-          title={intl.formatMessage({ id: 'network-error' })}
-          body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
-          extraButtonLabel={
-            apiKey != null ? intl.formatMessage({ id: 'sign-out' }) : undefined
-          }
-          extraButtonOnClick={apiKey ? () => dispatch(signOut()) : undefined}
-        />
-      )}
+
       {pendingError && (
         <Modal
           title={intl.formatMessage({ id: 'create-pending-title' })}
