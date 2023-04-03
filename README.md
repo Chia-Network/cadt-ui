@@ -1,10 +1,23 @@
-# Climate Warehouse Auxillery App
+# Climate Warehouse User Interface
 
-Auxillery App for the Climate Warehouse
+This repository provides a graphical user interface (UI) for the [Climate Warehouse](https://github.com/Chia-Network/climate-warehouse) application.  The Climate Warehouse interfaces with the Chia Blockchain software and provides and API for entering and retrieving carbon data.  This UI is a javascript application that connects to the Climate Warehouse API for a convenient way to access the data. 
 
-## Quickstart
 
-### Installation
+## Installation
+
+The UI application can be hosted as a web application and accessed via the browser, or as a desktop application packaged with Electron. 
+
+### Desktop Applications
+
+The [releases](https://github.com/Chia-Network/climate-warehouse-ui/releases) page provides desktop applications packaged for Windows, Mac, and Debian-based Linux distributions.  
+
+### Web Application
+
+The Climate Warehouse UI can be hosted as a web application, either for internal use, or made available to the public.  When operating as a web application, the user's browser must be able to connect to the [Climate Warehouse API](https://github.com/Chia-Network/climate-warehouse).  This means the API must be available on the public internet if the UI is public.  The `READ_ONLY` option on the API should be set when running a public observer node. 
+
+To host the UI on the web, use the [web-build.tar.gz file from the releases page](https://github.com/Chia-Network/climate-warehouse-ui/releases). One of the simplest solutions is to uncompress these files into a [public S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteAccessPermissionsReqd.html). These files could also be served by any webserver, such as Nginx or Apache.  
+
+### From Source
 
 ```
 npm install -g react-scripts
@@ -27,7 +40,7 @@ chmod ug+x .git/hooks/*
 npm run start
 ```
 
-### Prerequisites
+#### Prerequisites
 
 You'll need:
 
