@@ -399,7 +399,7 @@ export const getPickLists = () => {
     };
 
     try {
-      const response = await fetch(
+      const response = await fetchWrapper(
         `${constants.API_HOST}/governance/meta/pickList`,
       );
 
@@ -431,7 +431,7 @@ export const getGovernanceOrgList = () => {
     dispatch(activateProgressIndicator);
 
     try {
-      const response = await fetch(
+      const response = await fetchWrapper(
         `${constants.API_HOST}/governance/meta/orgList`,
       );
 

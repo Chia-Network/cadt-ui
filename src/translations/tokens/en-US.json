@@ -302,7 +302,7 @@
   "labels": "Labels",
   "issuances": "Issuances",
   "network-error": "Network Error",
-  "there-is-a-connection-error": "There is a connection error. The Climate Action Data Trust is inaccessible.",
+  "there-is-a-connection-error": "There is a connection error. The Climate Action Data Trust is inaccessible. Please try again or connect to a different instance.",
   "staging-group-could-not-be-deleted": "The staging group could not be deleted.",
   "staging-group-deleted": "The staging group was successfully deleted.",
   "project-locations": "Project Locations",
