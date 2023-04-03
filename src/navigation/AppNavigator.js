@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import {
@@ -13,8 +13,6 @@ import {
   MyAccount,
 } from '../components/';
 import { NotificationContainer } from 'react-notifications';
-
-import { signOut } from '../store/actions/app';
 import * as Pages from '../pages';
 
 import { createNotification } from '../utils/notificationUtils';
@@ -26,14 +24,12 @@ import { getOrganizationData } from '../store/actions/climateWarehouseActions';
 const AppNavigator = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
-  const [showConnectionModal, setShowConnectionModal] = useState(false);
 
   const {
     showProgressOverlay,
     connectionCheck,
     pendingError,
     notification,
-    apiKey,
     isAppLocked,
   } = useSelector(store => store.app);
 
@@ -51,34 +47,11 @@ const AppNavigator = () => {
     <AppContainer>
       {showProgressOverlay && <IndeterminateProgressOverlay />}
       {!connectionCheck ? (
-        <>
-          {showConnectionModal ? (
-            <MyAccount
-              openModal={true}
-              onClose={() => setShowConnectionModal(false)}
-              isHeader={false}
-            />
-          ) : (
-            <Modal
-              informationType="error"
-              modalType={modalTypeEnum.information}
-              label="Try Again"
-              onOk={() => dispatch(getOrganizationData())}
-              title={intl.formatMessage({ id: 'network-error' })}
-              body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
-              extraButtonLabel={
-                apiKey != null
-                  ? intl.formatMessage({ id: 'sign-out' })
-                  : intl.formatMessage({ id: 'sign-in' })
-              }
-              extraButtonOnClick={
-                apiKey
-                  ? () => dispatch(signOut())
-                  : () => setShowConnectionModal(true)
-              }
-            />
-          )}
-        </>
+        <MyAccount
+          openModal={true}
+          onClose={() => dispatch(getOrganizationData())}
+          isHeader={false}
+        />
       ) : (
         isAppLocked && (
           <Modal
