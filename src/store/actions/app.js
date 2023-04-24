@@ -128,15 +128,18 @@ export const setNotificationMessage = (type, id) => {
 
 export const signIn = ({ apiKey, serverAddress }) => {
   return async dispatch => {
-    if (apiKey && serverAddress) {
-      localStorage.setItem('apiKey', apiKey);
+    if (serverAddress) {
       localStorage.setItem('serverAddress', serverAddress);
+      let payload = { serverAddress };
+
+      if (apiKey) {
+        localStorage.setItem('apiKey', apiKey);
+        payload = { ...payload, apiKey };
+      }
+
       dispatch({
         type: actions.SIGN_USER_IN,
-        payload: {
-          apiKey,
-          serverAddress,
-        },
+        payload: payload,
       });
       dispatch(getOrganizationData());
       dispatch(refreshApp(true));

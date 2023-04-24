@@ -321,7 +321,7 @@
   "add-project-with-label": "Add a project with a label first",
   "sign-out": "Disconnect",
   "sign-in": "Connect",
-  "api-key": "Api key",
+  "api-key": "API key",
   "server-address": "Server address",
   "log-in-to-remote-node": "Log in to remote node",
   "add-valid-server-address": "Add a valid server address",
