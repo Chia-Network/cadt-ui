@@ -2558,30 +2558,38 @@ export const getVintages = options => {
 const fetchWrapper = async (url, payload) => {
   const apiKey = localStorage.getItem('apiKey');
   const serverAddress = localStorage.getItem('serverAddress');
-  const doesSignInDataExist = apiKey != null && serverAddress != null;
 
-  if (doesSignInDataExist) {
-    const payloadWithApiKey = { ...payload };
-    if (payloadWithApiKey?.headers) {
-      payloadWithApiKey.headers = {
-        ...payloadWithApiKey.headers,
-        'x-api-key': apiKey,
-      };
-    } else {
-      payloadWithApiKey.headers = { 'x-api-key': apiKey };
+  // Check if serverAddress is set and is a string; this results in changing the URL to the stored server address
+  // and adds the API key header (if applicable).
+  if (serverAddress && serverAddress.endsWith) {
+    const newPayload = { ...payload };
+
+    // If API key was set, add the header
+    if (apiKey) {
+      if (newPayload.headers) {
+        // Add to existing headers
+        newPayload.headers = {
+          ...newPayload.headers,
+          'x-api-key': apiKey,
+        };
+      } else {
+        // Create headers object if it doesn't exist
+        newPayload.headers = { 'x-api-key': apiKey };
+      }
     }
 
-    const serverAddressUrl =
-      serverAddress[serverAddress.length - 1] !== '/'
-        ? `${serverAddress}/`
-        : serverAddressUrl;
+    //Ensure server address ends in a forward slash
+    const addressWithSlash = serverAddress.endsWith('/')
+      ? serverAddress
+      : serverAddress + '/';
 
+    // Replace original URL with stored server URL (with slash)
     const newUrl = url.replace(
       /(https:|http:|)(^|\/\/)(.*?\/)/g,
-      serverAddressUrl,
+      addressWithSlash,
     );
 
-    return fetch(newUrl, payloadWithApiKey);
+    return fetch(newUrl, newPayload);
   }
 
   return fetch(url, payload);
