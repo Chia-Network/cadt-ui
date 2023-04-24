@@ -38,13 +38,12 @@ const MyAccount = ({ openModal = false, onClose, isHeader = true }) => {
   const [serverAddress, setServerAddress] = useState(null);
   const [isLogInModalOpen, setIsLogInModalOpen] = useState(openModal);
   const appStore = useSelector(state => state.app);
-  const isUserLoggedIn =
-    appStore.apiKey !== null && appStore.serverAddress !== null;
+  const isUserLoggedIn = appStore.serverAddress !== null;
   const intl = useIntl();
   const dispatch = useDispatch();
 
   const signUserIn = () => {
-    if (serverAddress && apiKey && validateUrl(serverAddress)) {
+    if (serverAddress && validateUrl(serverAddress)) {
       dispatch(signIn({ apiKey, serverAddress }));
       setServerAddress(null);
       setApiKey(null);
@@ -124,7 +123,7 @@ const MyAccount = ({ openModal = false, onClose, isHeader = true }) => {
               <StyledFieldContainer>
                 <StyledLabelContainer>
                   <Body>
-                    *<FormattedMessage id="api-key" />
+                    <FormattedMessage id="api-key" />
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
@@ -136,13 +135,6 @@ const MyAccount = ({ openModal = false, onClose, isHeader = true }) => {
                     placeholderText="xxxxxxx-xxxxxx-xxxxxx"
                   />
                 </InputContainer>
-                {apiKey === null && (
-                  <Body size="Small" color="red">
-                    {intl.formatMessage({
-                      id: 'add-valid-api-key',
-                    })}
-                  </Body>
-                )}
               </StyledFieldContainer>
             </ModalFormContainerStyle>
           }
