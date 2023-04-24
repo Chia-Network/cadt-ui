@@ -165,13 +165,17 @@ export const signInFromLocalStorage = () => {
   return async dispatch => {
     const apiKey = localStorage.getItem('apiKey');
     const serverAddress = localStorage.getItem('serverAddress');
-    if (apiKey && serverAddress) {
+
+    if (serverAddress) {
+      let payload = { serverAddress };
+
+      if (apiKey) {
+        payload = { ...payload, apiKey };
+      }
+
       dispatch({
         type: actions.SIGN_USER_IN,
-        payload: {
-          apiKey,
-          serverAddress,
-        },
+        payload: payload,
       });
     }
   };
