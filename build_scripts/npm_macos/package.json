@@ -13,7 +13,7 @@
     "foreman": "^3.0.1",
     "git-authors-cli": "^1.0.36",
     "husky": "^7.0.4",
-    "lint-staged": "^11.2.6",
+    "lint-staged": "^13.2.1",
     "notarize-cli": "^0.2.0",
     "prettier": "^2.4.1"
   }
