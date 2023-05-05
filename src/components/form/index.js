@@ -1,4 +1,3 @@
-export * from './SearchInputField';
 export * from './PrimaryButton';
 export * from './StandardInput';
 export * from './SearchInput';
@@ -7,3 +6,6 @@ export * from './Select';
 export * from './SelectOrganizations';
 export * from './SimpleSelect';
 export * from './FormikError';
+export * from './SelectCreatable';
+export * from './UploadPngInput';
+export * from './UploadFileInput';

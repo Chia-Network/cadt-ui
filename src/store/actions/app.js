@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
+import constants from '../../constants';
 import { keyMirror } from '../store-functions';
 import { LANGUAGE_CODES } from '../../translations';
-
 import { getOrganizationData } from './climateWarehouseActions';
 
 export const actions = keyMirror(
@@ -21,6 +21,7 @@ export const actions = keyMirror(
   'SIGN_USER_OUT',
   'REFRESH_APP',
   'LOCK_APP',
+  'SET_USER',
 );
 
 export const refreshApp = render => ({
@@ -36,6 +37,11 @@ export const lockApp = isLocked => ({
 export const setReadOnly = isReadOnly => ({
   type: actions.SET_READ_ONLY,
   payload: isReadOnly,
+});
+
+export const setUser = user => ({
+  type: actions.SET_USER,
+  payload: user,
 });
 
 export const activateProgressIndicator = {
@@ -80,6 +86,23 @@ export const NotificationMessageTypeEnum = {
   null: 'null',
 };
 
+export const getUser = () => {
+  return async dispatch => {
+    try {
+      const req = new XMLHttpRequest();
+      req.open('GET', constants.APP_URL, false);
+      req.send(null);
+
+      if (req.getAllResponseHeaders().indexOf('x-user') >= 0) {
+        const xUser = req.getResponseHeader('x-user');
+        dispatch(setUser(xUser));
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+};
+
 export const setNotificationMessage = (type, id) => {
   return async dispatch => {
     if (
@@ -105,15 +128,18 @@ export const setNotificationMessage = (type, id) => {
 
 export const signIn = ({ apiKey, serverAddress }) => {
   return async dispatch => {
-    if (apiKey && serverAddress) {
-      localStorage.setItem('apiKey', apiKey);
+    if (serverAddress) {
       localStorage.setItem('serverAddress', serverAddress);
+      let payload = { serverAddress };
+
+      if (apiKey) {
+        localStorage.setItem('apiKey', apiKey);
+        payload = { ...payload, apiKey };
+      }
+
       dispatch({
         type: actions.SIGN_USER_IN,
-        payload: {
-          apiKey,
-          serverAddress,
-        },
+        payload: payload,
       });
       dispatch(getOrganizationData());
       dispatch(refreshApp(true));
@@ -139,13 +165,17 @@ export const signInFromLocalStorage = () => {
   return async dispatch => {
     const apiKey = localStorage.getItem('apiKey');
     const serverAddress = localStorage.getItem('serverAddress');
-    if (apiKey && serverAddress) {
+
+    if (serverAddress) {
+      let payload = { serverAddress };
+
+      if (apiKey) {
+        payload = { ...payload, apiKey };
+      }
+
       dispatch({
         type: actions.SIGN_USER_IN,
-        payload: {
-          apiKey,
-          serverAddress,
-        },
+        payload: payload,
       });
     }
   };

@@ -16,6 +16,7 @@ import {
   StyledFieldContainer,
   StyledLabelContainer,
   ModalFormContainerStyle,
+  Link,
 } from '../../components';
 
 import {
@@ -32,18 +33,17 @@ const StyledMyAccountContainer = styled('div')`
   cursor: pointer;
 `;
 
-const MyAccount = () => {
+const MyAccount = ({ openModal = false, onClose, isHeader = true }) => {
   const [apiKey, setApiKey] = useState(null);
   const [serverAddress, setServerAddress] = useState(null);
-  const [isLogInModalOpen, setIsLogInModalOpen] = useState(false);
+  const [isLogInModalOpen, setIsLogInModalOpen] = useState(openModal);
   const appStore = useSelector(state => state.app);
-  const isUserLoggedIn =
-    appStore.apiKey !== null && appStore.serverAddress !== null;
+  const isUserLoggedIn = appStore.serverAddress !== null;
   const intl = useIntl();
   const dispatch = useDispatch();
 
   const signUserIn = () => {
-    if (serverAddress && apiKey && validateUrl(serverAddress)) {
+    if (serverAddress && validateUrl(serverAddress)) {
       dispatch(signIn({ apiKey, serverAddress }));
       setServerAddress(null);
       setApiKey(null);
@@ -59,29 +59,34 @@ const MyAccount = () => {
 
   return (
     <StyledMyAccountContainer>
-      {isUserLoggedIn && (
-        <div
-          onClick={() => {
-            dispatch(signOut());
-            dispatch(refreshApp(true));
-          }}
-        >
-          <Body color="#1890ff">
-            <FormattedMessage id="sign-out" />
-          </Body>
-        </div>
+      {isHeader && (
+        <>
+          {isUserLoggedIn && (
+            <div
+              onClick={() => {
+                dispatch(signOut());
+                dispatch(refreshApp(true));
+              }}
+            >
+              <Link>
+                <FormattedMessage id="sign-out" />
+              </Link>
+            </div>
+          )}
+          {!isUserLoggedIn && (
+            <div onClick={() => setIsLogInModalOpen(true)}>
+              <Link>
+                <FormattedMessage id="sign-in" />
+              </Link>
+            </div>
+          )}
+        </>
       )}
-      {!isUserLoggedIn && (
-        <div onClick={() => setIsLogInModalOpen(true)}>
-          <Body color="#1890ff">
-            <FormattedMessage id="sign-in" />
-          </Body>
-        </div>
-      )}
+
       {isLogInModalOpen && (
         <Modal
           onOk={signUserIn}
-          onClose={() => setIsLogInModalOpen(false)}
+          onClose={() => (onClose ? onClose() : setIsLogInModalOpen(false))}
           modalType={modalTypeEnum.basic}
           title={intl.formatMessage({
             id: 'log-in-to-remote-node',
@@ -118,7 +123,7 @@ const MyAccount = () => {
               <StyledFieldContainer>
                 <StyledLabelContainer>
                   <Body>
-                    *<FormattedMessage id="api-key" />
+                    <FormattedMessage id="api-key" />
                   </Body>
                 </StyledLabelContainer>
                 <InputContainer>
@@ -130,13 +135,6 @@ const MyAccount = () => {
                     placeholderText="xxxxxxx-xxxxxx-xxxxxx"
                   />
                 </InputContainer>
-                {apiKey === null && (
-                  <Body size="Small" color="red">
-                    {intl.formatMessage({
-                      id: 'add-valid-api-key',
-                    })}
-                  </Body>
-                )}
               </StyledFieldContainer>
             </ModalFormContainerStyle>
           }

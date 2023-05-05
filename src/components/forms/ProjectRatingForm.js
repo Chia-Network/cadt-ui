@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { FormikError } from '../form/FormikError';
@@ -21,10 +21,7 @@ import {
   InputContainer,
   SpanTwoColumnsContainer,
   SimpleSelectVariantEnum,
-  SimpleSelect,
-  SimpleSelectSizeEnum,
-  SimpleSelectTypeEnum,
-  SimpleSelectStateEnum,
+  SelectCreatable
 } from '..';
 
 // eslint-disable-next-line react/display-name
@@ -32,7 +29,10 @@ const ProjectRatingForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
     const { pickLists } = useSelector(store => store.climateWarehouse);
-    const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+    const getFieldName = useCallback(
+      fieldName => `${name}[${index}].${fieldName}`,
+      [index, name],
+    );
 
     return (
       <ModalFormContainerStyle>
@@ -47,29 +47,22 @@ const ProjectRatingForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'ratings-rating-type-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                <SimpleSelect
+                <SelectCreatable
                   variant={
                     errors?.ratingType &&
                     touched?.ratingType &&
                     SimpleSelectVariantEnum.error
                   }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
                   options={pickLists.ratingType}
-                  state={SimpleSelectStateEnum.default}
-                  selected={value.ratingType ? [value.ratingType] : undefined}
-                  onChange={selectedOptions =>
-                    setFieldValue(
-                      getFieldName('ratingType'),
-                      selectedOptions[0],
-                    )
+                  selected={value.ratingType}
+                  onChange={val =>
+                    setFieldValue(getFieldName('ratingType'), val)
                   }
                   onBlur={handleBlur}
                 />
@@ -85,8 +78,7 @@ const ProjectRatingForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'ratings-rating-value-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -122,8 +114,7 @@ const ProjectRatingForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'ratings-rating-range-highest-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -162,8 +153,7 @@ const ProjectRatingForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'ratings-rating-range-lowest-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -203,8 +193,7 @@ const ProjectRatingForm = memo(
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'ratings-rating-report-link-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>

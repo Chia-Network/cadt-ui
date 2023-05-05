@@ -1,14 +1,23 @@
-/* es-lint disable */
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
 import { getUpdatedUrl } from '../../utils/urlUtils';
 import { useWindowSize } from '../../components/hooks/useWindowSize';
+import {
+  addIsMakerPropToChangeGroups,
+  convertProcessedOfferToStagingChangeGroups,
+} from '../../utils/transferOfferUtils';
 
 import {
   APIDataTable,
@@ -29,8 +38,9 @@ import {
   CommitModal,
   Modal,
   modalTypeEnum,
-  MinusIcon,
+  RemoveIcon,
   ProjectDetailedViewModal,
+  OfferUploadModal,
 } from '../../components';
 
 import { setPendingError } from '../../store/actions/app';
@@ -44,8 +54,8 @@ import {
   deleteAllStagingData,
   clearProjectData,
   getProjectData,
+  takerGetUploadedOffer,
 } from '../../store/actions/climateWarehouseActions';
-import theme from '../../theme';
 
 const headings = [
   'currentRegistry',
@@ -90,6 +100,8 @@ const StyledFiltersContainer = styled('div')`
 `;
 
 const StyledButtonContainer = styled('div')`
+  display: flex;
+  gap: 10px;
   margin-left: auto;
 `;
 
@@ -128,15 +140,20 @@ const StyledCSVOperationsContainer = styled('div')`
   }
 `;
 
-const Projects = () => {
+const Projects = withTheme(({ theme }) => {
   const [createFormIsDisplayed, setCreateFormIsDisplayed] = useState(false);
   const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
   const [isDeleteAllStagingVisible, setIsDeleteAllStagingVisible] =
     useState(false);
   const { notification } = useSelector(store => store.app);
-  const { project, projects, stagingData, totalProjectsPages } = useSelector(
-    store => store.climateWarehouse,
-  );
+  const {
+    project,
+    projects,
+    stagingData,
+    totalProjectsPages,
+    totalNumberOfEntries,
+    processedTransferOffer,
+  } = useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -147,11 +164,15 @@ const Projects = () => {
   let searchParams = new URLSearchParams(location.search);
   const projectsContainerRef = useRef(null);
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
+  const [isImportOfferModalVisible, setIsImportModalVisible] = useState(false);
   const windowSize = useWindowSize();
 
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
+  const handleTabChange = useCallback(
+    (event, newValue) => {
+      setTabValue(newValue);
+    },
+    [setTabValue],
+  );
 
   useEffect(() => {
     const projectId = searchParams.get('projectId');
@@ -212,17 +233,20 @@ const Projects = () => {
   const pageIsMyRegistryPage =
     searchParams.has('myRegistry') && searchParams.get('myRegistry') === 'true';
 
-  const onOrganizationSelect = selectedOption => {
-    const orgUid = selectedOption[0].orgUid;
-    setSelectedOrganization(orgUid);
-    navigate(
-      `${location.pathname}?${getUpdatedUrl(location.search, {
-        param: 'orgUid',
-        value: orgUid,
-      })}`,
-      { replace: true },
-    );
-  };
+  const onOrganizationSelect = useCallback(
+    selectedOption => {
+      const orgUid = selectedOption[0].orgUid;
+      setSelectedOrganization(orgUid);
+      navigate(
+        `${location.pathname}?${getUpdatedUrl(location.search, {
+          param: 'orgUid',
+          value: orgUid,
+        })}`,
+        { replace: true },
+      );
+    },
+    [location, setSelectedOrganization],
+  );
 
   const onSearch = useMemo(
     () =>
@@ -316,6 +340,43 @@ const Projects = () => {
     );
   }, [projects, stagingData]);
 
+  const pendingProjects = useMemo(
+    () =>
+      stagingData?.projects?.pending?.filter(item => !item.isTransfer) ?? [],
+    [stagingData],
+  );
+
+  const pendingMakerOfferChangeGroups = useMemo(() => {
+    const makerChangeGroupsWithoutIsMakerProp =
+      stagingData?.projects?.pending?.filter(item => item.isTransfer) ?? [];
+    const makerChangeGroupsWithIsMakerProp = addIsMakerPropToChangeGroups(
+      makerChangeGroupsWithoutIsMakerProp,
+    );
+    return makerChangeGroupsWithIsMakerProp;
+  }, [stagingData]);
+
+  useEffect(() => {
+    dispatch(takerGetUploadedOffer());
+  }, [tabValue]);
+
+  const pendingTakerOfferChangeGroups = useMemo(
+    () =>
+      processedTransferOffer !== null
+        ? convertProcessedOfferToStagingChangeGroups(processedTransferOffer)
+        : [],
+    [processedTransferOffer],
+  );
+
+  const isImportTransferOfferButtonDisabled = useMemo(
+    () => pendingTakerOfferChangeGroups.length > 0,
+    [pendingTakerOfferChangeGroups],
+  );
+
+  const pendingTransferOffers = useMemo(
+    () => [...pendingMakerOfferChangeGroups, ...pendingTakerOfferChangeGroups],
+    [stagingData],
+  );
+
   if (!filteredColumnsTableData) {
     return null;
   }
@@ -346,6 +407,15 @@ const Projects = () => {
             </StyledFiltersContainer>
           )}
           <StyledButtonContainer>
+            {tabValue === 4 && pageIsMyRegistryPage && (
+              <PrimaryButton
+                label={intl.formatMessage({ id: 'import-offer' })}
+                size="large"
+                onClick={() => setIsImportModalVisible(true)}
+                disabled={isImportTransferOfferButtonDisabled}
+              />
+            )}
+
             {tabValue === 0 && pageIsMyRegistryPage && (
               <PrimaryButton
                 label={intl.formatMessage({ id: 'create' })}
@@ -354,7 +424,7 @@ const Projects = () => {
                   <AddIcon
                     width="16.13"
                     height="16.88"
-                    fill={theme.colors.default.onButton}
+                    fill={theme.colors.default.white}
                   />
                 }
                 onClick={() => {
@@ -387,29 +457,32 @@ const Projects = () => {
         )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab
-              label={`${intl.formatMessage({ id: 'committed' })} (${
-                projects && projects?.length
-              })`}
-            />
+            <Tab label={intl.formatMessage({ id: 'committed' })} />
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
-                  stagingData && totalProjectsPages
+                  totalNumberOfEntries && totalNumberOfEntries.projects.staging
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  stagingData && stagingData.projects.pending.length
+                  pendingProjects.length
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'failed' })} (${
-                  stagingData && stagingData.projects.failed.length
+                  totalNumberOfEntries && totalNumberOfEntries.projects.failed
+                })`}
+              />
+            )}
+            {pageIsMyRegistryPage && (
+              <Tab
+                label={`${intl.formatMessage({ id: 'offers' })} (${
+                  pendingTransferOffers.length
                 })`}
               />
             )}
@@ -419,11 +492,11 @@ const Projects = () => {
               tabValue === 1 &&
               stagingData?.projects?.staging?.length > 0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
-                  <MinusIcon width={20} height={20} />
+                  <RemoveIcon width={20} height={20} />
                 </span>
               )}
             <span onClick={() => downloadTxtFile('projects', searchParams)}>
-              <DownloadIcon />
+              <DownloadIcon width={20} height={20} />
             </span>
             {pageIsMyRegistryPage && (
               <span>
@@ -495,17 +568,17 @@ const Projects = () => {
                 )}
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
-                {stagingData && stagingData.projects.pending.length === 0 && (
+                {pendingProjects.length === 0 && (
                   <NoDataMessageContainer>
                     <H3>
                       <FormattedMessage id="no-pending" />
                     </H3>
                   </NoDataMessageContainer>
                 )}
-                {stagingData && (
+                {pendingProjects.length > 0 && (
                   <StagingDataGroups
                     headings={headings}
-                    data={stagingData.projects.pending}
+                    data={pendingProjects}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
@@ -526,6 +599,22 @@ const Projects = () => {
                       dispatch(deleteStagingData(uuid))
                     }
                     retryStagingData={uuid => dispatch(retryStagingData(uuid))}
+                    modalSizeAndPosition={modalSizeAndPosition}
+                  />
+                )}
+              </TabPanel>
+              <TabPanel value={tabValue} index={4}>
+                {pendingTransferOffers.length === 0 && (
+                  <NoDataMessageContainer>
+                    <H3>
+                      <FormattedMessage id="no-pending-offers" />
+                    </H3>
+                  </NoDataMessageContainer>
+                )}
+                {pendingTransferOffers.length > 0 && (
+                  <StagingDataGroups
+                    headings={headings}
+                    data={pendingTransferOffers}
                     modalSizeAndPosition={modalSizeAndPosition}
                   />
                 )}
@@ -565,8 +654,15 @@ const Projects = () => {
           projectObject={project}
         />
       )}
+      {isImportOfferModalVisible && (
+        <OfferUploadModal
+          onClose={() => {
+            setIsImportModalVisible(false);
+          }}
+        />
+      )}
     </>
   );
-};
+});
 
 export { Projects };

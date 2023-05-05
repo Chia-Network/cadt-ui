@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
 
@@ -23,11 +23,9 @@ import {
   SpanTwoColumnsContainer,
   HrSpanTwoColumnsContainer,
   SimpleSelectVariantEnum,
-  SimpleSelectSizeEnum,
-  SimpleSelectStateEnum,
-  SimpleSelectTypeEnum,
-  SimpleSelect,
+  SelectCreatable,
   FormikError,
+  SimpleSelectStateEnum,
 } from '..';
 
 // eslint-disable-next-line react/display-name
@@ -35,7 +33,10 @@ const ProjectLabelForm = memo(
   ({ index, name, errors, touched, value, setFieldValue, handleBlur }) => {
     const intl = useIntl();
     const { pickLists } = useSelector(store => store.climateWarehouse);
-    const getFieldName = fieldName => `${name}[${index}].${fieldName}`;
+    const getFieldName = useCallback(
+      fieldName => `${name}[${index}].${fieldName}`,
+      [name, index],
+    );
     const areFieldsDisabled = Boolean(value.id);
 
     return (
@@ -51,8 +52,7 @@ const ProjectLabelForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'labels-label-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -90,30 +90,25 @@ const ProjectLabelForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'labels-label-type-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
               </StyledLabelContainer>
               <InputContainer>
-                <SimpleSelect
+                <SelectCreatable
                   variant={
-                    errors?.labelType &&
-                    touched?.labelType &&
-                    SimpleSelectVariantEnum.error
-                  }
-                  size={SimpleSelectSizeEnum.large}
-                  type={SimpleSelectTypeEnum.basic}
-                  options={pickLists.labelType}
-                  state={
-                    areFieldsDisabled
+                    (errors?.labelType &&
+                      touched?.labelType &&
+                      SimpleSelectVariantEnum.error) ||
+                    (areFieldsDisabled
                       ? SimpleSelectStateEnum.disabled
-                      : SimpleSelectStateEnum.default
+                      : SimpleSelectStateEnum.default)
                   }
-                  selected={value.labelType ? [value.labelType] : undefined}
-                  onChange={selectedOptions =>
-                    setFieldValue(getFieldName('labelType'), selectedOptions[0])
+                  options={pickLists.labelType}
+                  selected={value.labelType}
+                  onChange={val =>
+                    setFieldValue(getFieldName('labelType'), val)
                   }
                   onBlur={handleBlur}
                 />
@@ -130,8 +125,7 @@ const ProjectLabelForm = memo(
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'labels-label-link-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -173,8 +167,7 @@ const ProjectLabelForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'labels-validity-period-start-date-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -210,8 +203,7 @@ const ProjectLabelForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'labels-validity-period-end-date-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -244,8 +236,7 @@ const ProjectLabelForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'labels-crediting-period-start-date-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -281,8 +272,7 @@ const ProjectLabelForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'labels-crediting-period-end-date-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>
@@ -318,8 +308,7 @@ const ProjectLabelForm = memo(
                   <ToolTipContainer
                     tooltip={intl.formatMessage({
                       id: 'labels-unit-quantity-description',
-                    })}
-                  >
+                    })}>
                     <DescriptionIcon height="14" width="14" />
                   </ToolTipContainer>
                 </Body>

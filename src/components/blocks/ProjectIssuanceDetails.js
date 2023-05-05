@@ -17,7 +17,7 @@ const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
         <StyledDetailedViewTab>
           <StyledItem>
             <Body size="Bold" width="100%">
-              <FormattedMessage id="start-date" />
+              <FormattedMessage id="verification-period-start" />
             </Body>
             {data && detailsViewData('data', data, 'startDate', changeColor)}
             {stagingData &&
@@ -30,7 +30,7 @@ const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
           </StyledItem>
           <StyledItem>
             <Body size="Bold" width="100%">
-              <FormattedMessage id="end-date" />
+              <FormattedMessage id="verification-period-end" />
             </Body>
             {data && detailsViewData('data', data, 'endDate', changeColor)}
             {stagingData &&
@@ -75,6 +75,9 @@ const ProjectIssuanceDetails = ({ data, stagingData, changeColor }) => {
               )}
           </StyledItem>
           {data && <DetailedViewIssuanceUnitTable issuance={data} />}
+          {stagingData && (
+            <DetailedViewIssuanceUnitTable issuance={stagingData} />
+          )}
         </StyledDetailedViewTab>
       </div>
     </StyledDetailedViewTabItem>

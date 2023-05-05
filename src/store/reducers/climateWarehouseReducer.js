@@ -19,6 +19,7 @@ const initialState = {
   organizations: null,
   pickLists: null,
   issuances: null,
+  glossary: null,
   labels: null,
   audit: null,
   conflicts: null,
@@ -30,12 +31,20 @@ const initialState = {
   isGovernance: null,
   isGovernanceCreated: null,
   isGovernanceInitiated: null,
+  walletBalance: null,
+  isWalletSynced: false,
+  fileList: null,
+  totalNumberOfEntries: null,
+  processedTransferOffer: null,
 };
 
 const climateWarehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case climateWarehouseActions.GET_ORGANIZATIONS:
       return u({ organizations: action.payload }, state);
+
+    case climateWarehouseActions.GET_TRANSFER_OFFER:
+      return u({ processedTransferOffer: action.payload }, state);
 
     case climateWarehouseActions.SET_IS_GOVERNANCE:
       return u({ isGovernance: action.payload }, state);
@@ -49,8 +58,17 @@ const climateWarehouseReducer = (state = initialState, action) => {
     case climateWarehouseActions.GET_GOVERNANCE_ORG_LIST:
       return u({ governanceOrgList: action.payload }, state);
 
+    case climateWarehouseActions.GET_FILE_LIST:
+      return u({ fileList: action.payload }, state);
+
     case climateWarehouseActions.SET_MY_ORG_UID:
       return u({ myOrgUid: action.payload }, state);
+
+    case climateWarehouseActions.SET_WALLET_BALANCE:
+      return u({ walletBalance: action.payload }, state);
+
+    case climateWarehouseActions.SET_WALLET_STATUS:
+      return u({ isWalletSynced: action.payload }, state);
 
     case climateWarehouseActions.GET_PICKLISTS:
       return u({ pickLists: action.payload }, state);
@@ -100,8 +118,14 @@ const climateWarehouseReducer = (state = initialState, action) => {
     case climateWarehouseActions.GET_VINTAGES:
       return u({ vintages: action.payload }, state);
 
+    case climateWarehouseActions.GET_GLOSSARY:
+      return u({ glossary: action.payload }, state);
+
     case climateWarehouseActions.GET_STAGING_DATA:
       return u({ stagingData: action.payload }, state);
+
+    case climateWarehouseActions.GET_TOTAL_NR_OF_STAGED_ENTRIES:
+      return u({ totalNumberOfEntries: action.payload }, state);
 
     case climateWarehouseActions.GET_STAGING_PROJECTS_PAGES:
       return u({ totalProjectsPages: action.payload }, state);

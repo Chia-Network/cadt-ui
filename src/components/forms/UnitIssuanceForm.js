@@ -91,27 +91,17 @@ const UnitIssuanceForm = () => {
     return [];
   }, [issuances, selectedWarehouseProjectId]);
 
-  const updateIssuanceById = id => {
-    const issuanceIsAvailable = issuances?.some(
-      issuance => issuance?.id === id,
-    );
-    const selectedIssuance =
-      issuanceIsAvailable &&
-      issuances.filter(issuance => issuance?.id === id)[0];
+  const updateIssuanceById = useCallback(
+    id => {
+      const issuanceIsAvailable = issuances?.some(
+        issuance => issuance?.id === id,
+      );
+      const selectedIssuance =
+        issuanceIsAvailable &&
+        issuances.filter(issuance => issuance?.id === id)[0];
 
-    if (selectedIssuance) {
-      const {
-        endDate,
-        startDate,
-        verificationApproach,
-        verificationBody,
-        verificationReportDate,
-        id,
-        warehouseProjectId,
-      } = selectedIssuance;
-      setValues({
-        ...values,
-        issuance: {
+      if (selectedIssuance) {
+        const {
           endDate,
           startDate,
           verificationApproach,
@@ -119,10 +109,23 @@ const UnitIssuanceForm = () => {
           verificationReportDate,
           id,
           warehouseProjectId,
-        },
-      });
-    }
-  };
+        } = selectedIssuance;
+        setValues({
+          ...values,
+          issuance: {
+            endDate,
+            startDate,
+            verificationApproach,
+            verificationBody,
+            verificationReportDate,
+            id,
+            warehouseProjectId,
+          },
+        });
+      }
+    },
+    [issuances, values, setValues],
+  );
 
   return (
     <ModalFormContainerStyle>
@@ -140,8 +143,7 @@ const UnitIssuanceForm = () => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'select-existing-issuance',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -188,13 +190,12 @@ const UnitIssuanceForm = () => {
                 <StyledLabelContainer>
                   <Body>
                     <LabelContainer>
-                      *<FormattedMessage id="start-date" />
+                      *<FormattedMessage id="verification-period-start" />
                     </LabelContainer>
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'issuances-start-date-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -211,13 +212,12 @@ const UnitIssuanceForm = () => {
                 <StyledLabelContainer>
                   <Body>
                     <LabelContainer>
-                      *<FormattedMessage id="end-date" />
+                      *<FormattedMessage id="verification-period-end" />
                     </LabelContainer>
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'issuances-end-date-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -236,8 +236,7 @@ const UnitIssuanceForm = () => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'id',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -263,8 +262,7 @@ const UnitIssuanceForm = () => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'issuances-verification-body-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -289,8 +287,7 @@ const UnitIssuanceForm = () => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'issuances-verification-report-date-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>
@@ -312,8 +309,7 @@ const UnitIssuanceForm = () => {
                     <ToolTipContainer
                       tooltip={intl.formatMessage({
                         id: 'issuances-verification-approach-description',
-                      })}
-                    >
+                      })}>
                       <DescriptionIcon height="14" width="14" />
                     </ToolTipContainer>
                   </Body>

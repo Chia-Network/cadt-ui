@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -48,13 +48,15 @@ const StyledBodyNoDataFound = styled('div')`
 `;
 
 const StyledTable = styled('table')`
+  border-spacing: 0;
+  border-collapse: collapse;
   width: 100%;
 `;
 
 const StyledTh = styled('th')`
   text-align: start;
   padding: 17px;
-  background-color: ${props => props.theme.colors.default.status.info.secondary};
+  background-color: ${props => props.theme.colors.default.shade4};
   position: sticky;
   top: 0;
 `;
@@ -66,7 +68,7 @@ const StyledTd = styled('td')`
 
 const StyledTr = styled('tr')`
   :nth-child(even) {
-    background-color: ${props => props.theme.colors.default.background};
+    background-color: ${props => props.theme.colors.default.shade6};
   }
 `;
 
@@ -105,7 +107,7 @@ const Audit = () => {
     }
   }, []);
 
-  const changeSortOrder = () => {
+  const changeSortOrder = useCallback(() => {
     const newSortOrder = auditSortOrder === 'DESC' ? 'ASC' : 'DESC';
     localStorage.setItem('auditSortOrder', newSortOrder);
     setAuditSortOrder(newSortOrder);
@@ -118,21 +120,29 @@ const Audit = () => {
         order: newSortOrder,
       }),
     );
-  };
+  }, [auditSortOrder, setAuditSortOrder, selectedOrgUid]);
 
-  const onOrganizationSelect = selectedOption => {
-    const orgUid = selectedOption[0].orgUid;
-    setSelectedOrgUid(orgUid);
-    dispatch(
-      getAudit({
-        orgUid,
-        page: 1,
-        limit: constants.MAX_AUDIT_TABLE_SIZE,
-        useMockedResponse: false,
-        order: auditSortOrder,
-      }),
-    );
-  };
+  const onOrganizationSelect = useCallback(
+    selectedOption => {
+      const orgUid = selectedOption[0].orgUid;
+      setSelectedOrgUid(orgUid);
+      dispatch(
+        getAudit({
+          orgUid,
+          page: 1,
+          limit: constants.MAX_AUDIT_TABLE_SIZE,
+          useMockedResponse: false,
+          order: auditSortOrder,
+        }),
+      );
+    },
+    [setSelectedOrgUid, auditSortOrder],
+  );
+
+  const closeAuditItemModal = useCallback(
+    () => setSelectedAuditItem(null),
+    [setSelectedAuditItem],
+  );
 
   if (!organizations) {
     return null;
@@ -235,6 +245,11 @@ const Audit = () => {
                 </StyledTh>
                 <StyledTh>
                   <Body size="Bold">
+                    <FormattedMessage id="author" />
+                  </Body>
+                </StyledTh>
+                <StyledTh>
+                  <Body size="Bold">
                     <FormattedMessage id="comment" />
                   </Body>
                 </StyledTh>
@@ -270,6 +285,9 @@ const Audit = () => {
                       <Body>{auditItem.rootHash}</Body>
                     </StyledTd>
                     <StyledTd>
+                      <Body>{auditItem.author}</Body>
+                    </StyledTd>
+                    <StyledTd>
                       <Body>{auditItem.comment}</Body>
                     </StyledTd>
                   </StyledTr>
@@ -280,7 +298,7 @@ const Audit = () => {
       )}
       {selectedAuditItem && (
         <AuditItemModal
-          onClose={() => setSelectedAuditItem(null)}
+          onClose={closeAuditItemModal}
           auditItem={selectedAuditItem}
         />
       )}

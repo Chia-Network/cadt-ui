@@ -7,10 +7,12 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import { IndeterminateProgressOverlay, Dashboard } from '../components/';
+import {
+  IndeterminateProgressOverlay,
+  Dashboard,
+  MyAccount,
+} from '../components/';
 import { NotificationContainer } from 'react-notifications';
-
-import { signOut } from '../store/actions/app';
 import * as Pages from '../pages';
 
 import { createNotification } from '../utils/notificationUtils';
@@ -28,7 +30,6 @@ const AppNavigator = () => {
     connectionCheck,
     pendingError,
     notification,
-    apiKey,
     isAppLocked,
   } = useSelector(store => store.app);
 
@@ -45,29 +46,24 @@ const AppNavigator = () => {
   return (
     <AppContainer>
       {showProgressOverlay && <IndeterminateProgressOverlay />}
-      {isAppLocked && (
-        <Modal
-          informationType="error"
-          modalType={modalTypeEnum.information}
-          title={intl.formatMessage({ id: 'something-went-wrong' })}
-          body={intl.formatMessage({ id: 'governance-data-failed' })}
-          hideButtons
+      {!connectionCheck ? (
+        <MyAccount
+          openModal={true}
+          onClose={() => dispatch(getOrganizationData())}
+          isHeader={false}
         />
+      ) : (
+        isAppLocked && (
+          <Modal
+            informationType="error"
+            modalType={modalTypeEnum.information}
+            title={intl.formatMessage({ id: 'something-went-wrong' })}
+            body={intl.formatMessage({ id: 'governance-data-failed' })}
+            hideButtons
+          />
+        )
       )}
-      {!connectionCheck && (
-        <Modal
-          informationType="error"
-          modalType={modalTypeEnum.information}
-          label="Try Again"
-          onOk={() => dispatch(getOrganizationData())}
-          title={intl.formatMessage({ id: 'network-error' })}
-          body={intl.formatMessage({ id: 'there-is-a-connection-error' })}
-          extraButtonLabel={
-            apiKey != null ? intl.formatMessage({ id: 'sign-out' }) : undefined
-          }
-          extraButtonOnClick={apiKey ? () => dispatch(signOut()) : undefined}
-        />
-      )}
+
       {pendingError && (
         <Modal
           title={intl.formatMessage({ id: 'create-pending-title' })}
@@ -86,11 +82,11 @@ const AppNavigator = () => {
               <Route exact path="" element={<Navigate to="/projects" />} />
               <Route path="/units" element={<Pages.Units />} />
               <Route path="/projects" element={<Pages.Projects />} />
-              <Route path="/storybook" element={<Pages.StoryBook />} />
               <Route path="/organization" element={<Pages.Organization />} />
               <Route path="/audit" element={<Pages.Audit />} />
-              <Route path="/conflicts" element={<Pages.Conflicts />} />
               <Route path="/governance" element={<Pages.Governance />} />
+              <Route path="/files" element={<Pages.Files />} />
+              <Route path="/glossary" element={<Pages.Glossary />} />
               <Route path="*" element={<Navigate to="/projects" />} />
             </Routes>
           </Suspense>

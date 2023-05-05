@@ -1,5 +1,5 @@
 {
-  "name": "climate-warehouse",
+  "name": "CADT-UI",
   "version": "1.1.0",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
@@ -29,16 +29,18 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
+    "react-select": "^5.4.0",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.0",
     "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
+    "update-notifier": "^6.0.2",
     "updeep": "^1.2.1",
     "web-vitals": "^1.0.1",
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "nf start -p 3001",
+    "start": "nf start -p 31320",
     "build": "react-scripts build",
     "test": "mocha tests/**/*.spec.js --reporter spec --exit",
     "eject": "react-scripts eject",
@@ -81,8 +83,9 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "chai": "^4.3.4",
+    "dotenv-webpack": "^8.0.1",
     "electron": "^15.3.0",
-    "electron-builder": "^22.14.13",
+    "electron-builder": "^23.6.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.25.2",
@@ -98,8 +101,8 @@
     "standard-version": "^9.3.2"
   },
   "build": {
-    "appId": "org.worldbank.climate-warehouse",
-    "productName": "Climate Warehouse",
+    "appId": "org.worldbank.climate-action-data-trust",
+    "productName": "CADT-UI",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -114,15 +117,24 @@
           "universal"
         ]
       },
-      "publish": null
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png"
     },
     "win": {
       "target": "nsis",
-      "publish": null
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png"
     },
     "linux": {
       "target": "deb",
-      "publish": null
+      "description": "Climate Action Data Trust user interface desktop application. Allows point-and-click interface for the CADT API application.",
+      "maintainer": "Chia Network Inc <hello@chia.net>",
+      "vendor": "https://climateactiondata.org/",
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png",
+      "desktop": {
+        "Icon": "/usr/share/icons/hicolor/0x0/apps/cadt-ui.png"
+      }
     }
   },
   "standard-version": {
@@ -139,6 +151,7 @@
     "Michael.Taylor <mtaylor@michaeltaylor3d.com>",
     "Daniel Stefan <82083960+danielstefanequilobe@users.noreply.github.com>",
     "SPageot <Stanley.Pageot@hotmail.com>",
-    "Justin England <justin@jeng.land>"
+    "Justin England <justin@jeng.land>",
+    "Zachary Brown <zachary.g.brown@gmail.com>"
   ]
 }

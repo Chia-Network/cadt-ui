@@ -1,11 +1,12 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stepper, Step, StepLabel } from '@mui/material';
+import { Step, StepLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { Formik, setNestedObjectValues } from 'formik';
 
 import {
+  Stepper,
   Modal,
   TabPanel,
   modalTypeEnum,
@@ -57,36 +58,42 @@ const ProjectEditModal = ({
     setProject(formattedProjectData);
   }, [projectToBeEdited]);
 
-  const stepperStepsTranslationIds = [
-    'project',
-    'issuances',
-    'project-locations',
-    'estimations',
-    'labels',
-    'ratings',
-    'co-benefits',
-    'related-projects',
-  ];
+  const stepperStepsTranslationIds = useMemo(
+    () => [
+      'project',
+      'issuances',
+      'project-locations',
+      'estimations',
+      'labels',
+      'ratings',
+      'co-benefits',
+      'related-projects',
+    ],
+    [],
+  );
 
-  const onChangeStepTo = async ({ formik, desiredStep = null }) => {
-    const errors = await formik.validateForm();
+  const onChangeStepTo = useCallback(
+    async ({ formik, desiredStep = null }) => {
+      const errors = await formik.validateForm();
 
-    // manually setting touched for error fields so errors are displayed
-    formik.setTouched(setNestedObjectValues(errors, true));
+      // manually setting touched for error fields so errors are displayed
+      formik.setTouched(setNestedObjectValues(errors, true));
 
-    const isProjectValid = _.isEmpty(errors);
+      const isProjectValid = _.isEmpty(errors);
 
-    if (isProjectValid) {
-      if (
-        desiredStep >= stepperStepsTranslationIds.length &&
-        !apiResponseIsPending
-      ) {
-        formik.submitForm();
-      } else {
-        setTabValue(desiredStep);
+      if (isProjectValid) {
+        if (
+          desiredStep >= stepperStepsTranslationIds.length &&
+          !apiResponseIsPending
+        ) {
+          formik.submitForm();
+        } else {
+          setTabValue(desiredStep);
+        }
       }
-    }
-  };
+    },
+    [setTabValue, apiResponseIsPending],
+  );
 
   // if project was successfully edited, close modal
   const projectWasSuccessfullyEdited =

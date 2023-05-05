@@ -24,7 +24,7 @@ export const projectSchema = yup.object().shape({
   projectStatus: yup.string().required('yup-validation-field-required'),
   unitMetric: yup.string().required('yup-validation-field-required'),
   methodology: yup.string().required('yup-validation-field-required'),
-  projectTags: yup.string().optional(),
+  projectTags: yup.mixed().optional(),
   validationBody: yup.string().optional(),
   projectStatusDate: yup.date().typeError('yup-validation-date'),
   validationDate: yup.lazy(value => {

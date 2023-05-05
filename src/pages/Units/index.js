@@ -1,8 +1,14 @@
 import _ from 'lodash';
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { downloadTxtFile } from '../../utils/xlsxUtils';
 import constants from '../../constants';
@@ -40,10 +46,9 @@ import {
   CommitModal,
   Modal,
   modalTypeEnum,
-  MinusIcon,
+  RemoveIcon,
   UnitsDetailViewModal,
 } from '../../components';
-import theme from '../../theme';
 
 const headings = [
   'projectLocationId',
@@ -124,7 +129,7 @@ const StyledCSVOperationsContainer = styled('div')`
   }
 `;
 
-const Units = () => {
+const Units = withTheme(({ theme }) => {
   const dispatch = useDispatch();
   const [create, setCreate] = useState(false);
   const [isCommitModalVisible, setIsCommitModalVisible] = useState(false);
@@ -134,9 +139,8 @@ const Units = () => {
   const intl = useIntl();
   let location = useLocation();
   let navigate = useNavigate();
-  const { stagingData, units, unit, totalUnitsPages } = useSelector(
-    store => store.climateWarehouse,
-  );
+  const { stagingData, units, unit, totalUnitsPages, totalNumberOfEntries } =
+    useSelector(store => store.climateWarehouse);
   const [tabValue, setTabValue] = useState(0);
   const [searchQuery, setSearchQuery] = useState(null);
   const [selectedOrganization, setSelectedOrganization] = useState(null);
@@ -145,9 +149,12 @@ const Units = () => {
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
+  const handleTabChange = useCallback(
+    (event, newValue) => {
+      setTabValue(newValue);
+    },
+    [setTabValue],
+  );
 
   useEffect(() => {
     const unitId = searchParams.get('unitId');
@@ -157,7 +164,7 @@ const Units = () => {
     return () => dispatch(clearUnitData());
   }, [searchParams.get('unitId')]);
 
-  const closeProjectOpenedInDetailedView = () => {
+  const closeUnitOpenedInDetailedView = useCallback(() => {
     dispatch(clearUnitData());
     navigate(
       `${location.pathname}?${getUpdatedUrl(location.search, {
@@ -166,7 +173,7 @@ const Units = () => {
       })}`,
       { replace: true },
     );
-  };
+  }, [location]);
 
   useEffect(() => {
     const switchTabBySuccessfulRequest = {
@@ -289,8 +296,6 @@ const Units = () => {
         'unitOwner',
         'countryJurisdictionOfOwner',
         'serialNumberBlock',
-        'unitBlockStart',
-        'unitBlockEnd',
         'unitCount',
         'vintageYear',
         'unitType',
@@ -303,21 +308,24 @@ const Units = () => {
     );
   }, [units]);
 
+  const onOrganizationSelect = useCallback(
+    selectedOption => {
+      const orgUid = selectedOption[0].orgUid;
+      setSelectedOrganization(orgUid);
+      navigate(
+        `${location.pathname}?${getUpdatedUrl(location.search, {
+          param: 'orgUid',
+          value: orgUid,
+        })}`,
+        { replace: true },
+      );
+    },
+    [location, setSelectedOrganization],
+  );
+
   if (!filteredColumnsTableData) {
     return null;
   }
-
-  const onOrganizationSelect = selectedOption => {
-    const orgUid = selectedOption[0].orgUid;
-    setSelectedOrganization(orgUid);
-    navigate(
-      `${location.pathname}?${getUpdatedUrl(location.search, {
-        param: 'orgUid',
-        value: orgUid,
-      })}`,
-      { replace: true },
-    );
-  };
 
   return (
     <>
@@ -353,7 +361,7 @@ const Units = () => {
                   <AddIcon
                     width="16.13"
                     height="16.88"
-                    fill={theme.colors.default.onButton}
+                    fill={theme.colors.default.white}
                   />
                 }
                 onClick={() => {
@@ -387,29 +395,25 @@ const Units = () => {
         </StyledHeaderContainer>
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab
-              label={`${intl.formatMessage({ id: 'committed' })} (${
-                units && units?.length
-              })`}
-            />
+            <Tab label={intl.formatMessage({ id: 'committed' })} />
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'staging' })} (${
-                  stagingData && totalUnitsPages
+                  totalNumberOfEntries && totalNumberOfEntries.units.staging
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'pending' })} (${
-                  stagingData && stagingData.units.pending.length
+                  totalNumberOfEntries && totalNumberOfEntries.units.pending
                 })`}
               />
             )}
             {pageIsMyRegistryPage && (
               <Tab
                 label={`${intl.formatMessage({ id: 'failed' })} (${
-                  stagingData && stagingData.units.failed.length
+                  totalNumberOfEntries && totalNumberOfEntries.units.failed
                 })`}
               />
             )}
@@ -419,11 +423,11 @@ const Units = () => {
               tabValue === 1 &&
               stagingData?.units?.staging?.length > 0 && (
                 <span onClick={() => setIsDeleteAllStagingVisible(true)}>
-                  <MinusIcon width={20} height={20} />
+                  <RemoveIcon width={20} height={20} />
                 </span>
               )}
             <span onClick={() => downloadTxtFile('units', searchParams)}>
-              <DownloadIcon />
+              <DownloadIcon width={20} height={20} />
             </span>
             {pageIsMyRegistryPage && (
               <span>
@@ -562,13 +566,13 @@ const Units = () => {
       )}
       {unit && (
         <UnitsDetailViewModal
-          onClose={closeProjectOpenedInDetailedView}
+          onClose={closeUnitOpenedInDetailedView}
           modalSizeAndPosition={modalSizeAndPosition}
           unitObject={unit}
         />
       )}
     </>
   );
-};
+});
 
 export { Units };

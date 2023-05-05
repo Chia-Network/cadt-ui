@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stepper, Step, StepLabel } from '@mui/material';
+import { Step, StepLabel } from '@mui/material';
 import { Formik, setNestedObjectValues } from 'formik';
 
 import {
@@ -13,6 +13,7 @@ import {
   getMyProjects,
 } from '../../store/actions/climateWarehouseActions';
 import {
+  Stepper,
   TabPanel,
   Modal,
   modalTypeEnum,
@@ -83,32 +84,35 @@ const UnitCreateModal = ({ onClose, modalSizeAndPosition }) => {
     }
   }, []);
 
-  const onChangeStepTo = useCallback(async ({ formik, desiredStep = null }) => {
-    const errors = await formik.validateForm();
+  const onChangeStepTo = useCallback(
+    async ({ formik, desiredStep = null }) => {
+      const errors = await formik.validateForm();
 
-    // manually setting touched for error fields so errors are displayed
-    formik.setTouched(setNestedObjectValues(errors, true));
+      // manually setting touched for error fields so errors are displayed
+      formik.setTouched(setNestedObjectValues(errors, true));
 
-    const isUnitValid = _.isEmpty(errors);
+      const isUnitValid = _.isEmpty(errors);
 
-    const isIssuanceSelected =
-      desiredStep > 1 ? !_.isEmpty(formik.values?.issuance) : true;
+      const isIssuanceSelected =
+        desiredStep > 1 ? !_.isEmpty(formik.values?.issuance) : true;
 
-    const isProjectSelected = Boolean(
-      localStorage.getItem('unitSelectedWarehouseProjectId'),
-    );
+      const isProjectSelected = Boolean(
+        localStorage.getItem('unitSelectedWarehouseProjectId'),
+      );
 
-    if (isUnitValid && isProjectSelected && isIssuanceSelected) {
-      if (
-        desiredStep >= stepperStepsTranslationIds.length &&
-        !apiResponseIsPending
-      ) {
-        formik.submitForm();
-      } else {
-        setTabValue(desiredStep);
+      if (isUnitValid && isProjectSelected && isIssuanceSelected) {
+        if (
+          desiredStep >= stepperStepsTranslationIds.length &&
+          !apiResponseIsPending
+        ) {
+          formik.submitForm();
+        } else {
+          setTabValue(desiredStep);
+        }
       }
-    }
-  }, []);
+    },
+    [setTabValue, apiResponseIsPending],
+  );
 
   // if unit was successfully created, close modal
   const unitWasSuccessfullyCreated =
