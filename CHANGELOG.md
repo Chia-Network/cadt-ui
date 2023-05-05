@@ -1,3 +1,14 @@
+## [1.0.20](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.19...1.0.20) (2023-05-03)
+
+
+### Bug Fixes
+
+* make api key optional ([7cd5b00](https://github.com/Chia-Network/climate-warehouse-ui/commit/7cd5b00dedcd13273a593dfec3b1a40561339ed6))
+* optional api key when signing in with stored credentials ([feb7dba](https://github.com/Chia-Network/climate-warehouse-ui/commit/feb7dba31d9a991a177e2178550db9ebd1e155b6))
+* properly format request URL when configured server URL ends in slash ([d75d756](https://github.com/Chia-Network/climate-warehouse-ui/commit/d75d756437918f12375da1e7c1eda764a3b51158))
+
+
+
 ## [1.0.19](https://github.com/Chia-Network/climate-warehouse-ui/compare/1.0.18...1.0.19) (2023-04-03)
 
 

@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build-and-deploy:
-    name: Build Climate Warehouse App and Upload to S3
+    name: Build CADT App and Upload to S3
     runs-on: [k8s-public]
     container:
       image: ubuntu:latest

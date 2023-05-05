@@ -55,7 +55,7 @@ jobs:
           npm install -g notarize-cli
           notarize-cli \
             --file="$DMG_FILE" \
-            --bundle-id net.chia.climate-warehouse-ui \
+            --bundle-id net.chia.cadt-ui \
             --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
             --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
 
@@ -117,7 +117,7 @@ jobs:
       - name: Upload Linux Installer
         uses: actions/upload-artifact@v3
         with:
-          name: linux-installer
+          name: cadt-ui-linux-installer
           path: ${{ github.workspace }}/dist/*.deb
 
   build_web:
@@ -139,13 +139,13 @@ jobs:
           npm run build
 
       - name: Create .tar.gz of the web build
-        run: tar -cvzf web-build.tar.gz build
+        run: tar -cvzf cadt-ui-web-build.tar.gz build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: web-build
-          path: web-build.tar.gz
+          name: cadt-ui-web-build
+          path: cadt-ui-web-build.tar.gz
 
   release:
     runs-on: ubuntu-latest
@@ -159,33 +159,33 @@ jobs:
       - name: Download Windows artifacts
         uses: actions/download-artifact@v3
         with:
-          name: windows-installer
-          path: windows-installer
+          name: cadt-ui-windows-installer
+          path: cadt-ui-windows-installer
 
       - name: Download MacOS artifacts
         uses: actions/download-artifact@v3
         with:
-          name: mac-installer
-          path: mac-installer
+          name: cadt-ui-mac-installer
+          path: cadt-ui-mac-installer
 
       - name: Download Linux artifacts
         uses: actions/download-artifact@v3
         with:
-          name: linux-installer
-          path: linux-installer
+          name: cadt-ui-linux-installer
+          path: cadt-ui-linux-installer
 
       - name: Download Web artifact
         uses: actions/download-artifact@v3
         with:
-          name: web-build
-          path: web-build
+          name: cadt-ui-web-build
+          path: cadt-ui-web-build
 
       - name: Get Filenames
         run: |
-          DMG_FILE=$(find ${{ github.workspace }}/mac-installer/ -type f -name '*.dmg')
-          DEB_FILE=$(find ${{ github.workspace }}/linux-installer/ -type f -name '*.deb')
-          EXE_FILE=$(find ${{ github.workspace }}/windows-installer/ -type f -name '*.exe')
-          WEB_FILE=$(find ${{ github.workspace }}/web-build/ -type f -name '*.tar.gz')
+          DMG_FILE=$(find ${{ github.workspace }}/cadt-ui-mac-installer/ -type f -name '*.dmg')
+          DEB_FILE=$(find ${{ github.workspace }}/cadt-ui-linux-installer/ -type f -name '*.deb')
+          EXE_FILE=$(find ${{ github.workspace }}/cadt-ui-windows-installer/ -type f -name '*.exe')
+          WEB_FILE=$(find ${{ github.workspace }}/cadt-ui-web-build/ -type f -name '*.tar.gz')
 
           echo "DMG_FILE=$DMG_FILE" >>$GITHUB_ENV
           echo "DEB_FILE=$DEB_FILE" >>$GITHUB_ENV
