@@ -34,6 +34,7 @@
     "redux-thunk": "^2.4.0",
     "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
+    "update-notifier": "^6.0.2",
     "updeep": "^1.2.1",
     "web-vitals": "^1.0.1",
     "yup": "^0.32.11"
@@ -101,7 +102,7 @@
   },
   "build": {
     "appId": "org.worldbank.climate-action-data-trust",
-    "productName": "CADT",
+    "productName": "CADT-UI",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -126,6 +127,10 @@
     },
     "linux": {
       "target": "deb",
+      "packageName": "CADT-UI",
+      "description": "Climate Action Data Trust user interface desktop application. Allows point-and-click interface for the CADT API application.",
+      "maintainer": "Chia Network Inc <hello@chia.net>",
+      "vendor": "https://climateactiondata.org/",
       "publish": null,
       "icon": "src/assets/img/CADT_Icon.png"
     }
