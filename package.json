@@ -127,7 +127,6 @@
     },
     "linux": {
       "target": "deb",
-      "packageName": "CADT-UI",
       "description": "Climate Action Data Trust user interface desktop application. Allows point-and-click interface for the CADT API application.",
       "maintainer": "Chia Network Inc <hello@chia.net>",
       "vendor": "https://climateactiondata.org/",
