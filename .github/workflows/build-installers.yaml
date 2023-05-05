@@ -121,7 +121,7 @@ jobs:
           path: ${{ github.workspace }}/dist/*.deb
 
   build_web:
-    name: Build Climate Warehouse Web App
+    name: Build CADT UI Web App
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
