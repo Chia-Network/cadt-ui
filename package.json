@@ -131,7 +131,10 @@
       "maintainer": "Chia Network Inc <hello@chia.net>",
       "vendor": "https://climateactiondata.org/",
       "publish": null,
-      "icon": "src/assets/img/CADT_Icon.png"
+      "icon": "src/assets/img/CADT_Icon.png",
+      "desktop": {
+        "Icon": "/usr/share/icons/hicolor/0x0/apps/cadt-ui.png"
+      }
     }
   },
   "standard-version": {
