@@ -62,7 +62,7 @@ jobs:
       - name: Upload Mac Installer
         uses: actions/upload-artifact@v3
         with:
-          name: mac-installer
+          name: cadt-ui-mac-installer
           path: ${{ github.workspace }}/dist/*.dmg
 
   build_windows:
@@ -91,7 +91,7 @@ jobs:
       - name: Upload Windows Installer
         uses: actions/upload-artifact@v3
         with:
-          name: windows-installer
+          name: cadt-ui-windows-installer
           path: ${{ github.workspace }}/dist/*.exe
 
   build_linux:
