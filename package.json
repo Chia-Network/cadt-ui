@@ -1,5 +1,5 @@
 {
-  "name": "climate-action-data-trust",
+  "name": "CADT-UI",
   "version": "1.0.20",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
@@ -101,7 +101,7 @@
   },
   "build": {
     "appId": "org.worldbank.climate-action-data-trust",
-    "productName": "Climate Warehouse",
+    "productName": "CADT",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -144,6 +144,7 @@
     "Michael.Taylor <mtaylor@michaeltaylor3d.com>",
     "Daniel Stefan <82083960+danielstefanequilobe@users.noreply.github.com>",
     "SPageot <Stanley.Pageot@hotmail.com>",
-    "Justin England <justin@jeng.land>"
+    "Justin England <justin@jeng.land>",
+    "Zachary Brown <zachary.g.brown@gmail.com>"
   ]
 }
