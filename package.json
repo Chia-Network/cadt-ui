@@ -1,5 +1,5 @@
 {
-  "name": "CADT-UI",
+  "name": "cadt-ui",
   "version": "1.1.0",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
@@ -102,7 +102,7 @@
   },
   "build": {
     "appId": "org.worldbank.climate-action-data-trust",
-    "productName": "CADT-UI",
+    "productName": "cadt-ui",
     "files": [
       "build/**/*",
       "node_modules/**/*"
