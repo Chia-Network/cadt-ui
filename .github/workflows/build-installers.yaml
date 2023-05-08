@@ -114,6 +114,12 @@ jobs:
       - name: Build electron app
         run: npm run electron:package:linux
 
+      - name: Rename Linux installer to be standard format for apt
+        run: |
+          ORIGINAL=$(ls dist/*.deb)
+          MODIFIED=${ORIGINAL:0:-9}1_${ORIGINAL#${ORIGINAL:0:-9}}
+          mv $ORIGINAL $MODIFIED
+
       - name: Upload Linux Installer
         uses: actions/upload-artifact@v3
         with:
