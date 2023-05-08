@@ -7,11 +7,42 @@ This repository provides a graphical user interface (UI) for the [Climate Action
 
 ## Installation
 
-The UI application can be hosted as a web application and accessed via the browser, or as a desktop application packaged with Electron. 
+The UI application can be hosted as a web application and accessed via the browser, or as a desktop application packaged with Electron.  Currently the application is only packaged for x86 platforms, though building from source is expected to work on ARM.  
 
 ### Desktop Applications
 
 The [releases](https://github.com/Chia-Network/cadt-ui/releases) page provides desktop applications packaged for Windows, Mac, and Debian-based Linux distributions.  
+
+#### Ubuntu Desktop via Apt
+
+For Ubuntu-based Linux desktops the CADT UI is available for install with `apt`.  
+
+1. Start by updating apt and allowing repository download over HTTPS:
+
+```
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+```
+
+2.  Add Chia's official GPG Key (if you have installed Chia or [CADT](https://github.com/Chia-Network/cadt) with `apt`, you'll have this key already and will get a message about overwriting the existing key, which is safe to do):
+
+```
+curl -sL https://repo.chia.net/FD39E6D3.pubkey.asc | sudo gpg --dearmor -o /usr/share/keyrings/chia.gpg
+```
+
+3. Use the following command to setup the repository.
+
+```
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/chia.gpg] https://repo.chia.net/cadt/debian/ stable main" | sudo tee /etc/apt/sources.list.d/cadt.list > /dev/null
+```
+
+4.  Install CADT-UI
+
+```
+sudo apt-get update
+sudo apt-get install cadt-ui
+```
+
 
 ### Web Application
 
