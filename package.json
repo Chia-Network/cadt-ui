@@ -1,6 +1,6 @@
 {
-  "name": "climate-action-data-trust",
-  "version": "1.0.20",
+  "name": "cadt-ui",
+  "version": "1.1.0",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
   "homepage": "./",
@@ -34,6 +34,7 @@
     "redux-thunk": "^2.4.0",
     "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
+    "update-notifier": "^6.0.2",
     "updeep": "^1.2.1",
     "web-vitals": "^1.0.1",
     "yup": "^0.32.11"
@@ -101,7 +102,7 @@
   },
   "build": {
     "appId": "org.worldbank.climate-action-data-trust",
-    "productName": "Climate Warehouse",
+    "productName": "cadt-ui",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -126,8 +127,14 @@
     },
     "linux": {
       "target": "deb",
+      "description": "Climate Action Data Trust user interface desktop application. Allows point-and-click interface for the CADT API application.",
+      "maintainer": "Chia Network Inc <hello@chia.net>",
+      "vendor": "https://climateactiondata.org/",
       "publish": null,
-      "icon": "src/assets/img/CADT_Icon.png"
+      "icon": "src/assets/img/CADT_Icon.png",
+      "desktop": {
+        "Icon": "/usr/share/icons/hicolor/0x0/apps/cadt-ui.png"
+      }
     }
   },
   "standard-version": {
@@ -144,6 +151,7 @@
     "Michael.Taylor <mtaylor@michaeltaylor3d.com>",
     "Daniel Stefan <82083960+danielstefanequilobe@users.noreply.github.com>",
     "SPageot <Stanley.Pageot@hotmail.com>",
-    "Justin England <justin@jeng.land>"
+    "Justin England <justin@jeng.land>",
+    "Zachary Brown <zachary.g.brown@gmail.com>"
   ]
 }
