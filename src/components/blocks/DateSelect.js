@@ -1,5 +1,5 @@
 import React from 'react';
-import DateAdapter from '@mui/lab/AdapterDayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import styled, { css, withTheme } from 'styled-components';
 import TextField from '@mui/material/TextField';
@@ -82,7 +82,7 @@ const DateSelect = withTheme(
     onBlur,
     name,
   }) => (
-    <LocalizationProvider dateAdapter={DateAdapter}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DesktopDatePicker
         inputFormat="YYYY-MM-DD"
         mask="____-__-__"
