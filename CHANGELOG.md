@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/Chia-Network/cadt-ui/compare/1.1.0...1.1.1) (2023-05-10)
+
+
+### Bug Fixes
+
+* restore previous versions of dependencies ([9a90224](https://github.com/Chia-Network/cadt-ui/commit/9a9022439ff3c1d113b84e995a3aa09d1eb9d0e3))
+
+
+
 # [1.1.0](https://github.com/Chia-Network/cadt-ui/compare/1.0.20...1.1.0) (2023-05-09)
 
 
