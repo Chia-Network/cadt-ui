@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/Chia-Network/cadt-ui/compare/1.1.1...1.1.2) (2023-05-30)
+
+
+### Bug Fixes
+
+* dont close model when click out of modal ([7818a7a](https://github.com/Chia-Network/cadt-ui/commit/7818a7a72c33072a177c7abcef8ac512c6f3ff8f))
+
+
+
 ## [1.1.1](https://github.com/Chia-Network/cadt-ui/compare/1.1.0...1.1.1) (2023-05-10)
 
 
