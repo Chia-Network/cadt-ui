@@ -152,14 +152,15 @@ const Modal = withTheme(
     const intl = useIntl();
 
     return (
-      <MaskContainer onClick={onClose}>
+      <MaskContainer>
         <ModalContainer
           onClick={e => e.stopPropagation()}
           modalType={modalType}
           top={modalSizeAndPosition?.top}
           left={modalSizeAndPosition?.left}
           width={modalSizeAndPosition?.width}
-          height={modalSizeAndPosition?.height}>
+          height={modalSizeAndPosition?.height}
+        >
           <TitleContainer modalType={modalType}>
             {modalType === modalTypeEnum.information && (
               <span>
