@@ -1,3 +1,12 @@
+## [1.1.3](https://github.com/Chia-Network/cadt-ui/compare/1.1.2...1.1.3) (2023-06-06)
+
+
+### Bug Fixes
+
+* swap out server override if present when downloading xls ([55e0b86](https://github.com/Chia-Network/cadt-ui/commit/55e0b8679b42d58a42f5db85218c12b66cb58967))
+
+
+
 ## [1.1.2](https://github.com/Chia-Network/cadt-ui/compare/1.1.1...1.1.2) (2023-05-30)
 
 
