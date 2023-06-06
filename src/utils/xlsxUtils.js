@@ -1,8 +1,9 @@
 import constants from '../constants';
+import { fetchWrapper } from '../store/actions/climateWarehouseActions';
 
 export const downloadTxtFile = async (type, searchParams) => {
   searchParams.delete('myRegistry');
-  await fetch(
+  await fetchWrapper(
     `${
       constants.API_HOST
     }/${`${type}?`}${`${searchParams.toString()}&`}xls=true`,
