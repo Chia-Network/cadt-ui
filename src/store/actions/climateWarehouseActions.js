@@ -2595,6 +2595,8 @@ const fetchWrapper = async (url, payload) => {
   return fetch(url, payload);
 };
 
+export { fetchWrapper };
+
 const formatApiErrorResponse = (
   { errors, message, error },
   alternativeResponseId,
