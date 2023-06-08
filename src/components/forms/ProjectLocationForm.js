@@ -53,7 +53,9 @@ const ProjectLocationForm = memo(
       [fileList],
     );
 
-    useEffect(() => dispatch(getFileList()), []);
+    useEffect(() => {
+      dispatch(getFileList());
+    }, []);
 
     return (
       <ModalFormContainerStyle>

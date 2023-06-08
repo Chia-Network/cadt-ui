@@ -36,10 +36,9 @@ const App = () => {
     dispatch(getUser());
   }, [dispatch, appStore.serverAddress]);
 
-  useEffect(
-    () => dispatch(setThemeFromLocalStorage),
-    [setThemeFromLocalStorage],
-  );
+  useEffect(() => {
+    dispatch(setThemeFromLocalStorage);
+  }, [setThemeFromLocalStorage]);
 
   useEffect(() => {
     if (appStore.locale) {

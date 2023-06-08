@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require('electron');
+const { app, BrowserWindow, protocol, shell } = require('electron');
 const path = require('path');
 const url = require('url');
 
@@ -13,6 +13,11 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+  });
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: 'deny' };
   });
 
   // In production, set the initial browser path to the local bundle generated
@@ -29,11 +34,6 @@ function createWindow() {
 
   mainWindow.webContents.on('did-fail-load', () => {
     mainWindow.loadURL(appURL);
-  });
-
-  mainWindow.webContents.on('new-window', (e, url) => {
-    e.preventDefault();
-    require('electron').shell.openExternal(url);
   });
 
   // Automatically open Chrome's DevTools in development mode.

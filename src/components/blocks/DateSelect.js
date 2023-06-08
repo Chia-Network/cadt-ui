@@ -1,9 +1,10 @@
 import React from 'react';
-import DateAdapter from '@mui/lab/AdapterDayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import styled, { css, withTheme } from 'styled-components';
 import TextField from '@mui/material/TextField';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
 
 import { getIsDateValid, formatDate, getISODate } from '../../utils/dateUtils';
 
@@ -82,13 +83,13 @@ const DateSelect = withTheme(
     onBlur,
     name,
   }) => (
-    <LocalizationProvider dateAdapter={DateAdapter}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DesktopDatePicker
         inputFormat="YYYY-MM-DD"
         mask="____-__-__"
         RegExp="/^d{4}-d{2}-d{2}$/"
         views={['year', 'month', 'day']}
-        value={getIsDateValid(dateValue) ? getISODate(dateValue) : null}
+        value={getIsDateValid(dateValue) ? dayjs(getISODate(dateValue)) : null}
         onChange={newValue =>
           getIsDateValid(newValue)
             ? setDateValue(formatDate(newValue))

@@ -1,31 +1,8 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
 import { Tab, Tabs, TabPanel } from '..';
-import styled from 'styled-components';
 import { UnitsDetails, UnitsIssuanceDetails, UnitsLabelsDetails } from '.';
 import theme from '../../theme';
-
-export const StyledDetailedViewTabItem = styled('div')`
-  display: flex;
-  justify-content: center;
-  background: #fafafa;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  padding: 16px 21px;
-  margin: 20px 0px;
-  gap: 20px;
-`;
-
-export const StyledDetailedViewTab = styled('div')`
-  display: grid;
-  grid-template-columns: 50% 50%;
-`;
-
-export const StyledItem = styled('div')`
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0;
-`;
 
 const UnitsDetailStagingViewTab = ({ entry }) => {
   const [tabValue, setTabValue] = useState(0);
@@ -85,7 +62,8 @@ const UnitsDetailStagingViewTab = ({ entry }) => {
             key={labelValue.id.original}
             noHeight
             value={tabValue}
-            index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}>
+            index={!_.isEmpty(unitsTabs) ? 2 - unitsTabs.length : 2}
+          >
             <UnitsLabelsDetails
               stagingData={labelValue}
               changeColor={getOriginalColorForKey}
