@@ -115,13 +115,13 @@ jobs:
         with:
           node-version: '16.x'
 
+      - name: Install Husky
+        run: npm install --save-dev husky
+
       - name: npm install
         run: |
           node --version
           npm install
-
-      - name: Install Husky
-        run: npm install --save-dev husky
 
       - name: Build electron app
         run: npm run electron:package:linux
