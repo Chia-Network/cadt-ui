@@ -48,7 +48,7 @@ const Th = styled('th')`
   border-bottom: 1px solid rgba(224, 224, 224, 1);
   letter-spacing: 0.01071em;
   vertical-align: inherit;
-  :nth-child(1) {
+  &:nth-child(1) {
     display: none;
   }
   ${props =>
@@ -94,7 +94,7 @@ const Td = styled('td')`
   letter-spacing: 0.01071em;
   vertical-align: inherit;
   max-width: 100px;
-  :nth-child(1) {
+  &:nth-child(1) {
     display: none;
   }
   ${props =>

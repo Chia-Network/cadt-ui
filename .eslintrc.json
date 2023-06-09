@@ -4,8 +4,12 @@
     "amd": true,
     "node": true
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-env", "@babel/preset-react"]
+    },
     "ecmaFeatures": {
       "jsx": true
     }
@@ -17,12 +21,10 @@
   ],
   "rules": {
     "react/prop-types": "off",
-    "mocha/no-mocha-arrows": 0
+    "mocha/no-mocha-arrows": 0,
+    "no-unsafe-optional-chaining": "off"
   },
-  "plugins": [
-    "react",
-    "mocha"
-  ],
+  "plugins": ["react", "mocha"],
   "settings": {
     "react": {
       "version": "detect"
