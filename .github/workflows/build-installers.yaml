@@ -30,6 +30,9 @@ jobs:
         with:
           node-version: '16.x'
 
+      - name: Install Husky
+        run: npm install --save-dev husky
+
       - name: install dmg-license
         run: npm i dmg-license
 
@@ -77,6 +80,12 @@ jobs:
         with:
           node-version: '16.x'
 
+      - name: Install Husky
+        run: npm install --save-dev husky
+
+      - name: Ignore Husky where not compatible
+        run: npm pkg delete scripts.prepare
+
       - name: npm install
         run: |
           node --version
@@ -111,6 +120,9 @@ jobs:
           node --version
           npm install
 
+      - name: Install Husky
+        run: npm install --save-dev husky
+
       - name: Build electron app
         run: npm run electron:package:linux
 
@@ -137,6 +149,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+
+      - name: Install Husky
+        run: npm install --save-dev husky
 
       - name: npm install and build
         run: |
