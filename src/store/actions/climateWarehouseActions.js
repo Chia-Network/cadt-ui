@@ -12,7 +12,6 @@ import {
   projectsResponseStub,
   vintagesResponseStub,
   stagingDataResponseStub,
-  auditResponseStub,
 } from '../../mocks';
 
 import {
@@ -1900,6 +1899,9 @@ export const editExistingOrg = data => {
       const url = `${constants.API_HOST}/organizations/edit`;
       const payload = {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
         body: formData,
       };
 
@@ -1990,6 +1992,9 @@ export const importHomeOrg = orgUid => {
 
       const payload = {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ orgUid }),
       };
 
@@ -2365,34 +2370,11 @@ export const getAudit = options => {
         getClimateWarehouseTable(
           `${constants.API_HOST}/audit?orgUid=${options.orgUid}&limit=${options.limit}&page=${options.page}&order=${options.order}`,
           actions.GET_AUDIT,
-          mockedAuditResponse({
-            orgUid: options.orgUid,
-            limit: options.limit,
-            page: options?.page,
-          }),
+          null,
           options,
         ),
       );
     }
-  };
-};
-
-const mockedAuditResponse = ({ page, limit, orgUid }) => {
-  const customAuditResponseStub = {
-    page: page,
-    pageCount: auditResponseStub.pageCount,
-    data: auditResponseStub.data.reduce((accumulator, current, index) => {
-      if (index < limit) {
-        return [...accumulator, { ...current, orgUid }];
-      }
-      return accumulator;
-    }, []),
-  };
-
-  // Different envs import this differently
-  return {
-    type: actions.GET_AUDIT,
-    payload: _.get(customAuditResponseStub, 'default', customAuditResponseStub),
   };
 };
 

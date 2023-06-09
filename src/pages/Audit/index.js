@@ -67,7 +67,7 @@ const StyledTd = styled('td')`
 `;
 
 const StyledTr = styled('tr')`
-  :nth-child(even) {
+  &:nth-child(even) {
     background-color: ${props => props.theme.colors.default.shade6};
   }
 `;

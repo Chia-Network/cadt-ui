@@ -53,7 +53,7 @@ const StyledTd = styled('td')`
 `;
 
 const StyledTr = styled('tr')`
-  :nth-child(even) {
+  &:nth-child(even) {
     background-color: ${props => props.theme.colors.default.shade6};
   }
 `;
@@ -91,8 +91,13 @@ const Glossary = () => {
   const [filteredFileList, setFilteredFileList] = useState(glossary ?? []);
   const [sortOrder, setSortOrder] = useState(SortEnum.aToZ);
 
-  useEffect(() => dispatch(getGlossary()), []);
-  useEffect(() => setFilteredFileList(glossary), [glossary]);
+  useEffect(() => {
+    dispatch(getGlossary());
+  }, []);
+
+  useEffect(() => {
+    setFilteredFileList(glossary);
+  }, [glossary]);
 
   const onSearch = useMemo(
     () =>

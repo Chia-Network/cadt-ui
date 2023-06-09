@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { refreshApp } from './store/actions/app';
+import { createRoot } from 'react-dom/client';
+const container = document.getElementById('root');
+const root = createRoot(container);
 
 import 'react-notifications/lib/notifications.css';
 import './index.css';
@@ -26,12 +28,10 @@ const RefreshWrapper = () => {
   return <App />;
 };
 
-ReactDOM.render(
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <RefreshWrapper />
     </Provider>
   </React.StrictMode>,
-  // eslint-disable-next-line no-undef
-  document.getElementById('root'),
 );

@@ -76,7 +76,7 @@ const StyledTd = styled('td')`
 `;
 
 const StyledTr = styled('tr')`
-  :nth-child(even) {
+  &:nth-child(even) {
     background-color: ${props => props.theme.colors.default.shade6};
   }
 `;
@@ -125,8 +125,13 @@ const Files = () => {
   const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
   const [fileToDelete, setFileToDelete] = useState();
 
-  useEffect(() => dispatch(getFileList()), []);
-  useEffect(() => setFilteredFileList(fileList), [fileList]);
+  useEffect(() => {
+    dispatch(getFileList());
+  }, []);
+
+  useEffect(() => {
+    setFilteredFileList(fileList);
+  }, [fileList]);
 
   const onSearch = useMemo(
     () =>
