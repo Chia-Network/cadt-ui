@@ -9,9 +9,9 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "electron-builder": "^22.14.13",
+    "electron-builder": "^23.5.0",
     "foreman": "^3.0.1",
-    "git-authors-cli": "^1.0.36",
+    "git-authors-cli": "^1.0.46",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "notarize-cli": "^0.2.0",
