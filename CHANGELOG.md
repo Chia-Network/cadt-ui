@@ -1,3 +1,12 @@
+## [1.2.3](https://github.com/Chia-Network/cadt-ui/compare/1.2.2...1.2.3) (2023-06-29)
+
+
+### Bug Fixes
+
+* year select ([96edbd2](https://github.com/Chia-Network/cadt-ui/commit/96edbd2b2d223ea4896d3f6a269d9292704bc3e4))
+
+
+
 ## [1.2.2](https://github.com/Chia-Network/cadt-ui/compare/1.2.1...1.2.2) (2023-06-29)
 
 
