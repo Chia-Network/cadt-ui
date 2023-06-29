@@ -1,3 +1,7 @@
+## [1.2.2](https://github.com/Chia-Network/cadt-ui/compare/1.2.1...1.2.2) (2023-06-29)
+
+
+
 ## [1.2.1](https://github.com/Chia-Network/cadt-ui/compare/1.2.0...1.2.1) (2023-06-29)
 
 
