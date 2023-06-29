@@ -79,7 +79,7 @@ const YearSelect = withTheme(
         mask="____"
         RegExp="/^d{4}$/"
         views={['year']}
-        value={yearValue ? dayjs(yearValue) : null}
+        value={yearValue ? dayjs(yearValue.toString(), 'YYYY') : null}
         onChange={newValue =>
           newValue ? onChange(newValue.$y) : onChange(null)
         }
