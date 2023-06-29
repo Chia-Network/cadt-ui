@@ -46,7 +46,7 @@ jobs:
             git add CHANGELOG.md
             sed -i -e '/<s>/d' CHANGELOG.md
             git commit -m "Updating changelog for $version"
-            git tag $version -m $changes
+            git tag $version -m "$changes"
             git push origin $version
             git push origin main
           fi
