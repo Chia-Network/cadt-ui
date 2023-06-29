@@ -15,7 +15,8 @@ jobs:
     name: Check version increment
     runs-on: ubuntu-latest
     steps:
-      - uses: Chia-Network/actions/clean-workspace@main
+      - name: Clean workspace
+        uses: Chia-Network/actions/clean-workspace@main
 
       - name: Checkout current branch
         uses: actions/checkout@v3
@@ -23,6 +24,12 @@ jobs:
           # Need PACKAGE_ADMIN_PAT token so when the tag is created, the tag automation runs
           token: ${{ secrets.PACKAGE_ADMIN_PAT }}
           fetch-depth: 0
+
+      - name: Setup commit signing for ChiaAutomation
+        uses: Chia-Network/actions/commit-sign/gpg@main
+        with:
+          gpg_private_key: ${{ secrets.CHIA_AUTOMATION_PRIVATE_GPG_KEY }}
+          passphrase: ${{ secrets.CHIA_AUTOMATION_PRIVATE_GPG_PASSPHRASE }}
 
       - name: Check for current version tag. Create if it doesn't exist
         run: |
@@ -35,12 +42,11 @@ jobs:
             echo "Tag does not exist. Creating and pushing tag"
             rm -f CHANGELOG.md
             npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0
+            changes=$(npx conventional-changelog-cli -r 1)
             git add CHANGELOG.md
             sed -i -e '/<s>/d' CHANGELOG.md
-            git config --global user.name 'ChiaAutomation'
-            git config --global user.email 'automation@chia.net'
             git commit -m "Updating changelog for $version"
-            git tag $version
+            git tag $version -m $changes
             git push origin $version
             git push origin main
           fi
