@@ -1,15 +1,14 @@
 {
   "name": "cadt-ui",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "private": true,
   "author": "Chia Network Inc. <hello@chia.net>",
   "homepage": "./",
   "main": "src/start.js",
   "engineStrict": true,
   "engines": {
-    "node": ">=15.0.1"
+    "node": ">=18.16.0"
   },
-  "proxy": "http://localhost:31310",
   "dependencies": {
     "@date-io/dayjs": "^2.16.0",
     "@emotion/react": "^11.11.1",

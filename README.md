@@ -56,8 +56,8 @@ To host the UI on the web, use the [web-build.tar.gz file from the releases page
 npm install -g react-scripts
 git clone git@github.com:Chia-Network/cadt-ui.git
 cd climate-warehouse-ui
-nvm install 16.0.0
-nvm use 16.0.0
+nvm install 18.15.0
+nvm use 18.16.0
 npm install foreman -g
 npm install -g husky
 npm install -g prettier
