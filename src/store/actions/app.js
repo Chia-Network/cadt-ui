@@ -4,6 +4,7 @@ import constants from '../../constants';
 import { keyMirror } from '../store-functions';
 import { LANGUAGE_CODES } from '../../translations';
 import { getOrganizationData } from './climateWarehouseActions';
+import { initiateSocket } from './socket';
 
 export const actions = keyMirror(
   'ACTIVATE_PROGRESS_INDICATOR',
@@ -70,10 +71,17 @@ export const clearGlobalErrorMessage = {
   type: actions.CLEAR_GLOBAL_ERROR_MESSAGE,
 };
 
-export const setConnectionCheck = bool => ({
-  type: actions.CONNECTION_CHECK,
-  payload: bool,
-});
+export const setConnectionCheck = bool => {
+  return async dispatch => {
+    if (bool) {
+      dispatch(initiateSocket());
+    }
+    return {
+      type: actions.CONNECTION_CHECK,
+      payload: bool,
+    };
+  };
+};
 
 export const setPendingError = bool => ({
   type: actions.PENDING_ERROR,

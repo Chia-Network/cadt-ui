@@ -1,8 +1,7 @@
 import React from 'react';
 import styled, { css, withTheme } from 'styled-components';
-import socketIO from 'socket.io-client';
 import { EllipseIcon } from '..';
-import constants from '../../constants';
+import { socket } from '../../store/actions/socket';
 
 const Container = styled('div')`
   position: absolute;
@@ -44,14 +43,6 @@ const StatusColor = styled('div')`
       color: red;
     `};
 `;
-
-const WS_HOST = `${constants.API_HOST}/ws`;
-const transports = ['websocket', 'polling'];
-
-let socket = socketIO(WS_HOST, {
-  path: '/socket.io',
-  transports,
-});
 
 const SocketStatusContainer = withTheme(({ socketStatus }) => {
   return (

@@ -6,6 +6,7 @@ import { getStagingData } from './climateWarehouseActions';
 import { refreshApp } from './app';
 import { NotificationManager } from 'react-notifications';
 import constants from '../../constants';
+import { overrideURL } from '../../utils/urlUtils';
 
 export const actions = keyMirror(
   'SOCKET_PROJECTS_UPDATE',
@@ -24,6 +25,11 @@ export const SOCKET_STATUS = keyMirror(
 let socket;
 let interval;
 let reconnectInterval = 1000;
+
+export { socket };
+
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 10;
 
 const notifyRefresh = _.debounce(dispatch => {
   NotificationManager.info(
@@ -84,24 +90,52 @@ export const emitAction = actionCreator => {
 };
 
 const reconnectSocket = _.debounce(dispatch => {
-  if (!socket || (socket && !socket.connected)) {
-    dispatch(initiateSocket());
+  const isSocketDisconnected = !socket || !socket.connected;
+
+  if (isSocketDisconnected && reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+    const serverAddress =
+      localStorage.getItem('serverAddress') || constants.API_HOST;
+    dispatch(initiateSocket(serverAddress));
+
+    reconnectAttempts += 1;
+
     setTimeout(() => {
-      if (!socket || (socket && !socket.connected)) {
+      if (isSocketDisconnected) {
         reconnectSocket(dispatch);
       }
-      reconnectInterval = reconnectInterval * 2;
+      reconnectInterval *= 2;
     }, reconnectInterval);
   }
 }, 100);
 
-export const initiateSocket = remoteHost => {
+export const getServerPath = () => {
+  const serverAddress = localStorage.getItem('serverAddress');
+
+  // If serverAddress is valid, extract and return the pathname.
+  if (serverAddress && typeof serverAddress === 'string') {
+    const serverUrl = new URL(serverAddress);
+
+    // Remove trailing slash from serverUrl.pathname if it exists
+    let serverPathname = serverUrl.pathname;
+    serverPathname = serverPathname.replace(/\/$/, '');
+
+    return serverPathname;
+  }
+
+  // If serverAddress is not valid, return a default path.
+  return '/socket.io';
+};
+
+export const initiateSocket = () => {
   disconnectSocket();
 
-  const WS_HOST = `${remoteHost || constants.API_HOST}/ws`;
+  const WS_HOST = overrideURL(`${constants.API_HOST}/ws`);
+  const host = new URL(WS_HOST);
+  host.pathname = '';
+
   const transports = ['websocket'];
 
-  socket = socketIO(WS_HOST, {
+  socket = socketIO(`${host.toString()}v1/ws`, {
     path: '/socket.io',
     transports,
   });
@@ -116,7 +150,7 @@ export const initiateSocket = remoteHost => {
       .on('authenticated', () => {
         console.log('### Socket Authenticated ###');
         dispatch(setSocketStatus(SOCKET_STATUS.AUTHENTICATED));
-
+        reconnectAttempts = 0;
         console.log('Joining project updates');
         socket.emit('/subscribe', 'projects', response => {
           console.log('Following projects updates', response);
