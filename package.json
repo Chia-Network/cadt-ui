@@ -40,12 +40,12 @@
     "yup": "^1.2.0"
   },
   "scripts": {
-    "start": "nf start -p 31320",
+    "start": "nf start -p 31329",
     "build": "react-scripts build",
     "test": "mocha tests/**/*.spec.js --reporter spec --exit",
     "eject": "react-scripts eject",
     "electron": "electron .",
-    "electron-start": "node src/start-react",
+    "electron-start": "node --trace-warnings src/start-react",
     "react-start": "react-scripts start",
     "pack": "build --dir",
     "dist": "npm run build && build",
@@ -86,7 +86,7 @@
     "chai": "^4.3.4",
     "dotenv-webpack": "^8.0.1",
     "electron": "^25.0.1",
-    "electron-builder": "^24.4.0",
+    "electron-builder": "^24.6.3",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
