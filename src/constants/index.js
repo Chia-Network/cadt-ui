@@ -10,15 +10,17 @@ let apiHost, appUrl;
 if (!_.isEmpty(buildAPIHost)) {
   apiHost = buildAPIHost;
 } else {
-  apiHost = _.isEmpty(hostName) || hostName.includes('localhost')
+  apiHost =
+    _.isEmpty(hostName) || hostName.includes('localhost')
       ? 'http://localhost:31310/v1'
-      : `${protocol}//${hostName}/api/v1`;
+      : `${protocol}//${hostName}/v1`;
 }
 
 if (!_.isEmpty(buildAPPURL)) {
   appUrl = buildAPPURL;
 } else {
-  appUrl = _.isEmpty(hostName) || hostName.includes('localhost')
+  appUrl =
+    _.isEmpty(hostName) || hostName.includes('localhost')
       ? 'https://app.climatewarehouse.chia.net/'
       : `${protocol}//${hostName}/`;
 }
