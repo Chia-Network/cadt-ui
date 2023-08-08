@@ -26,6 +26,7 @@ import {
 } from './app';
 import { areUiAndDataModelMajorVersionsAMatch } from '../../utils/semverUtils';
 import { getMyOrgUid } from '../../utils/getMyOrgUid';
+import { overrideURL } from '../../utils/urlUtils';
 
 export const actions = keyMirror(
   'GET_RATINGS',
@@ -2474,8 +2475,8 @@ export const mockUnitsResponse = {
 
 export const getUnits = options => {
   const url = options?.searchQuery
-    ? `${constants.API_HOST}/units?search=${options.searchQuery}`
-    : `${constants.API_HOST}/units`;
+    ? `${constants.API_HOST}/units?page=1&limit=10&search=${options.searchQuery}`
+    : `${constants.API_HOST}/units?page=1&limit=10&`;
 
   return dispatch => {
     dispatch(
@@ -2496,7 +2497,7 @@ export const mockProjectsResponse = {
 };
 
 export const getProjects = options => {
-  let url = `${constants.API_HOST}/projects?`;
+  let url = `${constants.API_HOST}/projects?page=1&limit=10&`;
 
   if (options?.searchQuery) {
     url += `search=${options.searchQuery}`;
@@ -2539,42 +2540,20 @@ export const getVintages = options => {
 // TODO to replace with an extended wrapper that also adds try catch finally and also handles network connection and progress indicator dispatches
 const fetchWrapper = async (url, payload) => {
   const apiKey = localStorage.getItem('apiKey');
-  const serverAddress = localStorage.getItem('serverAddress');
 
-  // Check if serverAddress is set and is a string; this results in changing the URL to the stored server address
-  // and adds the API key header (if applicable).
-  if (serverAddress && serverAddress.endsWith) {
-    const newPayload = { ...payload };
+  url = overrideURL(url);
 
-    // If API key was set, add the header
-    if (apiKey) {
-      if (newPayload.headers) {
-        // Add to existing headers
-        newPayload.headers = {
-          ...newPayload.headers,
-          'x-api-key': apiKey,
-        };
-      } else {
-        // Create headers object if it doesn't exist
-        newPayload.headers = { 'x-api-key': apiKey };
-      }
-    }
+  const newPayload = { ...payload };
 
-    //Ensure server address ends in a forward slash
-    const addressWithSlash = serverAddress.endsWith('/')
-      ? serverAddress
-      : serverAddress + '/';
-
-    // Replace original URL with stored server URL (with slash)
-    const newUrl = url.replace(
-      /(https:|http:|)(^|\/\/)(.*?\/)/g,
-      addressWithSlash,
-    );
-
-    return fetch(newUrl, newPayload);
+  // If an API key is present, add it to the headers.
+  if (apiKey) {
+    newPayload.headers = newPayload.headers
+      ? { ...newPayload.headers, 'x-api-key': apiKey }
+      : { 'x-api-key': apiKey };
   }
 
-  return fetch(url, payload);
+  // If serverAddress is not valid, perform the fetch operation with the original parameters.
+  return fetch(url, newPayload);
 };
 
 export { fetchWrapper };
