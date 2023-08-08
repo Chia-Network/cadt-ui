@@ -1,3 +1,13 @@
+## [1.2.4](https://github.com/Chia-Network/cadt-ui/compare/1.2.3...1.2.4) (2023-08-08)
+
+
+### Bug Fixes
+
+* remove yarn lock ([6242016](https://github.com/Chia-Network/cadt-ui/commit/62420167c38432d90e76ecad39c7db13d528a374))
+* url override for connect functionality ([4d35f78](https://github.com/Chia-Network/cadt-ui/commit/4d35f780b8889ba2d1eb17164ee92c727f36dd2c))
+
+
+
 ## [1.2.3](https://github.com/Chia-Network/cadt-ui/compare/1.2.2...1.2.3) (2023-06-29)
 
 
