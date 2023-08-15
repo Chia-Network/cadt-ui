@@ -57,6 +57,34 @@ const MyAccount = ({ openModal = false, onClose, isHeader = true }) => {
     }
   }, []);
 
+  useEffect(() => {
+    // Sign in from iframe
+    window.addEventListener(
+      'message',
+      event => {
+        if (event.origin !== window.location.origin) {
+          return;
+        }
+        console.log('Received message:', event.data);
+        if (
+          event?.data?.serverAddress &&
+          validateUrl(event?.data?.serverAddress)
+        ) {
+          dispatch(
+            signIn({
+              apiKey: event?.data?.apiKey,
+              serverAddress: event?.data?.serverAddress,
+            }),
+          );
+          setServerAddress(null);
+          setApiKey(null);
+          setIsLogInModalOpen(false);
+        }
+      },
+      false,
+    );
+  }, []);
+
   return (
     <StyledMyAccountContainer>
       {isHeader && (
