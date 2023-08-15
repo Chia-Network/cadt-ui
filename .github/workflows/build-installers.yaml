@@ -96,6 +96,7 @@ jobs:
 
       # Windows Code Signing
       - name: Get installer name for signing
+        shell: bash
         run: |
           FILE=$(find dist -type f -name '*.exe')
           echo "Installer file is $FILE"
