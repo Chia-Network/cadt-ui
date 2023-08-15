@@ -98,7 +98,7 @@ jobs:
       - name: Get installer name for signing
         shell: bash
         run: |
-          FILE=$(find dist -type f -name '*.exe')
+          FILE=$(find dist -type f -maxdepth 1 -name '*.exe')
           echo "Installer file is $FILE"
           echo "INSTALLER_FILE=$FILE" >> "$GITHUB_ENV"
 
