@@ -1,3 +1,17 @@
+## [1.2.5](https://github.com/Chia-Network/cadt-ui/compare/1.2.4...1.2.5) (2023-08-18)
+
+
+### Bug Fixes
+
+* clean up listener ([4b220a6](https://github.com/Chia-Network/cadt-ui/commit/4b220a6983064583eedde1751db891857c724da5))
+
+
+### Features
+
+* add iframe message listener ([a86e769](https://github.com/Chia-Network/cadt-ui/commit/a86e76991b4b20d8e50f90005a9a04f99878f2e3))
+
+
+
 ## [1.2.4](https://github.com/Chia-Network/cadt-ui/compare/1.2.3...1.2.4) (2023-08-08)
 
 
