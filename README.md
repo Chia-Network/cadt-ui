@@ -46,7 +46,7 @@ sudo apt-get install cadt-ui
 
 ### Web Application
 
-The Climate Warehouse UI can be hosted as a web application, either for internal use, or made available to the public.  When operating as a web application, the user's browser must be able to connect to the [CADT API](https://github.com/Chia-Network/cadt).  This means the API must be available on the public internet if the UI is public.  The `READ_ONLY` option on the API should be set when running a public observer node. 
+The CADT UI can be hosted as a web application, either for internal use, or made available to the public.  When operating as a web application, the user's browser must be able to connect to the [CADT API](https://github.com/Chia-Network/cadt).  This means the API must be available on the public internet if the UI is public.  The `READ_ONLY` option on the API should be set when running a public observer node. 
 
 To host the UI on the web, use the [web-build.tar.gz file from the releases page](https://github.com/Chia-Network/cadt-ui/releases). One of the simplest solutions is to uncompress these files into a [public S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteAccessPermissionsReqd.html). These files could also be served by any webserver, such as Nginx or Apache.  
 
@@ -55,7 +55,7 @@ To host the UI on the web, use the [web-build.tar.gz file from the releases page
 ```
 npm install -g react-scripts
 git clone git@github.com:Chia-Network/cadt-ui.git
-cd climate-warehouse-ui
+cd cadt-ui
 nvm install 18.16.0
 nvm use 18.16.0
 npm install foreman -g
