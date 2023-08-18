@@ -38,7 +38,6 @@ jobs:
 
       - name: npm install
         run: |
-          node --version
           npm install
 
       - name: Import Apple installer signing certificate
@@ -92,16 +91,30 @@ jobs:
           npm install
 
       - name: Build electron app
-        env:
-          CSC_LINK: ${{ secrets.WIN_CODE_SIGN_CERT }}
-          CSC_KEY_PASSWORD: ${{ secrets.WIN_CODE_SIGN_PASSWORD }}
         run: npm run electron:package:win
+
+      # Windows Code Signing
+      - name: Get installer name for signing
+        shell: bash
+        run: |
+          FILE=$(find dist -type f -maxdepth 1 -name '*.exe')
+          echo "Installer file is $FILE"
+          echo "INSTALLER_FILE=$FILE" >> "$GITHUB_ENV"
+
+      - name: Sign windows artifacts
+        uses: chia-network/actions/digicert/windows-sign@main
+        with:
+          sm_api_key: ${{ secrets.SM_API_KEY }}
+          sm_client_cert_file_b64: ${{ secrets.SM_CLIENT_CERT_FILE_B64 }}
+          sm_client_cert_password: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
+          sm_code_signing_cert_sha1_hash: ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}
+          file: "${{ github.workspace }}/${{ env.INSTALLER_FILE }}"
 
       - name: Upload Windows Installer
         uses: actions/upload-artifact@v3
         with:
           name: cadt-ui-windows-installer
-          path: ${{ github.workspace }}/dist/*.exe
+          path: "${{ github.workspace }}/${{ env.INSTALLER_FILE }}"
 
   build_linux:
     name: Build Linux Installer
