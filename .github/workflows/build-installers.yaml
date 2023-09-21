@@ -167,6 +167,9 @@ jobs:
         run: npm install --save-dev husky
 
       - name: npm install and build
+        env:
+          REACT_APP_API_HOST: "https://chia-cadt-demo.chiamanaged.com/observer"
+          REACT_APP_APP_URL: "https://chia-cadt-demo.chiamanaged.com/"
         run: |
           node --version
           npm install
