@@ -1,3 +1,12 @@
+## [1.2.6](https://github.com/Chia-Network/cadt-ui/compare/1.2.5...1.2.6) (2023-10-04)
+
+
+### Features
+
+* add deeplinked search ([42e2742](https://github.com/Chia-Network/cadt-ui/commit/42e2742881e640a4f4cd0355a0f461bb558ddb15))
+
+
+
 ## [1.2.5](https://github.com/Chia-Network/cadt-ui/compare/1.2.4...1.2.5) (2023-08-18)
 
 
