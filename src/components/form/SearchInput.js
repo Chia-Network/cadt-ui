@@ -1,8 +1,9 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
+import { useQueryParamState } from '../hooks/useQueryParamState';
 
 import { MagnifyGlassIcon, MagnifyGlassIconWhite } from '../icons';
 
@@ -89,7 +90,10 @@ const ButtonSearchText = styled('p')`
   align-items: center;
   font-size: 1rem;
   width: 3.125rem;
-  color: ${props => (props.usePrimaryButton ? props.theme.colors.default.onButton : props.theme.colors.default.onSurface)};
+  color: ${props =>
+    props.usePrimaryButton
+      ? props.theme.colors.default.onButton
+      : props.theme.colors.default.onSurface};
   box-sizing: border-box;
 `;
 
@@ -104,11 +108,23 @@ const SearchInput = withTheme(
     disabled = false,
   }) => {
     const intl = useIntl();
+    const ref = useRef();
     const appStore = useSelector(state => state.app);
+    const [searchQuery] = useQueryParamState('search');
+
+    useEffect(() => {
+      onChange({
+        target: {
+          value: searchQuery,
+        },
+      });
+      ref.current.value = searchQuery;
+    }, [searchQuery]);
 
     return (
       <SearchContainer usePrimaryButton={usePrimaryButton} size={size}>
         <Input
+          ref={ref}
           type="text"
           selectedTheme={appStore.theme}
           placeholder={intl.formatMessage({ id: 'search' })}
@@ -124,7 +140,8 @@ const SearchInput = withTheme(
           selectedTheme={appStore.theme}
           usePrimaryButton={usePrimaryButton}
           buttonText={buttonText}
-          disabled={disabled}>
+          disabled={disabled}
+        >
           {(buttonText && (
             <ButtonSearchText usePrimaryButton={usePrimaryButton}>
               {buttonText}
