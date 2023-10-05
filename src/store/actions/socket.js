@@ -24,6 +24,7 @@ export const SOCKET_STATUS = keyMirror(
 let socket;
 let interval;
 let reconnectInterval = 1000;
+let reconnectAttempts = 0;
 
 const notifyRefresh = _.debounce(dispatch => {
   NotificationManager.info(
@@ -33,7 +34,7 @@ const notifyRefresh = _.debounce(dispatch => {
     () => dispatch(refreshApp(true)),
     true,
   );
-}, 100);
+}, 1000);
 
 const initListenersForEachMessageType = dispatch => {
   Object.keys(messageTypes).forEach(key => {
@@ -84,19 +85,28 @@ export const emitAction = actionCreator => {
 };
 
 const reconnectSocket = _.debounce(dispatch => {
-  if (!socket || (socket && !socket.connected)) {
+  if (reconnectAttempts <= 10 && (!socket || !socket.connected)) {
+    console.log(
+      'Attempting to reconnect to socket server...',
+      reconnectAttempts,
+    );
     dispatch(initiateSocket());
     setTimeout(() => {
-      if (!socket || (socket && !socket.connected)) {
+      if (!socket || !socket.connected) {
         reconnectSocket(dispatch);
       }
-      reconnectInterval = reconnectInterval * 2;
+      reconnectInterval *= 2;
     }, reconnectInterval);
+  } else if (reconnectAttempts > 10) {
+    console.log("Couldn't connect to socket server. Max attempts reached.");
+    dispatch(setSocketStatus(SOCKET_STATUS.OFFLINE));
+    clearInterval(interval);
   }
-}, 100);
+}, 1000);
 
 export const initiateSocket = remoteHost => {
   disconnectSocket();
+  reconnectAttempts++;
 
   const WS_HOST = `${remoteHost || constants.API_HOST}/ws`;
   const transports = ['websocket'];
@@ -158,6 +168,7 @@ export const initiateSocket = remoteHost => {
         console.log('Attempting to connect to socket_id: ', socket.id);
         console.log('### Socket Connected ###');
         dispatch(setSocketStatus(SOCKET_STATUS.CONNECTED));
+        reconnectAttempts = 0;
         socket.emit('authentication');
       });
 
