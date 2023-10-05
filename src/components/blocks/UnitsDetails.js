@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styledComponents from 'styled-components';
 
@@ -14,6 +14,7 @@ import { SpanTwoColumnsContainer } from '../layout';
 import { detailsViewData } from '../../utils/functionUtils';
 import { MagnifyGlassIcon } from '..';
 import { getUpdatedUrl } from '../../utils/urlUtils';
+import { getProjects } from '../../store/actions/climateWarehouseActions';
 
 const StyledCursor = styledComponents('div')`
   cursor: zoom-in;
@@ -23,17 +24,28 @@ const UnitsDetails = ({ data, stagingData, changeColor }) => {
   const { issuances, projects } = useSelector(store => store.climateWarehouse);
   const navigate = useNavigate();
   let location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
+  }, [data]);
 
   const unitBelongsToProjectId =
     data &&
     issuances?.filter(issuanceItem => issuanceItem.id === data.issuanceId)[0]
       ?.warehouseProjectId;
 
-  const unitBelongsToProjectName =
-    data &&
-    projects?.filter(
-      projectItem => projectItem.warehouseProjectId === unitBelongsToProjectId,
-    )[0]?.projectName;
+  const unitBelongsToProjectName = useMemo(() => {
+    if (data && projects) {
+      const projectData = projects.data || projects;
+      return projectData?.filter(
+        projectItem =>
+          projectItem.warehouseProjectId === unitBelongsToProjectId,
+      )[0]?.projectName;
+    }
+
+    return '--';
+  }, [data, projects]);
 
   const projectUrl =
     data &&

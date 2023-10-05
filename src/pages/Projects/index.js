@@ -322,7 +322,9 @@ const Projects = withTheme(({ theme }) => {
       return null;
     }
 
-    return projects.map(project =>
+    const projectData = projects.data || projects;
+
+    return projectData.map(project =>
       _.pick(project, [
         'warehouseProjectId',
         'currentRegistry',
