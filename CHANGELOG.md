@@ -1,3 +1,18 @@
+## [1.2.8](https://github.com/Chia-Network/cadt-ui/compare/1.2.7...1.2.8) (2023-10-05)
+
+
+### Bug Fixes
+
+* socket tweaks ([8131c47](https://github.com/Chia-Network/cadt-ui/commit/8131c47b3c7b07014413e107e10e2e27a085d278))
+
+
+### Features
+
+* additional socket tweak: ([6782ba5](https://github.com/Chia-Network/cadt-ui/commit/6782ba5de650f24064ff9616415f0c4e30b39650))
+* throttle socket attempts and set max attempts ([61c961c](https://github.com/Chia-Network/cadt-ui/commit/61c961c1a4d9ac28a501a6937d5aa92515ecf385))
+
+
+
 ## [1.2.7](https://github.com/Chia-Network/cadt-ui/compare/1.2.6...1.2.7) (2023-10-05)
 
 
