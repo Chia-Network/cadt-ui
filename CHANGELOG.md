@@ -1,3 +1,12 @@
+## [1.2.7](https://github.com/Chia-Network/cadt-ui/compare/1.2.6...1.2.7) (2023-10-05)
+
+
+### Bug Fixes
+
+* data crashes ([021345f](https://github.com/Chia-Network/cadt-ui/commit/021345f07397c144069817a7e26fc13eaf900596))
+
+
+
 ## [1.2.6](https://github.com/Chia-Network/cadt-ui/compare/1.2.5...1.2.6) (2023-10-04)
 
 
