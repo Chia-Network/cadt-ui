@@ -11,6 +11,7 @@ import {
 import {
   getOrganizationData,
   getPickLists,
+  getProjects,
 } from './store/actions/climateWarehouseActions';
 import { initiateSocket } from './store/actions/socket';
 
@@ -28,12 +29,19 @@ const App = () => {
   const { socketStatus } = useSelector(state => state.app);
   const appStore = useSelector(state => state.app);
   const [translationTokens, setTranslationTokens] = useState();
+  const { projects } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
     dispatch(initiateSocket(appStore.serverAddress));
-    dispatch(getOrganizationData());
-    dispatch(getPickLists());
-    dispatch(getUser());
+
+    const hydrateData = () => {
+      dispatch(getOrganizationData());
+      dispatch(getPickLists());
+      dispatch(getUser());
+      dispatch(getProjects({ useMockedResponse: false, useApiMock: false }));
+    };
+
+    hydrateData();
   }, [dispatch, appStore.serverAddress]);
 
   useEffect(() => {
@@ -52,7 +60,7 @@ const App = () => {
     }
   }, [appStore.locale]);
 
-  if (!translationTokens) {
+  if (!translationTokens || !projects) {
     return <IndeterminateProgressOverlay />;
   }
 

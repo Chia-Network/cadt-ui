@@ -167,10 +167,14 @@ const APIDataTable = withTheme(
 
     const getFullRecord = useCallback(
       partialRecord => {
+        if (!projects) {
+          return null;
+        }
+
         let fullRecord = null;
 
         if (actions === 'Projects') {
-          fullRecord = projects.filter(
+          fullRecord = projects?.filter(
             project =>
               project.warehouseProjectId === partialRecord.warehouseProjectId,
           )[0];
