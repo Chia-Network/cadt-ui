@@ -175,10 +175,14 @@ export const initiateSocket = remoteHost => {
     initListenersForEachMessageType(dispatch);
 
     interval = setInterval(() => {
-      if (!socket || (socket && !socket.connected)) {
+      if (reconnectAttempts <= 10 && (!socket || !socket.connected)) {
         dispatch(setSocketStatus(SOCKET_STATUS.OFFLINE));
         clearInterval(interval);
         reconnectSocket(dispatch);
+      } else if (reconnectAttempts > 10) {
+        console.log("Couldn't connect to socket server. Max attempts reached.");
+        dispatch(setSocketStatus(SOCKET_STATUS.OFFLINE));
+        clearInterval(interval);
       }
     }, 5000);
   };
