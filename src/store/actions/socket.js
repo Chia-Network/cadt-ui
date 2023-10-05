@@ -100,12 +100,18 @@ const reconnectSocket = _.debounce(dispatch => {
   } else if (reconnectAttempts > 10) {
     console.log("Couldn't connect to socket server. Max attempts reached.");
     dispatch(setSocketStatus(SOCKET_STATUS.OFFLINE));
+
     clearInterval(interval);
   }
 }, 1000);
 
 export const initiateSocket = remoteHost => {
   disconnectSocket();
+
+  if (reconnectAttempts > 10) {
+    return;
+  }
+
   reconnectAttempts++;
 
   const WS_HOST = `${remoteHost || constants.API_HOST}/ws`;
@@ -183,6 +189,7 @@ export const initiateSocket = remoteHost => {
         console.log("Couldn't connect to socket server. Max attempts reached.");
         dispatch(setSocketStatus(SOCKET_STATUS.OFFLINE));
         clearInterval(interval);
+        disconnectSocket();
       }
     }, 5000);
   };
