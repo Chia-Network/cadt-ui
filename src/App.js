@@ -29,7 +29,6 @@ const App = () => {
   const { socketStatus } = useSelector(state => state.app);
   const appStore = useSelector(state => state.app);
   const [translationTokens, setTranslationTokens] = useState();
-  const { projects } = useSelector(store => store.climateWarehouse);
 
   useEffect(() => {
     dispatch(initiateSocket(appStore.serverAddress));
@@ -60,7 +59,7 @@ const App = () => {
     }
   }, [appStore.locale]);
 
-  if (!translationTokens || !projects) {
+  if (!translationTokens) {
     return <IndeterminateProgressOverlay />;
   }
 
