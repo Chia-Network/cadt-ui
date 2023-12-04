@@ -149,18 +149,23 @@ const Units = withTheme(({ theme }) => {
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
+  const fetchUnits = () => {
+    const unitId = searchParams.get('unitId');
+    if (unitId) {
+      dispatch(getUnitData(unitId));
+    }
+  };
+
   const handleTabChange = useCallback(
     (event, newValue) => {
       setTabValue(newValue);
+      fetchUnits();
     },
     [setTabValue],
   );
 
   useEffect(() => {
-    const unitId = searchParams.get('unitId');
-    if (unitId) {
-      dispatch(getUnitData(unitId));
-    }
+    fetchUnits();
     return () => dispatch(clearUnitData());
   }, [searchParams.get('unitId')]);
 
