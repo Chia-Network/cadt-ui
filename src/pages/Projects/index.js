@@ -167,13 +167,6 @@ const Projects = withTheme(({ theme }) => {
   const [isImportOfferModalVisible, setIsImportModalVisible] = useState(false);
   const windowSize = useWindowSize();
 
-  const handleTabChange = useCallback(
-    (event, newValue) => {
-      setTabValue(newValue);
-    },
-    [setTabValue],
-  );
-
   const fetchProject = () => {
     const projectId = searchParams.get('projectId');
     if (projectId) {
@@ -181,6 +174,14 @@ const Projects = withTheme(({ theme }) => {
       dispatch(getStagingData({ useMockedResponse: false }));
     }
   };
+
+  const handleTabChange = useCallback(
+    (event, newValue) => {
+      setTabValue(newValue);
+      fetchProject();
+    },
+    [setTabValue],
+  );
 
   useEffect(() => {
     fetchProject();
@@ -464,13 +465,9 @@ const Projects = withTheme(({ theme }) => {
         )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab
-              onClick={fetchProject}
-              label={intl.formatMessage({ id: 'committed' })}
-            />
+            <Tab label={intl.formatMessage({ id: 'committed' })} />
             {pageIsMyRegistryPage && (
               <Tab
-                onClick={fetchProject}
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.projects.staging
                 })`}
@@ -478,7 +475,6 @@ const Projects = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
-                onClick={fetchProject}
                 label={`${intl.formatMessage({ id: 'pending' })} (${
                   pendingProjects.length
                 })`}
@@ -486,7 +482,6 @@ const Projects = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
-                onClick={fetchProject}
                 label={`${intl.formatMessage({ id: 'failed' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.projects.failed
                 })`}
@@ -494,7 +489,6 @@ const Projects = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
-                onClick={fetchProject}
                 label={`${intl.formatMessage({ id: 'offers' })} (${
                   pendingTransferOffers.length
                 })`}

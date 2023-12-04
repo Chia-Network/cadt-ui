@@ -149,19 +149,20 @@ const Units = withTheme(({ theme }) => {
   const [modalSizeAndPosition, setModalSizeAndPosition] = useState(null);
   const windowSize = useWindowSize();
 
-  const handleTabChange = useCallback(
-    (event, newValue) => {
-      setTabValue(newValue);
-    },
-    [setTabValue],
-  );
-
   const fetchUnits = () => {
     const unitId = searchParams.get('unitId');
     if (unitId) {
       dispatch(getUnitData(unitId));
     }
   };
+
+  const handleTabChange = useCallback(
+    (event, newValue) => {
+      setTabValue(newValue);
+      fetchUnits();
+    },
+    [setTabValue],
+  );
 
   useEffect(() => {
     fetchUnits();
@@ -399,13 +400,9 @@ const Units = withTheme(({ theme }) => {
         </StyledHeaderContainer>
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab
-              onClick={fetchUnits}
-              label={intl.formatMessage({ id: 'committed' })}
-            />
+            <Tab label={intl.formatMessage({ id: 'committed' })} />
             {pageIsMyRegistryPage && (
               <Tab
-                onClick={fetchUnits}
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.units.staging
                 })`}
@@ -413,7 +410,6 @@ const Units = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
-                onClick={fetchUnits}
                 label={`${intl.formatMessage({ id: 'pending' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.units.pending
                 })`}
@@ -421,7 +417,6 @@ const Units = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
-                onClick={fetchUnits}
                 label={`${intl.formatMessage({ id: 'failed' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.units.failed
                 })`}
