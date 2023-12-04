@@ -174,11 +174,16 @@ const Projects = withTheme(({ theme }) => {
     [setTabValue],
   );
 
-  useEffect(() => {
+  const fetchProject = () => {
     const projectId = searchParams.get('projectId');
     if (projectId) {
       dispatch(getProjectData(projectId));
+      dispatch(getStagingData({ useMockedResponse: false }));
     }
+  };
+
+  useEffect(() => {
+    fetchProject();
     return () => dispatch(clearProjectData());
   }, [searchParams.get('projectId')]);
 
@@ -459,9 +464,13 @@ const Projects = withTheme(({ theme }) => {
         )}
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label={intl.formatMessage({ id: 'committed' })} />
+            <Tab
+              onClick={fetchProject}
+              label={intl.formatMessage({ id: 'committed' })}
+            />
             {pageIsMyRegistryPage && (
               <Tab
+                onClick={fetchProject}
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.projects.staging
                 })`}
@@ -469,6 +478,7 @@ const Projects = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
+                onClick={fetchProject}
                 label={`${intl.formatMessage({ id: 'pending' })} (${
                   pendingProjects.length
                 })`}
@@ -476,6 +486,7 @@ const Projects = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
+                onClick={fetchProject}
                 label={`${intl.formatMessage({ id: 'failed' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.projects.failed
                 })`}
@@ -483,6 +494,7 @@ const Projects = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
+                onClick={fetchProject}
                 label={`${intl.formatMessage({ id: 'offers' })} (${
                   pendingTransferOffers.length
                 })`}

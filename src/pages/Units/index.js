@@ -156,11 +156,15 @@ const Units = withTheme(({ theme }) => {
     [setTabValue],
   );
 
-  useEffect(() => {
+  const fetchUnits = () => {
     const unitId = searchParams.get('unitId');
     if (unitId) {
       dispatch(getUnitData(unitId));
     }
+  };
+
+  useEffect(() => {
+    fetchUnits();
     return () => dispatch(clearUnitData());
   }, [searchParams.get('unitId')]);
 
@@ -395,9 +399,13 @@ const Units = withTheme(({ theme }) => {
         </StyledHeaderContainer>
         <StyledSubHeaderContainer>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label={intl.formatMessage({ id: 'committed' })} />
+            <Tab
+              onClick={fetchUnits}
+              label={intl.formatMessage({ id: 'committed' })}
+            />
             {pageIsMyRegistryPage && (
               <Tab
+                onClick={fetchUnits}
                 label={`${intl.formatMessage({ id: 'staging' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.units.staging
                 })`}
@@ -405,6 +413,7 @@ const Units = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
+                onClick={fetchUnits}
                 label={`${intl.formatMessage({ id: 'pending' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.units.pending
                 })`}
@@ -412,6 +421,7 @@ const Units = withTheme(({ theme }) => {
             )}
             {pageIsMyRegistryPage && (
               <Tab
+                onClick={fetchUnits}
                 label={`${intl.formatMessage({ id: 'failed' })} (${
                   totalNumberOfEntries && totalNumberOfEntries.units.failed
                 })`}
