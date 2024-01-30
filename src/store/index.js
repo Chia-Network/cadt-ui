@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import ReduxThunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 
 import { appReducer, climateWarehouseReducer } from './reducers';
 
@@ -8,6 +8,6 @@ const rootReducer = combineReducers({
   climateWarehouse: climateWarehouseReducer,
 });
 
-export default createStore(rootReducer, applyMiddleware(ReduxThunk));
+export default createStore(rootReducer, applyMiddleware(thunk));
 
 export * from './store-functions';
