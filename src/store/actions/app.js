@@ -163,10 +163,28 @@ export const signOut = () => {
 
 export const signInFromLocalStorage = () => {
   return async dispatch => {
-    const apiKey = localStorage.getItem('apiKey');
-    const serverAddress = localStorage.getItem('serverAddress');
+    const apiKey = localStorage.getItem('cadtRemoteServerApiKey');
+    const serverAddress = localStorage.getItem('cadtRemoteServerAddress');
 
     if (serverAddress) {
+      // Ping the server to check if it's reachable and returns a 200 status.
+      try {
+        const response = await fetch(`${serverAddress}/health`, {
+          method: 'HEAD',
+        });
+        if (response.status !== 200) {
+          console.error(`Server returned status: ${response.status}`);
+          localStorage.removeItem('cadtRemoteServerApiKey');
+          localStorage.removeItem('cadtRemoteServerAddress');
+          return;
+        }
+      } catch (error) {
+        console.error(`Failed to ping server: ${error.message}`);
+        localStorage.removeItem('cadtRemoteServerApiKey');
+        localStorage.removeItem('cadtRemoteServerAddress');
+        return;
+      }
+
       let payload = { serverAddress };
 
       if (apiKey) {

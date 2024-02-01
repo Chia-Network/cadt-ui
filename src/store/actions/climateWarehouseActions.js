@@ -1900,9 +1900,6 @@ export const editExistingOrg = data => {
       const url = `${constants.API_HOST}/organizations/edit`;
       const payload = {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
         body: formData,
       };
 

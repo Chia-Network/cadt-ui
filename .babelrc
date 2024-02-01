@@ -1,6 +1,14 @@
 {
-    "presets": ["@babel/preset-env"],
-    "plugins": [
-        "@babel/plugin-transform-runtime"
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": "auto", // Ensures Babel handles ES modules and CommonJS appropriately
+        "useBuiltIns": "usage",
+        "corejs": 3 // If you're using polyfills, ensure you have core-js installed
+      }
     ]
+  ],
+  "plugins": ["@babel/plugin-transform-runtime"],
+  "sourceType": "unambiguous" // Babel will try to guess the type (CommonJS/ES Module)
 }
