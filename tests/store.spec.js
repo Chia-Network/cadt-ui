@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import ReduxThunk from 'redux-thunk';
+import thunk from 'redux-thunk';
 
 import { appReducer, climateWarehouseReducer } from '../src/store/reducers';
 import {
@@ -29,7 +29,7 @@ const rootReducer = combineReducers({
   climateWarehouse: climateWarehouseReducer,
 });
 
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 describe('test climateWarehouse store actions', () => {
   it('getProjects useMockedResponse', async () => {
