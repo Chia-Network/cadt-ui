@@ -1,3 +1,30 @@
+## [1.2.12](https://github.com/Chia-Network/cadt-ui/compare/1.2.11...1.2.12) (2024-02-26)
+
+
+
+## [1.2.11](https://github.com/Chia-Network/cadt-ui/compare/1.2.10...1.2.11) (2024-02-21)
+
+
+
+## [1.2.10](https://github.com/Chia-Network/cadt-ui/compare/1.2.9...1.2.10) (2024-02-09)
+
+
+
+## [1.2.9](https://github.com/Chia-Network/cadt-ui/compare/1.2.8...1.2.9) (2024-02-01)
+
+
+### Bug Fixes
+
+* connection check ([f7c3ad2](https://github.com/Chia-Network/cadt-ui/commit/f7c3ad2c27cf7e2066097ddf20cc2183ef29d6f1))
+* content type for edit org ([8261009](https://github.com/Chia-Network/cadt-ui/commit/82610099727a35f44bca68382489acef3ece187b))
+* deps ([e28e543](https://github.com/Chia-Network/cadt-ui/commit/e28e5434375d17aded83aef97369b99d52407b03))
+* deps ([4ec2fd0](https://github.com/Chia-Network/cadt-ui/commit/4ec2fd00daffa446a848448fbdc15fd4b97162d0))
+* redownload data on tab click for units and projects ([c72e1c9](https://github.com/Chia-Network/cadt-ui/commit/c72e1c921b4cf8642d8dd6a698550d7ea6f6a5a5))
+* redownload data on tab click for units and projects ([3cc44f8](https://github.com/Chia-Network/cadt-ui/commit/3cc44f82de3f7f2e3f1309619f836b05002a891e))
+* update redux thunk export ([0e24e6a](https://github.com/Chia-Network/cadt-ui/commit/0e24e6acc741564d56ef8b52e3f00b1e331229da))
+
+
+
 ## [1.2.8](https://github.com/Chia-Network/cadt-ui/compare/1.2.7...1.2.8) (2023-10-05)
 
 
