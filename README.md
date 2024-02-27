@@ -50,6 +50,11 @@ The CADT UI can be hosted as a web application, either for internal use, or made
 
 To host the UI on the web, use the [web-build.tar.gz file from the releases page](https://github.com/Chia-Network/cadt-ui/releases). One of the simplest solutions is to uncompress these files into a [public S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteAccessPermissionsReqd.html). These files could also be served by any webserver, such as Nginx or Apache.  
 
+To make the CADT UI web application automatically connect to a CADT host by default, build the application from source (`npm install && npm run build`) with the following environment variables set:
+
+* `REACT_APP_API_HOST`:  Set to the URL of the CADT API, including the `/v1` path.  For example: `https://www.example.com:31310/v1`  
+* `REACT_APP_APP_URL`:  Set to the URL of the UI application.  
+
 ### From Source
 
 ```
