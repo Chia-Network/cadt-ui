@@ -16,7 +16,7 @@ jobs:
     name: Check version increment
     runs-on: ubuntu-latest
     steps:
-      - uses: Chia-Network/actions/clean-workspace@main
+      - uses: Datalayer-Storage/actions/clean-workspace@main
 
       - name: Checkout current branch
         uses: actions/checkout@v3
