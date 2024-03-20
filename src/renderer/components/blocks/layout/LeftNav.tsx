@@ -4,10 +4,8 @@ import { Button } from 'flowbite-react';
 import { 
   HiOutlineArrowLeft, 
   HiOutlineArrowRight,
-  HiOutlineInboxIn,
   HiOutlineArchive,
 } from 'react-icons/hi';
-import { LuSettings } from 'react-icons/lu';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -66,38 +64,14 @@ const LeftNav = () => {
         <Sidebar.ItemGroup>
           <Sidebar.Item
             style={{ cursor: 'pointer',  }}
-            active={isActive(ROUTES.MY_STORES)}
-            onClick={() => navigate(ROUTES.MY_STORES)}
+            active={isActive(ROUTES.PROJECTS_LIST)}
+            onClick={() => navigate(ROUTES.PROJECTS_LIST)}
             icon={leftNavExpanded && HiOutlineArchive}
           >
             {
               (leftNavExpanded) ?
-                <FormattedMessage id="my-stores" /> :
+                <FormattedMessage id="projects-list" /> :
                 <HiOutlineArchive/>
-            }
-          </Sidebar.Item>
-          <Sidebar.Item
-            style={{ cursor: 'pointer',  }}
-            active={isActive(ROUTES.SUBSCRIPTIONS)}
-            onClick={() => navigate(ROUTES.SUBSCRIPTIONS)}
-            icon={leftNavExpanded && HiOutlineInboxIn}
-          >
-            {
-              (leftNavExpanded) ?
-                <FormattedMessage id="subscriptions" /> :
-                <HiOutlineInboxIn/>
-            }
-          </Sidebar.Item>
-          <Sidebar.Item
-            style={{ cursor: 'pointer' }}
-            active={isActive(ROUTES.SETTINGS)}
-            onClick={() => navigate(ROUTES.SETTINGS)}
-            icon={leftNavExpanded && LuSettings}
-          >
-            {
-              (leftNavExpanded) ?
-                <FormattedMessage id="settings" /> :
-                <LuSettings/>
             }
           </Sidebar.Item>
         </Sidebar.ItemGroup>

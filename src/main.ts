@@ -18,11 +18,9 @@ appServer.listen(serverPort);
 
 // Import additional modules
 import { startWeb2Gateway } from './web2gateway.js';
-import { mountHandles } from './handles/index.js';
 
 function createWindow() {
   startWeb2Gateway();
-  mountHandles();
 
   const win = new BrowserWindow({
     width: 1200,

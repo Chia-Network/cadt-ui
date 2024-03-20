@@ -1,9 +1,5 @@
-import appReducer from './app/app.slice';
-import userOptionsReducer from './userOptions/userOptions.slice';
-import browserReducer from './browser/browser.slice';
+import appReducer from './app/app.slice'
 
 export {
   appReducer,
-  userOptionsReducer,
-  browserReducer,
 };
