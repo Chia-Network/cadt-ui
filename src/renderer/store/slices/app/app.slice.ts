@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from './app.initialstate';
-import _ from 'lodash';
 
 export const appSlice = createSlice({
   name: 'app',

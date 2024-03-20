@@ -12,6 +12,8 @@ import {
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 // @ts-ignore
 import { rtkQueryErrorLogger } from './middleware/rtkQueryErrorLogger';
+import {cadtApi} from "@/api/cadt/v1";
+import {appReducer} from './slices';
 
 const persistAppsConfig = {
   key: 'app',
@@ -24,6 +26,7 @@ const store = configureStore({
   reducer: {
     // @ts-ignore
     app: persistReducer(persistAppsConfig, appReducer),
+    [cadtApi.reducerPath]: cadtApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -31,7 +34,8 @@ const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, REGISTER],
       },
     })
-      .concat(rtkQueryErrorLogger),
+      .concat(rtkQueryErrorLogger)
+      .concat(cadtApi.middleware),
 });
 
 const persistor = persistStore(store);

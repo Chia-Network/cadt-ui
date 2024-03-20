@@ -16,12 +16,7 @@ appServer.get('*', (_, res) => {
 
 appServer.listen(serverPort);
 
-// Import additional modules
-import { startWeb2Gateway } from './web2gateway.js';
-
 function createWindow() {
-  startWeb2Gateway();
-
   const win = new BrowserWindow({
     width: 1200,
     height: 675,

@@ -1,3 +1,7 @@
 {
-
+  "application-error": "Application Error",
+  "please-reload-or-restart-the-application": "Please reload or restart the application",
+  "projects-list": "Projects List",
+  "no-records-found": "No records found",
+  "unable-to-load-click-to-retry": "Unable to load, click to retry"
 }

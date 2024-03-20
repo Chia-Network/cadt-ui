@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { Caption2, Caption1 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
-const DataTable = (({ columns, data, isLoading = false }) => {
+const DataTable = (({ columns, primaryKey = 'id', data, isLoading = false, onRowClick = _.noop}) => {
   const columnMap = useMemo(() => {
     return columns.reduce((map, curr) => {
       map[curr.key] = curr;
@@ -45,13 +45,13 @@ const DataTable = (({ columns, data, isLoading = false }) => {
         <tbody className="divide-y divide-gray-200">
           {data?.length > 0 &&
             data.map((row, index) => (
-              <tr key={row.id} id={row.id}>
+              <tr key={row[primaryKey]} id={row[primaryKey]} onClick={() => onRowClick(row)}>
                 {columns.map((column) => {
                   const key = column.key;
                   return (
                     <td
-                      key={`${columnMap[key].key}-${row[key]}-${row.id}`}
-                      id={`${columnMap[key].key}-${row[key]}-${row.id}`}
+                      key={`${columnMap[key].key}-${row[key]}-${row[primaryKey]}`}
+                      id={`${columnMap[key].key}-${row[key]}-${row[primaryKey]}`}
                       style={{
                         width: columnMap[key].width,
                         padding: columnMap[key].padding
@@ -87,7 +87,7 @@ const DataTable = (({ columns, data, isLoading = false }) => {
             justifyContent: 'center',
           }}
         >
-          <FormattedMessage id="no-data-found" />
+          <FormattedMessage id="no-records-found" />
         </div>
       )}
     </>
