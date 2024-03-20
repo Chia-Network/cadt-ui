@@ -2,6 +2,7 @@ import { ErrorBoundary } from '@/pages';
 import { LeftNav } from './LeftNav';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
+import {Header} from "@/components";
 
 const AppContainer = styled.div`
   width: 100%;
@@ -30,6 +31,7 @@ const Template = () => {
     <ErrorBoundary>
       <>
         <AppContainer id="app">
+          <Header/>
           <BodyContainer id="body">
             <LeftNavAside>
               <LeftNav />
