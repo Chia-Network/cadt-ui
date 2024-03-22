@@ -5,7 +5,7 @@ import ContentLoader from 'react-content-loader';
 // SkeletonBar component with no props
 const SkeletonBar: React.FC = () => (
   <ContentLoader viewBox="0 0 400 32" width={400} height={32}>
-    <rect x="28" y="0" rx="0" ry="0" width="465" height="32" />
+    <rect x="28" y="0" rx="0" ry="0" width="265" height="32" />
   </ContentLoader>
 );
 
@@ -34,6 +34,11 @@ const SkeletonTable: React.FC = () => {
       key: 'column3',
       render: () => <SkeletonBar />,
     },
+    {
+      title: ' ',
+      key: 'column4',
+      render: () => <SkeletonBar />,
+    }
   ], []);
 
   return (
@@ -45,16 +50,25 @@ const SkeletonTable: React.FC = () => {
             column1: 'value1',
             column2: 'value2',
             column3: 'value3',
+            column4: 'value3',
           },
           {
             column1: 'value1',
             column2: 'value2',
             column3: 'value3',
+            column4: 'value3',
           },
           {
             column1: 'value1',
             column2: 'value2',
             column3: 'value3',
+            column4: 'value3',
+          },
+          {
+            column1: 'value1',
+            column2: 'value2',
+            column3: 'value3',
+            column4: 'value3',
           },
         ]}
         isLoading={false}

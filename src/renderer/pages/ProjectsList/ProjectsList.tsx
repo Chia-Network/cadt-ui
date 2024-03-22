@@ -29,7 +29,7 @@ const ProjectsList: React.FC = () => {
 
   const handleOrganizationSelected = useCallback(
     (organization: any) => {
-      setOrgUid(organization.orgUid);
+      setOrgUid(organization?.orgUid);
     },
     [setOrgUid],
   );
@@ -41,30 +41,30 @@ const ProjectsList: React.FC = () => {
     [setSearch, debounce],
   );
 
-  if (projectsLoading) {
-    return <SkeletonTable />;
-  }
-
   if (projectsError) {
     return <span>cant load</span>;
   }
 
   return (
     <>
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-40">
+      {projectsFetching && <IndeterminateProgressOverlay />}
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
-        <OrganizationSelector onSelect={handleOrganizationSelected} />
+        <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
       </div>
 
-      <ProjectsListTable
-        data={projectsData?.data || []}
-        isLoading={projectsLoading}
-        currentPage={Number(currentPage)}
-        onPageChange={handlePageChange}
-        totalPages={projectsData.pageCount}
-        totalCount={projectsData.pageCount * 10}
-      />
-      {projectsFetching && <IndeterminateProgressOverlay />}
+      {projectsLoading ? (
+        <SkeletonTable />
+      ) : (
+        <ProjectsListTable
+          data={projectsData?.data || []}
+          isLoading={projectsLoading}
+          currentPage={Number(currentPage)}
+          onPageChange={handlePageChange}
+          totalPages={projectsData.pageCount}
+          totalCount={projectsData.pageCount * 10}
+        />
+      )}
     </>
   );
 };
