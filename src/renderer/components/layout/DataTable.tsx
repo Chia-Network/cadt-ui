@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 interface Column {
