@@ -80,8 +80,6 @@ const ProjectsListTable: React.FC<TableProps> = (
         </>
       )}
     </div>
-
-
   );
 }
 

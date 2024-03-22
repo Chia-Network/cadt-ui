@@ -1,4 +1,5 @@
 import {cadtApi, projectsTag} from "../";
+import {Project} from "@/schemas/Project.schema";
 
 const host: string = 'http://localhost:31310'
 
@@ -8,10 +9,16 @@ interface GetProjectsParams {
   search?: string;
 }
 
+interface GetProjectsResponse {
+  page: number,
+  pageCount: number,
+  data: Project[]
+}
+
 const projectsApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
-    getProjects: builder.query<any, GetProjectsParams>({
-      query: ({ page, orgUid, search }) => {
+    getProjects: builder.query<GetProjectsResponse, GetProjectsParams>({
+      query: ({ page, orgUid, search }: GetProjectsParams) => {
         // Initialize the params object with page and limit
         const params: GetProjectsParams & {limit: number} = { page, limit: 10 };
 

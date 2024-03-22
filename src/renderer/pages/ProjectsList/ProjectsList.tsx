@@ -44,7 +44,11 @@ const ProjectsList: React.FC = () => {
   }
 
   if (projectsError) {
-    return(<span>cant load</span>)
+    return <span>cant load</span>;
+  }
+
+  if (!projectsData){
+    return <span>No Projects Found</span>;
   }
 
   return (
