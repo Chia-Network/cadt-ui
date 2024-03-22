@@ -28,8 +28,6 @@ const DataTable: React.FC<DataTableProps> = ({
   onRowClick = () => {},
   footer = null
 }) => {
-  const columnMap = useMemo(() => columns.reduce((map, curr) => ({ ...map, [curr.key]: curr }), {}), [columns]);
-
   if (isLoading) {
     return null;
   }
@@ -46,7 +44,11 @@ const DataTable: React.FC<DataTableProps> = ({
                   {column.renderHeader ? column.renderHeader(column) : column.title}
                 </div>
                 <div className="text-left text-gray-600 dark:text-white">
-                  {column.render ? column.render(row) : row[column.key]}
+                  {column.render ? column.render(row) : (
+                    <div className="truncate" style={{ maxWidth: '300px' }}>
+                      {row[column.key]}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -73,7 +75,11 @@ const DataTable: React.FC<DataTableProps> = ({
                   {columns.map((column) => (
                     <td key={`${column.key}-${row[primaryKey]}`} className="px-6 py-4 whitespace-normal">
                       <div className="text-gray-600 dark:text-white">
-                        {column.render ? column.render(row) : row[column.key]}
+                        {column.render ? column.render(row) : (
+                          <div className="truncate" style={{ maxWidth: '300px' }}>
+                            {row[column.key]}
+                          </div>
+                        )}
                       </div>
                     </td>
                   ))}
