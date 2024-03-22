@@ -1,53 +1,51 @@
-import React from 'react';
-import styled from 'styled-components';
-import {AppLogo} from "@/components";
-
-const Headline = styled('div')`
-  border-top: 8px solid #2dec7c;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  width: 100%;
-  height: 4rem;
-  background-color: #00242C;
-`;
-
-const LogoContainer = styled('div')`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledLocalContainer = styled('div')`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: left;
-  gap: 20px;
-  padding: 0rem 1.5rem;
-  box-sizing: border-box;
-`;
-
-const HomeOrgUidContainer = styled('div')`
-  margin-left: auto;
-  align-self: center;
-`;
+import React, { useState, useEffect } from 'react';
+import { AppLogo } from "@/components";
+import { IoSunny, IoMoon } from "react-icons/io5";
 
 const Header: React.FC = () => {
+  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Check if there's a theme preference saved in localStorage
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+      // Set the theme based on the stored preference
+      document.body.classList.toggle('dark', storedTheme === 'dark');
+      setIsDarkTheme(storedTheme === 'dark');
+    } else {
+      // If no preference is stored, use the default (light) theme
+      setIsDarkTheme(false);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    // Toggle the 'dark' class on the <body> tag to switch themes
+    const newTheme = isDarkTheme ? 'light' : 'dark';
+    document.body.classList.toggle('dark', newTheme === 'dark');
+    setIsDarkTheme(!isDarkTheme);
+    // Store the theme preference in localStorage
+    localStorage.setItem('theme', newTheme);
+  };
 
   return (
-    <Headline>
-      <StyledLocalContainer>
-        <LogoContainer>
-          <AppLogo width="100%" height="80%" />
-        </LogoContainer>
-        <HomeOrgUidContainer>
-          <div style={{color: 'white'}}>
+    <div className="border-t-8 border-green-400 pt-1 pb-1 w-screen h-16 bg-[#00242C] dark:bg-gray-800 dark:border-gray-600">
+      <div className="flex justify-between items-center h-full px-6 max-w-screen-xl mx-auto">
+        <div className="flex items-center h-full mr-5">
+          {/* App logo with a 5px left margin */}
+          <AppLogo width="100%" height="80%" className="" />
+        </div>
+        <div className="flex items-center gap-5">
+          {/* Theme toggle button */}
+          <button onClick={toggleTheme} className="text-white flex items-center justify-center">
+            {/* Dynamically switch the icon based on the isDarkTheme state */}
+            {isDarkTheme ? <IoSunny className="h-5 w-5" /> : <IoMoon className="h-5 w-5" />}
+          </button>
+          <div className="text-white">
             todo: connect button and locale selector
           </div>
-        </HomeOrgUidContainer>
-      </StyledLocalContainer>
-    </Headline>
+        </div>
+      </div>
+    </div>
   );
 };
 

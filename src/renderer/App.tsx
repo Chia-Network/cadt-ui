@@ -33,7 +33,7 @@ function App() {
   }
 
   return (
-  <div style={{height: '100%'}}> 
+  <div> 
     <IntlProvider
       locale={appStore.locale}
       defaultLocale="en"
