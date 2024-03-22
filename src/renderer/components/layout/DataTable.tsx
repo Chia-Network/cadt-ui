@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 interface Column {
@@ -44,7 +45,11 @@ const DataTable: React.FC<DataTableProps> = ({
                   {column.renderHeader ? column.renderHeader(column) : column.title}
                 </div>
                 <div className="text-left text-gray-600 dark:text-white">
-                  {column.render ? column.render(row) : row[column.key]}
+                  {column.render ? column.render(row) : (
+                    <div className="truncate" style={{ maxWidth: '300px' }}>
+                      {row[column.key]}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -53,7 +58,7 @@ const DataTable: React.FC<DataTableProps> = ({
       </div>
 
       {/* Desktop view */}
-      <div className="hidden md:flex md:flex-col" style={{ height: 'calc(100vh - 150px)' }}>
+      <div className="hidden md:flex md:flex-col" style={{ height: 'calc(100vh - 150px)', width: 'calc(100vw - 260px)' }}>
         <div className="overflow-auto">
           <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
@@ -71,7 +76,11 @@ const DataTable: React.FC<DataTableProps> = ({
                   {columns.map((column) => (
                     <td key={`${column.key}-${row[primaryKey]}`} className="px-6 py-4 whitespace-normal">
                       <div className="text-gray-600 dark:text-white">
-                        {column.render ? column.render(row) : row[column.key]}
+                        {column.render ? column.render(row) : (
+                          <div className="truncate" style={{ maxWidth: '300px' }}>
+                            {row[column.key]}
+                          </div>
+                        )}
                       </div>
                     </td>
                   ))}
