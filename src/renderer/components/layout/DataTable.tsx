@@ -1,97 +1,101 @@
-import _ from 'lodash';
 import { useMemo } from 'react';
-import { Caption2, Caption1 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
-const DataTable = (({ columns, primaryKey = 'id', data, isLoading = false, onRowClick = _.noop}) => {
-  const columnMap = useMemo(() => {
-    return columns.reduce((map, curr) => {
-      map[curr.key] = curr;
-      return map;
-    }, {});
-  }, [columns]);
+interface Column {
+  key: string;
+  title: string | JSX.Element;
+  render?: (row: any) => JSX.Element;
+  renderHeader?: (column: any) => JSX.Element;
+  width?: string;
+  padding?: string;
+  style?: React.CSSProperties;
+}
+
+interface DataTableProps {
+  columns: Column[];
+  primaryKey: string;
+  data: any[];
+  isLoading?: boolean;
+  onRowClick?: (row: any) => void;
+  footer?: JSX.Element | null;
+}
+
+const DataTable: React.FC<DataTableProps> = ({
+  columns,
+  primaryKey = 'id',
+  data,
+  isLoading = false,
+  onRowClick = () => {},
+  footer = null
+}) => {
+  const columnMap = useMemo(() => columns.reduce((map, curr) => ({ ...map, [curr.key]: curr }), {}), [columns]);
 
   if (isLoading) {
     return null;
   }
 
   return (
-    <>
-      <table className="min-w-full divide-y divide-gray-300 relative w-full">
-        <thead>
-          <tr>
+    <div className="dark:bg-gray-800">
+      {/* Mobile view */}
+      <div className="block md:hidden mx-auto w-full">
+        {data?.length > 0 && data.map((row, index) => (
+          <div key={row[primaryKey]} onClick={() => onRowClick(row)} className="mb-4 p-4 border border-gray-200 rounded dark:bg-gray-700">
             {columns.map((column) => (
-              <th
-                className={`sticky px-6 py-3 bg-gray`}
-                key={column.key}
-                style={{
-                  width: column.width,
-                  top: -1,
-                  textAlign: 'left',
-                }}
-              >
-                <Caption2
-                  style={{ textTransform: 'uppercase' }}
-                  onClick={column.onClick ? column.onClick : _.noop}
-                >
-                  {column.renderHeader
-                    ? column.renderHeader(column)
-                    : column.title}
-                </Caption2>
-              </th>
+              <div key={`${column.key}-${row[primaryKey]}`} className="py-2">
+                <div className="font-bold text-left text-gray-900 dark:text-gray-100">
+                  {column.renderHeader ? column.renderHeader(column) : column.title}
+                </div>
+                <div className="text-left text-gray-600 dark:text-white">
+                  {column.render ? column.render(row) : row[column.key]}
+                </div>
+              </div>
             ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {data?.length > 0 &&
-            data.map((row, index) => (
-              <tr key={row[primaryKey]} id={row[primaryKey]} onClick={() => onRowClick(row)}>
-                {columns.map((column) => {
-                  const key = column.key;
-                  return (
-                    <td
-                      key={`${columnMap[key].key}-${row[key]}-${row[primaryKey]}`}
-                      id={`${columnMap[key].key}-${row[key]}-${row[primaryKey]}`}
-                      style={{
-                        width: columnMap[key].width,
-                        padding: columnMap[key].padding
-                          ? `${columnMap[key].padding} !important`
-                          : '30px 30px 30px 20px',
-                        ...columnMap[key].style,
-                      }}
-                      className={
-                        index === 0
-                          ? 'whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0'
-                          : 'whitespace-nowrap px-3 py-4 text-sm text-gray-500'
-                      }
-                    >
-                      <Caption1>
-                        {columnMap[key].render
-                          ? columnMap[key].render(row)
-                          : row[key]}
-                      </Caption1>
-                    </td>
-                  );
-                })}
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop view */}
+      <div className="hidden md:flex md:flex-col" style={{ height: 'calc(100vh - 150px)' }}>
+        <div className="overflow-auto">
+          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
+              <tr>
+                {columns.map((column) => (
+                  <th key={column.key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    {column.renderHeader ? column.renderHeader(column) : column.title}
+                  </th>
+                ))}
               </tr>
-            ))}
-        </tbody>
-      </table>
+            </thead>
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              {data?.length > 0 && data.map((row, index) => (
+                <tr key={row[primaryKey]} onClick={() => onRowClick(row)} className={index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700' : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'}>
+                  {columns.map((column) => (
+                    <td key={`${column.key}-${row[primaryKey]}`} className="px-6 py-4 whitespace-normal">
+                      <div className="text-gray-600 dark:text-white">
+                        {column.render ? column.render(row) : row[column.key]}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {footer && data.length && (
+          <div className="mt-auto bg-gray-50 dark:bg-gray-700 w-full p-4 text-left">
+            {footer}
+          </div>
+        )}
+      </div>
 
       {data?.length === 0 && (
-        <div
-          style={{
-            padding: 15,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
+        <div className="p-4 w-full flex justify-center">
           <FormattedMessage id="no-records-found" />
         </div>
       )}
-    </>
+    </div>
   );
-});
+};
 
 export { DataTable };
