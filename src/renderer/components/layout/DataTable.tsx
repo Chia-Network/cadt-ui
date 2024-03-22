@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 interface Column {
@@ -13,7 +12,7 @@ interface Column {
 
 interface DataTableProps {
   columns: Column[];
-  primaryKey: string;
+  primaryKey?: string;
   data: any[];
   isLoading?: boolean;
   onRowClick?: (row: any) => void;
@@ -28,7 +27,6 @@ const DataTable: React.FC<DataTableProps> = ({
   onRowClick = () => {},
   footer = null
 }) => {
-  const columnMap = useMemo(() => columns.reduce((map, curr) => ({ ...map, [curr.key]: curr }), {}), [columns]);
 
   if (isLoading) {
     return null;
@@ -38,7 +36,7 @@ const DataTable: React.FC<DataTableProps> = ({
     <div className="dark:bg-gray-800">
       {/* Mobile view */}
       <div className="block md:hidden mx-auto w-full">
-        {data?.length > 0 && data.map((row, index) => (
+        {data?.length > 0 && data.map((row) => (
           <div key={row[primaryKey]} onClick={() => onRowClick(row)} className="mb-4 p-4 border border-gray-200 rounded dark:bg-gray-700">
             {columns.map((column) => (
               <div key={`${column.key}-${row[primaryKey]}`} className="py-2">
