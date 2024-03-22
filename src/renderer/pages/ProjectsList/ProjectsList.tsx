@@ -41,8 +41,16 @@ const ProjectsList: React.FC = () => {
     [setSearch, debounce],
   );
 
+  if (projectsLoading) {
+    return <SkeletonTable />;
+  }
+
   if (projectsError) {
     return <span>cant load</span>;
+  }
+
+  if (!projectsData){
+    return <span>No Projects Found</span>;
   }
 
   return (
