@@ -3,15 +3,14 @@ import logo from '@/assets/img/CAD-Logo-RGB-Full-Colour.png';
 interface AppLogoProps {
   width: string,
   height: string,
-  type?: string,
-  className?: string
+  type?: string
 }
 
-const AppLogo: React.FC<AppLogoProps> = ({ width, height, type = 'svg', className }) => {
+const AppLogo: React.FC<AppLogoProps> = ({ width, height, type = 'svg' }) => {
   if (type === 'png') return <img width={width} height={height} src={logo}/>;
   else
     return (
-      <svg className={className} width={width} height={height} viewBox="0 0 201.484 54">
+      <svg width={width} height={height} viewBox="0 0 201.484 54">
         <defs>
           <clipPath id="clip-path">
             <path

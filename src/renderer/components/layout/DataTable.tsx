@@ -1,3 +1,4 @@
+import { noop } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
 interface Column {
@@ -24,7 +25,7 @@ const DataTable: React.FC<DataTableProps> = ({
   primaryKey = 'id',
   data,
   isLoading = false,
-  onRowClick = () => {},
+  onRowClick = noop,
   footer = null
 }) => {
 
@@ -59,7 +60,7 @@ const DataTable: React.FC<DataTableProps> = ({
       {/* Desktop view */}
       <div className="hidden md:flex md:flex-col" style={{ height: 'calc(100vh - 150px)', width: 'calc(100vw - 260px)' }}>
         <div className="overflow-auto">
-          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700" style={{height: 'calc(100vh - 265px)'}}>
             <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
               <tr>
                 {columns.map((column) => (
