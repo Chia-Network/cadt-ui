@@ -33,7 +33,7 @@ function App() {
   }
 
   return (
-  <div style={{height: '100%'}}> 
+  <div style={{height: 'calc(100% - 67px)'}} className="dark:bg-gray-800 dark:text-white"> 
     <IntlProvider
       locale={appStore.locale}
       defaultLocale="en"
