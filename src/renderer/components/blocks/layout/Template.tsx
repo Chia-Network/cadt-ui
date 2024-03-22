@@ -8,11 +8,11 @@ const Template = () => {
     <ErrorBoundary>
       <div id="app" className="dark:bg-gray-800 w-full h-full">
         <Header />
-        <div id="body" className="w-full h-full flex flex-col sm:flex-row">
-          <aside className="h-full sm:w-auto sm:flex-none">
+        <div id="body" className="w-full h-full flex flex-col md:flex-row">
+          <aside className="h-full md:w-auto md:flex-none">
             <LeftNav />
           </aside>
-          <div id="content" className="w-full h-full relative p-2 sm:p-0 dark:text-white">
+          <div id="content" className="w-full h-full relative p-2 md:p-0 dark:text-white">
             <div className="h-full overflow-y-auto">
               <ErrorBoundary>
                 <Outlet />

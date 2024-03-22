@@ -51,7 +51,7 @@ const ProjectsList: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row gap-6 pl-1 my-2.5 relative z-40">
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-40">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector onSelect={handleOrganizationSelected} />
       </div>

@@ -22,7 +22,7 @@ const LeftNav = () => {
   return (
     <div className="relative bg-white dark:bg-gray-800">
       {/* Menu toggle with darker background */}
-      <div className="sm:hidden flex justify-end p-4 dark:bg-gray-700">
+      <div className="md:hidden flex justify-end p-4 dark:bg-gray-700">
         <button
           onClick={toggleDropdown}
           aria-label="Open navigation"
@@ -34,7 +34,7 @@ const LeftNav = () => {
 
       {/* Mobile Dropdown Menu */}
       <div
-        className={`${isOpen ? 'absolute z-50' : 'hidden'} sm:hidden top-full right-0 w-full bg-gradient-to-b from-gray-50 via-gray-100 to-gray-200 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 rounded-b-lg shadow-lg`}
+        className={`${isOpen ? 'absolute z-50' : 'hidden'} md:hidden top-full right-0 w-full bg-gradient-to-b from-gray-50 via-gray-100 to-gray-200 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 rounded-b-lg shadow-lg`}
       >
         <div
           onClick={() => handleNavigation(ROUTES.PROJECTS_LIST)}
@@ -46,7 +46,7 @@ const LeftNav = () => {
       </div>
 
       {/* Original Desktop LeftNav Layout */}
-      <div className="hidden sm:block">
+      <div className="hidden md:block">
         <Sidebar aria-label="App Navigation">
           <Sidebar.Items>
             <Sidebar.ItemGroup>

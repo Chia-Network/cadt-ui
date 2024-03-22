@@ -37,7 +37,7 @@ const DataTable: React.FC<DataTableProps> = ({
   return (
     <div className="dark:bg-gray-800">
       {/* Mobile view */}
-      <div className="block sm:hidden mx-auto w-full">
+      <div className="block md:hidden mx-auto w-full">
         {data?.length > 0 && data.map((row, index) => (
           <div key={row[primaryKey]} onClick={() => onRowClick(row)} className="mb-4 p-4 border border-gray-200 rounded dark:bg-gray-700">
             {columns.map((column) => (
@@ -55,7 +55,7 @@ const DataTable: React.FC<DataTableProps> = ({
       </div>
 
       {/* Desktop view */}
-      <div className="hidden sm:flex sm:flex-col" style={{ height: 'calc(100vh - 150px)' }}>
+      <div className="hidden md:flex md:flex-col" style={{ height: 'calc(100vh - 150px)' }}>
         <div className="overflow-auto">
           <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
