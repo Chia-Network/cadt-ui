@@ -35,7 +35,7 @@ const unitsApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
-      providesTags: [unitsTag],
+      providesTags: (_response, _error, {orgUid}) => [{type: unitsTag, id: orgUid}],
     })
   })
 });

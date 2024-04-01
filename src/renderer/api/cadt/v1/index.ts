@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 const projectsTag: string = 'projects';
 const organizationsTag: string = 'organizations';
-const unitsTag: string = 'units'
+const unitsTag: string = 'projects';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: '/',
