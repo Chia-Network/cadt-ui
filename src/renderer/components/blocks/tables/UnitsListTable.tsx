@@ -12,7 +12,7 @@ interface TableProps {
   totalCount: number;
 }
 
-const ProjectsListTable: React.FC<TableProps> = ({
+const UnitsListTable: React.FC<TableProps> = ({
   data,
   isLoading,
   currentPage,
@@ -23,48 +23,48 @@ const ProjectsListTable: React.FC<TableProps> = ({
   const columns = useMemo(
     () => [
       {
-        title: <FormattedMessage id={'current-registry'} />,
-        key: 'currentRegistry',
+        title: <FormattedMessage id={'unit-owner'} />,
+        key: 'unitOwner',
       },
       {
-        title: <FormattedMessage id={'project-id'} />,
-        key: 'projectId',
+        title: <FormattedMessage id={'country-jurisdiction-of-owner'} />,
+        key: 'countryJurisdictionOfOwner',
       },
       {
-        title: <FormattedMessage id={'project-name'} />,
-        key: 'projectName',
+        title: <FormattedMessage id={'serial-number-block'} />,
+        key: 'serialNumberBlock',
       },
       {
-        title: <FormattedMessage id={'project-developer'} />,
-        key: 'projectDeveloper',
+        title: <FormattedMessage id={'unit-count'} />,
+        key: 'unitCount',
       },
       {
-        title: <FormattedMessage id={'sector'} />,
-        key: 'sector',
+        title: <FormattedMessage id={'vintage-year'} />,
+        key: 'vintageYear',
       },
       {
-        title: <FormattedMessage id={'project-type'} />,
-        key: 'projectType',
+        title: <FormattedMessage id={'unit-type'} />,
+        key: 'unitType',
       },
       {
-        title: <FormattedMessage id={'project-tags'} />,
-        key: 'projectTags',
+        title: <FormattedMessage id={'marketplace'} />,
+        key: 'marketplace',
       },
       {
-        title: <FormattedMessage id={'covered-by-ndc'} />,
-        key: 'coveredByNdc',
+        title: <FormattedMessage id={'unit-tags'} />,
+        key: 'unitTags',
       },
       {
-        title: <FormattedMessage id={'project-status'} />,
-        key: 'projectStatus',
+        title: <FormattedMessage id={'unit-status'} />,
+        key: 'unitStatus',
       },
       {
-        title: <FormattedMessage id={'unit-metric'} />,
-        key: 'unitMetric',
+        title: <FormattedMessage id={'corresponding-adjustment-declaration'} />,
+        key: 'correspondingAdjustmentDeclaration',
       },
       {
-        title: <FormattedMessage id={'validation-body'} />,
-        key: 'validationBody',
+        title: <FormattedMessage id={'corresponding-adjustment-status'} />,
+        key: 'correspondingAdjustmentStatus',
       },
     ],
     [],
@@ -75,7 +75,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
       <DataTable
         columns={columns}
         data={data}
-        primaryKey="warehouseProjectId"
+        primaryKey="warehouseUnitId"
         isLoading={isLoading}
         footer={
           <>
@@ -94,4 +94,4 @@ const ProjectsListTable: React.FC<TableProps> = ({
   );
 };
 
-export { ProjectsListTable };
+export { UnitsListTable };

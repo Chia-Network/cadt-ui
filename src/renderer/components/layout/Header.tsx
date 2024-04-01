@@ -32,7 +32,7 @@ const Header: React.FC = () => {
       <div className="flex justify-between items-center h-full px-6 max-w-screen-xl mx-auto">
         <div className="flex items-center h-full mr-5">
           {/* App logo with a 5px left margin */}
-          <AppLogo width="100%" height="80%" className="" />
+          <AppLogo width="100%" height="80%" type="" />
         </div>
         <div className="flex items-center gap-5">
           {/* Theme toggle button */}

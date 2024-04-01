@@ -1,4 +1,4 @@
-import {cadtApi, projectsTag} from "../";
+import {cadtApi, projectsTag,} from "../";
 import {Project} from "@/schemas/Project.schema";
 
 const host: string = 'http://localhost:31310'
@@ -36,7 +36,7 @@ const projectsApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
-      providesTags: [projectsTag],
+      providesTags: (_response, _error, {orgUid}) => [{type: projectsTag, id: orgUid}],
     })
   })
 });

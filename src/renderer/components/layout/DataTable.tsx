@@ -1,6 +1,6 @@
 import { noop } from 'lodash';
 import { FormattedMessage } from 'react-intl';
-import { Tooltip } from 'flowbite-react';
+import { Tooltip } from '@/components';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 
@@ -23,14 +23,16 @@ interface DataTableProps {
   footer?: JSX.Element | null;
 }
 
-const DataTable: React.FC<DataTableProps> = ({
-  columns,
-  primaryKey = 'id',
-  data,
-  isLoading = false,
-  onRowClick = noop,
-  footer = null,
-}) => {
+const DataTable: React.FC<DataTableProps> =
+  ({
+    columns,
+    primaryKey = 'id',
+    data,
+    isLoading = false,
+    onRowClick = noop,
+    footer = null,
+  }) => {
+
   if (isLoading) {
     return null;
   }
@@ -78,44 +80,44 @@ const DataTable: React.FC<DataTableProps> = ({
             style={{ height: data.length > 5 ? 'calc(100vh - 265px)' : 'auto' }}
           >
             <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
-              <tr>
-                {columns.map((column) => (
-                  <th
-                    key={column.key}
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                  >
-                    {column.renderHeader ? column.renderHeader(column) : column.title}
-                  </th>
-                ))}
-              </tr>
+            <tr>
+              {columns.map((column) => (
+                <th
+                  key={column.key}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                >
+                  {column.renderHeader ? column.renderHeader(column) : column.title}
+                </th>
+              ))}
+            </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {data?.length > 0 &&
-                data.map((row, index) => (
-                  <tr
-                    key={row[primaryKey]}
-                    onClick={() => onRowClick(row)}
-                    className={
-                      index % 2 === 0
-                        ? 'bg-gray-50 dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
-                        : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
-                    }
-                  >
-                    {columns.map((column) => (
-                      <td key={`${column.key}-${row[primaryKey]}`} className="px-6 py-4 whitespace-normal">
-                        <div className="text-gray-600 dark:text-white">
-                          {column.render ? (
-                            column.render(row)
-                          ) : (
-                            <div className="truncate" style={{ maxWidth: '300px' }}>
-                              <Tooltip content={row[column.key]}>{row[column.key]}</Tooltip>
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+            {data?.length > 0 &&
+              data.map((row, index) => (
+                <tr
+                  key={row[primaryKey]}
+                  onClick={() => onRowClick(row)}
+                  className={
+                    index % 2 === 0
+                      ? 'bg-gray-50 dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }
+                >
+                  {columns.map((column) => (
+                    <td key={`${column.key}-${row[primaryKey]}`} className="px-6 py-4 whitespace-normal">
+                      <div className="text-gray-600 dark:text-white">
+                        {column.render ? (
+                          column.render(row)
+                        ) : (
+                          <div className="truncate" style={{ maxWidth: '300px' }}>
+                            <Tooltip content={row[column.key]}>{row[column.key]}</Tooltip>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </SimpleBar>
