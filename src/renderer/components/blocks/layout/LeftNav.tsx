@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoMenu } from 'react-icons/io5';
 import { FormattedMessage } from 'react-intl';
-import { Sidebar } from 'flowbite-react';
+import { Sidebar } from '@/components';
 import ROUTES from '@/routes/route-constants';
 
 const LeftNav = () => {
@@ -56,6 +56,13 @@ const LeftNav = () => {
                 onClick={() => navigate(ROUTES.PROJECTS_LIST)}
               >
                 <FormattedMessage id="projects-list" />
+              </Sidebar.Item>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.UNITS_LIST)}
+                onClick={() => navigate(ROUTES.UNITS_LIST)}
+              >
+                <FormattedMessage id="units-list" />
               </Sidebar.Item>
               {/* Add more Sidebar.Item as needed */}
             </Sidebar.ItemGroup>

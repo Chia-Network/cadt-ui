@@ -29,6 +29,10 @@ const AppNavigator: React.FC = () => {
               element={<Pages.ProjectsList/>}
             />
             <Route
+              path={ROUTES.UNITS_LIST}
+              element={<Pages.UnitsList/>}
+            />
+            <Route
               path="*"
               element={<Navigate replace to={ROUTES.PROJECTS_LIST} />}
             />

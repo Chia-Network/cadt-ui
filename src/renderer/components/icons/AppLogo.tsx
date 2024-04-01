@@ -1,4 +1,5 @@
 import logo from '@/assets/img/CAD-Logo-RGB-Full-Colour.png';
+import React from "react";
 
 interface AppLogoProps {
   width: string,

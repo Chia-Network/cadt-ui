@@ -1,6 +1,6 @@
-import { TextInput as FlowbiteTextInput } from 'flowbite-react';
+import {TextInput as FlowbiteTextInput, TextInputProps} from 'flowbite-react';
 
-function TextInput({ ...props }) {
+function TextInput({ ...props }: TextInputProps) {
   return (
     <FlowbiteTextInput {...props}/>
   );
