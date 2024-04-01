@@ -47,24 +47,28 @@ const SkeletonTable: React.FC = () => {
         columns={columns}
         data={[
           {
+            id: 1,
             column1: 'value1',
             column2: 'value2',
             column3: 'value3',
             column4: 'value3',
           },
           {
+            id: 2,
             column1: 'value1',
             column2: 'value2',
             column3: 'value3',
             column4: 'value3',
           },
           {
+            id: 3,
             column1: 'value1',
             column2: 'value2',
             column3: 'value3',
             column4: 'value3',
           },
           {
+            id: 4,
             column1: 'value1',
             column2: 'value2',
             column3: 'value3',

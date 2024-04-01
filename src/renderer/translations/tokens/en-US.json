@@ -17,5 +17,16 @@
   "vintage-year": "Vintage Year",
   "unit-type": "Unit Type",
   "unable-to-load-contents": "Unable to Load Contents",
-  "search": "Search"
+  "search": "Search",
+  "current-registry": "Current Registry",
+  "project-id": "Project Id",
+  "project-name": "Project Name",
+  "project-developer": "Project Developer",
+  "sector": "Sector",
+  "project-type": "Project Type",
+  "project-tags": "Project Tags",
+  "covered-by-ndc": "Covered By Ndc",
+  "project-status": "Project Status",
+  "unit-metric": "Unit Metric",
+  "validation-body": "Validation Body"
 }
