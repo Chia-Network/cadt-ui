@@ -5,9 +5,10 @@ import { Dropdown, SyncIndicator } from '@/components';
 interface OrganizationSelectorProps {
   onSelect: (organization: any | undefined) => void;
   defaultOrgUid: string | undefined;
+  noSelectionLabel?: string
 }
 
-const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, defaultOrgUid }) => {
+const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, defaultOrgUid, noSelectionLabel = 'Select Organization' }) => {
   const { data: organizations, error, isLoading } = useGetOrganizationsListQuery({});
   const [selectedOrganization, setSelectedOrganization] = useState<any | undefined>(undefined);
 
@@ -36,7 +37,7 @@ const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, d
   };
 
   return (
-    <Dropdown label={selectedOrganization ? selectedOrganization.name : 'All Organizations'} inline={true}>
+    <Dropdown label={selectedOrganization ? selectedOrganization.name : noSelectionLabel} inline={true}>
       <Dropdown.Item onClick={() => handleSelect(undefined)}>All Organizations</Dropdown.Item>
       {organizations.map((organization) => (
         <Dropdown.Item
