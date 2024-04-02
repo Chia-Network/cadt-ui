@@ -1,3 +1,16 @@
+## [1.2.14](https://github.com/Chia-Network/cadt-ui/compare/1.2.13...1.2.14) (2024-03-06)
+
+
+### Bug Fixes
+
+* pagination for myprojects action ([f0f07c7](https://github.com/Chia-Network/cadt-ui/commit/f0f07c70524b22f9bd499d4885e9db3615e62c47))
+
+
+
+## [1.2.13](https://github.com/Chia-Network/cadt-ui/compare/1.2.12...1.2.13) (2024-02-27)
+
+
+
 ## [1.2.12](https://github.com/Chia-Network/cadt-ui/compare/1.2.11...1.2.12) (2024-02-26)
 
 

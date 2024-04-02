@@ -305,7 +305,7 @@ export const getMyProjects = myOrgUid => {
 
     try {
       const response = await fetchWrapper(
-        `${constants.API_HOST}/projects?orgUid=${myOrgUid}`,
+        `${constants.API_HOST}/projects?orgUid=${myOrgUid}&page=1&limit=500`,
       );
 
       if (response.ok) {
