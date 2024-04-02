@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useGetProjectsQuery } from '@/api';
-import { useQueryParamState } from '@/hooks';
+import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   OrganizationSelector,
@@ -15,13 +15,15 @@ const ProjectsList: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
+  const [order, setOrder] = useQueryParamState('order', undefined);
+  const handleSetOrder = useColumnOrderHandler(order, setOrder);
 
   const {
     data: projectsData,
     isLoading: projectsLoading,
     isFetching: projectsFetching,
     error: projectsError,
-  } = useGetProjectsQuery({ page: Number(currentPage), orgUid, search });
+  } = useGetProjectsQuery({ page: Number(currentPage), orgUid, search, order });
 
   const handlePageChange = useCallback(
     debounce((page) => setCurrentPage(page), 800),
@@ -41,6 +43,7 @@ const ProjectsList: React.FC = () => {
     }, 800),
     [setSearch, debounce],
   );
+
 
   if (projectsLoading) {
     return <SkeletonTable />;
@@ -70,6 +73,8 @@ const ProjectsList: React.FC = () => {
           isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}
+          setOrder={handleSetOrder}
+          order={order}
           totalPages={projectsData.pageCount}
           totalCount={projectsData.pageCount * 10}
         />

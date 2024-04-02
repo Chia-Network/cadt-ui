@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useGetUnitsQuery } from '@/api';
-import { useQueryParamState } from '@/hooks';
+import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   OrganizationSelector,
@@ -15,13 +15,15 @@ const UnitsList: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
+  const [order, setOrder] = useQueryParamState('order', undefined);
+  const handleSetOrder = useColumnOrderHandler(order, setOrder);
 
   const {
     data: unitsData,
     isLoading: unitsLoading,
     isFetching: unitsFetching,
     error: unitsError,
-  } = useGetUnitsQuery({ page: Number(currentPage), orgUid, search });
+  } = useGetUnitsQuery({ page: Number(currentPage), orgUid, search, order });
 
   const handlePageChange = useCallback(
     debounce((page) => setCurrentPage(page), 800),
@@ -70,6 +72,8 @@ const UnitsList: React.FC = () => {
           isLoading={unitsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}
+          setOrder={handleSetOrder}
+          order={order}
           totalPages={unitsData.pageCount}
           totalCount={unitsData.pageCount * 10}
         />

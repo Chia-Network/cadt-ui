@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { DebouncedFunc }from 'lodash'
+import { DebouncedFunc } from 'lodash';
 import { DataTable, PageCounter, Pagination } from '@/components';
 
 interface TableProps {
@@ -8,6 +8,8 @@ interface TableProps {
   isLoading: boolean;
   currentPage: number;
   onPageChange: DebouncedFunc<(page: any) => void>;
+  setOrder?: (sort: string) => void;
+  order?: string;
   totalPages: number;
   totalCount: number;
 }
@@ -17,9 +19,13 @@ const ProjectsListTable: React.FC<TableProps> = ({
   isLoading,
   currentPage,
   onPageChange,
+  setOrder,
+  order,
   totalPages,
   totalCount,
 }) => {
+  
+
   const columns = useMemo(
     () => [
       {
@@ -74,6 +80,8 @@ const ProjectsListTable: React.FC<TableProps> = ({
     <div className="relative">
       <DataTable
         columns={columns}
+        onChangeOrder={setOrder}
+        order={order}
         data={data}
         primaryKey="warehouseProjectId"
         isLoading={isLoading}

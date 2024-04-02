@@ -1,4 +1,4 @@
 export default {
-  PROJECTS_LIST: '/ProjectsList',
-  UNITS_LIST: '/UnitsList'
+  PROJECTS_LIST: '/projects',
+  UNITS_LIST: '/units'
 };
