@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
 import { DataTable, PageCounter, Pagination } from '@/components';
+import {formatToDataTimeFromSeconds} from "@/utils/transforms";
 
 interface TableProps {
   data: any[];
@@ -36,20 +37,7 @@ const AuditsTable: React.FC<TableProps> = ({
         title: <FormattedMessage id={'timestamp'} />,
         key: 'onchainConfirmationTimeStamp',
         render: (row: any) => {
-          return (
-            <>
-              {
-                new Intl.DateTimeFormat('en-US', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit'
-                }).format(new Date(row.onchainConfirmationTimeStamp * 1000))
-              }
-            </>
-          );
+          return <>{formatToDataTimeFromSeconds(row.onchainConfirmationTimeStamp)}</>;
         }
       },
       {
