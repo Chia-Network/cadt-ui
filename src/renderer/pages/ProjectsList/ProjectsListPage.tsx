@@ -44,7 +44,6 @@ const ProjectsListPage: React.FC = () => {
     [setSearch, debounce],
   );
 
-
   if (projectsLoading) {
     return <SkeletonTable />;
   }
