@@ -1,17 +1,17 @@
 import React, { useCallback } from 'react';
-import { useGetProjectsQuery } from '@/api';
+import { useGetUnitsQuery } from '@/api';
 import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
-import { debounce } from 'lodash';
+import {debounce, DebouncedFunc} from 'lodash';
 import {
   OrganizationSelector,
   IndeterminateProgressOverlay,
   SkeletonTable,
-  ProjectsListTable,
   SearchBox,
+  UnitsListTable,
 } from '@/components';
 import {FormattedMessage} from "react-intl";
 
-const ProjectsList: React.FC = () => {
+const UnitsListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
@@ -19,13 +19,13 @@ const ProjectsList: React.FC = () => {
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
 
   const {
-    data: projectsData,
-    isLoading: projectsLoading,
-    isFetching: projectsFetching,
-    error: projectsError,
-  } = useGetProjectsQuery({ page: Number(currentPage), orgUid, search, order });
+    data: unitsData,
+    isLoading: unitsLoading,
+    isFetching: unitsFetching,
+    error: unitsError,
+  } = useGetUnitsQuery({ page: Number(currentPage), orgUid, search, order });
 
-  const handlePageChange = useCallback(
+  const handlePageChange: DebouncedFunc<any> = useCallback(
     debounce((page) => setCurrentPage(page), 800),
     [setCurrentPage],
   );
@@ -37,50 +37,49 @@ const ProjectsList: React.FC = () => {
     [setOrgUid],
   );
 
-  const handleSearchChange = useCallback(
+  const handleSearchChange: DebouncedFunc<any> = useCallback(
     debounce((event: any) => {
       setSearch(event.target.value);
     }, 800),
     [setSearch, debounce],
   );
 
-
-  if (projectsLoading) {
+  if (unitsLoading) {
     return <SkeletonTable />;
   }
 
-  if (projectsError) {
+  if (unitsError) {
     return <FormattedMessage id={"unable-to-load-contents"}/>;
   }
 
-  if (!projectsData){
+  if (!unitsData){
     return <FormattedMessage id={"no-records-found"}/>;
   }
 
   return (
     <>
-      {projectsFetching && <IndeterminateProgressOverlay />}
+      {unitsFetching && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
       </div>
 
-      {projectsLoading ? (
+      {unitsLoading ? (
         <SkeletonTable />
       ) : (
-        <ProjectsListTable
-          data={projectsData?.data || []}
-          isLoading={projectsLoading}
+        <UnitsListTable
+          data={unitsData?.data || []}
+          isLoading={unitsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}
           setOrder={handleSetOrder}
           order={order}
-          totalPages={projectsData.pageCount}
-          totalCount={projectsData.pageCount * 10}
+          totalPages={unitsData.pageCount}
+          totalCount={unitsData.pageCount * 10}
         />
       )}
     </>
   );
 };
 
-export { ProjectsList };
+export { UnitsListPage };

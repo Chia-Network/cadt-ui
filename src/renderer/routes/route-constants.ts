@@ -1,4 +1,5 @@
 export default {
   PROJECTS_LIST: '/projects',
-  UNITS_LIST: '/units'
+  UNITS_LIST: '/units',
+  AUDIT: '/audit'
 };

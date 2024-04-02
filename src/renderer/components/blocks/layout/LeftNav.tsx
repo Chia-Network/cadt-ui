@@ -64,6 +64,13 @@ const LeftNav = () => {
               >
                 <FormattedMessage id="units-list" />
               </Sidebar.Item>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.AUDIT)}
+                onClick={() => navigate(ROUTES.AUDIT)}
+              >
+                <FormattedMessage id="audits" />
+              </Sidebar.Item>
               {/* Add more Sidebar.Item as needed */}
             </Sidebar.ItemGroup>
           </Sidebar.Items>
