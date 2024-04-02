@@ -7,6 +7,7 @@ interface GetProjectsParams {
   page: number;
   orgUid?: string;
   search?: string;
+  order?: string;
 }
 
 interface GetProjectsResponse {
@@ -18,7 +19,7 @@ interface GetProjectsResponse {
 const projectsApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query<GetProjectsResponse, GetProjectsParams>({
-      query: ({ page, orgUid, search }: GetProjectsParams) => {
+      query: ({ page, orgUid, search, order }: GetProjectsParams) => {
         // Initialize the params object with page and limit
         const params: GetProjectsParams & {limit: number} = { page, limit: 10 };
 
@@ -28,6 +29,10 @@ const projectsApi = cadtApi.injectEndpoints({
 
         if (search) {
           params.search = search.replace(/[^a-zA-Z0-9 _.-]+/, '');
+        }
+
+        if (order) {
+          params.order = order;
         }
 
         return {

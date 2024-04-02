@@ -13,7 +13,7 @@ const useQueryParamState: QueryParamState<string> = (name, defaultValue = '') =>
   const location = useLocation();
 
   const setQueryStringParameter = useCallback(
-    (value: string) => {
+    (value?: string) => {
       const params = new URLSearchParams(window.location.search || window.location.hash.replace(/#.*\?/, ""));
 
       if (_.isNil(value) || value === '') {

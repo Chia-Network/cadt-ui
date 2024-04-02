@@ -8,6 +8,8 @@ interface TableProps {
   isLoading: boolean;
   currentPage: number;
   onPageChange: DebouncedFunc<(page: any) => void>;
+  setOrder?: (sort: string) => void;
+  order?: string;
   totalPages: number;
   totalCount: number;
 }
@@ -17,6 +19,8 @@ const UnitsListTable: React.FC<TableProps> = ({
   isLoading,
   currentPage,
   onPageChange,
+  setOrder,
+  order,
   totalPages,
   totalCount,
 }) => {
@@ -75,6 +79,8 @@ const UnitsListTable: React.FC<TableProps> = ({
       <DataTable
         columns={columns}
         data={data}
+        onChangeOrder={setOrder}
+        order={order}
         primaryKey="warehouseUnitId"
         isLoading={isLoading}
         footer={
