@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useGetUnitsQuery } from '@/api';
 import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
-import { debounce } from 'lodash';
+import {debounce, DebouncedFunc} from 'lodash';
 import {
   OrganizationSelector,
   IndeterminateProgressOverlay,
@@ -12,7 +12,7 @@ import {
 } from '@/components';
 import {FormattedMessage} from "react-intl";
 
-const UnitsList: React.FC = () => {
+const UnitsListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
@@ -26,7 +26,7 @@ const UnitsList: React.FC = () => {
     error: unitsError,
   } = useGetUnitsQuery({ page: Number(currentPage), orgUid, search, order });
 
-  const handlePageChange = useCallback(
+  const handlePageChange: DebouncedFunc<any> = useCallback(
     debounce((page) => setCurrentPage(page), 800),
     [setCurrentPage],
   );
@@ -38,7 +38,7 @@ const UnitsList: React.FC = () => {
     [setOrgUid],
   );
 
-  const handleSearchChange = useCallback(
+  const handleSearchChange: DebouncedFunc<any> = useCallback(
     debounce((event: any) => {
       setSearch(event.target.value);
     }, 800),
@@ -85,4 +85,4 @@ const UnitsList: React.FC = () => {
   );
 };
 
-export { UnitsList };
+export { UnitsListPage };
