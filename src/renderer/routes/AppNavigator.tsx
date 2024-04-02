@@ -23,6 +23,7 @@ const AppNavigator: React.FC = () => {
             <Route path="/" element={<Navigate to={ROUTES.PROJECTS_LIST} />} />
             <Route path={ROUTES.PROJECTS_LIST} element={<Pages.ProjectsListPage />} />
             <Route path={ROUTES.UNITS_LIST} element={<Pages.UnitsListPage />} />
+            <Route path={ROUTES.AUDIT} element={<Pages.AuditPage />} />
             <Route path={ROUTES.GLOSSARY} element={<Pages.GlossaryPage />} />
             <Route path="*" element={<Navigate replace to={ROUTES.PROJECTS_LIST} />} />
           </Route>
