@@ -15,11 +15,19 @@ const organizationsApi = cadtApi.injectEndpoints({
       transformResponse(baseQueryReturnValue: BaseQueryResult<any>): any[]{
         return Object.values(baseQueryReturnValue);
       }
+    }),
+    getOrganizationsMap: builder.query({
+      query: () => ({
+        url: `${host}/v1/organizations`,
+        method: 'GET',
+      }),
+      providesTags: [organizationsTag],
     })
   })
 });
 
 
 export const {
-  useGetOrganizationsListQuery
+  useGetOrganizationsListQuery,
+  useGetOrganizationsMapQuery
 } = organizationsApi;

@@ -8,6 +8,7 @@ import {
   SkeletonTable,
   ProjectsListTable,
   SearchBox,
+  SyncIndicator
 } from '@/components';
 import {FormattedMessage} from "react-intl";
 
@@ -62,6 +63,7 @@ const ProjectsListPage: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
+        <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 
       {projectsLoading ? (
