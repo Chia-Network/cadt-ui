@@ -56,12 +56,12 @@ jobs:
       - name: Notarize
         run: |
           DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
-          npm install -g notarize-cli
-          notarize-cli \
-            --file="$DMG_FILE" \
-            --bundle-id net.chia.cadt-ui \
-            --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
-            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
+          xcrun notarytool submit \
+          --wait \
+          --apple-id "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
+          --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}" \
+          --team-id "${{ secrets.APPLE_TEAM_ID }}" \
+          "$DMG_FILE"
 
       - name: Upload Mac Installer
         uses: actions/upload-artifact@v3
