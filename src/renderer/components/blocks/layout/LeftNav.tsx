@@ -42,6 +42,18 @@ const LeftNav = () => {
         >
           <FormattedMessage id={'projects-list'} />
         </div>
+        <div
+          onClick={() => handleNavigation(ROUTES.UNITS_LIST)}
+          className={`cursor-pointer p-3 ${isActive(ROUTES.UNITS_LIST) ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white' : 'text-gray-700 dark:text-gray-300'} hover:bg-gray-300 dark:hover:bg-gray-700 rounded-md text-lg font-semibold`}
+        >
+          <FormattedMessage id={'units-list'} />
+        </div>
+        <div
+          onClick={() => handleNavigation(ROUTES.GLOSSARY)}
+          className={`cursor-pointer p-3 ${isActive(ROUTES.GLOSSARY) ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white' : 'text-gray-700 dark:text-gray-300'} hover:bg-gray-300 dark:hover:bg-gray-700 rounded-md text-lg font-semibold`}
+        >
+          <FormattedMessage id={'glossary'} />
+        </div>
         {/* Additional mobile navigation items here */}
       </div>
 

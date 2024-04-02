@@ -64,6 +64,7 @@ const UnitsList: React.FC = () => {
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
         <SyncIndicator detailed={true} orgUid={orgUid} />
+        <OrgUidBadge orgUid={orgUid} />
       </div>
 
       {unitsLoading ? (

@@ -8,7 +8,8 @@ import {
   SkeletonTable,
   ProjectsListTable,
   SearchBox,
-  SyncIndicator
+  SyncIndicator,
+  OrgUidBadge
 } from '@/components';
 import {FormattedMessage} from "react-intl";
 
@@ -60,10 +61,11 @@ const ProjectsList: React.FC = () => {
   return (
     <>
       {projectsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
+      <div className="flex flex-col lg:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
         <SyncIndicator detailed={true} orgUid={orgUid} />
+        <OrgUidBadge orgUid={orgUid} />
       </div>
 
       {projectsLoading ? (
