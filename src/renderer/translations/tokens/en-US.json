@@ -28,5 +28,8 @@
   "covered-by-ndc": "Covered By Ndc",
   "project-status": "Project Status",
   "unit-metric": "Unit Metric",
-  "validation-body": "Validation Body"
+  "validation-body": "Validation Body",
+  "glossary": "Glossary",
+  "term": "Term",
+  "description": "Description"
 }
