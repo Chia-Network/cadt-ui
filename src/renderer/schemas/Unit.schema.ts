@@ -3,16 +3,16 @@ import {Issuance} from "@/schemas/Issuance.schema";
 
 export interface Unit {
   // Required properties
-  countryJurisdictionOfOwner: string; // Requires validation against a list of countries
-  unitCount: number; // Must be an integer
-  vintageYear: number; // Must be an integer between 1900 and 3000
-  unitType: string; // Requires validation against a list of unit types
-  unitStatus: string; // Requires validation against a list of unit statuses
+  countryJurisdictionOfOwner: string;
+  unitCount: number;
+  vintageYear: number;
+  unitType: string;
+  unitStatus: string;
   unitRegistryLink: string;
-  correspondingAdjustmentDeclaration: string; // Requires validation against a list of declarations
-  correspondingAdjustmentStatus: string; // Requires validation against a list of statuses
-  issuance: Issuance; // Detailed structure needs to be defined
-  labels: Label[]; // Detailed structure needs to be defined
+  correspondingAdjustmentDeclaration: string;
+  correspondingAdjustmentStatus: string;
+  issuance: Issuance;
+  labels: Label[];
 
   // Optional properties
   projectLocationId?: string | null;

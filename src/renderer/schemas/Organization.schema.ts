@@ -1,22 +1,22 @@
 export interface Organization {
   // Required fields
-  id: number; // Auto-incremented primary key
-  orgUid: string; // Unique string
+  id: number;
+  orgUid: string;
   name: string;
   icon: string;
   registryId: string;
   registryHash: string;
   fileStoreId: string;
-  prefix: string; // Default value '0', cannot be null
+  prefix: string;
 
   // Optional fields
   orgHash?: string;
-  fileStoreSubscribed?: boolean; // Default value false
-  subscribed?: boolean; // Default value false
-  isHome?: boolean; // Default value false
-  metadata?: string; // Default value '{}', can be null
-  synced?: boolean; // Default value false
-  sync_remaining?: number; // Default value 0
+  fileStoreSubscribed?: boolean;
+  subscribed?: boolean;
+  isHome?: boolean;
+  metadata?: string;
+  synced?: boolean;
+  sync_remaining?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
