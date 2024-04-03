@@ -3,7 +3,7 @@ import {
   SidebarProps,
   SidebarItemProps,
   SidebarItemsProps,
-  SidebarItemGroupProps
+  SidebarItemGroupProps,
 } from 'flowbite-react';
 
 function Sidebar({ children, ...props }: SidebarProps) {
@@ -26,7 +26,7 @@ function ItemGroup({children, ...props}: SidebarItemGroupProps) {
 
 function Item({children, ...props}: SidebarItemProps) {
   return (
-    <FlowbiteSidebar.Item {...props}>{children}</FlowbiteSidebar.Item>
+    <FlowbiteSidebar.Item className={'active:bg-green-500 dark:active:bg-green-500'} {...props}>{children}</FlowbiteSidebar.Item>
   );
 }
 
