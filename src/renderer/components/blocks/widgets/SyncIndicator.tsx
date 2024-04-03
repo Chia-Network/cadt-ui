@@ -30,7 +30,7 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
     }
   } else {
     const orgData = organizationsMap?.[orgUid];
-    isSynced = _.isNil(orgData?.synced) ? false : orgData.synced;
+    isSynced = Boolean(orgData?.synced);
     if (!isSynced) {
       syncRemaining = orgData?.sync_remaining ?? 0;
     }

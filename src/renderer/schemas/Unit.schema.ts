@@ -23,7 +23,4 @@ export interface Unit {
   marketplaceIdentifier?: string | null;
   unitTags?: string | null;
   unitStatusReason?: string | null;
-  updatedAt?: Date | null;
-  createdAt?: Date | null;
-  timeStaged?: number | null; // Assuming the timestamp is represented as a number
 }
