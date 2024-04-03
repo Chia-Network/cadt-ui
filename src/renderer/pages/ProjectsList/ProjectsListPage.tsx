@@ -1,17 +1,19 @@
 import React, { useCallback } from 'react';
 import { useGetProjectsQuery } from '@/api';
 import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
-import { debounce } from 'lodash';
+import { debounce, DebouncedFunc } from 'lodash';
 import {
   OrganizationSelector,
   IndeterminateProgressOverlay,
   SkeletonTable,
   ProjectsListTable,
   SearchBox,
+  SyncIndicator,
+  OrgUidBadge,
 } from '@/components';
-import {FormattedMessage} from "react-intl";
+import { FormattedMessage } from 'react-intl';
 
-const ProjectsList: React.FC = () => {
+const ProjectsListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
@@ -25,7 +27,7 @@ const ProjectsList: React.FC = () => {
     error: projectsError,
   } = useGetProjectsQuery({ page: Number(currentPage), orgUid, search, order });
 
-  const handlePageChange = useCallback(
+  const handlePageChange: DebouncedFunc<any> = useCallback(
     debounce((page) => setCurrentPage(page), 800),
     [setCurrentPage],
   );
@@ -37,32 +39,37 @@ const ProjectsList: React.FC = () => {
     [setOrgUid],
   );
 
-  const handleSearchChange = useCallback(
+  const handleSearchChange: DebouncedFunc<any> = useCallback(
     debounce((event: any) => {
       setSearch(event.target.value);
     }, 800),
     [setSearch, debounce],
   );
 
-
   if (projectsLoading) {
     return <SkeletonTable />;
   }
 
   if (projectsError) {
-    return <FormattedMessage id={"unable-to-load-contents"}/>;
+    return <FormattedMessage id={'unable-to-load-contents'} />;
   }
 
-  if (!projectsData){
-    return <FormattedMessage id={"no-records-found"}/>;
+  if (!projectsData) {
+    return <FormattedMessage id={'no-records-found'} />;
   }
 
   return (
     <>
       {projectsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
+      <div className="flex flex-col lg:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
-        <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
+        <OrganizationSelector
+          onSelect={handleOrganizationSelected}
+          defaultOrgUid={orgUid}
+          noSelectionLabel="All Organizations"
+        />
+        <SyncIndicator detailed={true} orgUid={orgUid} />
+        <OrgUidBadge orgUid={orgUid} />
       </div>
 
       {projectsLoading ? (
@@ -83,4 +90,4 @@ const ProjectsList: React.FC = () => {
   );
 };
 
-export { ProjectsList };
+export { ProjectsListPage };

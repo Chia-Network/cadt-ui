@@ -1,1 +1,1 @@
-export * from './UnitsList';
+export * from './UnitsListPage';

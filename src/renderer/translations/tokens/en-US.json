@@ -28,5 +28,16 @@
   "covered-by-ndc": "Covered By Ndc",
   "project-status": "Project Status",
   "unit-metric": "Unit Metric",
-  "validation-body": "Validation Body"
+  "table": "Table",
+  "timestamp": "Timestamp",
+  "type": "Type",
+  "root-hash": "Root Hash",
+  "author": "Author",
+  "comment": "Comment",
+  "please-select-an-organization-to-view-audit-data": "Please select an organization to view audit data",
+  "audit": "Audit",
+  "validation-body": "Validation Body",
+  "glossary": "Glossary",
+  "term": "Term",
+  "description": "Description"
 }
