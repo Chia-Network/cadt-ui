@@ -37,20 +37,19 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
   }
 
   return (
-    <div className={`flex items-center space-x-2 ${detailed ? 'p-2 rounded-lg shadow bg-white dark:bg-gray-800' : ''}`}>
+    <div className={`grid grid-cols-[auto_1fr] items-center gap-x-2 ${detailed ? 'p-2 rounded-lg shadow bg-white dark:bg-gray-800' : ''}`}>
       <div className={`${isSynced ? 'bg-green-500' : 'animate-pulse bg-yellow-500'} h-4 w-4 rounded-full`}></div>
       {detailed && (
-        <>
+        <div className="flex flex-col text-left">
           <span className={`text-sm ${isSynced ? 'text-green-700' : 'text-yellow-600'}`}>
             {isSynced ? 'Synced' : 'Syncing...'}
           </span>
           {!isSynced && (
-            // Made "sync remaining" more subtle with lighter color and smaller font
             <span className="text-xs text-yellow-400">
-              ({syncRemaining} remaining)
+              {syncRemaining} remaining
             </span>
           )}
-        </>
+        </div>
       )}
     </div>
   );

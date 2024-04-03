@@ -47,7 +47,7 @@ const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, d
   };
 
   return (
-    <Dropdown label={selectedOrganization ? selectedOrganization.name : 'All Organizations'} inline={true}>
+    <Dropdown label={selectedOrganization ? selectedOrganization.name : noSelectionLabel} inline={true}>
       <Dropdown.Item onClick={() => handleSelect(undefined)}>All Organizations</Dropdown.Item>
       {organizations.map((organization) => (
         <Dropdown.Item
