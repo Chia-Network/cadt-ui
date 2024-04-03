@@ -6,9 +6,10 @@ import {Organization} from "@/schemas/Organization.schema";
 interface OrganizationSelectorProps {
   onSelect: (organization: any | undefined) => void;
   defaultOrgUid: string | undefined;
+  noSelectionLabel?: string
 }
 
-const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, defaultOrgUid }) => {
+const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, defaultOrgUid, noSelectionLabel = 'Select Organization'  }) => {
   const { data: organizations, error, isLoading } = useGetOrganizationsListQuery();
   const [selectedOrganization, setSelectedOrganization] = useState<Organization | undefined>(undefined);
 
