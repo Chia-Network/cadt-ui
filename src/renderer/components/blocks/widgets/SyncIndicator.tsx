@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash'
 import { useGetOrganizationsMapQuery, useGetOrganizationsListQuery } from '@/api/cadt/v1/organizations';
 
 interface SyncIndicatorProps {
@@ -17,17 +18,19 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
     pollingInterval: 10000,
   });
 
-  let isSynced = false;
-  let syncRemaining = 0;
+  let isSynced: boolean;
+  let syncRemaining: number = 0;
 
   if (!orgUid) {
     isSynced = !organizationList?.some((org) => !org.synced);
     if (!isSynced) {
-      syncRemaining = organizationList?.reduce((acc, org) => acc + org.sync_remaining, 0) ?? 0;
+      syncRemaining = organizationList?.reduce((acc, org) => {
+        return _.isNil(org.sync_remaining) ? acc : acc + org.sync_remaining;
+      }, 0) ?? 0;
     }
   } else {
     const orgData = organizationsMap?.[orgUid];
-    isSynced = orgData?.synced;
+    isSynced = _.isNil(orgData?.synced) ? false : orgData.synced;
     if (!isSynced) {
       syncRemaining = orgData?.sync_remaining ?? 0;
     }

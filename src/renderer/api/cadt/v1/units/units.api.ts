@@ -1,4 +1,5 @@
 import {cadtApi, unitsTag} from "../";
+import {Unit} from "@/schemas/Unit.schema";
 
 const host: string = 'http://localhost:31310'
 
@@ -12,7 +13,7 @@ interface GetUnitsParams {
 interface GetUnitsResponse {
   page: number,
   pageCount: number,
-  data: any[]
+  data: Unit[]
 }
 
 const unitsApi = cadtApi.injectEndpoints({

@@ -1,22 +1,28 @@
 import {cadtApi, organizationsTag} from "../";
 // @ts-ignore
 import {BaseQueryResult} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
+import {Organization} from "@/schemas/Organization.schema";
 
 const host: string = 'http://localhost:31310'
 
+interface GetOrgnaizationsMapResponse {
+  [index: string]: Organization
+}
+
 const organizationsApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
-    getOrganizationsList: builder.query({
+    getOrganizationsList: builder.query<Organization[], void | null>({
       query: () => ({
         url: `${host}/v1/organizations`,
         method: 'GET',
       }),
       providesTags: [organizationsTag],
-      transformResponse(baseQueryReturnValue: BaseQueryResult<any>): any[]{
+      transformResponse(baseQueryReturnValue: BaseQueryResult<Organization[]>): Organization[]{
         return Object.values(baseQueryReturnValue);
       }
     }),
-    getOrganizationsMap: builder.query({
+
+    getOrganizationsMap: builder.query<GetOrgnaizationsMapResponse, void | null>({
       query: () => ({
         url: `${host}/v1/organizations`,
         method: 'GET',
