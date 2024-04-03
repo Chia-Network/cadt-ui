@@ -1,4 +1,4 @@
-import {LabelUnit} from "./LableUnit.schema";
+import {LabelUnit} from "./LabelUnit.schema";
 
 export interface Label {
   // Optional properties
