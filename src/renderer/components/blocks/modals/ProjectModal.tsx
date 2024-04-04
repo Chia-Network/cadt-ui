@@ -15,12 +15,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
       </Modal.Header>
       <Modal.Body>
         <Tabs>
-          <Tabs.Item title={<FormattedMessage id={'project'} />}>
+          <Tabs.Item title={<FormattedMessage id="project" />}>
             this is the project tab for warehouse project {warehouseProjectId}
           </Tabs.Item>
-          <Tabs.Item title={<FormattedMessage id={'issuance'} />}>this is the issuance tab</Tabs.Item>
-          <Tabs.Item title={<FormattedMessage id={'project-locations'} />}>this is the project locations tab</Tabs.Item>
-          <Tabs.Item title={<FormattedMessage id={'estimations'} />}>this is the project estimations tab</Tabs.Item>
+          <Tabs.Item title={<FormattedMessage id="issuance" />}>this is the issuance tab</Tabs.Item>
+          <Tabs.Item title={<FormattedMessage id="project-locations" />}>this is the project locations tab</Tabs.Item>
+          <Tabs.Item title={<FormattedMessage id="estimations" />}>this is the project estimations tab</Tabs.Item>
         </Tabs>
       </Modal.Body>
     </Modal>
