@@ -1,19 +1,41 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import initialState from '@/store/slices/app/app.initialstate';  // Ensure this path is correct
 
-const projectsTag: string = 'projects';
-const organizationsTag: string = 'organizations';
-const unitsTag: string = 'projects';
-const auditTag: string = 'audit';
+const projectsTag = 'projects';
+const organizationsTag = 'organizations';
+const unitsTag = 'projects';
+const auditTag = 'audit';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: '/',
 });
 
-export { projectsTag, organizationsTag, unitsTag, auditTag};
+const baseQueryWithDynamicHost = async (args, api, extraOptions) => {
+  let modifiedArgs = args;
+  const state = api.getState();
+  const currentHost = state.app.apiHost;
+
+  // Check if currentHost is equal to the initialState's apiHost
+  const effectiveHost = (currentHost === initialState.apiHost && import.meta.env.VITE_API_HOST) ? import.meta.env.VITE_API_HOST : currentHost;
+
+  // Modify the URL based on the effectiveHost
+  if (typeof args === 'string') {
+    modifiedArgs = `${effectiveHost}${args}`;
+  } else if (args && typeof args === 'object') {
+    modifiedArgs = {
+      ...args,
+      url: `${effectiveHost}${args.url}`,
+    };
+  }
+
+  return await baseQuery(modifiedArgs, api, extraOptions);
+};
 
 export const cadtApi = createApi({
-  baseQuery,
+  baseQuery: baseQueryWithDynamicHost,
   reducerPath: 'cadtApi',
   tagTypes: [projectsTag, organizationsTag, unitsTag, auditTag],
   endpoints: () => ({}),
 });
+
+export { projectsTag, organizationsTag, unitsTag, auditTag };

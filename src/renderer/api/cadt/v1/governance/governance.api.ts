@@ -2,8 +2,6 @@ import { cadtApi } from '../';
 // @ts-ignore
 import { BaseQueryResult } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 
-const host: string = 'http://localhost:31310';
-
 interface BaseQueryResult {
   [key: string]: string[];
 }
@@ -22,7 +20,7 @@ const governanceApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
     getGlossary: builder.query<GlossaryItem[], void>({
       query: () => ({
-        url: `${host}/v1/governance/meta/glossary`,
+        url: `/v1/governance/meta/glossary`,
         method: 'GET',
       }),
       transformResponse: (baseQueryReturnValue: BaseQueryResult): GlossaryItem[] => {

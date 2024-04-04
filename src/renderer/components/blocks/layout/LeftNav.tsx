@@ -2,8 +2,9 @@ import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoMenu } from 'react-icons/io5';
 import { FormattedMessage } from 'react-intl';
-import { Sidebar } from '@/components';
+import {Sidebar, WarehouseIcon} from '@/components';
 import ROUTES from '@/routes/route-constants';
+import {Card} from "@/components";
 
 const LeftNav = () => {
   const navigate = useNavigate();
@@ -66,6 +67,14 @@ const LeftNav = () => {
       {/* Original Desktop LeftNav Layout */}
       <div className="hidden md:block">
         <Sidebar aria-label="App Navigation">
+          <Card className="max-w-sm mb-6 shadow-none">
+            <div className={'flex space-x-3 justify-center'}>
+              <WarehouseIcon height={24} width={24}/>
+              <div>
+                <FormattedMessage id={'warehouse'}/>
+              </div>
+            </div>
+          </Card>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
               <Sidebar.Item

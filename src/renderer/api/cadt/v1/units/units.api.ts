@@ -1,8 +1,6 @@
 import {cadtApi, unitsTag} from "../";
 import {Unit} from "@/schemas/Unit.schema";
 
-const host: string = 'http://localhost:31310'
-
 interface GetUnitsParams {
   page: number;
   orgUid?: string;
@@ -36,8 +34,8 @@ const unitsApi = cadtApi.injectEndpoints({
         }
 
         return {
-          url: `${host}/v1/units`,
-          params, // Use the constructed params object
+          url: `/v1/units`,
+          params,
           method: 'GET',
         };
       },

@@ -8,11 +8,14 @@ export const appSlice = createSlice({
     setLocale: (state, { payload }) => {
       state.locale = payload;
     },
+    setHost: (state, { payload }) => {
+      state.apiHost = payload;
+    },
   },
 });
 
-export const {
-  setLocale,
-} = appSlice.actions;
+export const { setLocale, setHost } = appSlice.actions;
+
+export const selectCurrentHost = (state) => state.app.host;
 
 export default appSlice.reducer;
