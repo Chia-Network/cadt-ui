@@ -1,15 +1,14 @@
 import React, { useCallback } from 'react';
 import { useGetProjectsQuery } from '@/api';
-import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
-import { debounce, DebouncedFunc } from 'lodash';
+import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
+import { debounce } from 'lodash';
 import {
-  OrganizationSelector,
   IndeterminateProgressOverlay,
-  SkeletonTable,
+  OrganizationSelector,
+  ProjectModal,
   ProjectsListTable,
   SearchBox,
-  SyncIndicator,
-  OrgUidBadge,
+  SkeletonTable,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
@@ -19,6 +18,7 @@ const ProjectsListPage: React.FC = () => {
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
+  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project-');
 
   const {
     data: projectsData,
@@ -27,7 +27,7 @@ const ProjectsListPage: React.FC = () => {
     error: projectsError,
   } = useGetProjectsQuery({ page: Number(currentPage), orgUid, search, order });
 
-  const handlePageChange: DebouncedFunc<any> = useCallback(
+  const handlePageChange = useCallback(
     debounce((page) => setCurrentPage(page), 800),
     [setCurrentPage],
   );
@@ -39,7 +39,7 @@ const ProjectsListPage: React.FC = () => {
     [setOrgUid],
   );
 
-  const handleSearchChange: DebouncedFunc<any> = useCallback(
+  const handleSearchChange = useCallback(
     debounce((event: any) => {
       setSearch(event.target.value);
     }, 800),
@@ -61,15 +61,9 @@ const ProjectsListPage: React.FC = () => {
   return (
     <>
       {projectsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col lg:flex-row gap-6 pl-1 my-2.5 relative z-30">
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
-        <OrganizationSelector
-          onSelect={handleOrganizationSelected}
-          defaultOrgUid={orgUid}
-          noSelectionLabel="All Organizations"
-        />
-        <SyncIndicator detailed={true} orgUid={orgUid} />
-        <OrgUidBadge orgUid={orgUid} />
+        <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
       </div>
 
       {projectsLoading ? (
@@ -84,6 +78,12 @@ const ProjectsListPage: React.FC = () => {
           order={order}
           totalPages={projectsData.pageCount}
           totalCount={projectsData.pageCount * 10}
+        />
+      )}
+      {projectDetailsModalActive && (
+        <ProjectModal
+          onClose={() => setProjectModalActive(false)}
+          warehouseProjectId={projectDetailsFragment.replace('project-', '')}
         />
       )}
     </>

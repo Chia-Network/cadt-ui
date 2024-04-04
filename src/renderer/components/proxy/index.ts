@@ -5,4 +5,6 @@ export * from './TextInput';
 export * from './Spinner';
 export * from './Sidebar';
 export * from './Tooltip';
+export * from './Modal';
+export * from './Tabs';
 export * from './Card';

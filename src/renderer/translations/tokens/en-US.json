@@ -40,5 +40,10 @@
   "glossary": "Glossary",
   "term": "Term",
   "description": "Description",
+  "detailed-project-view": "Detailed Project View",
+  "project": "Project",
+  "issuance": "Issuance",
+  "project-locations": "Project Locations",
+  "estimations": "Estimations",
   "warehouse": "Warehouse"
 }
