@@ -1,7 +1,5 @@
 import {cadtApi, auditTag} from "../";
 
-const host: string = 'http://localhost:31310'
-
 interface GetAuditParams {
   page: number;
   orgUid: string;
@@ -31,8 +29,8 @@ const auditApi = cadtApi.injectEndpoints({
         }
 
         return {
-          url: `${host}/v1/audit`,
-          params, // Use the constructed params object
+          url: `/v1/audit`,
+          params,
           method: 'GET',
         };
       },

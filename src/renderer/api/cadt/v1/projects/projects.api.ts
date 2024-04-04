@@ -1,8 +1,6 @@
 import {cadtApi, projectsTag,} from "../";
 import {Project} from "@/schemas/Project.schema";
 
-const host: string = 'http://localhost:31310'
-
 interface GetProjectsParams {
   page: number;
   orgUid?: string;
@@ -36,8 +34,8 @@ const projectsApi = cadtApi.injectEndpoints({
         }
 
         return {
-          url: `${host}/v1/projects`,
-          params, // Use the constructed params object
+          url: `/v1/projects`,
+          params,
           method: 'GET',
         };
       },
