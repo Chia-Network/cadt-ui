@@ -1,17 +1,46 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoMenu } from 'react-icons/io5';
 import { FormattedMessage } from 'react-intl';
-import {Sidebar, WarehouseIcon} from '@/components';
+import { Card, CreateOrganizationModal, Sidebar, Spinner, WarehouseIcon } from '@/components';
 import ROUTES from '@/routes/route-constants';
-import {Card} from "@/components";
+import { MdListAlt } from 'react-icons/md';
+import { useGetOrganizationsListQuery } from '@/api';
+import { Organization } from '@/schemas/Organization.schema';
+import { useUrlHash } from '@/hooks';
 
 const LeftNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [myOrganization, setMyOrganization] = useState<Organization | undefined>(undefined);
+  const [orgCreationPending, setOrgCreationPending] = useState<boolean>(false);
+
+  const [createOrgModalActive, setCreateOrgModalActive] = useUrlHash('create-organization');
+  const getOrgRtkQueryOptions = myOrganization || createOrgModalActive ? {} : { pollingInterval: 10000 };
+  const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery(
+    null,
+    getOrgRtkQueryOptions,
+  );
+
+  //console.log('left nav re-render');
+
+  useEffect(() => {
+    setMyOrganization(organizationsListData?.find((org: Organization) => org.isHome));
+  }, [organizationsListData]);
+
+  useEffect(() => {
+    setOrgCreationPending(!myOrganization?.orgUid || myOrganization?.orgUid === 'pending');
+  }, [myOrganization]);
 
   const isActive = useCallback((path: string) => location.pathname === path, [location]);
+  const handleClickMyOrganization = useCallback(() => {
+    if (myOrganization && !orgCreationPending) {
+      navigate(ROUTES.MY_ORGANIZATION);
+    } else {
+      setCreateOrgModalActive(true);
+    }
+  }, [myOrganization, navigate, orgCreationPending, setCreateOrgModalActive]);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -67,16 +96,16 @@ const LeftNav = () => {
       {/* Original Desktop LeftNav Layout */}
       <div className="hidden md:block">
         <Sidebar aria-label="App Navigation">
-          <Card className="max-w-sm mb-6 shadow-none">
-            <div className={'flex space-x-3 justify-center'}>
-              <WarehouseIcon height={24} width={24}/>
-              <div>
-                <FormattedMessage id={'warehouse'}/>
-              </div>
-            </div>
-          </Card>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
+              <Card className="max-w-sm mb-6 shadow-none">
+                <div className={'flex space-x-3 justify-center'}>
+                  <WarehouseIcon height={24} width={24} />
+                  <div>
+                    <FormattedMessage id={'warehouse'} />
+                  </div>
+                </div>
+              </Card>
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.PROJECTS_LIST)}
@@ -105,10 +134,42 @@ const LeftNav = () => {
               >
                 <FormattedMessage id="glossary" />
               </Sidebar.Item>
-              {/* Add more Sidebar.Item as needed */}
+            </Sidebar.ItemGroup>
+            <Sidebar.ItemGroup>
+              <Card className="max-w-sm mb-6 shadow-none">
+                <div className={'flex space-x-3 justify-center'}>
+                  <MdListAlt size={24} />
+                  <div>
+                    <FormattedMessage id={'my-registry'} />
+                  </div>
+                </div>
+              </Card>
+              <Sidebar.Item
+                disabled={orgCreationPending || organizationsListLoading}
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.MY_ORGANIZATION)}
+                onClick={handleClickMyOrganization}
+              >
+                {myOrganization ? (
+                  <>
+                    {orgCreationPending ? (
+                      <>
+                        <FormattedMessage id={'creating-organization'} />
+                        {' ...'}
+                        <Spinner />
+                      </>
+                    ) : (
+                      <FormattedMessage id={'my-organization'} />
+                    )}
+                  </>
+                ) : (
+                  <FormattedMessage id={'create-organization'} />
+                )}
+              </Sidebar.Item>
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>
+        {createOrgModalActive && <CreateOrganizationModal onClose={() => setCreateOrgModalActive(false)} />}
       </div>
     </div>
   );

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  redirect,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, redirect, Route, Routes } from 'react-router-dom';
 import ROUTES from '@/routes/route-constants';
 import * as Pages from '@/pages';
 import { Template } from '@/components';
@@ -25,6 +19,7 @@ const AppNavigator: React.FC = () => {
             <Route path={ROUTES.UNITS_LIST} element={<Pages.UnitsListPage />} />
             <Route path={ROUTES.AUDIT} element={<Pages.AuditPage />} />
             <Route path={ROUTES.GLOSSARY} element={<Pages.GlossaryPage />} />
+            <Route path={ROUTES.MY_ORGANIZATION} element={<Pages.MyOrganization />} />
             <Route path="*" element={<Navigate replace to={ROUTES.PROJECTS_LIST} />} />
           </Route>
         </Routes>

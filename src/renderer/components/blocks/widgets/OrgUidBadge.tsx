@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Toast, Tooltip } from 'flowbite-react';
+import React, { useEffect, useState } from 'react';
+import { Toast, Tooltip } from '@/components';
 
 interface OrgUidBadgeProps {
   orgUid: string;
