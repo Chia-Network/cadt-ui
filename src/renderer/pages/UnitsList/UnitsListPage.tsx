@@ -68,8 +68,8 @@ const UnitsListPage: React.FC = () => {
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={'1234'}/> }
         <SyncIndicator detailed={true} orgUid={orgUid} />
-        <OrgUidBadge orgUid={orgUid} />
       </div>
 
       {unitsLoading ? (

@@ -11,10 +11,13 @@ export const appSlice = createSlice({
     setHost: (state, { payload }) => {
       state.apiHost = payload;
     },
+    toggleTheme: (state) => {
+      state.isDarkTheme = !state.isDarkTheme;
+    },
   },
 });
 
-export const { setLocale, setHost } = appSlice.actions;
+export const { setLocale, setHost, toggleTheme } = appSlice.actions;
 
 export const selectCurrentHost = (state) => state.app.host;
 

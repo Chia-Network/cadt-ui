@@ -9,8 +9,11 @@ import {
   ProjectsListTable,
   SearchBox,
   SkeletonTable,
+  SyncIndicator,
+  OrgUidBadge,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
+import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 
 const ProjectsListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
@@ -19,6 +22,9 @@ const ProjectsListPage: React.FC = () => {
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
   const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project-');
+  const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
+    skip: !orgUid,
+  });
 
   const {
     data: projectsData,
@@ -63,7 +69,13 @@ const ProjectsListPage: React.FC = () => {
       {projectsFetching && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
-        <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
+        <OrganizationSelector
+          onSelect={handleOrganizationSelected}
+          defaultOrgUid={orgUid}
+          noSelectionLabel="All Organizations"
+        />
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId}/> }
+        <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 
       {projectsLoading ? (

@@ -18,7 +18,7 @@ const Repeater: React.FC<RepeaterProps> = ({ name, component, maxNumber = 5, min
       name={name}
       render={(arrayHelpers) => (
         <div>
-          {groups.map((group: any, index: number) => (
+          {groups.map((_group: any, index: number) => (
             <div key={index} className="mb-4 flex items-center">
               {/* Clone the component for each group and pass in the adjusted name prop */}
               {React.cloneElement(component, { name: `${name}[${index}]` })}

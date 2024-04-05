@@ -14,6 +14,8 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { rtkQueryErrorLogger } from './middleware/rtkQueryErrorLogger';
 import {cadtApi} from "@/api/cadt/v1";
 import {appReducer} from './slices';
+import { PersistState } from 'redux-persist/es/types';
+import { AppState } from './slices/app/app.initialstate';
 
 const persistAppsConfig = {
   key: 'app',
@@ -42,5 +44,10 @@ const persistor = persistStore(store);
 
 // @ts-ignore
 window.store = store;
+
+export type RootState = {
+  app: AppState & PersistState,
+  [cadtApi.reducerPath]: ReturnType<typeof cadtApi.reducer>
+}
 
 export { store, persistor };

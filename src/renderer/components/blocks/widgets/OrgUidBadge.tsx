@@ -1,66 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import { Toast, Tooltip } from 'flowbite-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Toast, Spinner } from 'flowbite-react';
+import { FiInfo } from 'react-icons/fi';
 
 interface OrgUidBadgeProps {
   orgUid: string;
+  registryId?: string;
 }
 
-const OrgUidBadge: React.FC<OrgUidBadgeProps> = ({ orgUid }) => {
+const OrgUidBadge: React.FC<OrgUidBadgeProps> = ({ orgUid, registryId }) => {
   const [showToast, setShowToast] = useState(false);
-  const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [showPopout, setShowPopout] = useState(false);
+  const popoutRef = useRef(null);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    const handleClickOutside = (event) => {
+      // @ts-ignore
+      if (popoutRef.current && !popoutRef.current.contains(event.target)) {
+        setShowPopout(false);
+      }
+    };
 
-    if (showToast) {
-      setToastVisible(true);
-      timeoutId = setTimeout(() => setShowToast(false), 3000);
-    } else if (!showToast && toastVisible) {
-      timeoutId = setTimeout(() => setToastVisible(false), 300);
-    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [popoutRef]);
 
-    return () => clearTimeout(timeoutId);
-  }, [showToast, toastVisible]);
-
-  const handleCopyToClipboard = () => {
-    navigator.clipboard
-      .writeText(orgUid)
-      .then(() => {
-        setToastMessage('Org UID copied to clipboard!');
-        setShowToast(true);
-      })
-      .catch((err) => {
-        console.error('Failed to copy Org UID: ', err);
-        setToastMessage('Failed to copy Org UID.');
-        setShowToast(true);
-      });
+  const copyToClipboard = (text: string, message: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setToastMessage(message);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    }).catch(err => console.error('Failed to copy:', err));
   };
 
-  if (!orgUid) {
-    return null;
-  }
+  const togglePopout = () => setShowPopout(!showPopout);
 
   return (
-    <>
-      {toastVisible && (
-        <div
-          className={`absolute top-0 right-0 p-4 transition-opacity duration-300 ${showToast ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <Toast className="bg-gray-900 text-white border border-gray-700">
-            <span className="font-medium">{toastMessage}</span>
-          </Toast>
+    <div className="relative inline-flex items-center">
+      <button onClick={togglePopout} className="text-blue-300 hover:text-blue-400 transition duration-150 ease-in-out dark:text-blue-200 dark:hover:text-blue-300" aria-label="Info">
+        <FiInfo size={24} />
+      </button>
+
+      {showPopout && (
+        <div ref={popoutRef} className="absolute left-0 transform -translate-x-1/2 top-full mt-2 p-4 bg-white shadow-lg rounded-lg z-10 border border-gray-200 dark:bg-gray-700 dark:border-gray-600" style={{ left: '50%', minWidth: '700px' }}>
+          <div className="grid grid-cols-[100px_auto] gap-4">
+            <div className="text-gray-700 text-xs font-mono dark:text-gray-300">Org UID:</div>
+            <div className="cursor-pointer hover:bg-gray-100 p-2 rounded text-xs font-mono dark:hover:bg-gray-600 dark:text-gray-200" onClick={() => copyToClipboard(orgUid, 'Org UID copied!')}>
+              {orgUid}
+            </div>
+            <div className="text-gray-700 text-xs font-mono dark:text-gray-300">Registry ID:</div>
+            {registryId ? (
+              <div className="cursor-pointer hover:bg-gray-100 p-2 rounded text-xs font-mono dark:hover:bg-gray-600 dark:text-gray-200" onClick={() => copyToClipboard(registryId, 'Registry ID copied!')}>
+                {registryId}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center">
+                <Spinner size="sm" />
+              </div>
+            )}
+          </div>
         </div>
       )}
-      <Tooltip content="Click to copy Organization ID">
-        <span
-          onClick={handleCopyToClipboard}
-          className="cursor-pointer p-2 bg-gray-50 text-gray-700 text-xs font-mono rounded flex items-center"
-        >
-          {orgUid}
-        </span>
-      </Tooltip>
-    </>
+
+      {showToast && (
+        <Toast className="fixed bottom-4 right-4 z-50 bg-gray-900 text-white border border-gray-700 dark:bg-gray-800 dark:border-gray-600">
+          <span className="font-medium dark:text-gray-200">{toastMessage}</span>
+        </Toast>
+      )}
+    </div>
   );
 };
 
