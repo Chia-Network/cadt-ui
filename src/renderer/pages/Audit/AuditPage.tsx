@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react';
 import { useGetAuditQuery } from '@/api';
 import { useQueryParamState } from '@/hooks';
-import {debounce, DebouncedFunc} from 'lodash';
+import { debounce, DebouncedFunc } from 'lodash';
 import {
-  OrganizationSelector,
-  IndeterminateProgressOverlay,
-  SkeletonTable,
   AuditsTable,
+  IndeterminateProgressOverlay,
+  OrganizationSelector,
   SearchBox,
-  SyncIndicator
+  SkeletonTable,
+  SyncIndicator,
 } from '@/components';
-import {FormattedMessage} from "react-intl";
+import { FormattedMessage } from 'react-intl';
 
 const AuditPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
@@ -23,7 +23,7 @@ const AuditPage: React.FC = () => {
     isLoading: auditLoading,
     isFetching: auditFetching,
     error: auditError,
-  } = useGetAuditQuery({ page: Number(currentPage), orgUid, search, order }, {skip: !orgUid});
+  } = useGetAuditQuery({ page: Number(currentPage), orgUid, search, order }, { skip: !orgUid });
 
   const handlePageChange: DebouncedFunc<any> = useCallback(
     debounce((page) => setCurrentPage(page), 800),
@@ -47,72 +47,71 @@ const AuditPage: React.FC = () => {
   const handleSetOrder = useCallback(() => {
     const currentDirection = order;
 
-      // Cycle through 'ASC', 'DESC', and no order ('')
-      switch (currentDirection) {
-        case 'ASC':
-          setOrder(`DESC`);
-          break;
-        case 'DESC':
-          setOrder('');
-          break;
-        default:
-          setOrder(`ASC`);
-          break;
-      }
-
+    // Cycle through 'ASC', 'DESC', and no order ('')
+    switch (currentDirection) {
+      case 'ASC':
+        setOrder(`DESC`);
+        break;
+      case 'DESC':
+        setOrder('');
+        break;
+      default:
+        setOrder(`ASC`);
+        break;
+    }
   }, [order, setOrder]);
 
-  if (!orgUid){
+  if (!orgUid) {
     return (
       <>
         <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 ml-2.5 relative z-30">
-          <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid}/>
+          <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
         </div>
         <div className="flex h-full justify-center items-center">
-          <FormattedMessage id={"please-select-an-organization-to-view-audit-data"}/>
+          <FormattedMessage id="please-select-an-organization-to-view-audit-data" />
         </div>
       </>
     );
   }
 
   if (auditLoading) {
-    return <SkeletonTable/>;
+    return <SkeletonTable />;
   }
 
   if (auditError) {
-    return <FormattedMessage id={"unable-to-load-contents"}/>;
+    return <FormattedMessage id="unable-to-load-contents" />;
   }
 
   if (!auditData) {
-    return <FormattedMessage id={"no-records-found"}/>;
+    return <FormattedMessage id="no-records-found" />;
   }
 
   return (
     <>
-      {auditFetching && <IndeterminateProgressOverlay/>}
+      {auditFetching && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
-        <SearchBox defaultValue={search} onChange={handleSearchChange}/>
-        <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid}/>
+        <SearchBox defaultValue={search} onChange={handleSearchChange} />
+        <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
-        <>
-          {auditLoading ? (
-            <SkeletonTable/>
-          ) : (
-            <AuditsTable
-              data={auditData?.data || []}
-              isLoading={auditLoading}
-              currentPage={Number(currentPage)}
-              onPageChange={handlePageChange}
-              setOrder={handleSetOrder}
-              order={order && `onchainConfirmationTimeStamp:${order}`}
-              totalPages={auditData.pageCount}
-              totalCount={auditData.pageCount * 10}
-            />
-          )}
-        </>
+      <>
+        {auditLoading ? (
+          <SkeletonTable />
+        ) : (
+          <AuditsTable
+            data={auditData?.data || []}
+            isLoading={auditLoading}
+            currentPage={Number(currentPage)}
+            onPageChange={handlePageChange}
+            setOrder={handleSetOrder}
+            order={order && `onchainConfirmationTimeStamp:${order}`}
+            totalPages={auditData.pageCount}
+            totalCount={auditData.pageCount * 10}
+          />
+        )}
+      </>
     </>
   );
 };
 
-export {AuditPage};
+export { AuditPage };

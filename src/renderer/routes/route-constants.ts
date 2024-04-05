@@ -3,4 +3,5 @@ export default {
   UNITS_LIST: '/units',
   AUDIT: '/audit',
   GLOSSARY: '/glossary',
+  MY_ORGANIZATION: '/my-organization',
 };

@@ -40,10 +40,20 @@
   "glossary": "Glossary",
   "term": "Term",
   "description": "Description",
+  "my-registry": "My Registry",
+  "my-organization": "My Organization",
+  "create-organization": "Create Organization",
+  "creating-organization": "Creating Organization",
   "detailed-project-view": "Detailed Project View",
   "project": "Project",
   "issuance": "Issuance",
   "project-locations": "Project Locations",
   "estimations": "Estimations",
-  "warehouse": "Warehouse"
+  "warehouse": "Warehouse",
+  "cancel": "Cancel",
+  "organization-creation-is-already-pending": "Organization creation is already pending",
+  "add-details": "Add Details",
+  "import-by-id": "Import By ID",
+  "organization-orguid": "Organization OrgUID",
+  "organization-name": "Organization Name"
 }
