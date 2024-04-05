@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Tab } from 'flowbite-react';
+import { Button } from '@/components';
 import Field from './Field'; // Adjust import path
 import Repeater from './Repeater'; // Adjust import path
-import AddressGroup from './AddressGroup'; // Adjust import path
+import AddressGroup from './_example.addressgroup.txt'; // Adjust import path
 import { useSubmitUserFormMutation } from './userService'; // Adjust import path
-import { Button } from 'flowbite-react';
 
 // Define validation schemas for each tab
 const userValidationSchema = Yup.object({
@@ -15,13 +14,15 @@ const userValidationSchema = Yup.object({
   email: Yup.string().email('Invalid email address').required('Required'),
 });
 
-const addressValidationSchema = Yup.array().of(
-  Yup.object({
-    street: Yup.string().required('Required'),
-    city: Yup.string().required('Required'),
-    zipCode: Yup.string().required('Required'),
-  })
-).min(1, 'At least one address is required');
+const addressValidationSchema = Yup.array()
+  .of(
+    Yup.object({
+      street: Yup.string().required('Required'),
+      city: Yup.string().required('Required'),
+      zipCode: Yup.string().required('Required'),
+    }),
+  )
+  .min(1, 'At least one address is required');
 
 // Combine the validation schemas for final form submission validation
 const validationSchema = Yup.object({
@@ -29,7 +30,8 @@ const validationSchema = Yup.object({
   addresses: addressValidationSchema,
 });
 
-const UserForm = () => {
+// @ts-ignore
+const UserForm: React.FC = () => {
   const [submitUserForm, { isLoading }] = useSubmitUserFormMutation();
   const [activeTab, setActiveTab] = useState('userInfo');
 
@@ -41,7 +43,7 @@ const UserForm = () => {
     addresses: [{ street: '', city: '', zipCode: '' }],
   };
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values) => {
     try {
       await submitUserForm(values).unwrap();
     } catch (error) {
@@ -50,7 +52,7 @@ const UserForm = () => {
   };
 
   // Function to handle tab changes with validation
-  const handleTabChange = async (tab: string, validateForm: any) => {
+  const handleTabChange = async (tab, validateForm) => {
     const errors = await validateForm();
     // Check for errors in the current active tab's fields before switching
     if (activeTab === 'userInfo' && !errors.firstName && !errors.lastName && !errors.email) {
@@ -86,8 +88,9 @@ const UserForm = () => {
           )}
 
           {activeTab === 'addresses' && (
+            // @ts-ignore
             <Repeater name="addresses" maxNumber={3}>
-              <AddressGroup />
+              <AddressGroup name="" />
             </Repeater>
           )}
 
@@ -99,5 +102,3 @@ const UserForm = () => {
     </Formik>
   );
 };
-
-export default UserForm;

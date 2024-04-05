@@ -1,6 +1,6 @@
 import React from 'react';
-import { useFormikContext, FormikValues } from 'formik';
-import { Label, HelperText } from 'flowbite-react';
+import { FormikValues, useFormikContext } from 'formik';
+import { HelperText, Label } from '@/components';
 
 interface FieldProps {
   name: string;
@@ -18,7 +18,7 @@ const Field: React.FC<FieldProps> = ({ name, label, readonly, children }) => {
   const child = React.Children.only(children);
 
   // Styles for the read-only value container
-  const readOnlyValueStyles = "py-2 px-4 bg-gray-100 text-gray-800 rounded border border-gray-300";
+  const readOnlyValueStyles = 'py-2 px-4 bg-gray-100 text-gray-800 rounded border border-gray-300';
 
   if (readonly) {
     return (

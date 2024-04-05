@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Toast, Spinner } from 'flowbite-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Spinner, Toast } from '@/components';
 import { FiInfo } from 'react-icons/fi';
 
 interface OrgUidBadgeProps {
@@ -26,31 +26,48 @@ const OrgUidBadge: React.FC<OrgUidBadgeProps> = ({ orgUid, registryId }) => {
   }, [popoutRef]);
 
   const copyToClipboard = (text: string, message: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setToastMessage(message);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    }).catch(err => console.error('Failed to copy:', err));
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setToastMessage(message);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      })
+      .catch((err) => console.error('Failed to copy:', err));
   };
 
   const togglePopout = () => setShowPopout(!showPopout);
 
   return (
     <div className="relative inline-flex items-center">
-      <button onClick={togglePopout} className="text-blue-300 hover:text-blue-400 transition duration-150 ease-in-out dark:text-blue-200 dark:hover:text-blue-300" aria-label="Info">
+      <button
+        onClick={togglePopout}
+        className="text-blue-300 hover:text-blue-400 transition duration-150 ease-in-out dark:text-blue-200 dark:hover:text-blue-300"
+        aria-label="Info"
+      >
         <FiInfo size={24} />
       </button>
 
       {showPopout && (
-        <div ref={popoutRef} className="absolute left-0 transform -translate-x-1/2 top-full mt-2 p-4 bg-white shadow-lg rounded-lg z-10 border border-gray-200 dark:bg-gray-700 dark:border-gray-600" style={{ left: '50%', minWidth: '700px' }}>
+        <div
+          ref={popoutRef}
+          className="absolute left-0 transform -translate-x-1/2 top-full mt-2 p-4 bg-white shadow-lg rounded-lg z-10 border border-gray-200 dark:bg-gray-700 dark:border-gray-600"
+          style={{ left: '50%', minWidth: '700px' }}
+        >
           <div className="grid grid-cols-[100px_auto] gap-4">
             <div className="text-gray-700 text-xs font-mono dark:text-gray-300">Org UID:</div>
-            <div className="cursor-pointer hover:bg-gray-100 p-2 rounded text-xs font-mono dark:hover:bg-gray-600 dark:text-gray-200" onClick={() => copyToClipboard(orgUid, 'Org UID copied!')}>
+            <div
+              className="cursor-pointer hover:bg-gray-100 p-2 rounded text-xs font-mono dark:hover:bg-gray-600 dark:text-gray-200"
+              onClick={() => copyToClipboard(orgUid, 'Org UID copied!')}
+            >
               {orgUid}
             </div>
             <div className="text-gray-700 text-xs font-mono dark:text-gray-300">Registry ID:</div>
             {registryId ? (
-              <div className="cursor-pointer hover:bg-gray-100 p-2 rounded text-xs font-mono dark:hover:bg-gray-600 dark:text-gray-200" onClick={() => copyToClipboard(registryId, 'Registry ID copied!')}>
+              <div
+                className="cursor-pointer hover:bg-gray-100 p-2 rounded text-xs font-mono dark:hover:bg-gray-600 dark:text-gray-200"
+                onClick={() => copyToClipboard(registryId, 'Registry ID copied!')}
+              >
                 {registryId}
               </div>
             ) : (

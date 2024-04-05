@@ -1,6 +1,6 @@
 import React from 'react';
-import { FieldArray, useFormikContext, FormikValues } from 'formik';
-import { Button } from 'flowbite-react';
+import { FieldArray, FormikValues, useFormikContext } from 'formik';
+import { Button } from '@/components';
 
 interface RepeaterProps {
   name: string;
@@ -35,11 +35,7 @@ const Repeater: React.FC<RepeaterProps> = ({ name, component, maxNumber = 5, min
           ))}
 
           {/* Add button - shown if maxNumber hasn't been reached */}
-          {groups.length < maxNumber && (
-            <Button onClick={() => arrayHelpers.push({})}>
-              Add
-            </Button>
-          )}
+          {groups.length < maxNumber && <Button onClick={() => arrayHelpers.push({})}>Add</Button>}
         </div>
       )}
     />
