@@ -10,6 +10,5 @@ export * from './Tabs';
 export * from './Card';
 export * from './FloatingLabel';
 export * from './Toast';
-export * from './Toast';
 export * from './HelperText';
 export * from './Label';
