@@ -1,102 +1,46 @@
-import React, { useState } from 'react';
-import { Button, Card, FloatingLabel, Modal, Spinner, Tabs } from '@/components';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { Card, CreateOrganizationForm, Modal, Spinner, Tabs } from '@/components';
+import { FormattedMessage } from 'react-intl';
+import { useCreateOrganizationMutation, useImportOrganizationMutation } from '@/api';
+import { ImportOrganizationForm } from '@/components/blocks/forms/ImportOrganizationForm';
+import React, { useEffect, useState } from 'react';
+import { Alert } from 'flowbite-react';
+import { HiInformationCircle } from 'react-icons/hi';
 
 interface CreateOrganizationModalProps {
+  orgCreationPending: boolean;
   onClose: () => void; // onClose prop for closing the modal
 }
 
-const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({ onClose }: CreateOrganizationModalProps) => {
-  const intl: IntlShape = useIntl();
-  const [orgCreationPending, setOrgCreationPending] = useState<boolean>(false);
+const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
+  orgCreationPending,
+  onClose,
+}: CreateOrganizationModalProps) => {
+  const [showCreateOrgError, setShowCreateOrgError] = useState<boolean>(false);
 
-  const CreateOrgLayoutBody: React.FC = () => {
-    const [orgName, setOrgName] = useState<string>('');
-    const [orgNameChanged, setOrgNameChanged] = useState<boolean>(true);
+  const [triggerCreateOrganization, { error: createOrgError }] = useCreateOrganizationMutation();
+  const [triggerImportOrganization, { error: importOrgError }] = useImportOrganizationMutation();
 
-    const handleOrgUidChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setOrgNameChanged(true);
-      setOrgName(event.target.value);
-    };
-
-    const accept = async () => {
-      setOrgNameChanged(false);
-
-      if (!orgName) {
-        return;
-      }
-
+  const handleSubmitCreateOrg = async (orgName: string) => {
+    const createOrgResult: any = await triggerCreateOrganization(orgName);
+    if (createOrgResult?.data.orgId) {
       onClose();
-      setOrgCreationPending(true);
-    };
-
-    return (
-      <>
-        <div className="mt-4 mb-4">
-          {!orgNameChanged && !orgName && <p>todo error</p>}
-          <FloatingLabel
-            variant="outlined"
-            label={intl.formatMessage({ id: 'organization-name' })}
-            onChange={handleOrgUidChanged}
-            value={orgName}
-          />
-        </div>
-        {/* Variation of Modal.Footer */}
-        <div className="flex items-center space-x-2 rounded-b border-gray-200 pt-2 dark:border-gray-600">
-          <Button onClick={accept} disabled={!orgName}>
-            <FormattedMessage id="create-organization" />
-          </Button>
-          <Button color="gray" onClick={onClose}>
-            <FormattedMessage id="cancel" />
-          </Button>
-        </div>
-      </>
-    );
+    } else {
+      setShowCreateOrgError(true);
+    }
   };
 
-  const ImportByOrgUidLayoutBody: React.FC = () => {
-    const [orgUid, setOrgUid] = useState<string>('');
-    const [orgUidChanged, setOrgUidChanged] = useState<boolean>(true);
-
-    const handleOrgUidChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setOrgUidChanged(true);
-      setOrgUid(event.target.value);
-    };
-
-    const accept = async () => {
-      setOrgUidChanged(false);
-
-      if (!orgUid) {
-        return;
-      }
-
+  const handleSubmitImportOrg = async (orgName: string) => {
+    const createOrgResult: any = await triggerImportOrganization({ orgUid: orgName });
+    if (createOrgResult?.data.orgId) {
       onClose();
-      setOrgCreationPending(true);
-    };
-
-    return (
-      <>
-        <div className="mt-4 mb-4">
-          {!orgUidChanged && !orgUid && <p>todo error</p>}
-          <FloatingLabel
-            variant="outlined"
-            label={intl.formatMessage({ id: 'organization-orguid' })}
-            onChange={handleOrgUidChanged}
-            value={orgUid}
-          />
-        </div>
-        {/* Variation of Modal.Footer */}
-        <div className="flex items-center space-x-2 rounded-b border-gray-200 pt-2 dark:border-gray-600">
-          <Button onClick={accept} disabled={!orgUid}>
-            <FormattedMessage id="create-organization" />
-          </Button>
-          <Button color="gray" onClick={onClose}>
-            <FormattedMessage id="cancel" />
-          </Button>
-        </div>
-      </>
-    );
+    } else {
+      setShowCreateOrgError(true);
+    }
   };
+
+  useEffect(() => {
+    setShowCreateOrgError(Boolean(createOrgError || importOrgError));
+  }, [createOrgError, importOrgError]);
 
   if (orgCreationPending) {
     return (
@@ -122,12 +66,21 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({ onClo
         <FormattedMessage id="create-organization" />
       </Modal.Header>
       <Modal.Body>
+        {showCreateOrgError && (
+          <Alert color="failure" icon={HiInformationCircle} className="mb-3">
+            <span className="font-medium">
+              <FormattedMessage id="error" />!
+            </span>{' '}
+            <FormattedMessage id="unable-to-create-organization" />
+          </Alert>
+        )}
+
         <Tabs>
           <Tabs.Item title={<FormattedMessage id="add-details" />}>
-            <CreateOrgLayoutBody />
+            <CreateOrganizationForm onSubmit={handleSubmitCreateOrg} />
           </Tabs.Item>
           <Tabs.Item title={<FormattedMessage id="import-by-id" />}>
-            <ImportByOrgUidLayoutBody />
+            <ImportOrganizationForm onSubmit={handleSubmitImportOrg} />
           </Tabs.Item>
         </Tabs>
       </Modal.Body>

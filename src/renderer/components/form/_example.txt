@@ -8,26 +8,10 @@ import AddressGroup from './_example.addressgroup.txt'; // Adjust import path
 import { useSubmitUserFormMutation } from './userService'; // Adjust import path
 
 // Define validation schemas for each tab
-const userValidationSchema = Yup.object({
+const validationSchema = Yup.object({
   firstName: Yup.string().max(15, 'Must be 15 characters or less').required('Required'),
   lastName: Yup.string().max(20, 'Must be 20 characters or less').required('Required'),
   email: Yup.string().email('Invalid email address').required('Required'),
-});
-
-const addressValidationSchema = Yup.array()
-  .of(
-    Yup.object({
-      street: Yup.string().required('Required'),
-      city: Yup.string().required('Required'),
-      zipCode: Yup.string().required('Required'),
-    }),
-  )
-  .min(1, 'At least one address is required');
-
-// Combine the validation schemas for final form submission validation
-const validationSchema = Yup.object({
-  ...userValidationSchema.fields,
-  addresses: addressValidationSchema,
 });
 
 // @ts-ignore

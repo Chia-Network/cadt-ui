@@ -23,14 +23,12 @@ const LeftNav = () => {
     getOrgRtkQueryOptions,
   );
 
-  //console.log('left nav re-render');
-
   useEffect(() => {
     setMyOrganization(organizationsListData?.find((org: Organization) => org.isHome));
   }, [organizationsListData]);
 
   useEffect(() => {
-    setOrgCreationPending(!myOrganization?.orgUid || myOrganization?.orgUid === 'pending');
+    setOrgCreationPending(!myOrganization?.orgUid && myOrganization?.orgUid === 'pending');
   }, [myOrganization]);
 
   const isActive = useCallback((path: string) => location.pathname === path, [location]);
@@ -169,7 +167,12 @@ const LeftNav = () => {
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>
-        {createOrgModalActive && <CreateOrganizationModal onClose={() => setCreateOrgModalActive(false)} />}
+        {createOrgModalActive && (
+          <CreateOrganizationModal
+            orgCreationPending={orgCreationPending}
+            onClose={() => setCreateOrgModalActive(false)}
+          />
+        )}
       </div>
     </div>
   );

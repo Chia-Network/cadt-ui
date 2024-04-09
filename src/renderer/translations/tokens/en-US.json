@@ -55,5 +55,8 @@
   "add-details": "Add Details",
   "import-by-id": "Import By ID",
   "organization-orguid": "Organization OrgUID",
-  "organization-name": "Organization Name"
+  "organization-name": "Organization Name",
+  "required": "Required",
+  "error": "Error",
+  "unable-to-create-organization": "Unable to create organization"
 }
