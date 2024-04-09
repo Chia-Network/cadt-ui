@@ -35,19 +35,24 @@ const organizationsApi = cadtApi.injectEndpoints({
 
     createOrganization: builder.mutation<CreateOrganizationResponse, string>({
       query: (orgName: string) => {
+        const formData = new FormData();
+        formData.append('name', orgName);
+
         return {
-          url: `/v1/organizations`,
+          url: `/v1/organizations/create`,
           method: 'POST',
-          body: { name: orgName },
+          body: formData,
         };
       },
       invalidatesTags: [organizationsTag],
     }),
 
-    importOrganization: builder.mutation<CreateOrganizationResponse, { orgUid: string }>({
-      query: () => ({
+    importOrganization: builder.mutation<CreateOrganizationResponse, string>({
+      query: (orgUid: string) => ({
         url: `/v1/organizations`,
         method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: { orgId: orgUid },
       }),
       invalidatesTags: [organizationsTag],
     }),

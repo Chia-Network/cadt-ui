@@ -23,13 +23,13 @@ const LeftNav = () => {
     getOrgRtkQueryOptions,
   );
 
-  useEffect(() => {
-    setMyOrganization(organizationsListData?.find((org: Organization) => org.isHome));
-  }, [organizationsListData]);
+  console.log(organizationsListData);
+  console.log('my org', myOrganization);
 
   useEffect(() => {
-    setOrgCreationPending(!myOrganization?.orgUid && myOrganization?.orgUid === 'pending');
-  }, [myOrganization]);
+    setMyOrganization(organizationsListData?.find((org: Organization) => org.isHome));
+    setOrgCreationPending(myOrganization?.orgUid === 'PENDING');
+  }, [myOrganization?.orgUid, organizationsListData]);
 
   const isActive = useCallback((path: string) => location.pathname === path, [location]);
   const handleClickMyOrganization = useCallback(() => {
@@ -153,8 +153,7 @@ const LeftNav = () => {
                     {orgCreationPending ? (
                       <>
                         <FormattedMessage id={'creating-organization'} />
-                        {' ...'}
-                        <Spinner />
+                        <Spinner className="ml-2" />
                       </>
                     ) : (
                       <FormattedMessage id={'my-organization'} />

@@ -22,7 +22,7 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
 
   const handleSubmitCreateOrg = async (orgName: string) => {
     const createOrgResult: any = await triggerCreateOrganization(orgName);
-    if (createOrgResult?.data.orgId) {
+    if (createOrgResult?.data.success) {
       onClose();
     } else {
       setShowCreateOrgError(true);
@@ -30,8 +30,8 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
   };
 
   const handleSubmitImportOrg = async (orgName: string) => {
-    const createOrgResult: any = await triggerImportOrganization({ orgUid: orgName });
-    if (createOrgResult?.data.orgId) {
+    const createOrgResult: any = await triggerImportOrganization(orgName);
+    if (createOrgResult?.data.success) {
       onClose();
     } else {
       setShowCreateOrgError(true);
@@ -61,7 +61,7 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
   }
 
   return (
-    <Modal show={true} onClose={onClose} size={'3xl'}>
+    <Modal show={true} onClose={onClose} size={'2xl'}>
       <Modal.Header>
         <FormattedMessage id="create-organization" />
       </Modal.Header>
@@ -77,9 +77,19 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
 
         <Tabs>
           <Tabs.Item title={<FormattedMessage id="add-details" />}>
-            <CreateOrganizationForm onSubmit={handleSubmitCreateOrg} />
+            <div className="space-y-3">
+              <Alert color="info" icon={HiInformationCircle} className="mb-3">
+                <FormattedMessage id="use-this-tab-to-create-a-new-organization" />
+              </Alert>
+              <CreateOrganizationForm onSubmit={handleSubmitCreateOrg} />
+            </div>
           </Tabs.Item>
           <Tabs.Item title={<FormattedMessage id="import-by-id" />}>
+            <div className="space-y-3">
+              <Alert color="info" icon={HiInformationCircle} className="mb-3">
+                <FormattedMessage id="use-this-tab-to-import-an-existing-organization-into-CADT-from-datalayer" />
+              </Alert>
+            </div>
             <ImportOrganizationForm onSubmit={handleSubmitImportOrg} />
           </Tabs.Item>
         </Tabs>

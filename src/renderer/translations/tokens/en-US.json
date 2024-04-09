@@ -58,5 +58,7 @@
   "organization-name": "Organization Name",
   "required": "Required",
   "error": "Error",
-  "unable-to-create-organization": "Unable to create organization"
+  "unable-to-create-organization": "Unable to create organization",
+  "use-this-tab-to-create-a-new-organization": "Use this tab to create a new organization",
+  "use-this-tab-to-import-an-existing-organization-into-CADT-from-datalayer": "Use this tab to import an existing organization into CADT from datalayer"
 }
