@@ -52,7 +52,7 @@ const organizationsApi = cadtApi.injectEndpoints({
         url: `/v1/organizations`,
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: { orgId: orgUid },
+        body: { orgUid },
       }),
       invalidatesTags: [organizationsTag],
     }),
