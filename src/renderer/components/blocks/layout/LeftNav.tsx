@@ -23,9 +23,6 @@ const LeftNav = () => {
     getOrgRtkQueryOptions,
   );
 
-  console.log(organizationsListData);
-  console.log('my org', myOrganization);
-
   useEffect(() => {
     setMyOrganization(organizationsListData?.find((org: Organization) => org.isHome));
     setOrgCreationPending(myOrganization?.orgUid === 'PENDING');

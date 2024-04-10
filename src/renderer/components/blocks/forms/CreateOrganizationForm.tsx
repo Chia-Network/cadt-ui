@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { Button, Spinner } from 'flowbite-react';
+import { Button, FloatingLabel, Spinner } from '@/components';
 import { IntlShape, useIntl } from 'react-intl';
-import { FloatingLabel } from '@/components';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),

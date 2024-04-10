@@ -8,11 +8,13 @@ import { HiInformationCircle } from 'react-icons/hi';
 
 interface CreateOrganizationModalProps {
   orgCreationPending: boolean;
+  orgListLoading: boolean;
   onClose: () => void; // onClose prop for closing the modal
 }
 
 const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
   orgCreationPending,
+  orgListLoading,
   onClose,
 }: CreateOrganizationModalProps) => {
   const [showCreateOrgError, setShowCreateOrgError] = useState<boolean>(false);
@@ -42,7 +44,7 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
     setShowCreateOrgError(Boolean(createOrgError || importOrgError));
   }, [createOrgError, importOrgError]);
 
-  if (orgCreationPending) {
+  if (orgCreationPending || orgListLoading) {
     return (
       <Modal show={true} onClose={onClose} size={'3xl'}>
         <Modal.Header>
@@ -51,7 +53,11 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
         <Modal.Body>
           <Card>
             <div className={'flex justify-center align-middle'}>
-              <FormattedMessage id="organization-creation-is-already-pending" />
+              {orgListLoading ? (
+                <FormattedMessage id="organization-data-loading" />
+              ) : (
+                <FormattedMessage id="organization-creation-is-already-pending" />
+              )}
               <Spinner className="ml-3" />
             </div>
           </Card>
