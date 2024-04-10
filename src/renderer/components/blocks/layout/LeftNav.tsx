@@ -166,6 +166,7 @@ const LeftNav = () => {
         {createOrgModalActive && (
           <CreateOrganizationModal
             orgCreationPending={orgCreationPending}
+            orgListLoading={organizationsListLoading}
             onClose={() => setCreateOrgModalActive(false)}
           />
         )}
