@@ -18,6 +18,10 @@ const baseQueryWithDynamicHost = async (args, api, extraOptions) => {
   // Check if currentHost is equal to the initialState's apiHost
   const effectiveHost = (currentHost === initialState.apiHost && import.meta.env.VITE_API_HOST) ? import.meta.env.VITE_API_HOST : currentHost;
 
+  if (!args.url.startsWith('/')) {
+    return await baseQuery(args, api, extraOptions);
+  }
+
   // Modify the URL based on the effectiveHost
   if (typeof args === 'string') {
     modifiedArgs = `${effectiveHost}${args}`;

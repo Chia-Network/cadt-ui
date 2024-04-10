@@ -9,7 +9,16 @@ export const appSlice = createSlice({
       state.locale = payload;
     },
     setHost: (state, { payload }) => {
-      state.apiHost = payload;
+      state.apiHost = payload.apiHost;
+
+      if (payload.apiKey) {
+        state.apiKey = payload.apiKey;
+      }
+    },
+    resetApiHost: (state) => {
+      console.log(initialState.apiHost, initialState.apiKey)
+      state.apiHost = initialState.apiHost;
+      state.apiKey = initialState.apiKey;
     },
     toggleTheme: (state) => {
       state.isDarkTheme = !state.isDarkTheme;
@@ -17,7 +26,7 @@ export const appSlice = createSlice({
   },
 });
 
-export const { setLocale, setHost, toggleTheme } = appSlice.actions;
+export const { setLocale, setHost, resetApiHost, toggleTheme } = appSlice.actions;
 
 export const selectCurrentHost = (state) => state.app.host;
 

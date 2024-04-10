@@ -1,7 +1,17 @@
-import { Modal as FlowbiteModal, ModalBodyProps, ModalFooterProps, ModalHeaderProps, ModalProps } from 'flowbite-react';
+import {
+  Modal as FlowbiteModal,
+  ModalBodyProps,
+  ModalFooterProps,
+  ModalHeaderProps,
+  ModalProps as _ModalProps,
+} from 'flowbite-react';
 
-function Modal({ children, ...props }: ModalProps) {
-  return <FlowbiteModal {...props}>{children}</FlowbiteModal>;
+interface ModalProps extends _ModalProps {
+  show?: boolean;
+}
+
+function Modal({ children, show = true, ...props }: ModalProps) {
+  return <FlowbiteModal show={show} {...props}>{children}</FlowbiteModal>;
 }
 
 function Body({ children, ...props }: ModalBodyProps) {
