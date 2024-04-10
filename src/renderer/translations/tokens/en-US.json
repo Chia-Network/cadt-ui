@@ -72,5 +72,13 @@
   "public-address": "Public Address",
   "public-address-qr-code": "Public Address QR Code",
   "organization-subscriptions": "Organization Subscriptions",
-  "organization-data-loading": "Organization Data Loading"
+  "organization-data-loading": "Organization Data Loading",
+  "connect": "Connect",
+  "server-address": "Server Address",
+  "api-key": "API Key",
+  "server-address-helper": "example: http://localhost:31310",
+  "server-not-found": "The requested server was not found or was not detected as a valid CADT server",
+  "disconnect": "Disconnect",
+  "submit": "Submit",
+  "connect-to-remote-server": "Connect to Remote Server"
 }
