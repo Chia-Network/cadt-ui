@@ -35,7 +35,14 @@ const governanceApi = cadtApi.injectEndpoints({
         });
       },
     }),
+
+    getDefaultOrgList: builder.query<{ orgUid: string }[], void>({
+      query: () => ({
+        url: `/v1/governance/meta/orgList`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useGetGlossaryQuery } = governanceApi;
+export const { useGetGlossaryQuery, useGetDefaultOrgListQuery } = governanceApi;
