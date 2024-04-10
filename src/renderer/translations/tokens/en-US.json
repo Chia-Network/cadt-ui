@@ -80,5 +80,7 @@
   "server-not-found": "The requested server was not found or was not detected as a valid CADT server",
   "disconnect": "Disconnect",
   "submit": "Submit",
-  "connect-to-remote-server": "Connect to Remote Server"
+  "connect-to-remote-server": "Connect to Remote Server",
+  "save": "Save",
+  "delete-organization": "Delete Organization"
 }

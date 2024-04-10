@@ -35,7 +35,7 @@ const organizationsApi = cadtApi.injectEndpoints({
 
     createOrganization: builder.mutation<CreateOrganizationResponse, string>({
       query: (orgName: string) => {
-        const formData = new FormData();
+        const formData: FormData = new FormData();
         formData.append('name', orgName);
 
         return {
@@ -56,6 +56,30 @@ const organizationsApi = cadtApi.injectEndpoints({
       }),
       invalidatesTags: [organizationsTag],
     }),
+
+    deleteOrganization: builder.mutation<any, string>({
+      query: (orgUid: string) => ({
+        url: `/v1/organizations`,
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: { orgUid },
+      }),
+      invalidatesTags: [organizationsTag],
+    }),
+
+    editOrganization: builder.mutation<any, { orgUid: string; orgName: string }>({
+      query: ({ orgUid, orgName }) => {
+        const formData: FormData = new FormData();
+        formData.append('orgUid', orgUid);
+        formData.append('name', orgName);
+
+        return {
+          url: `/v1/organizations/edit`,
+          method: 'PUT',
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
@@ -64,4 +88,6 @@ export const {
   useGetOrganizationsMapQuery,
   useCreateOrganizationMutation,
   useImportOrganizationMutation,
+  useDeleteOrganizationMutation,
+  useEditOrganizationMutation,
 } = organizationsApi;

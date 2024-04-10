@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import { noop } from 'lodash';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { FloatingLabel, HelperText, Spacer, FormButton } from '@/components';
+import { FloatingLabel, FormButton, HelperText, Spacer } from '@/components';
 import { Alert } from 'flowbite-react';
-import { IntlShape, useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   apiHost: yup
@@ -87,7 +87,6 @@ const ConnectForm: React.FC<FormProps> = ({ onSubmit, hasServerError, onClearErr
                   type="text"
                   {...field}
                   onChange={(event) => handleChange(event, field)}
-                  ccccccrjflurktedcrhvrbtgldlgnjicvleikebbgnju
                 />
               )}
             </Field>
