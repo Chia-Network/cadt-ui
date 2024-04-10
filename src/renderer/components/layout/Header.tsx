@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppLogo, ThemeSelector } from "@/components";
+import { AppLogo, ThemeSelector, ConnectButton } from "@/components";
 
 const Header: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ const Header: React.FC = () => {
         </div>
         {/* Right-aligned elements with explicit right margin on larger breakpoints */}
         <div className="flex items-center gap-5 text-white">
-          <div>todo: connect button and locale selector</div>
+          <ConnectButton />
           <ThemeSelector />
         </div>
       </div>
