@@ -134,13 +134,6 @@ const MyOrganization: React.FC<MyOrganizationProps> = () => {
           </div>
         )}
       </Card>
-      <Card>
-        <div className="flex justify-start">
-          <p className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-            <FormattedMessage id="organization-subscriptions" />
-          </p>
-        </div>
-      </Card>
     </div>
   );
 };
