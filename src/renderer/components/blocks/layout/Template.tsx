@@ -1,7 +1,7 @@
 import { ErrorBoundary } from '@/pages';
 import { LeftNav } from './LeftNav';
 import { Outlet } from 'react-router-dom';
-import { Header } from "@/components";
+import { Header } from '@/components';
 
 const Template = () => {
   return (

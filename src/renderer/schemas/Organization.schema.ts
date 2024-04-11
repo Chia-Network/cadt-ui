@@ -17,6 +17,8 @@ export interface Organization {
   metadata?: string;
   synced?: boolean;
   sync_remaining?: number;
+  balance?: number;
+  xchAddress?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
