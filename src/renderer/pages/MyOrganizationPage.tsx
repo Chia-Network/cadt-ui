@@ -1,24 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Card, EditOrganizationForm, Spinner } from '@/components';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Button, Card, ComponentCenteredSpinner, EditOrganizationForm } from '@/components';
 import { Organization } from '@/schemas/Organization.schema';
 import { useDeleteOrganizationMutation, useEditOrganizationMutation, useGetOrganizationsListQuery } from '@/api';
 import { FormattedMessage } from 'react-intl';
 import QRCode from 'qrcode.react';
 import { FiEdit } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 interface MyOrganizationProps {}
 
-const MyOrganization: React.FC<MyOrganizationProps> = () => {
+const MyOrganizationPage: React.FC<MyOrganizationProps> = () => {
+  const navigate = useNavigate();
   const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery();
   const [triggerDeleteOrganization] = useDeleteOrganizationMutation();
   const [triggerEditOrganization] = useEditOrganizationMutation();
-
-  const [myOrganization, setMyOrganization] = useState<Organization | undefined>(undefined);
   const [editOrganization, setEditOrganization] = useState<boolean>(false);
 
+  const myOrganization = useMemo<Organization | undefined>(
+    () => organizationsListData?.find((org: Organization) => org.isHome),
+    [organizationsListData],
+  );
+
   useEffect(() => {
-    setMyOrganization(organizationsListData?.find((org: Organization) => org.isHome));
-  }, [myOrganization?.orgUid, organizationsListData]);
+    if (!myOrganization && !organizationsListLoading) {
+      navigate('/');
+    }
+  }, [myOrganization, navigate, organizationsListLoading]);
 
   const handleSubmitEditOrganization = async (orgName: string) => {
     if (myOrganization) {
@@ -26,19 +33,16 @@ const MyOrganization: React.FC<MyOrganizationProps> = () => {
     }
   };
 
-  const handleDeleteOrganization = () => {
+  const handleDeleteOrganization = async () => {
     setEditOrganization(false);
     if (myOrganization) {
-      triggerDeleteOrganization(myOrganization.orgUid);
+      await triggerDeleteOrganization(myOrganization.orgUid);
+      navigate('/');
     }
   };
 
-  if (!myOrganization || organizationsListLoading) {
-    return (
-      <div className="flex justify-center items-center w-full min-h-screen">
-        <Spinner />
-      </div>
-    );
+  if (organizationsListLoading || !myOrganization) {
+    return <ComponentCenteredSpinner />;
   }
 
   const MyOrganizationInformation: React.FC = () => {
@@ -137,4 +141,4 @@ const MyOrganization: React.FC<MyOrganizationProps> = () => {
     </div>
   );
 };
-export { MyOrganization };
+export { MyOrganizationPage };

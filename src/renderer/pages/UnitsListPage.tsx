@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react';
 import { useGetUnitsQuery } from '@/api';
-import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
+import { useColumnOrderHandler, useQueryParamState } from '@/hooks';
 import { debounce, DebouncedFunc } from 'lodash';
 import {
-  OrganizationSelector,
   IndeterminateProgressOverlay,
-  SkeletonTable,
-  SearchBox,
-  UnitsListTable,
-  SyncIndicator,
+  OrganizationSelector,
   OrgUidBadge,
+  SearchBox,
+  SkeletonTable,
+  SyncIndicator,
+  UnitsListTable,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
@@ -61,14 +61,14 @@ const UnitsListPage: React.FC = () => {
   return (
     <>
       {unitsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector
           onSelect={handleOrganizationSelected}
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={'1234'}/> }
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={'1234'} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 

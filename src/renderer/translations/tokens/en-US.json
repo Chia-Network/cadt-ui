@@ -82,5 +82,7 @@
   "submit": "Submit",
   "connect-to-remote-server": "Connect to Remote Server",
   "save": "Save",
-  "create-project": "Create Project"
+  "create-project": "Create Project",
+  "delete-organization": "Delete Organization",
+  "my-projects": "My Projects"
 }

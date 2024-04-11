@@ -5,12 +5,12 @@ import { debounce } from 'lodash';
 import {
   IndeterminateProgressOverlay,
   OrganizationSelector,
+  OrgUidBadge,
   ProjectModal,
   ProjectsListTable,
   SearchBox,
   SkeletonTable,
   SyncIndicator,
-  OrgUidBadge,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -67,14 +67,14 @@ const ProjectsListPage: React.FC = () => {
   return (
     <>
       {projectsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector
           onSelect={handleOrganizationSelected}
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId}/> }
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 

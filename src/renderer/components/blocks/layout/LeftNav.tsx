@@ -140,10 +140,9 @@ const LeftNav = () => {
                 </div>
               </Card>
               <Sidebar.Item
-                disabled={orgCreationPending || organizationsListLoading}
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.MY_ORGANIZATION)}
-                onClick={handleClickMyOrganization}
+                onClick={orgCreationPending || organizationsListLoading ? () => {} : handleClickMyOrganization}
               >
                 {myOrganization ? (
                   <>
@@ -160,6 +159,17 @@ const LeftNav = () => {
                   <FormattedMessage id={'create-organization'} />
                 )}
               </Sidebar.Item>
+              {!orgCreationPending && !organizationsListLoading && myOrganization && (
+                <>
+                  <Sidebar.Item
+                    style={{ cursor: 'pointer' }}
+                    active={isActive(ROUTES.MY_PROJECTS)}
+                    onClick={() => navigate(ROUTES.MY_PROJECTS)}
+                  >
+                    <FormattedMessage id="my-projects" />
+                  </Sidebar.Item>
+                </>
+              )}
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>

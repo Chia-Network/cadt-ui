@@ -89,7 +89,7 @@ const AuditPage: React.FC = () => {
   return (
     <>
       {auditFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
         <SyncIndicator detailed={true} orgUid={orgUid} />

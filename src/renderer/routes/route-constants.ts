@@ -4,4 +4,5 @@ export default {
   AUDIT: '/audit',
   GLOSSARY: '/glossary',
   MY_ORGANIZATION: '/my-organization',
+  MY_PROJECTS: '/my-projects',
 };

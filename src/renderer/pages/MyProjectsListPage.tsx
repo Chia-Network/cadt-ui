@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect } from 'react';
-import { useGetProjectsQuery } from '@/api';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useGetOrganizationsListQuery, useGetProjectsQuery } from '@/api';
 import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
+  ComponentCenteredSpinner,
   IndeterminateProgressOverlay,
-  OrganizationSelector,
   OrgUidBadge,
   ProjectModal,
   ProjectsListTable,
@@ -15,8 +15,11 @@ import {
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
+import { Organization } from '@/schemas/Organization.schema';
+import { useNavigate } from 'react-router-dom';
 
-const ProjectsListPage: React.FC = () => {
+const MyProjectsListPage: React.FC = () => {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
@@ -26,7 +29,6 @@ const ProjectsListPage: React.FC = () => {
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
-
   const {
     data: projectsData,
     isLoading: projectsLoading,
@@ -34,18 +36,28 @@ const ProjectsListPage: React.FC = () => {
     error: projectsError,
   } = useGetProjectsQuery({ page: Number(currentPage), orgUid, search, order });
 
-  useEffect(() => {}, []);
+  const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery();
+
+  const myOrganization = useMemo<Organization | undefined>(
+    () => organizationsListData?.find((org: Organization) => org.isHome),
+    [organizationsListData],
+  );
+
+  useEffect(() => {
+    if (myOrganization) {
+      setOrgUid(myOrganization.orgUid);
+    }
+  }, [myOrganization, myOrganization?.orgUid, organizationsListData, setOrgUid]);
+
+  useEffect(() => {
+    if (!myOrganization && !organizationsListLoading) {
+      navigate('/');
+    }
+  }, [myOrganization, navigate, organizationsListLoading]);
 
   const handlePageChange = useCallback(
     debounce((page) => setCurrentPage(page), 800),
     [setCurrentPage],
-  );
-
-  const handleOrganizationSelected = useCallback(
-    (organization: any) => {
-      setOrgUid(organization?.orgUid);
-    },
-    [setOrgUid],
   );
 
   const handleSearchChange = useCallback(
@@ -54,6 +66,10 @@ const ProjectsListPage: React.FC = () => {
     }, 800),
     [setSearch, debounce],
   );
+
+  if (!myOrganization || organizationsListLoading) {
+    return <ComponentCenteredSpinner />;
+  }
 
   if (projectsLoading) {
     return <SkeletonTable />;
@@ -71,17 +87,14 @@ const ProjectsListPage: React.FC = () => {
     <>
       {projectsFetching && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
+        <div>
+          <Button disabled={projectsFetching || projectsLoading}>
+            <FormattedMessage id="create-project" />
+          </Button>
+        </div>
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
-        <OrganizationSelector
-          onSelect={handleOrganizationSelected}
-          defaultOrgUid={orgUid}
-          noSelectionLabel="All Organizations"
-        />
         {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
-        <Button disabled={projectsFetching || projectsLoading}>
-          <FormattedMessage id="create-project" />
-        </Button>
       </div>
 
       {projectsLoading ? (
@@ -108,4 +121,4 @@ const ProjectsListPage: React.FC = () => {
   );
 };
 
-export { ProjectsListPage };
+export { MyProjectsListPage };
