@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useGetUnitsQuery } from '@/api';
+import { useGetOrganizationsMapQuery, useGetUnitsQuery } from '@/api';
 import { useColumnOrderHandler, useQueryParamState } from '@/hooks';
 import { debounce, DebouncedFunc } from 'lodash';
 import {
@@ -19,7 +19,9 @@ const UnitsListPage: React.FC = () => {
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
-
+  const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
+    skip: !orgUid,
+  });
   const {
     data: unitsData,
     isLoading: unitsLoading,
@@ -68,7 +70,7 @@ const UnitsListPage: React.FC = () => {
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={'1234'} />}
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 

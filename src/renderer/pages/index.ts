@@ -5,3 +5,4 @@ export * from './UnitsListPage';
 export * from './AuditPage';
 export * from './GlossaryPage';
 export * from './MyProjectsListPage';
+export * from './MyUnitsListPage';

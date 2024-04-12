@@ -89,5 +89,7 @@
   "staging": "Staging",
   "pending": "Pending",
   "failed": "Failed",
-  "transfers": "Transfers"
+  "transfers": "Transfers",
+  "my-units": "My Units",
+  "create-unit": "Create Unit"
 }

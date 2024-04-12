@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import { useGetAuditQuery } from '@/api';
+import { useGetAuditQuery, useGetOrganizationsMapQuery } from '@/api';
 import { useQueryParamState } from '@/hooks';
 import { debounce, DebouncedFunc } from 'lodash';
 import {
   AuditsTable,
   IndeterminateProgressOverlay,
   OrganizationSelector,
+  OrgUidBadge,
   SearchBox,
   SkeletonTable,
   SyncIndicator,
@@ -17,7 +18,9 @@ const AuditPage: React.FC = () => {
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
-
+  const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
+    skip: !orgUid,
+  });
   const {
     data: auditData,
     isLoading: auditLoading,
@@ -92,6 +95,7 @@ const AuditPage: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
       <>
