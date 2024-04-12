@@ -2,9 +2,10 @@ import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc }from 'lodash'
 import { DataTable, PageCounter, Pagination } from '@/components';
+import { Unit } from '@/schemas/Unit.schema';
 
 interface TableProps {
-  data: any[];
+  data: Unit[];
   isLoading: boolean;
   currentPage: number;
   onPageChange: DebouncedFunc<(page: any) => void>;
@@ -29,6 +30,7 @@ const UnitsListTable: React.FC<TableProps> = ({
       {
         title: <FormattedMessage id={'unit-owner'} />,
         key: 'unitOwner',
+        render: (row: Unit) => <span className="font-bold">{row.unitOwner || '-'}</span>,
       },
       {
         title: <FormattedMessage id={'country-jurisdiction-of-owner'} />,

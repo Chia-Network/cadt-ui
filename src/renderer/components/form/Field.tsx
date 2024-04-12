@@ -1,59 +1,116 @@
 import React from 'react';
-import { FormikValues, useFormikContext } from 'formik';
-import { HelperText, Label } from '@/components';
+import { useFormikContext, FormikValues } from 'formik';
+import { Label, TextInput, Textarea, Select, Checkbox, Datepicker } from 'flowbite-react';
+import { TagInput } from './TagInput';
+import dayjs from 'dayjs';
+
+type Option = {
+  label: string;
+  value: string | number;
+};
 
 interface FieldProps {
   name: string;
   label?: string;
+  type: 'text' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'tag' | 'date' | 'link' | 'number';
+  options?: Option[];
   readonly?: boolean;
-  children: React.ReactElement;
+  initialValue?: any;
 }
 
-const Field: React.FC<FieldProps> = ({ name, label, readonly, children }) => {
-  const { errors, touched, values, setFieldValue, setFieldTouched }: FormikValues = useFormikContext();
+const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, initialValue }) => {
+  const { errors, touched, setFieldValue }: FormikValues = useFormikContext();
 
-  const isError: boolean = !!errors[name] && !!touched[name];
-
-  // Enforce a single child
-  const child = React.Children.only(children);
-
-  // Styles for the read-only value container
-  const readOnlyValueStyles = 'py-2 px-4 bg-gray-100 text-gray-800 rounded border border-gray-300';
+  const isError: boolean = !!errors[name] && touched[name];
 
   if (readonly) {
+    const renderReadOnlyField = () => {
+      if (initialValue === undefined || initialValue === null) return 'N/A';
+      switch (type) {
+        case 'select':
+          return options?.find((option) => option.value === initialValue)?.label;
+        case 'link':
+          return (
+            <a href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500">
+              {initialValue}
+            </a>
+          );
+        case 'date':
+          return dayjs(new Date(initialValue)).format('MMMM D, YYYY');
+        case 'tag':
+          return <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />;
+        default:
+          return initialValue || 'N/A';
+      }
+    };
     return (
       <div className="mb-4">
         {label && <Label htmlFor={name}>{label}</Label>}
-        <div id={name} className={readOnlyValueStyles}>
-          {values[name] || 'N/A'} {/* Display 'N/A' if the value is falsy */}
+        <div id={name} className="py-2 text-gray-800 rounded">
+          {renderReadOnlyField()}
         </div>
-        {isError && <HelperText>{errors[name]}</HelperText>}
+        {isError && <p className="text-red-500 text-xs italic">{errors[name]}</p>}
       </div>
     );
   }
 
-  // Enhance the single child component with additional Formik-related props
-  const enhancedChild = React.cloneElement(child, {
-    id: name,
-    name,
-    onChange: (e: React.ChangeEvent<any>) => {
-      child.props.onChange?.(e);
-      setFieldValue(name, e.target.value);
-    },
-    onBlur: (e: React.FocusEvent<any>) => {
-      child.props.onBlur?.(e);
-      setFieldTouched(name, true);
-    },
-    color: isError ? 'failure' : 'gray',
-  });
+  const renderField = () => {
+    switch (type) {
+      case 'text':
+      case 'link':
+      case 'number':
+        return (
+          <TextInput
+            id={name}
+            name={name}
+            type={type === 'number' ? 'number' : 'text'}
+            defaultValue={initialValue}
+            onChange={(e) => setFieldValue(name, e.target.value)}
+          />
+        );
+      case 'textarea':
+        return (
+          <Textarea
+            id={name}
+            name={name}
+            defaultValue={initialValue}
+            onChange={(e) => setFieldValue(name, e.target.value)}
+          />
+        );
+      case 'select':
+        return (
+          <Select
+            id={name}
+            name={name}
+            defaultValue={initialValue}
+            onChange={(e) => setFieldValue(name, e.target.value)}
+          >
+            {options?.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        );
+      case 'date':
+        return <Datepicker defaultDate={initialValue ? new Date(initialValue) : undefined} />;
+      case 'checkbox':
+        return <Checkbox id={name} name={name} onChange={(e) => setFieldValue(name, e.target.checked)} />;
+      // Add cases for other field types as needed
+      case 'tag':
+        return <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="mb-4">
       {label && <Label htmlFor={name}>{label}</Label>}
-      {enhancedChild}
-      {isError && <HelperText>{errors[name]}</HelperText>}
+      {renderField()}
+      {isError && <p className="text-red-500 text-xs italic">{errors[name]}</p>}
     </div>
   );
 };
 
-export default Field;
+export { Field };

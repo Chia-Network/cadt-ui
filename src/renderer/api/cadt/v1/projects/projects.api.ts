@@ -8,6 +8,10 @@ interface GetProjectsParams {
   order?: string;
 }
 
+interface GetProjectParams {
+  warehouseProjectId: string;
+}
+
 interface GetProjectsResponse {
   page: number,
   pageCount: number,
@@ -40,10 +44,18 @@ const projectsApi = cadtApi.injectEndpoints({
         };
       },
       providesTags: (_response, _error, {orgUid}) => [{type: projectsTag, id: orgUid}],
-    })
+    }),
+    getProject: builder.query<Project, GetProjectParams>({
+      query: ({ warehouseProjectId }: GetProjectParams) => ({
+        url: `/v1/projects`,
+        params: { warehouseProjectId },
+        method: 'GET',
+      }),
+    }),
   })
 });
 
 export const {
-  useGetProjectsQuery
+  useGetProjectsQuery,
+  useGetProjectQuery
 } = projectsApi;
