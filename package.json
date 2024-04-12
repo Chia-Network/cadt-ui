@@ -35,6 +35,7 @@
     "chia-wallet": "^1.0.18",
     "chia-web2-gateway": "^1.0.10",
     "components": "^0.1.0",
+    "dayjs": "^1.11.10",
     "express": "^4.19.2",
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.7.8",

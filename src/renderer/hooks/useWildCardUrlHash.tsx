@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // Define a TypeScript type for the setActive callback function
-type SetActiveFunction = (isActive: boolean) => void;
+type SetActiveFunction = (isActive: boolean, value?: string) => void;
 
 // Define the TypeScript return type for the useUrlHash hook
 type UseUrlHashReturnType = [string, boolean, SetActiveFunction];
@@ -12,13 +12,13 @@ const useWildCardUrlHash = (prefix: string): UseUrlHashReturnType => {
   const location = useLocation();
 
   const setActive: SetActiveFunction = useCallback(
-    (isActive: boolean) => {
+    (isActive: boolean, value?: string) => {
       if (isActive) {
         window.history.pushState(
           {},
           '',
           decodeURIComponent(
-            `${window.location.href.replace(window.location.hash, '')}#${prefix}`,
+            `${window.location.href.replace(window.location.hash, '')}#${prefix}-${value}`,
           ),
         );
       } else {

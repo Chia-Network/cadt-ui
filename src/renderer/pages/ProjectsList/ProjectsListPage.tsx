@@ -21,7 +21,7 @@ const ProjectsListPage: React.FC = () => {
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
-  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project-');
+  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project');
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
@@ -86,6 +86,7 @@ const ProjectsListPage: React.FC = () => {
           isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}
+          onRowClick={(row) => setProjectModalActive(true, row.warehouseProjectId)}
           setOrder={handleSetOrder}
           order={order}
           totalPages={projectsData.pageCount}
