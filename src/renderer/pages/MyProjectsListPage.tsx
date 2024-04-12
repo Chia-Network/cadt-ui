@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery, useGetProjectsQuery } from '@/api';
 import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
@@ -12,11 +12,20 @@ import {
   SearchBox,
   SkeletonTable,
   SyncIndicator,
+  Tabs,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
 import { useNavigate } from 'react-router-dom';
+
+enum MyProjectsTabs {
+  COMMITTED,
+  STAGING,
+  PENDING,
+  FAILED,
+  TRANSFERS,
+}
 
 const MyProjectsListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +33,7 @@ const MyProjectsListPage: React.FC = () => {
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
+  const [activeTab, setActiveTab] = useState<MyProjectsTabs>(MyProjectsTabs.COMMITTED);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
   const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project-');
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -83,41 +93,49 @@ const MyProjectsListPage: React.FC = () => {
     return <FormattedMessage id={'no-records-found'} />;
   }
 
+  //todo: !!!!!! WRAP THIS IN TABS !!!!!!!
+
   return (
-    <>
+    <div className="m-2">
       {projectsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
-        <div>
-          <Button disabled={projectsFetching || projectsLoading}>
-            <FormattedMessage id="create-project" />
-          </Button>
-        </div>
-        <SearchBox defaultValue={search} onChange={handleSearchChange} />
+      <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
+        <Button disabled={projectsFetching || projectsLoading}>
+          <FormattedMessage id="create-project" />
+        </Button>
+        {activeTab === MyProjectsTabs.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
         {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 
-      {projectsLoading ? (
-        <SkeletonTable />
-      ) : (
-        <ProjectsListTable
-          data={projectsData?.data || []}
-          isLoading={projectsLoading}
-          currentPage={Number(currentPage)}
-          onPageChange={handlePageChange}
-          setOrder={handleSetOrder}
-          order={order}
-          totalPages={projectsData.pageCount}
-          totalCount={projectsData.pageCount * 10}
-        />
-      )}
-      {projectDetailsModalActive && (
-        <ProjectModal
-          onClose={() => setProjectModalActive(false)}
-          warehouseProjectId={projectDetailsFragment.replace('project-', '')}
-        />
-      )}
-    </>
+      <Tabs onActiveTabChange={(tab: MyProjectsTabs) => setActiveTab(tab)}>
+        <Tabs.Item title={<FormattedMessage id="committed" />}>
+          {projectsLoading ? (
+            <SkeletonTable />
+          ) : (
+            <ProjectsListTable
+              data={projectsData?.data || []}
+              isLoading={projectsLoading}
+              currentPage={Number(currentPage)}
+              onPageChange={handlePageChange}
+              setOrder={handleSetOrder}
+              order={order}
+              totalPages={projectsData.pageCount}
+              totalCount={projectsData.pageCount * 10}
+            />
+          )}
+          {projectDetailsModalActive && (
+            <ProjectModal
+              onClose={() => setProjectModalActive(false)}
+              warehouseProjectId={projectDetailsFragment.replace('project-', '')}
+            />
+          )}
+        </Tabs.Item>
+        <Tabs.Item title={<FormattedMessage id="staging" />}>todo staging</Tabs.Item>
+        <Tabs.Item title={<FormattedMessage id="pending" />}>todo pending</Tabs.Item>
+        <Tabs.Item title={<FormattedMessage id="failed" />}>todo failed</Tabs.Item>
+        <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
+      </Tabs>
+    </div>
   );
 };
 
