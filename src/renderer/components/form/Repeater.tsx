@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldArray, useFormikContext, FormikContextType } from 'formik';
+import { FieldArray, FormikContextType, useFormikContext } from 'formik';
 import { Button, Card } from '@/components';
 import { IoAddCircleOutline } from 'react-icons/io5'; // Importing a plus icon from react-icons
 
@@ -34,6 +34,7 @@ function Repeater<T extends { [key in keyof T]: any }>({
     const blankItem = {} as T;
     React.Children.forEach(children, (child: any) => {
       if (child.props.name) {
+        // @ts-ignore
         blankItem[child.props.name as keyof T] = null; // Assign a default blank or appropriate value
       }
     });
