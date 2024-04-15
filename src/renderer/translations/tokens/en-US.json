@@ -83,5 +83,7 @@
   "connect-to-remote-server": "Connect to Remote Server",
   "save": "Save",
   "delete-organization": "Delete Organization",
-  "retry": "Retry"
+  "retry": "Retry",
+  "unit": "Unit",
+  "detailed-unit-view": "Detailed Unit View"
 }

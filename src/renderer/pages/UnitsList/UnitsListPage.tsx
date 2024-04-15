@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useGetUnitsQuery } from '@/api';
-import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
+import { useQueryParamState, useColumnOrderHandler, useWildCardUrlHash } from '@/hooks';
 import { debounce, DebouncedFunc } from 'lodash';
 import {
   OrganizationSelector,
@@ -10,6 +10,7 @@ import {
   UnitsListTable,
   SyncIndicator,
   OrgUidBadge,
+  UnitModal
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
@@ -19,6 +20,7 @@ const UnitsListPage: React.FC = () => {
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
+  const [unitDetailsFragment, unitDetailsModalActive, setUnitModalActive] = useWildCardUrlHash('unit');
 
   const {
     data: unitsData,
@@ -75,16 +77,25 @@ const UnitsListPage: React.FC = () => {
       {unitsLoading ? (
         <SkeletonTable />
       ) : (
+        <>
         <UnitsListTable
           data={unitsData?.data || []}
           isLoading={unitsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}
           setOrder={handleSetOrder}
+          onRowClick={(row) => setUnitModalActive(true, row.warehouseUnitId)}
           order={order}
           totalPages={unitsData.pageCount}
           totalCount={unitsData.pageCount * 10}
         />
+        {unitDetailsModalActive && (
+          <UnitModal
+            onClose={() => setUnitModalActive(false)}
+            warehouseUnitId={unitDetailsFragment.replace('unit-', '')}
+          />
+        )}
+        </>
       )}
     </>
   );

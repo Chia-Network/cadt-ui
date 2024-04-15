@@ -8,6 +8,10 @@ interface GetUnitsParams {
   order?: string;
 }
 
+interface GetUnitParams {
+  warehouseUnitId: string;
+}
+
 interface GetUnitsResponse {
   page: number,
   pageCount: number,
@@ -40,10 +44,19 @@ const unitsApi = cadtApi.injectEndpoints({
         };
       },
       providesTags: (_response, _error, {orgUid}) => [{type: unitsTag, id: orgUid}],
-    })
+    }),
+    getUnit: builder.query<Unit, GetUnitParams>({
+      query: ({ warehouseUnitId }: GetUnitParams) => ({
+        url: `/v1/units`,
+        params: { warehouseUnitId },
+        method: 'GET',
+      }),
+      providesTags: (_response, _error, {warehouseUnitId}) => [{type: unitsTag, id: warehouseUnitId}],
+    }),
   })
 });
 
 export const {
-  useGetUnitsQuery
+  useGetUnitsQuery,
+  useGetUnitQuery
 } = unitsApi;

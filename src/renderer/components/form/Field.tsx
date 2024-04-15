@@ -25,13 +25,16 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
 
   if (readonly) {
     const renderReadOnlyField = () => {
-      if (initialValue === undefined || initialValue === null) return 'N/A';
+      if (initialValue === undefined || initialValue === null) {
+        return '--';
+      }
+      
       switch (type) {
         case 'select':
-          return options?.find((option) => option.value === initialValue)?.label;
+          return <div className="break-words">{options?.find((option) => option.value === initialValue)?.label}</div>;
         case 'link':
           return (
-            <a href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500">
+            <a className="break-words" href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500">
               {initialValue}
             </a>
           );
@@ -40,7 +43,7 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
         case 'tag':
           return <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />;
         default:
-          return initialValue || 'N/A';
+          return <div className="break-words">{initialValue}</div>;
       }
     };
     return (
