@@ -83,6 +83,9 @@ const organizationsApi = cadtApi.injectEndpoints({
   }),
 });
 
+const invalidateOrgApiTag = organizationsApi.util.invalidateTags;
+export { invalidateOrgApiTag };
+
 export const {
   useGetOrganizationsListQuery,
   useGetOrganizationsMapQuery,

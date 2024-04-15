@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndeterminateProgressOverlay, SkeletonTable, Spinner } from '@/components';
+import { ComponentCenteredSpinner, IndeterminateProgressOverlay, SkeletonTable } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetDefaultOrgListQuery } from '@/api/cadt/v1/governance';
 import { OrganizationSubscriptionsTable } from '@/components/blocks/tables/OrganizationSubscriptionsTable';
@@ -28,9 +28,7 @@ const OrganizationSubscriptionsManager: React.FC = () => {
     <div className="m-2">
       {orgListFetching && <IndeterminateProgressOverlay />}
       {orgListLoading ? (
-        <div className="flex justify-center items-center w-full min-h-screen">
-          <Spinner />
-        </div>
+        <ComponentCenteredSpinner />
       ) : (
         <OrganizationSubscriptionsTable data={orgList} isLoading={orgListLoading} />
       )}

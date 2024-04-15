@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react';
-import { useGetUnitsQuery } from '@/api';
-import { useQueryParamState, useColumnOrderHandler, useWildCardUrlHash } from '@/hooks';
+import { useGetOrganizationsMapQuery, useGetUnitsQuery } from '@/api';
+import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
 import { debounce, DebouncedFunc } from 'lodash';
 import {
-  OrganizationSelector,
   IndeterminateProgressOverlay,
-  SkeletonTable,
-  SearchBox,
-  UnitsListTable,
-  SyncIndicator,
+  OrganizationSelector,
   OrgUidBadge,
-  UnitModal
+  SearchBox,
+  SkeletonTable,
+  SyncIndicator,
+  UnitsListTable,
+  UnitModal,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
@@ -21,6 +21,9 @@ const UnitsListPage: React.FC = () => {
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
   const [unitDetailsFragment, unitDetailsModalActive, setUnitModalActive] = useWildCardUrlHash('unit');
+  const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
+    skip: !orgUid,
+  });
 
   const {
     data: unitsData,
@@ -63,14 +66,14 @@ const UnitsListPage: React.FC = () => {
   return (
     <>
       {unitsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector
           onSelect={handleOrganizationSelected}
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={'1234'}/> }
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 
@@ -78,23 +81,23 @@ const UnitsListPage: React.FC = () => {
         <SkeletonTable />
       ) : (
         <>
-        <UnitsListTable
-          data={unitsData?.data || []}
-          isLoading={unitsLoading}
-          currentPage={Number(currentPage)}
-          onPageChange={handlePageChange}
-          setOrder={handleSetOrder}
-          onRowClick={(row) => setUnitModalActive(true, row.warehouseUnitId)}
-          order={order}
-          totalPages={unitsData.pageCount}
-          totalCount={unitsData.pageCount * 10}
-        />
-        {unitDetailsModalActive && (
-          <UnitModal
-            onClose={() => setUnitModalActive(false)}
-            warehouseUnitId={unitDetailsFragment.replace('unit-', '')}
+          <UnitsListTable
+            data={unitsData?.data || []}
+            isLoading={unitsLoading}
+            currentPage={Number(currentPage)}
+            onPageChange={handlePageChange}
+            onRowClick={(row) => setUnitModalActive(true, row.warehouseUnitId)}
+            setOrder={handleSetOrder}
+            order={order}
+            totalPages={unitsData.pageCount}
+            totalCount={unitsData.pageCount * 10}
           />
-        )}
+          {unitDetailsModalActive && (
+            <UnitModal
+              onClose={() => setUnitModalActive(false)}
+              warehouseUnitId={unitDetailsFragment.replace('unit-', '')}
+            />
+          )}
         </>
       )}
     </>

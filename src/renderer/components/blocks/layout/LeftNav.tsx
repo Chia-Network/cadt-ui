@@ -5,11 +5,14 @@ import { FormattedMessage } from 'react-intl';
 import { Card, CreateOrganizationModal, Sidebar, Spinner, WarehouseIcon } from '@/components';
 import ROUTES from '@/routes/route-constants';
 import { MdListAlt } from 'react-icons/md';
-import { useGetOrganizationsListQuery } from '@/api';
+import { invalidateOrgApiTag, useGetOrganizationsListQuery } from '@/api';
 import { Organization } from '@/schemas/Organization.schema';
 import { useUrlHash } from '@/hooks';
+import { useDispatch } from 'react-redux';
+import { organizationsTag } from '@/api/cadt/v1';
 
 const LeftNav = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -25,8 +28,11 @@ const LeftNav = () => {
 
   useEffect(() => {
     setMyOrganization(organizationsListData?.find((org: Organization) => org.isHome));
+    if (orgCreationPending && myOrganization?.orgUid !== 'PENDING') {
+      dispatch(invalidateOrgApiTag([organizationsTag]));
+    }
     setOrgCreationPending(myOrganization?.orgUid === 'PENDING');
-  }, [myOrganization?.orgUid, organizationsListData]);
+  }, [dispatch, myOrganization?.orgUid, orgCreationPending, organizationsListData]);
 
   const isActive = useCallback((path: string) => location.pathname === path, [location]);
   const handleClickMyOrganization = useCallback(() => {
@@ -140,10 +146,9 @@ const LeftNav = () => {
                 </div>
               </Card>
               <Sidebar.Item
-                disabled={orgCreationPending || organizationsListLoading}
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.MY_ORGANIZATION)}
-                onClick={handleClickMyOrganization}
+                onClick={orgCreationPending || organizationsListLoading ? () => {} : handleClickMyOrganization}
               >
                 {myOrganization ? (
                   <>
@@ -160,6 +165,24 @@ const LeftNav = () => {
                   <FormattedMessage id={'create-organization'} />
                 )}
               </Sidebar.Item>
+              {!orgCreationPending && !organizationsListLoading && myOrganization && (
+                <>
+                  <Sidebar.Item
+                    style={{ cursor: 'pointer' }}
+                    active={isActive(ROUTES.MY_PROJECTS)}
+                    onClick={() => navigate(ROUTES.MY_PROJECTS)}
+                  >
+                    <FormattedMessage id="my-projects" />
+                  </Sidebar.Item>
+                  <Sidebar.Item
+                    style={{ cursor: 'pointer' }}
+                    active={isActive(ROUTES.MY_UNITS_LIST)}
+                    onClick={() => navigate(ROUTES.MY_UNITS_LIST)}
+                  >
+                    <FormattedMessage id="my-units" />
+                  </Sidebar.Item>
+                </>
+              )}
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>
