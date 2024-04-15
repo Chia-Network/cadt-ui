@@ -10,6 +10,7 @@ interface TableProps {
   currentPage: number;
   onPageChange: DebouncedFunc<(page: any) => void>;
   setOrder?: (sort: string) => void;
+  onRowClick?: (row: any) => void;
   order?: string;
   totalPages: number;
   totalCount: number;
@@ -21,6 +22,7 @@ const UnitsListTable: React.FC<TableProps> = ({
   currentPage,
   onPageChange,
   setOrder,
+  onRowClick,
   order,
   totalPages,
   totalCount,
@@ -82,6 +84,7 @@ const UnitsListTable: React.FC<TableProps> = ({
         columns={columns}
         data={data}
         onChangeOrder={setOrder}
+        onRowClick={onRowClick}
         order={order}
         primaryKey="warehouseUnitId"
         isLoading={isLoading}

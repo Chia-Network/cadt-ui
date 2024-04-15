@@ -13,6 +13,9 @@ export interface Unit {
   correspondingAdjustmentStatus: string;
   issuance: Issuance;
   labels: Label[];
+  unitBlockStart: string;
+  unitBlockEnd: string;
+  serialNumberBlock: string;
 
   // Optional properties
   projectLocationId?: string | null;

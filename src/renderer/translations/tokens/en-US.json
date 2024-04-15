@@ -92,5 +92,7 @@
   "transfers": "Transfers",
   "my-units": "My Units",
   "create-unit": "Create Unit",
-  "retry": "Retry"
+  "retry": "Retry",
+  "unit": "Unit",
+  "detailed-unit-view": "Detailed Unit View"
 }
