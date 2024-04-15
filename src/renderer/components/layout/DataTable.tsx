@@ -117,6 +117,7 @@ const DataTable: React.FC<DataTableProps> = ({
                   <tr
                     key={row[primaryKey]}
                     onClick={() => onRowClick(row)}
+                    style={{ cursor: onRowClick == noop ? 'default' : 'pointer' }}
                     className={
                       index % 2 === 0
                         ? 'bg-gray-50 dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
@@ -126,13 +127,13 @@ const DataTable: React.FC<DataTableProps> = ({
                     {columns.map((column) => (
                       <td key={`${column.key}-${row[primaryKey]}`} className="px-6 py-4 whitespace-normal">
                         <div className="text-gray-600 dark:text-white">
-                          {column.render ? (
-                            column.render(row)
-                          ) : (
-                            <div className="truncate" style={{ maxWidth: '300px' }}>
+                          <div className="truncate" style={{ maxWidth: '300px' }}>
+                            {column.render ? (
+                              column.render(row)
+                            ) : (
                               <Tooltip content={row[column.key]}>{row[column.key]}</Tooltip>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
                       </td>
                     ))}

@@ -2,9 +2,10 @@ import React, { useCallback } from 'react';
 import { noop } from 'lodash';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { FloatingLabel, FormButton, HelperText, Spacer } from '@/components';
+import { FloatingLabel, FormButton, HelperText, Spacer, Button } from '@/components';
 import { Alert } from 'flowbite-react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { useUrlHash } from '@/hooks';
 
 const validationSchema = yup.object({
   apiHost: yup
@@ -26,6 +27,7 @@ interface FormProps {
 
 const ConnectForm: React.FC<FormProps> = ({ onSubmit, hasServerError, onClearError = noop }) => {
   const intl: IntlShape = useIntl();
+  const [, setIsActive] = useUrlHash('connect');
 
   const handleSubmit = useCallback(
     async (values: { apiHost: string; apiKey?: string }, { setSubmitting }) => {
@@ -42,6 +44,11 @@ const ConnectForm: React.FC<FormProps> = ({ onSubmit, hasServerError, onClearErr
     },
     [onClearError],
   );
+
+  const handleRetry = useCallback(() => {
+    setIsActive(false);
+    window.location.reload();
+  }, [setIsActive]);
 
   return (
     <Formik initialValues={{ apiHost: '', apiKey: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
@@ -92,9 +99,14 @@ const ConnectForm: React.FC<FormProps> = ({ onSubmit, hasServerError, onClearErr
             </Field>
             {touched.apiKey && <ErrorMessage name="apiKey" component="div" className="text-red-600" />}
           </div>
-          <FormButton isSubmitting={isSubmitting} formikErrors={errors}>
-            <FormattedMessage id="submit" />
-          </FormButton>
+          <div className="flex gap-4">
+            <FormButton isSubmitting={isSubmitting} formikErrors={errors}>
+              <FormattedMessage id="submit" />
+            </FormButton>
+            <Button color="light" type="button" onClick={handleRetry}>
+              <FormattedMessage id="retry" />
+            </Button>
+          </div>
         </Form>
       )}
     </Formik>

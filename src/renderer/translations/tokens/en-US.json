@@ -91,5 +91,6 @@
   "failed": "Failed",
   "transfers": "Transfers",
   "my-units": "My Units",
-  "create-unit": "Create Unit"
+  "create-unit": "Create Unit",
+  "retry": "Retry"
 }

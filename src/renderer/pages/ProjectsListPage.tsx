@@ -5,12 +5,12 @@ import { debounce } from 'lodash';
 import {
   IndeterminateProgressOverlay,
   OrganizationSelector,
-  OrgUidBadge,
   ProjectModal,
   ProjectsListTable,
   SearchBox,
   SkeletonTable,
   SyncIndicator,
+  OrgUidBadge,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -21,7 +21,7 @@ const ProjectsListPage: React.FC = () => {
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
-  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project-');
+  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project');
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
@@ -67,14 +67,14 @@ const ProjectsListPage: React.FC = () => {
   return (
     <>
       {projectsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector
           onSelect={handleOrganizationSelected}
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId}/> }
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 
@@ -86,6 +86,7 @@ const ProjectsListPage: React.FC = () => {
           isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}
+          onRowClick={(row) => setProjectModalActive(true, row.warehouseProjectId)}
           setOrder={handleSetOrder}
           order={order}
           totalPages={projectsData.pageCount}
