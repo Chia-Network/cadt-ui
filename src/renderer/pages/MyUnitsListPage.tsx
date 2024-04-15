@@ -16,6 +16,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { Organization } from '@/schemas/Organization.schema';
+import ROUTES from '@/routes/route-constants';
 
 enum TabTypes {
   COMMITTED,
@@ -49,6 +50,12 @@ const MyUnitsListPage: React.FC = () => {
     () => organizationsListData?.find((org: Organization) => org.isHome),
     [organizationsListData],
   );
+
+  useEffect(() => {
+    if (orgUid !== myOrganization?.orgUid) {
+      navigate(ROUTES.PROJECTS_LIST);
+    }
+  }, [myOrganization?.orgUid, navigate, orgUid]);
 
   useEffect(() => {
     if (myOrganization) {

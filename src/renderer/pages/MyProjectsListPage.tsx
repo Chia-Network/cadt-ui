@@ -18,6 +18,7 @@ import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
 import { useNavigate } from 'react-router-dom';
+import ROUTES from '@/routes/route-constants';
 
 enum TabTypes {
   COMMITTED,
@@ -52,6 +53,13 @@ const MyProjectsListPage: React.FC = () => {
     () => organizationsListData?.find((org: Organization) => org.isHome),
     [organizationsListData],
   );
+
+  useEffect(() => {
+    if (orgUid !== myOrganization?.orgUid) {
+      console.log('query param orgUid', orgUid, 'myOrg Uid', myOrganization?.orgUid);
+      navigate(ROUTES.PROJECTS_LIST);
+    }
+  }, [myOrganization?.orgUid, navigate, orgUid]);
 
   useEffect(() => {
     if (myOrganization) {
