@@ -1,33 +1,39 @@
 import React, { useCallback } from 'react';
-import { useGetUnitsQuery } from '@/api';
-import { useQueryParamState, useColumnOrderHandler } from '@/hooks';
-import { debounce, DebouncedFunc } from 'lodash';
+import { useGetProjectsQuery } from '@/api';
+import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
+import { debounce } from 'lodash';
 import {
-  OrganizationSelector,
   IndeterminateProgressOverlay,
-  SkeletonTable,
+  OrganizationSelector,
+  ProjectModal,
+  ProjectsListTable,
   SearchBox,
-  UnitsListTable,
+  SkeletonTable,
   SyncIndicator,
   OrgUidBadge,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
+import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 
-const UnitsListPage: React.FC = () => {
+const ProjectsListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
+  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project');
+  const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
+    skip: !orgUid,
+  });
 
   const {
-    data: unitsData,
-    isLoading: unitsLoading,
-    isFetching: unitsFetching,
-    error: unitsError,
-  } = useGetUnitsQuery({ page: Number(currentPage), orgUid, search, order });
+    data: projectsData,
+    isLoading: projectsLoading,
+    isFetching: projectsFetching,
+    error: projectsError,
+  } = useGetProjectsQuery({ page: Number(currentPage), orgUid, search, order });
 
-  const handlePageChange: DebouncedFunc<any> = useCallback(
+  const handlePageChange = useCallback(
     debounce((page) => setCurrentPage(page), 800),
     [setCurrentPage],
   );
@@ -39,28 +45,28 @@ const UnitsListPage: React.FC = () => {
     [setOrgUid],
   );
 
-  const handleSearchChange: DebouncedFunc<any> = useCallback(
+  const handleSearchChange = useCallback(
     debounce((event: any) => {
       setSearch(event.target.value);
     }, 800),
     [setSearch, debounce],
   );
 
-  if (unitsLoading) {
+  if (projectsLoading) {
     return <SkeletonTable />;
   }
 
-  if (unitsError) {
+  if (projectsError) {
     return <FormattedMessage id={'unable-to-load-contents'} />;
   }
 
-  if (!unitsData) {
+  if (!projectsData) {
     return <FormattedMessage id={'no-records-found'} />;
   }
 
   return (
     <>
-      {unitsFetching && <IndeterminateProgressOverlay />}
+      {projectsFetching && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector
@@ -68,26 +74,33 @@ const UnitsListPage: React.FC = () => {
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={'1234'}/> }
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId}/> }
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 
-      {unitsLoading ? (
+      {projectsLoading ? (
         <SkeletonTable />
       ) : (
-        <UnitsListTable
-          data={unitsData?.data || []}
-          isLoading={unitsLoading}
+        <ProjectsListTable
+          data={projectsData?.data || []}
+          isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}
+          onRowClick={(row) => setProjectModalActive(true, row.warehouseProjectId)}
           setOrder={handleSetOrder}
           order={order}
-          totalPages={unitsData.pageCount}
-          totalCount={unitsData.pageCount * 10}
+          totalPages={projectsData.pageCount}
+          totalCount={projectsData.pageCount * 10}
+        />
+      )}
+      {projectDetailsModalActive && (
+        <ProjectModal
+          onClose={() => setProjectModalActive(false)}
+          warehouseProjectId={projectDetailsFragment.replace('project-', '')}
         />
       )}
     </>
   );
 };
 
-export { UnitsListPage };
+export { ProjectsListPage };
