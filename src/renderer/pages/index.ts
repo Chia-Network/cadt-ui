@@ -4,5 +4,5 @@ export * from './ProjectsListPage';
 export * from './UnitsListPage';
 export * from './AuditPage';
 export * from './GlossaryPage';
-export * from './MyProjectsListPage';
-export * from './MyUnitsListPage';
+export * from './MyProjectsPage';
+export * from './MyUnitsPage';

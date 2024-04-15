@@ -1,24 +1,21 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useGetOrganizationsListQuery, useGetProjectsQuery } from '@/api';
-import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
-import { debounce } from 'lodash';
+import { useGetOrganizationsListQuery, useGetOrganizationsMapQuery, useGetUnitsQuery } from '@/api';
+import { useColumnOrderHandler, useQueryParamState } from '@/hooks';
+import { debounce, DebouncedFunc } from 'lodash';
 import {
   Button,
   ComponentCenteredSpinner,
   IndeterminateProgressOverlay,
   OrgUidBadge,
-  ProjectModal,
-  ProjectsListTable,
   SearchBox,
   SkeletonTable,
   SyncIndicator,
   Tabs,
+  UnitsListTable,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
-import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
-import { Organization } from '@/schemas/Organization.schema';
 import { useNavigate } from 'react-router-dom';
-import ROUTES from '@/routes/route-constants';
+import { Organization } from '@/schemas/Organization.schema';
 
 enum TabTypes {
   COMMITTED,
@@ -28,7 +25,7 @@ enum TabTypes {
   TRANSFERS,
 }
 
-const MyProjectsListPage: React.FC = () => {
+const MyUnitsPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
@@ -36,16 +33,15 @@ const MyProjectsListPage: React.FC = () => {
   const [order, setOrder] = useQueryParamState('order', undefined);
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
-  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project-');
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
   const {
-    data: projectsData,
-    isLoading: projectsLoading,
-    isFetching: projectsFetching,
-    error: projectsError,
-  } = useGetProjectsQuery({ page: Number(currentPage), orgUid, search, order });
+    data: unitsData,
+    isLoading: unitsLoading,
+    isFetching: unitsFetching,
+    error: unitsError,
+  } = useGetUnitsQuery({ page: Number(currentPage), orgUid, search, order });
 
   const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery();
 
@@ -53,13 +49,6 @@ const MyProjectsListPage: React.FC = () => {
     () => organizationsListData?.find((org: Organization) => org.isHome),
     [organizationsListData],
   );
-
-  useEffect(() => {
-    if (orgUid !== myOrganization?.orgUid) {
-      console.log('query param orgUid', orgUid, 'myOrg Uid', myOrganization?.orgUid);
-      navigate(ROUTES.PROJECTS_LIST);
-    }
-  }, [myOrganization?.orgUid, navigate, orgUid]);
 
   useEffect(() => {
     if (myOrganization) {
@@ -73,12 +62,12 @@ const MyProjectsListPage: React.FC = () => {
     }
   }, [myOrganization, navigate, organizationsListLoading]);
 
-  const handlePageChange = useCallback(
+  const handlePageChange: DebouncedFunc<any> = useCallback(
     debounce((page) => setCurrentPage(page), 800),
     [setCurrentPage],
   );
 
-  const handleSearchChange = useCallback(
+  const handleSearchChange: DebouncedFunc<any> = useCallback(
     debounce((event: any) => {
       setSearch(event.target.value);
     }, 800),
@@ -89,24 +78,24 @@ const MyProjectsListPage: React.FC = () => {
     return <ComponentCenteredSpinner />;
   }
 
-  if (projectsLoading) {
+  if (unitsLoading) {
     return <SkeletonTable />;
   }
 
-  if (projectsError) {
+  if (unitsError) {
     return <FormattedMessage id={'unable-to-load-contents'} />;
   }
 
-  if (!projectsData) {
+  if (!unitsData) {
     return <FormattedMessage id={'no-records-found'} />;
   }
 
   return (
     <div className="m-2">
-      {projectsFetching && <IndeterminateProgressOverlay />}
+      {unitsFetching && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-        <Button disabled={projectsFetching || projectsLoading}>
-          <FormattedMessage id="create-project" />
+        <Button disabled={organizationsListLoading}>
+          <FormattedMessage id="create-unit" />
         </Button>
         {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
         {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
@@ -115,24 +104,18 @@ const MyProjectsListPage: React.FC = () => {
 
       <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
         <Tabs.Item title={<FormattedMessage id="committed" />}>
-          {projectsLoading ? (
+          {unitsLoading ? (
             <SkeletonTable />
           ) : (
-            <ProjectsListTable
-              data={projectsData?.data || []}
-              isLoading={projectsLoading}
+            <UnitsListTable
+              data={unitsData?.data || []}
+              isLoading={unitsLoading}
               currentPage={Number(currentPage)}
               onPageChange={handlePageChange}
               setOrder={handleSetOrder}
               order={order}
-              totalPages={projectsData.pageCount}
-              totalCount={projectsData.pageCount * 10}
-            />
-          )}
-          {projectDetailsModalActive && (
-            <ProjectModal
-              onClose={() => setProjectModalActive(false)}
-              warehouseProjectId={projectDetailsFragment.replace('project-', '')}
+              totalPages={unitsData.pageCount}
+              totalCount={unitsData.pageCount * 10}
             />
           )}
         </Tabs.Item>
@@ -145,4 +128,4 @@ const MyProjectsListPage: React.FC = () => {
   );
 };
 
-export { MyProjectsListPage };
+export { MyUnitsPage };
