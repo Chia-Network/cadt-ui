@@ -1,8 +1,8 @@
 import { FormattedMessage } from 'react-intl';
-import { ProjectModal, SkeletonTable, UnitsListTable } from '@/components';
+import { SkeletonTable, UnitsListTable } from '@/components';
 import React, { useCallback, useEffect } from 'react';
 import { useGetUnitsQuery } from '@/api';
-import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
+import { useColumnOrderHandler, useQueryParamState } from '@/hooks';
 import { debounce } from 'lodash';
 
 interface PageTabProps {
@@ -15,8 +15,8 @@ const MyCommittedUnitsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoad
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
-  //todo: rename this fragment to reflect units and replace the projects modal with the units modal !!!!
-  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project-');
+  //todo: uncomment when units modal added
+  //const [unitDetailsFragment, unitDetailsModalActive, setUnitsModalActive] = useWildCardUrlHash('unit-');
   const {
     data: unitsData,
     isLoading: unitsLoading,
@@ -60,12 +60,7 @@ const MyCommittedUnitsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoad
           totalCount={unitsData.pageCount * 10}
         />
       )}
-      {projectDetailsModalActive && (
-        <ProjectModal
-          onClose={() => setProjectModalActive(false)}
-          warehouseProjectId={projectDetailsFragment.replace('project-', '')}
-        />
-      )}
+      {/* todo: add units modal here */}
     </>
   );
 };

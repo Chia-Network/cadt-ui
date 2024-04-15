@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useGetOrganizationsListQuery, useGetOrganizationsMapQuery, useGetUnitsQuery } from '@/api';
-import { useColumnOrderHandler, useQueryParamState } from '@/hooks';
+import { useGetOrganizationsListQuery, useGetOrganizationsMapQuery } from '@/api';
+import { useQueryParamState } from '@/hooks';
 import { debounce, DebouncedFunc } from 'lodash';
 import {
   Button,
@@ -8,14 +8,13 @@ import {
   IndeterminateProgressOverlay,
   OrgUidBadge,
   SearchBox,
-  SkeletonTable,
   SyncIndicator,
   Tabs,
-  UnitsListTable,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { Organization } from '@/schemas/Organization.schema';
+import { MyCommittedUnitsTab } from '@/components/blocks/tabs/MyCommittedUnitsTab';
 
 enum TabTypes {
   COMMITTED,
@@ -27,21 +26,13 @@ enum TabTypes {
 
 const MyUnitsPage: React.FC = () => {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [order, setOrder] = useQueryParamState('order', undefined);
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
-  const handleSetOrder = useColumnOrderHandler(order, setOrder);
+  const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
-  const {
-    data: unitsData,
-    isLoading: unitsLoading,
-    isFetching: unitsFetching,
-    error: unitsError,
-  } = useGetUnitsQuery({ page: Number(currentPage), orgUid, search, order });
 
   const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery();
 
@@ -49,6 +40,10 @@ const MyUnitsPage: React.FC = () => {
     () => organizationsListData?.find((org: Organization) => org.isHome),
     [organizationsListData],
   );
+
+  const contentsLoading = useMemo<boolean>(() => {
+    return committedDataLoading;
+  }, [committedDataLoading]);
 
   useEffect(() => {
     if (myOrganization) {
@@ -62,11 +57,6 @@ const MyUnitsPage: React.FC = () => {
     }
   }, [myOrganization, navigate, organizationsListLoading]);
 
-  const handlePageChange: DebouncedFunc<any> = useCallback(
-    debounce((page) => setCurrentPage(page), 800),
-    [setCurrentPage],
-  );
-
   const handleSearchChange: DebouncedFunc<any> = useCallback(
     debounce((event: any) => {
       setSearch(event.target.value);
@@ -78,21 +68,9 @@ const MyUnitsPage: React.FC = () => {
     return <ComponentCenteredSpinner />;
   }
 
-  if (unitsLoading) {
-    return <SkeletonTable />;
-  }
-
-  if (unitsError) {
-    return <FormattedMessage id={'unable-to-load-contents'} />;
-  }
-
-  if (!unitsData) {
-    return <FormattedMessage id={'no-records-found'} />;
-  }
-
   return (
     <div className="m-2">
-      {unitsFetching && <IndeterminateProgressOverlay />}
+      {contentsLoading && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
         <Button disabled={organizationsListLoading}>
           <FormattedMessage id="create-unit" />
@@ -104,20 +82,7 @@ const MyUnitsPage: React.FC = () => {
 
       <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
         <Tabs.Item title={<FormattedMessage id="committed" />}>
-          {unitsLoading ? (
-            <SkeletonTable />
-          ) : (
-            <UnitsListTable
-              data={unitsData?.data || []}
-              isLoading={unitsLoading}
-              currentPage={Number(currentPage)}
-              onPageChange={handlePageChange}
-              setOrder={handleSetOrder}
-              order={order}
-              totalPages={unitsData.pageCount}
-              totalCount={unitsData.pageCount * 10}
-            />
-          )}
+          <MyCommittedUnitsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
         </Tabs.Item>
         <Tabs.Item title={<FormattedMessage id="staging" />}>todo staging</Tabs.Item>
         <Tabs.Item title={<FormattedMessage id="pending" />}>todo pending</Tabs.Item>
