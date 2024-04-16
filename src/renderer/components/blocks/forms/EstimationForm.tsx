@@ -14,13 +14,13 @@ const validationSchema = yup.object({
   ),
 });
 
-interface EstimationsFormProps {
+interface EstimationFormProps {
   onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: Estimation[];
 }
 
-const EstimationsForm: React.FC<EstimationsFormProps> = ({ readonly = false, data, onSubmit }) => {
+const EstimationForm: React.FC<EstimationFormProps> = ({ readonly = false, data, onSubmit }) => {
   return (
     <Formik
       initialValues={{ estimations: data || [] }}
@@ -74,4 +74,4 @@ const EstimationsForm: React.FC<EstimationsFormProps> = ({ readonly = false, dat
   );
 };
 
-export { EstimationsForm };
+export { EstimationForm };

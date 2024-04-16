@@ -1,7 +1,18 @@
 import React from 'react';
-import { Modal, Tabs, ProjectForm, IssuanceForm, ProjectLocationForm, EstimationsForm, Spinner } from '@/components';
+import {
+  Modal,
+  Tabs,
+  ProjectForm,
+  IssuanceForm,
+  ProjectLocationForm,
+  EstimationForm,
+  CoBenefitForm,
+  RelatedProjectForm,
+  RatingForm,
+  Spinner,
+} from '@/components';
 import { FormattedMessage } from 'react-intl';
-import { useGetProjectQuery } from '@/api';
+import { useGetProjectQuery, useGetPickListsQuery } from '@/api';
 
 interface ProjectModalProps {
   warehouseProjectId: string;
@@ -9,7 +20,8 @@ interface ProjectModalProps {
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose }: ProjectModalProps) => {
-  const { data, isLoading } = useGetProjectQuery({ warehouseProjectId });
+  const { data: projectData, isLoading: isProjectLoading } = useGetProjectQuery({ warehouseProjectId });
+  const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
 
   const handleProjectFormSubmit = async () => {
     return Promise.resolve();
@@ -24,30 +36,70 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
         <Tabs>
           {/* There is no per-tab deeplinking so we only need to put a spinned on the first */}
           <Tabs.Item title={<FormattedMessage id="project" />}>
-            {!isLoading && data ? (
-              <ProjectForm onSubmit={handleProjectFormSubmit} readonly={true} data={data} />
+            {!isProjectLoading && !isPickListLoading && projectData ? (
+              <ProjectForm
+                onSubmit={handleProjectFormSubmit}
+                readonly={true}
+                data={projectData}
+                picklistOptions={pickListData}
+              />
             ) : (
               <Spinner size="xl" />
             )}
           </Tabs.Item>
-          {data?.issuances?.length && (
+          {projectData?.issuances?.length && (
             <Tabs.Item title={<FormattedMessage id="issuance" />}>
               <IssuanceForm
                 onSubmit={handleProjectFormSubmit}
                 readonly={true}
-                data={data?.issuances}
+                data={projectData?.issuances}
                 showUnits={true}
+                picklistOptions={pickListData}
               />
             </Tabs.Item>
           )}
-          {data?.projectLocations?.length && (
+          {projectData?.projectLocations?.length && (
             <Tabs.Item title={<FormattedMessage id="project-locations" />}>
-              <ProjectLocationForm onSubmit={handleProjectFormSubmit} readonly={true} data={data?.projectLocations} />
+              <ProjectLocationForm
+                onSubmit={handleProjectFormSubmit}
+                readonly={true}
+                data={projectData?.projectLocations}
+                picklistOptions={pickListData}
+              />
             </Tabs.Item>
           )}
-          {data?.estimations?.length && (
+          {projectData?.estimations?.length && (
             <Tabs.Item title={<FormattedMessage id="estimations" />}>
-              <EstimationsForm onSubmit={handleProjectFormSubmit} readonly={true} data={data?.estimations} />
+              <EstimationForm onSubmit={handleProjectFormSubmit} readonly={true} data={projectData?.estimations} />
+            </Tabs.Item>
+          )}
+          {projectData?.coBenefits?.length && (
+            <Tabs.Item title={<FormattedMessage id="co-benefits" />}>
+              <CoBenefitForm
+                onSubmit={handleProjectFormSubmit}
+                readonly={true}
+                data={projectData?.coBenefits}
+                picklistOptions={pickListData}
+              />
+            </Tabs.Item>
+          )}
+          {projectData?.relatedProjects?.length && (
+            <Tabs.Item title={<FormattedMessage id="related-projects" />}>
+              <RelatedProjectForm
+                onSubmit={handleProjectFormSubmit}
+                readonly={true}
+                data={projectData?.relatedProjects}
+              />
+            </Tabs.Item>
+          )}
+          {(projectData?.projectRatings?.length || projectData?.labels?.length) && (
+            <Tabs.Item title={<FormattedMessage id="ratings" />}>
+              <RatingForm
+                onSubmit={handleProjectFormSubmit}
+                readonly={true}
+                data={projectData?.projectRatings}
+                picklistOptions={pickListData}
+              />
             </Tabs.Item>
           )}
         </Tabs>

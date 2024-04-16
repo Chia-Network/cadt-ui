@@ -2,8 +2,7 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
-import { ProjectLocation } from '@/schemas/ProjectLocation.schema';
-import { PickList } from '@/schemas/PickList.schema';
+import { RelatedProject } from '@/schemas/RelatedProject.schema';
 
 const validationSchema = yup.object({
   locations: yup.array().of(
@@ -17,14 +16,13 @@ const validationSchema = yup.object({
   ),
 });
 
-interface ProjectLocationFormProps {
+interface RelatedProjectFormFormProps {
   onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
-  data?: ProjectLocation[];
-  picklistOptions: PickList | undefined;
+  data?: RelatedProject[];
 }
 
-const ProjectLocationForm: React.FC<ProjectLocationFormProps> = ({ readonly = false, data, picklistOptions }) => {
+const RelatedProjectForm: React.FC<RelatedProjectFormFormProps> = ({ readonly = false, data }) => {
   return (
     <Formik
       initialValues={{ locations: data || [] }}
@@ -33,38 +31,29 @@ const ProjectLocationForm: React.FC<ProjectLocationFormProps> = ({ readonly = fa
     >
       {() => (
         <Form>
-          <Repeater<ProjectLocation>
+          <Repeater<RelatedProject>
             name="locations"
             maxNumber={100}
             minNumber={1}
             readonly={readonly}
             initialValue={data || []}
           >
-            {(location: ProjectLocation) => (
+            {(relatedProject: RelatedProject) => (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                 <Field
-                  name="country"
-                  label="Host Country"
-                  type="picklist"
-                  options={picklistOptions?.countries}
-                  readonly={readonly}
-                  initialValue={location.country}
-                />
-                <Field
-                  name="inCountryRegion"
-                  label="In-Country Region"
+                  name="relationshipType"
+                  label="Relationship Type"
                   type="text"
                   readonly={readonly}
-                  initialValue={location.inCountryRegion}
+                  initialValue={relatedProject.relationshipType}
                 />
                 <Field
-                  name="geographicIdentifier"
-                  label="Geographic Identifier"
+                  name="registry"
+                  label="Registry"
                   type="text"
                   readonly={readonly}
-                  initialValue={location.geographicIdentifier}
+                  initialValue={relatedProject.registry}
                 />
-                <Field name="fileId" label="File ID" type="text" readonly={readonly} initialValue={location.fileId} />
               </div>
             )}
           </Repeater>
@@ -74,4 +63,4 @@ const ProjectLocationForm: React.FC<ProjectLocationFormProps> = ({ readonly = fa
   );
 };
 
-export { ProjectLocationForm };
+export { RelatedProjectForm };

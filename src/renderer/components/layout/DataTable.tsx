@@ -144,9 +144,9 @@ const DataTable: React.FC<DataTableProps> = ({
             </tbody>
           </table>
         </SimpleBar>
-        {footer && data.length && (
+        {footer && data.length ? (
           <div className="mt-auto bg-gray-50 dark:bg-gray-700 w-full p-4 text-left">{footer}</div>
-        )}
+        ) : null}
       </div>
 
       {data?.length === 0 && (

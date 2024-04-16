@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik';
 import * as yup from 'yup';
 import { Field, Repeater, UnitSummary } from '@/components';
 import { Issuance } from '@/schemas/Issuance.schema';
+import { PickList } from '@/schemas/PickList.schema';
 
 const validationSchema = yup.object({
   issuances: yup.array().of(
@@ -21,9 +22,10 @@ interface IssuanceFormProps {
   readonly?: boolean;
   data?: Issuance[] | undefined;
   showUnits?: boolean;
+  picklistOptions: PickList | undefined;
 }
 
-const IssuanceForm: React.FC<IssuanceFormProps> = ({ readonly = false, data, showUnits = false }) => {
+const IssuanceForm: React.FC<IssuanceFormProps> = ({ readonly = false, data, showUnits = false, picklistOptions }) => {
   return (
     <Formik
       initialValues={{ issuances: data }}
@@ -66,7 +68,8 @@ const IssuanceForm: React.FC<IssuanceFormProps> = ({ readonly = false, data, sho
                   <Field
                     name="verificationBody"
                     label="Verification Body"
-                    type="text"
+                    type="picklist"
+                    options={picklistOptions?.verificationBody}
                     readonly={readonly}
                     initialValue={issuance.verificationBody}
                   />
