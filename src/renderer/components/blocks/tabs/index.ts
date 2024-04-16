@@ -1,1 +1,1 @@
-export * from './MyCommittedProjectsTab';
+export * from './CommittedProjectsTab';

@@ -14,7 +14,7 @@ import {
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { Organization } from '@/schemas/Organization.schema';
-import { MyCommittedUnitsTab } from '@/components/blocks/tabs/MyCommittedUnitsTab';
+import { CommittedUnitsTab } from '@/components/blocks/tabs/CommittedUnitsTab';
 
 enum TabTypes {
   COMMITTED,
@@ -82,7 +82,7 @@ const MyUnitsPage: React.FC = () => {
 
       <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
         <Tabs.Item title={<FormattedMessage id="committed" />}>
-          <MyCommittedUnitsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
+          <CommittedUnitsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
         </Tabs.Item>
         <Tabs.Item title={<FormattedMessage id="staging" />}>todo staging</Tabs.Item>
         <Tabs.Item title={<FormattedMessage id="pending" />}>todo pending</Tabs.Item>

@@ -11,7 +11,7 @@ interface PageTabProps {
   setIsLoading: (isLoading: boolean) => void;
 }
 
-const MyCommittedProjectsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoading }: PageTabProps) => {
+const CommittedProjectsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoading }: PageTabProps) => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
@@ -69,4 +69,4 @@ const MyCommittedProjectsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsL
   );
 };
 
-export { MyCommittedProjectsTab };
+export { CommittedProjectsTab };

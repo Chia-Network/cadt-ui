@@ -15,7 +15,9 @@ import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
 import { useNavigate } from 'react-router-dom';
-import { MyCommittedProjectsTab } from '@/components/blocks/tabs/MyCommittedProjectsTab';
+import { CommittedProjectsTab } from '@/components/blocks/tabs/CommittedProjectsTab';
+import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging/staging.api';
+import { StagingTableTab } from '@/components/blocks/tabs/StagingTableTab';
 
 enum TabTypes {
   COMMITTED,
@@ -23,6 +25,12 @@ enum TabTypes {
   PENDING,
   FAILED,
   TRANSFERS,
+}
+
+interface ProcessedStagingData {
+  staged: any[];
+  pending: any[];
+  failed: any[];
 }
 
 const MyProjectsPage: React.FC = () => {
@@ -34,7 +42,7 @@ const MyProjectsPage: React.FC = () => {
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
-
+  const { data: unprocessedStagedProjects, isLoading: stagingDataLoading } = useGetStagedProjectsQuery();
   const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery();
 
   const myOrganization = useMemo<Organization | undefined>(
@@ -42,9 +50,25 @@ const MyProjectsPage: React.FC = () => {
     [organizationsListData],
   );
 
+  const processedStagingData: ProcessedStagingData = useMemo<ProcessedStagingData>(() => {
+    const data: ProcessedStagingData = { staged: [], pending: [], failed: [] };
+    if (unprocessedStagedProjects?.forEach) {
+      unprocessedStagedProjects.forEach((stagedProject: any) => {
+        if (!stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
+          data.staged.push(stagedProject);
+        } else if (stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
+          data.pending.push(stagedProject);
+        } else if (!stagedProject.commited && stagedProject.failedCommit && !stagedProject.isTransfer) {
+          data.failed.push(stagedProject);
+        }
+      });
+    }
+    return data;
+  }, [unprocessedStagedProjects]);
+
   const contentsLoading = useMemo<boolean>(() => {
-    return committedDataLoading;
-  }, [committedDataLoading]);
+    return committedDataLoading || stagingDataLoading;
+  }, [committedDataLoading, stagingDataLoading]);
 
   useEffect(() => {
     if (myOrganization) {
@@ -83,11 +107,17 @@ const MyProjectsPage: React.FC = () => {
 
       <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
         <Tabs.Item title={<FormattedMessage id="committed" />}>
-          <MyCommittedProjectsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
+          <CommittedProjectsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
         </Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="staging" />}>todo staging</Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="pending" />}>todo pending</Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="failed" />}>todo failed</Tabs.Item>
+        <Tabs.Item title={<FormattedMessage id="staging" />}>
+          <StagingTableTab stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
+        </Tabs.Item>
+        <Tabs.Item title={<FormattedMessage id="pending" />}>
+          <StagingTableTab stagingData={processedStagingData.pending} showLoading={stagingDataLoading} />
+        </Tabs.Item>
+        <Tabs.Item title={<FormattedMessage id="failed" />}>
+          <StagingTableTab stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
+        </Tabs.Item>
         <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
       </Tabs>
     </div>
