@@ -39,19 +39,49 @@ const IssuanceForm: React.FC<IssuanceFormProps> = ({ readonly = false, data, sho
             readonly={readonly}
             initialValue={data || []}
           >
-            {(group) => (
+            {(issuance: Issuance) => (
               <>
-                <Field name="startDate" label="Start Date" type="date" readonly={readonly} />
-                <Field name="endDate" label="End Date" type="date" readonly={readonly} />
-                <Field name="verificationApproach" label="Verification Approach" type="text" readonly={readonly} />
-                <Field name="verificationBody" label="Verification Body" type="text" readonly={readonly} />
-                <Field name="verificationReportDate" label="Verification Report Date" type="date" readonly={readonly} />
-                <div />
-                {showUnits && readonly && group.id && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                  <Field
+                    name="startDate"
+                    label="Start Date"
+                    type="date"
+                    readonly={readonly}
+                    initialValue={issuance.startDate}
+                  />
+                  <Field
+                    name="endDate"
+                    label="End Date"
+                    type="date"
+                    readonly={readonly}
+                    initialValue={issuance.endDate}
+                  />
+                  <Field
+                    name="verificationApproach"
+                    label="Verification Approach"
+                    type="text"
+                    readonly={readonly}
+                    initialValue={issuance.verificationApproach}
+                  />
+                  <Field
+                    name="verificationBody"
+                    label="Verification Body"
+                    type="text"
+                    readonly={readonly}
+                    initialValue={issuance.verificationBody}
+                  />
+                  <Field
+                    name="verificationReportDate"
+                    label="Verification Report Date"
+                    type="date"
+                    readonly={readonly}
+                    initialValue={issuance.verificationReportDate}
+                  />
+                </div>
+                {showUnits && readonly && issuance.id && (
                   <div>
                     <div className="text-xl font-semibold text-gray-800 p-4">Unit Belonging to this Issuance</div>
-
-                    <UnitSummary issuanceId={group.id} />
+                    <UnitSummary issuanceId={issuance.id} />
                   </div>
                 )}
               </>

@@ -1,6 +1,6 @@
-import React, { ReactNode, Fragment, ReactElement, useCallback  } from 'react';
-import { FieldArray, FormikContextType, useFormikContext } from 'formik';
-import { Button, Card, Field } from '@/components';
+import React, { ReactNode } from 'react';
+import { FieldArray, useFormikContext, FormikContextType } from 'formik';
+import { Button, Card } from '@/components';
 import { IoAddCircleOutline } from 'react-icons/io5'; // Importing a plus icon from react-icons
 
 interface RepeaterProps<T> {
@@ -30,73 +30,31 @@ function Repeater<T extends { [key in keyof T]: any }>({
 
   const groups = values[name] || initialValue;
 
-  const createBlankItem = useCallback((): T => {
+  const createBlankItem = (): T => {
     const blankItem = {} as T;
     React.Children.forEach(children, (child: any) => {
       if (child.props.name) {
         // @ts-ignore
-        blankItem[child.props.name as keyof T] = null;
+        blankItem[child.props.name as keyof T] = null; // Assign a default blank or appropriate value
       }
     });
     return blankItem;
-  }, [children]);
+  };
 
-  const renderChildren = useCallback((group: T, index: number): ReactNode => {
-    const childNodes = typeof children === 'function' ? children(group, index) : children;
-    const fieldElements: ReactNode[] = [];
-    const otherElements: ReactNode[] = [];
-
-    const processChild = (child: ReactElement) => {
-      if (React.isValidElement(child)) {
-        if (child.type === Field) {
-          const clonedField = React.cloneElement(child, {
-            // @ts-ignore
-            key: `${child.props.name}-${index}`,
-            // @ts-ignore
-            name: `${name}[${index}].${child.props.name}`,
-            // @ts-ignore
-            initialValue: group[child.props.name],
-            readonly: readonly,
-          });
-          fieldElements.push(clonedField);
-        } else {
-          otherElements.push(child);
-        }
-      }
-    };
-
-    React.Children.forEach(childNodes, (child) => {
-      if (React.isValidElement(child) && child.type === Fragment) {
-        React.Children.forEach(child.props.children, processChild);
-      } else {
-        // @ts-ignore
-        processChild(child);
-      }
-    });
-
-    return (
-      <>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-          {fieldElements}
-        </div>
-        {otherElements}
-      </>
-    );
-  }, [children, name, readonly]);
-  
   return (
     <FieldArray
       name={name}
       render={(arrayHelpers) => (
         <div className="flex flex-col gap-4 relative">
           {groups.map((_group: any, index: number) => (
-            <Card key={_group.id || _group.warehouseProjectId || _group.warehouseUnitId || index}>
+            <Card key={index}>
               <div
                 className={`mb-4 ${
                   readonly ? 'grid-cols-1' : 'sm:grid-cols-1 md:grid-cols-[1fr_auto]'
                 } grid items-center gap-x-4 relative`}
               >
-                <div>{renderChildren(_group, index)}</div>
+                {typeof children === 'function' ? children(_group, index) : children}
+
                 {!readonly && (
                   <div className="relative flex items-center">
                     <Button
