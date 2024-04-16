@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { Field } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { Card } from '@/components';
+import { PickList } from '@/schemas/PickList.schema';
 
 const validationSchema = yup.object({
   projectName: yup.string(),
@@ -13,9 +14,10 @@ interface ProjectFormProps {
   onSubmit: () => Promise<any>;
   readonly?: boolean;
   data: Project;
+  picklistOptions: PickList | undefined;
 }
 
-const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data }) => {
+const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, picklistOptions }) => {
   return (
     <Formik initialValues={{ apiHost: '', apiKey: '' }} validationSchema={validationSchema} onSubmit={() => {}}>
       {() => (
@@ -60,14 +62,16 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data }) => 
                 <Field
                   name="projectType"
                   label="Project Type"
-                  type="text"
+                  type="picklist"
+                  options={picklistOptions?.projectType}
                   readonly={readonly}
                   initialValue={data.sector}
                 />
                 <Field
                   name="projectStatus"
                   label="Project Status"
-                  type="text"
+                  type="picklist"
+                  options={picklistOptions?.projectStatusValues}
                   readonly={readonly}
                   initialValue={data.projectStatus}
                 />
@@ -85,7 +89,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data }) => 
                 <Field
                   name="coveredByNDC"
                   label="Covered By NDC"
-                  type="text"
+                  type="picklist"
+                  options={picklistOptions?.coveredByNDC}
                   readonly={readonly}
                   initialValue={data.coveredByNDC}
                 />
@@ -124,21 +129,24 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data }) => 
                 <Field
                   name="unitMetric"
                   label="Unit Metric"
-                  type="text"
+                  type="picklist"
+                  options={picklistOptions?.unitMetric}
                   readonly={readonly}
                   initialValue={data.unitMetric}
                 />
                 <Field
                   name="methodology"
                   label="Methodology"
-                  type="text"
+                  type="picklist"
+                  options={picklistOptions?.methodology}
                   readonly={readonly}
                   initialValue={data.methodology}
                 />
                 <Field
                   name="validationBody"
                   label="Validation Body"
-                  type="text"
+                  type="picklist"
+                  options={picklistOptions?.validationBody}
                   readonly={readonly}
                   initialValue={data.validationBody}
                 />
