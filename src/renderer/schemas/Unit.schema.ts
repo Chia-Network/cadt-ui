@@ -3,6 +3,7 @@ import {Issuance} from "@/schemas/Issuance.schema";
 
 export interface Unit {
   // Required properties
+  warehouseUnitId: string;
   countryJurisdictionOfOwner: string;
   unitCount: number;
   vintageYear: number;

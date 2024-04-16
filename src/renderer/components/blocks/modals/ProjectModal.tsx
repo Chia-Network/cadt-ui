@@ -30,21 +30,26 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
               <Spinner size="xl" />
             )}
           </Tabs.Item>
-          <Tabs.Item title={<FormattedMessage id="issuance" />}>
-            {!isLoading && data && (
-              <IssuanceForm onSubmit={handleProjectFormSubmit} readonly={true} data={data?.issuances} />
-            )}
-          </Tabs.Item>
-          <Tabs.Item title={<FormattedMessage id="project-locations" />}>
-            {!isLoading && data && (
+          {data?.issuances?.length && (
+            <Tabs.Item title={<FormattedMessage id="issuance" />}>
+              <IssuanceForm
+                onSubmit={handleProjectFormSubmit}
+                readonly={true}
+                data={data?.issuances}
+                showUnits={true}
+              />
+            </Tabs.Item>
+          )}
+          {data?.projectLocations?.length && (
+            <Tabs.Item title={<FormattedMessage id="project-locations" />}>
               <ProjectLocationForm onSubmit={handleProjectFormSubmit} readonly={true} data={data?.projectLocations} />
-            )}
-          </Tabs.Item>
-          <Tabs.Item title={<FormattedMessage id="estimations" />}>
-            {!isLoading && data && (
+            </Tabs.Item>
+          )}
+          {data?.estimations?.length && (
+            <Tabs.Item title={<FormattedMessage id="estimations" />}>
               <EstimationsForm onSubmit={handleProjectFormSubmit} readonly={true} data={data?.estimations} />
-            )}
-          </Tabs.Item>
+            </Tabs.Item>
+          )}
         </Tabs>
       </Modal.Body>
     </Modal>
