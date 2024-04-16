@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useGetOrganizationsListQuery } from '@/api/cadt/v1/organizations';
-import { Dropdown, SyncIndicator } from '@/components';
-import {Organization} from "@/schemas/Organization.schema";
+import { Dropdown, SyncIndicator, Spinner } from '@/components';
+import { Organization } from '@/schemas/Organization.schema';
 
 interface OrganizationSelectorProps {
   onSelect: (organization: any | undefined) => void;
   defaultOrgUid: string | undefined;
-  noSelectionLabel?: string
+  noSelectionLabel?: string;
 }
 
-const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, defaultOrgUid, noSelectionLabel = 'Select Organization'  }) => {
+const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({
+  onSelect,
+  defaultOrgUid,
+  noSelectionLabel = 'Select Organization',
+}) => {
   const { data: organizations, error, isLoading } = useGetOrganizationsListQuery();
   const [selectedOrganization, setSelectedOrganization] = useState<Organization | undefined>(undefined);
 
@@ -23,8 +27,8 @@ const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, d
         registryId: '',
         registryHash: '',
         fileStoreId: '',
-        prefix: ''
-      }
+        prefix: '',
+      };
       setSelectedOrganization(allOrganizationsPlaceholder);
     } else if (defaultOrgUid !== undefined && organizations) {
       const defaultOrganization = organizations.find((org) => org.orgUid === defaultOrgUid);
@@ -35,7 +39,11 @@ const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, d
   }, [defaultOrgUid, organizations]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
   }
 
   if (error || !organizations) {
