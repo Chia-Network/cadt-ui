@@ -1,4 +1,4 @@
-import { cadtApi, stagedProjectsTag } from '../';
+import { cadtApi, stagedProjectsTag, stagedUnitsTag } from '../';
 
 const stagingApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,7 +14,20 @@ const stagingApi = cadtApi.injectEndpoints({
       },
       providesTags: [stagedProjectsTag],
     }),
+
+    getStagedUnits: builder.query<any, null | undefined | void>({
+      query: () => {
+        const params: { type: string } = { type: 'units' };
+
+        return {
+          url: `/v1/staging`,
+          params,
+          method: 'GET',
+        };
+      },
+      providesTags: [stagedUnitsTag],
+    }),
   }),
 });
 
-export const { useGetStagedProjectsQuery } = stagingApi;
+export const { useGetStagedProjectsQuery, useGetStagedUnitsQuery } = stagingApi;

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useGetOrganizationsListQuery, useGetOrganizationsMapQuery } from '@/api';
+import { useGetOrganizationsListQuery } from '@/api';
 import { useQueryParamState } from '@/hooks';
-import { debounce, DebouncedFunc } from 'lodash';
+import { debounce } from 'lodash';
 import {
   Button,
   CommittedUnitsTab,
@@ -9,12 +9,15 @@ import {
   IndeterminateProgressOverlay,
   OrgUidBadge,
   SearchBox,
+  StagingTableTab,
   SyncIndicator,
   Tabs,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
+import { useNavigate } from 'react-router-dom';
+import { useGetStagedUnitsQuery } from '@/api/cadt/v1/staging/staging.api';
 
 enum TabTypes {
   COMMITTED,
@@ -22,6 +25,12 @@ enum TabTypes {
   PENDING,
   FAILED,
   TRANSFERS,
+}
+
+interface ProcessedStagingData {
+  staged: any[];
+  pending: any[];
+  failed: any[];
 }
 
 const MyUnitsPage: React.FC = () => {
@@ -33,7 +42,7 @@ const MyUnitsPage: React.FC = () => {
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
-
+  const { data: unprocessedStagedUnits, isLoading: stagingDataLoading } = useGetStagedUnitsQuery();
   const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery();
 
   const myOrganization = useMemo<Organization | undefined>(
@@ -41,9 +50,29 @@ const MyUnitsPage: React.FC = () => {
     [organizationsListData],
   );
 
+  console.log('hello from units page', unprocessedStagedUnits);
+
+  const processedStagingData: ProcessedStagingData = useMemo<ProcessedStagingData>(() => {
+    const data: ProcessedStagingData = { staged: [], pending: [], failed: [] };
+    if (unprocessedStagedUnits?.forEach) {
+      unprocessedStagedUnits.forEach((stagedUnit: any) => {
+        if (stagedUnit?.table === 'Units') {
+          if (!stagedUnit.commited && !stagedUnit.failedCommit && !stagedUnit.isTransfer) {
+            data.staged.push(stagedUnit);
+          } else if (stagedUnit.commited && !stagedUnit.failedCommit && !stagedUnit.isTransfer) {
+            data.pending.push(stagedUnit);
+          } else if (!stagedUnit.commited && stagedUnit.failedCommit && !stagedUnit.isTransfer) {
+            data.failed.push(stagedUnit);
+          }
+        }
+      });
+    }
+    return data;
+  }, [unprocessedStagedUnits]);
+
   const contentsLoading = useMemo<boolean>(() => {
-    return committedDataLoading;
-  }, [committedDataLoading]);
+    return committedDataLoading || stagingDataLoading;
+  }, [committedDataLoading, stagingDataLoading]);
 
   useEffect(() => {
     if (myOrganization) {
@@ -57,7 +86,7 @@ const MyUnitsPage: React.FC = () => {
     }
   }, [myOrganization, navigate, organizationsListLoading]);
 
-  const handleSearchChange: DebouncedFunc<any> = useCallback(
+  const handleSearchChange = useCallback(
     debounce((event: any) => {
       setSearch(event.target.value);
     }, 800),
@@ -72,7 +101,7 @@ const MyUnitsPage: React.FC = () => {
     <div className="m-2">
       {contentsLoading && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-        <Button disabled={organizationsListLoading}>
+        <Button disabled={contentsLoading}>
           <FormattedMessage id="create-unit" />
         </Button>
         {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
@@ -84,9 +113,36 @@ const MyUnitsPage: React.FC = () => {
         <Tabs.Item title={<FormattedMessage id="committed" />}>
           <CommittedUnitsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
         </Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="staging" />}>todo staging</Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="pending" />}>todo pending</Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="failed" />}>todo failed</Tabs.Item>
+        <Tabs.Item
+          title={
+            <p>
+              <FormattedMessage id="staging" />
+              {' (' + String(processedStagingData.staged.length + ') ')}
+            </p>
+          }
+        >
+          <StagingTableTab stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
+        </Tabs.Item>
+        <Tabs.Item
+          title={
+            <p>
+              <FormattedMessage id="pending" />
+              {' (' + String(processedStagingData.pending.length + ') ')}
+            </p>
+          }
+        >
+          <StagingTableTab stagingData={processedStagingData.pending} showLoading={stagingDataLoading} />
+        </Tabs.Item>
+        <Tabs.Item
+          title={
+            <p>
+              <FormattedMessage id="failed" />
+              {' (' + String(processedStagingData.failed.length + ') ')}
+            </p>
+          }
+        >
+          <StagingTableTab stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
+        </Tabs.Item>
         <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
       </Tabs>
     </div>

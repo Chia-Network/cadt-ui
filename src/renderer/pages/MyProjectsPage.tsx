@@ -54,12 +54,14 @@ const MyProjectsPage: React.FC = () => {
     const data: ProcessedStagingData = { staged: [], pending: [], failed: [] };
     if (unprocessedStagedProjects?.forEach) {
       unprocessedStagedProjects.forEach((stagedProject: any) => {
-        if (!stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
-          data.staged.push(stagedProject);
-        } else if (stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
-          data.pending.push(stagedProject);
-        } else if (!stagedProject.commited && stagedProject.failedCommit && !stagedProject.isTransfer) {
-          data.failed.push(stagedProject);
+        if (unprocessedStagedProjects?.forEach) {
+          if (!stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
+            data.staged.push(stagedProject);
+          } else if (stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
+            data.pending.push(stagedProject);
+          } else if (!stagedProject.commited && stagedProject.failedCommit && !stagedProject.isTransfer) {
+            data.failed.push(stagedProject);
+          }
         }
       });
     }
