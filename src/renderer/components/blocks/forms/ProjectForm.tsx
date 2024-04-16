@@ -7,8 +7,27 @@ import { Card } from '@/components';
 import { PickList } from '@/schemas/PickList.schema';
 
 const validationSchema = yup.object({
-  projectName: yup.string(),
+  projectName: yup.string().required('Project Name is required'),
+  projectId: yup.string().required('Project ID is required'),
+  projectDeveloper: yup.string().required('Project Developer is required'),
+  program: yup.string().required('Program is required'),
+  projectLink: yup.string().url('Must be a valid URL').required('Project Link is required'),
+  sector: yup.string().required('Sector is required'),
+  projectType: yup.string().required('Project Type is required'),
+  projectStatus: yup.string().required('Project Status is required'),
+  projectStatusDate: yup.date().required('Project Status Date is required'),
+  coveredByNDC: yup.string().required('Covered By NDC is required'),
+  ndcInformation: yup.string(),
+  currentRegistry: yup.string(),
+  registryOfOrigin: yup.string().required('Registry of Origin is required'),
+  originProjectId: yup.string().required('Origin Project ID is required'),
+  unitMetric: yup.string().required('Unit Metric is required'),
+  methodology: yup.string().required('Methodology is required'),
+  validationBody: yup.string().required('Validation Body is required'),
+  validationDate: yup.date().required('Validation Date is required'),
+  projectTags: yup.string(),
 });
+
 
 interface ProjectFormProps {
   onSubmit: () => Promise<any>;
@@ -19,7 +38,7 @@ interface ProjectFormProps {
 
 const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, picklistOptions }) => {
   return (
-    <Formik initialValues={{ apiHost: '', apiKey: '' }} validationSchema={validationSchema} onSubmit={() => {}}>
+    <Formik initialValues={data} validationSchema={validationSchema} onSubmit={() => {}}>
       {() => (
         <Form>
           <div className="flex flex-col gap-4">

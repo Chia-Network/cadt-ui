@@ -8,11 +8,11 @@ import { PickList } from '@/schemas/PickList.schema';
 const validationSchema = yup.object({
   ratings: yup.array().of(
     yup.object({
-      country: yup.string().required('Country is required'),
-      geographicIdentifier: yup.mixed().required('Geographic Identifier is required'),
-      inCountryRegion: yup.string(),
-      timeStaged: yup.date().nullable(),
-      fileId: yup.string(),
+      ratingType: yup.string().required('Rating type is required'),
+      ratingRangeLowest: yup.string().required('Rating lowest value is required'),
+      ratingRangeHighest: yup.string().required('Rating highest value is required'),
+      rating: yup.string().required('Rating is required'),
+      ratingLink: yup.string().url('Must be a valid URL').nullable(),
     }),
   ),
 });
@@ -34,7 +34,7 @@ const RatingForm: React.FC<RatingFormFormProps> = ({ readonly = false, data, pic
       {() => (
         <Form>
           <Repeater<Rating>
-            name="locations"
+            name="ratings"
             maxNumber={100}
             minNumber={1}
             readonly={readonly}

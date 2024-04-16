@@ -5,13 +5,10 @@ import * as yup from 'yup';
 import { RelatedProject } from '@/schemas/RelatedProject.schema';
 
 const validationSchema = yup.object({
-  locations: yup.array().of(
+  relatedProjects: yup.array().of(
     yup.object({
-      country: yup.string().required('Country is required'),
-      geographicIdentifier: yup.mixed().required('Geographic Identifier is required'),
-      inCountryRegion: yup.string(),
-      timeStaged: yup.date().nullable(),
-      fileId: yup.string(),
+      relationshipType: yup.string().required('Relationship Type is required'),
+      registry: yup.string().required('Registry is required'),
     }),
   ),
 });
@@ -25,14 +22,14 @@ interface RelatedProjectFormFormProps {
 const RelatedProjectForm: React.FC<RelatedProjectFormFormProps> = ({ readonly = false, data }) => {
   return (
     <Formik
-      initialValues={{ locations: data || [] }}
+      initialValues={{ relatedProjects: data || [] }}
       validationSchema={validationSchema}
       onSubmit={(values) => console.log(values)}
     >
       {() => (
         <Form>
           <Repeater<RelatedProject>
-            name="locations"
+            name="relatedProjects"
             maxNumber={100}
             minNumber={1}
             readonly={readonly}

@@ -9,9 +9,8 @@ const validationSchema = yup.object({
   locations: yup.array().of(
     yup.object({
       country: yup.string().required('Country is required'),
-      geographicIdentifier: yup.mixed().required('Geographic Identifier is required'),
+      geographicIdentifier: yup.string().required('Geographic Identifier is required'),
       inCountryRegion: yup.string(),
-      timeStaged: yup.date().nullable(),
       fileId: yup.string(),
     }),
   ),

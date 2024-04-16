@@ -7,7 +7,23 @@ import { useGetProjectQuery } from '@/api';
 import { PickList } from '@/schemas/PickList.schema';
 
 const validationSchema = yup.object({
-  projectName: yup.string(),
+  unitOwner: yup.string().required('Unit Owner is required'),
+  unitBlockStart: yup.string().required('Unit Block Start is required'),
+  unitBlockEnd: yup.string().required('Unit Block End is required'),
+  unitCount: yup.number().required('Unit Count is required').positive('Unit Count must be positive'),
+  serialNumberBlock: yup.string().required('Serial Number Block is required'),
+  countryJurisdictionOfOwner: yup.string().required('Country Jurisdiction Of Owner is required'),
+  inCountryJurisdictionOfOwner: yup.string().required('In-Country Jurisdiction Of Owner is required'),
+  unitType: yup.string().required('Unit Type is required'),
+  unitStatusReason: yup.string().required('Unit Status Reason is required'),
+  vintageYear: yup.number().required('Vintage Year is required'),
+  unitRegistryLink: yup.string().url('Must be a valid URL'),
+  marketplace: yup.string(),
+  marketplaceIdentifier: yup.string(),
+  marketplaceLink: yup.string().url('Must be a valid URL'),
+  correspondingAdjustmentStatus: yup.string().required('Corresponding Adjustment Status is required'),
+  correspondingAdjustmentDeclaration: yup.string().required('Corresponding Adjustment Declaration is required'),
+  unitTags: yup.string(),
 });
 
 interface UnitFormProps {
@@ -40,7 +56,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
   }, [projectData, isLoading]);
 
   return (
-    <Formik initialValues={{ apiHost: '', apiKey: '' }} validationSchema={validationSchema} onSubmit={() => {}}>
+    <Formik initialValues={data} validationSchema={validationSchema} onSubmit={() => {}}>
       {() => (
         <Form>
           <div className="flex flex-col gap-4">

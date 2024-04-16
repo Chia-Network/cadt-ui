@@ -8,11 +8,7 @@ import { PickList } from '@/schemas/PickList.schema';
 const validationSchema = yup.object({
   cobenifets: yup.array().of(
     yup.object({
-      country: yup.string().required('Country is required'),
-      geographicIdentifier: yup.mixed().required('Geographic Identifier is required'),
-      inCountryRegion: yup.string(),
-      timeStaged: yup.date().nullable(),
-      fileId: yup.string(),
+      cobenefit: yup.string().required('Co-Benefit is required'),
     }),
   ),
 });

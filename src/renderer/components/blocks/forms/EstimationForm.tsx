@@ -8,9 +8,13 @@ const validationSchema = yup.object({
   estimations: yup.array().of(
     yup.object({
       creditingPeriodStart: yup.date().required('Crediting period start is required'),
-      creditingPeriodEnd: yup.date().required('Crediting period end is required'),
+      creditingPeriodEnd: yup.date().required('Crediting period end is required')
+        .min(
+          yup.ref('creditingPeriodStart'),
+          'Crediting period end date must be after the start date'
+        ),
       unitCount: yup.number().required('Unit count is required').positive('Unit count must be positive'),
-    }),
+    })
   ),
 });
 
