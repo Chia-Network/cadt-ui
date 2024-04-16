@@ -4,6 +4,7 @@ import { useQueryParamState } from '@/hooks';
 import { debounce, DebouncedFunc } from 'lodash';
 import {
   Button,
+  CommittedUnitsTab,
   ComponentCenteredSpinner,
   IndeterminateProgressOverlay,
   OrgUidBadge,
@@ -14,7 +15,6 @@ import {
 import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { Organization } from '@/schemas/Organization.schema';
-import { CommittedUnitsTab } from '@/components/blocks/tabs/CommittedUnitsTab';
 
 enum TabTypes {
   COMMITTED,

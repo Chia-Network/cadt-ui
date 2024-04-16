@@ -4,10 +4,12 @@ import { useQueryParamState } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
+  CommittedProjectsTab,
   ComponentCenteredSpinner,
   IndeterminateProgressOverlay,
   OrgUidBadge,
   SearchBox,
+  StagingTableTab,
   SyncIndicator,
   Tabs,
 } from '@/components';
@@ -15,9 +17,7 @@ import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
 import { useNavigate } from 'react-router-dom';
-import { CommittedProjectsTab } from '@/components/blocks/tabs/CommittedProjectsTab';
 import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging/staging.api';
-import { StagingTableTab } from '@/components/blocks/tabs/StagingTableTab';
 
 enum TabTypes {
   COMMITTED,
@@ -109,13 +109,34 @@ const MyProjectsPage: React.FC = () => {
         <Tabs.Item title={<FormattedMessage id="committed" />}>
           <CommittedProjectsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
         </Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="staging" />}>
+        <Tabs.Item
+          title={
+            <p>
+              <FormattedMessage id="staging" />
+              {' (' + String(processedStagingData.staged.length + ') ')}
+            </p>
+          }
+        >
           <StagingTableTab stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
         </Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="pending" />}>
+        <Tabs.Item
+          title={
+            <p>
+              <FormattedMessage id="pending" />
+              {' (' + String(processedStagingData.pending.length + ') ')}
+            </p>
+          }
+        >
           <StagingTableTab stagingData={processedStagingData.pending} showLoading={stagingDataLoading} />
         </Tabs.Item>
-        <Tabs.Item title={<FormattedMessage id="failed" />}>
+        <Tabs.Item
+          title={
+            <p>
+              <FormattedMessage id="failed" />
+              {' (' + String(processedStagingData.failed.length + ') ')}
+            </p>
+          }
+        >
           <StagingTableTab stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
         </Tabs.Item>
         <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
