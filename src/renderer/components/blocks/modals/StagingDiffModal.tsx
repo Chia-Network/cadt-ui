@@ -11,30 +11,27 @@ interface ProjectModalProps {
 const StagingDiffModal: React.FC<ProjectModalProps> = ({ stagingUuid, onClose }: ProjectModalProps) => {
   const { data: stagingData, isLoading } = useGetStagedProjectsQuery();
 
+  console.log(stagingUuid, stagingData);
+
   const changeRecord: any = useMemo(() => {
     if (isLoading || !stagingData) {
       return undefined;
     }
-    return stagingData.find(() => stagingData.uuid === stagingUuid);
+    return stagingData.find((record) => record.uuid === stagingUuid);
   }, [stagingData, isLoading, stagingUuid]);
 
-  console.log(stagingData);
+  console.log(changeRecord)
 
-  if (isLoading) {
+  if (isLoading || !changeRecord) {
     return null;
   }
-
-  const oldRevision: any = changeRecord?.diff?.original;
-  const newRevisions: any[] = changeRecord?.diff?.change;
 
   return (
     <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
       <Modal.Header>
         <FormattedMessage id={'staging-diff'} />
       </Modal.Header>
-      <Modal.Body>
-        {isLoading ? <p>loading...</p> : <DiffViewer oldText={oldRevision} newText={newRevisions?.[0]} />}
-      </Modal.Body>
+      <Modal.Body>{isLoading ? <p>loading...</p> : <DiffViewer data={changeRecord} />}</Modal.Body>
     </Modal>
   );
 };
