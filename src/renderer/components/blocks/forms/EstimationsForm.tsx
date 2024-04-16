@@ -37,9 +37,31 @@ const EstimationsForm: React.FC<EstimationsFormProps> = ({ readonly = false, dat
             readonly={readonly}
             initialValue={data || []}
           >
-            <Field name="creditingPeriodStart" label="Crediting Period Start" type="date" readonly={readonly} />
-            <Field name="creditingPeriodEnd" label="Crediting Period End" type="date" readonly={readonly} />
-            <Field name="unitCount" label="Unit Count" type="number" readonly={readonly} />
+            {(estimation: Estimation) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                <Field
+                  name="creditingPeriodStart"
+                  label="Crediting Period Start"
+                  type="date"
+                  readonly={readonly}
+                  initialValue={estimation.creditingPeriodEnd}
+                />
+                <Field
+                  name="creditingPeriodEnd"
+                  label="Crediting Period End"
+                  type="date"
+                  readonly={readonly}
+                  initialValue={estimation.creditingPeriodEnd}
+                />
+                <Field
+                  name="unitCount"
+                  label="Unit Count"
+                  type="number"
+                  readonly={readonly}
+                  initialValue={estimation.unitCount}
+                />
+              </div>
+            )}
           </Repeater>
           {!readonly && (
             <button type="submit" disabled={isSubmitting} className="mt-4 bg-blue-500 text-white p-2 rounded">

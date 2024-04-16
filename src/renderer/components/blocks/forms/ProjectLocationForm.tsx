@@ -38,10 +38,14 @@ const ProjectLocationForm: React.FC<ProjectLocationFormProps> = ({ readonly = fa
             readonly={readonly}
             initialValue={data || []}
           >
-            <Field name="country" label="Host Country" type="text" readonly={readonly} />
-            <Field name="inCountryRegion" label="In-Country Region" type="text" readonly={readonly} />
-            <Field name="geographicIdentifier" label="Geographic Identifier" type="text" readonly={readonly} />
-            <Field name="fileId" label="File ID" type="text" readonly={readonly} />
+            {(location: ProjectLocation) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                <Field name="country" label="Host Country" type="text" readonly={readonly} initialValue={location.country}/>
+                <Field name="inCountryRegion" label="In-Country Region" type="text" readonly={readonly} initialValue={location.inCountryRegion}/>
+                <Field name="geographicIdentifier" label="Geographic Identifier" type="text" readonly={readonly} initialValue={location.geographicIdentifier}/>
+                <Field name="fileId" label="File ID" type="text" readonly={readonly} initialValue={location.fileId}/>
+              </div>
+            )}
           </Repeater>
         </Form>
       )}
