@@ -30,11 +30,11 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
               <Spinner size="xl" />
             )}
           </Tabs.Item>
-          <Tabs.Item title={<FormattedMessage id="issuance" />}>
-            {!unitLoading && unitData && (
+          {unitData?.issuance && (
+            <Tabs.Item title={<FormattedMessage id="issuance" />}>
               <IssuanceForm onSubmit={handleProjectFormSubmit} readonly={true} data={[unitData?.issuance]} />
-            )}
-          </Tabs.Item>
+            </Tabs.Item>
+          )}
         </Tabs>
       </Modal.Body>
     </Modal>

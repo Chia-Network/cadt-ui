@@ -6,6 +6,7 @@ interface GetUnitsParams {
   orgUid?: string;
   search?: string;
   order?: string;
+  filter?: string;
 }
 
 interface GetUnitParams {
@@ -21,7 +22,7 @@ interface GetUnitsResponse {
 const unitsApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
     getUnits: builder.query<GetUnitsResponse, GetUnitsParams>({
-      query: ({ page, orgUid, search, order }: GetUnitsParams) => {
+      query: ({ page, orgUid, search, order, filter }: GetUnitsParams) => {
         // Initialize the params object with page and limit
         const params: GetUnitsParams & {limit: number} = { page, limit: 10 };
 
@@ -35,6 +36,10 @@ const unitsApi = cadtApi.injectEndpoints({
 
         if (order) {
           params.order = order;
+        }
+
+        if (filter) {
+          params.filter = filter;
         }
 
         return {

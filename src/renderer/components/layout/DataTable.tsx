@@ -24,6 +24,7 @@ interface DataTableProps {
   onChangeOrder?: (column: string) => void;
   order?: string;
   footer?: JSX.Element | null;
+  compact?: boolean;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -35,6 +36,7 @@ const DataTable: React.FC<DataTableProps> = ({
   onChangeOrder,
   order,
   footer = null,
+  compact = false,
 }) => {
   if (isLoading) {
     return null;
@@ -75,7 +77,7 @@ const DataTable: React.FC<DataTableProps> = ({
 
       <div
         className="hidden md:flex md:flex-col custom-scrollbar"
-        style={{ height: 'calc(100vh - 150px)', width: 'calc(100vw - 260px)' }}
+        style={compact ? {} : { height: 'calc(100vh - 150px)', width: 'calc(100vw - 260px)' }}
       >
         <SimpleBar style={{ maxHeight: '100%' }} autoHide={false} forceVisible="x">
           <table

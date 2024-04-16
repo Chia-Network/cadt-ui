@@ -34,7 +34,7 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
           return <div className="break-words">{options?.find((option) => option.value === initialValue)?.label}</div>;
         case 'link':
           return (
-            <a className="break-words" href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500">
+            <a href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500 break-words">
               {initialValue}
             </a>
           );
