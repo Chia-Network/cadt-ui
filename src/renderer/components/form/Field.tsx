@@ -1,22 +1,40 @@
 import React from 'react';
 import { useFormikContext, FormikValues } from 'formik';
-import { Label, TextInput, Textarea, Select, Checkbox, Datepicker } from 'flowbite-react';
+import { Label, TextInput, Textarea, Checkbox, Datepicker } from 'flowbite-react';
 import { TagInput } from './TagInput';
 import dayjs from 'dayjs';
-
-type Option = {
-  label: string;
-  value: string | number;
-};
+import { Select, SelectOption } from '@/components';
 
 interface FieldProps {
   name: string;
   label?: string;
-  type: 'text' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'tag' | 'date' | 'link' | 'number';
-  options?: Option[];
+  type: 'text' | 'textarea' | 'picklist' | 'checkbox' | 'radio' | 'tag' | 'date' | 'link' | 'number';
+  options?: SelectOption[];
   readonly?: boolean;
   initialValue?: any;
 }
+
+const renderOption = (options, initialValue) => {
+  // Find the option that matches the initialValue
+  const foundOption = options?.find(option => {
+      if (typeof option === 'object') {
+          return option.value === initialValue;
+      } else {
+          return option === initialValue;
+      }
+  });
+
+  // Determine the label to display
+  if (foundOption) {
+      if (typeof foundOption === 'object') {
+          return foundOption.label;  // Use label from the object
+      } else {
+          return foundOption;  // Use the value directly as it is a string or number
+      }
+  } else {
+      return "No Option Selected";
+  }
+};
 
 const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, initialValue }) => {
   const { errors, touched, setFieldValue }: FormikValues = useFormikContext();
@@ -25,22 +43,27 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
 
   if (readonly) {
     const renderReadOnlyField = () => {
-      if (initialValue === undefined || initialValue === null) return 'N/A';
+      if (initialValue === undefined || initialValue === null) {
+        return '--';
+      }
+
       switch (type) {
-        case 'select':
-          return options?.find((option) => option.value === initialValue)?.label;
+        case 'picklist':
+          return <div className="break-words">{renderOption(options, initialValue)}</div>;
         case 'link':
           return (
-            <a href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500">
+            <a href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500 break-words">
               {initialValue}
             </a>
           );
         case 'date':
           return dayjs(new Date(initialValue)).format('MMMM D, YYYY');
         case 'tag':
-          return <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />;
+          return (
+            <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />
+          );
         default:
-          return initialValue || 'N/A';
+          return <div className="break-words">{initialValue}</div>;
       }
     };
     return (
@@ -77,20 +100,15 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
             onChange={(e) => setFieldValue(name, e.target.value)}
           />
         );
-      case 'select':
+      case 'picklist':
         return (
           <Select
             id={name}
             name={name}
-            defaultValue={initialValue}
+            initialValue={initialValue}
             onChange={(e) => setFieldValue(name, e.target.value)}
-          >
-            {options?.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
+            options={options}
+          />
         );
       case 'date':
         return <Datepicker defaultDate={initialValue ? new Date(initialValue) : undefined} />;

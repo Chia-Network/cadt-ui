@@ -3,6 +3,7 @@ import {Issuance} from "@/schemas/Issuance.schema";
 
 export interface Unit {
   // Required properties
+  warehouseUnitId: string;
   countryJurisdictionOfOwner: string;
   unitCount: number;
   vintageYear: number;
@@ -13,6 +14,9 @@ export interface Unit {
   correspondingAdjustmentStatus: string;
   issuance: Issuance;
   labels: Label[];
+  unitBlockStart: string;
+  unitBlockEnd: string;
+  serialNumberBlock: string;
 
   // Optional properties
   projectLocationId?: string | null;

@@ -6,6 +6,11 @@ interface GetUnitsParams {
   orgUid?: string;
   search?: string;
   order?: string;
+  filter?: string;
+}
+
+interface GetUnitParams {
+  warehouseUnitId: string;
 }
 
 interface GetUnitsResponse {
@@ -17,7 +22,7 @@ interface GetUnitsResponse {
 const unitsApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
     getUnits: builder.query<GetUnitsResponse, GetUnitsParams>({
-      query: ({ page, orgUid, search, order }: GetUnitsParams) => {
+      query: ({ page, orgUid, search, order, filter }: GetUnitsParams) => {
         // Initialize the params object with page and limit
         const params: GetUnitsParams & {limit: number} = { page, limit: 10 };
 
@@ -33,6 +38,10 @@ const unitsApi = cadtApi.injectEndpoints({
           params.order = order;
         }
 
+        if (filter) {
+          params.filter = filter;
+        }
+
         return {
           url: `/v1/units`,
           params,
@@ -40,10 +49,19 @@ const unitsApi = cadtApi.injectEndpoints({
         };
       },
       providesTags: (_response, _error, {orgUid}) => [{type: unitsTag, id: orgUid}],
-    })
+    }),
+    getUnit: builder.query<Unit, GetUnitParams>({
+      query: ({ warehouseUnitId }: GetUnitParams) => ({
+        url: `/v1/units`,
+        params: { warehouseUnitId },
+        method: 'GET',
+      }),
+      providesTags: (_response, _error, {warehouseUnitId}) => [{type: unitsTag, id: warehouseUnitId}],
+    }),
   })
 });
 
 export const {
-  useGetUnitsQuery
+  useGetUnitsQuery,
+  useGetUnitQuery
 } = unitsApi;

@@ -1,11 +1,11 @@
-import React from 'react';
-import { FieldArray, FormikContextType, useFormikContext } from 'formik';
+import React, { ReactNode } from 'react';
+import { FieldArray, useFormikContext, FormikContextType } from 'formik';
 import { Button, Card } from '@/components';
 import { IoAddCircleOutline } from 'react-icons/io5'; // Importing a plus icon from react-icons
 
 interface RepeaterProps<T> {
   name: string;
-  children: React.ReactNode;
+  children: ReactNode | ((item: T, index: number) => ReactNode);
   maxNumber?: number;
   minNumber?: number;
   readonly?: boolean;
@@ -53,15 +53,8 @@ function Repeater<T extends { [key in keyof T]: any }>({
                   readonly ? 'grid-cols-1' : 'sm:grid-cols-1 md:grid-cols-[1fr_auto]'
                 } grid items-center gap-x-4 relative`}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                  {React.Children.map(children, (child: any) => {
-                    return React.cloneElement(child, {
-                      name: `${name}[${index}].${child.props.name}`,
-                      initialValue: _group[child.props.name],
-                      readonly: readonly,
-                    });
-                  })}
-                </div>
+                {typeof children === 'function' ? children(_group, index) : children}
+
                 {!readonly && (
                   <div className="relative flex items-center">
                     <Button

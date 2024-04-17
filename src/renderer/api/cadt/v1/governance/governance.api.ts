@@ -1,6 +1,7 @@
 import { cadtApi } from '../';
 // @ts-ignore
 import { BaseQueryResult } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import { PickList } from '@/schemas/PickList.schema';
 
 interface BaseQueryResult {
   [key: string]: string[];
@@ -42,7 +43,14 @@ const governanceApi = cadtApi.injectEndpoints({
         method: 'GET',
       }),
     }),
+
+    getPickLists: builder.query<PickList, void>({
+      query: () => ({
+        url: `/v1/governance/meta/pickList`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useGetGlossaryQuery, useGetDefaultOrgListQuery } = governanceApi;
+export const { useGetGlossaryQuery, useGetDefaultOrgListQuery, useGetPickListsQuery } = governanceApi;

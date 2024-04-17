@@ -51,6 +51,7 @@ const projectsApi = cadtApi.injectEndpoints({
         params: { warehouseProjectId },
         method: 'GET',
       }),
+      providesTags: (_response, _error, {warehouseProjectId}) => [{type: projectsTag, id: warehouseProjectId}],
     }),
   })
 });

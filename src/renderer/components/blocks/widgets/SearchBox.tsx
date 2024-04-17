@@ -12,13 +12,14 @@ const SearchBox: React.FC<SearchBoxProps> = ({ defaultValue, onChange }) => {
   const intl: IntlShape = useIntl();
 
   return (
-    <div className="w-full md:max-w-md">
+    <div className="flex justify-center items-center w-full md:max-w-md">
       <TextInput
         type="text"
         icon={IoSearchSharp}
         defaultValue={defaultValue || ''}
         onChange={onChange}
         placeholder={intl.formatMessage({ id: 'search' })}
+        className="w-full"
       />
     </div>
   );

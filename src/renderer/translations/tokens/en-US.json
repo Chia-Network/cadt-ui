@@ -92,10 +92,12 @@
   "transfers": "Transfers",
   "my-units": "My Units",
   "create-unit": "Create Unit",
-  "retry": "Retry",
   "action": "Action",
   "date-created": "Date Created",
   "date-last-updated": "Date Last Updated",
   "uuid": "UUID",
-  "staging-diff": "Staging Diff"
+  "staging-diff": "Staging Diff",
+  "retry": "Retry",
+  "unit": "Unit",
+  "detailed-unit-view": "Detailed Unit View"
 }

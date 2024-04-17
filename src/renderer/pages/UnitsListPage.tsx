@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useGetOrganizationsMapQuery, useGetUnitsQuery } from '@/api';
-import { useColumnOrderHandler, useQueryParamState } from '@/hooks';
+import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
 import { debounce, DebouncedFunc } from 'lodash';
 import {
   IndeterminateProgressOverlay,
@@ -10,6 +10,7 @@ import {
   SkeletonTable,
   SyncIndicator,
   UnitsListTable,
+  UnitModal,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
@@ -19,9 +20,11 @@ const UnitsListPage: React.FC = () => {
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
+  const [unitDetailsFragment, unitDetailsModalActive, setUnitModalActive] = useWildCardUrlHash('unit');
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
+
   const {
     data: unitsData,
     isLoading: unitsLoading,
@@ -77,16 +80,25 @@ const UnitsListPage: React.FC = () => {
       {unitsLoading ? (
         <SkeletonTable />
       ) : (
-        <UnitsListTable
-          data={unitsData?.data || []}
-          isLoading={unitsLoading}
-          currentPage={Number(currentPage)}
-          onPageChange={handlePageChange}
-          setOrder={handleSetOrder}
-          order={order}
-          totalPages={unitsData.pageCount}
-          totalCount={unitsData.pageCount * 10}
-        />
+        <>
+          <UnitsListTable
+            data={unitsData?.data || []}
+            isLoading={unitsLoading}
+            currentPage={Number(currentPage)}
+            onPageChange={handlePageChange}
+            onRowClick={(row) => setUnitModalActive(true, row.warehouseUnitId)}
+            setOrder={handleSetOrder}
+            order={order}
+            totalPages={unitsData.pageCount}
+            totalCount={unitsData.pageCount * 10}
+          />
+          {unitDetailsModalActive && (
+            <UnitModal
+              onClose={() => setUnitModalActive(false)}
+              warehouseUnitId={unitDetailsFragment.replace('unit-', '')}
+            />
+          )}
+        </>
       )}
     </>
   );
