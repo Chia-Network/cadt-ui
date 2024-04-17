@@ -15,7 +15,7 @@ const CommittedProjectsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoa
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
-  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project-');
+  const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project');
   const {
     data: projectsData,
     isLoading: projectsLoading,
@@ -53,6 +53,7 @@ const CommittedProjectsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoa
           isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}
+          onRowClick={(row) => setProjectModalActive(true, row.warehouseProjectId)}
           setOrder={handleSetOrder}
           order={order}
           totalPages={projectsData.pageCount}

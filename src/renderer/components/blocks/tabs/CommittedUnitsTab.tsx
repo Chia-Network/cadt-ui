@@ -1,8 +1,8 @@
 import { FormattedMessage } from 'react-intl';
-import { SkeletonTable, UnitsListTable } from '@/components';
+import { SkeletonTable, UnitModal, UnitsListTable } from '@/components';
 import React, { useCallback, useEffect } from 'react';
 import { useGetUnitsQuery } from '@/api';
-import { useColumnOrderHandler, useQueryParamState } from '@/hooks';
+import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 
 interface PageTabProps {
@@ -15,8 +15,7 @@ const CommittedUnitsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoadin
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
-  //todo: uncomment when units modal added
-  //const [unitDetailsFragment, unitDetailsModalActive, setUnitsModalActive] = useWildCardUrlHash('unit-');
+  const [unitDetailsFragment, unitDetailsModalActive, setUnitsModalActive] = useWildCardUrlHash('unit');
   const {
     data: unitsData,
     isLoading: unitsLoading,
@@ -53,6 +52,7 @@ const CommittedUnitsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoadin
           data={unitsData?.data || []}
           isLoading={unitsLoading}
           currentPage={Number(currentPage)}
+          onRowClick={(row) => setUnitsModalActive(true, row.warehouseUnitId)}
           onPageChange={handlePageChange}
           setOrder={handleSetOrder}
           order={order}
@@ -60,7 +60,12 @@ const CommittedUnitsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoadin
           totalCount={unitsData.pageCount * 10}
         />
       )}
-      {/* todo: add units modal here */}
+      {unitDetailsModalActive && (
+        <UnitModal
+          onClose={() => setUnitsModalActive(false)}
+          warehouseUnitId={unitDetailsFragment.replace('unit-', '')}
+        />
+      )}
     </>
   );
 };
