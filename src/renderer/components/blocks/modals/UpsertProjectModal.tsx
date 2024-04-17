@@ -37,17 +37,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     <Modal show={true} onClose={onClose}>
       <ModalHeader />
       <Modal.Body>
-        <>
-          {createProjectModalActive || !projectData ? (
-            <>
-              <p>todo blank project details form</p>
-            </>
-          ) : (
-            <>
-              <p>todo edit project details for project id {projectData?.projectId}</p>
-            </>
-          )}
-        </>
+        <p>the project form goes here {projectData?.warehouseProjectId}</p>
       </Modal.Body>
     </Modal>
   );

@@ -10,9 +10,9 @@ interface UpsertModalProps {
 
 const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalProps) => {
   const [, createUnitModalActive] = useWildCardUrlHash('create-unit');
-  const [UnitUpsertFragment] = useWildCardUrlHash('edit-unit');
-  const warehouseUnitId = UnitUpsertFragment.replace('edit-unit-', '');
-  const { data: UnitData, isLoading: UnitLoading } = useGetUnitQuery({ warehouseUnitId });
+  const [unitUpsertFragment] = useWildCardUrlHash('edit-unit');
+  const warehouseUnitId = unitUpsertFragment.replace('edit-unit-', '');
+  const { data: unitData, isLoading: unitLoading } = useGetUnitQuery({ warehouseUnitId });
 
   const ModalHeader: React.FC = () => {
     return (
@@ -22,7 +22,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
     );
   };
 
-  if (UnitLoading) {
+  if (unitLoading) {
     return (
       <Modal show={true} onClose={onClose}>
         <ModalHeader />
@@ -37,17 +37,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
     <Modal show={true} onClose={onClose}>
       <ModalHeader />
       <Modal.Body>
-        <>
-          {createUnitModalActive || !UnitData ? (
-            <>
-              <p>todo blank Unit details form</p>
-            </>
-          ) : (
-            <>
-              <p>todo edit Unit details for Unit id {UnitData?.warehouseUnitId}</p>
-            </>
-          )}
-        </>
+        <p>the unit form goes here {unitData?.warehouseUnitId}</p>
       </Modal.Body>
     </Modal>
   );
