@@ -99,5 +99,6 @@
   "staging-diff": "Staging Diff",
   "retry": "Retry",
   "unit": "Unit",
-  "detailed-unit-view": "Detailed Unit View"
+  "detailed-unit-view": "Detailed Unit View",
+  "edit-project": "Edit Project"
 }
