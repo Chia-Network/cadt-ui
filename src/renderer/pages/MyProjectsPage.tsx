@@ -108,7 +108,7 @@ const MyProjectsPage: React.FC = () => {
       <div className="m-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-          <Button disabled={contentsLoading}>
+          <Button disabled={contentsLoading} onClick={() => setCreateProjectModalActive(true)}>
             <FormattedMessage id="create-project" />
           </Button>
           {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}

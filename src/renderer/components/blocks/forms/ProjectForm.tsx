@@ -1,9 +1,8 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { Field } from '@/components';
+import { Card, Field } from '@/components';
 import { Project } from '@/schemas/Project.schema';
-import { Card } from '@/components';
 import { PickList } from '@/schemas/PickList.schema';
 
 const validationSchema = yup.object({
@@ -28,15 +27,14 @@ const validationSchema = yup.object({
   projectTags: yup.string(),
 });
 
-
 interface ProjectFormProps {
   onSubmit: () => Promise<any>;
   readonly?: boolean;
-  data: Project;
-  picklistOptions: PickList | undefined;
+  data?: Project;
+  picklistOptions?: PickList;
 }
 
-const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, picklistOptions }) => {
+const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data = {}, picklistOptions }) => {
   return (
     <Formik initialValues={data} validationSchema={validationSchema} onSubmit={() => {}}>
       {() => (
@@ -49,23 +47,29 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, pickl
                   label="Project Name"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.projectName}
+                  initialValue={data?.projectName || ''}
                 />
                 <Field
                   name="projectId"
                   label="External Project Id"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.projectId}
+                  initialValue={data?.projectId || ''}
                 />
                 <Field
                   name="projectDeveloper"
                   label="Project Developer"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.projectDeveloper}
+                  initialValue={data?.projectDeveloper || ''}
                 />
-                <Field name="program" label="Program" type="text" readonly={readonly} initialValue={data.program} />
+                <Field
+                  name="program"
+                  label="Program"
+                  type="text"
+                  readonly={readonly}
+                  initialValue={data?.program || ''}
+                />
               </div>
               <div>
                 <Field
@@ -73,18 +77,18 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, pickl
                   label="Project Link"
                   type="link"
                   readonly={readonly}
-                  initialValue={data.projectLink}
+                  initialValue={data?.projectLink || ''}
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                <Field name="sector" label="Sector" type="text" readonly={readonly} initialValue={data.sector} />
+                <Field name="sector" label="Sector" type="text" readonly={readonly} initialValue={data?.sector || ''} />
                 <Field
                   name="projectType"
                   label="Project Type"
                   type="picklist"
                   options={picklistOptions?.projectType}
                   readonly={readonly}
-                  initialValue={data.sector}
+                  initialValue={data?.projectType || ''}
                 />
                 <Field
                   name="projectStatus"
@@ -92,14 +96,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, pickl
                   type="picklist"
                   options={picklistOptions?.projectStatusValues}
                   readonly={readonly}
-                  initialValue={data.projectStatus}
+                  initialValue={data?.projectStatus || ''}
                 />
                 <Field
                   name="projectStatusDate"
                   label="Project Status Date"
                   type="date"
                   readonly={readonly}
-                  initialValue={data.projectStatusDate}
+                  initialValue={data?.projectStatusDate || ''}
                 />
               </div>
             </Card>
@@ -111,35 +115,35 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, pickl
                   type="picklist"
                   options={picklistOptions?.coveredByNDC}
                   readonly={readonly}
-                  initialValue={data.coveredByNDC}
+                  initialValue={data?.coveredByNDC || ''}
                 />
                 <Field
                   name="ndcInformation"
                   label="NDC Information"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.ndcInformation}
+                  initialValue={data?.ndcInformation || ''}
                 />
                 <Field
                   name="currentRegistry"
                   label="Current Registry"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.currentRegistry}
+                  initialValue={data?.currentRegistry || ''}
                 />
                 <Field
                   name="registryOfOrigin"
                   label="Registry Of Origin"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.registryOfOrigin}
+                  initialValue={data?.registryOfOrigin || ''}
                 />
                 <Field
                   name="originProjectId"
                   label="Origin Project ID"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.originProjectId}
+                  initialValue={data?.originProjectId || ''}
                 />
               </div>
             </Card>
@@ -151,7 +155,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, pickl
                   type="picklist"
                   options={picklistOptions?.unitMetric}
                   readonly={readonly}
-                  initialValue={data.unitMetric}
+                  initialValue={data?.unitMetric || ''}
                 />
                 <Field
                   name="methodology"
@@ -159,7 +163,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, pickl
                   type="picklist"
                   options={picklistOptions?.methodology}
                   readonly={readonly}
-                  initialValue={data.methodology}
+                  initialValue={data?.methodology || ''}
                 />
                 <Field
                   name="validationBody"
@@ -167,14 +171,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, pickl
                   type="picklist"
                   options={picklistOptions?.validationBody}
                   readonly={readonly}
-                  initialValue={data.validationBody}
+                  initialValue={data?.validationBody || ''}
                 />
                 <Field
                   name="validationDate"
                   label="Validation Date"
                   type="date"
                   readonly={readonly}
-                  initialValue={data.validationDate}
+                  initialValue={data?.validationDate || ''}
                 />
               </div>
             </Card>
@@ -184,7 +188,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ readonly = false, data, pickl
                 label="Project Tags"
                 type="tag"
                 readonly={readonly}
-                initialValue={data.projectTags}
+                initialValue={data?.projectTags || ''}
               />
             </Card>
           </div>
