@@ -17,7 +17,7 @@ interface CoBenefitFormFormProps {
   onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: CoBenefit[];
-  picklistOptions: PickList | undefined;
+  picklistOptions?: PickList;
 }
 
 const CoBenefitForm: React.FC<CoBenefitFormFormProps> = ({ readonly = false, data, picklistOptions }) => {

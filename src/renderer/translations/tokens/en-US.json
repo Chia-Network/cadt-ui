@@ -100,5 +100,12 @@
   "retry": "Retry",
   "unit": "Unit",
   "detailed-unit-view": "Detailed Unit View",
-  "edit-project": "Edit Project"
+  "edit-project": "Edit Project",
+  "next": "Next",
+  "issuances": "Issuances",
+  "project_locations": "Project Locations",
+  "labels": "Labels",
+  "ratings": "Ratings",
+  "co-benefits": "Co-Benefits",
+  "related-projects": "Related Projects"
 }

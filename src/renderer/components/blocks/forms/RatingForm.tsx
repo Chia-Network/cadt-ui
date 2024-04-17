@@ -21,7 +21,7 @@ interface RatingFormFormProps {
   onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: Rating[];
-  picklistOptions: PickList | undefined | null;
+  picklistOptions?: PickList | null;
 }
 
 const RatingForm: React.FC<RatingFormFormProps> = ({ readonly = false, data, picklistOptions }) => {
@@ -33,13 +33,7 @@ const RatingForm: React.FC<RatingFormFormProps> = ({ readonly = false, data, pic
     >
       {() => (
         <Form>
-          <Repeater<Rating>
-            name="ratings"
-            maxNumber={100}
-            minNumber={1}
-            readonly={readonly}
-            initialValue={data || []}
-          >
+          <Repeater<Rating> name="ratings" maxNumber={100} minNumber={1} readonly={readonly} initialValue={data || []}>
             {(rating: Rating) => (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">

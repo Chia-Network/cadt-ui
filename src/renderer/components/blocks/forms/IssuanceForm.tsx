@@ -9,7 +9,9 @@ const validationSchema = yup.object({
   issuances: yup.array().of(
     yup.object({
       startDate: yup.date().required('Start date is required'),
-      endDate: yup.date().required('End date is required')
+      endDate: yup
+        .date()
+        .required('End date is required')
         .min(yup.ref('startDate'), 'End date must be after the start date'),
       verificationApproach: yup.string().required('Verification approach is required'),
       verificationBody: yup.string().required('Verification body is required'),
@@ -23,7 +25,7 @@ interface IssuanceFormProps {
   readonly?: boolean;
   data?: Issuance[] | undefined;
   showUnits?: boolean;
-  picklistOptions: PickList | undefined;
+  picklistOptions?: PickList;
 }
 
 const IssuanceForm: React.FC<IssuanceFormProps> = ({ readonly = false, data, showUnits = false, picklistOptions }) => {

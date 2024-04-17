@@ -20,7 +20,7 @@ interface ProjectLocationFormProps {
   onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: ProjectLocation[];
-  picklistOptions: PickList | undefined;
+  picklistOptions?: PickList;
 }
 
 const ProjectLocationForm: React.FC<ProjectLocationFormProps> = ({ readonly = false, data, picklistOptions }) => {

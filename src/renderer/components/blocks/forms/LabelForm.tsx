@@ -12,15 +12,23 @@ const validationSchema = yup.object({
       labelType: yup.string().required('Label type is required'),
       labelLink: yup.string().url('Must be a valid URL').nullable(),
       validityPeriodStartDate: yup.date().nullable(),
-      validityPeriodEndDate: yup.date().nullable().when(
-        'validityPeriodStartDate',
-        (validityPeriodStartDate, schema) => validityPeriodStartDate ? schema.min(validityPeriodStartDate, 'Validity Period End Date must be after the start date') : schema
-      ),
+      validityPeriodEndDate: yup
+        .date()
+        .nullable()
+        .when('validityPeriodStartDate', (validityPeriodStartDate, schema) =>
+          validityPeriodStartDate
+            ? schema.min(validityPeriodStartDate, 'Validity Period End Date must be after the start date')
+            : schema,
+        ),
       creditingPeriodStartDate: yup.date().nullable(),
-      creditingPeriodEndDate: yup.date().nullable().when(
-        'creditingPeriodStartDate',
-        (creditingPeriodStartDate, schema) => creditingPeriodStartDate ? schema.min(creditingPeriodStartDate, 'Crediting Period End Date must be after the start date') : schema
-      ),
+      creditingPeriodEndDate: yup
+        .date()
+        .nullable()
+        .when('creditingPeriodStartDate', (creditingPeriodStartDate, schema) =>
+          creditingPeriodStartDate
+            ? schema.min(creditingPeriodStartDate, 'Crediting Period End Date must be after the start date')
+            : schema,
+        ),
       unitQuantity: yup
         .number()
         .positive('Unit Quantity must be positive')
@@ -34,7 +42,7 @@ interface LabelFormFormProps {
   onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: Label[];
-  picklistOptions: PickList | undefined | null;
+  picklistOptions?: PickList | null;
 }
 
 const LabelForm: React.FC<LabelFormFormProps> = ({ readonly = false, data, picklistOptions }) => {

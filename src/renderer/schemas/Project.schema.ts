@@ -7,7 +7,6 @@ import { Rating } from './Rating.schema';
 import { Estimation } from './Estimation.schema';
 
 export interface Project {
-
   // Required properties
   warehouseProjectId: string; // Derived upon creation
   orgUid: string; // Derived upon creation
