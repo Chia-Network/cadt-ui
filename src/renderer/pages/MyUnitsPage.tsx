@@ -50,8 +50,6 @@ const MyUnitsPage: React.FC = () => {
     [organizationsListData],
   );
 
-  console.log('hello from units page', unprocessedStagedUnits);
-
   const processedStagingData: ProcessedStagingData = useMemo<ProcessedStagingData>(() => {
     const data: ProcessedStagingData = { staged: [], pending: [], failed: [] };
     if (unprocessedStagedUnits?.forEach) {

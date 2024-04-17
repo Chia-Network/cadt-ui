@@ -11,16 +11,12 @@ interface ProjectModalProps {
 const StagingDiffModal: React.FC<ProjectModalProps> = ({ stagingUuid, onClose }: ProjectModalProps) => {
   const { data: stagingData, isLoading } = useGetStagedProjectsQuery();
 
-  console.log(stagingUuid, stagingData);
-
   const changeRecord: any = useMemo(() => {
     if (isLoading || !stagingData) {
       return undefined;
     }
     return stagingData.find((record) => record.uuid === stagingUuid);
   }, [stagingData, isLoading, stagingUuid]);
-
-  console.log(changeRecord)
 
   if (isLoading || !changeRecord) {
     return null;

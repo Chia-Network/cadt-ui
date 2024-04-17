@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import initialState from '@/store/slices/app/app.initialstate'; // Ensure this path is correct
+import initialState from '@/store/slices/app/app.initialstate';
 
 const projectsTag = 'projects';
 const organizationsTag = 'organizations';
