@@ -9,15 +9,15 @@ interface UpsertModalProps {
 }
 
 const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalProps) => {
-  const [, createUnitModalActive] = useWildCardUrlHash('create-Unit');
-  const [UnitUpsertFragment] = useWildCardUrlHash('edit-Unit');
-  const warehouseUnitId = UnitUpsertFragment.replace('edit-Unit-', '');
+  const [, createUnitModalActive] = useWildCardUrlHash('create-unit');
+  const [UnitUpsertFragment] = useWildCardUrlHash('edit-unit');
+  const warehouseUnitId = UnitUpsertFragment.replace('edit-unit-', '');
   const { data: UnitData, isLoading: UnitLoading } = useGetUnitQuery({ warehouseUnitId });
 
   const ModalHeader: React.FC = () => {
     return (
       <Modal.Header>
-        {createUnitModalActive ? <FormattedMessage id="create-Unit" /> : <FormattedMessage id="edit-Unit" />}
+        {createUnitModalActive ? <FormattedMessage id="create-unit" /> : <FormattedMessage id="edit-unit" />}
       </Modal.Header>
     );
   };
