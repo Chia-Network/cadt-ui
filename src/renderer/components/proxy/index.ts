@@ -14,3 +14,4 @@ export * from './HelperText';
 export * from './Label';
 export * from './FloatingLabel';
 export * from './Select';
+export * from './Badge';

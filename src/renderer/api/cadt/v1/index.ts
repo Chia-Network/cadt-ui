@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import initialState from '@/store/slices/app/app.initialstate';  // Ensure this path is correct
+import initialState from '@/store/slices/app/app.initialstate';
 
 const projectsTag = 'projects';
 const organizationsTag = 'organizations';
 const unitsTag = 'projects';
 const auditTag = 'audit';
 const issuancesTag = 'issuances';
+const stagedProjectsTag = 'stagedProjects';
+const stagedUnitsTag = 'stagedUnits';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: '/',
@@ -17,7 +19,8 @@ const baseQueryWithDynamicHost = async (args, api, extraOptions) => {
   const currentHost = state.app.apiHost;
 
   // Check if currentHost is equal to the initialState's apiHost
-  const effectiveHost = (currentHost === initialState.apiHost && import.meta.env.VITE_API_HOST) ? import.meta.env.VITE_API_HOST : currentHost;
+  const effectiveHost =
+    currentHost === initialState.apiHost && import.meta.env.VITE_API_HOST ? import.meta.env.VITE_API_HOST : currentHost;
 
   if (!args.url.startsWith('/')) {
     return await baseQuery(args, api, extraOptions);
@@ -39,8 +42,8 @@ const baseQueryWithDynamicHost = async (args, api, extraOptions) => {
 export const cadtApi = createApi({
   baseQuery: baseQueryWithDynamicHost,
   reducerPath: 'cadtApi',
-  tagTypes: [projectsTag, organizationsTag, unitsTag, auditTag, issuancesTag],
+  tagTypes: [projectsTag, organizationsTag, unitsTag, auditTag, stagedProjectsTag, stagedUnitsTag, issuancesTag],
   endpoints: () => ({}),
 });
 
-export { projectsTag, organizationsTag, unitsTag, auditTag, issuancesTag };
+export { projectsTag, organizationsTag, unitsTag, auditTag, stagedProjectsTag, stagedUnitsTag, issuancesTag  };

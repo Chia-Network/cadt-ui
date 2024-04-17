@@ -1,8 +1,12 @@
 import React from 'react';
-import { ComponentCenteredSpinner, IndeterminateProgressOverlay, SkeletonTable } from '@/components';
+import {
+  ComponentCenteredSpinner,
+  IndeterminateProgressOverlay,
+  OrganizationSubscriptionsTable,
+  SkeletonTable,
+} from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetDefaultOrgListQuery } from '@/api/cadt/v1/governance';
-import { OrganizationSubscriptionsTable } from '@/components/blocks/tables/OrganizationSubscriptionsTable';
 
 const OrganizationSubscriptionsManager: React.FC = () => {
   const {
