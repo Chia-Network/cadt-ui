@@ -25,7 +25,7 @@ interface IssuanceFormProps {
   readonly?: boolean;
   data?: Issuance[] | undefined;
   showUnits?: boolean;
-  picklistOptions?: PickList;
+  picklistOptions?: PickList | undefined;
 }
 
 const IssuanceForm: React.FC<IssuanceFormProps> = ({ readonly = false, data, showUnits = false, picklistOptions }) => {

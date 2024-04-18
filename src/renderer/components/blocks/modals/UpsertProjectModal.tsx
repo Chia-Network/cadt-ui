@@ -13,7 +13,7 @@ import {
   RelatedProjectForm,
 } from '@/components';
 import { useWildCardUrlHash } from '@/hooks';
-import { useGetProjectQuery } from '@/api';
+import { useGetPickListsQuery, useGetProjectQuery } from '@/api';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -40,6 +40,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
   const [projectUpsertFragment] = useWildCardUrlHash('edit-project');
   const warehouseProjectId = projectUpsertFragment.replace('edit-project-', '');
   const { data: projectData, isLoading: projectLoading } = useGetProjectQuery({ warehouseProjectId });
+  const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
 
   const steps: string[] = useMemo<string[]>(() => {
     return [
@@ -109,7 +110,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     );
   };
 
-  if (projectLoading) {
+  if (projectLoading || isPickListLoading) {
     return (
       <Modal show={true} onClose={onClose}>
         <ModalHeader />
@@ -139,7 +140,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
             <ProjectForm data={projectData} onSubmit={async () => handleComplete} />
           )}
           {activeStep === UpsertProjectTabs.ISSUANCES && (
-            <IssuanceForm data={projectData?.issuances} onSubmit={() => new Promise(() => {})} />
+            <IssuanceForm data={[]} onSubmit={() => new Promise(() => {})} picklistOptions={pickListData} />
           )}
           {activeStep === UpsertProjectTabs.PROJECT_LOCATIONS && (
             <ProjectLocationForm data={projectData?.projectLocations} onSubmit={() => new Promise(() => {})} />
