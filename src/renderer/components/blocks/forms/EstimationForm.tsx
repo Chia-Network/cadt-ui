@@ -19,7 +19,6 @@ const validationSchema = yup.object({
 });
 
 interface EstimationFormProps {
-  onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: Estimation[];
 }

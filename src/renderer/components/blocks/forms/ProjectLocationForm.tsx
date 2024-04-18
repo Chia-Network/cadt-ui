@@ -17,7 +17,6 @@ const validationSchema = yup.object({
 });
 
 interface ProjectLocationFormProps {
-  onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: ProjectLocation[];
   picklistOptions?: PickList;

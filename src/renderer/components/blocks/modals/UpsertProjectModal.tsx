@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from 'react';
+
+import { assign, isEmpty } from 'lodash';
+import React, { useMemo, useState, useRef } from 'react';
 import {
   Button,
   CoBenefitForm,
@@ -11,6 +13,8 @@ import {
   ProjectLocationForm,
   RatingForm,
   RelatedProjectForm,
+  ProjectFormRef,
+  IssuanceFormRef
 } from '@/components';
 import { useWildCardUrlHash } from '@/hooks';
 import { useGetPickListsQuery, useGetProjectQuery } from '@/api';
@@ -18,6 +22,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import { StepButton } from '@mui/material';
+import { Project } from '@/schemas/Project.schema';
 
 enum UpsertProjectTabs {
   PROJECT,
@@ -36,6 +41,10 @@ interface UpsertModalProps {
 
 const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalProps) => {
   const intl: IntlShape = useIntl();
+  const projectFormRef = useRef<ProjectFormRef>(null);
+  const issuanceFormRef = useRef<IssuanceFormRef>(null);
+
+  const [projectFormData, setProjectFormData] = useState<Project>();
   const [, createProjectModalActive] = useWildCardUrlHash('create-project');
   const [projectUpsertFragment] = useWildCardUrlHash('edit-project');
   const warehouseProjectId = projectUpsertFragment.replace('edit-project-', '');
@@ -55,8 +64,8 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     ];
   }, []);
 
-  const [activeStep, setActiveStep] = useState(UpsertProjectTabs.PROJECT);
-  const [completed, setCompleted] = useState<{
+  const [activeStep, setActiveStep] = useState(UpsertProjectTabs.ISSUANCES);
+  const [completed /*setCompleted*/] = useState<{
     [k: number]: boolean;
   }>({});
 
@@ -76,15 +85,49 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     return completedSteps() === totalSteps();
   };
 
+  const handleFormSubmit = (values: any) => {
+    console.log('Form Submitted with Values:', values);
+    handleNext(); // Move to the next step after successful submission
+  };
+
   const handleNext = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          // @ts-ignore
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
-    setActiveStep(newActiveStep);
+    let currentRef;
+
+    switch (activeStep) {
+      case UpsertProjectTabs.PROJECT:
+        currentRef = projectFormRef;
+        break;
+      case UpsertProjectTabs.ISSUANCES:
+        currentRef = issuanceFormRef;
+        break;
+      default:
+        break;
+    }
+
+    currentRef.current
+      ?.submitForm()
+      .then(([errors, values]) => {
+        if (!isEmpty(errors)) {
+          console.error('Form submission error:', errors);
+          return;
+        }
+        
+        setProjectFormData(assign(projectFormData, values))
+
+        console.log('Form submission success:', assign(projectFormData, values));
+
+        const newActiveStep =
+          isLastStep() && !allStepsCompleted()
+            ? // It's the last step, but not all steps have been completed,
+              // find the first step that has been completed
+              // @ts-ignore
+              steps.findIndex((step, i) => !(i in completed))
+            : activeStep + 1;
+        setActiveStep(newActiveStep);
+      })
+      .catch((error) => {
+        console.error('Form submission error:', error);
+      });
   };
 
   const handleBack = () => {
@@ -95,12 +138,12 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     setActiveStep(step);
   };
 
-  const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
-    handleNext();
-  };
+  //const handleComplete = () => {
+  //  const newCompleted = completed;
+  //  newCompleted[activeStep] = true;
+  //  setCompleted(newCompleted);
+  //  handleNext();
+  // };
 
   const ModalHeader: React.FC = () => {
     return (
@@ -137,28 +180,47 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
         <div className="mt-4">
           {/* TODO this call to handlecomplete is just a placeholder and does nothing useful, will probably break */}
           {activeStep === UpsertProjectTabs.PROJECT && (
-            <ProjectForm data={projectData} onSubmit={async () => handleComplete} />
+            // @ts-ignore
+            <ProjectForm ref={projectFormRef} data={projectFormData || projectData} picklistOptions={pickListData} />
           )}
           {activeStep === UpsertProjectTabs.ISSUANCES && (
-            <IssuanceForm data={[]} onSubmit={() => new Promise(() => {})} picklistOptions={pickListData} />
+            <IssuanceForm
+              ref={issuanceFormRef}
+              data={projectFormData?.issuances || projectData?.issuances}
+              picklistOptions={pickListData}
+            />
           )}
           {activeStep === UpsertProjectTabs.PROJECT_LOCATIONS && (
-            <ProjectLocationForm data={projectData?.projectLocations} onSubmit={() => new Promise(() => {})} />
+            <ProjectLocationForm
+              data={projectData?.projectLocations}
+              picklistOptions={pickListData}
+            />
           )}
           {activeStep === UpsertProjectTabs.ESTIMATIONS && (
-            <EstimationForm data={projectData?.estimations} onSubmit={() => new Promise(() => {})} />
+            <EstimationForm data={projectData?.estimations} />
           )}
           {activeStep === UpsertProjectTabs.LABELS && (
-            <LabelForm data={projectData?.labels} onSubmit={() => new Promise(() => {})} />
+            <LabelForm
+              data={projectData?.labels}
+              picklistOptions={pickListData}
+            />
           )}
           {activeStep === UpsertProjectTabs.RATINGS && (
-            <RatingForm data={projectData?.projectRatings} onSubmit={() => new Promise(() => {})} />
+            <RatingForm
+              data={projectData?.projectRatings}
+              picklistOptions={pickListData}
+            />
           )}
           {activeStep === UpsertProjectTabs.CO_BENEFITS && (
-            <CoBenefitForm data={projectData?.coBenefits} onSubmit={() => new Promise(() => {})} />
+            <CoBenefitForm
+              data={projectData?.coBenefits}
+              picklistOptions={pickListData}
+            />
           )}
           {activeStep === UpsertProjectTabs.RELATED_PROJECTS && (
-            <RelatedProjectForm data={projectData?.relatedProjects} onSubmit={() => new Promise(() => {})} />
+            <RelatedProjectForm
+              data={projectData?.relatedProjects}
+            />
           )}
           <p>Step {activeStep + 1}</p>
           <div className="flex">

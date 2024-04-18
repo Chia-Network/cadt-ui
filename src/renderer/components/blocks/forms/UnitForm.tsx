@@ -56,7 +56,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
   }, [projectData, isLoading]);
 
   return (
-    <Formik initialValues={data} validationSchema={validationSchema} onSubmit={() => {}}>
+    <Formik initialValues={data || {}} validationSchema={validationSchema} onSubmit={() => {}}>
       {() => (
         <Form>
           <div className="flex flex-col gap-4">

@@ -18,7 +18,6 @@ const validationSchema = yup.object({
 });
 
 interface RatingFormFormProps {
-  onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: Rating[];
   picklistOptions?: PickList | null;

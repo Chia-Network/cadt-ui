@@ -39,7 +39,6 @@ const validationSchema = yup.object({
 });
 
 interface LabelFormFormProps {
-  onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: Label[];
   picklistOptions?: PickList | null;

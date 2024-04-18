@@ -14,7 +14,6 @@ const validationSchema = yup.object({
 });
 
 interface CoBenefitFormFormProps {
-  onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: CoBenefit[];
   picklistOptions?: PickList;

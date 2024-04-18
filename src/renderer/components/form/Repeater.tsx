@@ -5,11 +5,12 @@ import { IoAddCircleOutline } from 'react-icons/io5'; // Importing a plus icon f
 
 interface RepeaterProps<T> {
   name: string;
-  children: ReactNode | ((item: T, index: number) => ReactNode);
+  children: ReactNode | ((item: T, index: number, name: string) => ReactNode);
   maxNumber?: number;
   minNumber?: number;
   readonly?: boolean;
   initialValue?: T[];
+  itemTemplate: T;
 }
 
 function Repeater<T extends { [key in keyof T]: any }>({
@@ -19,6 +20,7 @@ function Repeater<T extends { [key in keyof T]: any }>({
   minNumber = 1,
   readonly = false,
   initialValue = [],
+  itemTemplate,
 }: RepeaterProps<T>) {
   const { values, setFieldValue }: FormikContextType<{ [key: string]: any[] }> = useFormikContext();
 
@@ -29,17 +31,6 @@ function Repeater<T extends { [key in keyof T]: any }>({
   }, [initialValue, name, setFieldValue, values]);
 
   const groups = values[name] || initialValue;
-
-  const createBlankItem = (): T => {
-    const blankItem = {} as T;
-    React.Children.forEach(children, (child: any) => {
-      if (child.props.name) {
-        // @ts-ignore
-        blankItem[child.props.name as keyof T] = null; // Assign a default blank or appropriate value
-      }
-    });
-    return blankItem;
-  };
 
   return (
     <FieldArray
@@ -53,7 +44,7 @@ function Repeater<T extends { [key in keyof T]: any }>({
                   readonly ? 'grid-cols-1' : 'sm:grid-cols-1 md:grid-cols-[1fr_auto]'
                 } grid items-center gap-x-4 relative`}
               >
-                {typeof children === 'function' ? children(_group, index) : children}
+                {typeof children === 'function' ? children(_group, index, name) : children}
 
                 {!readonly && (
                   <div className="relative flex items-center">
@@ -74,7 +65,7 @@ function Repeater<T extends { [key in keyof T]: any }>({
           {!readonly && groups.length < maxNumber && (
             <button
               type="button"
-              onClick={() => arrayHelpers.push(createBlankItem())}
+              onClick={() => arrayHelpers.push(itemTemplate)}
               className="fixed bottom-12 left-6 p-4 bg-blue-500 text-white rounded-full shadow-lg text-lg hover:bg-blue-600 transition duration-150 ease-in-out z-50"
               aria-label="Add new item"
             >

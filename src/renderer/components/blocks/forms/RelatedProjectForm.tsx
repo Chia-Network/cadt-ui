@@ -14,7 +14,6 @@ const validationSchema = yup.object({
 });
 
 interface RelatedProjectFormFormProps {
-  onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: RelatedProject[];
 }
