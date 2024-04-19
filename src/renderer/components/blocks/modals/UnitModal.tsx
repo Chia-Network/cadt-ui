@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal, Tabs, UnitForm, IssuanceForm, LabelForm, Spinner } from '@/components';
+import { IssuanceForm, LabelForm, Modal, Spinner, Tabs, UnitForm } from '@/components';
 import { FormattedMessage } from 'react-intl';
-import { useGetUnitQuery, useGetPickListsQuery } from '@/api';
+import { useGetPickListsQuery, useGetUnitQuery } from '@/api';
 
 interface UnitModalProps {
   warehouseUnitId: string;
@@ -22,41 +22,43 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
         <FormattedMessage id={'detailed-unit-view'} />
       </Modal.Header>
       <Modal.Body>
-        <Tabs>
-          {/* There is no per-tab deeplinking so we only need to put a spinned on the first */}
-          <Tabs.Item title={<FormattedMessage id="unit" />}>
-            {!unitLoading && !isPickListLoading && unitData ? (
-              <UnitForm
-                onSubmit={handleProjectFormSubmit}
-                readonly={true}
-                data={unitData}
-                picklistOptions={pickListData}
-              />
-            ) : (
-              <Spinner size="xl" />
+        <div className="h-screen">
+          <Tabs>
+            {/* There is no per-tab deeplinking so we only need to put a spinned on the first */}
+            <Tabs.Item title={<FormattedMessage id="unit" />}>
+              {!unitLoading && !isPickListLoading && unitData ? (
+                <UnitForm
+                  onSubmit={handleProjectFormSubmit}
+                  readonly={true}
+                  data={unitData}
+                  picklistOptions={pickListData}
+                />
+              ) : (
+                <Spinner size="xl" />
+              )}
+            </Tabs.Item>
+            {unitData?.issuance && (
+              <Tabs.Item title={<FormattedMessage id="issuance" />}>
+                <IssuanceForm
+                  onSubmit={handleProjectFormSubmit}
+                  readonly={true}
+                  data={[unitData?.issuance]}
+                  picklistOptions={pickListData}
+                />
+              </Tabs.Item>
             )}
-          </Tabs.Item>
-          {unitData?.issuance && (
-            <Tabs.Item title={<FormattedMessage id="issuance" />}>
-              <IssuanceForm
-                onSubmit={handleProjectFormSubmit}
-                readonly={true}
-                data={[unitData?.issuance]}
-                picklistOptions={pickListData}
-              />
-            </Tabs.Item>
-          )}
-          {unitData?.labels?.length && (
-            <Tabs.Item title={<FormattedMessage id="labels" />}>
-              <LabelForm
-                onSubmit={handleProjectFormSubmit}
-                readonly={true}
-                data={unitData?.labels}
-                picklistOptions={pickListData}
-              />
-            </Tabs.Item>
-          )}
-        </Tabs>
+            {unitData?.labels?.length && (
+              <Tabs.Item title={<FormattedMessage id="labels" />}>
+                <LabelForm
+                  onSubmit={handleProjectFormSubmit}
+                  readonly={true}
+                  data={unitData?.labels}
+                  picklistOptions={pickListData}
+                />
+              </Tabs.Item>
+            )}
+          </Tabs>
+        </div>
       </Modal.Body>
     </Modal>
   );
