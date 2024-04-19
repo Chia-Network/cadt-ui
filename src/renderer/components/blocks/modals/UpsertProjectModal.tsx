@@ -37,7 +37,9 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     <Modal show={true} onClose={onClose}>
       <ModalHeader />
       <Modal.Body>
-        <p>the project form goes here {projectData?.warehouseProjectId}</p>
+        <div className="h-screen">
+          <p>the project form goes here {projectData?.warehouseProjectId}</p>
+        </div>
       </Modal.Body>
     </Modal>
   );

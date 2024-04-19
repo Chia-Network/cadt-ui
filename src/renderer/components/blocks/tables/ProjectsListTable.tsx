@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import { DataTable, PageCounter, Pagination } from '@/components';
+import { DataTable, PageCounter, Pagination, Tooltip } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { Badge } from 'flowbite-react';
 
@@ -39,8 +39,10 @@ const ProjectsListTable: React.FC<TableProps> = ({
         title: <FormattedMessage id={'project-id'} />,
         key: 'projectId',
         render: (row: Project) => (
-          <div className="p-4 bg-white rounded-lg border shadow-md">
-            <h5 className="text-sm font-bold tracking-tight text-gray-900">{row.projectId}</h5>
+          <div className="m-1 p-3 bg-white rounded-lg border shadow-sm dark:border-gray-500 dark:bg-transparent text-center overflow-hidden">
+            <Tooltip content={row.projectId}>
+              <h5 className="text-sm font-bold tracking-tight text-gray-900 dark:text-gray-50">{row.projectId}</h5>
+            </Tooltip>
           </div>
         ),
       },
