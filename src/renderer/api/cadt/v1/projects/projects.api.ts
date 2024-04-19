@@ -3,9 +3,9 @@ import {Project} from "@/schemas/Project.schema";
 
 interface GetProjectsParams {
   page: number;
-  orgUid?: string;
-  search?: string;
-  order?: string;
+  orgUid?: string | null;
+  search?: string | null;
+  order?: string | null;
 }
 
 interface GetProjectParams {
@@ -43,6 +43,7 @@ const projectsApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
+      // @ts-ignore
       providesTags: (_response, _error, {orgUid}) => [{type: projectsTag, id: orgUid}],
     }),
     getProject: builder.query<Project, GetProjectParams>({

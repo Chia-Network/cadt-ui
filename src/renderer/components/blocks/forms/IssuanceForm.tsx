@@ -1,10 +1,10 @@
-import { flatten } from 'lodash';
 import { forwardRef, useRef, useImperativeHandle } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { Field, Repeater, UnitSummary } from '@/components';
 import { Issuance } from '@/schemas/Issuance.schema';
 import { PickList } from '@/schemas/PickList.schema';
+import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   issuances: yup.array().of(
@@ -39,34 +39,7 @@ const IssuanceForm = forwardRef<IssuanceFormRef, IssuanceFormProps>(
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
-      submitForm: async () => {
-        if (formikRef.current) {
-          const formik = formikRef.current;
-          if (formik) {
-            const errors = await formik.validateForm(formik.values);
-            console.log('errors', errors);
-
-            if (errors && errors.issuances) {
-              // @ts-ignore
-              const touchedIssuances = flatten(errors.issuances.map((issuanceError, index) => {
-                return Object.keys(issuanceError).reduce((acc, key) => {
-                  acc[`issuances[${index}].${key}`] = true;
-                  return acc;
-                }, {});
-              }));
-
-      
-              // @ts-ignore
-              const touched = touchedIssuances.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-              console.log(touched);
-              // @ts-ignore
-              formik.setTouched(touched);
-            }
-
-            return [errors, {issuances: formik.values}];
-          }
-        }
-      },
+      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'issuances') 
     }));
 
     return (

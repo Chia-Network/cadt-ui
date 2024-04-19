@@ -14,7 +14,13 @@ import {
   RatingForm,
   RelatedProjectForm,
   ProjectFormRef,
-  IssuanceFormRef
+  IssuanceFormRef,
+  ProjectLocationFormRef,
+  EstimationFormRef,
+  LabelFormRef,
+  RatingFormRef,
+  CoBenefitFormRef,
+  RelatedProjectFormRef
 } from '@/components';
 import { useWildCardUrlHash } from '@/hooks';
 import { useGetPickListsQuery, useGetProjectQuery } from '@/api';
@@ -43,6 +49,13 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
   const intl: IntlShape = useIntl();
   const projectFormRef = useRef<ProjectFormRef>(null);
   const issuanceFormRef = useRef<IssuanceFormRef>(null);
+  const projectLocationFormRef = useRef<ProjectLocationFormRef>(null);
+  const estimationFormRef = useRef<EstimationFormRef>(null);
+  const labelFormRef = useRef<LabelFormRef>(null);
+  const relatedProjectFormRef = useRef<RelatedProjectFormRef>(null);
+  const ratingFormRef = useRef<RatingFormRef>(null);
+  const cobenefitFormRef = useRef<CoBenefitFormRef>(null);
+
 
   const [projectFormData, setProjectFormData] = useState<Project>();
   const [, createProjectModalActive] = useWildCardUrlHash('create-project');
@@ -83,11 +96,6 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
 
   const allStepsCompleted = () => {
     return completedSteps() === totalSteps();
-  };
-
-  const handleFormSubmit = (values: any) => {
-    console.log('Form Submitted with Values:', values);
-    handleNext(); // Move to the next step after successful submission
   };
 
   const handleNext = () => {
@@ -138,13 +146,6 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     setActiveStep(step);
   };
 
-  //const handleComplete = () => {
-  //  const newCompleted = completed;
-  //  newCompleted[activeStep] = true;
-  //  setCompleted(newCompleted);
-  //  handleNext();
-  // };
-
   const ModalHeader: React.FC = () => {
     return (
       <Modal.Header>
@@ -192,34 +193,40 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
           )}
           {activeStep === UpsertProjectTabs.PROJECT_LOCATIONS && (
             <ProjectLocationForm
+              ref={projectLocationFormRef}
               data={projectData?.projectLocations}
               picklistOptions={pickListData}
             />
           )}
           {activeStep === UpsertProjectTabs.ESTIMATIONS && (
-            <EstimationForm data={projectData?.estimations} />
+            <EstimationForm ref={estimationFormRef} data={projectData?.estimations}  />
           )}
           {activeStep === UpsertProjectTabs.LABELS && (
             <LabelForm
+              ref={labelFormRef}
               data={projectData?.labels}
               picklistOptions={pickListData}
             />
           )}
           {activeStep === UpsertProjectTabs.RATINGS && (
             <RatingForm
+              ref={ratingFormRef}
               data={projectData?.projectRatings}
               picklistOptions={pickListData}
             />
           )}
           {activeStep === UpsertProjectTabs.CO_BENEFITS && (
             <CoBenefitForm
+              ref={cobenefitFormRef}
               data={projectData?.coBenefits}
               picklistOptions={pickListData}
             />
           )}
           {activeStep === UpsertProjectTabs.RELATED_PROJECTS && (
             <RelatedProjectForm
+              ref={relatedProjectFormRef}
               data={projectData?.relatedProjects}
+              orgUid={projectData?.orgUid}
             />
           )}
           <p>Step {activeStep + 1}</p>

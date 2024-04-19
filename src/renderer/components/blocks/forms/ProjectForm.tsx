@@ -87,8 +87,6 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
               Object.keys(errors).reduce((acc, key) => ({ ...acc, [key]: true }), {})
             );
 
-            console.log("formik.values", formik.values, JSON.stringify(formik.values));
-
             return [errors, formik.values];
           }
         }

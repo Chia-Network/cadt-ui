@@ -1,13 +1,13 @@
 export interface RelatedProject {
   // Required properties
-  orgUid: string; // Derived upon creation
-  warehouseProjectId: string; // Derived upon creation
-  relatedProjectId: string;
+  orgUid?: string | null; 
+  warehouseProjectId?: string | null;
+  relatedProjectId: string | null;
 
   // Optional properties
   id?: string;
-  relationshipType?: string;
-  registry?: string;
+  relationshipType?: string | null;
+  registry?: string | null;
   timeStaged?: Date | null;
   updatedAt?: Date;
   createdAt?: Date;

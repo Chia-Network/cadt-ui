@@ -1,9 +1,10 @@
-import React from 'react';
-import { Form, Formik } from 'formik';
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { ProjectLocation } from '@/schemas/ProjectLocation.schema';
 import { PickList } from '@/schemas/PickList.schema';
+import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   locations: yup.array().of(
@@ -22,54 +23,79 @@ interface ProjectLocationFormProps {
   picklistOptions?: PickList;
 }
 
-const ProjectLocationForm: React.FC<ProjectLocationFormProps> = ({ readonly = false, data, picklistOptions }) => {
-  return (
-    <Formik
-      initialValues={{ locations: data || [] }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
-    >
-      {() => (
-        <Form>
-          <Repeater<ProjectLocation>
-            name="locations"
-            maxNumber={100}
-            minNumber={1}
-            readonly={readonly}
-            initialValue={data || []}
-          >
-            {(location: ProjectLocation) => (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                <Field
-                  name="country"
-                  label="Host Country"
-                  type="picklist"
-                  options={picklistOptions?.countries}
-                  readonly={readonly}
-                  initialValue={location.country}
-                />
-                <Field
-                  name="inCountryRegion"
-                  label="In-Country Region"
-                  type="text"
-                  readonly={readonly}
-                  initialValue={location.inCountryRegion}
-                />
-                <Field
-                  name="geographicIdentifier"
-                  label="Geographic Identifier"
-                  type="text"
-                  readonly={readonly}
-                  initialValue={location.geographicIdentifier}
-                />
-                <Field name="fileId" label="File ID" type="text" readonly={readonly} initialValue={location.fileId} />
-              </div>
-            )}
-          </Repeater>
-        </Form>
-      )}
-    </Formik>
-  );
-};
+export interface ProjectLocationFormRef {
+  submitForm: () => Promise<any>;
+}
+
+const ProjectLocationForm = forwardRef<ProjectLocationFormRef, ProjectLocationFormProps>(
+  ({ readonly = false, data, picklistOptions }, ref) => {
+    const formikRef = useRef<FormikProps<any>>(null);
+
+    useImperativeHandle(ref, () => ({
+      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'locations'),
+    }));
+
+    return (
+      <Formik
+        innerRef={formikRef}
+        initialValues={{ locations: data || [] }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => console.log(values)}
+      >
+        {() => (
+          <Form>
+            <Repeater<ProjectLocation>
+              name="locations"
+              maxNumber={100}
+              minNumber={1}
+              readonly={readonly}
+              initialValue={data || []}
+              itemTemplate={{
+                country: '',
+                geographicIdentifier: '',
+                inCountryRegion: '',
+                fileId: ''
+              }}
+            >
+              {(location, index, name) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                  <Field
+                    name={`${name}[${index}].country`}
+                    label="Host Country"
+                    type="picklist"
+                    options={picklistOptions?.countries}
+                    readonly={readonly}
+                    initialValue={location.country}
+                  />
+                  <Field
+                    name={`${name}[${index}].inCountryRegion`}
+                    label="In-Country Region"
+                    type="text"
+                    readonly={readonly}
+                    initialValue={location.inCountryRegion}
+                  />
+                  <Field
+                    name={`${name}[${index}].geographicIdentifier`}
+                    label="Geographic Identifier"
+                    type="text"
+                    readonly={readonly}
+                    initialValue={location.geographicIdentifier}
+                  />
+                  <Field
+                    name={`${name}[${index}].fileId`}
+                    label="File ID"
+                    type="text"
+                    readonly={readonly}
+                    initialValue={location.fileId}
+                  />
+                </div>
+              )}
+            </Repeater>
+          </Form>
+        )}
+      </Formik>
+    );
+  }
+);
 
 export { ProjectLocationForm };
