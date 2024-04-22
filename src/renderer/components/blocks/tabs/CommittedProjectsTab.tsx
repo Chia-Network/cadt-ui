@@ -50,6 +50,7 @@ const CommittedProjectsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoa
       ) : (
         <ProjectsListTable
           data={projectsData?.data || []}
+          isEditable={true}
           isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}

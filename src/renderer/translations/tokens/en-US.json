@@ -100,5 +100,10 @@
   "retry": "Retry",
   "unit": "Unit",
   "detailed-unit-view": "Detailed Unit View",
-  "edit-project": "Edit Project"
+  "edit-project": "Edit Project",
+  "delete": "Delete",
+  "edit": "Edit",
+  "confirm-delete": "Confirm Delete",
+  "this-action-cannot-be-undone": "This action cannot be undone",
+  "ratings": "Ratings"
 }

@@ -5,12 +5,12 @@ import { debounce } from 'lodash';
 import {
   IndeterminateProgressOverlay,
   OrganizationSelector,
+  OrgUidBadge,
   ProjectModal,
   ProjectsListTable,
   SearchBox,
   SkeletonTable,
   SyncIndicator,
-  OrgUidBadge,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -74,7 +74,7 @@ const ProjectsListPage: React.FC = () => {
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId}/> }
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
       </div>
 
@@ -83,6 +83,7 @@ const ProjectsListPage: React.FC = () => {
       ) : (
         <ProjectsListTable
           data={projectsData?.data || []}
+          isEditable={false}
           isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}

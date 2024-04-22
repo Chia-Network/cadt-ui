@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import { DataTable, PageCounter, Pagination } from '@/components';
+import { DataTable, PageCounter, Pagination, ProjectAndUnitActions } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { Badge } from 'flowbite-react';
 
 interface TableProps {
   data: Project[];
+  isEditable: boolean;
   isLoading: boolean;
   currentPage: number;
   onPageChange: DebouncedFunc<(page: any) => void>;
@@ -19,6 +20,7 @@ interface TableProps {
 
 const ProjectsListTable: React.FC<TableProps> = ({
   data,
+  isEditable,
   isLoading,
   currentPage,
   onPageChange,
@@ -28,8 +30,17 @@ const ProjectsListTable: React.FC<TableProps> = ({
   totalPages,
   totalCount,
 }) => {
-  const columns = useMemo(
-    () => [
+  const columns = useMemo(() => {
+    const editColumn: any = [
+      {
+        title: '',
+        key: 'actionColumn',
+        ignoreChildEvents: true,
+        render: (row: Project) => <ProjectAndUnitActions type="project" warehouseId={row.warehouseProjectId} />,
+      },
+    ];
+
+    const staticColumns: any = [
       {
         title: <FormattedMessage id={'current-registry'} />,
         key: 'currentRegistry',
@@ -85,9 +96,10 @@ const ProjectsListTable: React.FC<TableProps> = ({
         title: <FormattedMessage id={'project-tags'} />,
         key: 'projectTags',
       },
-    ],
-    [],
-  );
+    ];
+
+    return isEditable ? editColumn.concat(staticColumns) : staticColumns;
+  }, [isEditable]);
 
   return (
     <div className="relative">
