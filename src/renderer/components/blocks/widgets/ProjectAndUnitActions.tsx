@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
-import { Button, ConfirmDeleteModal, Tooltip, UpsertProjectModal } from '@/components';
+import { Button, ConfirmDeleteModal, Tooltip, UpsertProjectModal, UpsertUnitModal } from '@/components';
 import { useWildCardUrlHash } from '@/hooks';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,6 +14,7 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   warehouseId,
 }: ProjectAndUnitActionsProps) => {
   const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const handleClickDelete = () => {
@@ -21,7 +22,11 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   };
 
   const handleClickEdit = () => {
-    setEditProjectModalActive(true, warehouseId);
+    if (type === 'project') {
+      setEditProjectModalActive(true, warehouseId);
+    } else {
+      setEditUnitModalActive(true, warehouseId);
+    }
   };
 
   return (
@@ -45,6 +50,7 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
         </Button>
       </Tooltip>
       {editProjectModalActive && <UpsertProjectModal onClose={() => setEditProjectModalActive(false)} />}
+      {editUnitModalActive && <UpsertUnitModal onClose={() => setEditUnitModalActive(false)} />}
       {showDeleteModal && (
         <ConfirmDeleteModal type={type} warehouseId={warehouseId} onClose={() => setShowDeleteModal(false)} />
       )}
