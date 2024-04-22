@@ -27,7 +27,9 @@ const StagingDiffModal: React.FC<ProjectModalProps> = ({ stagingUuid, onClose }:
       <Modal.Header>
         <FormattedMessage id={'staging-diff'} />
       </Modal.Header>
-      <Modal.Body>{isLoading ? <p>loading...</p> : <DiffViewer data={changeRecord} />}</Modal.Body>
+      <Modal.Body>
+        <div className="h-screen">{isLoading ? <p>loading...</p> : <DiffViewer data={changeRecord} />}</div>
+      </Modal.Body>
     </Modal>
   );
 };

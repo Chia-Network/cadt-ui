@@ -37,7 +37,9 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
     <Modal show={true} onClose={onClose}>
       <ModalHeader />
       <Modal.Body>
-        <p>the unit form goes here {unitData?.warehouseUnitId}</p>
+        <div className="h-screen">
+          <p>the unit form goes here {unitData?.warehouseUnitId}</p>
+        </div>
       </Modal.Body>
     </Modal>
   );
