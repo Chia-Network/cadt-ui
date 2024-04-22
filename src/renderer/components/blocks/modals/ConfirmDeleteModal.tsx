@@ -2,6 +2,9 @@ import React from 'react';
 import { Button, Modal } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useDeleteProjectMutation, useDeleteUnitMutation } from '@/api';
+import { invalidateStagingApiTag } from '@/api/cadt/v1/staging/staging.api';
+import { stagedProjectsTag, stagedUnitsTag } from '@/api/cadt/v1';
+import { useDispatch } from 'react-redux';
 
 interface ConfirmDeleteModalProps {
   type: 'project' | 'unit';
@@ -14,13 +17,16 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   warehouseId,
   onClose,
 }: ConfirmDeleteModalProps) => {
-  const [triggerDeleteProject] = useDeleteProjectMutation();
-  const [triggerDeleteUnit] = useDeleteUnitMutation();
+  const [triggerDeleteProject, { isLoading: projectDeletionLoading }] = useDeleteProjectMutation();
+  const [triggerDeleteUnit, { isLoading: unitDeletionLoading }] = useDeleteUnitMutation();
+  const dispatch = useDispatch();
   const handleConfirm = async () => {
     if (type === 'project') {
-      triggerDeleteProject({ warehouseProjectId: warehouseId });
+      await triggerDeleteProject({ warehouseProjectId: warehouseId });
+      dispatch(invalidateStagingApiTag([stagedProjectsTag]));
     } else {
-      triggerDeleteUnit({ warehouseUnitId: warehouseId });
+      await triggerDeleteUnit({ warehouseUnitId: warehouseId });
+      dispatch(invalidateStagingApiTag([stagedUnitsTag]));
     }
     onClose();
   };
@@ -40,10 +46,14 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button color="gray" onClick={handleClickClose}>
+        <Button color="gray" onClick={handleClickClose} disabled={projectDeletionLoading || unitDeletionLoading}>
           <FormattedMessage id="cancel" />
         </Button>
-        <Button onClick={handleConfirm}>
+        <Button
+          onClick={handleConfirm}
+          isProcessing={projectDeletionLoading || unitDeletionLoading}
+          disabled={projectDeletionLoading || unitDeletionLoading}
+        >
           <FormattedMessage id="delete" />
         </Button>
       </Modal.Footer>
