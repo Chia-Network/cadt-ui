@@ -56,7 +56,7 @@ const MyProjectsPage: React.FC = () => {
     const data: ProcessedStagingData = { staged: [], pending: [], failed: [] };
     if (unprocessedStagedProjects?.forEach) {
       unprocessedStagedProjects.forEach((stagedProject: any) => {
-        if (unprocessedStagedProjects?.forEach) {
+        if (stagedProject?.table === 'Projects') {
           if (!stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
             data.staged.push(stagedProject);
           } else if (stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
