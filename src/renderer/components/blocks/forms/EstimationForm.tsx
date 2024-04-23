@@ -49,7 +49,7 @@ const EstimationForm = forwardRef<EstimationFormRef, EstimationFormProps>(
             <Repeater<Estimation>
               name="estimations"
               maxNumber={10}
-              minNumber={1}
+              minNumber={0}
               readonly={readonly}
               initialValue={data || []}
               itemTemplate={{

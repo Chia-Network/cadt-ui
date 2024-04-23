@@ -1,5 +1,4 @@
 import { forwardRef, useRef, useImperativeHandle } from 'react';
-import React from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
@@ -70,7 +69,7 @@ const LabelForm = forwardRef<LabelFormRef, LabelFormFormProps>(
             <Repeater<Label>
               name="labels"
               maxNumber={100}
-              minNumber={1}
+              minNumber={0}
               readonly={readonly}
               initialValue={data || []}
               itemTemplate={{
@@ -96,8 +95,6 @@ const LabelForm = forwardRef<LabelFormRef, LabelFormFormProps>(
                       readonly={readonly}
                       initialValue={label.labelType}
                     />
-                  </div>
-                  <div>
                     <Field
                       name={`${name}[${index}].labelLink`}
                       label="Label Link"

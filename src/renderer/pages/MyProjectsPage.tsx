@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useWildCardUrlHash } from '@/hooks';
+import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
@@ -13,6 +13,7 @@ import {
   SyncIndicator,
   Tabs,
   UpsertProjectModal,
+  StagedProjectSuccessModal
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -39,7 +40,8 @@ const MyProjectsPage: React.FC = () => {
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
-  const [, createProjectModalActive, setCreateProjectModalActive] = useWildCardUrlHash('create-project');
+  const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
+  const [projectStagedSuccess, setProjectStagedSuccess] = useUrlHash('success-stage-project');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -154,6 +156,7 @@ const MyProjectsPage: React.FC = () => {
         </Tabs>
       </div>
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+      {projectStagedSuccess && <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />}
     </>
   );
 };

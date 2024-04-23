@@ -33,22 +33,22 @@ const RatingForm = forwardRef<RatingFormRef, RatingFormProps>(
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
-      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'ratings'),
+      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'projectRatings'),
     }));
 
     return (
       <Formik
         innerRef={formikRef}
-        initialValues={{ ratings: data || [] }}
+        initialValues={{ projectRatings: data || [] }}
         validationSchema={validationSchema}
         onSubmit={(values) => console.log(values)}
       >
         {() => (
           <Form>
             <Repeater<Rating>
-              name="ratings"
+              name="projectRatings"
               maxNumber={100}
-              minNumber={1}
+              minNumber={0}
               readonly={readonly}
               initialValue={data || []}
               itemTemplate={{

@@ -1,4 +1,4 @@
-import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import { useRef, forwardRef, useImperativeHandle } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
@@ -32,22 +32,22 @@ const ProjectLocationForm = forwardRef<ProjectLocationFormRef, ProjectLocationFo
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
-      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'locations'),
+      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'projectLocations'),
     }));
 
     return (
       <Formik
         innerRef={formikRef}
-        initialValues={{ locations: data || [] }}
+        initialValues={{ projectLocations: data || [] }}
         validationSchema={validationSchema}
         onSubmit={(values) => console.log(values)}
       >
         {() => (
           <Form>
             <Repeater<ProjectLocation>
-              name="locations"
+              name="projectLocations"
               maxNumber={100}
-              minNumber={1}
+              minNumber={0}
               readonly={readonly}
               initialValue={data || []}
               itemTemplate={{

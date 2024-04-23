@@ -1,5 +1,4 @@
-
-import { assign, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import React, { useMemo, useState, useRef } from 'react';
 import {
   Button,
@@ -20,10 +19,10 @@ import {
   LabelFormRef,
   RatingFormRef,
   CoBenefitFormRef,
-  RelatedProjectFormRef
+  RelatedProjectFormRef,
 } from '@/components';
-import { useWildCardUrlHash } from '@/hooks';
-import { useGetPickListsQuery, useGetProjectQuery } from '@/api';
+import { useWildCardUrlHash, useUrlHash } from '@/hooks';
+import { useGetPickListsQuery, useGetProjectQuery, useStageProjectMutation } from '@/api';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -56,13 +55,14 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
   const ratingFormRef = useRef<RatingFormRef>(null);
   const cobenefitFormRef = useRef<CoBenefitFormRef>(null);
 
-
   const [projectFormData, setProjectFormData] = useState<Project>();
   const [, createProjectModalActive] = useWildCardUrlHash('create-project');
   const [projectUpsertFragment] = useWildCardUrlHash('edit-project');
   const warehouseProjectId = projectUpsertFragment.replace('edit-project-', '');
   const { data: projectData, isLoading: projectLoading } = useGetProjectQuery({ warehouseProjectId });
   const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
+  const [triggerStageProject, { isLoading: isProjectStaging }] = useStageProjectMutation();
+  const [, setProjectStagedSuccessModal] = useUrlHash('success-stage-project');
 
   const steps: string[] = useMemo<string[]>(() => {
     return [
@@ -75,27 +75,16 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
       intl.formatMessage({ id: 'co-benefits' }),
       intl.formatMessage({ id: 'related-projects' }),
     ];
-  }, []);
+  }, [intl]);
 
-  const [activeStep, setActiveStep] = useState(UpsertProjectTabs.ISSUANCES);
-  const [completed /*setCompleted*/] = useState<{
-    [k: number]: boolean;
-  }>({});
+  const [activeStep, setActiveStep] = useState(UpsertProjectTabs.PROJECT);
 
   const totalSteps = () => {
     return steps.length;
   };
 
-  const completedSteps = () => {
-    return Object.keys(completed).length;
-  };
-
   const isLastStep = () => {
     return activeStep === totalSteps() - 1;
-  };
-
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
   };
 
   const handleNext = () => {
@@ -108,30 +97,57 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
       case UpsertProjectTabs.ISSUANCES:
         currentRef = issuanceFormRef;
         break;
+      case UpsertProjectTabs.PROJECT_LOCATIONS:
+        currentRef = projectLocationFormRef;
+        break;
+      case UpsertProjectTabs.ESTIMATIONS:
+        currentRef = estimationFormRef;
+        break;
+      case UpsertProjectTabs.LABELS:
+        currentRef = labelFormRef;
+        break;
+      case UpsertProjectTabs.RATINGS:
+        currentRef = ratingFormRef;
+        break;
+      case UpsertProjectTabs.CO_BENEFITS:
+        currentRef = cobenefitFormRef;
+        break;
+      case UpsertProjectTabs.RELATED_PROJECTS:
+        currentRef = relatedProjectFormRef;
+        break;
       default:
         break;
     }
 
     currentRef.current
       ?.submitForm()
-      .then(([errors, values]) => {
+      .then(async ([errors, values]) => {
         if (!isEmpty(errors)) {
           console.error('Form submission error:', errors);
           return;
         }
-        
-        setProjectFormData(assign(projectFormData, values))
 
-        console.log('Form submission success:', assign(projectFormData, values));
+        if (values) {
+          setProjectFormData({ ...projectFormData, ...values });
+        }
 
-        const newActiveStep =
-          isLastStep() && !allStepsCompleted()
-            ? // It's the last step, but not all steps have been completed,
-              // find the first step that has been completed
-              // @ts-ignore
+        console.log(projectFormData, values);
+
+        if (activeStep === UpsertProjectTabs.RELATED_PROJECTS) {
+          if (projectFormData) {
+            const response: any = await triggerStageProject(projectFormData);
+
+            if (response.data) {
+              setProjectStagedSuccessModal(true);
+            }
+          }
+        } else {
+          const newActiveStep = isLastStep()
+            ? // @ts-ignore
               steps.findIndex((step, i) => !(i in completed))
             : activeStep + 1;
-        setActiveStep(newActiveStep);
+          setActiveStep(newActiveStep);
+        }
       })
       .catch((error) => {
         console.error('Form submission error:', error);
@@ -165,13 +181,21 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     );
   }
 
+  if (isProjectStaging) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <ComponentCenteredSpinner />
+      </div>
+    );
+  }
+
   return (
     <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
       <ModalHeader />
       <Modal.Body>
         <Stepper nonLinear alternativeLabel activeStep={activeStep}>
           {steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
+            <Step key={label}>
               <StepButton color="inherit" onClick={handleStep(index)}>
                 {label}
               </StepButton>
@@ -199,35 +223,19 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
             />
           )}
           {activeStep === UpsertProjectTabs.ESTIMATIONS && (
-            <EstimationForm ref={estimationFormRef} data={projectData?.estimations}  />
+            <EstimationForm ref={estimationFormRef} data={projectData?.estimations} />
           )}
           {activeStep === UpsertProjectTabs.LABELS && (
-            <LabelForm
-              ref={labelFormRef}
-              data={projectData?.labels}
-              picklistOptions={pickListData}
-            />
+            <LabelForm ref={labelFormRef} data={projectData?.labels} picklistOptions={pickListData} />
           )}
           {activeStep === UpsertProjectTabs.RATINGS && (
-            <RatingForm
-              ref={ratingFormRef}
-              data={projectData?.projectRatings}
-              picklistOptions={pickListData}
-            />
+            <RatingForm ref={ratingFormRef} data={projectData?.projectRatings} picklistOptions={pickListData} />
           )}
           {activeStep === UpsertProjectTabs.CO_BENEFITS && (
-            <CoBenefitForm
-              ref={cobenefitFormRef}
-              data={projectData?.coBenefits}
-              picklistOptions={pickListData}
-            />
+            <CoBenefitForm ref={cobenefitFormRef} data={projectData?.coBenefits} picklistOptions={pickListData} />
           )}
           {activeStep === UpsertProjectTabs.RELATED_PROJECTS && (
-            <RelatedProjectForm
-              ref={relatedProjectFormRef}
-              data={projectData?.relatedProjects}
-              orgUid={projectData?.orgUid}
-            />
+            <RelatedProjectForm ref={relatedProjectFormRef} data={projectData?.relatedProjects} />
           )}
           <p>Step {activeStep + 1}</p>
           <div className="flex">

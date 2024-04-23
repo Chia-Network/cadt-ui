@@ -1,4 +1,4 @@
-import {cadtApi, projectsTag,} from "../";
+import {cadtApi, projectsTag, stagedProjectsTag} from "../";
 import {Project} from "@/schemas/Project.schema";
 
 interface GetProjectsParams {
@@ -54,10 +54,19 @@ const projectsApi = cadtApi.injectEndpoints({
       }),
       providesTags: (_response, _error, {warehouseProjectId}) => [{type: projectsTag, id: warehouseProjectId}],
     }),
+    stageProject: builder.mutation<any, Project>({
+      query: (project) => ({
+        url: `/v1/projects`,
+        method: 'POST',
+        body: project,
+      }),
+      invalidatesTags: [stagedProjectsTag],
+    }),
   })
 });
 
 export const {
   useGetProjectsQuery,
-  useGetProjectQuery
+  useGetProjectQuery,
+  useStageProjectMutation,
 } = projectsApi;

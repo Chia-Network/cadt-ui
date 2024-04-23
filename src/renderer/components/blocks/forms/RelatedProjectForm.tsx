@@ -4,7 +4,7 @@ import { Field, Repeater, Spinner } from '@/components';
 import * as yup from 'yup';
 import { RelatedProject } from '@/schemas/RelatedProject.schema';
 import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
-import { useGetProjectOptionsList } from '@/hooks';
+import { useGetProjectOptionsList, useQueryParamState } from '@/hooks';
 
 const validationSchema = yup.object({
   relatedProjects: yup.array().of(
@@ -19,7 +19,6 @@ const validationSchema = yup.object({
 interface RelatedProjectFormProps {
   readonly?: boolean;
   data?: RelatedProject[];
-  orgUid: string | null | undefined;
 }
 
 export interface RelatedProjectFormRef {
@@ -27,13 +26,15 @@ export interface RelatedProjectFormRef {
 }
 
 const RelatedProjectForm = forwardRef<RelatedProjectFormRef, RelatedProjectFormProps>(
-  ({ readonly = false, data, orgUid }, ref) => {
+  ({ readonly = false, data }, ref) => {
     const formikRef = useRef<FormikProps<any>>(null);
+    const [orgUid] = useQueryParamState('orgUid');
 
     useImperativeHandle(ref, () => ({
       submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'relatedProjects'),
     }));
 
+    console.log(orgUid)
     const { projects: projectOptions, isLoading } = useGetProjectOptionsList(orgUid);
 
     if (isLoading) {
@@ -52,7 +53,7 @@ const RelatedProjectForm = forwardRef<RelatedProjectFormRef, RelatedProjectFormP
             <Repeater<RelatedProject>
               name="relatedProjects"
               maxNumber={100}
-              minNumber={1}
+              minNumber={0}
               readonly={readonly}
               initialValue={data || []}
               itemTemplate={{

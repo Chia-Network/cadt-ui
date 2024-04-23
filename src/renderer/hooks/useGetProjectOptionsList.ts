@@ -13,7 +13,7 @@ const useGetProjectOptionsList = (orgUid: string | null | undefined) => {
     refetchOnMountOrArgChange: false,
   });
 
-  console.log(data);
+  console.log(data, orgUid, page);
 
   useEffect(() => {
     if (data && data.data.length > 0) {

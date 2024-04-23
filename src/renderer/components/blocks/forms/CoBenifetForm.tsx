@@ -29,22 +29,22 @@ const CoBenefitForm = forwardRef<CoBenefitFormRef, CoBenefitFormProps>(
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
-      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'cobenefits'),
+      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'coBenefits'),
     }));
 
     return (
       <Formik
         innerRef={formikRef}
-        initialValues={{ cobenefits: data || [] }}
+        initialValues={{ coBenefits: data || [] }}
         validationSchema={validationSchema}
         onSubmit={(values) => console.log(values)}
       >
         {() => (
           <Form>
             <Repeater<CoBenefit>
-              name="cobenefits"
+              name="coBenefits"
               maxNumber={100}
-              minNumber={1}
+              minNumber={0}
               readonly={readonly}
               initialValue={data || []}
               itemTemplate={{ cobenefit: '' }}  // Assuming default template needed
