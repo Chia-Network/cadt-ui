@@ -5,4 +5,5 @@ export * from './UnitModal';
 export * from './StagingDiffModal';
 export * from './UpsertProjectModal';
 export * from './UpsertUnitModal';
-export * from './ConfirmDeleteModal';
+export * from './ConfirmDeleteCommittedItemModal';
+export * from './ConfirmDeleteStagedItemModal';

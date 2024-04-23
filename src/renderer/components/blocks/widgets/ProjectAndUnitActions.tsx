@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
-import { Button, ConfirmDeleteModal, Tooltip, UpsertProjectModal, UpsertUnitModal } from '@/components';
+import { Button, Tooltip, UpsertProjectModal, UpsertUnitModal } from '@/components';
 import { useWildCardUrlHash } from '@/hooks';
 import { FormattedMessage } from 'react-intl';
 
@@ -51,7 +51,11 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
       {editProjectModalActive && <UpsertProjectModal onClose={() => setEditProjectModalActive(false)} />}
       {editUnitModalActive && <UpsertUnitModal onClose={() => setEditUnitModalActive(false)} />}
       {showDeleteModal && (
-        <ConfirmDeleteModal type={type} warehouseId={warehouseId} onClose={() => setShowDeleteModal(false)} />
+        <ConfirmDeleteCommittedItemModal
+          type={type}
+          warehouseId={warehouseId}
+          onClose={() => setShowDeleteModal(false)}
+        />
       )}
     </>
   );

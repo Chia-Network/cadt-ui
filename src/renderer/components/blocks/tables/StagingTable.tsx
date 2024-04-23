@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Badge, DataTable } from '@/components';
 import dayjs from 'dayjs';
+import { StagedItemActions } from '@/components/blocks/widgets/StagedItemActions';
 
 interface TableProps {
   data: any[];
@@ -14,6 +15,12 @@ interface TableProps {
 const StagingTable: React.FC<TableProps> = ({ data, isLoading, onRowClick, setOrder, order }) => {
   const columns = useMemo(
     () => [
+      {
+        title: '',
+        key: 'actionColumn',
+        ignoreChildEvents: true,
+        render: (row: any) => <StagedItemActions stagedItem={row} />,
+      },
       {
         title: <FormattedMessage id={'table'} />,
         key: 'table',

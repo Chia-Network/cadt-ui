@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useDeleteProjectMutation, useDeleteUnitMutation } from '@/api';
-import { invalidateStagingApiTag } from '@/api/cadt/v1/staging/staging.api';
+import { invalidateStagingApiTag } from '@/api/cadt/v1/staging/';
 import { stagedProjectsTag, stagedUnitsTag } from '@/api/cadt/v1';
 import { useDispatch } from 'react-redux';
 
@@ -12,7 +12,7 @@ interface ConfirmDeleteModalProps {
   onClose: () => void;
 }
 
-const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
+const ConfirmDeleteCommittedItemModal: React.FC<ConfirmDeleteModalProps> = ({
   type,
   warehouseId,
   onClose,
@@ -41,9 +41,14 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
         <FormattedMessage id="confirm-delete" />
       </Modal.Header>
       <Modal.Body>
-        <p>
-          <FormattedMessage id="this-action-cannot-be-undone" />
-        </p>
+        <div className="space-y-2">
+          <p>
+            <FormattedMessage id="deleting-this-item-will-add-a-corresponding-delete-entry-to-the-staging-table" />.
+          </p>
+          <p>
+            <FormattedMessage id="no-items-will-be-deleted-until-staged-changes-are-committed" />.
+          </p>
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <Button color="gray" onClick={handleClickClose} disabled={projectDeletionLoading || unitDeletionLoading}>
@@ -61,4 +66,4 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   );
 };
 
-export { ConfirmDeleteModal };
+export { ConfirmDeleteCommittedItemModal };

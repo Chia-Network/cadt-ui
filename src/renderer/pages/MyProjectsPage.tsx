@@ -18,7 +18,7 @@ import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
 import { useNavigate } from 'react-router-dom';
-import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging/staging.api';
+import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging';
 
 enum TabTypes {
   COMMITTED,
