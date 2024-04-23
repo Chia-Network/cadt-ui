@@ -38,7 +38,6 @@ const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
   const [, createProjectModalActive, setCreateProjectModalActive] = useWildCardUrlHash('create-project');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
@@ -57,7 +56,7 @@ const MyProjectsPage: React.FC = () => {
     const data: ProcessedStagingData = { staged: [], pending: [], failed: [] };
     if (unprocessedStagedProjects?.forEach) {
       unprocessedStagedProjects.forEach((stagedProject: any) => {
-        if (unprocessedStagedProjects?.forEach) {
+        if (stagedProject?.table === 'Projects') {
           if (!stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
             data.staged.push(stagedProject);
           } else if (stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
@@ -95,7 +94,6 @@ const MyProjectsPage: React.FC = () => {
   );
 
   const handleCloseUpsertModal = () => {
-    setEditProjectModalActive(false);
     setCreateProjectModalActive(false);
   };
 
@@ -153,7 +151,7 @@ const MyProjectsPage: React.FC = () => {
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
-      {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+      {createProjectModalActive && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
     </>
   );
 };

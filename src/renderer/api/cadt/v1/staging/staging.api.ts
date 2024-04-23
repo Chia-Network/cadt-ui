@@ -30,4 +30,7 @@ const stagingApi = cadtApi.injectEndpoints({
   }),
 });
 
+const invalidateStagingApiTag = stagingApi.util.invalidateTags;
+export { invalidateStagingApiTag };
+
 export const { useGetStagedProjectsQuery, useGetStagedUnitsQuery } = stagingApi;

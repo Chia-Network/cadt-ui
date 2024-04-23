@@ -4,10 +4,12 @@ import { Tooltip } from '@/components';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import { AiOutlineSortAscending, AiOutlineSortDescending } from 'react-icons/ai';
+import React from 'react';
 
 interface Column {
   key: string;
   title: string | JSX.Element;
+  ignoreChildEvents?: boolean;
   render?: (row: any) => JSX.Element;
   renderHeader?: (column: any) => JSX.Element;
   width?: string;
@@ -48,13 +50,17 @@ const DataTable: React.FC<DataTableProps> = ({
       <div className="block md:hidden mx-auto w-full">
         {data?.length > 0 &&
           data.map((row) => (
-            <div
-              key={row[primaryKey]}
-              onClick={() => onRowClick(row)}
-              className="mb-4 p-4 border border-gray-200 rounded dark:bg-gray-700"
-            >
+            <div key={row[primaryKey]} className="mb-4 p-4 border border-gray-200 rounded dark:bg-gray-700">
               {columns.map((column) => (
-                <div key={`${column.key}-${row[primaryKey]}`} className="py-2">
+                <div
+                  key={`${column.key}-${row[primaryKey]}`}
+                  className="py-2"
+                  onClick={(event: any) => {
+                    if (!column.ignoreChildEvents || event.target === event.currentTarget) {
+                      onRowClick(row);
+                    }
+                  }}
+                >
                   <div className="font-bold text-left text-gray-900 dark:text-gray-100">
                     {column.renderHeader ? column.renderHeader(column) : column.title}
                   </div>
@@ -118,7 +124,6 @@ const DataTable: React.FC<DataTableProps> = ({
                 data.map((row, index) => (
                   <tr
                     key={row[primaryKey]}
-                    onClick={() => onRowClick(row)}
                     style={{ cursor: onRowClick == noop ? 'default' : 'pointer' }}
                     className={
                       index % 2 === 0
@@ -127,7 +132,15 @@ const DataTable: React.FC<DataTableProps> = ({
                     }
                   >
                     {columns.map((column) => (
-                      <td key={`${column.key}-${row[primaryKey]}`} className="px-6 py-4 whitespace-normal">
+                      <td
+                        key={`${column.key}-${row[primaryKey]}`}
+                        className="px-6 py-4 whitespace-normal"
+                        onClick={(event: any) => {
+                          if (!column.ignoreChildEvents || event.target === event.currentTarget) {
+                            onRowClick(row);
+                          }
+                        }}
+                      >
                         <div className="text-gray-600 dark:text-white">
                           <div className="truncate" style={{ maxWidth: '300px' }}>
                             {column.render ? (

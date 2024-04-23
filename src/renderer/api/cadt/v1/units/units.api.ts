@@ -1,5 +1,5 @@
-import {cadtApi, unitsTag} from "../";
-import {Unit} from "@/schemas/Unit.schema";
+import { cadtApi, unitsTag } from '../';
+import { Unit } from '@/schemas/Unit.schema';
 
 interface GetUnitsParams {
   page: number;
@@ -13,10 +13,14 @@ interface GetUnitParams {
   warehouseUnitId: string;
 }
 
+interface DeleteUnitParams {
+  warehouseUnitId: string;
+}
+
 interface GetUnitsResponse {
-  page: number,
-  pageCount: number,
-  data: Unit[]
+  page: number;
+  pageCount: number;
+  data: Unit[];
 }
 
 const unitsApi = cadtApi.injectEndpoints({
@@ -24,7 +28,7 @@ const unitsApi = cadtApi.injectEndpoints({
     getUnits: builder.query<GetUnitsResponse, GetUnitsParams>({
       query: ({ page, orgUid, search, order, filter }: GetUnitsParams) => {
         // Initialize the params object with page and limit
-        const params: GetUnitsParams & {limit: number} = { page, limit: 10 };
+        const params: GetUnitsParams & { limit: number } = { page, limit: 10 };
 
         if (orgUid) {
           params.orgUid = orgUid;
@@ -48,20 +52,28 @@ const unitsApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
-      providesTags: (_response, _error, {orgUid}) => [{type: unitsTag, id: orgUid}],
+      providesTags: (_response, _error, { orgUid }) => [{ type: unitsTag, id: orgUid }],
     }),
+
     getUnit: builder.query<Unit, GetUnitParams>({
       query: ({ warehouseUnitId }: GetUnitParams) => ({
         url: `/v1/units`,
         params: { warehouseUnitId },
         method: 'GET',
       }),
-      providesTags: (_response, _error, {warehouseUnitId}) => [{type: unitsTag, id: warehouseUnitId}],
+      providesTags: (_response, _error, { warehouseUnitId }) => [{ type: unitsTag, id: warehouseUnitId }],
     }),
-  })
+
+    deleteUnit: builder.mutation<any, DeleteUnitParams>({
+      query: ({ warehouseUnitId }: DeleteUnitParams) => ({
+        url: `/v1/units`,
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: { warehouseUnitId },
+      }),
+      invalidatesTags: (_response, _error, { warehouseUnitId }) => [{ type: unitsTag, id: warehouseUnitId }],
+    }),
+  }),
 });
 
-export const {
-  useGetUnitsQuery,
-  useGetUnitQuery
-} = unitsApi;
+export const { useGetUnitsQuery, useGetUnitQuery, useDeleteUnitMutation } = unitsApi;

@@ -1,9 +1,13 @@
-import {Button as FlowbiteButton, ButtonProps} from 'flowbite-react';
+import { Button as FlowbiteButton, ButtonGroupProps, ButtonProps } from 'flowbite-react';
 
 function Button({ children, ...props }: ButtonProps) {
-  return (
-    <FlowbiteButton {...props}>{children}</FlowbiteButton>
-  );
+  return <FlowbiteButton {...props}>{children}</FlowbiteButton>;
 }
 
-export {Button};
+function Group({ children, ...props }: ButtonGroupProps) {
+  return <FlowbiteButton.Group {...props}>{children}</FlowbiteButton.Group>;
+}
+
+Button.Group = Group;
+
+export { Button };

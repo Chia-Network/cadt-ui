@@ -9,8 +9,8 @@ import {
   SearchBox,
   SkeletonTable,
   SyncIndicator,
-  UnitsListTable,
   UnitModal,
+  UnitsListTable,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
@@ -84,6 +84,7 @@ const UnitsListPage: React.FC = () => {
           <UnitsListTable
             data={unitsData?.data || []}
             isLoading={unitsLoading}
+            isEditable={false}
             currentPage={Number(currentPage)}
             onPageChange={handlePageChange}
             onRowClick={(row) => setUnitModalActive(true, row.warehouseUnitId)}
