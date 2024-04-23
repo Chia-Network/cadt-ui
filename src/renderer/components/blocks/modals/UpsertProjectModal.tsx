@@ -20,6 +20,7 @@ import {
   RatingFormRef,
   CoBenefitFormRef,
   RelatedProjectFormRef,
+  Spacer
 } from '@/components';
 import { useWildCardUrlHash, useUrlHash } from '@/hooks';
 import { useGetPickListsQuery, useGetProjectQuery, useStageProjectMutation } from '@/api';
@@ -131,8 +132,6 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
           setProjectFormData({ ...projectFormData, ...values });
         }
 
-        console.log(projectFormData, values);
-
         if (activeStep === UpsertProjectTabs.RELATED_PROJECTS) {
           if (projectFormData) {
             const response: any = await triggerStageProject(projectFormData);
@@ -170,7 +169,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     );
   };
 
-  if (projectLoading || isPickListLoading) {
+  if (projectLoading || isPickListLoading || isProjectStaging) {
     return (
       <Modal show={true} onClose={onClose}>
         <ModalHeader />
@@ -178,14 +177,6 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
           <ComponentCenteredSpinner />
         </Modal.Body>
       </Modal>
-    );
-  }
-
-  if (isProjectStaging) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <ComponentCenteredSpinner />
-      </div>
     );
   }
 
@@ -237,7 +228,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
           {activeStep === UpsertProjectTabs.RELATED_PROJECTS && (
             <RelatedProjectForm ref={relatedProjectFormRef} data={projectData?.relatedProjects} />
           )}
-          <p>Step {activeStep + 1}</p>
+          <Spacer size={15} />
           <div className="flex">
             <Button color="gray" disabled={activeStep === 0} onClick={handleBack}>
               Back

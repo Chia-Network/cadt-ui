@@ -25,6 +25,18 @@ const organizationsApi = cadtApi.injectEndpoints({
       },
     }),
 
+    getHomeOrg: builder.query<Organization | undefined, void | null>({
+        query: () => ({
+          url: `/v1/organizations`,
+          method: 'GET',
+        }),
+        providesTags: [organizationsTag],
+        transformResponse(baseQueryReturnValue: BaseQueryResult<Organization[]>): Organization | undefined {
+          const organizations: Organization[] =  Object.values(baseQueryReturnValue);
+          return organizations.find(org => org.isHome);
+        },
+    }),
+
     getOrganizationsMap: builder.query<GetOrgnaizationsMapResponse, void | null>({
       query: () => ({
         url: `/v1/organizations`,
@@ -93,4 +105,5 @@ export const {
   useImportOrganizationMutation,
   useDeleteOrganizationMutation,
   useEditOrganizationMutation,
+  useGetHomeOrgQuery
 } = organizationsApi;

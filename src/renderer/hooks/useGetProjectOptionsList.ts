@@ -3,6 +3,11 @@ import { useGetProjectsQuery } from '@/api';
 import { SelectOption } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 
+export interface ProjectOptionsResult {
+  projects: SelectOption[];
+  isLoading: boolean;
+}
+
 const useGetProjectOptionsList = (orgUid: string | null | undefined) => {
   const [projects, setProjects] = useState<SelectOption[]>([]);
   const [allDataFetched, setAllDataFetched] = useState(false);
@@ -13,15 +18,24 @@ const useGetProjectOptionsList = (orgUid: string | null | undefined) => {
     refetchOnMountOrArgChange: false,
   });
 
-  console.log(data, orgUid, page);
-
   useEffect(() => {
     if (data && data.data.length > 0) {
+      // @ts-ignore
       const newProjects: SelectOption[] = data.data.map((p: Project) => ({
         label: p.projectName,
         value: p.warehouseProjectId
-      } as SelectOption));
-      setProjects(prev => [...prev, ...newProjects]);
+      }));
+
+      // Merge and filter duplicates
+      setProjects(prev => {
+        // @ts-ignore
+        const existingValues = new Set(prev.map(p => p.value));
+        // @ts-ignore
+        const uniqueNewProjects = newProjects.filter(p => !existingValues.has(p.value));
+        return [...prev, ...uniqueNewProjects];
+      });
+
+      // Update pagination if more data is available
       if (page < data.pageCount) {
         setPage(page + 1);
       } else {
@@ -32,7 +46,7 @@ const useGetProjectOptionsList = (orgUid: string | null | undefined) => {
     }
   }, [data, page]);
 
-  return { projects, isLoading: isFetching || isLoading, error };
+  return { projects, isLoading: isFetching || isLoading, error } as ProjectOptionsResult;
 };
 
 export { useGetProjectOptionsList };

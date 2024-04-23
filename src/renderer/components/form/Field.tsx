@@ -13,6 +13,7 @@ interface FieldProps {
   options?: SelectOption[];
   readonly?: boolean;
   initialValue?: any;
+  disabled?: boolean;
 }
 
 const renderOption = (options, initialValue) => {
@@ -37,7 +38,7 @@ const renderOption = (options, initialValue) => {
   }
 };
 
-const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, initialValue }) => {
+const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, initialValue, disabled = false }) => {
   const { errors, setFieldValue }: FormikValues = useFormikContext();
 
   const isError: boolean = !!get(errors, name);
@@ -106,6 +107,7 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
           <Select
             id={name}
             name={name}
+            disabled={disabled}
             initialValue={initialValue}
             onChange={(e) => setFieldValue(name, e.target.value)}
             options={options}
