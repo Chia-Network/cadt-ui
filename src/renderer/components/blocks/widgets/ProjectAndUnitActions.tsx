@@ -33,6 +33,7 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
     <>
       <Tooltip
         style="light"
+        trigger="click"
         placement="right"
         content={
           <Button.Group>
@@ -45,9 +46,7 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
           </Button.Group>
         }
       >
-        <Button size="sm" pill outline>
-          <HiDotsVertical />
-        </Button>
+        <HiDotsVertical size="25" />
       </Tooltip>
       {editProjectModalActive && <UpsertProjectModal onClose={() => setEditProjectModalActive(false)} />}
       {editUnitModalActive && <UpsertUnitModal onClose={() => setEditUnitModalActive(false)} />}
