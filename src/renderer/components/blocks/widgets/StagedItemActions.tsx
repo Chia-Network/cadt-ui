@@ -33,20 +33,27 @@ const StagedItemActions: React.FC<ActionsProps> = ({ stagedItem }: ActionsProps)
         placement="right"
         content={
           <>
-            {stagedItem?.action === 'DELETE' ? (
-              <Button onClick={handleClickDelete} outline>
-                <FormattedMessage id="delete" />
-              </Button>
-            ) : (
-              <Button.Group>
-                <Button onClick={handleClickEdit} outline>
-                  <FormattedMessage id="edit" />
-                </Button>
+            <Button onClick={handleClickDelete} outline>
+              <FormattedMessage id="delete" />
+            </Button>
+            {/*todo: delete the above button and encasing fragment and make this div
+                 visible when a solution to editing a staged item is complete */}
+            <div className="hidden">
+              {stagedItem?.action === 'DELETE' ? (
                 <Button onClick={handleClickDelete} outline>
                   <FormattedMessage id="delete" />
                 </Button>
-              </Button.Group>
-            )}
+              ) : (
+                <Button.Group>
+                  <Button onClick={handleClickEdit} outline>
+                    <FormattedMessage id="edit" />
+                  </Button>
+                  <Button onClick={handleClickDelete} outline>
+                    <FormattedMessage id="delete" />
+                  </Button>
+                </Button.Group>
+              )}
+            </div>
           </>
         }
       >
