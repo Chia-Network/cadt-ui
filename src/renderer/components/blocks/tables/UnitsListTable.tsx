@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { DebouncedFunc }from 'lodash'
-import { DataTable, PageCounter, Pagination } from '@/components';
+import { DebouncedFunc } from 'lodash';
+import { DataTable, PageCounter, Pagination, ProjectAndUnitActions } from '@/components';
 import { Unit } from '@/schemas/Unit.schema';
 
 interface TableProps {
   data: Unit[];
   isLoading: boolean;
+  isEditable: boolean;
   currentPage: number;
   onPageChange: DebouncedFunc<(page: any) => void>;
   setOrder?: (sort: string) => void;
@@ -19,6 +20,7 @@ interface TableProps {
 const UnitsListTable: React.FC<TableProps> = ({
   data,
   isLoading,
+  isEditable,
   currentPage,
   onPageChange,
   setOrder,
@@ -27,8 +29,17 @@ const UnitsListTable: React.FC<TableProps> = ({
   totalPages,
   totalCount,
 }) => {
-  const columns = useMemo(
-    () => [
+  const columns = useMemo(() => {
+    const editColumn: any = [
+      {
+        title: '',
+        key: 'actionColumn',
+        ignoreChildEvents: true,
+        render: (row: Unit) => <ProjectAndUnitActions type="unit" warehouseId={row.warehouseUnitId} />,
+      },
+    ];
+
+    const staticColumns: any = [
       {
         title: <FormattedMessage id={'unit-owner'} />,
         key: 'unitOwner',
@@ -74,9 +85,10 @@ const UnitsListTable: React.FC<TableProps> = ({
         title: <FormattedMessage id={'corresponding-adjustment-status'} />,
         key: 'correspondingAdjustmentStatus',
       },
-    ],
-    [],
-  );
+    ];
+
+    return isEditable ? editColumn.concat(staticColumns) : staticColumns;
+  }, [isEditable]);
 
   return (
     <div className="relative">

@@ -51,6 +51,7 @@ const CommittedUnitsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoadin
         <UnitsListTable
           data={unitsData?.data || []}
           isLoading={unitsLoading}
+          isEditable={true}
           currentPage={Number(currentPage)}
           onRowClick={(row) => setUnitsModalActive(true, row.warehouseUnitId)}
           onPageChange={handlePageChange}

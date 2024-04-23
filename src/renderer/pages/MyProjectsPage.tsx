@@ -39,7 +39,7 @@ const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
   const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
   const [projectStagedSuccess, setProjectStagedSuccess] = useUrlHash('success-stage-project');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
@@ -59,7 +59,7 @@ const MyProjectsPage: React.FC = () => {
     const data: ProcessedStagingData = { staged: [], pending: [], failed: [] };
     if (unprocessedStagedProjects?.forEach) {
       unprocessedStagedProjects.forEach((stagedProject: any) => {
-        if (unprocessedStagedProjects?.forEach) {
+        if (stagedProject?.table === 'Projects') {
           if (!stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
             data.staged.push(stagedProject);
           } else if (stagedProject.commited && !stagedProject.failedCommit && !stagedProject.isTransfer) {
@@ -97,7 +97,6 @@ const MyProjectsPage: React.FC = () => {
   );
 
   const handleCloseUpsertModal = () => {
-    setEditProjectModalActive(false);
     setCreateProjectModalActive(false);
   };
 
@@ -157,6 +156,7 @@ const MyProjectsPage: React.FC = () => {
       </div>
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
       {projectStagedSuccess && <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />}
+      {createProjectModalActive && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
     </>
   );
 };

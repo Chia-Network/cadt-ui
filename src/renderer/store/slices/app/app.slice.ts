@@ -16,7 +16,6 @@ export const appSlice = createSlice({
       }
     },
     resetApiHost: (state) => {
-      console.log(initialState.apiHost, initialState.apiKey)
       state.apiHost = initialState.apiHost;
       state.apiKey = initialState.apiKey;
     },

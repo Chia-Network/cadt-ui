@@ -107,5 +107,11 @@
   "labels": "Labels",
   "ratings": "Ratings",
   "co-benefits": "Co-Benefits",
-  "related-projects": "Related Projects"
+  "related-projects": "Related Projects",
+  "delete": "Delete",
+  "edit": "Edit",
+  "confirm-delete": "Confirm Delete",
+  "this-action-cannot-be-undone": "This action cannot be undone",
+  "ratings": "Ratings",
+  "edit-unit": "Edit Unit"
 }
