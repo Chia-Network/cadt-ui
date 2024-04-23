@@ -39,6 +39,7 @@ const MyProjectsPage: React.FC = () => {
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [, createProjectModalActive, setCreateProjectModalActive] = useWildCardUrlHash('create-project');
+  const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -106,7 +107,7 @@ const MyProjectsPage: React.FC = () => {
       <div className="m-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-          <Button disabled={contentsLoading}>
+          <Button disabled={contentsLoading} onClick={() => setCreateProjectModalActive(true, '')}>
             <FormattedMessage id="create-project" />
           </Button>
           {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
@@ -151,7 +152,7 @@ const MyProjectsPage: React.FC = () => {
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
-      {createProjectModalActive && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+      {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
     </>
   );
 };

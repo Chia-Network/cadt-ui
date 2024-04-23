@@ -38,7 +38,7 @@ const MyUnitsPage: React.FC = () => {
   const navigate = useNavigate();
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
+  const [, editUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [, createUnitModalActive, setCreateUnitModalActive] = useWildCardUrlHash('create-unit');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
@@ -95,7 +95,6 @@ const MyUnitsPage: React.FC = () => {
   );
 
   const handleCloseUpsertModal = () => {
-    setEditUnitModalActive(false);
     setCreateUnitModalActive(false);
   };
 

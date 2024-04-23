@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
-import { Button, ConfirmDeleteStagedItemModal, Tooltip, UpsertProjectModal, UpsertUnitModal } from '@/components';
+import { Button, ConfirmDeleteStagedItemModal, Tooltip } from '@/components';
 import { useWildCardUrlHash } from '@/hooks';
 import { FormattedMessage } from 'react-intl';
 
@@ -9,8 +9,8 @@ interface ActionsProps {
 }
 
 const StagedItemActions: React.FC<ActionsProps> = ({ stagedItem }: ActionsProps) => {
-  const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
-  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
+  const [, , setEditProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [, , setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const handleClickDelete = () => {
@@ -19,9 +19,9 @@ const StagedItemActions: React.FC<ActionsProps> = ({ stagedItem }: ActionsProps)
 
   const handleClickEdit = () => {
     if (stagedItem?.table === 'Projects') {
-      setEditProjectModalActive(true); //todo: need a way to get staged data into form without using warehouseId
+      setEditProjectModalActive(true, ''); //todo: need a way to get staged data into form without using warehouseId
     } else {
-      setEditUnitModalActive(true); //todo: need a way to get staged data into form without using warehouseId
+      setEditUnitModalActive(true, ''); //todo: need a way to get staged data into form without using warehouseId
     }
   };
 
@@ -52,8 +52,6 @@ const StagedItemActions: React.FC<ActionsProps> = ({ stagedItem }: ActionsProps)
       >
         <HiDotsVertical size="25" />
       </Tooltip>
-      {editProjectModalActive && <UpsertProjectModal onClose={() => setEditProjectModalActive(false)} />}
-      {editUnitModalActive && <UpsertUnitModal onClose={() => setEditUnitModalActive(false)} />}
       {showDeleteModal && stagedItem?.uuid && (
         <ConfirmDeleteStagedItemModal uuid={stagedItem.uuid} onClose={() => setShowDeleteModal(false)} />
       )}

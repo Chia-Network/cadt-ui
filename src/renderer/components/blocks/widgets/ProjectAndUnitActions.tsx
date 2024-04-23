@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
-import { Button, Tooltip, UpsertProjectModal, UpsertUnitModal } from '@/components';
+import { Button, ConfirmDeleteCommittedItemModal, Tooltip } from '@/components';
 import { useWildCardUrlHash } from '@/hooks';
 import { FormattedMessage } from 'react-intl';
 
@@ -13,8 +13,8 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   type,
   warehouseId,
 }: ProjectAndUnitActionsProps) => {
-  const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
-  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
+  const [, , setEditProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [, , setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const handleClickDelete = () => {
@@ -37,10 +37,10 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
         placement="right"
         content={
           <Button.Group>
-            <Button onClick={handleClickEdit}>
+            <Button onClick={handleClickEdit} outline>
               <FormattedMessage id="edit" />
             </Button>
-            <Button color="gray" onClick={handleClickDelete}>
+            <Button onClick={handleClickDelete} outline>
               <FormattedMessage id="delete" />
             </Button>
           </Button.Group>
@@ -48,8 +48,6 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
       >
         <HiDotsVertical size="25" />
       </Tooltip>
-      {editProjectModalActive && <UpsertProjectModal onClose={() => setEditProjectModalActive(false)} />}
-      {editUnitModalActive && <UpsertUnitModal onClose={() => setEditUnitModalActive(false)} />}
       {showDeleteModal && (
         <ConfirmDeleteCommittedItemModal
           type={type}
