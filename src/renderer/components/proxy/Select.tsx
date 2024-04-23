@@ -13,9 +13,10 @@ interface SelectProps {
     name: string;
     onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     required?: boolean;
+    disabled?: boolean;
 }
 
-const Select: React.FC<SelectProps> = ({ options, initialValue, id, name, onChange, required = false }) => {
+const Select: React.FC<SelectProps> = ({ options, initialValue, id, name, onChange, required = false, disabled = false }) => {
     // Helper function to determine the display text for each option
     const getOptionLabel = (option: SelectOption): string => {
         if (typeof option === 'object') {
@@ -41,6 +42,7 @@ const Select: React.FC<SelectProps> = ({ options, initialValue, id, name, onChan
                 name={name}
                 defaultValue={initialValue?.toString()}
                 onChange={onChange}
+                disabled={disabled}
             >
                 <option value="" disabled={required} selected={!initialValue}>
                     No Selection

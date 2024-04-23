@@ -1,58 +1,72 @@
-import React from 'react';
-import { Form, Formik } from 'formik';
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import { Formik, Form, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { CoBenefit } from '@/schemas/CoBenefit.schema';
 import { PickList } from '@/schemas/PickList.schema';
+import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
-  cobenifets: yup.array().of(
+  cobenefits: yup.array().of(
     yup.object({
       cobenefit: yup.string().required('Co-Benefit is required'),
     }),
   ),
 });
 
-interface CoBenefitFormFormProps {
-  onSubmit: (values: any) => Promise<any>;
+interface CoBenefitFormProps {
   readonly?: boolean;
   data?: CoBenefit[];
-  picklistOptions: PickList | undefined;
+  picklistOptions?: PickList;
 }
 
-const CoBenefitForm: React.FC<CoBenefitFormFormProps> = ({ readonly = false, data, picklistOptions }) => {
-  return (
-    <Formik
-      initialValues={{ cobenifets: data || [] }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
-    >
-      {() => (
-        <Form>
-          <Repeater<CoBenefit>
-            name="cobenifets"
-            maxNumber={100}
-            minNumber={1}
-            readonly={readonly}
-            initialValue={data || []}
-          >
-            {(coBenefit: CoBenefit) => (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                <Field
-                  name="cobenefit"
-                  label="Co-Benefit"
-                  type="picklist"
-                  options={picklistOptions?.coBenefits}
-                  readonly={readonly}
-                  initialValue={coBenefit.cobenefit}
-                />
-              </div>
-            )}
-          </Repeater>
-        </Form>
-      )}
-    </Formik>
-  );
-};
+export interface CoBenefitFormRef {
+  submitForm: () => Promise<any>;
+}
+
+const CoBenefitForm = forwardRef<CoBenefitFormRef, CoBenefitFormProps>(
+  ({ readonly = false, data, picklistOptions }, ref) => {
+    const formikRef = useRef<FormikProps<any>>(null);
+
+    useImperativeHandle(ref, () => ({
+      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'coBenefits'),
+    }));
+
+    return (
+      <Formik
+        innerRef={formikRef}
+        initialValues={{ coBenefits: data || [] }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => console.log(values)}
+      >
+        {() => (
+          <Form>
+            <Repeater<CoBenefit>
+              name="coBenefits"
+              maxNumber={100}
+              minNumber={0}
+              readonly={readonly}
+              initialValue={data || []}
+              itemTemplate={{ cobenefit: '' }}  // Assuming default template needed
+            >
+              {(coBenefit, index, name) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                  <Field
+                    name={`${name}[${index}].cobenefit`}
+                    label="Co-Benefit"
+                    type="picklist"
+                    options={picklistOptions?.coBenefits}
+                    readonly={readonly}
+                    initialValue={coBenefit.cobenefit}
+                  />
+                </div>
+              )}
+            </Repeater>
+          </Form>
+        )}
+      </Formik>
+    );
+  }
+);
 
 export { CoBenefitForm };

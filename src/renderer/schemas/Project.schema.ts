@@ -7,10 +7,9 @@ import { Rating } from './Rating.schema';
 import { Estimation } from './Estimation.schema';
 
 export interface Project {
-
   // Required properties
-  warehouseProjectId: string; // Derived upon creation
-  orgUid: string; // Derived upon creation
+  warehouseProjectId?: string; // Derived upon creation
+  orgUid?: string; // Derived upon creation
   projectId: string | number;
   originProjectId: string | number;
   registryOfOrigin: string;
@@ -21,7 +20,7 @@ export interface Project {
   projectType: string;
   coveredByNDC: string;
   projectStatus: string;
-  projectStatusDate: Date;
+  projectStatusDate: Date | null;
   unitMetric: string;
   methodology: string;
 

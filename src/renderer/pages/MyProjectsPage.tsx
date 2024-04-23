@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useWildCardUrlHash } from '@/hooks';
+import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
@@ -13,6 +13,7 @@ import {
   SyncIndicator,
   Tabs,
   UpsertProjectModal,
+  StagedProjectSuccessModal
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -38,7 +39,9 @@ const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [, createProjectModalActive, setCreateProjectModalActive] = useWildCardUrlHash('create-project');
+  const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
+  const [projectStagedSuccess, setProjectStagedSuccess] = useUrlHash('success-stage-project');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -106,7 +109,7 @@ const MyProjectsPage: React.FC = () => {
       <div className="m-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-          <Button disabled={contentsLoading}>
+          <Button disabled={contentsLoading} onClick={() => setCreateProjectModalActive(true)}>
             <FormattedMessage id="create-project" />
           </Button>
           {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
@@ -151,6 +154,8 @@ const MyProjectsPage: React.FC = () => {
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
+      {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+      {projectStagedSuccess && <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />}
       {createProjectModalActive && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
     </>
   );

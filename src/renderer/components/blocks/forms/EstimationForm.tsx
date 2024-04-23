@@ -1,8 +1,9 @@
-import React from 'react';
-import { Formik, Form } from 'formik';
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import { Formik, Form, FormikProps } from 'formik';
 import { Repeater, Field } from '@/components';
 import { Estimation } from '@/schemas/Estimation.schema';
 import * as yup from 'yup';
+import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   estimations: yup.array().of(
@@ -19,63 +20,75 @@ const validationSchema = yup.object({
 });
 
 interface EstimationFormProps {
-  onSubmit: (values: any) => Promise<any>;
   readonly?: boolean;
   data?: Estimation[];
 }
 
-const EstimationForm: React.FC<EstimationFormProps> = ({ readonly = false, data, onSubmit }) => {
-  return (
-    <Formik
-      initialValues={{ estimations: data || [] }}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-      enableReinitialize={true}
-    >
-      {({ isSubmitting }) => (
-        <Form>
-          <Repeater<Estimation>
-            name="estimations"
-            maxNumber={10}
-            minNumber={1}
-            readonly={readonly}
-            initialValue={data || []}
-          >
-            {(estimation: Estimation) => (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                <Field
-                  name="creditingPeriodStart"
-                  label="Crediting Period Start"
-                  type="date"
-                  readonly={readonly}
-                  initialValue={estimation.creditingPeriodEnd}
-                />
-                <Field
-                  name="creditingPeriodEnd"
-                  label="Crediting Period End"
-                  type="date"
-                  readonly={readonly}
-                  initialValue={estimation.creditingPeriodEnd}
-                />
-                <Field
-                  name="unitCount"
-                  label="Unit Count"
-                  type="number"
-                  readonly={readonly}
-                  initialValue={estimation.unitCount}
-                />
-              </div>
-            )}
-          </Repeater>
-          {!readonly && (
-            <button type="submit" disabled={isSubmitting} className="mt-4 bg-blue-500 text-white p-2 rounded">
-              Save Estimations
-            </button>
-          )}
-        </Form>
-      )}
-    </Formik>
-  );
-};
+export interface EstimationFormRef {
+  submitForm: () => Promise<any>;
+}
+
+const EstimationForm = forwardRef<EstimationFormRef, EstimationFormProps>(
+  ({ readonly = false, data, }, ref) => {
+    const formikRef = useRef<FormikProps<any>>(null);
+
+    useImperativeHandle(ref, () => ({
+      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'estimations'),
+    }));
+
+    return (
+      <Formik
+        innerRef={formikRef}
+        initialValues={{ estimations: data || [] }}
+        validationSchema={validationSchema}
+        onSubmit={() => {}}
+        enableReinitialize={true}
+      >
+        {() => (
+          <Form>
+            <Repeater<Estimation>
+              name="estimations"
+              maxNumber={10}
+              minNumber={0}
+              readonly={readonly}
+              initialValue={data || []}
+              itemTemplate={{
+                creditingPeriodStart: null,
+                creditingPeriodEnd: null,
+                unitCount: 0
+              }}
+            >
+              {(estimation, index, name) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                  <Field
+                    name={`${name}[${index}].creditingPeriodStart`}
+                    label="Crediting Period Start"
+                    type="date"
+                    readonly={readonly}
+                    initialValue={estimation.creditingPeriodStart}
+                  />
+                  <Field
+                    name={`${name}[${index}].creditingPeriodEnd`}
+                    label="Crediting Period End"
+                    type="date"
+                    readonly={readonly}
+                    initialValue={estimation.creditingPeriodEnd}
+                  />
+                  <Field
+                    name={`${name}[${index}].unitCount`}
+                    label="Unit Count"
+                    type="number"
+                    readonly={readonly}
+                    initialValue={estimation.unitCount}
+                  />
+                </div>
+              )}
+            </Repeater>
+          </Form>
+        )}
+      </Formik>
+    );
+  }
+);
 
 export { EstimationForm };

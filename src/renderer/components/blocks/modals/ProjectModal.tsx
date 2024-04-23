@@ -23,10 +23,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
   const { data: projectData, isLoading: isProjectLoading } = useGetProjectQuery({ warehouseProjectId });
   const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
 
-  const handleProjectFormSubmit = async () => {
-    return Promise.resolve();
-  };
-
   return (
     <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
       <Modal.Header>
@@ -39,7 +35,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             <Tabs.Item title={<FormattedMessage id="project" />}>
               {!isProjectLoading && !isPickListLoading && projectData ? (
                 <ProjectForm
-                  onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={projectData}
                   picklistOptions={pickListData}
@@ -51,7 +46,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             {projectData?.issuances?.length && (
               <Tabs.Item title={<FormattedMessage id="issuance" />}>
                 <IssuanceForm
-                  onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={projectData?.issuances}
                   showUnits={true}
@@ -62,7 +56,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             {projectData?.projectLocations?.length && (
               <Tabs.Item title={<FormattedMessage id="project-locations" />}>
                 <ProjectLocationForm
-                  onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={projectData?.projectLocations}
                   picklistOptions={pickListData}
@@ -71,13 +64,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             )}
             {projectData?.estimations?.length && (
               <Tabs.Item title={<FormattedMessage id="estimations" />}>
-                <EstimationForm onSubmit={handleProjectFormSubmit} readonly={true} data={projectData?.estimations} />
+                <EstimationForm readonly={true} data={projectData?.estimations} />
               </Tabs.Item>
             )}
             {projectData?.coBenefits?.length && (
               <Tabs.Item title={<FormattedMessage id="co-benefits" />}>
                 <CoBenefitForm
-                  onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={projectData?.coBenefits}
                   picklistOptions={pickListData}
@@ -87,7 +79,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             {projectData?.relatedProjects?.length && (
               <Tabs.Item title={<FormattedMessage id="related-projects" />}>
                 <RelatedProjectForm
-                  onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={projectData?.relatedProjects}
                 />
@@ -96,7 +87,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             {(projectData?.projectRatings?.length || projectData?.labels?.length) && (
               <Tabs.Item title={<FormattedMessage id="ratings" />}>
                 <RatingForm
-                  onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={projectData?.projectRatings}
                   picklistOptions={pickListData}

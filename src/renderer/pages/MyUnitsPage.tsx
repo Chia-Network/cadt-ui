@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useWildCardUrlHash } from '@/hooks';
+import { useQueryParamState, useWildCardUrlHash, useUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
@@ -39,7 +39,7 @@ const MyUnitsPage: React.FC = () => {
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
-  const [, createUnitModalActive, setCreateUnitModalActive] = useWildCardUrlHash('create-unit');
+  const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -108,7 +108,7 @@ const MyUnitsPage: React.FC = () => {
       <div className="m-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-          <Button disabled={contentsLoading}>
+          <Button disabled={contentsLoading} onClick={() => setCreateUnitModalActive(true)}>
             <FormattedMessage id="create-unit" />
           </Button>
           {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}

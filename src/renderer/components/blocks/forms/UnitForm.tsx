@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { Card, Field, SelectOption } from '@/components';
+import { Card, Field, SelectOption, Select, Spinner,Label } from '@/components';
 import { Unit } from '@/schemas/Unit.schema';
-import { useGetProjectQuery } from '@/api';
+import { useGetProjectQuery, useGetHomeOrgQuery } from '@/api';
 import { PickList } from '@/schemas/PickList.schema';
+import { useGetProjectOptionsList } from '@/hooks';
 
 const validationSchema = yup.object({
   unitOwner: yup.string().required('Unit Owner is required'),
@@ -27,23 +28,26 @@ const validationSchema = yup.object({
 });
 
 interface UnitFormProps {
-  onSubmit: () => Promise<any>;
   readonly?: boolean;
-  data: Unit;
+  data?: Unit;
   picklistOptions: PickList | undefined;
 }
 
 const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOptions }) => {
-  const { data: projectData, isLoading } = useGetProjectQuery(
+  const { data: homeOrg, isLoading: isHomeOrgLoading } = useGetHomeOrgQuery();
+  const { projects: projectOptions, isLoading: isProjectOptionsLoading } = useGetProjectOptionsList(homeOrg?.orgUid);
+  const [selectedWarehouseProjectId, setSelectedWarehouseProjectId] = useState<string | undefined>();
+
+  const { data: projectData, isLoading: isProjectLoading, isFetching: isProjectFetching } = useGetProjectQuery(
     {
       // @ts-ignore
-      warehouseProjectId: data?.issuance?.warehouseProjectId,
+      warehouseProjectId: selectedWarehouseProjectId,
     },
-    { skip: !data?.issuance?.warehouseProjectId },
+    { skip: !selectedWarehouseProjectId },
   );
 
   const projectLocationOptions: SelectOption[] = useMemo(() => {
-    if (isLoading || !projectData?.projectLocations) {
+    if (isProjectLoading || !projectData?.projectLocations) {
       return [];
     }
 
@@ -53,36 +57,53 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
         value: location.id || '',
       }),
     );
-  }, [projectData, isLoading]);
+  }, [projectData, isProjectLoading]);
+
+  if (isHomeOrgLoading || isProjectOptionsLoading || isProjectLoading || isProjectFetching) {
+    return <Spinner />;
+  }
 
   return (
-    <Formik initialValues={data} validationSchema={validationSchema} onSubmit={() => {}}>
+    <Formik initialValues={data || {}} validationSchema={validationSchema} onSubmit={() => {}}>
       {() => (
         <Form>
           <div className="flex flex-col gap-4">
             <Card>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                <div>
+                <Label htmlFor="select-project">Select Project</Label>
+                <Select
+                  id="select-project"
+                  name="select-project"
+                  onChange={(event) => {
+                    console.log(event.target.value);
+                    setSelectedWarehouseProjectId(event.target.value)
+                  }}
+                  options={projectOptions}
+                />
+                </div>
                 <Field
                   name="projectLocationId"
                   label="Project Location Id"
+                  disabled={!selectedWarehouseProjectId}
                   type="picklist"
                   options={projectLocationOptions}
                   readonly={readonly}
-                  initialValue={data.projectLocationId}
+                  initialValue={data?.projectLocationId}
                 />
                 <Field
                   name="unitOwner"
                   label="Unit Owner"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.unitOwner}
+                  initialValue={data?.unitOwner}
                 />
                 <Field
                   name="unitBlockStart"
                   label="Unit Block Start"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.unitBlockStart}
+                  initialValue={data?.unitBlockStart}
                 />
 
                 <Field
@@ -90,7 +111,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Unit Block End"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.unitBlockEnd}
+                  initialValue={data?.unitBlockEnd}
                 />
 
                 <Field
@@ -98,7 +119,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Unit Count"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.unitCount}
+                  initialValue={data?.unitCount}
                 />
 
                 <Field
@@ -106,7 +127,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Serial Number Block"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.serialNumberBlock}
+                  initialValue={data?.serialNumberBlock}
                 />
 
                 <Field
@@ -114,7 +135,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Country Jurisdiction Of Owner"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.countryJurisdictionOfOwner}
+                  initialValue={data?.countryJurisdictionOfOwner}
                 />
 
                 <Field
@@ -122,7 +143,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="In-Country Jurisdiction Of Owner"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.inCountryJurisdictionOfOwner}
+                  initialValue={data?.inCountryJurisdictionOfOwner}
                 />
 
                 <Field
@@ -131,7 +152,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   type="picklist"
                   options={picklistOptions?.unitType}
                   readonly={readonly}
-                  initialValue={data.unitType}
+                  initialValue={data?.unitType}
                 />
 
                 <Field
@@ -140,7 +161,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   type="picklist"
                   options={picklistOptions?.unitStatus}
                   readonly={readonly}
-                  initialValue={data.unitStatusReason}
+                  initialValue={data?.unitStatusReason}
                 />
 
                 <Field
@@ -148,7 +169,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Unit Status Reason"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.vintageYear}
+                  initialValue={data?.vintageYear}
                 />
               </div>
               <div>
@@ -157,7 +178,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Unit Registry Link"
                   type="link"
                   readonly={readonly}
-                  initialValue={data.unitRegistryLink}
+                  initialValue={data?.unitRegistryLink}
                 />
               </div>
             </Card>
@@ -168,7 +189,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Marketplace"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.marketplace}
+                  initialValue={data?.marketplace}
                 />
 
                 <Field
@@ -176,7 +197,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Marketplace Identifier"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.marketplaceIdentifier}
+                  initialValue={data?.marketplaceIdentifier}
                 />
 
                 <Field
@@ -184,7 +205,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   label="Marketplace Link"
                   type="text"
                   readonly={readonly}
-                  initialValue={data.marketplaceLink}
+                  initialValue={data?.marketplaceLink}
                 />
 
                 <Field
@@ -193,7 +214,7 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   type="picklist"
                   options={picklistOptions?.correspondingAdjustmentStatus}
                   readonly={readonly}
-                  initialValue={data.correspondingAdjustmentStatus}
+                  initialValue={data?.correspondingAdjustmentStatus}
                 />
 
                 <Field
@@ -202,12 +223,12 @@ const UnitForm: React.FC<UnitFormProps> = ({ readonly = false, data, picklistOpt
                   type="picklist"
                   options={picklistOptions?.correspondingAdjustmentDeclaration}
                   readonly={readonly}
-                  initialValue={data.correspondingAdjustmentDeclaration}
+                  initialValue={data?.correspondingAdjustmentDeclaration}
                 />
               </div>
             </Card>
             <Card>
-              <Field name="unitTags" label="Unit Tags" type="tag" readonly={readonly} initialValue={data.unitTags} />
+              <Field name="unitTags" label="Unit Tags" type="tag" readonly={readonly} initialValue={data?.unitTags} />
             </Card>
           </div>
         </Form>

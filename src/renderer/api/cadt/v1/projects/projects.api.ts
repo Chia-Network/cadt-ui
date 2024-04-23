@@ -1,11 +1,11 @@
-import { cadtApi, projectsTag } from '../';
+import { cadtApi, projectsTag, stagedProjectsTag } from '../';
 import { Project } from '@/schemas/Project.schema';
 
 interface GetProjectsParams {
   page: number;
-  orgUid?: string;
-  search?: string;
-  order?: string;
+  orgUid?: string | null;
+  search?: string | null;
+  order?: string | null;
 }
 
 interface GetProjectParams {
@@ -47,6 +47,7 @@ const projectsApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
+      // @ts-ignore
       providesTags: (_response, _error, { orgUid }) => [{ type: projectsTag, id: orgUid }],
     }),
 
@@ -68,7 +69,17 @@ const projectsApi = cadtApi.injectEndpoints({
       }),
       invalidatesTags: (_response, _error, { warehouseProjectId }) => [{ type: projectsTag, id: warehouseProjectId }],
     }),
+
+    stageProject: builder.mutation<any, Project>({
+      query: (project) => ({
+        url: `/v1/projects`,
+        method: 'POST',
+        body: project,
+      }),
+      invalidatesTags: [stagedProjectsTag],
+    }),
   }),
 });
 
-export const { useGetProjectsQuery, useGetProjectQuery, useDeleteProjectMutation } = projectsApi;
+export const { useGetProjectsQuery, useGetProjectQuery, useDeleteProjectMutation, useStageProjectMutation } =
+  projectsApi;
