@@ -1,4 +1,4 @@
-import { cadtApi, unitsTag, stagedUnitsTag } from '../';
+import { cadtApi, stagedUnitsTag, unitsTag } from '../';
 import { Unit } from '@/schemas/Unit.schema';
 
 interface GetUnitsParams {
@@ -85,4 +85,4 @@ const unitsApi = cadtApi.injectEndpoints({
   }),
 });
 
-export const { useGetUnitsQuery, useGetUnitQuery, useDeleteUnitMutation } = unitsApi;
+export const { useGetUnitsQuery, useGetUnitQuery, useDeleteUnitMutation, useStageUnitMutation } = unitsApi;

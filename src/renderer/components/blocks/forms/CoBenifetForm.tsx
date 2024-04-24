@@ -1,5 +1,5 @@
-import React, { useRef, forwardRef, useImperativeHandle } from 'react';
-import { Formik, Form, FormikProps } from 'formik';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { CoBenefit } from '@/schemas/CoBenefit.schema';
@@ -47,7 +47,7 @@ const CoBenefitForm = forwardRef<CoBenefitFormRef, CoBenefitFormProps>(
               minNumber={0}
               readonly={readonly}
               initialValue={data || []}
-              itemTemplate={{ cobenefit: '' }}  // Assuming default template needed
+              itemTemplate={{ cobenefit: '' }} // Assuming default template needed
             >
               {(coBenefit, index, name) => (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
@@ -66,7 +66,7 @@ const CoBenefitForm = forwardRef<CoBenefitFormRef, CoBenefitFormProps>(
         )}
       </Formik>
     );
-  }
+  },
 );
 
 export { CoBenefitForm };

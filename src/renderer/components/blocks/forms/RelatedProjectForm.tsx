@@ -1,4 +1,4 @@
-import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater, Spinner } from '@/components';
 import * as yup from 'yup';
@@ -11,7 +11,7 @@ const validationSchema = yup.object({
     yup.object({
       relationshipType: yup.string().required('Relationship Type is required'),
       registry: yup.string().required('Registry is required'),
-      relatedProjectId: yup.string().required('Related Project ID is required')
+      relatedProjectId: yup.string().required('Related Project ID is required'),
     }),
   ),
 });
@@ -34,7 +34,7 @@ const RelatedProjectForm = forwardRef<RelatedProjectFormRef, RelatedProjectFormP
       submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'relatedProjects'),
     }));
 
-    console.log(orgUid)
+    console.log(orgUid);
     const { projects: projectOptions, isLoading } = useGetProjectOptionsList(orgUid);
 
     if (isLoading) {
@@ -59,7 +59,7 @@ const RelatedProjectForm = forwardRef<RelatedProjectFormRef, RelatedProjectFormP
               itemTemplate={{
                 relationshipType: null,
                 registry: null,
-                relatedProjectId: null
+                relatedProjectId: null,
               }}
             >
               {(relatedProject, index, name) => (
@@ -93,7 +93,7 @@ const RelatedProjectForm = forwardRef<RelatedProjectFormRef, RelatedProjectFormP
         )}
       </Formik>
     );
-  }
+  },
 );
 
 export { RelatedProjectForm };

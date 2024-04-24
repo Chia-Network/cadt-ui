@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import {DataTable, PageCounter, Pagination, ProjectAndUnitActions, Tooltip} from '@/components';
+import { DataTable, PageCounter, Pagination, ProjectAndUnitActions, Tooltip } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { Badge } from 'flowbite-react';
 
@@ -36,7 +36,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
         title: '',
         key: 'actionColumn',
         ignoreChildEvents: true,
-        render: (row: Project) => <ProjectAndUnitActions type="project" warehouseId={row.warehouseProjectId} />,
+        render: (row: Project) => <ProjectAndUnitActions type="project" warehouseId={row?.warehouseProjectId || ''} />,
       },
     ];
 
