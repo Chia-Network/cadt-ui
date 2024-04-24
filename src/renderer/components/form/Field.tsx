@@ -135,7 +135,7 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
     <div className="mb-4">
       {label && <Label htmlFor={name}>{label}</Label>}
       {renderField()}
-      <p className="text-red-500 text-xs italic">{get(errors, name)}</p>
+      <p className="text-red-500 text-s italic">{get(errors, name)}</p>
     </div>
   );
 };

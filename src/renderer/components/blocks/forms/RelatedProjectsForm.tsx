@@ -16,16 +16,16 @@ const validationSchema = yup.object({
   ),
 });
 
-interface RelatedProjectFormProps {
+interface RelatedProjectsFormProps {
   readonly?: boolean;
   data?: RelatedProject[];
 }
 
-export interface RelatedProjectFormRef {
+export interface RelatedProjectsFormRef {
   submitForm: () => Promise<any>;
 }
 
-const RelatedProjectForm = forwardRef<RelatedProjectFormRef, RelatedProjectFormProps>(
+const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFormProps>(
   ({ readonly = false, data }, ref) => {
     const formikRef = useRef<FormikProps<any>>(null);
     const [orgUid] = useQueryParamState('orgUid');
@@ -96,4 +96,4 @@ const RelatedProjectForm = forwardRef<RelatedProjectFormRef, RelatedProjectFormP
   }
 );
 
-export { RelatedProjectForm };
+export { RelatedProjectsForm };

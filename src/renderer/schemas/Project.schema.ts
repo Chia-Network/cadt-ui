@@ -7,24 +7,21 @@ import { Rating } from './Rating.schema';
 import { Estimation } from './Estimation.schema';
 
 export interface Project {
-  // Required properties
-  warehouseProjectId?: string; // Derived upon creation
-  orgUid?: string; // Derived upon creation
-  projectId: string | number;
-  originProjectId: string | number;
-  registryOfOrigin: string;
-  projectName: string;
-  projectLink: string;
-  projectDeveloper: string;
-  sector: string;
-  projectType: string;
-  coveredByNDC: string;
-  projectStatus: string;
+  warehouseProjectId?: string | null;
+  orgUid?: string | null;
+  projectId: string | number | null;
+  originProjectId: string | number | null;
+  registryOfOrigin: string | null;
+  projectName: string | null;
+  projectLink: string | null;
+  projectDeveloper: string | null;
+  sector: string | null;
+  projectType: string | null;
+  coveredByNDC: string | null;
+  projectStatus: string | null;
   projectStatusDate: Date | null;
-  unitMetric: string;
-  methodology: string;
-
-  // Optional properties
+  unitMetric: string | null;
+  methodology: string | null;
   currentRegistry?: string | null;
   program?: string | null;
   projectTags?: string | null;
@@ -40,7 +37,4 @@ export interface Project {
   projectLocations?: ProjectLocation[];
   projectRatings?: Rating[];
   estimations?: Estimation[];
-  updatedAt?: Date | null;
-  createdAt?: Date | null;
-  timeStaged?: Date | null;
 }

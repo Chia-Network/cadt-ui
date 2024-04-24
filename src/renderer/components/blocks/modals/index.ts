@@ -7,3 +7,4 @@ export * from './UpsertProjectModal';
 export * from './UpsertUnitModal';
 export * from './StagedProjectSuccessModal';
 export * from './ConfirmDeleteModal';
+export * from './StagedUnitSuccessModal';

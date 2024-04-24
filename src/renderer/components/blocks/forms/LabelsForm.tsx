@@ -13,22 +13,14 @@ const validationSchema = yup.object({
       labelType: yup.string().required('Label type is required'),
       labelLink: yup.string().url('Must be a valid URL').nullable(),
       validityPeriodStartDate: yup.date().nullable(),
-      validityPeriodEndDate: yup
-        .date()
-        .nullable()
+      validityPeriodEndDate: yup.date().nullable()
         .when('validityPeriodStartDate', (validityPeriodStartDate, schema) =>
-          validityPeriodStartDate
-            ? schema.min(validityPeriodStartDate, 'Validity Period End Date must be after the start date')
-            : schema,
+          validityPeriodStartDate ? schema.min(validityPeriodStartDate, 'Validity Period End Date must be after the start date') : schema
         ),
       creditingPeriodStartDate: yup.date().nullable(),
-      creditingPeriodEndDate: yup
-        .date()
-        .nullable()
+      creditingPeriodEndDate: yup.date().nullable()
         .when('creditingPeriodStartDate', (creditingPeriodStartDate, schema) =>
-          creditingPeriodStartDate
-            ? schema.min(creditingPeriodStartDate, 'Crediting Period End Date must be after the start date')
-            : schema,
+          creditingPeriodStartDate ? schema.min(creditingPeriodStartDate, 'Crediting Period End Date must be after the start date') : schema
         ),
       unitQuantity: yup
         .number()
@@ -39,17 +31,17 @@ const validationSchema = yup.object({
   ),
 });
 
-interface LabelFormFormProps {
+interface LabelsFormProps {
   readonly?: boolean;
   data?: Label[];
   picklistOptions?: PickList | null;
 }
 
-export interface LabelFormRef {
+export interface LabelsFormRef {
   submitForm: () => Promise<any>;
 }
 
-const LabelForm = forwardRef<LabelFormRef, LabelFormFormProps>(
+const LabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(
   ({ readonly = false, data, picklistOptions }, ref) => {
     const formikRef = useRef<FormikProps<any>>(null);
 
@@ -86,7 +78,7 @@ const LabelForm = forwardRef<LabelFormRef, LabelFormFormProps>(
               {(label: Label, index: number, name: string) => (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                    <Field name="label" label="Label" type="text" readonly={readonly} initialValue={label.label} />
+                    <Field name={`${name}[${index}].label`} label="Label" type="text" readonly={readonly} initialValue={label.label} />
                     <Field
                       name={`${name}[${index}].labelType`}
                       label="Label Type"
@@ -102,8 +94,6 @@ const LabelForm = forwardRef<LabelFormRef, LabelFormFormProps>(
                       readonly={readonly}
                       initialValue={label.labelLink}
                     />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                     <Field
                       name={`${name}[${index}].validityPeriodStartDate`}
                       label="Validity Period Start Date"
@@ -150,4 +140,4 @@ const LabelForm = forwardRef<LabelFormRef, LabelFormFormProps>(
   },
 );
 
-export { LabelForm };
+export { LabelsForm };

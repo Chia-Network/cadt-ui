@@ -75,14 +75,18 @@ const unitsApi = cadtApi.injectEndpoints({
     }),
 
     stageUnit: builder.mutation<any, Unit>({
-      query: (unit) => ({
-        url: `/v1/units`,
-        method: 'POST',
-        body: unit,
-      }),
+      query: (unit) => {
+        delete unit.warehouseProjectId;
+    
+        return {
+          url: `/v1/units`,
+          method: 'POST',
+          body: unit,
+        };
+      },
       invalidatesTags: [stagedUnitsTag],
     }),
   }),
 });
 
-export const { useGetUnitsQuery, useGetUnitQuery, useDeleteUnitMutation } = unitsApi;
+export const { useGetUnitsQuery, useGetUnitQuery, useDeleteUnitMutation, useStageUnitMutation } = unitsApi;

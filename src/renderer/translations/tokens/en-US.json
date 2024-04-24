@@ -113,5 +113,7 @@
   "confirm-delete": "Confirm Delete",
   "this-action-cannot-be-undone": "This action cannot be undone",
   "ratings": "Ratings",
-  "edit-unit": "Edit Unit"
+  "edit-unit": "Edit Unit",
+  "unit-successfully-staged": "Unit successfully staged",
+  "project-successfully-staged": "Project successfully staged"
 }
