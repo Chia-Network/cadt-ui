@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useWildCardUrlHash, useUrlHash } from '@/hooks';
+import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
+  CommitStagedItemsModal,
   CommittedUnitsTab,
   ComponentCenteredSpinner,
   IndeterminateProgressOverlay,
@@ -40,6 +41,7 @@ const MyUnitsPage: React.FC = () => {
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
+  const [commitModalActive, setCommitModalActive] = useUrlHash('commit-staged-items');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -108,10 +110,21 @@ const MyUnitsPage: React.FC = () => {
       <div className="m-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-          <Button disabled={contentsLoading} onClick={() => setCreateUnitModalActive(true)}>
-            <FormattedMessage id="create-unit" />
-          </Button>
-          {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
+          {activeTab === TabTypes.COMMITTED && (
+            <>
+              <Button disabled={contentsLoading} onClick={() => setCreateUnitModalActive(true)}>
+                <FormattedMessage id="create-unit" />
+              </Button>
+              <SearchBox defaultValue={search} onChange={handleSearchChange} />
+            </>
+          )}
+          {activeTab === TabTypes.STAGING && (
+            <>
+              <Button disabled={contentsLoading} onClick={() => setCommitModalActive(true)}>
+                <FormattedMessage id="commit" />
+              </Button>
+            </>
+          )}
           {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
         </div>
@@ -153,6 +166,12 @@ const MyUnitsPage: React.FC = () => {
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
+      {commitModalActive && (
+        <CommitStagedItemsModal
+          numStagedItems={processedStagingData.staged.length}
+          onClose={() => setCommitModalActive(false)}
+        />
+      )}
       {(createUnitModalActive || editUnitModalActive) && <UpsertUnitModal onClose={handleCloseUpsertModal} />}
     </>
   );

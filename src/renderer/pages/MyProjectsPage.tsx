@@ -4,16 +4,17 @@ import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
+  CommitStagedItemsModal,
   CommittedProjectsTab,
   ComponentCenteredSpinner,
   IndeterminateProgressOverlay,
   OrgUidBadge,
   SearchBox,
+  StagedProjectSuccessModal,
   StagingTableTab,
   SyncIndicator,
   Tabs,
   UpsertProjectModal,
-  StagedProjectSuccessModal
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -42,6 +43,7 @@ const MyProjectsPage: React.FC = () => {
   const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
   const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
   const [projectStagedSuccess, setProjectStagedSuccess] = useUrlHash('success-stage-project');
+  const [commitModalActive, setCommitModalActive] = useUrlHash('commit-staged-items');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -109,12 +111,23 @@ const MyProjectsPage: React.FC = () => {
       <div className="m-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-          <Button disabled={contentsLoading} onClick={() => setCreateProjectModalActive(true)}>
-            <FormattedMessage id="create-project" />
-          </Button>
-          {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
-          {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
+          {activeTab === TabTypes.COMMITTED && (
+            <>
+              <Button disabled={contentsLoading} onClick={() => setCreateProjectModalActive(true)}>
+                <FormattedMessage id="create-project" />
+              </Button>
+              <SearchBox defaultValue={search} onChange={handleSearchChange} />
+            </>
+          )}
+          {activeTab === TabTypes.STAGING && (
+            <>
+              <Button disabled={contentsLoading} onClick={() => setCommitModalActive(true)}>
+                <FormattedMessage id="commit" />
+              </Button>
+            </>
+          )}
           <SyncIndicator detailed={true} orgUid={orgUid} />
+          {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         </div>
 
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
@@ -155,8 +168,15 @@ const MyProjectsPage: React.FC = () => {
         </Tabs>
       </div>
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
-      {projectStagedSuccess && <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />}
-      {createProjectModalActive && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+      {commitModalActive && (
+        <CommitStagedItemsModal
+          numStagedItems={processedStagingData.staged.length}
+          onClose={() => setCommitModalActive(false)}
+        />
+      )}
+      {projectStagedSuccess && (
+        <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />
+      )}
     </>
   );
 };
