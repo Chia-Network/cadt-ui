@@ -47,7 +47,7 @@ const CoBenefitsForm = forwardRef<CoBenefitsFormRef, CoBenefitsFormProps>(
               minNumber={0}
               readonly={readonly}
               initialValue={data || []}
-              itemTemplate={{ cobenefit: '' }}  // Assuming default template needed
+              itemTemplate={{ cobenefit: '' }} // Assuming default template needed
             >
               {(coBenefit, index, name) => (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
@@ -66,7 +66,7 @@ const CoBenefitsForm = forwardRef<CoBenefitsFormRef, CoBenefitsFormProps>(
         )}
       </Formik>
     );
-  }
+  },
 );
 
 export { CoBenefitsForm };
