@@ -120,7 +120,10 @@ const MyUnitsPage: React.FC = () => {
           )}
           {activeTab === TabTypes.STAGING && (
             <>
-              <Button disabled={contentsLoading} onClick={() => setCommitModalActive(true)}>
+              <Button
+                disabled={contentsLoading || !processedStagingData.staged.length}
+                onClick={() => setCommitModalActive(true)}
+              >
                 <FormattedMessage id="commit" />
               </Button>
             </>
@@ -166,11 +169,8 @@ const MyUnitsPage: React.FC = () => {
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
-      {commitModalActive && (
-        <CommitStagedItemsModal
-          numStagedItems={processedStagingData.staged.length}
-          onClose={() => setCommitModalActive(false)}
-        />
+      {commitModalActive && processedStagingData.staged.length && (
+        <CommitStagedItemsModal type="unit" onClose={() => setCommitModalActive(false)} />
       )}
       {(createUnitModalActive || editUnitModalActive) && <UpsertUnitModal onClose={handleCloseUpsertModal} />}
     </>

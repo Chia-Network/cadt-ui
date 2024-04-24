@@ -121,7 +121,10 @@ const MyProjectsPage: React.FC = () => {
           )}
           {activeTab === TabTypes.STAGING && (
             <>
-              <Button disabled={contentsLoading} onClick={() => setCommitModalActive(true)}>
+              <Button
+                disabled={contentsLoading || !processedStagingData.staged.length}
+                onClick={() => setCommitModalActive(true)}
+              >
                 <FormattedMessage id="commit" />
               </Button>
             </>
@@ -168,11 +171,8 @@ const MyProjectsPage: React.FC = () => {
         </Tabs>
       </div>
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
-      {commitModalActive && (
-        <CommitStagedItemsModal
-          numStagedItems={processedStagingData.staged.length}
-          onClose={() => setCommitModalActive(false)}
-        />
+      {commitModalActive && processedStagingData.staged.length && (
+        <CommitStagedItemsModal type="project" onClose={() => setCommitModalActive(false)} />
       )}
       {projectStagedSuccess && (
         <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />
