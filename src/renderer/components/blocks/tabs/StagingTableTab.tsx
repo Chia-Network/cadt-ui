@@ -4,11 +4,12 @@ import React from 'react';
 import { useColumnOrderHandler, useQueryParamState, useWildCardUrlHash } from '@/hooks';
 
 interface PageTabProps {
+  type: 'staged' | 'pending' | 'failed';
   stagingData: any[];
   showLoading: boolean;
 }
 
-const StagingTableTab: React.FC<PageTabProps> = ({ stagingData, showLoading }: PageTabProps) => {
+const StagingTableTab: React.FC<PageTabProps> = ({ stagingData, showLoading, type }: PageTabProps) => {
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
   const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
@@ -28,6 +29,7 @@ const StagingTableTab: React.FC<PageTabProps> = ({ stagingData, showLoading }: P
       ) : (
         <StagingTable
           data={stagingData}
+          type={type}
           isLoading={showLoading}
           setOrder={handleSetOrder}
           order={order}

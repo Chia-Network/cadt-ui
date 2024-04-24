@@ -11,6 +11,7 @@ interface FieldProps {
   label?: string;
   type: 'text' | 'textarea' | 'picklist' | 'checkbox' | 'radio' | 'tag' | 'date' | 'link' | 'number';
   options?: SelectOption[];
+  freeform?: boolean;
   readonly?: boolean;
   initialValue?: any;
   disabled?: boolean;
@@ -38,7 +39,7 @@ const renderOption = (options, initialValue) => {
   }
 };
 
-const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, initialValue, disabled = false }) => {
+const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, initialValue, disabled = false, freeform = false }) => {
   const { errors, setFieldValue }: FormikValues = useFormikContext();
 
   const isError: boolean = !!get(errors, name);
@@ -108,8 +109,9 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
             id={name}
             name={name}
             disabled={disabled}
+            freeform={freeform}
             initialValue={initialValue}
-            onChange={(e) => setFieldValue(name, e.target.value)}
+            onChange={(value) => setFieldValue(name, value)}
             options={options}
           />
         );
