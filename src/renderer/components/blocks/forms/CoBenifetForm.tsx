@@ -55,6 +55,7 @@ const CoBenefitForm = forwardRef<CoBenefitFormRef, CoBenefitFormProps>(
                     name={`${name}[${index}].cobenefit`}
                     label="Co-Benefit"
                     type="picklist"
+                    freeform={true}
                     options={picklistOptions?.coBenefits}
                     readonly={readonly}
                     initialValue={coBenefit.cobenefit}

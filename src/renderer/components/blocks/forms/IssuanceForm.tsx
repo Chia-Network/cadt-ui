@@ -93,6 +93,7 @@ const IssuanceForm = forwardRef<IssuanceFormRef, IssuanceFormProps>(
                       name={`${name}[${index}].verificationBody`}
                       label="Verification Body"
                       type="picklist"
+                      freeform={true}
                       options={picklistOptions?.verificationBody}
                       readonly={readonly}
                       initialValue={issuance.verificationBody || ''}
