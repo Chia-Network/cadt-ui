@@ -6,20 +6,21 @@ import { StagedItemActions } from '@/components/blocks/widgets/StagedItemActions
 
 interface TableProps {
   data: any[];
+  type: 'staged' | 'pending' | 'failed';
   isLoading: boolean;
   setOrder: (sort: string) => void;
   onRowClick: (row: any) => void;
   order: string;
 }
 
-const StagingTable: React.FC<TableProps> = ({ data, isLoading, onRowClick, setOrder, order }) => {
+const StagingTable: React.FC<TableProps> = ({ data, type, isLoading, onRowClick, setOrder, order }: TableProps) => {
   const columns = useMemo(
     () => [
       {
         title: '',
         key: 'actionColumn',
         ignoreChildEvents: true,
-        render: (row: any) => <StagedItemActions stagedItem={row} />,
+        render: (row: any) => <StagedItemActions type={type} stagedItem={row} />,
       },
       {
         title: <FormattedMessage id={'table'} />,

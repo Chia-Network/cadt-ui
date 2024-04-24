@@ -127,7 +127,7 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
+            <StagingTableTab type="staged" stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -137,7 +137,11 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.pending} showLoading={stagingDataLoading} />
+            <StagingTableTab
+              type="pending"
+              stagingData={processedStagingData.pending}
+              showLoading={stagingDataLoading}
+            />
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -147,7 +151,7 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
+            <StagingTableTab type="failed" stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
           </Tabs.Item>
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>

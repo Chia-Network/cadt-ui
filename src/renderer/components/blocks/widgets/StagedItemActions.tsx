@@ -5,10 +5,11 @@ import { useWildCardUrlHash } from '@/hooks';
 import { FormattedMessage } from 'react-intl';
 
 interface ActionsProps {
+  type: 'staged' | 'pending' | 'failed';
   stagedItem: any;
 }
 
-const StagedItemActions: React.FC<ActionsProps> = ({ stagedItem }: ActionsProps) => {
+const StagedItemActions: React.FC<ActionsProps> = ({ type, stagedItem }: ActionsProps) => {
   const [, , setEditProjectModalActive] = useWildCardUrlHash('edit-project');
   const [, , setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -27,38 +28,40 @@ const StagedItemActions: React.FC<ActionsProps> = ({ stagedItem }: ActionsProps)
 
   return (
     <>
-      <Tooltip
-        style="light"
-        trigger="click"
-        placement="right"
-        content={
-          <>
-            <Button onClick={handleClickDelete} outline>
-              <FormattedMessage id="delete" />
-            </Button>
-            {/*todo: delete the above button and encasing fragment and make this div
+      {type !== 'pending' && (
+        <Tooltip
+          style="light"
+          trigger="click"
+          placement="right"
+          content={
+            <>
+              <Button onClick={handleClickDelete} outline>
+                <FormattedMessage id="delete" />
+              </Button>
+              {/*todo: delete the above button and encasing fragment and make this div
                  visible when a solution to editing a staged item is complete */}
-            <div className="hidden">
-              {stagedItem?.action === 'DELETE' ? (
-                <Button onClick={handleClickDelete} outline>
-                  <FormattedMessage id="delete" />
-                </Button>
-              ) : (
-                <Button.Group>
-                  <Button onClick={handleClickEdit} outline>
-                    <FormattedMessage id="edit" />
-                  </Button>
+              <div className="hidden">
+                {stagedItem?.action === 'DELETE' || type === 'failed' ? (
                   <Button onClick={handleClickDelete} outline>
                     <FormattedMessage id="delete" />
                   </Button>
-                </Button.Group>
-              )}
-            </div>
-          </>
-        }
-      >
-        <HiDotsVertical size="25" />
-      </Tooltip>
+                ) : (
+                  <Button.Group>
+                    <Button onClick={handleClickEdit} outline>
+                      <FormattedMessage id="edit" />
+                    </Button>
+                    <Button onClick={handleClickDelete} outline>
+                      <FormattedMessage id="delete" />
+                    </Button>
+                  </Button.Group>
+                )}
+              </div>
+            </>
+          }
+        >
+          <HiDotsVertical size="25" />
+        </Tooltip>
+      )}
       {showDeleteModal && stagedItem?.uuid && (
         <ConfirmDeleteStagedItemModal uuid={stagedItem.uuid} onClose={() => setShowDeleteModal(false)} />
       )}
