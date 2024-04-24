@@ -39,8 +39,17 @@ const renderOption = (options, initialValue) => {
   }
 };
 
-const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, initialValue, disabled = false, freeform = false }) => {
-  const { errors, setFieldValue }: FormikValues = useFormikContext();
+const Field: React.FC<FieldProps> = ({
+  name,
+  label,
+  type,
+  options,
+  readonly,
+  initialValue,
+  disabled = false,
+  freeform = false,
+}) => {
+  const { errors, setFieldValue, values, touched }: FormikValues = useFormikContext();
 
   const isError: boolean = !!get(errors, name);
 
@@ -80,6 +89,8 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
     );
   }
 
+ 
+
   const renderField = () => {
     switch (type) {
       case 'text':
@@ -116,11 +127,15 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
           />
         );
       case 'date':
+        console.log(name, values[name])
         return (
           <Datepicker
+            showTodayButton={true}
+            showClearButton={false}
             defaultDate={initialValue ? new Date(initialValue) : undefined}
             onSelectedDateChanged={(date) => setFieldValue(name, date)}
             placeholder="Select date"
+            {...((values[name]) ? {} : { value: undefined })}
           />
         );
       case 'checkbox':
@@ -137,7 +152,10 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
     <div className="mb-4">
       {label && <Label htmlFor={name}>{label}</Label>}
       {renderField()}
-      <p className="text-red-500 text-s italic">{get(errors, name)}</p>
+      {touched[name] && (
+<p className="text-red-500 text-s italic">{get(errors, name)}</p>
+      )}
+      
     </div>
   );
 };
