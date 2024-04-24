@@ -23,7 +23,7 @@ import {
   Spacer
 } from '@/components';
 import { useWildCardUrlHash, useUrlHash } from '@/hooks';
-import { useGetPickListsQuery, useGetProjectQuery, useStageProjectMutation } from '@/api';
+import { useGetPickListsQuery, useGetProjectQuery, useStageCreateProjectMutation, useStageUpdateProjectMutation } from '@/api';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Project } from '@/schemas/Project.schema';
 import { Alert } from 'flowbite-react'
@@ -66,7 +66,8 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
   const warehouseProjectId = projectUpsertFragment.replace('edit-project-', '');
   const { data: projectData, isLoading: projectLoading } = useGetProjectQuery({ warehouseProjectId });
   const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
-  const [triggerStageProject, { isLoading: isProjectStaging }] = useStageProjectMutation();
+  const [triggerStageCreateProject, { isLoading: isProjectStaging }] = useStageCreateProjectMutation();
+  const [triggerStageUpdateProject, { isLoading: isProjectUpdateStaging }] = useStageUpdateProjectMutation();
   const [, setProjectStagedSuccessModal] = useUrlHash('success-stage-project');
 
   const steps: string[] = useMemo<string[]>(() => {
@@ -134,13 +135,18 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
 
         if (activeStep === UpsertProjectTabs.RELATED_PROJECTS) {
           if (projectFormData) {
-            const response: any = await triggerStageProject(projectFormData);
+            let response: any;
+            
+            if (createProjectModalActive) {
+              response = await triggerStageCreateProject(projectFormData);
+            } else {
+              response = await triggerStageUpdateProject(projectFormData);
+            }
 
             if (response.data) {
               setProjectStagedSuccessModal(true);
               onClose();
             } else {
-              console.log('response', response.error.data)
               let errorMessage = `Error processing Unit: ${response.error.data.message}`;
               if (response.error.data.errors && Array.isArray(response.error.data.errors)) {
                 errorMessage = `${errorMessage} - ${response.error.data.errors.join(', ')}`;
@@ -215,24 +221,24 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
           {activeStep === UpsertProjectTabs.PROJECT_LOCATIONS && (
             <ProjectLocationsForm
               ref={projectLocationsFormRef}
-              data={projectData?.projectLocations}
+              data={projectFormData?.projectLocations || projectData?.projectLocations}
               picklistOptions={pickListData}
             />
           )}
           {activeStep === UpsertProjectTabs.ESTIMATIONS && (
-            <EstimationsForm ref={estimationsFormRef} data={projectData?.estimations} />
+            <EstimationsForm ref={estimationsFormRef} data={projectFormData?.estimations || projectData?.estimations} />
           )}
           {activeStep === UpsertProjectTabs.LABELS && (
-            <LabelsForm ref={labelsFormRef} data={projectData?.labels} picklistOptions={pickListData} />
+            <LabelsForm ref={labelsFormRef} data={projectFormData?.labels || projectData?.labels} picklistOptions={pickListData} />
           )}
           {activeStep === UpsertProjectTabs.RATINGS && (
-            <RatingsForm ref={ratingsFormRef} data={projectData?.projectRatings} picklistOptions={pickListData} />
+            <RatingsForm ref={ratingsFormRef} data={projectFormData?.projectRatings || projectData?.projectRatings} picklistOptions={pickListData} />
           )}
           {activeStep === UpsertProjectTabs.CO_BENEFITS && (
-            <CoBenefitsForm ref={cobenefitsFormRef} data={projectData?.coBenefits} picklistOptions={pickListData} />
+            <CoBenefitsForm ref={cobenefitsFormRef} data={projectFormData?.coBenefits || projectData?.coBenefits} picklistOptions={pickListData} />
           )}
           {activeStep === UpsertProjectTabs.RELATED_PROJECTS && (
-            <RelatedProjectsForm ref={relatedProjectsFormRef} data={projectData?.relatedProjects} />
+            <RelatedProjectsForm ref={relatedProjectsFormRef} data={projectFormData?.relatedProjects || projectData?.relatedProjects} />
           )}
           <Spacer size={15} />
           <div className="flex">

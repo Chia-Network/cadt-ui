@@ -1,3 +1,4 @@
+import { isNil, isEmpty, omit } from 'lodash';
 import { cadtApi, projectsTag, stagedProjectsTag } from '../';
 import { Project } from '@/schemas/Project.schema';
 
@@ -70,20 +71,92 @@ const projectsApi = cadtApi.injectEndpoints({
       invalidatesTags: (_response, _error, { warehouseProjectId }) => [{ type: projectsTag, id: warehouseProjectId }],
     }),
 
-    stageProject: builder.mutation<any, Project>({
-      query: (project) => ({
-        url: `/v1/projects`,
-        method: 'POST',
-        body: project,
-      }),
+    stageCreateProject: builder.mutation<any, Project>({
+      query: (project) => {
+        delete project.orgUid;
+
+        if (isNil(project.projectLocations) || isEmpty(project.projectLocations)) {
+          delete project.projectLocations;
+        }
+
+        if (isNil(project.labels) || isEmpty(project.labels)) {
+          delete project.labels;
+        }
+
+        if (isNil(project.relatedProjects) || isEmpty(project.relatedProjects)) {
+          delete project.relatedProjects;
+        }
+
+        if (isNil(project.projectRatings) || isEmpty(project.projectRatings)) {
+          delete project.projectRatings;
+        }
+
+        if (isNil(project.estimations) || isEmpty(project.estimations)) {
+          delete project.estimations;
+        }
+
+        if (isNil(project.issuances) || isEmpty(project.issuances)) {
+          delete project.issuances;
+        }
+
+        if (isNil(project.coBenefits) || isEmpty(project.coBenefits)) {
+          delete project.coBenefits;
+        }
+
+        return {
+          url: `/v1/projects`,
+          method: 'POST',
+          body: project,
+        };
+      },
+      invalidatesTags: [stagedProjectsTag],
+    }),
+
+    stageUpdateProject: builder.mutation<any, Project>({
+      query: (project) => {
+        if (isNil(project.projectLocations) || isEmpty(project.projectLocations)) {
+          delete project.projectLocations;
+        }
+
+        if (isNil(project.labels) || isEmpty(project.labels)) {
+          delete project.labels;
+        }
+
+        if (isNil(project.relatedProjects) || isEmpty(project.relatedProjects)) {
+          delete project.relatedProjects;
+        }
+
+        if (isNil(project.projectRatings) || isEmpty(project.projectRatings)) {
+          delete project.projectRatings;
+        }
+
+        if (isNil(project.estimations) || isEmpty(project.estimations)) {
+          delete project.estimations;
+        }
+
+        if (isNil(project.issuances) || isEmpty(project.issuances)) {
+          delete project.issuances;
+        }
+
+        if (isNil(project.coBenefits) || isEmpty(project.coBenefits)) {
+          delete project.coBenefits;
+        }
+
+        return {
+          url: `/v1/projects`,
+          method: 'PUT',
+          body: omit(project, ['orgUid']),
+        };
+      },
       invalidatesTags: [stagedProjectsTag],
     }),
   }),
 });
 
-export const { 
-  useGetProjectsQuery, 
-  useGetProjectQuery, 
-  useDeleteProjectMutation, 
-  useStageProjectMutation 
+export const {
+  useGetProjectsQuery,
+  useGetProjectQuery,
+  useDeleteProjectMutation,
+  useStageCreateProjectMutation,
+  useStageUpdateProjectMutation,
 } = projectsApi;

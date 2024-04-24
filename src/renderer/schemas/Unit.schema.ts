@@ -2,6 +2,7 @@ import {Label} from './Label.schema';
 import {Issuance} from "@/schemas/Issuance.schema";
 
 export interface Unit {
+  orgUid?: string | null;
   warehouseProjectId?: string | null;
   warehouseUnitId?: string | null;
   countryJurisdictionOfOwner: string | null;
@@ -13,7 +14,7 @@ export interface Unit {
   correspondingAdjustmentDeclaration: string | null;
   correspondingAdjustmentStatus: string | null;
   issuance: Issuance | null;
-  labels: Label[];
+  labels?: Label[];
   unitBlockStart: string | null;
   unitBlockEnd: string | null;
   serialNumberBlock: string | null;

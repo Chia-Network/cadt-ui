@@ -13,7 +13,7 @@ import {
   Button,
 } from '@/components';
 import { useWildCardUrlHash, useUrlHash } from '@/hooks';
-import { useGetUnitQuery, useGetPickListsQuery, useStageUnitMutation } from '@/api';
+import { useGetUnitQuery, useGetPickListsQuery, useStageCreateUnitMutation } from '@/api';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Unit } from '@/schemas/Unit.schema';
 import { Alert } from 'flowbite-react'
@@ -52,7 +52,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
 
   const [unitFormData, setUnitFormData] = useState<Unit>();
   const [formSubmitError, setFormSubmitError] = useState<string | null>(null);
-  const [triggerStageUnit, { isLoading: isUnitStaging }] = useStageUnitMutation();
+  const [triggerStageCreateUnit, { isLoading: isUnitStaging }] = useStageCreateUnitMutation();
   const [activeStep, setActiveStep] = useState(UpsertUnitTabs.UNIT);
   const [, setUnitStagedSuccessModal] = useUrlHash('success-stage-unit');
 
@@ -105,12 +105,11 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
 
         if (activeStep === UpsertUnitTabs.LABELS) {
           if (unitFormData) {
-            const response: any = await triggerStageUnit(unitFormData);
+            const response: any = await triggerStageCreateUnit(unitFormData);
 
             if (response.data) {
                setUnitStagedSuccessModal(true);
             } else {
-              console.log('response', response.error.data)
               let errorMessage = `Error processing Unit: ${response.error.data.message}`;
               if (response.error.data.errors && Array.isArray(response.error.data.errors)) {
                 errorMessage = `${errorMessage} - ${response.error.data.errors.join(', ')}`;

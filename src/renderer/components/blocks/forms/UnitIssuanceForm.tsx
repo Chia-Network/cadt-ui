@@ -18,7 +18,6 @@ export interface UnitIssuanceFormRef {
 
 const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
   ({ data: issuance, selectedWarehouseProjectId }, ref) => {
-    console.log(issuance, selectedWarehouseProjectId)
     const [selectedIssuance, setSelectedIssuance] = useState<Issuance | undefined>(issuance || undefined);
     const [error, setError] = useState<string | null>(null);
     const {

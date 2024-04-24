@@ -243,6 +243,15 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     initialValue={data?.methodology || ''}
                   />
                   <Field
+                    name="methodology2"
+                    label="Methodology 2"
+                    type="picklist"
+                    freeform={true}
+                    options={picklistOptions?.methodology}
+                    readonly={readonly}
+                    initialValue={data?.methodology2 || ''}
+                  />
+                  <Field
                     name="validationBody"
                     label="Validation Body"
                     type="picklist"

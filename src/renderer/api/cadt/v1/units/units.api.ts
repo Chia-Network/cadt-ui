@@ -1,3 +1,4 @@
+import { isNil, isEmpty, omit } from 'lodash';
 import { cadtApi, stagedUnitsTag, unitsTag } from '../';
 import { Unit } from '@/schemas/Unit.schema';
 
@@ -74,10 +75,14 @@ const unitsApi = cadtApi.injectEndpoints({
       invalidatesTags: (_response, _error, { warehouseUnitId }) => [{ type: unitsTag, id: warehouseUnitId }],
     }),
 
-    stageUnit: builder.mutation<any, Unit>({
+    stageCreateUnit: builder.mutation<any, Unit>({
       query: (unit) => {
         delete unit.warehouseProjectId;
-    
+
+        if (isNil(unit.labels) || isEmpty(unit.labels)) {
+          delete unit.labels;
+        }
+
         return {
           url: `/v1/units`,
           method: 'POST',
@@ -86,7 +91,28 @@ const unitsApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedUnitsTag],
     }),
+
+    stageUpdateUnit: builder.mutation<any, Unit>({
+      query: (unit) => {
+        if (isNil(unit.labels) || isEmpty(unit.labels)) {
+          delete unit.labels;
+        }
+
+        return {
+          url: `/v1/units`,
+          method: 'PUT',
+          body: omit(unit, ['warehouseUnitId', 'orgUid']),
+        };
+      },
+      invalidatesTags: [stagedUnitsTag],
+    }),
   }),
 });
 
-export const { useGetUnitsQuery, useGetUnitQuery, useDeleteUnitMutation, useStageUnitMutation } = unitsApi;
+export const {
+  useGetUnitsQuery,
+  useGetUnitQuery,
+  useDeleteUnitMutation,
+  useStageCreateUnitMutation,
+  useStageUpdateUnitMutation,
+} = unitsApi;
