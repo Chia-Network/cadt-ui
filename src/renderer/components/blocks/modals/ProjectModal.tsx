@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  CoBenefitForm,
-  EstimationForm,
-  IssuanceForm,
+  CoBenefitsForm,
+  EstimationsForm,
+  IssuancesForm,
   Modal,
   ProjectForm,
-  ProjectLocationForm,
-  RatingForm,
-  RelatedProjectForm,
+  ProjectLocationsForm,
+  RatingsForm,
+  RelatedProjectsForm,
   Spinner,
   Tabs,
 } from '@/components';
@@ -45,7 +45,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             </Tabs.Item>
             {projectData?.issuances?.length && (
               <Tabs.Item title={<FormattedMessage id="issuance" />}>
-                <IssuanceForm
+                <IssuancesForm
                   readonly={true}
                   data={projectData?.issuances}
                   showUnits={true}
@@ -55,7 +55,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             )}
             {projectData?.projectLocations?.length && (
               <Tabs.Item title={<FormattedMessage id="project-locations" />}>
-                <ProjectLocationForm
+                <ProjectLocationsForm
                   readonly={true}
                   data={projectData?.projectLocations}
                   picklistOptions={pickListData}
@@ -64,12 +64,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             )}
             {projectData?.estimations?.length && (
               <Tabs.Item title={<FormattedMessage id="estimations" />}>
-                <EstimationForm readonly={true} data={projectData?.estimations} />
+                <EstimationsForm readonly={true} data={projectData?.estimations} />
               </Tabs.Item>
             )}
             {projectData?.coBenefits?.length && (
               <Tabs.Item title={<FormattedMessage id="co-benefits" />}>
-                <CoBenefitForm
+                <CoBenefitsForm
                   readonly={true}
                   data={projectData?.coBenefits}
                   picklistOptions={pickListData}
@@ -78,7 +78,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             )}
             {projectData?.relatedProjects?.length && (
               <Tabs.Item title={<FormattedMessage id="related-projects" />}>
-                <RelatedProjectForm
+                <RelatedProjectsForm
                   readonly={true}
                   data={projectData?.relatedProjects}
                 />
@@ -86,7 +86,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             )}
             {(projectData?.projectRatings?.length || projectData?.labels?.length) && (
               <Tabs.Item title={<FormattedMessage id="ratings" />}>
-                <RatingForm
+                <RatingsForm
                   readonly={true}
                   data={projectData?.projectRatings}
                   picklistOptions={pickListData}

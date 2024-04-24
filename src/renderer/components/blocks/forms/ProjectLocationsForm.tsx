@@ -17,17 +17,17 @@ const validationSchema = yup.object({
   ),
 });
 
-interface ProjectLocationFormProps {
+interface ProjectLocationsFormProps {
   readonly?: boolean;
   data?: ProjectLocation[];
   picklistOptions?: PickList;
 }
 
-export interface ProjectLocationFormRef {
+export interface ProjectLocationsFormRef {
   submitForm: () => Promise<any>;
 }
 
-const ProjectLocationForm = forwardRef<ProjectLocationFormRef, ProjectLocationFormProps>(
+const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocationsFormProps>(
   ({ readonly = false, data, picklistOptions }, ref) => {
     const formikRef = useRef<FormikProps<any>>(null);
 
@@ -98,4 +98,4 @@ const ProjectLocationForm = forwardRef<ProjectLocationFormRef, ProjectLocationFo
   }
 );
 
-export { ProjectLocationForm };
+export { ProjectLocationsForm };

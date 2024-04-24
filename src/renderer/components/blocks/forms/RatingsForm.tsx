@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useRef, useImperativeHandle } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
@@ -18,18 +18,19 @@ const validationSchema = yup.object({
   ),
 });
 
-interface RatingFormProps {
+interface RatingsFormProps {
   readonly?: boolean;
   data?: Rating[];
   picklistOptions?: PickList | null;
 }
 
-export interface RatingFormRef {
+export interface RatingsFormRef {
   submitForm: () => Promise<any>;
 }
 
-const RatingForm = forwardRef<RatingFormRef, RatingFormProps>(({ readonly = false, data, picklistOptions }, ref) => {
-  const formikRef = useRef<FormikProps<any>>(null);
+const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(
+  ({ readonly = false, data, picklistOptions }, ref) => {
+    const formikRef = useRef<FormikProps<any>>(null);
 
   useImperativeHandle(ref, () => ({
     submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'projectRatings'),
@@ -107,4 +108,4 @@ const RatingForm = forwardRef<RatingFormRef, RatingFormProps>(({ readonly = fals
   );
 });
 
-export { RatingForm };
+export { RatingsForm };

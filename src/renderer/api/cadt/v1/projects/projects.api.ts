@@ -81,5 +81,9 @@ const projectsApi = cadtApi.injectEndpoints({
   }),
 });
 
-export const { useGetProjectsQuery, useGetProjectQuery, useDeleteProjectMutation, useStageProjectMutation } =
-  projectsApi;
+export const { 
+  useGetProjectsQuery, 
+  useGetProjectQuery, 
+  useDeleteProjectMutation, 
+  useStageProjectMutation 
+} = projectsApi;

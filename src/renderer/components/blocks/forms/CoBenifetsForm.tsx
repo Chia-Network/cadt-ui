@@ -1,5 +1,5 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
-import { Form, Formik, FormikProps } from 'formik';
+import { useRef, forwardRef, useImperativeHandle } from 'react';
+import { Formik, Form, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { CoBenefit } from '@/schemas/CoBenefit.schema';
@@ -14,17 +14,17 @@ const validationSchema = yup.object({
   ),
 });
 
-interface CoBenefitFormProps {
+interface CoBenefitsFormProps {
   readonly?: boolean;
   data?: CoBenefit[];
   picklistOptions?: PickList;
 }
 
-export interface CoBenefitFormRef {
+export interface CoBenefitsFormRef {
   submitForm: () => Promise<any>;
 }
 
-const CoBenefitForm = forwardRef<CoBenefitFormRef, CoBenefitFormProps>(
+const CoBenefitsForm = forwardRef<CoBenefitsFormRef, CoBenefitsFormProps>(
   ({ readonly = false, data, picklistOptions }, ref) => {
     const formikRef = useRef<FormikProps<any>>(null);
 
@@ -70,4 +70,4 @@ const CoBenefitForm = forwardRef<CoBenefitFormRef, CoBenefitFormProps>(
   },
 );
 
-export { CoBenefitForm };
+export { CoBenefitsForm };

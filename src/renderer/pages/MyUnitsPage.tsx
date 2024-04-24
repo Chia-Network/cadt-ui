@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
 import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
+
 import {
   Button,
   CommittedUnitsTab,
@@ -13,7 +14,9 @@ import {
   SyncIndicator,
   Tabs,
   UpsertUnitModal,
+  StagedUnitSuccessModal
 } from '@/components';
+
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
@@ -42,6 +45,7 @@ const MyUnitsPage: React.FC = () => {
   const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
+  const [unitStagedSuccess, setUnitStagedSuccess] = useUrlHash('success-stage-unit');
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
   });
@@ -157,6 +161,7 @@ const MyUnitsPage: React.FC = () => {
         </Tabs>
       </div>
       {(createUnitModalActive || editUnitModalActive) && <UpsertUnitModal onClose={handleCloseUpsertModal} />}
+      {unitStagedSuccess && <StagedUnitSuccessModal showModal={true} onClose={() => setUnitStagedSuccess(false)} />}
     </>
   );
 };

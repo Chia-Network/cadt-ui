@@ -2,23 +2,21 @@ import {Label} from './Label.schema';
 import {Issuance} from "@/schemas/Issuance.schema";
 
 export interface Unit {
-  // Required properties
-  warehouseUnitId: string;
-  countryJurisdictionOfOwner: string;
-  unitCount: number;
-  vintageYear: number;
-  unitType: string;
-  unitStatus: string;
-  unitRegistryLink: string;
-  correspondingAdjustmentDeclaration: string;
-  correspondingAdjustmentStatus: string;
-  issuance: Issuance;
+  warehouseProjectId?: string | null;
+  warehouseUnitId?: string | null;
+  countryJurisdictionOfOwner: string | null;
+  unitCount: number | null;
+  vintageYear: number | null;
+  unitType: string | null;
+  unitStatus: string | null;
+  unitRegistryLink: string | null;
+  correspondingAdjustmentDeclaration: string | null;
+  correspondingAdjustmentStatus: string | null;
+  issuance: Issuance | null;
   labels: Label[];
-  unitBlockStart: string;
-  unitBlockEnd: string;
-  serialNumberBlock: string;
-
-  // Optional properties
+  unitBlockStart: string | null;
+  unitBlockEnd: string | null;
+  serialNumberBlock: string | null;
   projectLocationId?: string | null;
   unitOwner?: string | null;
   inCountryJurisdictionOfOwner?: string | null;
