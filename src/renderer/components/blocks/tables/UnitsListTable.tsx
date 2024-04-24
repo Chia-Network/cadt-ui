@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import { DataTable, PageCounter, Pagination, ProjectAndUnitActions } from '@/components';
+import { Column, DataTable, PageCounter, Pagination, ProjectAndUnitActions } from '@/components';
 import { Unit } from '@/schemas/Unit.schema';
 
 interface TableProps {
@@ -30,16 +30,17 @@ const UnitsListTable: React.FC<TableProps> = ({
   totalCount,
 }) => {
   const columns = useMemo(() => {
-    const editColumn: any = [
+    const editColumn: Column[] = [
       {
         title: '',
         key: 'actionColumn',
         ignoreChildEvents: true,
+        ignoreOrderChange: true,
         render: (row: Unit) => <ProjectAndUnitActions type="unit" warehouseId={row.warehouseUnitId} />,
       },
     ];
 
-    const staticColumns: any = [
+    const staticColumns: Column[] = [
       {
         title: <FormattedMessage id={'unit-owner'} />,
         key: 'unitOwner',

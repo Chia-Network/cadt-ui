@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useWildCardUrlHash, useUrlHash } from '@/hooks';
+import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
@@ -39,7 +39,7 @@ const MyUnitsPage: React.FC = () => {
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [, editUnitModalActive] = useWildCardUrlHash('edit-unit');
-  const [, createUnitModalActive, setCreateUnitModalActive] = useWildCardUrlHash('create-unit');
+  const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
