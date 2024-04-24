@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { DiffViewer, Modal } from '@/components';
 import { FormattedMessage } from 'react-intl';
-import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging/staging.api';
+import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging';
 
 interface ProjectModalProps {
   stagingUuid: string;

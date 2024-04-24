@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useWildCardUrlHash, useUrlHash } from '@/hooks';
+import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
@@ -18,7 +18,7 @@ import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
 import { useNavigate } from 'react-router-dom';
-import { useGetStagedUnitsQuery } from '@/api/cadt/v1/staging/staging.api';
+import { useGetStagedUnitsQuery } from '@/api/cadt/v1/staging';
 
 enum TabTypes {
   COMMITTED,
@@ -38,7 +38,7 @@ const MyUnitsPage: React.FC = () => {
   const navigate = useNavigate();
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
+  const [, editUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
@@ -95,7 +95,6 @@ const MyUnitsPage: React.FC = () => {
   );
 
   const handleCloseUpsertModal = () => {
-    setEditUnitModalActive(false);
     setCreateUnitModalActive(false);
   };
 
@@ -108,7 +107,7 @@ const MyUnitsPage: React.FC = () => {
       <div className="m-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-          <Button disabled={contentsLoading} onClick={() => setCreateUnitModalActive(true)}>
+          <Button disabled={contentsLoading}>
             <FormattedMessage id="create-unit" />
           </Button>
           {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
@@ -128,7 +127,7 @@ const MyUnitsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
+            <StagingTableTab type="staged" stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -138,7 +137,11 @@ const MyUnitsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.pending} showLoading={stagingDataLoading} />
+            <StagingTableTab
+              type="pending"
+              stagingData={processedStagingData.pending}
+              showLoading={stagingDataLoading}
+            />
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -148,7 +151,7 @@ const MyUnitsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
+            <StagingTableTab type="failed" stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
           </Tabs.Item>
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>

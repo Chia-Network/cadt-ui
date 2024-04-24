@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import { DataTable, PageCounter, Pagination, ProjectAndUnitActions, Tooltip } from '@/components';
+import { Column, DataTable, PageCounter, Pagination, ProjectAndUnitActions, Tooltip } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { Badge } from 'flowbite-react';
 
@@ -31,16 +31,17 @@ const ProjectsListTable: React.FC<TableProps> = ({
   totalCount,
 }) => {
   const columns = useMemo(() => {
-    const editColumn: any = [
+    const editColumn: Column[] = [
       {
         title: '',
         key: 'actionColumn',
         ignoreChildEvents: true,
+        ignoreOrderChange: true,
         render: (row: Project) => <ProjectAndUnitActions type="project" warehouseId={row?.warehouseProjectId || ''} />,
       },
     ];
 
-    const staticColumns: any = [
+    const staticColumns: Column[] = [
       {
         title: <FormattedMessage id={'current-registry'} />,
         key: 'currentRegistry',

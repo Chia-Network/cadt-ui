@@ -6,10 +6,11 @@ import 'simplebar/dist/simplebar.min.css';
 import { AiOutlineSortAscending, AiOutlineSortDescending } from 'react-icons/ai';
 import React from 'react';
 
-interface Column {
+export interface Column {
   key: string;
   title: string | JSX.Element;
   ignoreChildEvents?: boolean;
+  ignoreOrderChange?: boolean;
   render?: (row: any) => JSX.Element;
   renderHeader?: (column: any) => JSX.Element;
   width?: string;
@@ -103,7 +104,7 @@ const DataTable: React.FC<DataTableProps> = ({
                           ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white'
                           : 'text-gray-500 dark:text-gray-400'
                       }`}
-                      onClick={() => onChangeOrder && onChangeOrder(column.key)}
+                      onClick={() => !column.ignoreOrderChange && onChangeOrder && onChangeOrder(column.key)}
                     >
                       <div className="flex items-center justify-between">
                         <span>{column.renderHeader ? column.renderHeader(column) : column.title}</span>
