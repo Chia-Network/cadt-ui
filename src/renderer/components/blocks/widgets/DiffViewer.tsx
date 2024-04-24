@@ -23,13 +23,12 @@ interface DiffViewerProps {
 }
 
 const sanitizeObject = (obj: any): any => {
-  console.log('obj', obj);
   if (Array.isArray(obj)) {
-    return obj.map(item => sanitizeObject(item));
+    return obj.map((item) => sanitizeObject(item));
   }
 
   return omit(obj, ['orgUid', 'createdAt', 'updatedAt', 'timeStaged', 'action']);
-}
+};
 
 const camelCaseToHumanReadable = (text: string): string => {
   return text
@@ -48,7 +47,7 @@ const renderArrayDiff = (original: any[], updated: any[]): React.ReactNode[] => 
       subDiffs.push(
         <div key={`array-item-${i}`} className="ml-4 mb-4 bg-gray-50 p-3 rounded-md shadow-md">
           {renderFieldDiffs(orig, upd)}
-        </div>
+        </div>,
       );
     }
   }
@@ -59,7 +58,7 @@ const renderFieldDiffs = (original: any, updated: any): React.ReactNode[] => {
   const changes: React.ReactNode[] = [];
   const allKeys = new Set([...Object.keys(original || {}), ...Object.keys(updated || {})]);
 
-  allKeys.forEach(key => {
+  allKeys.forEach((key) => {
     const origValue = original ? original[key] : undefined;
     const updatedValue = updated ? updated[key] : undefined;
 
@@ -71,15 +70,27 @@ const renderFieldDiffs = (original: any, updated: any): React.ReactNode[] => {
         <div key={`${key}-array-diff`} className="mt-4">
           <div className="font-bold mb-1 text-gray-700">{label}:</div>
           {renderArrayDiff(sanitizeObject(origValue || []), sanitizeObject(updatedValue || []))}
-        </div>
+        </div>,
       );
     } else {
-      const lineDiffs = diffLines(JSON.stringify(origValue || '', null, 2), JSON.stringify(updatedValue || '', null, 2));
-      const hasChanges = lineDiffs.some(change => change.added || change.removed);
+      const lineDiffs = diffLines(
+        JSON.stringify(origValue || '', null, 2),
+        JSON.stringify(updatedValue || '', null, 2),
+      );
+      const hasChanges = lineDiffs.some((change) => change.added || change.removed);
       if (hasChanges) {
-        changes.push(<div key={`${key}-label`} className="font-bold mb-1 text-gray-700">{label}:</div>);
+        changes.push(
+          <div key={`${key}-label`} className="font-bold mb-1 text-gray-700">
+            {label}:
+          </div>,
+        );
         lineDiffs.forEach((change: Change, index: number) => {
-          if (change.value.trim() === '' || change.value === null || change.value === undefined || change.value.trim() === '""') {
+          if (
+            change.value.trim() === '' ||
+            change.value === null ||
+            change.value === undefined ||
+            change.value.trim() === '""'
+          ) {
             return;
           }
           const color = change.added ? 'bg-green-100' : change.removed ? 'bg-red-100' : 'bg-transparent';
@@ -88,7 +99,7 @@ const renderFieldDiffs = (original: any, updated: any): React.ReactNode[] => {
             <div key={`${key}-${index}`} className={`${color} whitespace-pre-wrap rounded-md p-1 ml-4 mt-2`}>
               <div className="inline-block mr-1">{prefix}</div>
               <div className="inline-block">{change.value.replace(/"/g, '')}</div>
-            </div>
+            </div>,
           );
         });
       } else {
@@ -97,7 +108,9 @@ const renderFieldDiffs = (original: any, updated: any): React.ReactNode[] => {
           return;
         }
         changes.push(
-          <div key={`${key}-label`} className="font-bold mb-1 text-gray-700">{label}: <span className="text-gray-500">{value}</span></div>
+          <div key={`${key}-label`} className="font-bold mb-1 text-gray-700">
+            {label}: <span className="text-gray-500">{value}</span>
+          </div>,
         );
       }
     }
@@ -110,7 +123,10 @@ const DiffViewer: React.FC<DiffViewerProps> = ({ data }) => {
   const { original, change } = data.diff;
   const changeData = change.length > 1 ? change : change[0];
 
-  const diffs = useMemo(() => renderFieldDiffs(sanitizeObject(original), sanitizeObject(changeData)), [original, changeData]);
+  const diffs = useMemo(
+    () => renderFieldDiffs(sanitizeObject(original), sanitizeObject(changeData)),
+    [original, changeData],
+  );
 
   return (
     <div className="diff-container p-5 bg-gray-100 rounded-md shadow">

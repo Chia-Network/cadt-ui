@@ -14,7 +14,8 @@ import {
   SyncIndicator,
   Tabs,
   UpsertUnitModal,
-  StagedUnitSuccessModal
+  StagedUnitSuccessModal,
+  StagingDiffModal
 } from '@/components';
 
 import { FormattedMessage } from 'react-intl';
@@ -39,6 +40,7 @@ interface ProcessedStagingData {
 
 const MyUnitsPage: React.FC = () => {
   const navigate = useNavigate();
+  const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [, editUnitModalActive] = useWildCardUrlHash('edit-unit');
@@ -106,6 +108,8 @@ const MyUnitsPage: React.FC = () => {
     return <ComponentCenteredSpinner />;
   }
 
+  console.log('@@')
+
   return (
     <>
       <div className="m-2">
@@ -162,6 +166,12 @@ const MyUnitsPage: React.FC = () => {
       </div>
       {(createUnitModalActive || editUnitModalActive) && <UpsertUnitModal onClose={handleCloseUpsertModal} />}
       {unitStagedSuccess && <StagedUnitSuccessModal showModal={true} onClose={() => setUnitStagedSuccess(false)} />}
+      {stagingDiffModalActive && (
+        <StagingDiffModal
+          onClose={() => setStagingDiffModalActive(false)}
+          stagingUuid={stagingDiffFragment.replace('staging-', '')}
+        />
+      )}
     </>
   );
 };

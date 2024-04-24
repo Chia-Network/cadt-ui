@@ -174,7 +174,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
                 {activeStep !== steps.length - 1 ? (
                   <FormattedMessage id="next" />
                 ) : (
-                  <FormattedMessage id="create-project" />
+                  <FormattedMessage id={createUnitModalActive ? "create-project" : "edit-project"} />
                 )}
               </Button>
             </div>

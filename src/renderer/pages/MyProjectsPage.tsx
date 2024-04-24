@@ -14,6 +14,7 @@ import {
   SyncIndicator,
   Tabs,
   UpsertProjectModal,
+  StagingDiffModal,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -37,6 +38,7 @@ interface ProcessedStagingData {
 
 const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
+  const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
@@ -161,6 +163,12 @@ const MyProjectsPage: React.FC = () => {
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
       {projectStagedSuccess && (
         <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />
+      )}
+      {stagingDiffModalActive && (
+        <StagingDiffModal
+          onClose={() => setStagingDiffModalActive(false)}
+          stagingUuid={stagingDiffFragment.replace('staging-', '')}
+        />
       )}
     </>
   );

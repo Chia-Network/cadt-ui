@@ -118,5 +118,6 @@
   "project-successfully-staged": "Project successfully staged",
   "deleting-this-item-will-add-a-corresponding-delete-entry-to-the-staging-table": "Deleting this item will add a corresponding delete entry to the staging table",
   "no-items-will-be-deleted-until-staged-changes-are-committed": "No items will be deleted until staged changes are committed",
-  "deleting-a-staged-item-is-a-permanent-action": "Deleting a staged item is a permanent action"
+  "deleting-a-staged-item-is-a-permanent-action": "Deleting a staged item is a permanent action",
+  "change-record": "Change Record"
 }
