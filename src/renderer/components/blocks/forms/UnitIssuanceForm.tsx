@@ -52,9 +52,9 @@ const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
       }));
     }, [projectData, isProjectLoading]);
 
-    const handleSetIssuance = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSetIssuance = useCallback((value) => {
       setError(null);
-      const selectedIssuanceId = event.target.value;
+      const selectedIssuanceId = value;
       const foundIssuance = projectData?.issuances?.find(issuance => issuance.id === selectedIssuanceId);
       setSelectedIssuance(foundIssuance);
     }, [projectData]);

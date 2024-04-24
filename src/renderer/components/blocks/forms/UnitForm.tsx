@@ -97,9 +97,9 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
     },
   }));
 
-  const handleSetWarehouseProjectId = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSetWarehouseProjectId = (value) => {
     setError(null);
-    setSelectedWarehouseProjectId(event.target.value);
+    setSelectedWarehouseProjectId(value);
   };
 
   if (isHomeOrgLoading || isProjectOptionsLoading) {
