@@ -13,6 +13,7 @@ import {
   SyncIndicator,
   Tabs,
   UpsertProjectModal,
+  StagedProjectSuccessModal
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -38,6 +39,9 @@ const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
+  const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
+  const [projectStagedSuccess, setProjectStagedSuccess] = useUrlHash('success-stage-project');
   const [, createProjectModalActive, setCreateProjectModalActive] = useWildCardUrlHash('create-project');
   const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
@@ -157,6 +161,7 @@ const MyProjectsPage: React.FC = () => {
         </Tabs>
       </div>
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+      {projectStagedSuccess && <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />}
     </>
   );
 };

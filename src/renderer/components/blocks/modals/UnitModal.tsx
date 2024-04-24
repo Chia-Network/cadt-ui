@@ -28,6 +28,7 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
             <Tabs.Item title={<FormattedMessage id="unit" />}>
               {!unitLoading && !isPickListLoading && unitData ? (
                 <UnitForm
+                  // @ts-ignore
                   onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={unitData}
@@ -40,6 +41,7 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
             {unitData?.issuance && (
               <Tabs.Item title={<FormattedMessage id="issuance" />}>
                 <IssuanceForm
+                  // @ts-ignore
                   onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={[unitData?.issuance]}
@@ -50,6 +52,7 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
             {unitData?.labels?.length && (
               <Tabs.Item title={<FormattedMessage id="labels" />}>
                 <LabelForm
+                  // @ts-ignore
                   onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={unitData?.labels}

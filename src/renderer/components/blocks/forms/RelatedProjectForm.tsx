@@ -1,63 +1,99 @@
-import React from 'react';
-import { Form, Formik } from 'formik';
-import { Field, Repeater } from '@/components';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { Form, Formik, FormikProps } from 'formik';
+import { Field, Repeater, Spinner } from '@/components';
 import * as yup from 'yup';
 import { RelatedProject } from '@/schemas/RelatedProject.schema';
+import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { useGetProjectOptionsList, useQueryParamState } from '@/hooks';
 
 const validationSchema = yup.object({
   relatedProjects: yup.array().of(
     yup.object({
       relationshipType: yup.string().required('Relationship Type is required'),
       registry: yup.string().required('Registry is required'),
+      relatedProjectId: yup.string().required('Related Project ID is required'),
     }),
   ),
 });
 
-interface RelatedProjectFormFormProps {
-  onSubmit: (values: any) => Promise<any>;
+interface RelatedProjectFormProps {
   readonly?: boolean;
   data?: RelatedProject[];
 }
 
-const RelatedProjectForm: React.FC<RelatedProjectFormFormProps> = ({ readonly = false, data }) => {
-  return (
-    <Formik
-      initialValues={{ relatedProjects: data || [] }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
-    >
-      {() => (
-        <Form>
-          <Repeater<RelatedProject>
-            name="relatedProjects"
-            maxNumber={100}
-            minNumber={1}
-            readonly={readonly}
-            initialValue={data || []}
-          >
-            {(relatedProject: RelatedProject) => (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                <Field
-                  name="relationshipType"
-                  label="Relationship Type"
-                  type="text"
-                  readonly={readonly}
-                  initialValue={relatedProject.relationshipType}
-                />
-                <Field
-                  name="registry"
-                  label="Registry"
-                  type="text"
-                  readonly={readonly}
-                  initialValue={relatedProject.registry}
-                />
-              </div>
-            )}
-          </Repeater>
-        </Form>
-      )}
-    </Formik>
-  );
-};
+export interface RelatedProjectFormRef {
+  submitForm: () => Promise<any>;
+}
+
+const RelatedProjectForm = forwardRef<RelatedProjectFormRef, RelatedProjectFormProps>(
+  ({ readonly = false, data }, ref) => {
+    const formikRef = useRef<FormikProps<any>>(null);
+    const [orgUid] = useQueryParamState('orgUid');
+
+    useImperativeHandle(ref, () => ({
+      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'relatedProjects'),
+    }));
+
+    console.log(orgUid);
+    const { projects: projectOptions, isLoading } = useGetProjectOptionsList(orgUid);
+
+    if (isLoading) {
+      return <Spinner />;
+    }
+
+    return (
+      <Formik
+        innerRef={formikRef}
+        initialValues={{ relatedProjects: data || [] }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => console.log(values)}
+      >
+        {() => (
+          <Form>
+            <Repeater<RelatedProject>
+              name="relatedProjects"
+              maxNumber={100}
+              minNumber={0}
+              readonly={readonly}
+              initialValue={data || []}
+              itemTemplate={{
+                relationshipType: null,
+                registry: null,
+                relatedProjectId: null,
+              }}
+            >
+              {(relatedProject, index, name) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                  <Field
+                    name={`${name}[${index}].relationshipType`}
+                    label="Relationship Type"
+                    type="text"
+                    readonly={readonly}
+                    initialValue={relatedProject.relationshipType}
+                  />
+                  <Field
+                    name={`${name}[${index}].registry`}
+                    label="Registry"
+                    type="text"
+                    readonly={readonly}
+                    initialValue={relatedProject.registry}
+                  />
+                  <Field
+                    name={`${name}[${index}].relatedProjectId`}
+                    label="Related Projects"
+                    type="picklist"
+                    options={projectOptions}
+                    readonly={readonly}
+                    initialValue={relatedProject.relatedProjectId}
+                  />
+                </div>
+              )}
+            </Repeater>
+          </Form>
+        )}
+      </Formik>
+    );
+  },
+);
 
 export { RelatedProjectForm };

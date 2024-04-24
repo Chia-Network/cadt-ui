@@ -1,9 +1,10 @@
-import React from 'react';
-import { Form, Formik } from 'formik';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { Rating } from '@/schemas/Rating.schema';
 import { PickList } from '@/schemas/PickList.schema';
+import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   ratings: yup.array().of(
@@ -17,34 +18,51 @@ const validationSchema = yup.object({
   ),
 });
 
-interface RatingFormFormProps {
-  onSubmit: (values: any) => Promise<any>;
+interface RatingFormProps {
   readonly?: boolean;
   data?: Rating[];
-  picklistOptions: PickList | undefined | null;
+  picklistOptions?: PickList | null;
 }
 
-const RatingForm: React.FC<RatingFormFormProps> = ({ readonly = false, data, picklistOptions }) => {
+export interface RatingFormRef {
+  submitForm: () => Promise<any>;
+}
+
+const RatingForm = forwardRef<RatingFormRef, RatingFormProps>(({ readonly = false, data, picklistOptions }, ref) => {
+  const formikRef = useRef<FormikProps<any>>(null);
+
+  useImperativeHandle(ref, () => ({
+    submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'projectRatings'),
+  }));
+
   return (
     <Formik
-      initialValues={{ ratings: data || [] }}
+      innerRef={formikRef}
+      initialValues={{ projectRatings: data || [] }}
       validationSchema={validationSchema}
       onSubmit={(values) => console.log(values)}
     >
       {() => (
         <Form>
           <Repeater<Rating>
-            name="ratings"
+            name="projectRatings"
             maxNumber={100}
-            minNumber={1}
+            minNumber={0}
             readonly={readonly}
             initialValue={data || []}
+            itemTemplate={{
+              ratingType: null,
+              ratingRangeLowest: null,
+              ratingRangeHighest: null,
+              rating: null,
+              ratingLink: null,
+            }}
           >
-            {(rating: Rating) => (
+            {(rating, index, name) => (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
-                    name="ratingType"
+                    name={`${name}[${index}].ratingType`}
                     label="Rating Type"
                     type="picklist"
                     options={picklistOptions?.ratingType}
@@ -52,26 +70,29 @@ const RatingForm: React.FC<RatingFormFormProps> = ({ readonly = false, data, pic
                     initialValue={rating.ratingType}
                   />
                   <Field
-                    name="ratingLowest"
+                    name={`${name}[${index}].ratingRangeLowest`}
                     label="Rating Lowest"
                     type="text"
                     readonly={readonly}
                     initialValue={rating.ratingRangeLowest}
                   />
-
                   <Field
-                    name="ratingHighest"
+                    name={`${name}[${index}].ratingRangeHighest`}
                     label="Rating Highest"
                     type="text"
                     readonly={readonly}
                     initialValue={rating.ratingRangeHighest}
                   />
-                  <Field name="rating" label="Rating" type="text" readonly={readonly} initialValue={rating.rating} />
-                </div>
-                <div>
                   <Field
-                    name="rating"
+                    name={`${name}[${index}].rating`}
                     label="Rating"
+                    type="text"
+                    readonly={readonly}
+                    initialValue={rating.rating}
+                  />
+                  <Field
+                    name={`${name}[${index}].ratingLink`}
+                    label="Rating Link"
                     type="link"
                     readonly={readonly}
                     initialValue={rating.ratingLink}
@@ -84,6 +105,6 @@ const RatingForm: React.FC<RatingFormFormProps> = ({ readonly = false, data, pic
       )}
     </Formik>
   );
-};
+});
 
 export { RatingForm };

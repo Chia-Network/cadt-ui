@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useWildCardUrlHash } from '@/hooks';
+import { useQueryParamState, useWildCardUrlHash, useUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,

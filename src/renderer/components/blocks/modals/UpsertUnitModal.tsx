@@ -1,7 +1,7 @@
 import React from 'react';
-import { ComponentCenteredSpinner, Modal } from '@/components';
+import { ComponentCenteredSpinner, Modal, UnitForm } from '@/components';
 import { useWildCardUrlHash } from '@/hooks';
-import { useGetUnitQuery } from '@/api';
+import { useGetPickListsQuery, useGetUnitQuery, useStageUnitMutation } from '@/api';
 import { FormattedMessage } from 'react-intl';
 
 interface UpsertModalProps {
@@ -12,7 +12,15 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
   const [, createUnitModalActive] = useWildCardUrlHash('create-unit');
   const [unitUpsertFragment] = useWildCardUrlHash('edit-unit');
   const warehouseUnitId = unitUpsertFragment.replace('edit-unit-', '');
-  const { data: unitData, isLoading: unitLoading } = useGetUnitQuery({ warehouseUnitId });
+  const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
+  const { data: unitData, isLoading: unitLoading } = useGetUnitQuery(
+    { warehouseUnitId },
+    {
+      skip: !warehouseUnitId,
+    },
+  );
+  // @ts-ignore
+  const [triggerStageUnit, { isLoading: isUnitStaging }] = useStageUnitMutation();
 
   const ModalHeader: React.FC = () => {
     return (
@@ -22,7 +30,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
     );
   };
 
-  if (unitLoading) {
+  if (unitLoading || isPickListLoading || isUnitStaging) {
     return (
       <Modal show={true} onClose={onClose}>
         <ModalHeader />
@@ -38,7 +46,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
       <ModalHeader />
       <Modal.Body>
         <div className="h-screen">
-          <p>the unit form goes here {unitData?.warehouseUnitId}</p>
+          <UnitForm data={unitData} picklistOptions={pickListData} />
         </div>
       </Modal.Body>
     </Modal>

@@ -1,4 +1,4 @@
-import { cadtApi, unitsTag } from '../';
+import { cadtApi, stagedUnitsTag, unitsTag } from '../';
 import { Unit } from '@/schemas/Unit.schema';
 
 interface GetUnitsParams {
@@ -73,7 +73,16 @@ const unitsApi = cadtApi.injectEndpoints({
       }),
       invalidatesTags: (_response, _error, { warehouseUnitId }) => [{ type: unitsTag, id: warehouseUnitId }],
     }),
+
+    stageUnit: builder.mutation<any, Unit>({
+      query: (unit) => ({
+        url: `/v1/units`,
+        method: 'POST',
+        body: unit,
+      }),
+      invalidatesTags: [stagedUnitsTag],
+    }),
   }),
 });
 
-export const { useGetUnitsQuery, useGetUnitQuery, useDeleteUnitMutation } = unitsApi;
+export const { useGetUnitsQuery, useGetUnitQuery, useDeleteUnitMutation, useStageUnitMutation } = unitsApi;

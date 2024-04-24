@@ -1,11 +1,11 @@
 export interface Issuance {
   // Required properties
-  orgUid: string;
-  startDate: Date;
-  endDate: Date;
-  verificationApproach: string;
-  verificationBody: string;
-  verificationReportDate: Date;
+  orgUid?: string;
+  startDate: Date | null;
+  endDate: Date | null;
+  verificationApproach: string | null;
+  verificationBody: string | null;
+  verificationReportDate: Date | null;
 
   // Optional properties
   id?: string | null;
