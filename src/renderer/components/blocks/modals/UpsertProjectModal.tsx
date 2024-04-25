@@ -279,6 +279,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
               </Button>
             </div>
           </div>
+          <Spacer size={15} />
         </div>
       </Modal.Body>
     </Modal>

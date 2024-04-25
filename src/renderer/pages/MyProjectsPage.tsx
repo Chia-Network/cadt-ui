@@ -133,7 +133,7 @@ const MyProjectsPage: React.FC = () => {
           )}
           <SyncIndicator detailed={true} orgUid={orgUid} />
           {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
-          <SyncIndicator detailed={true} orgUid={orgUid} />
+    
         </div>
 
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>

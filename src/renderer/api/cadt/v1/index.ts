@@ -3,7 +3,7 @@ import initialState from '@/store/slices/app/app.initialstate';
 
 const projectsTag = 'projects';
 const organizationsTag = 'organizations';
-const unitsTag = 'projects';
+const unitsTag = 'units';
 const auditTag = 'audit';
 const issuancesTag = 'issuances';
 const stagedProjectsTag = 'stagedProjects';

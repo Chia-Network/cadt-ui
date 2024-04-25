@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
-import { useGetOrganizationsMapQuery, useGetOrganizationsListQuery } from '@/api/cadt/v1/organizations';
-import { BiRefresh } from "react-icons/bi";
+import {
+  useGetOrganizationsMapQuery,
+  useGetOrganizationsListQuery,
+  invalidateProjectApiTag,
+  invalidateUnitsApiTag,
+} from '@/api';
+import { BiRefresh } from 'react-icons/bi';
+import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 interface SyncIndicatorProps {
   detailed: boolean;
@@ -16,6 +23,8 @@ interface SyncIndicatorProps {
  * @returns {JSX.Element} SyncIndicator component.
  */
 const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
+  const dispatch = useDispatch();
+  const location = useLocation();
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
     skip: !orgUid,
     pollingInterval: 10000,
@@ -56,10 +65,18 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
 
     if (prevSyncRemaining !== newSyncRemaining && prevSyncRemaining !== 0) {
       setShowRefreshBadge(true);
+
+      if (location.pathname.includes('projects')) {
+        dispatch(invalidateProjectApiTag(['projects', 'stagedProjects']));
+      }
+
+      if (location.pathname.includes('units')) {
+        dispatch(invalidateUnitsApiTag(['units', 'stagedUnits']));
+      }
     }
 
     setPrevSyncRemaining(newSyncRemaining);
-  }, [orgUid, organizationsMap, organizationList]);
+  }, [orgUid, organizationsMap, organizationList, location.pathname, dispatch, prevSyncRemaining]);
 
   const handleRefreshClick = () => {
     // Trigger hard refresh of the app here
@@ -82,13 +99,13 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
         )}
       </div>
       {showRefreshBadge && (
-       <button
-       onClick={handleRefreshClick}
-       className="ml-2 py-2 px-4 bg-orange-200 text-orange-600 border border-orange-400 rounded-lg hover:bg-orange-300 transition duration-150 ease-in-out flex items-center justify-center space-x-2 dark:bg-orange-600 dark:text-orange-200 dark:border-orange-700 dark:hover:bg-orange-700"
-     >
-       <BiRefresh className="text-orange-600 dark:text-orange-300" />
-       <span>Refresh</span>
-     </button>
+        <button
+          onClick={handleRefreshClick}
+          className="ml-2 py-2 px-4 bg-orange-200 text-orange-600 border border-orange-400 rounded-lg hover:bg-orange-300 transition duration-150 ease-in-out flex items-center justify-center space-x-2 dark:bg-orange-600 dark:text-orange-200 dark:border-orange-700 dark:hover:bg-orange-700"
+        >
+          <BiRefresh className="text-orange-600 dark:text-orange-300" />
+          <span>Refresh</span>
+        </button>
       )}
     </>
   );

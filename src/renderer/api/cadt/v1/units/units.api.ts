@@ -101,13 +101,15 @@ const unitsApi = cadtApi.injectEndpoints({
         return {
           url: `/v1/units`,
           method: 'PUT',
-          body: omit(unit, ['warehouseUnitId', 'orgUid']),
+          body: omit(unit, ['warehouseProjectId', 'orgUid', 'timeStaged', 'createdBy', 'updatedBy']),
         };
       },
       invalidatesTags: [stagedUnitsTag],
     }),
   }),
 });
+
+export const invalidateUnitsApiTag = unitsApi.util.invalidateTags;
 
 export const {
   useGetUnitsQuery,

@@ -106,7 +106,7 @@ const projectsApi = cadtApi.injectEndpoints({
         return {
           url: `/v1/projects`,
           method: 'POST',
-          body: project,
+          body: omit(project, ['orgUid', 'timeStaged', 'createdBy', 'updatedBy']),
         };
       },
       invalidatesTags: [stagedProjectsTag],
@@ -145,13 +145,15 @@ const projectsApi = cadtApi.injectEndpoints({
         return {
           url: `/v1/projects`,
           method: 'PUT',
-          body: omit(project, ['orgUid']),
+          body: omit(project, ['orgUid', 'timeStaged', 'createdBy', 'updatedBy']),
         };
       },
       invalidatesTags: [stagedProjectsTag],
     }),
   }),
 });
+
+export const invalidateProjectApiTag = projectsApi.util.invalidateTags;
 
 export const {
   useGetProjectsQuery,
