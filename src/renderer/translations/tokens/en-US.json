@@ -112,12 +112,18 @@
   "confirm-delete": "Confirm Delete",
   "this-action-cannot-be-undone": "This action cannot be undone",
   "ratings": "Ratings",
-  "edit-unit": "Edit Unit",
   "commit": "Commit",
   "commit-staged-changes": "Commit Staged Changes",
   "what-would-you-like-to-commit": "What would you like to commit",
   "commit-all": "Commit All",
   "commit-projects-only": "Commit Projects Only",
   "commit-units-only": "Commit Units Only",
-  "nothing-to-commit": "Nothing to commit"
+  "nothing-to-commit": "Nothing to commit",
+  "edit-unit": "Edit Unit",
+  "unit-successfully-staged": "Unit successfully staged",
+  "project-successfully-staged": "Project successfully staged",
+  "deleting-this-item-will-add-a-corresponding-delete-entry-to-the-staging-table": "Deleting this item will add a corresponding delete entry to the staging table",
+  "no-items-will-be-deleted-until-staged-changes-are-committed": "No items will be deleted until staged changes are committed",
+  "deleting-a-staged-item-is-a-permanent-action": "Deleting a staged item is a permanent action",
+  "change-record": "Change Record"
 }

@@ -18,17 +18,18 @@ const validationSchema = yup.object({
   ),
 });
 
-interface EstimationFormProps {
+interface EstimationsFormProps {
   readonly?: boolean;
   data?: Estimation[];
 }
 
-export interface EstimationFormRef {
+export interface EstimationsFormRef {
   submitForm: () => Promise<any>;
 }
 
-const EstimationForm = forwardRef<EstimationFormRef, EstimationFormProps>(({ readonly = false, data }, ref) => {
-  const formikRef = useRef<FormikProps<any>>(null);
+const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(
+  ({ readonly = false, data, }, ref) => {
+    const formikRef = useRef<FormikProps<any>>(null);
 
   useImperativeHandle(ref, () => ({
     submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'estimations'),
@@ -88,4 +89,4 @@ const EstimationForm = forwardRef<EstimationFormRef, EstimationFormProps>(({ rea
   );
 });
 
-export { EstimationForm };
+export { EstimationsForm };

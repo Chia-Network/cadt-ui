@@ -1,5 +1,5 @@
 import React from 'react';
-import { IssuanceForm, LabelForm, Modal, Spinner, Tabs, UnitForm } from '@/components';
+import { IssuancesForm, LabelsForm, Modal, Spinner, Tabs, UnitForm } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetPickListsQuery, useGetUnitQuery } from '@/api';
 
@@ -11,10 +11,6 @@ interface UnitModalProps {
 const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitModalProps) => {
   const { data: unitData, isLoading: unitLoading } = useGetUnitQuery({ warehouseUnitId });
   const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
-
-  const handleProjectFormSubmit = async () => {
-    return Promise.resolve();
-  };
 
   return (
     <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
@@ -28,8 +24,6 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
             <Tabs.Item title={<FormattedMessage id="unit" />}>
               {!unitLoading && !isPickListLoading && unitData ? (
                 <UnitForm
-                  // @ts-ignore
-                  onSubmit={handleProjectFormSubmit}
                   readonly={true}
                   data={unitData}
                   picklistOptions={pickListData}
@@ -40,9 +34,7 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
             </Tabs.Item>
             {unitData?.issuance && (
               <Tabs.Item title={<FormattedMessage id="issuance" />}>
-                <IssuanceForm
-                  // @ts-ignore
-                  onSubmit={handleProjectFormSubmit}
+                <IssuancesForm
                   readonly={true}
                   data={[unitData?.issuance]}
                   picklistOptions={pickListData}
@@ -51,9 +43,7 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
             )}
             {unitData?.labels?.length && (
               <Tabs.Item title={<FormattedMessage id="labels" />}>
-                <LabelForm
-                  // @ts-ignore
-                  onSubmit={handleProjectFormSubmit}
+                <LabelsForm
                   readonly={true}
                   data={unitData?.labels}
                   picklistOptions={pickListData}

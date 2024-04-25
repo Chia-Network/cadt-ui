@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { DiffViewer, Modal } from '@/components';
 import { FormattedMessage } from 'react-intl';
-import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging/staging.api';
+import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging';
 
 interface ProjectModalProps {
   stagingUuid: string;
@@ -25,7 +25,7 @@ const StagingDiffModal: React.FC<ProjectModalProps> = ({ stagingUuid, onClose }:
   return (
     <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
       <Modal.Header>
-        <FormattedMessage id={'staging-diff'} />
+        <FormattedMessage id={'change-record'} />
       </Modal.Header>
       <Modal.Body>
         <div className="h-screen">{isLoading ? <p>loading...</p> : <DiffViewer data={changeRecord} />}</div>

@@ -21,20 +21,20 @@ const validationSchema = yup.object({
   ),
 });
 
-interface IssuanceFormProps {
+interface IssuancesFormProps {
   readonly?: boolean;
   data?: Issuance[] | undefined;
   showUnits?: boolean;
   picklistOptions?: PickList | undefined;
 }
 
-export interface IssuanceFormRef {
+export interface IssuancesFormRef {
   submitForm: () => Promise<any>;
 }
 
 const defaultIssuanceData: Issuance[] = [];
 
-const IssuanceForm = forwardRef<IssuanceFormRef, IssuanceFormProps>(
+const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
   ({ readonly = false, data = defaultIssuanceData, showUnits = false, picklistOptions }, ref) => {
     const formikRef = useRef<FormikProps<any>>(null);
 
@@ -93,6 +93,7 @@ const IssuanceForm = forwardRef<IssuanceFormRef, IssuanceFormProps>(
                       name={`${name}[${index}].verificationBody`}
                       label="Verification Body"
                       type="picklist"
+                      freeform={true}
                       options={picklistOptions?.verificationBody}
                       readonly={readonly}
                       initialValue={issuance.verificationBody || ''}
@@ -121,4 +122,4 @@ const IssuanceForm = forwardRef<IssuanceFormRef, IssuanceFormProps>(
   },
 );
 
-export { IssuanceForm };
+export { IssuancesForm };

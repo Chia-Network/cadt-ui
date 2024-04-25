@@ -15,12 +15,13 @@ import {
   SyncIndicator,
   Tabs,
   UpsertProjectModal,
+  StagingDiffModal,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
 import { useNavigate } from 'react-router-dom';
-import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging/staging.api';
+import { useGetStagedProjectsQuery } from '@/api/cadt/v1/staging';
 
 enum TabTypes {
   COMMITTED,
@@ -38,6 +39,7 @@ interface ProcessedStagingData {
 
 const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
+  const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
@@ -131,6 +133,7 @@ const MyProjectsPage: React.FC = () => {
           )}
           <SyncIndicator detailed={true} orgUid={orgUid} />
           {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
+          <SyncIndicator detailed={true} orgUid={orgUid} />
         </div>
 
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
@@ -145,7 +148,7 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
+            <StagingTableTab type="staged" stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -155,7 +158,11 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.pending} showLoading={stagingDataLoading} />
+            <StagingTableTab
+              type="pending"
+              stagingData={processedStagingData.pending}
+              showLoading={stagingDataLoading}
+            />
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -165,12 +172,18 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
+            <StagingTableTab type="failed" stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
           </Tabs.Item>
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+      {stagingDiffModalActive && (
+        <StagingDiffModal
+          onClose={() => setStagingDiffModalActive(false)}
+          stagingUuid={stagingDiffFragment.replace('staging-', '')}
+        />
+      )}
       {commitModalActive && processedStagingData.staged.length && (
         <CommitStagedItemsModal type="project" onClose={() => setCommitModalActive(false)} />
       )}

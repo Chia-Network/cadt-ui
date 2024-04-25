@@ -45,25 +45,25 @@ export interface ProjectFormRef {
 }
 
 const defaultProjectData: Project = {
-  projectName: '',
-  projectId: '',
-  projectDeveloper: '',
-  program: '',
-  projectLink: '',
-  sector: '',
-  projectType: '',
-  projectStatus: '',
-  projectStatusDate: new Date(),
-  coveredByNDC: '',
-  ndcInformation: '',
-  currentRegistry: '',
-  registryOfOrigin: '',
-  originProjectId: '',
-  unitMetric: '',
-  methodology: '',
-  validationBody: '',
-  validationDate: new Date(),
-  projectTags: '',
+  projectName: null,
+  projectId: null,
+  projectDeveloper: null,
+  program: null,
+  projectLink: null,
+  sector: null,
+  projectType: null,
+  projectStatus: null,
+  projectStatusDate: null,
+  coveredByNDC: null,
+  ndcInformation: null,
+  currentRegistry: null,
+  registryOfOrigin: null,
+  originProjectId: null,
+  unitMetric: null,
+  methodology: null,
+  validationBody: null,
+  validationDate: null,
+  projectTags: null,
 };
 
 const getDefaultInitialValues = (data: Partial<Project>): Project => {
@@ -147,13 +147,16 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   <Field
                     name="sector"
                     label="Sector"
-                    type="text"
+                    type="picklist"
+                    freeform={true}
+                    options={picklistOptions?.projectSector}
                     readonly={readonly}
                     initialValue={data?.sector || ''}
                   />
                   <Field
                     name="projectType"
                     label="Project Type"
+                    freeform={true}
                     type="picklist"
                     options={picklistOptions?.projectType}
                     readonly={readonly}
@@ -196,14 +199,18 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   <Field
                     name="currentRegistry"
                     label="Current Registry"
-                    type="text"
+                    type="picklist"
+                    freeform={true}
+                    options={picklistOptions?.registries}
                     readonly={readonly}
                     initialValue={data?.currentRegistry || ''}
                   />
                   <Field
                     name="registryOfOrigin"
                     label="Registry Of Origin"
-                    type="text"
+                    type="picklist"
+                    freeform={true}
+                    options={picklistOptions?.registries}
                     readonly={readonly}
                     initialValue={data?.registryOfOrigin || ''}
                   />
@@ -230,9 +237,19 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     name="methodology"
                     label="Methodology"
                     type="picklist"
+                    freeform={true}
                     options={picklistOptions?.methodology}
                     readonly={readonly}
                     initialValue={data?.methodology || ''}
+                  />
+                  <Field
+                    name="methodology2"
+                    label="Methodology 2"
+                    type="picklist"
+                    freeform={true}
+                    options={picklistOptions?.methodology}
+                    readonly={readonly}
+                    initialValue={data?.methodology2 || ''}
                   />
                   <Field
                     name="validationBody"

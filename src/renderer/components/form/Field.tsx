@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import React from 'react';
-import { useFormikContext, FormikValues } from 'formik';
-import { Label, TextInput, Textarea, Checkbox, Datepicker } from 'flowbite-react';
+import { FormikValues, useFormikContext } from 'formik';
+import { Checkbox, Datepicker, Label, Textarea, TextInput } from 'flowbite-react';
 import { TagInput } from './TagInput';
 import dayjs from 'dayjs';
 import { Select, SelectOption } from '@/components';
@@ -11,6 +11,7 @@ interface FieldProps {
   label?: string;
   type: 'text' | 'textarea' | 'picklist' | 'checkbox' | 'radio' | 'tag' | 'date' | 'link' | 'number';
   options?: SelectOption[];
+  freeform?: boolean;
   readonly?: boolean;
   initialValue?: any;
   disabled?: boolean;
@@ -38,8 +39,18 @@ const renderOption = (options, initialValue) => {
   }
 };
 
-const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, initialValue, disabled = false }) => {
-  const { errors, setFieldValue }: FormikValues = useFormikContext();
+const Field: React.FC<FieldProps> = ({
+  name,
+  label,
+  type,
+  options,
+  readonly,
+  initialValue,
+  disabled = false,
+  freeform = false,
+}) => {
+  // @ts-ignore
+  const { errors, setFieldValue, values, touched }: FormikValues = useFormikContext();
 
   const isError: boolean = !!get(errors, name);
 
@@ -108,14 +119,17 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
             id={name}
             name={name}
             disabled={disabled}
+            freeform={freeform}
             initialValue={initialValue}
-            onChange={(e) => setFieldValue(name, e.target.value)}
+            onChange={(value) => setFieldValue(name, value)}
             options={options}
           />
         );
       case 'date':
         return (
           <Datepicker
+            showTodayButton={true}
+            showClearButton={false}
             defaultDate={initialValue ? new Date(initialValue) : undefined}
             onSelectedDateChanged={(date) => setFieldValue(name, date)}
             placeholder="Select date"
@@ -135,7 +149,7 @@ const Field: React.FC<FieldProps> = ({ name, label, type, options, readonly, ini
     <div className="mb-4">
       {label && <Label htmlFor={name}>{label}</Label>}
       {renderField()}
-      <p className="text-red-500 text-xs italic">{get(errors, name)}</p>
+      {touched[name] && <p className="text-red-500 text-s italic">{get(errors, name)}</p>}
     </div>
   );
 };

@@ -77,7 +77,7 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
             <span className={`text-sm ${isSynced ? 'text-green-700' : 'text-yellow-600'}`}>
               {isSynced ? 'Synced' : 'Syncing...'}
             </span>
-            {!isSynced && <span className="text-xs text-yellow-400">{syncRemaining} remaining</span>}
+            {!isSynced && <span className="text-xs text-yellow-400">{syncRemaining + 1} remaining</span>}
           </div>
         )}
       </div>

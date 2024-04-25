@@ -3,7 +3,6 @@ export const validateAndSubmitFieldArrayForm = async (formikRef, formName) => {
     const formik = formikRef.current;
     if (formik) {
       const errors = await formik.validateForm(formik.values);
-      console.log('errors', errors);
 
       if (errors && errors.issuances) {
         // @ts-ignore
@@ -18,7 +17,6 @@ export const validateAndSubmitFieldArrayForm = async (formikRef, formName) => {
 
         // @ts-ignore
         const touched = touchedIssuances.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-        console.log(touched);
         // @ts-ignore
         formik.setTouched(touched);
       }

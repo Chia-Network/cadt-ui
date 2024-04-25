@@ -59,6 +59,18 @@ const stagingApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedUnitsTag, stagedProjectsTag],
     }),
+
+    deleteStagedItem: builder.mutation<any, { uuid: string }>({
+      query: ({ uuid }) => {
+        return {
+          url: `/v1/staging`,
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: { uuid },
+        };
+      },
+      invalidatesTags: [stagedUnitsTag, stagedProjectsTag],
+    }),
   }),
 });
 
@@ -71,4 +83,5 @@ export const {
   useCommitProjectsMutation,
   useCommitUnitsMutation,
   useCommitAllMutation,
+  useDeleteStagedItemMutation
 } = stagingApi;
