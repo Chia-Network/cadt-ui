@@ -180,7 +180,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     );
   };
 
-  if (projectLoading || isPickListLoading || isProjectStaging) {
+  if (projectLoading || isPickListLoading || isProjectStaging || isProjectUpdateStaging) {
     return (
       <Modal show={true} onClose={onClose}>
         <ModalHeader />
