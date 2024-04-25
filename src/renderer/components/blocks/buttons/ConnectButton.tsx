@@ -16,14 +16,14 @@ const ConnectButton: React.FC = () => {
   const [isActive, setActive] = useUrlHash('connect');
   const { apiHost } = useSelector((state: RootState) => state.app);
 
-  const { data: serverFound, isLoading, refetch } = useGetHealthQuery({});
+  const { data: serverHealth, isLoading, refetch } = useGetHealthQuery({});
 
   // Activte the connect modal when the service is not found
   useEffect(() => {
-    if (!serverFound && !isLoading) {
+    if (!serverHealth?.isHealthy && !isLoading) {
       setActive(true);
     }
-  }, [serverFound, setActive, isLoading]);
+  }, [serverHealth, setActive, isLoading]);
 
   // Recheck the health when the location changes
   useEffect(() => {

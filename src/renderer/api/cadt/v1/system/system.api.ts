@@ -12,17 +12,24 @@ interface GetHealthParams {
   apiKey?: string;
 }
 
+interface ServerHealth {
+  isHealthy: boolean;
+  readOnly: boolean;
+}
+
 const systemApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHealth: builder.query<boolean, GetHealthParams>({
+    getHealth: builder.query<ServerHealth, GetHealthParams>({
       query: ({ apiHost = '', apiKey }) => ({
         url: `${apiHost}/health`,
         method: 'GET',
         headers: apiKey ? { 'X-Api-Key': apiKey } : {},
       }),
-      transformResponse(baseQueryReturnValue: BaseQueryResult<Health>): boolean {
-        return baseQueryReturnValue?.message === 'OK';
-      },
+      transformResponse: (response: BaseQueryResult<Health>, meta): ServerHealth => {
+        const isHealthy = response?.message === 'OK';
+        const readOnly = meta?.response?.headers.get('cw-readonly') === 'true';
+        return { isHealthy, readOnly };
+      }
     }),
     getHealthImmediate: builder.mutation<boolean, GetHealthParams>({
       query: ({ apiHost = '', apiKey }) => ({
