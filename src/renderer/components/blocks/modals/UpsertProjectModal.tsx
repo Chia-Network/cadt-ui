@@ -1,32 +1,37 @@
 import { isEmpty } from 'lodash';
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
   Button,
   CoBenefitsForm,
+  CoBenefitsFormRef,
   ComponentCenteredSpinner,
   EstimationsForm,
+  EstimationsFormRef,
   IssuancesForm,
+  IssuancesFormRef,
   LabelsForm,
+  LabelsFormRef,
   Modal,
   ProjectForm,
-  ProjectLocationsForm,
-  RatingsForm,
-  RelatedProjectsForm,
   ProjectFormRef,
-  IssuancesFormRef,
+  ProjectLocationsForm,
   ProjectLocationsFormRef,
-  EstimationsFormRef,
-  LabelsFormRef,
+  RatingsForm,
   RatingsFormRef,
-  CoBenefitsFormRef,
+  RelatedProjectsForm,
   RelatedProjectsFormRef,
-  Spacer
+  Spacer,
 } from '@/components';
-import { useWildCardUrlHash, useUrlHash } from '@/hooks';
-import { useGetPickListsQuery, useGetProjectQuery, useStageCreateProjectMutation, useStageUpdateProjectMutation } from '@/api';
+import { useUrlHash, useWildCardUrlHash } from '@/hooks';
+import {
+  useGetPickListsQuery,
+  useGetProjectQuery,
+  useStageCreateProjectMutation,
+  useStageUpdateProjectMutation,
+} from '@/api';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Project } from '@/schemas/Project.schema';
-import { Alert } from 'flowbite-react'
+import { Alert } from 'flowbite-react';
 
 // unfortunate  use of material UI here but dont have an altenative for stepper
 import Stepper from '@mui/material/Stepper';
@@ -67,6 +72,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
   const { data: projectData, isLoading: projectLoading } = useGetProjectQuery({ warehouseProjectId });
   const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
   const [triggerStageCreateProject, { isLoading: isProjectStaging }] = useStageCreateProjectMutation();
+  // @ts-ignore
   const [triggerStageUpdateProject, { isLoading: isProjectUpdateStaging }] = useStageUpdateProjectMutation();
   const [, setProjectStagedSuccessModal] = useUrlHash('success-stage-project');
 
@@ -136,7 +142,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
         if (activeStep === UpsertProjectTabs.RELATED_PROJECTS) {
           if (projectFormData) {
             let response: any;
-            
+
             if (createProjectModalActive) {
               response = await triggerStageCreateProject(projectFormData);
             } else {
@@ -195,13 +201,16 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
       <ModalHeader />
       <Modal.Body>
-        {formSubmitError && <><Alert color="failure">{formSubmitError}</Alert><Spacer size={15} /></>}
+        {formSubmitError && (
+          <>
+            <Alert color="failure">{formSubmitError}</Alert>
+            <Spacer size={15} />
+          </>
+        )}
         <Stepper nonLinear alternativeLabel activeStep={activeStep}>
           {steps.map((label) => (
             <Step key={label}>
-              <StepButton color="inherit">
-                {label}
-              </StepButton>
+              <StepButton color="inherit">{label}</StepButton>
             </Step>
           ))}
         </Stepper>
@@ -229,16 +238,31 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
             <EstimationsForm ref={estimationsFormRef} data={projectFormData?.estimations || projectData?.estimations} />
           )}
           {activeStep === UpsertProjectTabs.LABELS && (
-            <LabelsForm ref={labelsFormRef} data={projectFormData?.labels || projectData?.labels} picklistOptions={pickListData} />
+            <LabelsForm
+              ref={labelsFormRef}
+              data={projectFormData?.labels || projectData?.labels}
+              picklistOptions={pickListData}
+            />
           )}
           {activeStep === UpsertProjectTabs.RATINGS && (
-            <RatingsForm ref={ratingsFormRef} data={projectFormData?.projectRatings || projectData?.projectRatings} picklistOptions={pickListData} />
+            <RatingsForm
+              ref={ratingsFormRef}
+              data={projectFormData?.projectRatings || projectData?.projectRatings}
+              picklistOptions={pickListData}
+            />
           )}
           {activeStep === UpsertProjectTabs.CO_BENEFITS && (
-            <CoBenefitsForm ref={cobenefitsFormRef} data={projectFormData?.coBenefits || projectData?.coBenefits} picklistOptions={pickListData} />
+            <CoBenefitsForm
+              ref={cobenefitsFormRef}
+              data={projectFormData?.coBenefits || projectData?.coBenefits}
+              picklistOptions={pickListData}
+            />
           )}
           {activeStep === UpsertProjectTabs.RELATED_PROJECTS && (
-            <RelatedProjectsForm ref={relatedProjectsFormRef} data={projectFormData?.relatedProjects || projectData?.relatedProjects} />
+            <RelatedProjectsForm
+              ref={relatedProjectsFormRef}
+              data={projectFormData?.relatedProjects || projectData?.relatedProjects}
+            />
           )}
           <Spacer size={15} />
           <div className="flex">
@@ -250,7 +274,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
                 {activeStep !== steps.length - 1 ? (
                   <FormattedMessage id="next" />
                 ) : (
-                  <FormattedMessage id={createProjectModalActive ? "create-project" : "edit-project"} />
+                  <FormattedMessage id={createProjectModalActive ? 'create-project' : 'edit-project'} />
                 )}
               </Button>
             </div>
