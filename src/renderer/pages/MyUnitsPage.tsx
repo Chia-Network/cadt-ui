@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
 import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
-
 import {
   Button,
+  CommitStagedItemsModal,
   CommittedUnitsTab,
   ComponentCenteredSpinner,
   IndeterminateProgressOverlay,
@@ -17,7 +17,6 @@ import {
   StagedUnitSuccessModal,
   StagingDiffModal
 } from '@/components';
-
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
 import { Organization } from '@/schemas/Organization.schema';
@@ -43,8 +42,9 @@ const MyUnitsPage: React.FC = () => {
   const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [, editUnitModalActive] = useWildCardUrlHash('edit-unit');
+  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
+  const [commitModalActive, setCommitModalActive] = useUrlHash('commit-staged-items');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const [unitStagedSuccess, setUnitStagedSuccess] = useUrlHash('success-stage-unit');
@@ -101,6 +101,7 @@ const MyUnitsPage: React.FC = () => {
   );
 
   const handleCloseUpsertModal = () => {
+    setEditUnitModalActive(false);
     setCreateUnitModalActive(false);
   };
 
@@ -108,17 +109,29 @@ const MyUnitsPage: React.FC = () => {
     return <ComponentCenteredSpinner />;
   }
 
-  console.log('@@')
-
   return (
     <>
       <div className="m-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
-          <Button disabled={contentsLoading}>
-            <FormattedMessage id="create-unit" />
-          </Button>
-          {activeTab === TabTypes.COMMITTED && <SearchBox defaultValue={search} onChange={handleSearchChange} />}
+          {activeTab === TabTypes.COMMITTED && (
+            <>
+              <Button disabled={contentsLoading} onClick={() => setCreateUnitModalActive(true)}>
+                <FormattedMessage id="create-unit" />
+              </Button>
+              <SearchBox defaultValue={search} onChange={handleSearchChange} />
+            </>
+          )}
+          {activeTab === TabTypes.STAGING && (
+            <>
+              <Button
+                disabled={contentsLoading || !processedStagingData.staged.length}
+                onClick={() => setCommitModalActive(true)}
+              >
+                <FormattedMessage id="commit" />
+              </Button>
+            </>
+          )}
           {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
         </div>
@@ -164,6 +177,9 @@ const MyUnitsPage: React.FC = () => {
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
+      {commitModalActive && processedStagingData.staged.length && (
+        <CommitStagedItemsModal type="unit" onClose={() => setCommitModalActive(false)} />
+      )}
       {(createUnitModalActive || editUnitModalActive) && <UpsertUnitModal onClose={handleCloseUpsertModal} />}
       {unitStagedSuccess && <StagedUnitSuccessModal showModal={true} onClose={() => setUnitStagedSuccess(false)} />}
       {stagingDiffModalActive && (

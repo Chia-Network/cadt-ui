@@ -51,15 +51,15 @@ const ConfirmDeleteCommittedItemModal: React.FC<ConfirmDeleteModalProps> = ({
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button color="gray" onClick={handleClickClose} disabled={projectDeletionLoading || unitDeletionLoading}>
-          <FormattedMessage id="cancel" />
-        </Button>
         <Button
           onClick={handleConfirm}
           isProcessing={projectDeletionLoading || unitDeletionLoading}
           disabled={projectDeletionLoading || unitDeletionLoading}
         >
           <FormattedMessage id="delete" />
+        </Button>
+        <Button color="gray" onClick={handleClickClose} disabled={projectDeletionLoading || unitDeletionLoading}>
+          <FormattedMessage id="cancel" />
         </Button>
       </Modal.Footer>
     </Modal>

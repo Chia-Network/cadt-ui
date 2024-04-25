@@ -28,6 +28,38 @@ const stagingApi = cadtApi.injectEndpoints({
       providesTags: [stagedUnitsTag],
     }),
 
+    commitProjects: builder.mutation<any, void | null | undefined>({
+      query: () => {
+        return {
+          url: `/v1/staging/commit`,
+          method: 'POST',
+          params: { table: 'Projects' },
+        };
+      },
+      invalidatesTags: [stagedProjectsTag],
+    }),
+
+    commitUnits: builder.mutation<any, void | null | undefined>({
+      query: () => {
+        return {
+          url: `/v1/staging/commit`,
+          method: 'POST',
+          params: { table: 'Units' },
+        };
+      },
+      invalidatesTags: [stagedUnitsTag],
+    }),
+
+    commitAll: builder.mutation<any, void | null | undefined>({
+      query: () => {
+        return {
+          url: `/v1/staging/commit`,
+          method: 'POST',
+        };
+      },
+      invalidatesTags: [stagedUnitsTag, stagedProjectsTag],
+    }),
+
     deleteStagedItem: builder.mutation<any, { uuid: string }>({
       query: ({ uuid }) => {
         return {
@@ -45,4 +77,11 @@ const stagingApi = cadtApi.injectEndpoints({
 const invalidateStagingApiTag = stagingApi.util.invalidateTags;
 export { invalidateStagingApiTag };
 
-export const { useGetStagedProjectsQuery, useGetStagedUnitsQuery, useDeleteStagedItemMutation } = stagingApi;
+export const {
+  useGetStagedProjectsQuery,
+  useGetStagedUnitsQuery,
+  useCommitProjectsMutation,
+  useCommitUnitsMutation,
+  useCommitAllMutation,
+  useDeleteStagedItemMutation
+} = stagingApi;

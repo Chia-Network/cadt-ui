@@ -8,4 +8,5 @@ export * from './UpsertUnitModal';
 export * from './ConfirmDeleteCommittedItemModal';
 export * from './ConfirmDeleteStagedItemModal';
 export * from './StagedProjectSuccessModal';
+export * from './CommitStagedItemsModal';
 export * from './StagedUnitSuccessModal';
