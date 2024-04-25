@@ -1,4 +1,4 @@
-import { isNil, isEmpty, omit } from 'lodash';
+import { isEmpty, isNil, omit } from 'lodash';
 import { cadtApi, stagedUnitsTag, unitsTag } from '../';
 import { Unit } from '@/schemas/Unit.schema';
 
@@ -106,6 +106,37 @@ const unitsApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedUnitsTag],
     }),
+
+    uploadUnitsXls: builder.mutation<any, { orgUid: string; xlsx: File }>({
+      query: ({ orgUid, xlsx }) => {
+        const formData: FormData = new FormData();
+        formData.append('xlsx', xlsx);
+
+        return {
+          url: `/v1/units/xlsx`,
+          method: 'PUT',
+          params: { orgUid, xls: true },
+          body: formData,
+        };
+      },
+      invalidatesTags: [stagedUnitsTag],
+    }),
+
+    downloadUnitsXls: builder.query<any, { orgUid: string }>({
+      query: ({ orgUid }) => ({
+        url: `/v1/units/xlsx`,
+        method: 'GET',
+        params: { orgUid, xls: true },
+      }),
+    }),
+
+    downloadUnitsXlsImmediate: builder.mutation<any, { orgUid: string }>({
+      query: ({ orgUid }) => ({
+        url: `/v1/units/xlsx`,
+        method: 'GET',
+        params: { orgUid, xls: true },
+      }),
+    }),
   }),
 });
 
@@ -115,4 +146,7 @@ export const {
   useDeleteUnitMutation,
   useStageCreateUnitMutation,
   useStageUpdateUnitMutation,
+  useDownloadUnitsXlsQuery,
+  useUploadUnitsXlsMutation,
+  useDownloadUnitsXlsImmediateMutation,
 } = unitsApi;

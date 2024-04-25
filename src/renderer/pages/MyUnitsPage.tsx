@@ -10,12 +10,13 @@ import {
   IndeterminateProgressOverlay,
   OrgUidBadge,
   SearchBox,
+  StagedUnitSuccessModal,
+  StagingDiffModal,
   StagingTableTab,
   SyncIndicator,
   Tabs,
   UpsertUnitModal,
-  StagedUnitSuccessModal,
-  StagingDiffModal
+  XlsUploadDownloadButtons,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -132,8 +133,9 @@ const MyUnitsPage: React.FC = () => {
               </Button>
             </>
           )}
-          {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
+          {myOrganization && <XlsUploadDownloadButtons orgUid={myOrganization.orgUid} type="unit" />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
+          {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         </div>
 
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
