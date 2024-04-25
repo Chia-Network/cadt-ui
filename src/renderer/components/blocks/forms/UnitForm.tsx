@@ -1,9 +1,9 @@
-import { forwardRef, useRef, useImperativeHandle, useMemo, useState } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
-import { Card, Field, SelectOption, Select, Spinner, Label, ComponentCenteredSpinner } from '@/components';
+import { Card, ComponentCenteredSpinner, Field, Label, Select, SelectOption } from '@/components';
 import { Unit } from '@/schemas/Unit.schema';
-import { useGetProjectQuery, useGetHomeOrgQuery } from '@/api';
+import { useGetHomeOrgQuery, useGetProjectQuery } from '@/api';
 import { PickList } from '@/schemas/PickList.schema';
 import { useGetProjectOptionsList } from '@/hooks';
 
@@ -88,7 +88,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
           } else {
             const error = { warehouseProjectId: 'A valid project must be selected' };
             setError(error.warehouseProjectId);
-            return [{...errors, ...error}, formik.values];
+            return [{ ...errors, ...error }, formik.values];
           }
 
           return [errors, formik.values];

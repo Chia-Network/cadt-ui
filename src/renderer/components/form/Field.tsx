@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import React from 'react';
-import { useFormikContext, FormikValues } from 'formik';
-import { Label, TextInput, Textarea, Checkbox, Datepicker } from 'flowbite-react';
+import { FormikValues, useFormikContext } from 'formik';
+import { Checkbox, Datepicker, Label, Textarea, TextInput } from 'flowbite-react';
 import { TagInput } from './TagInput';
 import dayjs from 'dayjs';
 import { Select, SelectOption } from '@/components';
@@ -49,6 +49,7 @@ const Field: React.FC<FieldProps> = ({
   disabled = false,
   freeform = false,
 }) => {
+  // @ts-ignore
   const { errors, setFieldValue, values, touched }: FormikValues = useFormikContext();
 
   const isError: boolean = !!get(errors, name);
@@ -88,8 +89,6 @@ const Field: React.FC<FieldProps> = ({
       </div>
     );
   }
-
- 
 
   const renderField = () => {
     switch (type) {
@@ -150,10 +149,7 @@ const Field: React.FC<FieldProps> = ({
     <div className="mb-4">
       {label && <Label htmlFor={name}>{label}</Label>}
       {renderField()}
-      {touched[name] && (
-<p className="text-red-500 text-s italic">{get(errors, name)}</p>
-      )}
-      
+      {touched[name] && <p className="text-red-500 text-s italic">{get(errors, name)}</p>}
     </div>
   );
 };

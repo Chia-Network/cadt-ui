@@ -36,7 +36,7 @@ const UnitsListTable: React.FC<TableProps> = ({
         key: 'actionColumn',
         ignoreChildEvents: true,
         ignoreOrderChange: true,
-        render: (row: Unit) => <ProjectAndUnitActions type="unit" warehouseId={row.warehouseUnitId} />,
+        render: (row: Unit) => <ProjectAndUnitActions type="unit" warehouseId={row.warehouseUnitId || ''} />,
       },
     ];
 
