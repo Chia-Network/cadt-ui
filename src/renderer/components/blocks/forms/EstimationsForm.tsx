@@ -3,7 +3,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import { Estimation } from '@/schemas/Estimation.schema';
 import * as yup from 'yup';
-import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { validateAndSubmitFieldArrayForm, deepOmit } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   estimations: yup.array().of(
@@ -32,7 +32,7 @@ const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(
     const formikRef = useRef<FormikProps<any>>(null);
 
   useImperativeHandle(ref, () => ({
-    submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'estimations'),
+    submitForm: async () => deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'estimations'), ['orgUid', 'warehouseProjectId', 'timeStaged']),
   }));
 
   return (

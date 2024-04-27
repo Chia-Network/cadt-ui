@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import { Column, DataTable, PageCounter, Pagination, ProjectAndUnitActions } from '@/components';
+import { Column, DataTable, PageCounter, Pagination, ProjectAndUnitActions, UpsertUnitModal } from '@/components';
+import { partial } from 'lodash';
+import { useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { Unit } from '@/schemas/Unit.schema';
 
 interface TableProps {
@@ -30,13 +32,27 @@ const UnitsListTable: React.FC<TableProps> = ({
   totalCount,
 }) => {
   const columns = useMemo(() => {
+    const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-project');
+    const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-project');
+
+    const handleCloseUpsertModal = () => {
+      setEditUnitModalActive(false);
+      setCreateUnitModalActive(false);
+    };
+
     const editColumn: Column[] = [
       {
         title: '',
         key: 'actionColumn',
         ignoreChildEvents: true,
         ignoreOrderChange: true,
-        render: (row: Unit) => <ProjectAndUnitActions type="unit" warehouseId={row.warehouseUnitId || ''} />,
+        render: (row: Unit) => (
+          <ProjectAndUnitActions
+            type="project"
+            warehouseId={row?.warehouseProjectId || ''}
+            openEditModal={partial(setEditUnitModalActive, true)}
+          />
+        ),
       },
     ];
 
@@ -92,29 +108,32 @@ const UnitsListTable: React.FC<TableProps> = ({
   }, [isEditable]);
 
   return (
-    <div className="relative">
-      <DataTable
-        columns={columns}
-        data={data}
-        onChangeOrder={setOrder}
-        onRowClick={onRowClick}
-        order={order}
-        primaryKey="warehouseUnitId"
-        isLoading={isLoading}
-        footer={
-          <>
-            <PageCounter currentPage={currentPage} totalCount={totalCount} />
-            <Pagination
-              currentPage={currentPage}
-              layout="pagination"
-              onPageChange={onPageChange}
-              showIcons={true}
-              totalPages={totalPages || 1}
-            />
-          </>
-        }
-      />
-    </div>
+    <>
+      <div className="relative">
+        <DataTable
+          columns={columns}
+          data={data}
+          onChangeOrder={setOrder}
+          onRowClick={onRowClick}
+          order={order}
+          primaryKey="warehouseUnitId"
+          isLoading={isLoading}
+          footer={
+            <>
+              <PageCounter currentPage={currentPage} totalCount={totalCount} />
+              <Pagination
+                currentPage={currentPage}
+                layout="pagination"
+                onPageChange={onPageChange}
+                showIcons={true}
+                totalPages={totalPages || 1}
+              />
+            </>
+          }
+        />
+      </div>
+      {(createUnitModalActive || editUnitModalActive) && <UpsertUnitModal onClose={handleCloseUpsertModal} />}
+    </>
   );
 };
 

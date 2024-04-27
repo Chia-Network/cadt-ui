@@ -1,3 +1,5 @@
+import { isObject, isArray, transform, isFunction } from 'lodash';
+
 export const validateAndSubmitFieldArrayForm = async (formikRef, formName) => {
   if (formikRef.current) {
     const formik = formikRef.current;
@@ -32,3 +34,26 @@ export const validateAndSubmitFieldArrayForm = async (formikRef, formName) => {
 
   return Promise.resolve([null, null]);
 };
+
+/**
+ * Recursively omits the 'orgUId' property from an object or every object within an array.
+ * @param input The object or array from which to omit the 'orgUId' property.
+ * @returns The new object or array with the 'orgUId' property omitted from every level.
+ */
+export const deepOmit = (input: any, omitKeys: string[]): any => {
+  // Check if the input is an array
+  if (isArray(input)) {
+    // Map each item in the array, applying deepOmitOrgUId recursively
+    return input.map(item => deepOmit(item, omitKeys));
+  } else if (isObject(input) && !isFunction(input)) {
+    // If the input is an object (excluding functions), omit 'orgUId' and apply recursively to all properties
+    return transform(input, (result: any, value: any, key: string) => {
+      // Omit 'orgUId' from the current level and recurse into objects and arrays
+      if (!omitKeys.includes(key)) {
+        result[key] = deepOmit(value, omitKeys);
+      }
+    });
+  }
+  // Return the value unchanged if it's neither an object nor an array
+  return input;
+}

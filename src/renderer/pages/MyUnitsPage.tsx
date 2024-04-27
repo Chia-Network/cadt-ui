@@ -13,9 +13,8 @@ import {
   StagingTableTab,
   SyncIndicator,
   Tabs,
-  UpsertUnitModal,
   StagedUnitSuccessModal,
-  StagingDiffModal
+  StagingDiffModal,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -42,8 +41,7 @@ const MyUnitsPage: React.FC = () => {
   const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
-  const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
+  const [, setCreateUnitModalActive] = useUrlHash('create-unit');
   const [commitModalActive, setCommitModalActive] = useUrlHash('commit-staged-items');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
@@ -100,11 +98,6 @@ const MyUnitsPage: React.FC = () => {
     [setSearch, debounce],
   );
 
-  const handleCloseUpsertModal = () => {
-    setEditUnitModalActive(false);
-    setCreateUnitModalActive(false);
-  };
-
   if (!myOrganization || organizationsListLoading) {
     return <ComponentCenteredSpinner />;
   }
@@ -138,7 +131,9 @@ const MyUnitsPage: React.FC = () => {
 
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
           <Tabs.Item title={<FormattedMessage id="committed" />}>
-            <CommittedUnitsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
+            {activeTab === TabTypes.COMMITTED && (
+              <CommittedUnitsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
+            )}
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -148,7 +143,13 @@ const MyUnitsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab type="staged" stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
+            {activeTab === TabTypes.STAGING && (
+              <StagingTableTab
+                type="staged"
+                stagingData={processedStagingData.staged}
+                showLoading={stagingDataLoading}
+              />
+            )}
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -158,11 +159,13 @@ const MyUnitsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab
-              type="pending"
-              stagingData={processedStagingData.pending}
-              showLoading={stagingDataLoading}
-            />
+            {activeTab === TabTypes.PENDING && (
+              <StagingTableTab
+                type="pending"
+                stagingData={processedStagingData.pending}
+                showLoading={stagingDataLoading}
+              />
+            )}
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -172,7 +175,13 @@ const MyUnitsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab type="failed" stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
+            {activeTab === TabTypes.FAILED && (
+              <StagingTableTab
+                type="failed"
+                stagingData={processedStagingData.failed}
+                showLoading={stagingDataLoading}
+              />
+            )}
           </Tabs.Item>
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
@@ -180,7 +189,7 @@ const MyUnitsPage: React.FC = () => {
       {commitModalActive && processedStagingData.staged.length && (
         <CommitStagedItemsModal type="unit" onClose={() => setCommitModalActive(false)} />
       )}
-      {(createUnitModalActive || editUnitModalActive) && <UpsertUnitModal onClose={handleCloseUpsertModal} />}
+      
       {unitStagedSuccess && <StagedUnitSuccessModal showModal={true} onClose={() => setUnitStagedSuccess(false)} />}
       {stagingDiffModalActive && (
         <StagingDiffModal

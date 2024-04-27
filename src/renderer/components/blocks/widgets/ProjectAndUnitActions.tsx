@@ -1,20 +1,20 @@
+import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
 import { Button, ConfirmDeleteCommittedItemModal, Tooltip } from '@/components';
-import { useWildCardUrlHash } from '@/hooks';
 import { FormattedMessage } from 'react-intl';
 
 interface ProjectAndUnitActionsProps {
   type: 'project' | 'unit';
   warehouseId: string;
+  openEditModal: (string) => void;
 }
 
 const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   type,
   warehouseId,
+  openEditModal = noop,
 }: ProjectAndUnitActionsProps) => {
-  const [, , setEditProjectModalActive] = useWildCardUrlHash('edit-project');
-  const [, , setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const handleClickDelete = () => {
@@ -22,11 +22,7 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   };
 
   const handleClickEdit = () => {
-    if (type === 'project') {
-      setEditProjectModalActive(true, warehouseId);
-    } else {
-      setEditUnitModalActive(true, warehouseId);
-    }
+    openEditModal(warehouseId);
   };
 
   return (

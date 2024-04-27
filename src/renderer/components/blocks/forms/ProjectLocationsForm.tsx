@@ -4,7 +4,7 @@ import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { ProjectLocation } from '@/schemas/ProjectLocation.schema';
 import { PickList } from '@/schemas/PickList.schema';
-import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { validateAndSubmitFieldArrayForm, deepOmit } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   locations: yup.array().of(
@@ -32,7 +32,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
-      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'projectLocations'),
+      submitForm: async () => deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'projectLocations'), ['orgUid', 'warehouseProjectId', 'timeStaged']),
     }));
 
     return (
