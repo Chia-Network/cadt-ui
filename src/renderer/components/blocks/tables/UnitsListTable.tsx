@@ -48,8 +48,8 @@ const UnitsListTable: React.FC<TableProps> = ({
         ignoreOrderChange: true,
         render: (row: Unit) => (
           <ProjectAndUnitActions
-            type="project"
-            warehouseId={row?.warehouseProjectId || ''}
+            type="unit"
+            warehouseId={row?.warehouseUnitId || ''}
             openEditModal={partial(setEditUnitModalActive, true)}
           />
         ),
