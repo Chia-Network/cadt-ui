@@ -8,12 +8,14 @@ interface ProjectAndUnitActionsProps {
   type: 'project' | 'unit';
   warehouseId: string;
   openEditModal: (string) => void;
+  openSplitModal?: (string) => void;
 }
 
 const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   type,
   warehouseId,
   openEditModal = noop,
+  openSplitModal = noop,
 }: ProjectAndUnitActionsProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
@@ -24,6 +26,10 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   const handleClickEdit = () => {
     openEditModal(warehouseId);
   };
+
+  const handleClickSplit = () => {
+    openSplitModal(warehouseId);
+  }
 
   return (
     <>
@@ -36,6 +42,11 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
             <Button onClick={handleClickEdit} outline>
               <FormattedMessage id="edit" />
             </Button>
+            {type === 'unit' && (
+              <Button onClick={handleClickSplit} outline>
+                <FormattedMessage id="split" />
+              </Button>
+            )}
             <Button onClick={handleClickDelete} outline>
               <FormattedMessage id="delete" />
             </Button>

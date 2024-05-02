@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import { Column, DataTable, PageCounter, Pagination, ProjectAndUnitActions, UpsertUnitModal } from '@/components';
+import { Column, DataTable, PageCounter, Pagination, ProjectAndUnitActions, UpsertUnitModal, SplitUnitModal } from '@/components';
 import { partial } from 'lodash';
 import { useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { Unit } from '@/schemas/Unit.schema';
@@ -31,12 +31,14 @@ const UnitsListTable: React.FC<TableProps> = ({
   totalPages,
   totalCount,
 }) => {
-  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-project');
+  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
+  const [, splitUnitModalActive, setSplitUnitModalActive] = useWildCardUrlHash('split-unit');
   const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
 
   const handleCloseUpsertModal = () => {
     setEditUnitModalActive(false);
     setCreateUnitModalActive(false);
+    setSplitUnitModalActive(false);
   };
 
   const columns = useMemo(() => {
@@ -51,6 +53,7 @@ const UnitsListTable: React.FC<TableProps> = ({
             type="unit"
             warehouseId={row?.warehouseUnitId || ''}
             openEditModal={partial(setEditUnitModalActive, true)}
+            openSplitModal={partial(setSplitUnitModalActive, true)}
           />
         ),
       },
@@ -133,6 +136,7 @@ const UnitsListTable: React.FC<TableProps> = ({
         />
       </div>
       {(createUnitModalActive || editUnitModalActive) && <UpsertUnitModal onClose={handleCloseUpsertModal} />}
+      {splitUnitModalActive && <SplitUnitModal onClose={handleCloseUpsertModal} />}
     </>
   );
 };

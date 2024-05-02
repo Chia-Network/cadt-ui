@@ -86,6 +86,7 @@ const unitsApi = cadtApi.injectEndpoints({
         return {
           url: `/v1/units`,
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: unit,
         };
       },
@@ -101,7 +102,22 @@ const unitsApi = cadtApi.injectEndpoints({
         return {
           url: `/v1/units`,
           method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
           body: omit(unit, ['warehouseProjectId', 'orgUid', 'timeStaged', 'createdBy', 'updatedBy']),
+        };
+      },
+      invalidatesTags: [stagedUnitsTag],
+    }),
+
+    stageSplitUnit: builder.mutation<any, any>({
+      query: ({warehouseUnitId, records}) => {
+        return {
+          url: `/v1/units/split`,
+          method: 'POST',
+          body: {
+            warehouseUnitId,
+            records,
+          },
         };
       },
       invalidatesTags: [stagedUnitsTag],
@@ -117,4 +133,5 @@ export const {
   useDeleteUnitMutation,
   useStageCreateUnitMutation,
   useStageUpdateUnitMutation,
+  useStageSplitUnitMutation,
 } = unitsApi;
