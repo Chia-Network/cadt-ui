@@ -31,15 +31,15 @@ const UnitsListTable: React.FC<TableProps> = ({
   totalPages,
   totalCount,
 }) => {
+  const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-project');
+  const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-unit');
+
+  const handleCloseUpsertModal = () => {
+    setEditUnitModalActive(false);
+    setCreateUnitModalActive(false);
+  };
+
   const columns = useMemo(() => {
-    const [, editUnitModalActive, setEditUnitModalActive] = useWildCardUrlHash('edit-project');
-    const [createUnitModalActive, setCreateUnitModalActive] = useUrlHash('create-project');
-
-    const handleCloseUpsertModal = () => {
-      setEditUnitModalActive(false);
-      setCreateUnitModalActive(false);
-    };
-
     const editColumn: Column[] = [
       {
         title: '',
