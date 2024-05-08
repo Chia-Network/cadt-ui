@@ -117,17 +117,22 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
           <div className="flex flex-col gap-4">
             <Card>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                <div>
-                  <Label htmlFor="select-project">Select Project</Label>
-                  <Select
-                    id="select-project"
-                    name="select-project"
-                    onChange={handleSetWarehouseProjectId}
-                    options={projectOptions}
-                    initialValue={unit?.warehouseProjectId?.toString() || ''}
-                  />
-                  {error && <p className="text-red-500 text-s italic">{error}</p>}
-                </div>
+                {!readonly && (
+                  <>
+                    <div>
+                      <Label htmlFor="select-project">Select Project</Label>
+                      <Select
+                        id="select-project"
+                        name="select-project"
+                        onChange={handleSetWarehouseProjectId}
+                        options={projectOptions}
+                        initialValue={unit?.warehouseProjectId?.toString() || ''}
+                      />
+                      {error && <p className="text-red-500 text-s italic">{error}</p>}
+                    </div>
+                  </>
+                )}
+
                 <Field
                   name="projectLocationId"
                   label="Project Location Id"

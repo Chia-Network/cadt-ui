@@ -1,5 +1,5 @@
 {
-  "name": "sprout-ui",
+  "name": "cadt",
   "private": true,
   "version": "0.0.9",
   "type": "module",
@@ -101,8 +101,8 @@
     "*.+(js|ts|tsx)": "npm run lint:prettier-eslint"
   },
   "build": {
-    "appId": "storage.datalayer.sprout-ui",
-    "productName": "sprout-ui",
+    "appId": "net.chia.cadt",
+    "productName": "cadt",
     "files": [
       "build/renderer/**/*",
       "build/**/*",
