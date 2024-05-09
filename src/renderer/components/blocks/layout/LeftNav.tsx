@@ -5,12 +5,12 @@ import { FormattedMessage } from 'react-intl';
 import { Card, CreateOrganizationModal, Sidebar, Spinner, WarehouseIcon } from '@/components';
 import ROUTES from '@/routes/route-constants';
 import { MdListAlt } from 'react-icons/md';
-import { invalidateOrgApiTag, useGetOrganizationsListQuery, useGetHealthQuery } from '@/api';
+import { invalidateOrgApiTag, useGetHealthQuery, useGetOrganizationsListQuery } from '@/api';
 import { Organization } from '@/schemas/Organization.schema';
 import { useUrlHash } from '@/hooks';
 import { useDispatch } from 'react-redux';
 import { organizationsTag } from '@/api/cadt/v1';
-import { Flowbite, ThemeProps, CustomFlowbiteTheme } from 'flowbite-react';
+import { CustomFlowbiteTheme, Flowbite, ThemeProps } from 'flowbite-react';
 
 const LeftNav = () => {
   const dispatch = useDispatch();
@@ -31,13 +31,14 @@ const LeftNav = () => {
   const customerTheme: CustomFlowbiteTheme = {
     sidebar: {
       root: {
+        base: 'h-full',
         inner: 'h-full overflow-y-auto overflow-x-hidden bg-[#4d5c63] px-3 py-4 dark:bg-gray-800',
       },
-      "item": {
-        "base": "flex items-center justify-center rounded-lg p-2 text-base font-normal text-white hover:text-black hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700",
-        "active": "bg-green-500 dark:bg-gray-700 text-black",
-      }
-    },  
+      item: {
+        base: 'flex items-center justify-center rounded-lg p-2 text-base font-normal text-white hover:text-black hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700',
+        active: 'bg-green-500 dark:bg-gray-700 text-black',
+      },
+    },
   };
 
   const SidebarTheme: ThemeProps = {
@@ -69,7 +70,7 @@ const LeftNav = () => {
   };
 
   return (
-    <div className="relative bg-white dark:bg-gray-800">
+    <div className="h-full relative bg-white dark:bg-gray-800">
       {/* Menu toggle with darker background */}
       <div className="md:hidden flex justify-end p-4 dark:bg-gray-700">
         <button
@@ -113,7 +114,7 @@ const LeftNav = () => {
       </div>
 
       {/* Original Desktop LeftNav Layout */}
-      <div className="hidden md:block">
+      <div className="h-full hidden md:block">
         <Flowbite theme={SidebarTheme}>
           <Sidebar aria-label="App Navigation">
             <Sidebar.Items>
