@@ -83,9 +83,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
           const formik = formikRef.current;
           if (formik) {
             const errors = await formik.validateForm(formik.values);
-            formik.setTouched(
-              Object.keys(errors).reduce((acc, key) => ({ ...acc, [key]: true }), {})
-            );
+            formik.setTouched(Object.keys(errors).reduce((acc, key) => ({ ...acc, [key]: true }), {}));
 
             return [errors, formik.values];
           }
@@ -110,6 +108,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     label="Project Name"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.projectName || ''}
                   />
                   <Field
@@ -117,6 +116,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     label="External Project Id"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.projectId || ''}
                   />
                   <Field
@@ -124,6 +124,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     label="Project Developer"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.projectDeveloper || ''}
                   />
                   <Field
@@ -140,6 +141,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     label="Project Link"
                     type="link"
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.projectLink || ''}
                   />
                 </div>
@@ -151,6 +153,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     freeform={true}
                     options={picklistOptions?.projectSector}
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.sector || ''}
                   />
                   <Field
@@ -160,6 +163,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     type="picklist"
                     options={picklistOptions?.projectType}
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.projectType || ''}
                   />
                   <Field
@@ -168,6 +172,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     type="picklist"
                     options={picklistOptions?.projectStatusValues}
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.projectStatus || ''}
                   />
                   <Field
@@ -175,6 +180,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     label="Project Status Date"
                     type="date"
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.projectStatusDate || ''}
                   />
                 </div>
@@ -187,6 +193,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     type="picklist"
                     options={picklistOptions?.coveredByNDC}
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.coveredByNDC || ''}
                   />
                   <Field
@@ -194,6 +201,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     label="NDC Information"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.ndcInformation || ''}
                   />
                   <Field
@@ -203,6 +211,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     freeform={true}
                     options={picklistOptions?.registries}
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.currentRegistry || ''}
                   />
                   <Field
@@ -212,6 +221,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     freeform={true}
                     options={picklistOptions?.registries}
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.registryOfOrigin || ''}
                   />
                   <Field
@@ -219,6 +229,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     label="Origin Project ID"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.originProjectId || ''}
                   />
                 </div>
@@ -231,6 +242,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     type="picklist"
                     options={picklistOptions?.unitMetric}
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.unitMetric || ''}
                   />
                   <Field
@@ -240,6 +252,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     freeform={true}
                     options={picklistOptions?.methodology}
                     readonly={readonly}
+                    required={true}
                     initialValue={data?.methodology || ''}
                   />
                   <Field

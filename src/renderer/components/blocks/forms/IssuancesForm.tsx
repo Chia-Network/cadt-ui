@@ -1,10 +1,10 @@
-import { forwardRef, useRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { Field, Repeater, UnitSummary } from '@/components';
 import { Issuance } from '@/schemas/Issuance.schema';
 import { PickList } from '@/schemas/PickList.schema';
-import { validateAndSubmitFieldArrayForm, deepOmit } from '@/utils/formik-utils';
+import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   issuances: yup.array().of(
@@ -39,7 +39,12 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
-      submitForm: async () => deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'issuances'), ['orgUid', 'warehouseProjectId', 'timeStaged']),
+      submitForm: async () =>
+        deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'issuances'), [
+          'orgUid',
+          'warehouseProjectId',
+          'timeStaged',
+        ]),
     }));
 
     return (
@@ -73,6 +78,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                       label="Start Date"
                       type="date"
                       readonly={readonly}
+                      required={true}
                       initialValue={issuance.startDate}
                     />
                     <Field
@@ -80,6 +86,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                       label="End Date"
                       type="date"
                       readonly={readonly}
+                      required={true}
                       initialValue={issuance.endDate}
                     />
                     <Field
@@ -87,6 +94,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                       label="Verification Approach"
                       type="text"
                       readonly={readonly}
+                      required={true}
                       initialValue={issuance.verificationApproach}
                     />
                     <Field
@@ -96,6 +104,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                       freeform={true}
                       options={picklistOptions?.verificationBody}
                       readonly={readonly}
+                      required={true}
                       initialValue={issuance.verificationBody || ''}
                     />
                     <Field
@@ -103,6 +112,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                       label="Verification Report Date"
                       type="date"
                       readonly={readonly}
+                      required={true}
                       initialValue={issuance.verificationReportDate || null}
                     />
                   </div>
