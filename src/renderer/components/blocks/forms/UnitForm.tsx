@@ -147,6 +147,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Owner"
                   type="text"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitOwner}
                 />
                 <Field
@@ -154,6 +155,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Block Start"
                   type="text"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitBlockStart}
                 />
 
@@ -162,6 +164,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Block End"
                   type="text"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitBlockEnd}
                 />
 
@@ -170,6 +173,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Count"
                   type="number"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitCount}
                 />
 
@@ -179,6 +183,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.countries}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.countryJurisdictionOfOwner}
                 />
 
@@ -188,6 +193,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.countries}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.inCountryJurisdictionOfOwner}
                 />
 
@@ -197,6 +203,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.unitType}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitType}
                 />
 
@@ -206,6 +213,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.unitStatus}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitStatus}
                 />
 
@@ -214,6 +222,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Status Reason"
                   type="text"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitStatusReason}
                 />
 
@@ -222,6 +231,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Vintage Year"
                   type="number"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.vintageYear}
                 />
               </div>
@@ -267,6 +277,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.correspondingAdjustmentStatus}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.correspondingAdjustmentStatus}
                 />
 
@@ -276,6 +287,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.correspondingAdjustmentDeclaration}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.correspondingAdjustmentDeclaration}
                 />
               </div>
