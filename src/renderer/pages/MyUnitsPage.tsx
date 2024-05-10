@@ -15,6 +15,7 @@ import {
   Tabs,
   StagedUnitSuccessModal,
   StagingDiffModal,
+  XlsUploadDownloadButtons,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -125,8 +126,9 @@ const MyUnitsPage: React.FC = () => {
               </Button>
             </>
           )}
-          {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
+          {myOrganization && <XlsUploadDownloadButtons orgUid={myOrganization.orgUid} type="unit" />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
+          {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         </div>
 
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
@@ -189,7 +191,7 @@ const MyUnitsPage: React.FC = () => {
       {commitModalActive && processedStagingData.staged.length && (
         <CommitStagedItemsModal type="unit" onClose={() => setCommitModalActive(false)} />
       )}
-      
+
       {unitStagedSuccess && <StagedUnitSuccessModal showModal={true} onClose={() => setUnitStagedSuccess(false)} />}
       {stagingDiffModalActive && (
         <StagingDiffModal

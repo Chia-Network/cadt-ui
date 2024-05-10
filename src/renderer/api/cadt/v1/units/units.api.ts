@@ -122,6 +122,36 @@ const unitsApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedUnitsTag],
     }),
+
+    uploadUnitsXls: builder.mutation<any, { xlsx: File }>({
+      query: ({ xlsx }) => {
+        const formData: FormData = new FormData();
+        formData.append('xlsx', xlsx);
+
+        return {
+          url: `/v1/units/xlsx`,
+          method: 'PUT',
+          body: formData,
+        };
+      },
+      invalidatesTags: [stagedUnitsTag],
+    }),
+
+    downloadUnitsXls: builder.query<any, { orgUid: string }>({
+      query: ({ orgUid }) => ({
+        url: `/v1/units/xlsx`,
+        method: 'GET',
+        params: { orgUid, xls: true },
+      }),
+    }),
+
+    downloadUnitsXlsImmediate: builder.mutation<any, { orgUid: string }>({
+      query: ({ orgUid }) => ({
+        url: `/v1/units/xlsx`,
+        method: 'GET',
+        params: { orgUid, xls: true },
+      }),
+    }),
   }),
 });
 
@@ -134,4 +164,7 @@ export const {
   useStageCreateUnitMutation,
   useStageUpdateUnitMutation,
   useStageSplitUnitMutation,
+  useDownloadUnitsXlsQuery,
+  useUploadUnitsXlsMutation,
+  useDownloadUnitsXlsImmediateMutation,
 } = unitsApi;

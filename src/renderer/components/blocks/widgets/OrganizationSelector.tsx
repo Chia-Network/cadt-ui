@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useGetOrganizationsListQuery } from '@/api/cadt/v1/organizations';
-import { Dropdown, SyncIndicator, Spinner, Select } from '@/components';
+import { Dropdown, SyncIndicator, Spinner } from '@/components';
 import { Organization } from '@/schemas/Organization.schema';
 
 interface OrganizationSelectorProps {

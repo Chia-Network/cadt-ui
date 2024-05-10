@@ -75,8 +75,8 @@ const ProjectsListPage: React.FC = () => {
           defaultOrgUid={orgUid}
           noSelectionLabel="All Organizations"
         />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
       </div>
 
       {projectsLoading ? (

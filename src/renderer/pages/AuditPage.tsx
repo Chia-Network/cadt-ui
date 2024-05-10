@@ -100,8 +100,8 @@ const AuditPage: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
         <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
-        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         <SyncIndicator detailed={true} orgUid={orgUid} />
+        {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
       </div>
       <>
         {auditLoading ? (

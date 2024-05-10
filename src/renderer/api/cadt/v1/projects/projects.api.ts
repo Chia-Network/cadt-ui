@@ -1,4 +1,4 @@
-import { isNil, isEmpty, omit } from 'lodash';
+import { isEmpty, isNil, omit } from 'lodash';
 import { cadtApi, projectsTag, stagedProjectsTag } from '../';
 import { Project } from '@/schemas/Project.schema';
 
@@ -192,6 +192,36 @@ const projectsApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedProjectsTag],
     }),
+
+    uploadProjectsXls: builder.mutation<any, { xlsx: File }>({
+      query: ({ xlsx }) => {
+        const formData: FormData = new FormData();
+        formData.append('xlsx', xlsx);
+
+        return {
+          url: `/v1/projects/xlsx`,
+          method: 'PUT',
+          body: formData,
+        };
+      },
+      invalidatesTags: [stagedProjectsTag],
+    }),
+
+    downloadProjectsXls: builder.query<any, { orgUid: string }>({
+      query: ({ orgUid }) => ({
+        url: `/v1/projects/xlsx`,
+        method: 'GET',
+        params: { orgUid, xls: true },
+      }),
+    }),
+
+    downloadProjectsXlsImmediate: builder.mutation<any, { orgUid: string }>({
+      query: ({ orgUid }) => ({
+        url: `/v1/projects/xlsx`,
+        method: 'GET',
+        params: { orgUid, xls: true },
+      }),
+    }),
   }),
 });
 
@@ -204,4 +234,7 @@ export const {
   useDeleteProjectMutation,
   useStageCreateProjectMutation,
   useStageUpdateProjectMutation,
+  useDownloadProjectsXlsQuery,
+  useUploadProjectsXlsMutation,
+  useDownloadProjectsXlsImmediateMutation,
 } = projectsApi;

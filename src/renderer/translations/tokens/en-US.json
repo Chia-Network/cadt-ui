@@ -126,6 +126,7 @@
   "no-items-will-be-deleted-until-staged-changes-are-committed": "No items will be deleted until staged changes are committed",
   "deleting-a-staged-item-is-a-permanent-action": "Deleting a staged item is a permanent action",
   "change-record": "Change Record",
+  "upload-failed": "Upload failed",
   "split": "Split",
   "split-unit": "Split Unit",
   "detailed-audit-view": "Detailed Audit Record"
