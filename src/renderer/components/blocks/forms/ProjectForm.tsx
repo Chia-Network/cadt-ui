@@ -31,7 +31,7 @@ const validationSchema = yup.object({
   methodology: yup.string().required('Methodology is required').min(1, 'Methodology cannot be empty'),
   validationBody: yup.string().required('Validation Body is required').min(1, 'Validation Body cannot be empty'),
   validationDate: yup.date().required('Validation Date is required'),
-  projectTags: yup.string().min(1, 'Project Tags cannot be empty'), // Optional field with no empty string
+  projectTags: yup.string().nullable(), // Optional field with no empty string
 });
 
 interface ProjectFormProps {
@@ -83,9 +83,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
           const formik = formikRef.current;
           if (formik) {
             const errors = await formik.validateForm(formik.values);
-            formik.setTouched(
-              Object.keys(errors).reduce((acc, key) => ({ ...acc, [key]: true }), {})
-            );
+            formik.setTouched(Object.keys(errors).reduce((acc, key) => ({ ...acc, [key]: true }), {}));
 
             return [errors, formik.values];
           }
