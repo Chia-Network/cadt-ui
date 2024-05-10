@@ -58,7 +58,7 @@ const CommittedProjectsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoa
           setOrder={handleSetOrder}
           order={order}
           totalPages={projectsData.pageCount}
-          totalCount={projectsData.pageCount * 10}
+          totalCount={projectsData.pageCount < 10 ? projectsData.data.length : projectsData.pageCount * 10}
         />
       )}
       {projectDetailsModalActive && (

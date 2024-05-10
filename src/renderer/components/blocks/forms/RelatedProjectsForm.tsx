@@ -1,9 +1,9 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
-import { Field, Repeater, Spinner } from '@/components';
+import { ComponentCenteredSpinner, Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { RelatedProject } from '@/schemas/RelatedProject.schema';
-import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 import { useGetProjectOptionsList, useQueryParamState } from '@/hooks';
 
 const validationSchema = yup.object({
@@ -31,14 +31,18 @@ const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFo
     const [orgUid] = useQueryParamState('orgUid');
 
     useImperativeHandle(ref, () => ({
-      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'relatedProjects'),
+      submitForm: async () =>
+        deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'relatedProjects'), [
+          'orgUid',
+          'warehouseProjectId',
+          'timeStaged',
+        ]),
     }));
 
-    console.log(orgUid);
     const { projects: projectOptions, isLoading } = useGetProjectOptionsList(orgUid);
 
     if (isLoading) {
-      return <Spinner />;
+      return <ComponentCenteredSpinner label="Loading Project Data" />;
     }
 
     return (
@@ -69,6 +73,7 @@ const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFo
                     label="Relationship Type"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={relatedProject.relationshipType}
                   />
                   <Field
@@ -76,6 +81,7 @@ const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFo
                     label="Registry"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={relatedProject.registry}
                   />
                   <Field
@@ -84,6 +90,7 @@ const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFo
                     type="picklist"
                     options={projectOptions}
                     readonly={readonly}
+                    required={true}
                     initialValue={relatedProject.relatedProjectId}
                   />
                 </div>

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
+import { useQueryParamState, useUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
@@ -11,11 +11,9 @@ import {
   OrgUidBadge,
   SearchBox,
   StagedProjectSuccessModal,
-  StagingDiffModal,
   StagingTableTab,
   SyncIndicator,
   Tabs,
-  UpsertProjectModal,
   XlsUploadDownloadButtons,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
@@ -40,13 +38,11 @@ interface ProcessedStagingData {
 
 const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
-  const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
-  const [, editProjectModalActive] = useWildCardUrlHash('edit-project');
-  const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
   const [projectStagedSuccess, setProjectStagedSuccess] = useUrlHash('success-stage-project');
   const [commitModalActive, setCommitModalActive] = useUrlHash('commit-staged-items');
+  const [, setCreateProjectModalActive] = useUrlHash('create-project');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
   const [committedDataLoading, setCommittedDataLoading] = useState<boolean>(false);
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -101,10 +97,6 @@ const MyProjectsPage: React.FC = () => {
     [setSearch, debounce],
   );
 
-  const handleCloseUpsertModal = () => {
-    setCreateProjectModalActive(false);
-  };
-
   if (!myOrganization || organizationsListLoading) {
     return <ComponentCenteredSpinner />;
   }
@@ -139,7 +131,9 @@ const MyProjectsPage: React.FC = () => {
 
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
           <Tabs.Item title={<FormattedMessage id="committed" />}>
-            <CommittedProjectsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
+            {activeTab === TabTypes.COMMITTED && (
+              <CommittedProjectsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
+            )}
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -149,7 +143,13 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab type="staged" stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
+            {activeTab === TabTypes.STAGING && (
+              <StagingTableTab
+                type="staged"
+                stagingData={processedStagingData.staged}
+                showLoading={stagingDataLoading}
+              />
+            )}
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -159,11 +159,13 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab
-              type="pending"
-              stagingData={processedStagingData.pending}
-              showLoading={stagingDataLoading}
-            />
+            {activeTab === TabTypes.PENDING && (
+              <StagingTableTab
+                type="pending"
+                stagingData={processedStagingData.pending}
+                showLoading={stagingDataLoading}
+              />
+            )}
           </Tabs.Item>
           <Tabs.Item
             title={
@@ -173,18 +175,17 @@ const MyProjectsPage: React.FC = () => {
               </p>
             }
           >
-            <StagingTableTab type="failed" stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
+            {activeTab === TabTypes.FAILED && (
+              <StagingTableTab
+                type="failed"
+                stagingData={processedStagingData.failed}
+                showLoading={stagingDataLoading}
+              />
+            )}
           </Tabs.Item>
           <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
-      {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
-      {stagingDiffModalActive && (
-        <StagingDiffModal
-          onClose={() => setStagingDiffModalActive(false)}
-          stagingUuid={stagingDiffFragment.replace('staging-', '')}
-        />
-      )}
       {commitModalActive && processedStagingData.staged.length && (
         <CommitStagedItemsModal type="project" onClose={() => setCommitModalActive(false)} />
       )}

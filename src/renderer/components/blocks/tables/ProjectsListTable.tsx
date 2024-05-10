@@ -1,9 +1,19 @@
+import { partial } from 'lodash';
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import { Column, DataTable, PageCounter, Pagination, ProjectAndUnitActions, Tooltip } from '@/components';
+import {
+  Column,
+  DataTable,
+  PageCounter,
+  Pagination,
+  ProjectAndUnitActions,
+  Tooltip,
+  UpsertProjectModal,
+} from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { Badge } from 'flowbite-react';
+import { useWildCardUrlHash, useUrlHash } from '@/hooks';
 
 interface TableProps {
   data: Project[];
@@ -30,6 +40,14 @@ const ProjectsListTable: React.FC<TableProps> = ({
   totalPages,
   totalCount,
 }) => {
+  const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
+
+  const handleCloseUpsertModal = () => {
+    setCreateProjectModalActive(false);
+    setEditProjectModalActive(false);
+  };
+
   const columns = useMemo(() => {
     const editColumn: Column[] = [
       {
@@ -37,7 +55,13 @@ const ProjectsListTable: React.FC<TableProps> = ({
         key: 'actionColumn',
         ignoreChildEvents: true,
         ignoreOrderChange: true,
-        render: (row: Project) => <ProjectAndUnitActions type="project" warehouseId={row?.warehouseProjectId || ''} />,
+        render: (row: Project) => (
+          <ProjectAndUnitActions
+            type="project"
+            warehouseId={row?.warehouseProjectId || ''}
+            openEditModal={partial(setEditProjectModalActive, true)}
+          />
+        ),
       },
     ];
 
@@ -102,32 +126,35 @@ const ProjectsListTable: React.FC<TableProps> = ({
     ];
 
     return isEditable ? editColumn.concat(staticColumns) : staticColumns;
-  }, [isEditable]);
+  }, [isEditable, setEditProjectModalActive]);
 
   return (
-    <div className="relative">
-      <DataTable
-        columns={columns}
-        onChangeOrder={setOrder}
-        onRowClick={onRowClick}
-        order={order}
-        data={data}
-        primaryKey="warehouseProjectId"
-        isLoading={isLoading}
-        footer={
-          <>
-            <PageCounter currentPage={currentPage} totalCount={totalCount} />
-            <Pagination
-              currentPage={currentPage}
-              layout="pagination"
-              onPageChange={onPageChange}
-              showIcons={true}
-              totalPages={totalPages || 1}
-            />
-          </>
-        }
-      />
-    </div>
+    <>
+      <div className="relative">
+        <DataTable
+          columns={columns}
+          onChangeOrder={setOrder}
+          onRowClick={onRowClick}
+          order={order}
+          data={data}
+          primaryKey="warehouseProjectId"
+          isLoading={isLoading}
+          footer={
+            <>
+              <PageCounter currentPage={currentPage} totalCount={totalCount} />
+              <Pagination
+                currentPage={currentPage}
+                layout="pagination"
+                onPageChange={onPageChange}
+                showIcons={true}
+                totalPages={totalPages || 1}
+              />
+            </>
+          }
+        />
+      </div>
+      {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+    </>
   );
 };
 

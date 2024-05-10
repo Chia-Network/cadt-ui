@@ -13,6 +13,7 @@ interface FieldProps {
   options?: SelectOption[];
   freeform?: boolean;
   readonly?: boolean;
+  required?: boolean;
   initialValue?: any;
   disabled?: boolean;
 }
@@ -45,6 +46,7 @@ const Field: React.FC<FieldProps> = ({
   type,
   options,
   readonly,
+  required,
   initialValue,
   disabled = false,
   freeform = false,
@@ -147,7 +149,12 @@ const Field: React.FC<FieldProps> = ({
 
   return (
     <div className="mb-4">
-      {label && <Label htmlFor={name}>{label}</Label>}
+      {label && (
+        <div className="flex">
+          {!readonly && required && <p className="text-red-600 mr-1">*</p>}
+          <Label htmlFor={name}>{label}</Label>
+        </div>
+      )}
       {renderField()}
       {touched[name] && <p className="text-red-500 text-s italic">{get(errors, name)}</p>}
     </div>

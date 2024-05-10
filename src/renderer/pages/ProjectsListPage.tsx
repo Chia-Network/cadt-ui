@@ -41,8 +41,9 @@ const ProjectsListPage: React.FC = () => {
   const handleOrganizationSelected = useCallback(
     (organization: any) => {
       setOrgUid(organization?.orgUid);
+      setCurrentPage('1');
     },
-    [setOrgUid],
+    [setOrgUid, setCurrentPage],
   );
 
   const handleSearchChange = useCallback(
@@ -91,7 +92,7 @@ const ProjectsListPage: React.FC = () => {
           setOrder={handleSetOrder}
           order={order}
           totalPages={projectsData.pageCount}
-          totalCount={projectsData.pageCount * 10}
+          totalCount={projectsData.pageCount < 10 ? projectsData.data.length : projectsData.pageCount * 10}
         />
       )}
       {projectDetailsModalActive && (

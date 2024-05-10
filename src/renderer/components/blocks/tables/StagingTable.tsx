@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Badge, DataTable } from '@/components';
+import { Badge, DataTable, StagingDiffModal, StagedItemActions } from '@/components';
+import { useWildCardUrlHash } from '@/hooks';
 import dayjs from 'dayjs';
-import { StagedItemActions } from '@/components/blocks/widgets/StagedItemActions';
 
 interface TableProps {
   data: any[];
@@ -14,6 +14,7 @@ interface TableProps {
 }
 
 const StagingTable: React.FC<TableProps> = ({ data, type, isLoading, onRowClick, setOrder, order }: TableProps) => {
+  const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const columns = useMemo(
     () => [
       {
@@ -79,6 +80,12 @@ const StagingTable: React.FC<TableProps> = ({ data, type, isLoading, onRowClick,
           isLoading={isLoading}
         />
       </div>
+      {stagingDiffModalActive && (
+        <StagingDiffModal
+          onClose={() => setStagingDiffModalActive(false)}
+          stagingUuid={stagingDiffFragment.replace('staging-', '')}
+        />
+      )}
     </>
   );
 };

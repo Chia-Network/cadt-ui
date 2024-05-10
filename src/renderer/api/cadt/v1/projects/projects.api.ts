@@ -7,6 +7,7 @@ interface GetProjectsParams {
   orgUid?: string | null;
   search?: string | null;
   order?: string | null;
+  xls?: boolean | null;
 }
 
 interface GetProjectParams {
@@ -26,7 +27,7 @@ interface GetProjectsResponse {
 const projectsApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query<GetProjectsResponse, GetProjectsParams>({
-      query: ({ page, orgUid, search, order }: GetProjectsParams) => {
+      query: ({ page, orgUid, search, order, xls }: GetProjectsParams) => {
         // Initialize the params object with page and limit
         const params: GetProjectsParams & { limit: number } = { page, limit: 10 };
 
@@ -40,6 +41,47 @@ const projectsApi = cadtApi.injectEndpoints({
 
         if (order) {
           params.order = order;
+        }
+
+        if (xls) {
+          params.xls = xls;
+          if (!orgUid) {
+            params.orgUid = 'all';
+          }
+        }
+
+        return {
+          url: `/v1/projects`,
+          params,
+          method: 'GET',
+        };
+      },
+      // @ts-ignore
+      providesTags: (_response, _error, { orgUid }) => [{ type: projectsTag, id: orgUid }],
+    }),
+
+    getProjectsImmediate: builder.mutation<GetProjectsResponse, GetProjectsParams>({
+      query: ({ page, orgUid, search, order, xls }: GetProjectsParams) => {
+        // Initialize the params object with page and limit
+        const params: GetProjectsParams & { limit: number } = { page, limit: 10 };
+
+        if (orgUid) {
+          params.orgUid = orgUid;
+        }
+
+        if (search) {
+          params.search = search.replace(/[^a-zA-Z0-9 _.-]+/, '');
+        }
+
+        if (order) {
+          params.order = order;
+        }
+
+        if (xls) {
+          params.xls = xls;
+          if (!orgUid) {
+            params.orgUid = 'all';
+          }
         }
 
         return {
@@ -106,7 +148,7 @@ const projectsApi = cadtApi.injectEndpoints({
         return {
           url: `/v1/projects`,
           method: 'POST',
-          body: project,
+          body: omit(project, ['orgUid', 'timeStaged', 'createdBy', 'updatedBy']),
         };
       },
       invalidatesTags: [stagedProjectsTag],
@@ -145,7 +187,7 @@ const projectsApi = cadtApi.injectEndpoints({
         return {
           url: `/v1/projects`,
           method: 'PUT',
-          body: omit(project, ['orgUid']),
+          body: omit(project, ['orgUid', 'timeStaged', 'createdBy', 'updatedBy']),
         };
       },
       invalidatesTags: [stagedProjectsTag],
@@ -183,8 +225,11 @@ const projectsApi = cadtApi.injectEndpoints({
   }),
 });
 
+export const invalidateProjectApiTag = projectsApi.util.invalidateTags;
+
 export const {
   useGetProjectsQuery,
+  useGetProjectsImmediateMutation,
   useGetProjectQuery,
   useDeleteProjectMutation,
   useStageCreateProjectMutation,

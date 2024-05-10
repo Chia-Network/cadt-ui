@@ -34,7 +34,7 @@ const validationSchema = yup.object({
 interface UnitFormProps {
   readonly?: boolean;
   data?: Unit;
-  picklistOptions: PickList | undefined;
+  picklistOptions?: PickList | undefined;
 }
 
 export interface UnitFormRef {
@@ -102,11 +102,11 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
     setSelectedWarehouseProjectId(value);
   };
 
-  if (isHomeOrgLoading || isProjectOptionsLoading) {
+  if ((isHomeOrgLoading || isProjectOptionsLoading) && !readonly) {
     return <ComponentCenteredSpinner label="Loading Selected Project Data" />;
   }
 
-  if (isProjectLoading || isProjectFetching) {
+  if ((isProjectLoading || isProjectFetching) && !readonly) {
     return <ComponentCenteredSpinner label="Loading Selected Project Data" />;
   }
 
@@ -117,17 +117,22 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
           <div className="flex flex-col gap-4">
             <Card>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                <div>
-                  <Label htmlFor="select-project">Select Project</Label>
-                  <Select
-                    id="select-project"
-                    name="select-project"
-                    onChange={handleSetWarehouseProjectId}
-                    options={projectOptions}
-                    initialValue={unit?.warehouseProjectId?.toString() || ''}
-                  />
-                  {error && <p className="text-red-500 text-s italic">{error}</p>}
-                </div>
+                {!readonly && (
+                  <>
+                    <div>
+                      <Label htmlFor="select-project">Select Project</Label>
+                      <Select
+                        id="select-project"
+                        name="select-project"
+                        onChange={handleSetWarehouseProjectId}
+                        options={projectOptions}
+                        initialValue={unit?.warehouseProjectId?.toString() || ''}
+                      />
+                      {error && <p className="text-red-500 text-s italic">{error}</p>}
+                    </div>
+                  </>
+                )}
+
                 <Field
                   name="projectLocationId"
                   label="Project Location Id"
@@ -142,6 +147,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Owner"
                   type="text"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitOwner}
                 />
                 <Field
@@ -149,6 +155,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Block Start"
                   type="text"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitBlockStart}
                 />
 
@@ -157,6 +164,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Block End"
                   type="text"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitBlockEnd}
                 />
 
@@ -165,6 +173,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Count"
                   type="number"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitCount}
                 />
 
@@ -174,6 +183,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.countries}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.countryJurisdictionOfOwner}
                 />
 
@@ -183,6 +193,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.countries}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.inCountryJurisdictionOfOwner}
                 />
 
@@ -192,6 +203,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.unitType}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitType}
                 />
 
@@ -201,6 +213,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.unitStatus}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitStatus}
                 />
 
@@ -209,6 +222,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Status Reason"
                   type="text"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitStatusReason}
                 />
 
@@ -217,6 +231,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Vintage Year"
                   type="number"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.vintageYear}
                 />
               </div>
@@ -262,6 +277,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.correspondingAdjustmentStatus}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.correspondingAdjustmentStatus}
                 />
 
@@ -271,6 +287,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={picklistOptions?.correspondingAdjustmentDeclaration}
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.correspondingAdjustmentDeclaration}
                 />
               </div>

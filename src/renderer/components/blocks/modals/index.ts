@@ -10,3 +10,5 @@ export * from './ConfirmDeleteStagedItemModal';
 export * from './StagedProjectSuccessModal';
 export * from './CommitStagedItemsModal';
 export * from './StagedUnitSuccessModal';
+export * from './SplitUnitModal';
+export * from './AuditModal';

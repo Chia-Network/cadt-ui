@@ -1,10 +1,10 @@
-import { useRef, forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { ProjectLocation } from '@/schemas/ProjectLocation.schema';
 import { PickList } from '@/schemas/PickList.schema';
-import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   locations: yup.array().of(
@@ -32,7 +32,12 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
-      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'projectLocations'),
+      submitForm: async () =>
+        deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'projectLocations'), [
+          'orgUid',
+          'warehouseProjectId',
+          'timeStaged',
+        ]),
     }));
 
     return (
@@ -54,7 +59,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                 country: '',
                 geographicIdentifier: '',
                 inCountryRegion: '',
-                fileId: ''
+                fileId: '',
               }}
             >
               {(location, index, name) => (
@@ -65,6 +70,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                     type="picklist"
                     options={picklistOptions?.countries}
                     readonly={readonly}
+                    required={true}
                     initialValue={location.country}
                   />
                   <Field
@@ -72,6 +78,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                     label="In-Country Region"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={location.inCountryRegion}
                   />
                   <Field
@@ -79,6 +86,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                     label="Geographic Identifier"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={location.geographicIdentifier}
                   />
                   <Field
@@ -86,6 +94,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                     label="File ID"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={location.fileId}
                   />
                 </div>
@@ -95,7 +104,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
         )}
       </Formik>
     );
-  }
+  },
 );
 
 export { ProjectLocationsForm };

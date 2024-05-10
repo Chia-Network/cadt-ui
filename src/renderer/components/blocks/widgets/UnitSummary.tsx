@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { CompactUnitsTable, Spinner } from '@/components';
 import { useGetUnitsQuery } from '@/api';
 import { useNavigate } from 'react-router-dom';
@@ -49,7 +49,7 @@ const UnitSummary: React.FC<{ issuanceId: any }> = ({ issuanceId }) => {
         onRowClick={onRowClick}
         currentPage={currentPage}
         totalPages={units.pageCount}
-        totalCount={units.pageCount * 10}
+        totalCount={units.pageCount < 10 ? units.data.length : units.pageCount * 10}
       />
     </>
   );

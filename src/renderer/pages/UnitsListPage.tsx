@@ -40,8 +40,9 @@ const UnitsListPage: React.FC = () => {
   const handleOrganizationSelected = useCallback(
     (organization: any) => {
       setOrgUid(organization?.orgUid);
+      setCurrentPage('1');
     },
-    [setOrgUid],
+    [setOrgUid, setCurrentPage],
   );
 
   const handleSearchChange: DebouncedFunc<any> = useCallback(
@@ -91,7 +92,7 @@ const UnitsListPage: React.FC = () => {
             setOrder={handleSetOrder}
             order={order}
             totalPages={unitsData.pageCount}
-            totalCount={unitsData.pageCount * 10}
+            totalCount={unitsData.pageCount < 10 ? unitsData.data.length : unitsData.pageCount * 10}
           />
           {unitDetailsModalActive && (
             <UnitModal

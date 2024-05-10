@@ -1,10 +1,10 @@
-import { useRef, forwardRef, useImperativeHandle } from 'react';
-import { Formik, Form, FormikProps } from 'formik';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { CoBenefit } from '@/schemas/CoBenefit.schema';
 import { PickList } from '@/schemas/PickList.schema';
-import { validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   cobenefits: yup.array().of(
@@ -29,7 +29,12 @@ const CoBenefitsForm = forwardRef<CoBenefitsFormRef, CoBenefitsFormProps>(
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
-      submitForm: () => validateAndSubmitFieldArrayForm(formikRef, 'coBenefits'),
+      submitForm: async () =>
+        deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'coBenefits'), [
+          'orgUid',
+          'warehouseProjectId',
+          'timeStaged',
+        ]),
     }));
 
     return (
@@ -58,6 +63,7 @@ const CoBenefitsForm = forwardRef<CoBenefitsFormRef, CoBenefitsFormProps>(
                     freeform={true}
                     options={picklistOptions?.coBenefits}
                     readonly={readonly}
+                    required={true}
                     initialValue={coBenefit.cobenefit}
                   />
                 </div>

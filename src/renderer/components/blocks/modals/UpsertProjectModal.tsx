@@ -136,6 +136,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
         }
 
         if (values) {
+          console.log('values:', values)
           setProjectFormData({ ...projectFormData, ...values });
         }
 
@@ -279,6 +280,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
               </Button>
             </div>
           </div>
+          <Spacer size={15} />
         </div>
       </Modal.Body>
     </Modal>

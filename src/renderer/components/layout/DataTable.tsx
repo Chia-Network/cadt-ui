@@ -84,7 +84,7 @@ const DataTable: React.FC<DataTableProps> = ({
 
       <div
         className="hidden md:flex md:flex-col custom-scrollbar"
-        style={compact ? {} : { height: 'calc(100vh - 240px)', width: 'calc(100vw - 260px)' }}
+        style={compact ? {} : { height: data.length > 0 ? 'calc(100vh - 240px)' : 'unset', width: 'calc(100vw - 260px)' }}
       >
         <SimpleBar style={{ maxHeight: '100%' }} autoHide={false} forceVisible="x">
           <table

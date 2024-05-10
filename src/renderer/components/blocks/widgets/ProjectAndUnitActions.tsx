@@ -1,20 +1,22 @@
+import { noop } from 'lodash';
 import React, { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
 import { Button, ConfirmDeleteCommittedItemModal, Tooltip } from '@/components';
-import { useWildCardUrlHash } from '@/hooks';
 import { FormattedMessage } from 'react-intl';
 
 interface ProjectAndUnitActionsProps {
   type: 'project' | 'unit';
   warehouseId: string;
+  openEditModal: (string) => void;
+  openSplitModal?: (string) => void;
 }
 
 const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   type,
   warehouseId,
+  openEditModal = noop,
+  openSplitModal = noop,
 }: ProjectAndUnitActionsProps) => {
-  const [, , setEditProjectModalActive] = useWildCardUrlHash('edit-project');
-  const [, , setEditUnitModalActive] = useWildCardUrlHash('edit-unit');
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const handleClickDelete = () => {
@@ -22,12 +24,12 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   };
 
   const handleClickEdit = () => {
-    if (type === 'project') {
-      setEditProjectModalActive(true, warehouseId);
-    } else {
-      setEditUnitModalActive(true, warehouseId);
-    }
+    openEditModal(warehouseId);
   };
+
+  const handleClickSplit = () => {
+    openSplitModal(warehouseId);
+  }
 
   return (
     <>
@@ -40,6 +42,11 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
             <Button onClick={handleClickEdit} outline>
               <FormattedMessage id="edit" />
             </Button>
+            {type === 'unit' && (
+              <Button onClick={handleClickSplit} outline>
+                <FormattedMessage id="split" />
+              </Button>
+            )}
             <Button onClick={handleClickDelete} outline>
               <FormattedMessage id="delete" />
             </Button>
