@@ -80,8 +80,6 @@ const AuditPage: React.FC = () => {
       </>
     );
   }
-  
-  
 
   if (auditLoading) {
     return <SkeletonTable />;
@@ -116,7 +114,7 @@ const AuditPage: React.FC = () => {
             setOrder={handleSetOrder}
             order={order && `onchainConfirmationTimeStamp:${order}`}
             totalPages={auditData.pageCount}
-            totalCount={auditData.pageCount * 10}
+            totalCount={auditData.pageCount < 10 ? auditData.data.length : auditData.pageCount * 10}
           />
         )}
       </>

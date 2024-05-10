@@ -91,7 +91,7 @@ const UnitsListPage: React.FC = () => {
             setOrder={handleSetOrder}
             order={order}
             totalPages={unitsData.pageCount}
-            totalCount={unitsData.pageCount * 10}
+            totalCount={unitsData.pageCount < 10 ? unitsData.data.length : unitsData.pageCount * 10}
           />
           {unitDetailsModalActive && (
             <UnitModal
