@@ -3,7 +3,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import { Estimation } from '@/schemas/Estimation.schema';
 import * as yup from 'yup';
-import { validateAndSubmitFieldArrayForm, deepOmit } from '@/utils/formik-utils';
+import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   estimations: yup.array().of(
@@ -27,12 +27,16 @@ export interface EstimationsFormRef {
   submitForm: () => Promise<any>;
 }
 
-const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(
-  ({ readonly = false, data, }, ref) => {
-    const formikRef = useRef<FormikProps<any>>(null);
+const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(({ readonly = false, data }, ref) => {
+  const formikRef = useRef<FormikProps<any>>(null);
 
   useImperativeHandle(ref, () => ({
-    submitForm: async () => deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'estimations'), ['orgUid', 'warehouseProjectId', 'timeStaged']),
+    submitForm: async () =>
+      deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'estimations'), [
+        'orgUid',
+        'warehouseProjectId',
+        'timeStaged',
+      ]),
   }));
 
   return (
@@ -64,6 +68,7 @@ const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(
                   label="Crediting Period Start"
                   type="date"
                   readonly={readonly}
+                  required={true}
                   initialValue={estimation.creditingPeriodStart}
                 />
                 <Field
@@ -71,6 +76,7 @@ const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(
                   label="Crediting Period End"
                   type="date"
                   readonly={readonly}
+                  required={true}
                   initialValue={estimation.creditingPeriodEnd}
                 />
                 <Field
@@ -78,6 +84,7 @@ const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(
                   label="Unit Count"
                   type="number"
                   readonly={readonly}
+                  required={true}
                   initialValue={estimation.unitCount}
                 />
               </div>

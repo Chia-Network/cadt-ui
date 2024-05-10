@@ -1,10 +1,10 @@
-import { forwardRef, useRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import { Field, Repeater } from '@/components';
 import * as yup from 'yup';
 import { Rating } from '@/schemas/Rating.schema';
 import { PickList } from '@/schemas/PickList.schema';
-import { validateAndSubmitFieldArrayForm, deepOmit } from '@/utils/formik-utils';
+import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 
 const validationSchema = yup.object({
   ratings: yup.array().of(
@@ -28,12 +28,16 @@ export interface RatingsFormRef {
   submitForm: () => Promise<any>;
 }
 
-const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(
-  ({ readonly = false, data, picklistOptions }, ref) => {
-    const formikRef = useRef<FormikProps<any>>(null);
+const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(({ readonly = false, data, picklistOptions }, ref) => {
+  const formikRef = useRef<FormikProps<any>>(null);
 
   useImperativeHandle(ref, () => ({
-    submitForm: async () => deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'projectRatings'), ['orgUid', 'warehouseProjectId', 'timeStaged']),
+    submitForm: async () =>
+      deepOmit(await validateAndSubmitFieldArrayForm(formikRef, 'projectRatings'), [
+        'orgUid',
+        'warehouseProjectId',
+        'timeStaged',
+      ]),
   }));
 
   return (
@@ -68,6 +72,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(
                     type="picklist"
                     options={picklistOptions?.ratingType}
                     readonly={readonly}
+                    required={true}
                     initialValue={rating.ratingType}
                   />
                   <Field
@@ -75,6 +80,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(
                     label="Rating Lowest"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={rating.ratingRangeLowest}
                   />
                   <Field
@@ -82,6 +88,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(
                     label="Rating Highest"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={rating.ratingRangeHighest}
                   />
                   <Field
@@ -89,6 +96,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(
                     label="Rating"
                     type="text"
                     readonly={readonly}
+                    required={true}
                     initialValue={rating.rating}
                   />
                   <Field
