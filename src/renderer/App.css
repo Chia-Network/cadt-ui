@@ -40,3 +40,9 @@
 .read-the-docs {
   color: #888;
 }
+
+[data-testid="flowbite-dropdown"] {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

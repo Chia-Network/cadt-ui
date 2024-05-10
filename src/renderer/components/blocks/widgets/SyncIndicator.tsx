@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 interface SyncIndicatorProps {
   detailed: boolean;
   orgUid?: string;
+  useRefeshBadge?: boolean;
 }
 
 /**
@@ -22,7 +23,7 @@ interface SyncIndicatorProps {
  * @param {string} [props.orgUid] Organization UID for specific org data.
  * @returns {JSX.Element} SyncIndicator component.
  */
-const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
+const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid, useRefeshBadge = true }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { data: organizationsMap } = useGetOrganizationsMapQuery(null, {
@@ -98,7 +99,7 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
           </div>
         )}
       </div>
-      {showRefreshBadge && (
+      {useRefeshBadge && showRefreshBadge && (
         <button
           onClick={handleRefreshClick}
           className="ml-2 py-2 px-4 bg-orange-200 text-orange-600 border border-orange-400 rounded-lg hover:bg-orange-300 transition duration-150 ease-in-out flex items-center justify-center space-x-2 dark:bg-orange-600 dark:text-orange-200 dark:border-orange-700 dark:hover:bg-orange-700"

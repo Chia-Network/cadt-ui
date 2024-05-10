@@ -7,3 +7,4 @@ export * from './UnitSummary';
 export * from './DiffViewer';
 export * from './ProjectAndUnitActions';
 export * from './StagedItemActions';
+export * from './DownloadProjectXlsButton';

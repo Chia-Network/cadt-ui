@@ -34,7 +34,7 @@ const validationSchema = yup.object({
 interface UnitFormProps {
   readonly?: boolean;
   data?: Unit;
-  picklistOptions: PickList | undefined;
+  picklistOptions?: PickList | undefined;
 }
 
 export interface UnitFormRef {
@@ -102,11 +102,11 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
     setSelectedWarehouseProjectId(value);
   };
 
-  if (isHomeOrgLoading || isProjectOptionsLoading) {
+  if ((isHomeOrgLoading || isProjectOptionsLoading) && !readonly) {
     return <ComponentCenteredSpinner label="Loading Selected Project Data" />;
   }
 
-  if (isProjectLoading || isProjectFetching) {
+  if ((isProjectLoading || isProjectFetching) && !readonly) {
     return <ComponentCenteredSpinner label="Loading Selected Project Data" />;
   }
 

@@ -40,8 +40,9 @@ const UnitsListPage: React.FC = () => {
   const handleOrganizationSelected = useCallback(
     (organization: any) => {
       setOrgUid(organization?.orgUid);
+      setCurrentPage('1');
     },
-    [setOrgUid],
+    [setOrgUid, setCurrentPage],
   );
 
   const handleSearchChange: DebouncedFunc<any> = useCallback(

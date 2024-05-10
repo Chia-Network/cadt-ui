@@ -126,7 +126,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
     ];
 
     return isEditable ? editColumn.concat(staticColumns) : staticColumns;
-  }, [isEditable]);
+  }, [isEditable, setEditProjectModalActive]);
 
   return (
     <>

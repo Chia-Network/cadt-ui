@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useGetOrganizationsListQuery } from '@/api/cadt/v1/organizations';
-import { Dropdown, SyncIndicator, Spinner } from '@/components';
+import { Dropdown, SyncIndicator, Spinner, Select } from '@/components';
 import { Organization } from '@/schemas/Organization.schema';
 
 interface OrganizationSelectorProps {
@@ -65,7 +65,7 @@ const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({
           className="flex justify-between items-center"
         >
           <span className="mr-2.5">{organization.name}</span>
-          <SyncIndicator orgUid={organization.orgUid} detailed={false} />
+          <SyncIndicator orgUid={organization.orgUid} detailed={false} useRefeshBadge={false}/>
         </Dropdown.Item>
       ))}
     </Dropdown>

@@ -127,5 +127,6 @@
   "deleting-a-staged-item-is-a-permanent-action": "Deleting a staged item is a permanent action",
   "change-record": "Change Record",
   "split": "Split",
-  "split-unit": "Split Unit"
+  "split-unit": "Split Unit",
+  "detailed-audit-view": "Detailed Audit Record"
 }
