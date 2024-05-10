@@ -30,12 +30,12 @@ const XlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> = ({
     const xlsx: File | undefined = event.target.files?.[0];
 
     if (xlsx && type === 'project') {
-      const uploadResult: any = await triggerUploadProjectXls({ orgUid, xlsx });
+      const uploadResult: any = await triggerUploadProjectXls({ xlsx });
       if (uploadResult?.data?.error || uploadResult?.error) {
         setShowFailedAlert(true);
       }
     } else if (xlsx) {
-      const uploadResult: any = await triggerUploadUnitXls({ orgUid, xlsx });
+      const uploadResult: any = await triggerUploadUnitXls({ xlsx });
       if (uploadResult?.data?.error || uploadResult?.error) {
         setShowFailedAlert(true);
       }

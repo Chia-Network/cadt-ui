@@ -107,15 +107,14 @@ const unitsApi = cadtApi.injectEndpoints({
       invalidatesTags: [stagedUnitsTag],
     }),
 
-    uploadUnitsXls: builder.mutation<any, { orgUid: string; xlsx: File }>({
-      query: ({ orgUid, xlsx }) => {
+    uploadUnitsXls: builder.mutation<any, { xlsx: File }>({
+      query: ({ xlsx }) => {
         const formData: FormData = new FormData();
         formData.append('xlsx', xlsx);
 
         return {
           url: `/v1/units/xlsx`,
           method: 'PUT',
-          params: { orgUid, xls: true },
           body: formData,
         };
       },
