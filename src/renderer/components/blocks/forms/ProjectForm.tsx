@@ -9,7 +9,7 @@ const validationSchema = yup.object({
   projectName: yup.string().required('Project Name is required').min(1, 'Project Name cannot be empty'),
   projectId: yup.string().required('Project ID is required').min(1, 'Project ID cannot be empty'),
   projectDeveloper: yup.string().required('Project Developer is required').min(1, 'Project Developer cannot be empty'),
-  program: yup.string().required('Program is required').min(1, 'Program cannot be empty'),
+  program: yup.string().nullable(),
   projectLink: yup
     .string()
     .url('Must be a valid URL')
@@ -20,7 +20,7 @@ const validationSchema = yup.object({
   projectStatus: yup.string().required('Project Status is required').min(1, 'Project Status cannot be empty'),
   projectStatusDate: yup.date().required('Project Status Date is required'),
   coveredByNDC: yup.string().required('Covered By NDC is required').min(1, 'Covered By NDC cannot be empty'),
-  ndcInformation: yup.string().min(1, 'NDC Information cannot be empty'), // Optional field with no empty string
+  ndcInformation: yup.string().nullable(), // Optional field with no empty string
   currentRegistry: yup.string().min(1, 'Current Registry cannot be empty'), // Optional field with no empty string
   registryOfOrigin: yup
     .string()
@@ -29,8 +29,8 @@ const validationSchema = yup.object({
   originProjectId: yup.string().required('Origin Project ID is required').min(1, 'Origin Project ID cannot be empty'),
   unitMetric: yup.string().required('Unit Metric is required').min(1, 'Unit Metric cannot be empty'),
   methodology: yup.string().required('Methodology is required').min(1, 'Methodology cannot be empty'),
-  validationBody: yup.string().required('Validation Body is required').min(1, 'Validation Body cannot be empty'),
-  validationDate: yup.date().required('Validation Date is required'),
+  validationBody: yup.string().nullable(),
+  validationDate: yup.date().nullable(),
   projectTags: yup.string().nullable(), // Optional field with no empty string
 });
 
@@ -201,7 +201,6 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                     label="NDC Information"
                     type="text"
                     readonly={readonly}
-                    required={true}
                     initialValue={data?.ndcInformation || ''}
                   />
                   <Field

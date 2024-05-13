@@ -9,8 +9,8 @@ import { useGetProjectOptionsList, useQueryParamState } from '@/hooks';
 const validationSchema = yup.object({
   relatedProjects: yup.array().of(
     yup.object({
-      relationshipType: yup.string().required('Relationship Type is required'),
-      registry: yup.string().required('Registry is required'),
+      relationshipType: yup.string().nullable(),
+      registry: yup.string().nullable(),
       relatedProjectId: yup.string().required('Related Project ID is required'),
     }),
   ),
@@ -73,7 +73,6 @@ const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFo
                     label="Relationship Type"
                     type="text"
                     readonly={readonly}
-                    required={true}
                     initialValue={relatedProject.relationshipType}
                   />
                   <Field
@@ -81,7 +80,6 @@ const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFo
                     label="Registry"
                     type="text"
                     readonly={readonly}
-                    required={true}
                     initialValue={relatedProject.registry}
                   />
                   <Field

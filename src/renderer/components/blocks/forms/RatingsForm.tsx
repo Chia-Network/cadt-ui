@@ -13,7 +13,7 @@ const validationSchema = yup.object({
       ratingRangeLowest: yup.string().required('Rating lowest value is required'),
       ratingRangeHighest: yup.string().required('Rating highest value is required'),
       rating: yup.string().required('Rating is required'),
-      ratingLink: yup.string().url('Must be a valid URL').nullable(),
+      ratingLink: yup.string().url('Must be a valid URL').required('Rating link is required'),
     }),
   ),
 });
@@ -104,6 +104,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(({ readonly = f
                     label="Rating Link"
                     type="link"
                     readonly={readonly}
+                    required={true}
                     initialValue={rating.ratingLink}
                   />
                 </div>

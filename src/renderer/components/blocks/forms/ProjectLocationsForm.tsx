@@ -78,7 +78,6 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                     label="In-Country Region"
                     type="text"
                     readonly={readonly}
-                    required={true}
                     initialValue={location.inCountryRegion}
                   />
                   <Field
@@ -94,7 +93,6 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                     label="File ID"
                     type="text"
                     readonly={readonly}
-                    required={true}
                     initialValue={location.fileId}
                   />
                 </div>

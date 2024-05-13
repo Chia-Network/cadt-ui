@@ -11,20 +11,20 @@ const validationSchema = yup.object({
     yup.object({
       label: yup.string().required('Label is required'),
       labelType: yup.string().required('Label type is required'),
-      labelLink: yup.string().url('Must be a valid URL').nullable(),
-      validityPeriodStartDate: yup.date().nullable(),
+      labelLink: yup.string().required('Label link is required').url('Must be a valid URL'),
+      validityPeriodStartDate: yup.date().required('Validity period start date is required'),
       validityPeriodEndDate: yup
         .date()
-        .nullable()
+        .required('Validity period end date is required')
         .when('validityPeriodStartDate', (validityPeriodStartDate, schema) =>
           validityPeriodStartDate
             ? schema.min(validityPeriodStartDate, 'Validity Period End Date must be after the start date')
             : schema,
         ),
-      creditingPeriodStartDate: yup.date().nullable(),
+      creditingPeriodStartDate: yup.date().required('crediting period start date is required'),
       creditingPeriodEndDate: yup
         .date()
-        .nullable()
+        .required('crediting period end date is required')
         .when('creditingPeriodStartDate', (creditingPeriodStartDate, schema) =>
           creditingPeriodStartDate
             ? schema.min(creditingPeriodStartDate, 'Crediting Period End Date must be after the start date')
@@ -113,6 +113,7 @@ const LabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(({ readonly = fals
                     label="Label Link"
                     type="link"
                     readonly={readonly}
+                    required={true}
                     initialValue={label.labelLink}
                   />
                   <Field
@@ -120,6 +121,7 @@ const LabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(({ readonly = fals
                     label="Validity Period Start Date"
                     type="date"
                     readonly={readonly}
+                    required={true}
                     initialValue={label.validityPeriodStartDate}
                   />
                   <Field
@@ -127,6 +129,7 @@ const LabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(({ readonly = fals
                     label="Validity Period End Date"
                     type="date"
                     readonly={readonly}
+                    required={true}
                     initialValue={label.validityPeriodEndDate}
                   />
                   <Field
@@ -134,6 +137,7 @@ const LabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(({ readonly = fals
                     label="Crediting Period End Date"
                     type="date"
                     readonly={readonly}
+                    required={true}
                     initialValue={label.creditingPeriodStartDate}
                   />
                   <Field
@@ -141,6 +145,7 @@ const LabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(({ readonly = fals
                     label="Crediting Period End Date"
                     type="date"
                     readonly={readonly}
+                    required={true}
                     initialValue={label.creditingPeriodEndDate}
                   />
                   <Field
