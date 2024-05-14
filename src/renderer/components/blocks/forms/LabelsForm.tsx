@@ -134,7 +134,7 @@ const LabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(({ readonly = fals
                   />
                   <Field
                     name={`${name}[${index}].creditingPeriodStartDate`}
-                    label="Crediting Period End Date"
+                    label="Crediting Period Start Date"
                     type="date"
                     readonly={readonly}
                     required={true}

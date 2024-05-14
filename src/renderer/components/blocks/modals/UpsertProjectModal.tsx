@@ -136,7 +136,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
         }
 
         if (values) {
-          console.log('values:', values)
+          console.log('values:', values);
           setProjectFormData({ ...projectFormData, ...values });
         }
 

@@ -133,7 +133,7 @@ const Field: React.FC<FieldProps> = ({
             showTodayButton={true}
             showClearButton={false}
             defaultDate={initialValue ? new Date(initialValue) : undefined}
-            onSelectedDateChanged={(date) => setFieldValue(name, date)}
+            onSelectedDateChanged={(date) => setFieldValue(name, date.toUTCString())}
             placeholder="Select date"
           />
         );
