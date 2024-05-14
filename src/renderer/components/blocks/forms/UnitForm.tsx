@@ -16,7 +16,7 @@ const validationSchema = yup.object({
   inCountryJurisdictionOfOwner: yup.string().required('In-Country Jurisdiction Of Owner is required'),
   unitType: yup.string().required('Unit Type is required'),
   unitStatus: yup.string().required('Unit Status is required'),
-  unitStatusReason: yup.string().required('Unit Status Reason is required'),
+  unitStatusReason: yup.string().nullable(),
   vintageYear: yup
     .number()
     .required('Vintage Year is required')
@@ -222,7 +222,6 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Status Reason"
                   type="text"
                   readonly={readonly}
-                  required={true}
                   initialValue={unit?.unitStatusReason}
                 />
 
