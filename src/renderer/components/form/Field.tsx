@@ -129,13 +129,16 @@ const Field: React.FC<FieldProps> = ({
         );
       case 'date':
         return (
-          <Datepicker
-            showTodayButton={true}
-            showClearButton={false}
-            defaultDate={initialValue ? new Date(initialValue) : undefined}
-            onSelectedDateChanged={(date) => setFieldValue(name, date.toUTCString())}
-            placeholder="Select date"
-          />
+          <>
+            <Datepicker
+              showTodayButton={true}
+              showClearButton={false}
+              defaultDate={initialValue ? new Date(initialValue) : undefined}
+              onSelectedDateChanged={(date) => setFieldValue(name, date.toUTCString())}
+              placeholder="Select date"
+              {...(initialValue || values[name] ? {} : { value: undefined })}
+            />
+          </>
         );
       case 'checkbox':
         return <Checkbox id={name} name={name} onChange={(e) => setFieldValue(name, e.target.checked)} />;
