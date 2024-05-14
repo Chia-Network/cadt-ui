@@ -52,7 +52,7 @@ const Field: React.FC<FieldProps> = ({
   freeform = false,
 }) => {
   // @ts-ignore
-  const { errors, setFieldValue, values, touched }: FormikValues = useFormikContext();
+  const { errors, setFieldValue, values }: FormikValues = useFormikContext();
 
   const isError: boolean = !!get(errors, name);
 
@@ -159,7 +159,7 @@ const Field: React.FC<FieldProps> = ({
         </div>
       )}
       {renderField()}
-      {touched[name] && <p className="text-red-500 text-s italic">{get(errors, name)}</p>}
+      {get(errors, name) && <p className="text-red-500 text-s italic">{get(errors, name)}</p>}
     </div>
   );
 };
