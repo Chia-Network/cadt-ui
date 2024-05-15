@@ -2,11 +2,7 @@ import React from 'react';
 import { useQueryParamState } from '@/hooks';
 import { useGetProjectsImmediateMutation } from '@/api';
 
-interface DownloadProjectsProps {
-  orgUid: string;
-}
-
-const DownloadProjectXlsButton: React.FC<DownloadProjectsProps> = () => {
+const DownloadProjectXlsButton: React.FC = () => {
   const [getProjects, { isLoading: projectsLoading }] = useGetProjectsImmediateMutation();
   const [currentPage] = useQueryParamState('page', '1');
   const [orgUid] = useQueryParamState('orgUid', undefined);

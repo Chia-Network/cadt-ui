@@ -3,11 +3,17 @@ import { cadtApi, projectsTag, stagedProjectsTag } from '../';
 import { Project } from '@/schemas/Project.schema';
 
 interface GetProjectsParams {
-  page: number;
+  page?: number;
   orgUid?: string | null;
   search?: string | null;
   order?: string | null;
   xls?: boolean | null;
+}
+
+interface DownloadProjectParams {
+  orgUid?: string;
+  search?: string;
+  order?: string;
 }
 
 interface GetProjectParams {
@@ -56,14 +62,12 @@ const projectsApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
-      // @ts-ignore
-      providesTags: (_response, _error, { orgUid }) => [{ type: projectsTag, id: orgUid }],
     }),
 
     getProjectsImmediate: builder.mutation<GetProjectsResponse, GetProjectsParams>({
-      query: ({ page, orgUid, search, order, xls }: GetProjectsParams) => {
+      query: ({ orgUid, search, order, xls }: GetProjectsParams) => {
         // Initialize the params object with page and limit
-        const params: GetProjectsParams & { limit: number } = { page, limit: 10 };
+        const params: GetProjectsParams = {};
 
         if (orgUid) {
           params.orgUid = orgUid;
@@ -90,8 +94,6 @@ const projectsApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
-      // @ts-ignore
-      providesTags: (_response, _error, { orgUid }) => [{ type: projectsTag, id: orgUid }],
     }),
 
     getProject: builder.query<Project, GetProjectParams>({
@@ -207,20 +209,31 @@ const projectsApi = cadtApi.injectEndpoints({
       invalidatesTags: [stagedProjectsTag],
     }),
 
-    downloadProjectsXls: builder.query<any, { orgUid: string }>({
-      query: ({ orgUid }) => ({
-        url: `/v1/projects/xlsx`,
-        method: 'GET',
-        params: { orgUid, xls: true },
-      }),
-    }),
+    downloadProjectsXlsImmediate: builder.mutation<any, DownloadProjectParams>({
+      query: ({ orgUid, search, order }: DownloadProjectParams) => {
+        const params: DownloadProjectParams & { xls: boolean } = { xls: true };
 
-    downloadProjectsXlsImmediate: builder.mutation<any, { orgUid: string }>({
-      query: ({ orgUid }) => ({
-        url: `/v1/projects/xlsx`,
-        method: 'GET',
-        params: { orgUid, xls: true },
-      }),
+        if (orgUid) {
+          params.orgUid = orgUid;
+        } else {
+          params.orgUid = 'all';
+        }
+
+        if (search) {
+          params.search = search.replace(/[^a-zA-Z0-9 _.-]+/, '');
+        }
+
+        if (order) {
+          params.order = order;
+        }
+
+        return {
+          url: `/v1/projects`,
+          params,
+          method: 'GET',
+          responseHandler: (response: any) => response.blob(),
+        };
+      },
     }),
   }),
 });
@@ -234,7 +247,6 @@ export const {
   useDeleteProjectMutation,
   useStageCreateProjectMutation,
   useStageUpdateProjectMutation,
-  useDownloadProjectsXlsQuery,
   useUploadProjectsXlsMutation,
   useDownloadProjectsXlsImmediateMutation,
 } = projectsApi;
