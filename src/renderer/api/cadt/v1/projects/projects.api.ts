@@ -7,13 +7,6 @@ interface GetProjectsParams {
   orgUid?: string | null;
   search?: string | null;
   order?: string | null;
-  xls?: boolean | null;
-}
-
-interface DownloadProjectParams {
-  orgUid?: string;
-  search?: string;
-  order?: string;
 }
 
 interface GetProjectParams {
@@ -33,7 +26,7 @@ interface GetProjectsResponse {
 const projectsApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query<GetProjectsResponse, GetProjectsParams>({
-      query: ({ page, orgUid, search, order, xls }: GetProjectsParams) => {
+      query: ({ page, orgUid, search, order }: GetProjectsParams) => {
         // Initialize the params object with page and limit
         const params: GetProjectsParams & { limit: number } = { page, limit: 10 };
 
@@ -49,13 +42,6 @@ const projectsApi = cadtApi.injectEndpoints({
           params.order = order;
         }
 
-        if (xls) {
-          params.xls = xls;
-          if (!orgUid) {
-            params.orgUid = 'all';
-          }
-        }
-
         return {
           url: `/v1/projects`,
           params,
@@ -65,7 +51,7 @@ const projectsApi = cadtApi.injectEndpoints({
     }),
 
     getProjectsImmediate: builder.mutation<GetProjectsResponse, GetProjectsParams>({
-      query: ({ orgUid, search, order, xls }: GetProjectsParams) => {
+      query: ({ orgUid, search, order }: GetProjectsParams) => {
         // Initialize the params object with page and limit
         const params: GetProjectsParams = {};
 
@@ -79,13 +65,6 @@ const projectsApi = cadtApi.injectEndpoints({
 
         if (order) {
           params.order = order;
-        }
-
-        if (xls) {
-          params.xls = xls;
-          if (!orgUid) {
-            params.orgUid = 'all';
-          }
         }
 
         return {
@@ -208,33 +187,6 @@ const projectsApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedProjectsTag],
     }),
-
-    downloadProjectsXlsImmediate: builder.mutation<any, DownloadProjectParams>({
-      query: ({ orgUid, search, order }: DownloadProjectParams) => {
-        const params: DownloadProjectParams & { xls: boolean } = { xls: true };
-
-        if (orgUid) {
-          params.orgUid = orgUid;
-        } else {
-          params.orgUid = 'all';
-        }
-
-        if (search) {
-          params.search = search.replace(/[^a-zA-Z0-9 _.-]+/, '');
-        }
-
-        if (order) {
-          params.order = order;
-        }
-
-        return {
-          url: `/v1/projects`,
-          params,
-          method: 'GET',
-          responseHandler: (response: any) => response.blob(),
-        };
-      },
-    }),
   }),
 });
 
@@ -248,5 +200,4 @@ export const {
   useStageCreateProjectMutation,
   useStageUpdateProjectMutation,
   useUploadProjectsXlsMutation,
-  useDownloadProjectsXlsImmediateMutation,
 } = projectsApi;
