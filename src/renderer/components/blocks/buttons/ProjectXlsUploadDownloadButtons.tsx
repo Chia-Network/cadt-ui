@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AiOutlineDownload, AiOutlineUpload } from 'react-icons/ai';
 import { Button } from '@/components';
-import { useDownloadProjectsXlsImmediateMutation, useUploadProjectsXlsMutation } from '@/api';
+import { useUploadProjectsXlsMutation } from '@/api';
 import { Alert } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 import { useQueryParamState } from '@/hooks';
@@ -17,20 +17,29 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
   const [triggerUploadProjectXls] = useUploadProjectsXlsMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showUploadFailedAlert, setShowUploadFailedAlert] = useState<boolean>(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
 
   // download hooks and state
-  const [triggerDownloadProjectsXls, { isLoading: downloadProjectsLoading, error: downloadProjectsError }] =
-    useDownloadProjectsXlsImmediateMutation();
   const [showDownLoadFailedAlert, setShowDownloadFailedAlert] = useState<boolean>(false);
   const [orgUid] = useQueryParamState('orgUid', undefined);
   const [search] = useQueryParamState('search', undefined);
   const [order] = useQueryParamState('order', undefined);
 
   useEffect(() => {
-    if (downloadProjectsError) {
-      setShowDownloadFailedAlert(true);
+    if (showDownLoadFailedAlert) {
+      setDownloadLoading(false);
     }
-  }, [downloadProjectsError]);
+  }, [showDownLoadFailedAlert]);
+
+  const downloadXlsUrl: URL = useMemo(() => {
+    const url = new URL('http://localhost:31310/v1/projects');
+    url.searchParams.append('xls', 'true');
+    orgUid && url.searchParams.append('orgUid', orgUid);
+    search && url.searchParams.append('search', search);
+    order && url.searchParams.append('order', order);
+
+    return url;
+  }, [order, orgUid, search]);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const xlsx: File | undefined = event.target.files?.[0];
@@ -47,9 +56,8 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
     fileInputRef.current?.click();
   };
 
-  const handleDownload = async (data: any) => {
-    const fileData = JSON.stringify(data);
-    const blob = new Blob([fileData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const handleDownloadedData = async (data: Blob) => {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -61,13 +69,22 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
   };
 
   const handleClickDownload = async () => {
+    setDownloadLoading(true);
     try {
-      const result = await triggerDownloadProjectsXls({
-        orgUid,
-        search,
-        order,
-      }).unwrap();
-      handleDownload(result);
+      const downloadResponse: Response = await fetch(downloadXlsUrl);
+      if (!downloadResponse?.ok) {
+        setShowDownloadFailedAlert(true);
+        return;
+      }
+
+      const blob: Blob = await downloadResponse.blob();
+      if (!blob) {
+        setShowDownloadFailedAlert(true);
+        return;
+      }
+
+      await handleDownloadedData(blob);
+      setDownloadLoading(false);
     } catch (error) {
       setShowDownloadFailedAlert(true);
     }
@@ -76,14 +93,14 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
   return (
     <>
       {downloadOnly ? (
-        <Button color="gray" onClick={handleClickDownload} isProcessing={downloadProjectsLoading}>
+        <Button color="gray" onClick={handleClickDownload} isProcessing={downloadLoading}>
           <AiOutlineDownload className="h-5 w-5" />
         </Button>
       ) : (
         <>
           <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
           <Button.Group>
-            <Button color="gray" onClick={handleClickDownload} isProcessing={downloadProjectsLoading}>
+            <Button color="gray" onClick={handleClickDownload} isProcessing={downloadLoading}>
               <AiOutlineDownload className="h-5 w-5" />
             </Button>
             <Button color="gray" onClick={handleUpload}>
