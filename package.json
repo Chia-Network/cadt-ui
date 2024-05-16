@@ -1,12 +1,12 @@
 {
-  "name": "cadt",
+  "name": "cadt-ui",
   "private": true,
   "version": "0.0.10",
   "type": "module",
   "main": "build/main.js",
   "engineStrict": true,
-  "author": "Michael Taylor",
-  "description": "Sprout UI",
+  "author": "Chia Network Inc. <hello@chia.net>",
+  "description": "Climate Action Data Trust User Interface",
   "engines": {
     "node": ">=18.16.0"
   },
@@ -101,8 +101,8 @@
     "*.+(js|ts|tsx)": "npm run lint:prettier-eslint"
   },
   "build": {
-    "appId": "net.chia.cadt",
-    "productName": "cadt",
+    "appId": "org.worldbank.climate-action-data-trust",
+    "productName": "cadt-ui",
     "files": [
       "build/renderer/**/*",
       "build/**/*",
@@ -118,18 +118,24 @@
           "universal"
         ]
       },
-      "publish": null
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png"
     },
     "win": {
       "target": "nsis",
-      "publish": null
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png"
     },
     "linux": {
       "target": "deb",
-      "description": "Sprout UI.",
-      "maintainer": "Michael Taylor",
-      "vendor": "https://datalayer.storage/",
-      "publish": null
+      "description": "Climate Action Data Trust User Interface",
+      "maintainer": "Chia Network Inc. <hello@chia.net>",
+      "vendor": "https://climateactiondata.org/",
+      "publish": null,
+      "icon": "src/assets/img/CADT_Icon.png",
+      "desktop": {
+        "Icon": "/usr/share/icons/hicolor/0x0/apps/cadt-ui.png"
+      }
     }
   }
 }
