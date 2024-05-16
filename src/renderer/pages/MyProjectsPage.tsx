@@ -9,12 +9,12 @@ import {
   ComponentCenteredSpinner,
   IndeterminateProgressOverlay,
   OrgUidBadge,
+  ProjectXlsUploadDownloadButtons,
   SearchBox,
   StagedProjectSuccessModal,
   StagingTableTab,
   SyncIndicator,
   Tabs,
-  XlsUploadDownloadButtons,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -124,7 +124,7 @@ const MyProjectsPage: React.FC = () => {
               </Button>
             </>
           )}
-          {myOrganization && <XlsUploadDownloadButtons orgUid={myOrganization.orgUid} type="project" />}
+          {myOrganization && <ProjectXlsUploadDownloadButtons />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
           {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         </div>

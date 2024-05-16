@@ -10,12 +10,12 @@ import {
   IndeterminateProgressOverlay,
   OrgUidBadge,
   SearchBox,
+  StagedUnitSuccessModal,
+  StagingDiffModal,
   StagingTableTab,
   SyncIndicator,
   Tabs,
-  StagedUnitSuccessModal,
-  StagingDiffModal,
-  XlsUploadDownloadButtons,
+  UnitXlsUploadDownloadButtons,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -126,7 +126,7 @@ const MyUnitsPage: React.FC = () => {
               </Button>
             </>
           )}
-          {myOrganization && <XlsUploadDownloadButtons orgUid={myOrganization.orgUid} type="unit" />}
+          {myOrganization && <UnitXlsUploadDownloadButtons />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
           {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         </div>

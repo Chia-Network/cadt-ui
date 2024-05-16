@@ -3,11 +3,10 @@ import { cadtApi, projectsTag, stagedProjectsTag } from '../';
 import { Project } from '@/schemas/Project.schema';
 
 interface GetProjectsParams {
-  page: number;
+  page?: number;
   orgUid?: string | null;
   search?: string | null;
   order?: string | null;
-  xls?: boolean | null;
 }
 
 interface GetProjectParams {
@@ -27,7 +26,7 @@ interface GetProjectsResponse {
 const projectsApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query<GetProjectsResponse, GetProjectsParams>({
-      query: ({ page, orgUid, search, order, xls }: GetProjectsParams) => {
+      query: ({ page, orgUid, search, order }: GetProjectsParams) => {
         // Initialize the params object with page and limit
         const params: GetProjectsParams & { limit: number } = { page, limit: 10 };
 
@@ -43,27 +42,18 @@ const projectsApi = cadtApi.injectEndpoints({
           params.order = order;
         }
 
-        if (xls) {
-          params.xls = xls;
-          if (!orgUid) {
-            params.orgUid = 'all';
-          }
-        }
-
         return {
           url: `/v1/projects`,
           params,
           method: 'GET',
         };
       },
-      // @ts-ignore
-      providesTags: (_response, _error, { orgUid }) => [{ type: projectsTag, id: orgUid }],
     }),
 
     getProjectsImmediate: builder.mutation<GetProjectsResponse, GetProjectsParams>({
-      query: ({ page, orgUid, search, order, xls }: GetProjectsParams) => {
+      query: ({ orgUid, search, order }: GetProjectsParams) => {
         // Initialize the params object with page and limit
-        const params: GetProjectsParams & { limit: number } = { page, limit: 10 };
+        const params: GetProjectsParams = {};
 
         if (orgUid) {
           params.orgUid = orgUid;
@@ -77,21 +67,12 @@ const projectsApi = cadtApi.injectEndpoints({
           params.order = order;
         }
 
-        if (xls) {
-          params.xls = xls;
-          if (!orgUid) {
-            params.orgUid = 'all';
-          }
-        }
-
         return {
           url: `/v1/projects`,
           params,
           method: 'GET',
         };
       },
-      // @ts-ignore
-      providesTags: (_response, _error, { orgUid }) => [{ type: projectsTag, id: orgUid }],
     }),
 
     getProject: builder.query<Project, GetProjectParams>({
@@ -206,22 +187,6 @@ const projectsApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedProjectsTag],
     }),
-
-    downloadProjectsXls: builder.query<any, { orgUid: string }>({
-      query: ({ orgUid }) => ({
-        url: `/v1/projects/xlsx`,
-        method: 'GET',
-        params: { orgUid, xls: true },
-      }),
-    }),
-
-    downloadProjectsXlsImmediate: builder.mutation<any, { orgUid: string }>({
-      query: ({ orgUid }) => ({
-        url: `/v1/projects/xlsx`,
-        method: 'GET',
-        params: { orgUid, xls: true },
-      }),
-    }),
   }),
 });
 
@@ -234,7 +199,5 @@ export const {
   useDeleteProjectMutation,
   useStageCreateProjectMutation,
   useStageUpdateProjectMutation,
-  useDownloadProjectsXlsQuery,
   useUploadProjectsXlsMutation,
-  useDownloadProjectsXlsImmediateMutation,
 } = projectsApi;
