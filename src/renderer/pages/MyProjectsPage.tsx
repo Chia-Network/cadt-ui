@@ -40,6 +40,7 @@ const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
+  const [order, setOrder] = useQueryParamState('order', undefined);
   const [projectStagedSuccess, setProjectStagedSuccess] = useUrlHash('success-stage-project');
   const [commitModalActive, setCommitModalActive] = useUrlHash('commit-staged-items');
   const [, setCreateProjectModalActive] = useUrlHash('create-project');
@@ -124,7 +125,7 @@ const MyProjectsPage: React.FC = () => {
               </Button>
             </>
           )}
-          {myOrganization && <ProjectXlsUploadDownloadButtons />}
+          {myOrganization && <ProjectXlsUploadDownloadButtons orgUid={orgUid} order={order} search={search} />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
           {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         </div>
@@ -132,7 +133,13 @@ const MyProjectsPage: React.FC = () => {
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
           <Tabs.Item title={<FormattedMessage id="committed" />}>
             {activeTab === TabTypes.COMMITTED && (
-              <CommittedProjectsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
+              <CommittedProjectsTab
+                orgUid={orgUid}
+                search={search}
+                order={order}
+                setOrder={setOrder}
+                setIsLoading={setCommittedDataLoading}
+              />
             )}
           </Tabs.Item>
           <Tabs.Item

@@ -42,6 +42,7 @@ const MyUnitsPage: React.FC = () => {
   const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
+  const [order, setOrder] = useQueryParamState('order', undefined);
   const [, setCreateUnitModalActive] = useUrlHash('create-unit');
   const [commitModalActive, setCommitModalActive] = useUrlHash('commit-staged-items');
   const [activeTab, setActiveTab] = useState<TabTypes>(TabTypes.COMMITTED);
@@ -126,7 +127,7 @@ const MyUnitsPage: React.FC = () => {
               </Button>
             </>
           )}
-          {myOrganization && <UnitXlsUploadDownloadButtons />}
+          {myOrganization && <UnitXlsUploadDownloadButtons orgUid={orgUid} search={search} order={order} />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
           {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
         </div>
@@ -134,7 +135,13 @@ const MyUnitsPage: React.FC = () => {
         <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
           <Tabs.Item title={<FormattedMessage id="committed" />}>
             {activeTab === TabTypes.COMMITTED && (
-              <CommittedUnitsTab orgUid={orgUid} search={search} setIsLoading={setCommittedDataLoading} />
+              <CommittedUnitsTab
+                orgUid={orgUid}
+                search={search}
+                order={order}
+                setOrder={setOrder}
+                setIsLoading={setCommittedDataLoading}
+              />
             )}
           </Tabs.Item>
           <Tabs.Item
