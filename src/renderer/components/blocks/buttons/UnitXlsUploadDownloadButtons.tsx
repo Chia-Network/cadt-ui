@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AiOutlineDownload, AiOutlineUpload } from 'react-icons/ai';
 import { Button } from '@/components';
-import { useUploadProjectsXlsMutation } from '@/api';
+import { useUploadUnitsXlsMutation } from '@/api';
 import { Alert } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 
@@ -12,14 +12,14 @@ interface XlsUploadDownloadButtonsProps {
   downloadOnly?: boolean;
 }
 
-const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> = ({
+const UnitXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> = ({
   downloadOnly,
-  orgUid,
-  order,
   search,
+  order,
+  orgUid,
 }: XlsUploadDownloadButtonsProps) => {
   // upload hooks and state
-  const [triggerUploadProjectXls] = useUploadProjectsXlsMutation();
+  const [triggerUploadUnitXls] = useUploadUnitsXlsMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showUploadFailedAlert, setShowUploadFailedAlert] = useState<boolean>(false);
   const [downloadLoading, setDownloadLoading] = useState(false);
@@ -37,7 +37,7 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
     const xlsx: File | undefined = event.target.files?.[0];
 
     if (xlsx) {
-      const uploadResult: any = await triggerUploadProjectXls({ xlsx });
+      const uploadResult: any = await triggerUploadUnitXls({ xlsx });
       if (uploadResult?.data?.error || uploadResult?.error) {
         setShowUploadFailedAlert(true);
       }
@@ -53,7 +53,7 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'projects-data.xlsx';
+    link.download = 'units-data.xlsx';
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -63,8 +63,9 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
   const handleClickDownload = async () => {
     setDownloadLoading(true);
     try {
-      const url = new URL('http://localhost:31310/v1/projects');
+      const url = new URL('http://localhost:31310/v1/units');
       url.searchParams.append('xls', 'true');
+      console.log('**** units', orgUid);
       orgUid && url.searchParams.append('orgUid', orgUid);
       search && url.searchParams.append('search', search);
       order && url.searchParams.append('order', order);
@@ -126,4 +127,4 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
   );
 };
 
-export { ProjectXlsUploadDownloadButtons };
+export { UnitXlsUploadDownloadButtons };
