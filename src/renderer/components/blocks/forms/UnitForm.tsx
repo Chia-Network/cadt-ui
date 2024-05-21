@@ -8,7 +8,7 @@ import { PickList } from '@/schemas/PickList.schema';
 import { useGetProjectOptionsList } from '@/hooks';
 
 const validationSchema = yup.object({
-  unitOwner: yup.string().required('Unit Owner is required'),
+  unitOwner: yup.string(),
   unitBlockStart: yup.string().required('Unit Block Start is required'),
   unitBlockEnd: yup.string().required('Unit Block End is required'),
   unitCount: yup.number().required('Unit Count is required').positive('Unit Count must be positive'),
@@ -22,7 +22,7 @@ const validationSchema = yup.object({
     .required('Vintage Year is required')
     .min(1901, 'Vintage Year must be after 1900')
     .max(2155, 'Vintage Year must be before 2156'),
-  unitRegistryLink: yup.string().url('Must be a valid URL'),
+  unitRegistryLink: yup.string().url('Must be a valid URL').required(),
   marketplace: yup.string(),
   marketplaceIdentifier: yup.string(),
   marketplaceLink: yup.string().url('Must be a valid URL'),
@@ -147,7 +147,6 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Owner"
                   type="text"
                   readonly={readonly}
-                  required={true}
                   initialValue={unit?.unitOwner}
                 />
                 <Field
@@ -240,6 +239,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Registry Link"
                   type="link"
                   readonly={readonly}
+                  required={true}
                   initialValue={unit?.unitRegistryLink}
                 />
               </div>

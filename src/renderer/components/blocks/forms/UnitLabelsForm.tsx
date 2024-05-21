@@ -39,6 +39,7 @@ const validationSchema = yup.object({
         .positive('Unit Quantity must be positive')
         .integer('Must be an integer')
         .required('Unit Quantity is required'),
+      timeStaged: yup.date().nullable(),
     }),
   ),
 });
@@ -106,7 +107,14 @@ const UnitLabelsForm = forwardRef<UnitLabelsFormRef, LabelsFormProps>(
     }, [projectData, isProjectLoading]);
 
     const handleSetLabel = (labelId: string | number, index: number) => {
-      const label = projectData?.labels?.find((label) => label.id === labelId);
+      let label = projectData?.labels?.find((label) => label.id === labelId);
+
+      if (label) {
+        if (label.timeStaged === null) {
+          label = { ...label, timeStaged: new Date(0) };
+        }
+      }
+
       const updatedLabels = [...selectedLabels];
       updatedLabels[index] = label || {
         label: null,
@@ -181,6 +189,7 @@ const UnitLabelsForm = forwardRef<UnitLabelsFormRef, LabelsFormProps>(
                       name={`${name}[${index}].labelLink`}
                       label="Label Link"
                       type="link"
+                      required={true}
                       readonly={readonly}
                       initialValue={selectedLabels[index]?.labelLink}
                     />
