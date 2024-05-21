@@ -129,7 +129,7 @@ const Field: React.FC<FieldProps> = ({
         );
       case 'date':
         return (
-          <>
+          <div key={initialValue}>
             <Datepicker
               showTodayButton={true}
               showClearButton={false}
@@ -138,7 +138,7 @@ const Field: React.FC<FieldProps> = ({
               placeholder="Select date"
               {...(initialValue || values[name] ? {} : { value: undefined })}
             />
-          </>
+          </div>
         );
       case 'checkbox':
         return <Checkbox id={name} name={name} onChange={(e) => setFieldValue(name, e.target.checked)} />;

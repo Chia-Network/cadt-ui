@@ -10,7 +10,6 @@ import {
   IssuancesForm,
   IssuancesFormRef,
   LabelsForm,
-  LabelsFormRef,
   Modal,
   ProjectForm,
   ProjectFormRef,
@@ -21,6 +20,7 @@ import {
   RelatedProjectsForm,
   RelatedProjectsFormRef,
   Spacer,
+  UnitLabelsFormRef,
 } from '@/components';
 import { useUrlHash, useWildCardUrlHash } from '@/hooks';
 import {
@@ -59,7 +59,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
   const issuancesFormRef = useRef<IssuancesFormRef>(null);
   const projectLocationsFormRef = useRef<ProjectLocationsFormRef>(null);
   const estimationsFormRef = useRef<EstimationsFormRef>(null);
-  const labelsFormRef = useRef<LabelsFormRef>(null);
+  const labelsFormRef = useRef<UnitLabelsFormRef>(null);
   const relatedProjectsFormRef = useRef<RelatedProjectsFormRef>(null);
   const ratingsFormRef = useRef<RatingsFormRef>(null);
   const cobenefitsFormRef = useRef<CoBenefitsFormRef>(null);
