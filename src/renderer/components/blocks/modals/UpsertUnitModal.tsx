@@ -1,4 +1,4 @@
-import { isEmpty, omit } from 'lodash';
+import { isEmpty } from 'lodash';
 import React, { useRef, useMemo, useState } from 'react';
 import {
   ComponentCenteredSpinner,
