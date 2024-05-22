@@ -189,8 +189,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                 <Field
                   name="inCountryJurisdictionOfOwner"
                   label="In-Country Jurisdiction Of Owner"
-                  type="picklist"
-                  options={picklistOptions?.countries}
+                  type="text"
                   readonly={readonly}
                   required={true}
                   initialValue={unit?.inCountryJurisdictionOfOwner}
