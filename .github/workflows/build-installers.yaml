@@ -1,0 +1,251 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  # SHA is added to the end if on `main` to let all main workflows run
+  group: ${{ github.ref }}-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref == 'refs/heads/main' && github.sha || '' }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  build_mac:
+    name: Build Mac Installer
+    runs-on: macos-latest
+    steps:
+      - uses: Chia-Network/actions/clean-workspace@main
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+
+      - name: Install Husky
+        run: npm install --save-dev husky
+
+      - name: install dmg-license
+        run: npm i dmg-license
+
+      - name: npm install
+        run: |
+          npm install
+
+      - name: Import Apple installer signing certificate
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.APPLE_DEV_ID_APP }}
+          p12-password: ${{ secrets.APPLE_DEV_ID_APP_PASS }}
+
+      - name: Build electron app
+        env:
+          CSC_FOR_PULL_REQUEST: "true"
+        run: npm run electron:package:mac
+
+      - name: Notarize
+        run: |
+          DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
+          xcrun notarytool submit \
+          --wait \
+          --apple-id "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
+          --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}" \
+          --team-id "${{ secrets.APPLE_TEAM_ID }}" \
+          "$DMG_FILE"
+
+      - name: Upload Mac Installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: cadt-ui-mac-installer
+          path: ${{ github.workspace }}/dist/*.dmg
+
+  build_windows:
+    name: Build Windows Installer
+    runs-on: windows-2019
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node 18.16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+
+      - name: Install Husky
+        run: npm install --save-dev husky
+
+      - name: Ignore Husky where not compatible
+        run: npm pkg delete scripts.prepare
+
+      - name: npm install
+        run: |
+          node --version
+          npm install
+
+      - name: Build electron app
+        run: npm run electron:package:win
+
+      # Windows Code Signing
+      - name: Get installer name for signing
+        shell: bash
+        run: |
+          FILE=$(find dist -type f -maxdepth 1 -name '*.exe')
+          echo "Installer file is $FILE"
+          echo "INSTALLER_FILE=$FILE" >> "$GITHUB_ENV"
+
+      - name: Sign windows artifacts
+        uses: chia-network/actions/digicert/windows-sign@main
+        with:
+          sm_api_key: ${{ secrets.SM_API_KEY }}
+          sm_client_cert_file_b64: ${{ secrets.SM_CLIENT_CERT_FILE_B64 }}
+          sm_client_cert_password: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
+          sm_code_signing_cert_sha1_hash: ${{ secrets.SM_CODE_SIGNING_CERT_SHA1_HASH }}
+          file: "${{ github.workspace }}/${{ env.INSTALLER_FILE }}"
+
+      - name: Upload Windows Installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: cadt-ui-windows-installer
+          path: "${{ github.workspace }}/${{ env.INSTALLER_FILE }}"
+
+  build_linux:
+    name: Build Linux Installer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node 20.10
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+
+      - name: Install Husky
+        run: npm install --save-dev husky
+
+      - name: npm install
+        run: |
+          node --version
+          npm install
+
+      - name: Build electron app
+        run: npm run electron:package:linux
+
+      - name: Rename Linux installer to be standard format for apt
+        run: |
+          ORIGINAL=$(ls dist/*.deb)
+          MODIFIED=${ORIGINAL:0:-10}-1${ORIGINAL#${ORIGINAL:0:-10}}
+          mv $ORIGINAL $MODIFIED
+
+      - name: Upload Linux Installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: cadt-ui-linux-installer
+          path: ${{ github.workspace }}/dist/*.deb
+
+  build_web:
+    name: Build CADT UI Web App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node 20.10
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+
+      - name: Install Husky
+        run: npm install --save-dev husky
+
+      - name: npm install and build
+        run: |
+          node --version
+          npm install
+          npm run build
+
+      - name: Create .tar.gz of the web build
+        run: tar -cvzf cadt-ui-web-build.tar.gz build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: cadt-ui-web-build
+          path: cadt-ui-web-build.tar.gz
+
+  release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs:
+      - build_mac
+      - build_windows
+      - build_linux
+      - build_web
+    steps:
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: cadt-ui-windows-installer
+          path: cadt-ui-windows-installer
+
+      - name: Download MacOS artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: cadt-ui-mac-installer
+          path: cadt-ui-mac-installer
+
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: cadt-ui-linux-installer
+          path: cadt-ui-linux-installer
+
+      - name: Download Web artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: cadt-ui-web-build
+          path: cadt-ui-web-build
+
+      - name: Get Filenames
+        run: |
+          DMG_FILE=$(find ${{ github.workspace }}/cadt-ui-mac-installer/ -type f -name '*.dmg')
+          DEB_FILE=$(find ${{ github.workspace }}/cadt-ui-linux-installer/ -type f -name '*.deb')
+          EXE_FILE=$(find ${{ github.workspace }}/cadt-ui-windows-installer/ -type f -name '*.exe')
+          WEB_FILE=$(find ${{ github.workspace }}/cadt-ui-web-build/ -type f -name '*.tar.gz')
+
+          echo "DMG_FILE=$DMG_FILE" >>$GITHUB_ENV
+          echo "DEB_FILE=$DEB_FILE" >>$GITHUB_ENV
+          echo "EXE_FILE=$EXE_FILE" >>$GITHUB_ENV
+          echo "WEB_FILE=$WEB_FILE" >>$GITHUB_ENV
+
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          files: |
+            ${{ env.DMG_FILE }}
+            ${{ env.DEB_FILE }}
+            ${{ env.EXE_FILE }}
+            ${{ env.WEB_FILE }}
+
+      - name: Get tag name
+        id: tag-name
+        run: |
+          echo "TAGNAME=$(echo $GITHUB_REF | cut -d / -f 3)" >>$GITHUB_OUTPUT
+
+      - name: Gets JWT Token from GitHub
+        uses: Chia-Network/actions/github/jwt@main
+
+      - name: Trigger apt repo update
+        run: |
+          curl -s -XPOST -H "Authorization: Bearer ${{ env.JWT_TOKEN }}" --data '{"cadt_repo":"cadt-ui","release_version":"${{ steps.tag-name.outputs.TAGNAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/cadt/${{ github.sha }}/start
+          curl -s -XPOST -H "Authorization: Bearer ${{ env.JWT_TOKEN }}" --data '{"cadt_repo":"cadt-ui","release_version":"${{ steps.tag-name.outputs.TAGNAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/cadt/${{ github.sha }}/success/deploy
