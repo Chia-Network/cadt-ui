@@ -129,5 +129,6 @@
   "upload-failed": "Upload failed",
   "split": "Split",
   "split-unit": "Split Unit",
-  "detailed-audit-view": "Detailed Audit Record"
+  "detailed-audit-view": "Detailed Audit Record",
+  "download-failed": "Download failed"
 }

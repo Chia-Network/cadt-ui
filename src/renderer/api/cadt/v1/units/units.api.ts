@@ -1,4 +1,4 @@
-import { isNil, isEmpty, omit } from 'lodash';
+import { isEmpty, isNil, omit } from 'lodash';
 import { cadtApi, stagedUnitsTag, unitsTag } from '../';
 import { Unit } from '@/schemas/Unit.schema';
 
@@ -110,7 +110,7 @@ const unitsApi = cadtApi.injectEndpoints({
     }),
 
     stageSplitUnit: builder.mutation<any, any>({
-      query: ({warehouseUnitId, records}) => {
+      query: ({ warehouseUnitId, records }) => {
         return {
           url: `/v1/units/split`,
           method: 'POST',
@@ -136,22 +136,6 @@ const unitsApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedUnitsTag],
     }),
-
-    downloadUnitsXls: builder.query<any, { orgUid: string }>({
-      query: ({ orgUid }) => ({
-        url: `/v1/units/xlsx`,
-        method: 'GET',
-        params: { orgUid, xls: true },
-      }),
-    }),
-
-    downloadUnitsXlsImmediate: builder.mutation<any, { orgUid: string }>({
-      query: ({ orgUid }) => ({
-        url: `/v1/units/xlsx`,
-        method: 'GET',
-        params: { orgUid, xls: true },
-      }),
-    }),
   }),
 });
 
@@ -164,7 +148,5 @@ export const {
   useStageCreateUnitMutation,
   useStageUpdateUnitMutation,
   useStageSplitUnitMutation,
-  useDownloadUnitsXlsQuery,
   useUploadUnitsXlsMutation,
-  useDownloadUnitsXlsImmediateMutation,
 } = unitsApi;

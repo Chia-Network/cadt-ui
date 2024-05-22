@@ -8,6 +8,7 @@ import {
   OrgUidBadge,
   ProjectModal,
   ProjectsListTable,
+  ProjectXlsUploadDownloadButtons,
   SearchBox,
   SkeletonTable,
   SyncIndicator,
@@ -68,8 +69,9 @@ const ProjectsListPage: React.FC = () => {
   return (
     <>
       {projectsFetching && <IndeterminateProgressOverlay />}
-      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30">
+      <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
+        <ProjectXlsUploadDownloadButtons downloadOnly orgUid={orgUid} order={order} search={search} />
         <OrganizationSelector
           onSelect={handleOrganizationSelected}
           defaultOrgUid={orgUid}

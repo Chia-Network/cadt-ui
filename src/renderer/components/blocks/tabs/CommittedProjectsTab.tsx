@@ -8,12 +8,19 @@ import { debounce } from 'lodash';
 interface PageTabProps {
   orgUid: string;
   search: string;
+  order: string;
+  setOrder: (order: string) => void;
   setIsLoading: (isLoading: boolean) => void;
 }
 
-const CommittedProjectsTab: React.FC<PageTabProps> = ({ orgUid, search, setIsLoading }: PageTabProps) => {
+const CommittedProjectsTab: React.FC<PageTabProps> = ({
+  orgUid,
+  search,
+  order,
+  setOrder,
+  setIsLoading,
+}: PageTabProps) => {
   const [currentPage, setCurrentPage] = useQueryParamState('page', '1');
-  const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
   const [projectDetailsFragment, projectDetailsModalActive, setProjectModalActive] = useWildCardUrlHash('project');
   const {
