@@ -128,17 +128,29 @@ const Field: React.FC<FieldProps> = ({
           />
         );
       case 'date':
+        // eslint-disable-next-line
+        const props: any = {
+          showTodayButton: true,
+          showClearButton: false,
+          onSelectedDateChanged: (date) => {
+            const dateValue = date ? date.toISOString() : undefined;
+            setFieldValue(name, dateValue)
+          },
+          placeholder: 'Select date',
+        };
+
+        if (initialValue) {
+          props.defaultDate = new Date(initialValue);
+        }
+
+        if (!initialValue && !get(values, name)) {
+          props.value = undefined;
+        }
+
         return (
-          <>
-            <Datepicker
-              showTodayButton={true}
-              showClearButton={false}
-              defaultDate={initialValue ? new Date(initialValue) : undefined}
-              onSelectedDateChanged={(date) => setFieldValue(name, date.toUTCString())}
-              placeholder="Select date"
-              {...(initialValue || values[name] ? {} : { value: undefined })}
-            />
-          </>
+          <div key={initialValue}>
+            <Datepicker {...props} />
+          </div>
         );
       case 'checkbox':
         return <Checkbox id={name} name={name} onChange={(e) => setFieldValue(name, e.target.checked)} />;

@@ -39,6 +39,10 @@ const Select: React.FC<SelectProps> = ({
     setFilteredOptions(options);
   }, [options]);
 
+  useEffect(() => {
+    setInputValue(initialValue);
+  }, [initialValue, options])
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | ChangeEventHandler<HTMLSelectElement>) => {
     // @ts-ignore
     const value = event.target.value;
@@ -124,6 +128,7 @@ const Select: React.FC<SelectProps> = ({
         id={id}
         name={name}
         value={inputValue?.toString()}
+        defaultValue={initialValue?.toString()}
         // @ts-ignore
         onChange={handleInputChange}
         disabled={disabled}

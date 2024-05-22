@@ -30,4 +30,4 @@ dist-ssr
 .contentlayer
 
 .package-lock.json
-
+.history
