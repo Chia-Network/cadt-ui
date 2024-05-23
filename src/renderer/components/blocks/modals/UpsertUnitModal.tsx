@@ -100,8 +100,6 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
           return;
         }
 
-        console.log('Form submission values:', values);
-
         if (values) {
           setUnitFormData({ ...unitFormData, ...values });
         }
@@ -207,7 +205,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
                 {activeStep !== steps.length - 1 ? (
                   <FormattedMessage id="next" />
                 ) : (
-                  <FormattedMessage id={createUnitModalActive ? 'create-project' : 'edit-project'} />
+                  <FormattedMessage id={createUnitModalActive ? 'create-unit' : 'edit-unit'} />
                 )}
               </Button>
             </div>
