@@ -1,22 +1,22 @@
 import { isEmpty } from 'lodash';
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
+  Button,
   ComponentCenteredSpinner,
+  IssuancesFormRef,
   Modal,
+  Spacer,
   UnitForm,
+  UnitFormRef,
   UnitIssuanceForm,
   UnitLabelsForm,
-  UnitFormRef,
-  IssuancesFormRef,
-  LabelsFormRef,
-  Spacer,
-  Button,
+  UnitLabelsFormRef,
 } from '@/components';
-import { useWildCardUrlHash, useUrlHash } from '@/hooks';
-import { useGetUnitQuery, useGetPickListsQuery, useStageCreateUnitMutation, useStageUpdateUnitMutation } from '@/api';
+import { useUrlHash, useWildCardUrlHash } from '@/hooks';
+import { useGetPickListsQuery, useGetUnitQuery, useStageCreateUnitMutation, useStageUpdateUnitMutation } from '@/api';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Unit } from '@/schemas/Unit.schema';
-import { Alert } from 'flowbite-react'
+import { Alert } from 'flowbite-react';
 
 // unfortunate  use of material UI here but dont have an altenative for stepper
 import Stepper from '@mui/material/Stepper';
@@ -37,7 +37,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
   const intl = useIntl();
   const unitFormRef = useRef<UnitFormRef>(null);
   const issuancesFormRef = useRef<IssuancesFormRef>(null);
-  const labelsFormRef = useRef<LabelsFormRef>(null);
+  const labelsFormRef = useRef<UnitLabelsFormRef>(null);
 
   const [, createUnitModalActive] = useWildCardUrlHash('create-unit');
   const [unitUpsertFragment] = useWildCardUrlHash('edit-unit');
@@ -106,7 +106,6 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
           setUnitFormData({ ...unitFormData, ...values });
         }
 
-
         if (activeStep === UpsertUnitTabs.LABELS) {
           if (unitFormData) {
             const finalUnitFormData = { ...unitFormData, ...values };
@@ -121,9 +120,9 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
               delete finalUnitFormData?.serialNumberBlock;
               response = await triggerStageUpdateUnit(finalUnitFormData);
             }
-            
+
             if (response.data) {
-               setUnitStagedSuccessModal(true);
+              setUnitStagedSuccessModal(true);
             } else {
               let errorMessage = `Error processing Unit: ${response.error.data.message}`;
               if (response.error.data.errors && Array.isArray(response.error.data.errors)) {
@@ -146,7 +145,6 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
       });
   };
 
-
   if (unitLoading || isPickListLoading || isUnitStaging || isUnitUpdating) {
     return (
       <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
@@ -166,7 +164,12 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
         {createUnitModalActive ? <FormattedMessage id="create-unit" /> : <FormattedMessage id="edit-unit" />}
       </Modal.Header>
       <Modal.Body>
-        {formSubmitError && <><Alert color="failure">{formSubmitError}</Alert><Spacer size={15} /></>}
+        {formSubmitError && (
+          <>
+            <Alert color="failure">{formSubmitError}</Alert>
+            <Spacer size={15} />
+          </>
+        )}
         <Stepper nonLinear alternativeLabel activeStep={activeStep}>
           {steps.map((label) => (
             <Step key={label}>
@@ -175,9 +178,24 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
           ))}
         </Stepper>
         <div className="h-screen">
-          {activeStep === UpsertUnitTabs.UNIT && <UnitForm ref={unitFormRef} data={unitFormData || unitData} picklistOptions={pickListData} />}
-          {activeStep === UpsertUnitTabs.ISSUANCES && <UnitIssuanceForm ref={issuancesFormRef} data={unitFormData?.issuance || unitData?.issuance} selectedWarehouseProjectId={unitFormData?.warehouseProjectId || unitData?.warehouseProjectId} />}
-          {activeStep === UpsertUnitTabs.LABELS && <UnitLabelsForm ref={labelsFormRef} data={unitFormData?.labels || unitData?.labels} picklistOptions={pickListData} selectedWarehouseProjectId={unitFormData?.warehouseProjectId || unitData?.warehouseProjectId} />}
+          {activeStep === UpsertUnitTabs.UNIT && (
+            <UnitForm ref={unitFormRef} data={unitFormData || unitData} picklistOptions={pickListData} />
+          )}
+          {activeStep === UpsertUnitTabs.ISSUANCES && (
+            <UnitIssuanceForm
+              ref={issuancesFormRef}
+              data={unitFormData?.issuance || unitData?.issuance}
+              selectedWarehouseProjectId={unitFormData?.warehouseProjectId || unitData?.warehouseProjectId}
+            />
+          )}
+          {activeStep === UpsertUnitTabs.LABELS && (
+            <UnitLabelsForm
+              ref={labelsFormRef}
+              data={unitFormData?.labels || unitData?.labels}
+              picklistOptions={pickListData}
+              selectedWarehouseProjectId={unitFormData?.warehouseProjectId || unitData?.warehouseProjectId}
+            />
+          )}
 
           <Spacer size={15} />
           <div className="flex">
@@ -189,7 +207,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
                 {activeStep !== steps.length - 1 ? (
                   <FormattedMessage id="next" />
                 ) : (
-                  <FormattedMessage id={createUnitModalActive ? "create-project" : "edit-project"} />
+                  <FormattedMessage id={createUnitModalActive ? 'create-project' : 'edit-project'} />
                 )}
               </Button>
             </div>

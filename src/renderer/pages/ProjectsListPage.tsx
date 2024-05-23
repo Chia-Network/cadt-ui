@@ -12,7 +12,6 @@ import {
   SearchBox,
   SkeletonTable,
   SyncIndicator,
-  DownloadProjectXlsButton
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';

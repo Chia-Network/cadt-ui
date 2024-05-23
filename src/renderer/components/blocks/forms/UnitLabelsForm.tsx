@@ -1,6 +1,6 @@
-import { forwardRef, useImperativeHandle, useRef, useState, useMemo, useEffect } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
-import { Field, Repeater, SelectOption, Select } from '@/components';
+import { Field, Repeater, Select, SelectOption } from '@/components';
 import * as yup from 'yup';
 import { Label } from '@/schemas/Label.schema';
 import { PickList } from '@/schemas/PickList.schema';
@@ -56,14 +56,14 @@ interface LabelsFormProps {
 /**
  * Reference methods for the LabelsForm component
  */
-export interface LabelsFormRef {
+export interface UnitLabelsFormRef {
   submitForm: () => Promise<any>;
 }
 
 /**
  * Labels form component to manage label data
  */
-const UnitLabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(
+const UnitLabelsForm = forwardRef<UnitLabelsFormRef, LabelsFormProps>(
   ({ readonly = false, data: labels, picklistOptions, selectedWarehouseProjectId }, ref) => {
     const formikRef = useRef<FormikProps<any>>(null);
     const [selectedLabels, setSelectedLabels] = useState<Label[]>(labels || []);
@@ -117,7 +117,7 @@ const UnitLabelsForm = forwardRef<LabelsFormRef, LabelsFormProps>(
         formikRef.current?.setFieldValue(`labels[${index}].creditingPeriodEndDate`, label.creditingPeriodEndDate);
         formikRef.current?.setFieldValue(`labels[${index}].unitQuantity`, label.unitQuantity);
       }
-      
+
       const updatedLabels = [...selectedLabels];
       updatedLabels[index] = label || {
         label: null,
