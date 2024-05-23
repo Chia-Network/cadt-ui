@@ -1,4 +1,5 @@
-import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
+
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { Card, ComponentCenteredSpinner, Field, Label, Select, SelectOption } from '@/components';
@@ -6,6 +7,36 @@ import { Unit } from '@/schemas/Unit.schema';
 import { useGetHomeOrgQuery, useGetProjectQuery } from '@/api';
 import { PickList } from '@/schemas/PickList.schema';
 import { useGetProjectOptionsList } from '@/hooks';
+
+function removeNullFields(obj) {
+  // Check if the input is an object and not null
+  if (typeof obj !== 'object' || obj === null) {
+      return obj;
+  }
+
+  // Create a new object to avoid mutating the original object
+  const result = Array.isArray(obj) ? [] : {};
+
+  // Iterate over each key in the object
+  for (const key in obj) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (obj.hasOwnProperty(key)) {
+          const value = obj[key];
+
+          // Recursively clean nested objects or arrays
+          if (typeof value === 'object' && value !== null) {
+              const cleanedValue = removeNullFields(value);
+              if (cleanedValue !== null && (Array.isArray(cleanedValue) ? cleanedValue.length > 0 : Object.keys(cleanedValue).length > 0)) {
+                  result[key] = cleanedValue;
+              }
+          } else if (value !== null) {
+              result[key] = value;
+          }
+      }
+  }
+
+  return result;
+}
 
 const validationSchema = yup.object({
   unitOwner: yup.string(),
@@ -102,6 +133,12 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
     setSelectedWarehouseProjectId(value);
   };
 
+  useEffect(() => {
+    if (!unit?.warehouseProjectId && unit?.issuance?.warehouseProjectId) {
+      setSelectedWarehouseProjectId(unit.issuance.warehouseProjectId.toString());
+    }
+  }, [unit, selectedWarehouseProjectId])
+
   if ((isHomeOrgLoading || isProjectOptionsLoading) && !readonly) {
     return <ComponentCenteredSpinner label="Loading Selected Project Data" />;
   }
@@ -111,7 +148,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
   }
 
   return (
-    <Formik innerRef={formikRef} initialValues={unit || {}} validationSchema={validationSchema} onSubmit={() => {}}>
+    <Formik innerRef={formikRef} initialValues={removeNullFields(unit || {})} validationSchema={validationSchema} onSubmit={() => {}}>
       {() => (
         <Form>
           <div className="flex flex-col gap-4">
@@ -126,7 +163,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                         name="select-project"
                         onChange={handleSetWarehouseProjectId}
                         options={projectOptions}
-                        initialValue={unit?.warehouseProjectId?.toString() || ''}
+                        initialValue={selectedWarehouseProjectId || ''}
                       />
                       {error && <p className="text-red-500 text-s italic">{error}</p>}
                     </div>
@@ -140,14 +177,14 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="picklist"
                   options={projectLocationOptions}
                   readonly={readonly}
-                  initialValue={unit?.projectLocationId}
+                  initialValue={unit?.projectLocationId || ''}
                 />
                 <Field
                   name="unitOwner"
                   label="Unit Owner"
                   type="text"
                   readonly={readonly}
-                  initialValue={unit?.unitOwner}
+                  initialValue={unit?.unitOwner || ''}
                 />
                 <Field
                   name="unitBlockStart"
@@ -155,7 +192,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="text"
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.unitBlockStart}
+                  initialValue={unit?.unitBlockStart || ''}
                 />
 
                 <Field
@@ -164,7 +201,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="text"
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.unitBlockEnd}
+                  initialValue={unit?.unitBlockEnd || ''}
                 />
 
                 <Field
@@ -173,7 +210,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="number"
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.unitCount}
+                  initialValue={unit?.unitCount || ''}
                 />
 
                 <Field
@@ -183,7 +220,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   options={picklistOptions?.countries}
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.countryJurisdictionOfOwner}
+                  initialValue={unit?.countryJurisdictionOfOwner || ''}
                 />
 
                 <Field
@@ -192,7 +229,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="text"
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.inCountryJurisdictionOfOwner}
+                  initialValue={unit?.inCountryJurisdictionOfOwner || ''}
                 />
 
                 <Field
@@ -202,7 +239,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   options={picklistOptions?.unitType}
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.unitType}
+                  initialValue={unit?.unitType || ''}
                 />
 
                 <Field
@@ -212,7 +249,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   options={picklistOptions?.unitStatus}
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.unitStatus}
+                  initialValue={unit?.unitStatus || ''}
                 />
 
                 <Field
@@ -220,7 +257,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Status Reason"
                   type="text"
                   readonly={readonly}
-                  initialValue={unit?.unitStatusReason}
+                  initialValue={unit?.unitStatusReason || ''}
                 />
 
                 <Field
@@ -229,7 +266,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="number"
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.vintageYear}
+                  initialValue={unit?.vintageYear || ''}
                 />
               </div>
               <div>
@@ -238,8 +275,8 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Unit Registry Link"
                   type="link"
                   readonly={readonly}
+                  initialValue={unit?.unitRegistryLink || ''}
                   required={true}
-                  initialValue={unit?.unitRegistryLink}
                 />
               </div>
             </Card>
@@ -250,7 +287,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Marketplace"
                   type="text"
                   readonly={readonly}
-                  initialValue={unit?.marketplace}
+                  initialValue={unit?.marketplace || ''}
                 />
 
                 <Field
@@ -258,7 +295,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Marketplace Identifier"
                   type="text"
                   readonly={readonly}
-                  initialValue={unit?.marketplaceIdentifier}
+                  initialValue={unit?.marketplaceIdentifier || ''}
                 />
 
                 <Field
@@ -266,7 +303,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   label="Marketplace Link"
                   type="text"
                   readonly={readonly}
-                  initialValue={unit?.marketplaceLink}
+                  initialValue={unit?.marketplaceLink || ''}
                 />
 
                 <Field
@@ -276,7 +313,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   options={picklistOptions?.correspondingAdjustmentStatus}
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.correspondingAdjustmentStatus}
+                  initialValue={unit?.correspondingAdjustmentStatus || ''}
                 />
 
                 <Field
@@ -286,12 +323,18 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   options={picklistOptions?.correspondingAdjustmentDeclaration}
                   readonly={readonly}
                   required={true}
-                  initialValue={unit?.correspondingAdjustmentDeclaration}
+                  initialValue={unit?.correspondingAdjustmentDeclaration || ''}
                 />
               </div>
             </Card>
             <Card>
-              <Field name="unitTags" label="Unit Tags" type="tag" readonly={readonly} initialValue={unit?.unitTags} />
+              <Field
+                name="unitTags"
+                label="Unit Tags"
+                type="tag"
+                readonly={readonly}
+                initialValue={unit?.unitTags || ''}
+              />
             </Card>
           </div>
         </Form>

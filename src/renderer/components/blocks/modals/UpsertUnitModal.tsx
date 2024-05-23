@@ -4,16 +4,16 @@ import {
   Button,
   ComponentCenteredSpinner,
   IssuancesFormRef,
-  LabelsForm,
-  LabelsFormRef,
   Modal,
   Spacer,
   UnitForm,
   UnitFormRef,
   UnitIssuanceForm,
+  UnitLabelsForm,
+  UnitLabelsFormRef,
 } from '@/components';
 import { useUrlHash, useWildCardUrlHash } from '@/hooks';
-import { useGetPickListsQuery, useGetUnitQuery, useStageCreateUnitMutation } from '@/api';
+import { useGetPickListsQuery, useGetUnitQuery, useStageCreateUnitMutation, useStageUpdateUnitMutation } from '@/api';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Unit } from '@/schemas/Unit.schema';
 import { Alert } from 'flowbite-react';
@@ -37,7 +37,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
   const intl = useIntl();
   const unitFormRef = useRef<UnitFormRef>(null);
   const issuancesFormRef = useRef<IssuancesFormRef>(null);
-  const labelsFormRef = useRef<LabelsFormRef>(null);
+  const labelsFormRef = useRef<UnitLabelsFormRef>(null);
 
   const [, createUnitModalActive] = useWildCardUrlHash('create-unit');
   const [unitUpsertFragment] = useWildCardUrlHash('edit-unit');
@@ -53,6 +53,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
   const [unitFormData, setUnitFormData] = useState<Unit>();
   const [formSubmitError, setFormSubmitError] = useState<string | null>(null);
   const [triggerStageCreateUnit, { isLoading: isUnitStaging }] = useStageCreateUnitMutation();
+  const [triggerStageUpdateUnit, { isLoading: isUnitUpdating }] = useStageUpdateUnitMutation();
   const [activeStep, setActiveStep] = useState(UpsertUnitTabs.UNIT);
   const [, setUnitStagedSuccessModal] = useUrlHash('success-stage-unit');
 
@@ -105,7 +106,18 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
 
         if (activeStep === UpsertUnitTabs.LABELS) {
           if (unitFormData) {
-            const response: any = await triggerStageCreateUnit(unitFormData);
+            const finalUnitFormData = { ...unitFormData, ...values };
+            let response: any;
+
+            if (createUnitModalActive) {
+              response = await triggerStageCreateUnit(finalUnitFormData);
+            } else {
+              // @ts-ignore
+              delete finalUnitFormData?.issuanceId;
+              // @ts-ignore
+              delete finalUnitFormData?.serialNumberBlock;
+              response = await triggerStageUpdateUnit(finalUnitFormData);
+            }
 
             if (response.data) {
               setUnitStagedSuccessModal(true);
@@ -131,7 +143,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
       });
   };
 
-  if (unitLoading || isPickListLoading || isUnitStaging) {
+  if (unitLoading || isPickListLoading || isUnitStaging || isUnitUpdating) {
     return (
       <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
         <Modal.Header>
@@ -175,10 +187,11 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
             />
           )}
           {activeStep === UpsertUnitTabs.LABELS && (
-            <LabelsForm
+            <UnitLabelsForm
               ref={labelsFormRef}
               data={unitFormData?.labels || unitData?.labels}
               picklistOptions={pickListData}
+              selectedWarehouseProjectId={unitFormData?.warehouseProjectId || unitData?.warehouseProjectId}
             />
           )}
 

@@ -13,3 +13,4 @@ export * from './RatingsForm';
 export * from './RelatedProjectsForm';
 export * from './UnitIssuanceForm';
 export * from './SplitUnitForm';
+export * from './UnitLabelsForm';
