@@ -135,8 +135,15 @@ jobs:
 
       - name: npm install
         run: |
+          echo "Node version "
           node --version
+          echo "npm version "
           npm --version
+          echo "Clearing npm cache "
+          npm cache clean --force
+          echo "Verify cleared npm cache "
+          npm cache verify
+          echo "Run npm install"
           npm install
 
       - name: Build electron app
