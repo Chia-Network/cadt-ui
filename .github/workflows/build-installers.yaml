@@ -130,8 +130,8 @@ jobs:
         with:
           node-version: '20.10'
 
-      - name: Install Husky
-        run: npm install --save-dev husky
+      # - name: Install Husky
+      #   run: npm install --save-dev husky
 
       - name: npm install
         run: |
@@ -145,9 +145,10 @@ jobs:
           npm cache verify
           echo "Run npm install"
           npm install
+          npm run electron:package:linux
 
-      - name: Build electron app
-        run: npm run electron:package:linux
+      # - name: Build electron app
+      #   run: npm run electron:package:linux
 
       - name: Rename Linux installer to be standard format for apt
         run: |
