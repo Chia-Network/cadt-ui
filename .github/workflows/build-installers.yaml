@@ -136,6 +136,7 @@ jobs:
       - name: npm install
         run: |
           node --version
+          npm --version
           npm install
 
       - name: Build electron app
