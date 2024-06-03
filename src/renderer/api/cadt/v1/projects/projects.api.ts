@@ -2,6 +2,7 @@ import { isEmpty, isNil, omit } from 'lodash';
 import { cadtApi, projectsTag, stagedProjectsTag } from '../';
 import { Project } from '@/schemas/Project.schema';
 
+//ci-test
 interface GetProjectsParams {
   page?: number;
   orgUid?: string | null;
