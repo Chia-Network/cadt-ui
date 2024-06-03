@@ -189,7 +189,7 @@ const projectsApi = cadtApi.injectEndpoints({
     }),
 
     transferProject: builder.mutation<any, Project>({
-      query: ({ project }) => {
+      query: (project) => {
         return {
           url: `/v1/projects/transfer`,
           method: 'PUT',
