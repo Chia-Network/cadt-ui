@@ -1,7 +1,6 @@
-import { partial } from 'lodash';
+import { DebouncedFunc, partial } from 'lodash';
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { DebouncedFunc } from 'lodash';
 import {
   Column,
   DataTable,
@@ -13,7 +12,7 @@ import {
 } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { Badge } from 'flowbite-react';
-import { useWildCardUrlHash, useUrlHash } from '@/hooks';
+import { useUrlHash, useWildCardUrlHash } from '@/hooks';
 
 interface TableProps {
   data: Project[];
@@ -130,7 +129,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
 
   return (
     <>
-      <div className="relative">
+      <div className="relative h-max">
         <DataTable
           columns={columns}
           onChangeOrder={setOrder}
