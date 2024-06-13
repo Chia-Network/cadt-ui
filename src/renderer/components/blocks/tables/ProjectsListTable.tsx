@@ -129,29 +129,27 @@ const ProjectsListTable: React.FC<TableProps> = ({
 
   return (
     <>
-      <div className="relative h-max">
-        <DataTable
-          columns={columns}
-          onChangeOrder={setOrder}
-          onRowClick={onRowClick}
-          order={order}
-          data={data}
-          primaryKey="warehouseProjectId"
-          isLoading={isLoading}
-          footer={
-            <>
-              <PageCounter currentPage={currentPage} totalCount={totalCount} />
-              <Pagination
-                currentPage={currentPage}
-                layout="pagination"
-                onPageChange={onPageChange}
-                showIcons={true}
-                totalPages={totalPages || 1}
-              />
-            </>
-          }
-        />
-      </div>
+      <DataTable
+        columns={columns}
+        onChangeOrder={setOrder}
+        onRowClick={onRowClick}
+        order={order}
+        data={data}
+        primaryKey="warehouseProjectId"
+        isLoading={isLoading}
+        footer={
+          <>
+            <PageCounter currentPage={currentPage} totalCount={totalCount} />
+            <Pagination
+              currentPage={currentPage}
+              layout="pagination"
+              onPageChange={onPageChange}
+              showIcons={true}
+              totalPages={totalPages || 1}
+            />
+          </>
+        }
+      />
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
     </>
   );
