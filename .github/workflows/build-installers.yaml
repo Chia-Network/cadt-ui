@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - '**'
+    branches:
+      - refactor/refactor-base #remove this once rebuild is merged
   pull_request:
     branches:
       - '**'
