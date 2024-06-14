@@ -1,4 +1,3 @@
-
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { Form, Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
@@ -11,7 +10,7 @@ import { useGetProjectOptionsList } from '@/hooks';
 function removeNullFields(obj) {
   // Check if the input is an object and not null
   if (typeof obj !== 'object' || obj === null) {
-      return obj;
+    return obj;
   }
 
   // Create a new object to avoid mutating the original object
@@ -19,20 +18,23 @@ function removeNullFields(obj) {
 
   // Iterate over each key in the object
   for (const key in obj) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (obj.hasOwnProperty(key)) {
-          const value = obj[key];
+    // eslint-disable-next-line no-prototype-builtins
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key];
 
-          // Recursively clean nested objects or arrays
-          if (typeof value === 'object' && value !== null) {
-              const cleanedValue = removeNullFields(value);
-              if (cleanedValue !== null && (Array.isArray(cleanedValue) ? cleanedValue.length > 0 : Object.keys(cleanedValue).length > 0)) {
-                  result[key] = cleanedValue;
-              }
-          } else if (value !== null) {
-              result[key] = value;
-          }
+      // Recursively clean nested objects or arrays
+      if (typeof value === 'object' && value !== null) {
+        const cleanedValue = removeNullFields(value);
+        if (
+          cleanedValue !== null &&
+          (Array.isArray(cleanedValue) ? cleanedValue.length > 0 : Object.keys(cleanedValue).length > 0)
+        ) {
+          result[key] = cleanedValue;
+        }
+      } else if (value !== null) {
+        result[key] = value;
       }
+    }
   }
 
   return result;
@@ -137,7 +139,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
     if (!unit?.warehouseProjectId && unit?.issuance?.warehouseProjectId) {
       setSelectedWarehouseProjectId(unit.issuance.warehouseProjectId.toString());
     }
-  }, [unit, selectedWarehouseProjectId])
+  }, [unit, selectedWarehouseProjectId]);
 
   if ((isHomeOrgLoading || isProjectOptionsLoading) && !readonly) {
     return <ComponentCenteredSpinner label="Loading Selected Project Data" />;
@@ -148,7 +150,12 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
   }
 
   return (
-    <Formik innerRef={formikRef} initialValues={removeNullFields(unit || {})} validationSchema={validationSchema} onSubmit={() => {}}>
+    <Formik
+      innerRef={formikRef}
+      initialValues={removeNullFields(unit || {})}
+      validationSchema={validationSchema}
+      onSubmit={() => {}}
+    >
       {() => (
         <Form>
           <div className="flex flex-col gap-4">
@@ -157,7 +164,10 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                 {!readonly && (
                   <>
                     <div>
-                      <Label htmlFor="select-project">Select Project</Label>
+                      <div className="flex">
+                        {!readonly && <p className="text-red-600 mr-1">*</p>}
+                        <Label htmlFor="select-project">Select Project</Label>
+                      </div>
                       <Select
                         id="select-project"
                         name="select-project"
