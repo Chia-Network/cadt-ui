@@ -44,7 +44,7 @@ const DataTable: React.FC<DataTableProps> = ({
   }
 
   return (
-    <div className="dark:bg-gray-800 h-full">
+    <div className="dark:bg-gray-800 h-full w-full">
       {/* Mobile view */}
       <div className="block md:hidden mx-auto w-full">
         {data?.length > 0 &&
