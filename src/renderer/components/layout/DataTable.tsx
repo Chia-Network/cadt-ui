@@ -79,84 +79,84 @@ const DataTable: React.FC<DataTableProps> = ({
       </div>
 
       {/* Desktop view */}
-      {footer && data.length ? (
-        <div id="footer" className="bg-gray-100 dark:bg-gray-700 w-full p-4 text-left fixed bottom-0 z-50">
-          {footer}
-        </div>
-      ) : null}
-      <div className="flex-grow custom-scrollbar" style={{ height: data.length > 0 ? 'calc(100vh - 240px)' : 'auto' }}>
-        <SimpleBar style={{ maxHeight: '100%' }} autoHide={false} forceVisible="x">
-          <table
-            className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 custom-scrollbar"
-            style={{ height: data.length > 5 ? 'calc(100vh - 265px)' : 'auto' }}
-          >
-            <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
-              <tr>
-                {columns.map((column) => {
-                  const isActive = order?.startsWith(column.key);
-                  return (
-                    <th
-                      key={column.key}
-                      style={{ cursor: onChangeOrder ? 'pointer' : 'default' }}
-                      className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
-                        isActive
-                          ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white'
-                          : 'text-gray-500 dark:text-gray-400'
-                      }`}
-                      onClick={() => !column.ignoreOrderChange && onChangeOrder && onChangeOrder(column.key)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span>{column.renderHeader ? column.renderHeader(column) : column.title}</span>
-                        {order?.includes(column.key) && (
-                          <div style={{ width: '24px', height: '24px', display: 'inline-block' }}>
-                            {order.includes('ASC') && <AiOutlineSortAscending className="w-6 h-6" />}
-                            {order.includes('DESC') && <AiOutlineSortDescending className="w-6 h-6" />}
-                          </div>
-                        )}
-                      </div>
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {data?.length > 0 &&
-                data.map((row, index) => (
-                  <tr
-                    key={row[primaryKey]}
-                    style={{ cursor: onRowClick == noop ? 'default' : 'pointer' }}
-                    className={
-                      index % 2 === 0
-                        ? 'bg-gray-50 dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
-                        : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
-                    }
-                  >
-                    {columns.map((column) => (
-                      <td
-                        key={`${column.key}-${row[primaryKey]}`}
-                        className="px-6 py-4 whitespace-normal"
-                        onClick={(event: any) => {
-                          if (!column.ignoreChildEvents || event.target === event.currentTarget) {
-                            onRowClick(row);
-                          }
-                        }}
+      <div className="h-full">
+        <div className="flex-col flex-grow">
+          <SimpleBar autoHide={false} forceVisible="x">
+            <table className="h-full min-w-full divide-y divide-gray-300 dark:divide-gray-700 custom-scrollbar">
+              <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
+                <tr>
+                  {columns.map((column) => {
+                    const isActive = order?.startsWith(column.key);
+                    return (
+                      <th
+                        key={column.key}
+                        style={{ cursor: onChangeOrder ? 'pointer' : 'default' }}
+                        className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
+                          isActive
+                            ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white'
+                            : 'text-gray-500 dark:text-gray-400'
+                        }`}
+                        onClick={() => !column.ignoreOrderChange && onChangeOrder && onChangeOrder(column.key)}
                       >
-                        <div className="text-gray-600 dark:text-white">
-                          <div className="truncate" style={{ maxWidth: '300px' }}>
-                            {column.render ? (
-                              column.render(row)
-                            ) : (
-                              <Tooltip content={row[column.key]}>{row[column.key]}</Tooltip>
-                            )}
-                          </div>
+                        <div className="flex items-center justify-between">
+                          <span>{column.renderHeader ? column.renderHeader(column) : column.title}</span>
+                          {order?.includes(column.key) && (
+                            <div style={{ width: '24px', height: '24px', display: 'inline-block' }}>
+                              {order.includes('ASC') && <AiOutlineSortAscending className="w-6 h-6" />}
+                              {order.includes('DESC') && <AiOutlineSortDescending className="w-6 h-6" />}
+                            </div>
+                          )}
                         </div>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </SimpleBar>
+                      </th>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                {data?.length > 0 &&
+                  data.map((row, index) => (
+                    <tr
+                      key={row[primaryKey]}
+                      style={{ cursor: onRowClick == noop ? 'default' : 'pointer' }}
+                      className={
+                        index % 2 === 0
+                          ? 'bg-gray-50 dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      }
+                    >
+                      {columns.map((column) => (
+                        <td
+                          key={`${column.key}-${row[primaryKey]}`}
+                          className="px-6 py-4 whitespace-normal"
+                          onClick={(event: any) => {
+                            if (!column.ignoreChildEvents || event.target === event.currentTarget) {
+                              onRowClick(row);
+                            }
+                          }}
+                        >
+                          <div className="text-gray-600 dark:text-white">
+                            <div className="truncate" style={{ maxWidth: '300px' }}>
+                              {column.render ? (
+                                column.render(row)
+                              ) : (
+                                <Tooltip content={row[column.key]}>{row[column.key]}</Tooltip>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </SimpleBar>
+        </div>
+
+        {footer && data.length ? (
+          <div id="footer" className="flex-none w-full p-4 text-left bg-gray-100 dark:bg-gray-700">
+            {footer}
+          </div>
+        ) : null}
       </div>
 
       {data?.length === 0 && (

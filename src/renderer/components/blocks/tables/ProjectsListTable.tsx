@@ -128,7 +128,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
   }, [isEditable, setEditProjectModalActive]);
 
   return (
-    <>
+    <div className="h-full">
       <DataTable
         columns={columns}
         onChangeOrder={setOrder}
@@ -151,7 +151,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
         }
       />
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
-    </>
+    </div>
   );
 };
 

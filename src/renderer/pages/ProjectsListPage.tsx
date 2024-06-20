@@ -67,7 +67,7 @@ const ProjectsListPage: React.FC = () => {
   }
 
   return (
-    <>
+    <div className="h-full">
       {projectsFetching && <IndeterminateProgressOverlay />}
       <div className="flex flex-col md:flex-row gap-6 pl-1 my-2.5 relative z-30 items-center">
         <SearchBox defaultValue={search} onChange={handleSearchChange} />
@@ -103,7 +103,7 @@ const ProjectsListPage: React.FC = () => {
           warehouseProjectId={projectDetailsFragment.replace('project-', '')}
         />
       )}
-    </>
+    </div>
   );
 };
 
