@@ -7,11 +7,11 @@ import { FormattedMessage } from 'react-intl';
 interface ProjectAndUnitActionsProps {
   type: 'project' | 'unit';
   warehouseId: string;
-  openEditModal: (string) => void;
-  openSplitModal?: (string) => void;
+  openEditModal: (warehouseId: string) => void;
+  openSplitModal?: (warehouseId: string) => void;
 }
 
-const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
+const OwnedProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   type,
   warehouseId,
   openEditModal = noop,
@@ -29,7 +29,7 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
 
   const handleClickSplit = () => {
     openSplitModal(warehouseId);
-  }
+  };
 
   return (
     <>
@@ -66,4 +66,4 @@ const ProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
   );
 };
 
-export { ProjectAndUnitActions };
+export { OwnedProjectAndUnitActions };

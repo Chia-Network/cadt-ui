@@ -130,5 +130,8 @@
   "split": "Split",
   "split-unit": "Split Unit",
   "detailed-audit-view": "Detailed Audit Record",
-  "download-failed": "Download failed"
+  "download-failed": "Download failed",
+  "transfer": "Transfer",
+  "create-project-transfer": "Create Project Transfer",
+  "transfer-project": "Transfer Project"
 }

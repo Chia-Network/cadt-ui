@@ -57,7 +57,7 @@ const CommittedProjectsTab: React.FC<PageTabProps> = ({
       ) : (
         <ProjectsListTable
           data={projectsData?.data || []}
-          isEditable={true}
+          rowActions="edit"
           isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}

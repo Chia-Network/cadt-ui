@@ -1,8 +1,15 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { DebouncedFunc } from 'lodash';
-import { Column, DataTable, PageCounter, Pagination, ProjectAndUnitActions, UpsertUnitModal, SplitUnitModal } from '@/components';
-import { partial } from 'lodash';
+import { DebouncedFunc, partial } from 'lodash';
+import {
+  Column,
+  DataTable,
+  OwnedProjectAndUnitActions,
+  PageCounter,
+  Pagination,
+  SplitUnitModal,
+  UpsertUnitModal,
+} from '@/components';
 import { useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { Unit } from '@/schemas/Unit.schema';
 
@@ -49,7 +56,7 @@ const UnitsListTable: React.FC<TableProps> = ({
         ignoreChildEvents: true,
         ignoreOrderChange: true,
         render: (row: Unit) => (
-          <ProjectAndUnitActions
+          <OwnedProjectAndUnitActions
             type="unit"
             warehouseId={row?.warehouseUnitId || ''}
             openEditModal={partial(setEditUnitModalActive, true)}
