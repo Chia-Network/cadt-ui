@@ -8,3 +8,4 @@ export * from './DiffViewer';
 export * from './OwnedProjectAndUnitActions';
 export * from './StagedItemActions';
 export * from './TransferOption';
+export * from './StagingDiff';

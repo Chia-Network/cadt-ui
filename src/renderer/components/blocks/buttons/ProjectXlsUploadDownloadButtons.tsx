@@ -22,10 +22,10 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
   const [triggerUploadProjectXls] = useUploadProjectsXlsMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showUploadFailedAlert, setShowUploadFailedAlert] = useState<boolean>(false);
-  const [downloadLoading, setDownloadLoading] = useState(false);
 
   // download hooks and state
   const [showDownLoadFailedAlert, setShowDownloadFailedAlert] = useState<boolean>(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
 
   useEffect(() => {
     if (showDownLoadFailedAlert) {

@@ -133,5 +133,9 @@
   "download-failed": "Download failed",
   "transfer": "Transfer",
   "create-project-transfer": "Create Project Transfer",
-  "transfer-project": "Transfer Project"
+  "transfer-project": "Transfer Project",
+  "no-pending-transfers": "No pending transfers",
+  "download-offer-file": "Download Offer File",
+  "cancel-offer": "Cancel Offer",
+  "failed-to-cancel-offer": "Failed to cancel offer"
 }
