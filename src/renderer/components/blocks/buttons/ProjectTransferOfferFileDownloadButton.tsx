@@ -4,7 +4,11 @@ import { AiOutlineDeliveredProcedure } from 'react-icons/ai';
 import { Alert } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 
-const ProjectTransferOfferFileDownload: React.FC = () => {
+interface Props {
+  disabled?: boolean;
+}
+
+const ProjectTransferOfferFileDownloadButton: React.FC<Props> = ({ disabled }) => {
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [showDownLoadFailedAlert, setShowDownloadFailedAlert] = useState<boolean>(false);
 
@@ -53,7 +57,7 @@ const ProjectTransferOfferFileDownload: React.FC = () => {
 
   return (
     <>
-      <Button onClick={handleClickDownload} isProcessing={downloadLoading}>
+      <Button onClick={handleClickDownload} isProcessing={downloadLoading} disabled={downloadLoading || disabled}>
         <AiOutlineDeliveredProcedure className="h-5 w-5 mr-1" />
         <FormattedMessage id="download-offer-file" />
       </Button>
@@ -68,4 +72,4 @@ const ProjectTransferOfferFileDownload: React.FC = () => {
   );
 };
 
-export { ProjectTransferOfferFileDownload };
+export { ProjectTransferOfferFileDownloadButton };

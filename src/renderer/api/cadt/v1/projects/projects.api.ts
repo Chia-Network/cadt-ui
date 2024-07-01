@@ -190,10 +190,38 @@ const projectsApi = cadtApi.injectEndpoints({
 
     transferProject: builder.mutation<any, Project>({
       query: (project) => {
+        if (isNil(project.projectLocations) || isEmpty(project.projectLocations)) {
+          delete project.projectLocations;
+        }
+
+        if (isNil(project.labels) || isEmpty(project.labels)) {
+          delete project.labels;
+        }
+
+        if (isNil(project.relatedProjects) || isEmpty(project.relatedProjects)) {
+          delete project.relatedProjects;
+        }
+
+        if (isNil(project.projectRatings) || isEmpty(project.projectRatings)) {
+          delete project.projectRatings;
+        }
+
+        if (isNil(project.estimations) || isEmpty(project.estimations)) {
+          delete project.estimations;
+        }
+
+        if (isNil(project.issuances) || isEmpty(project.issuances)) {
+          delete project.issuances;
+        }
+
+        if (isNil(project.coBenefits) || isEmpty(project.coBenefits)) {
+          delete project.coBenefits;
+        }
+
         return {
           url: `/v1/projects/transfer`,
           method: 'PUT',
-          body: project,
+          body: omit(project, ['orgUid', 'timeStaged', 'createdBy', 'updatedBy']),
         };
       },
     }),

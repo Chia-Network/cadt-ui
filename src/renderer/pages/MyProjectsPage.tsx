@@ -7,10 +7,11 @@ import {
   CommitStagedItemsModal,
   CommittedProjectsTab,
   ComponentCenteredSpinner,
+  ImportTransferFileButton,
   IndeterminateProgressOverlay,
   OrgUidBadge,
-  ProjectTransferOfferCancel,
-  ProjectTransferOfferFileDownload,
+  ProjectTransferOfferCancelButton,
+  ProjectTransferOfferFileDownloadButton,
   ProjectXlsUploadDownloadButtons,
   SearchBox,
   StagedProjectSuccessModal,
@@ -132,8 +133,8 @@ const MyProjectsPage: React.FC = () => {
           )}
           {activeTab === TabTypes.TRANSFERS && (
             <div className="flex space-x-2">
-              <ProjectTransferOfferFileDownload />
-              <ProjectTransferOfferCancel />
+              <ProjectTransferOfferFileDownloadButton disabled={!processedStagingData?.transfer} />
+              <ProjectTransferOfferCancelButton disabled={!processedStagingData?.transfer} />
             </div>
           )}
 
@@ -171,7 +172,7 @@ const MyProjectsPage: React.FC = () => {
             <Tabs.Item
               title={
                 <p>
-                  <FormattedMessage id="transfers" />
+                  <FormattedMessage id="transfer" />
                   {processedStagingData.transfer && ' (1) '}
                 </p>
               }
@@ -208,7 +209,12 @@ const MyProjectsPage: React.FC = () => {
                   <StagingDiff stagingUuid={processedStagingData.transfer.uuid} />
                 </div>
               ) : (
-                <FormattedMessage id="no-pending-transfers" />
+                <div className="grid justify-items-center">
+                  <p className="pb-5">
+                    <FormattedMessage id="no-pending-transfers" />
+                  </p>
+                  <ImportTransferFileButton />
+                </div>
               )}
             </>
           )}

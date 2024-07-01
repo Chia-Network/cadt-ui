@@ -13,7 +13,6 @@ const TransferOption: React.FC<ProjectAndUnitActionsProps> = ({
   openTransferModal,
 }: ProjectAndUnitActionsProps) => {
   const handleClickTransfer = () => {
-    console.log('####### transfer project opened with id', warehouseId);
     openTransferModal(warehouseId);
   };
 

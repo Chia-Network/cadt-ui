@@ -89,7 +89,6 @@
   "staging": "Staging",
   "pending": "Pending",
   "failed": "Failed",
-  "transfers": "Transfers",
   "my-units": "My Units",
   "create-unit": "Create Unit",
   "action": "Action",
@@ -137,5 +136,9 @@
   "no-pending-transfers": "No pending transfers",
   "download-offer-file": "Download Offer File",
   "cancel-offer": "Cancel Offer",
-  "failed-to-cancel-offer": "Failed to cancel offer"
+  "failed-to-cancel-offer": "Failed to cancel offer",
+  "confirm-cancel-offer": "Confirm Cancel Offer",
+  "do-not-cancel-offer": "Do Not Cancel Offer",
+  "cancelling-this-offer-will-invalidate-the-corresponding-offer-file": "Cancelling this offer will invalidate the corresponding offer file",
+  "import-transfer-file": "Import Transfer File"
 }
