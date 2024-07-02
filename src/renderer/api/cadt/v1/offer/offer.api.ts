@@ -1,4 +1,4 @@
-import { cadtApi, offerTag, stagedProjectsTag } from '../';
+import { cadtApi, importedOfferTag, offerTag } from '../';
 
 const offerApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -33,9 +33,46 @@ const offerApi = cadtApi.injectEndpoints({
           body: formData,
         };
       },
-      invalidatesTags: [stagedProjectsTag],
+      invalidatesTags: [importedOfferTag],
+    }),
+
+    getImportedOffer: builder.query<any, void>({
+      query: () => {
+        return {
+          url: `/v1/offer/accept`,
+          method: 'GET',
+        };
+      },
+      providesTags: [importedOfferTag],
+    }),
+
+    rejectImportedOfferFile: builder.mutation<void, void>({
+      query: () => {
+        return {
+          url: `/v1/offer/accept/cancel`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: [importedOfferTag],
+    }),
+
+    commitImportedOfferFile: builder.mutation<void, void>({
+      query: () => {
+        return {
+          url: `/v1/offer/accept/commit`,
+          method: 'post',
+        };
+      },
+      invalidatesTags: [importedOfferTag],
     }),
   }),
 });
 
-export const { useGetOfferFileQuery, useCancelActiveOfferMutation, useUploadOfferFileMutation } = offerApi;
+export const {
+  useGetOfferFileQuery,
+  useCancelActiveOfferMutation,
+  useUploadOfferFileMutation,
+  useGetImportedOfferQuery,
+  useRejectImportedOfferFileMutation,
+  useCommitImportedOfferFileMutation,
+} = offerApi;

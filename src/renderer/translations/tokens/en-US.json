@@ -140,5 +140,10 @@
   "confirm-cancel-offer": "Confirm Cancel Offer",
   "do-not-cancel-offer": "Do Not Cancel Offer",
   "cancelling-this-offer-will-invalidate-the-corresponding-offer-file": "Cancelling this offer will invalidate the corresponding offer file",
-  "import-transfer-file": "Import Transfer File"
+  "import-transfer-file": "Import Transfer File",
+  "reject-transfer-offer": "Reject Transfer Offer",
+  "accepting-this-offer-will-write-the-associated-changes-transferring-ownership-of-the-project": "Accepting this offer will write the associated changes transferring ownership of the project",
+  "the-transfer-cannot-be-revoked-once-committed": "The transfer cannot be revoked once committed",
+  "accept-and-commit": "Accept and Commit",
+  "failed-to-accept-offer": "Failed to accept offer"
 }
