@@ -8,7 +8,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const ProjectTransferOfferFileDownloadButton: React.FC<Props> = ({ disabled }) => {
+const ProjectOfferFileDownloadButton: React.FC<Props> = ({ disabled }) => {
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [showDownLoadFailedAlert, setShowDownloadFailedAlert] = useState<boolean>(false);
 
@@ -19,11 +19,11 @@ const ProjectTransferOfferFileDownloadButton: React.FC<Props> = ({ disabled }) =
   }, [showDownLoadFailedAlert]);
 
   const handleDownloadedData = async (data: Blob) => {
-    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'projects-data.xlsx';
+    link.download = 'transfer-offer.txt';
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -33,7 +33,7 @@ const ProjectTransferOfferFileDownloadButton: React.FC<Props> = ({ disabled }) =
   const handleClickDownload = async () => {
     setDownloadLoading(true);
     try {
-      const url = new URL('http://localhost:31310/v1/projects');
+      const url = new URL('http://localhost:31310/v1/offer');
       url.searchParams.append('xls', 'true');
 
       const downloadResponse: Response = await fetch(url);
@@ -72,4 +72,4 @@ const ProjectTransferOfferFileDownloadButton: React.FC<Props> = ({ disabled }) =
   );
 };
 
-export { ProjectTransferOfferFileDownloadButton };
+export { ProjectOfferFileDownloadButton };

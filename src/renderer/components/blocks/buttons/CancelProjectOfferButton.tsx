@@ -8,7 +8,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const ProjectTransferOfferCancelButton: React.FC<Props> = ({ disabled }) => {
+const CancelProjectOfferButton: React.FC<Props> = ({ disabled }) => {
   const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);
 
   return (
@@ -22,4 +22,4 @@ const ProjectTransferOfferCancelButton: React.FC<Props> = ({ disabled }) => {
   );
 };
 
-export { ProjectTransferOfferCancelButton };
+export { CancelProjectOfferButton };

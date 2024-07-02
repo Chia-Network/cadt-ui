@@ -7,18 +7,15 @@ import {
   CommitStagedItemsModal,
   CommittedProjectsTab,
   ComponentCenteredSpinner,
-  ImportTransferFileButton,
   IndeterminateProgressOverlay,
   OrgUidBadge,
-  ProjectTransferOfferCancelButton,
-  ProjectTransferOfferFileDownloadButton,
   ProjectXlsUploadDownloadButtons,
   SearchBox,
   StagedProjectSuccessModal,
-  StagingDiff,
   StagingTableTab,
   SyncIndicator,
   Tabs,
+  TransferManager,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetOrganizationsMapQuery } from '@/api/cadt/v1/organizations';
@@ -131,12 +128,6 @@ const MyProjectsPage: React.FC = () => {
               </Button>
             </>
           )}
-          {activeTab === TabTypes.TRANSFERS && (
-            <div className="flex space-x-2">
-              <ProjectTransferOfferFileDownloadButton disabled={!processedStagingData?.transfer} />
-              <ProjectTransferOfferCancelButton disabled={!processedStagingData?.transfer} />
-            </div>
-          )}
 
           {myOrganization && <ProjectXlsUploadDownloadButtons orgUid={orgUid} order={order} search={search} />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
@@ -202,22 +193,7 @@ const MyProjectsPage: React.FC = () => {
           {activeTab === TabTypes.FAILED && (
             <StagingTableTab type="failed" stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
           )}
-          {activeTab === TabTypes.TRANSFERS && (
-            <>
-              {processedStagingData?.transfer?.uuid ? (
-                <div style={{ height: 'calc(100vh - 240px)' }}>
-                  <StagingDiff stagingUuid={processedStagingData.transfer.uuid} />
-                </div>
-              ) : (
-                <div className="grid justify-items-center">
-                  <p className="pb-5">
-                    <FormattedMessage id="no-pending-transfers" />
-                  </p>
-                  <ImportTransferFileButton />
-                </div>
-              )}
-            </>
-          )}
+          {activeTab === TabTypes.TRANSFERS && <TransferManager stagedTransferData={processedStagingData.transfer} />}
         </div>
       </div>
       {commitModalActive && processedStagingData.staged.length && (

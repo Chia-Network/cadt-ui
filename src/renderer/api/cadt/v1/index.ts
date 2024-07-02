@@ -9,6 +9,7 @@ const issuancesTag = 'issuances';
 const stagedProjectsTag = 'stagedProjects';
 const stagedUnitsTag = 'stagedUnits';
 const offerTag = 'offer';
+const importedOfferTag = 'importedTransferTag';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: '/',
@@ -52,8 +53,19 @@ export const cadtApi = createApi({
     stagedUnitsTag,
     issuancesTag,
     offerTag,
+    importedOfferTag,
   ],
   endpoints: () => ({}),
 });
 
-export { projectsTag, organizationsTag, unitsTag, auditTag, stagedProjectsTag, stagedUnitsTag, issuancesTag, offerTag };
+export {
+  projectsTag,
+  organizationsTag,
+  unitsTag,
+  auditTag,
+  stagedProjectsTag,
+  stagedUnitsTag,
+  issuancesTag,
+  offerTag,
+  importedOfferTag,
+};
