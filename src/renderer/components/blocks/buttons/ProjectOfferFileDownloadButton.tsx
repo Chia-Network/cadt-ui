@@ -34,7 +34,6 @@ const ProjectOfferFileDownloadButton: React.FC<Props> = ({ disabled }) => {
     setDownloadLoading(true);
     try {
       const url = new URL('http://localhost:31310/v1/offer');
-      url.searchParams.append('xls', 'true');
 
       const downloadResponse: Response = await fetch(url);
       if (!downloadResponse?.ok) {
