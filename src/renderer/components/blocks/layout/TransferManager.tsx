@@ -24,15 +24,17 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
   }
 
   return (
-    <>
+    <div className="h-full">
       {stagedTransferData?.uuid ? (
         <>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 pb-2 pt-1">
             <ProjectOfferFileDownloadButton disabled={!stagedTransferData} />
             <CancelProjectOfferButton disabled={!stagedTransferData} />
           </div>
-          <div style={{ height: 'calc(100vh - 240px)' }}>
-            <StagingDiff stagingUuid={stagedTransferData.uuid} />
+          <div className="overflow-y-auto outline outline-gray-300 rounded">
+            <div style={{ height: 'calc(100vh - 295px)' }}>
+              <StagingDiff stagingUuid={stagedTransferData.uuid} />
+            </div>
           </div>
         </>
       ) : (
@@ -57,7 +59,7 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 

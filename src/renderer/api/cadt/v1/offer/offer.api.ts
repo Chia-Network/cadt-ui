@@ -60,7 +60,7 @@ const offerApi = cadtApi.injectEndpoints({
       query: () => {
         return {
           url: `/v1/offer/accept/commit`,
-          method: 'post',
+          method: 'POST',
         };
       },
       invalidatesTags: [importedOfferTag],

@@ -170,7 +170,7 @@ const MyProjectsPage: React.FC = () => {
             />
           </Tabs>
         </div>
-        <div id="tabs content" className="overflow-y-auto">
+        <div id="tabs content">
           {activeTab === TabTypes.COMMITTED && (
             <CommittedProjectsTab
               orgUid={orgUid}
