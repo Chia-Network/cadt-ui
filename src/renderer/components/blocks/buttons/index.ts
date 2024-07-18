@@ -6,5 +6,4 @@ export * from './UnitXlsUploadDownloadButtons';
 export * from './ProjectOfferFileDownloadButton';
 export * from './CancelProjectOfferButton';
 export * from './ImportTransferFileButton';
-export * from './RejectProjectTransferFileButton';
 export * from './CommitImportedProjectTransferButton';

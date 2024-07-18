@@ -144,6 +144,6 @@
   "reject-transfer-offer": "Reject Transfer Offer",
   "accepting-this-offer-will-write-the-associated-changes-transferring-ownership-of-the-project": "Accepting this offer will write the associated changes transferring ownership of the project",
   "the-transfer-cannot-be-revoked-once-committed": "The transfer cannot be revoked once committed",
-  "accept-and-commit": "Accept and Commit",
+  "accept-and-commit-transfer": "Accept and Commit Transfer",
   "failed-to-accept-offer": "Failed to accept offer"
 }

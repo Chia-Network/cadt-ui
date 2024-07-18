@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 import React, { useMemo } from 'react';
-import { diffLines, Change } from 'diff';
+import { Change, diffLines } from 'diff';
 
 interface ChangeRecord {
   id: number;

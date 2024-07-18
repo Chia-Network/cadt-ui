@@ -65,7 +65,6 @@ const UnitXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> = ({
     try {
       const url = new URL('http://localhost:31310/v1/units');
       url.searchParams.append('xls', 'true');
-      console.log('**** units', orgUid);
       orgUid && url.searchParams.append('orgUid', orgUid);
       search && url.searchParams.append('search', search);
       order && url.searchParams.append('order', order);

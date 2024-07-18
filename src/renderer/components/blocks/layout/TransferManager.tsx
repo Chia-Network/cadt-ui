@@ -1,16 +1,17 @@
 import {
+  Button,
   CancelProjectOfferButton,
   CommitImportedProjectTransferButton,
   ComponentCenteredSpinner,
   DiffViewer,
   ImportTransferFileButton,
   ProjectOfferFileDownloadButton,
-  RejectProjectTransferFileButton,
   StagingDiff,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
-import React from 'react';
-import { useGetImportedOfferQuery } from '@/api';
+import React, { useMemo } from 'react';
+import { useGetImportedOfferQuery, useRejectImportedOfferFileMutation } from '@/api';
+import { HiOutlineX } from 'react-icons/hi';
 
 interface TransferManagerProps {
   stagedTransferData: any;
@@ -18,6 +19,22 @@ interface TransferManagerProps {
 
 const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData }) => {
   const { data: importedOfferData, isLoading: importedOfferLoading } = useGetImportedOfferQuery();
+  const [triggerRejectOfferFile, { isLoading: rejectOfferLoading }] = useRejectImportedOfferFileMutation();
+
+  const processedImportedOfferData: any = useMemo(() => {
+    const original: any = importedOfferData?.changes?.taker?.[0]?.value ? importedOfferData.changes.taker[0].value : {};
+    const change: any[] = [
+      importedOfferData?.changes?.maker?.[0]?.value ? importedOfferData.changes.maker[0].value : {},
+    ];
+
+    return {
+      action: 'TRANSFER',
+      diff: {
+        original,
+        change,
+      },
+    };
+  }, [importedOfferData]);
 
   if (importedOfferLoading) {
     return <ComponentCenteredSpinner />;
@@ -41,12 +58,23 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
         <>
           {importedOfferData?.changes ? (
             <>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 pb-3">
                 <CommitImportedProjectTransferButton />
-                <RejectProjectTransferFileButton />
+                <Button
+                  onClick={async () => await triggerRejectOfferFile()}
+                  disabled={rejectOfferLoading}
+                  isProcessing={rejectOfferLoading}
+                >
+                  <HiOutlineX className="h-5 w-5 mr-1" />
+                  <FormattedMessage id="reject-transfer-offer" />
+                </Button>
               </div>
-              <div style={{ height: 'calc(100vh - 240px)' }}>
-                <DiffViewer data={importedOfferData.changes} />
+              <div className="overflow-y-auto outline outline-gray-300 rounded">
+                <div style={{ height: 'calc(100vh - 295px)' }}>
+                  <div className="h-screen">
+                    <DiffViewer data={processedImportedOfferData} />
+                  </div>
+                </div>
               </div>
             </>
           ) : (

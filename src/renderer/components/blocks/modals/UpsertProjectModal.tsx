@@ -162,8 +162,6 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
               error: { data: { message: 'application internal state error. reload the application' } },
             };
 
-            console.log('##########', projectData);
-
             if (createProjectModalActive) {
               response = await triggerStageCreateProject(projectFormData);
             } else if (editProjectModalActive) {
