@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useGetOrganizationsListQuery } from '@/api';
+import { useGetImportedOfferQuery, useGetOrganizationsListQuery } from '@/api';
 import { useQueryParamState, useUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
@@ -52,6 +52,7 @@ const MyProjectsPage: React.FC = () => {
     skip: !orgUid,
   });
   const { data: unprocessedStagedProjects, isLoading: stagingDataLoading } = useGetStagedProjectsQuery();
+  const { data: importedTransferOfferData, isLoading: importedTransferOfferLoading } = useGetImportedOfferQuery();
   const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery();
   const myOrganization = useMemo<Organization | undefined>(
     () => organizationsListData?.find((org: Organization) => org.isHome),
@@ -79,8 +80,8 @@ const MyProjectsPage: React.FC = () => {
   }, [unprocessedStagedProjects]);
 
   const contentsLoading = useMemo<boolean>(() => {
-    return committedDataLoading || stagingDataLoading;
-  }, [committedDataLoading, stagingDataLoading]);
+    return committedDataLoading || stagingDataLoading || importedTransferOfferLoading;
+  }, [committedDataLoading, importedTransferOfferLoading, stagingDataLoading]);
 
   useEffect(() => {
     if (myOrganization) {
@@ -164,7 +165,7 @@ const MyProjectsPage: React.FC = () => {
               title={
                 <p>
                   <FormattedMessage id="transfer" />
-                  {processedStagingData.transfer && ' (1) '}
+                  {(processedStagingData.transfer || importedTransferOfferData) && ' (!) '}
                 </p>
               }
             />
@@ -193,7 +194,13 @@ const MyProjectsPage: React.FC = () => {
           {activeTab === TabTypes.FAILED && (
             <StagingTableTab type="failed" stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
           )}
-          {activeTab === TabTypes.TRANSFERS && <TransferManager stagedTransferData={processedStagingData.transfer} />}
+          {activeTab === TabTypes.TRANSFERS && (
+            <TransferManager
+              stagedTransferData={processedStagingData.transfer}
+              importedTransferOfferData={importedTransferOfferData}
+              isLoading={stagingDataLoading || importedTransferOfferLoading}
+            />
+          )}
         </div>
       </div>
       {commitModalActive && processedStagingData.staged.length && (

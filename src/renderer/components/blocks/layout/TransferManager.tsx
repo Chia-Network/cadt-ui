@@ -9,33 +9,78 @@ import {
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import React, { useCallback, useMemo } from 'react';
-import { useGetImportedOfferQuery, useRejectImportedOfferFileMutation } from '@/api';
+import { useRejectImportedOfferFileMutation } from '@/api';
 import { HiOutlineX } from 'react-icons/hi';
+import { Unit } from '@/schemas/Unit.schema';
+import { Project } from '@/schemas/Project.schema';
 
 const diffHeight: string = 'calc(100vh - 295px)';
 
-interface TransferManagerProps {
-  stagedTransferData: any;
+interface UnitDiff {
+  action: string;
+  table: 'Units';
+  diff: { original: Unit; change: Unit[] };
 }
 
-const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData }) => {
-  const { data: importedOfferData, isLoading: importedOfferLoading } = useGetImportedOfferQuery();
+interface ProcessedImportedOffer {
+  project: {
+    action: string;
+    table: 'Projects';
+    diff: { original: Project; change: Project[] };
+  };
+  units: UnitDiff[];
+}
+
+interface TransferManagerProps {
+  stagedTransferData: any;
+  importedTransferOfferData: any;
+  isLoading: boolean;
+}
+
+const TransferManager: React.FC<TransferManagerProps> = ({
+  stagedTransferData,
+  importedTransferOfferData,
+  isLoading,
+}) => {
   const [triggerRejectOfferFile, { isLoading: rejectOfferLoading }] = useRejectImportedOfferFileMutation();
 
-  const processedImportedOfferData: any = useMemo(() => {
-    const original: any = importedOfferData?.changes?.taker?.[0]?.value ? importedOfferData.changes.taker[0].value : {};
-    const change: any[] = [
-      importedOfferData?.changes?.maker?.[0]?.value ? importedOfferData.changes.maker[0].value : {},
-    ];
+  const processedImportedOfferData = useMemo<ProcessedImportedOffer>((): ProcessedImportedOffer => {
+    const original: any = importedTransferOfferData?.changes?.taker?.[0]?.value
+      ? importedTransferOfferData.changes.taker[0].value
+      : {};
+    const change: any = importedTransferOfferData?.changes?.maker?.[0]?.value
+      ? importedTransferOfferData.changes.maker[0].value
+      : {};
+
+    const units: UnitDiff[] = [];
+
+    importedTransferOfferData?.changes?.taker?.forEach((takerItem: any, index: number) => {
+      if (importedTransferOfferData?.changes?.maker?.length && index < importedTransferOfferData.changes.maker.length) {
+        const makerItem: any = importedTransferOfferData?.changes?.maker?.[index];
+
+        if (takerItem?.table === 'unit' && makerItem?.table === 'unit' && takerItem?.value && makerItem?.value) {
+          const diff: UnitDiff = {
+            action: 'TRANSFER',
+            table: 'Units',
+            diff: { original: takerItem.value, change: [makerItem.value] },
+          };
+          units.push(diff);
+        }
+      }
+    });
 
     return {
-      action: 'TRANSFER',
-      diff: {
-        original,
-        change,
+      project: {
+        action: 'TRANSFER',
+        table: 'Projects',
+        diff: {
+          original,
+          change: [change],
+        },
       },
+      units,
     };
-  }, [importedOfferData]);
+  }, [importedTransferOfferData]);
 
   const handleRejectOffer = useCallback(async () => {
     await triggerRejectOfferFile();
@@ -43,7 +88,7 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
     window.location.reload();
   }, [triggerRejectOfferFile]);
 
-  if (importedOfferLoading) {
+  if (isLoading) {
     return <ComponentCenteredSpinner />;
   }
 
@@ -65,7 +110,7 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
         </>
       ) : (
         <>
-          {importedOfferData?.changes ? (
+          {importedTransferOfferData?.changes ? (
             <>
               <div className="flex space-x-2 pb-3">
                 <CommitImportedProjectTransferButton />
@@ -77,7 +122,10 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
               <div className="overflow-y-auto outline outline-gray-300 rounded">
                 <div style={{ height: diffHeight }}>
                   <div className="h-screen">
-                    <DiffViewer data={processedImportedOfferData} />
+                    <DiffViewer data={processedImportedOfferData.project} />
+                    {processedImportedOfferData.units.map((unit: UnitDiff) => (
+                      <DiffViewer data={unit} key={unit.diff.original.warehouseUnitId} />
+                    ))}
                   </div>
                 </div>
               </div>

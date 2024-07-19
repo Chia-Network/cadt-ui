@@ -3,15 +3,15 @@ import React, { useMemo } from 'react';
 import { Change, diffLines } from 'diff';
 
 interface ChangeRecord {
-  id: number;
-  uuid: string;
+  id?: number;
+  uuid?: string;
   table: string;
   action: string;
-  committed: boolean;
-  failedCommit: boolean;
-  isTransfer: boolean;
-  createdAt: string;
-  updatedAt: string;
+  committed?: boolean;
+  failedCommit?: boolean;
+  isTransfer?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
   diff: {
     original: any;
     change: any[];
