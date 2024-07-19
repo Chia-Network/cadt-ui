@@ -9,7 +9,7 @@ import {
   StagingDiff,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useGetImportedOfferQuery, useRejectImportedOfferFileMutation } from '@/api';
 import { HiOutlineX } from 'react-icons/hi';
 
@@ -36,6 +36,12 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
     };
   }, [importedOfferData]);
 
+  const handleRejectOffer = useCallback(async () => {
+    await triggerRejectOfferFile();
+    // required until cadt /offer/accept is fixed to not return 400 when no offer present. forces store refresh
+    window.location.reload();
+  }, [triggerRejectOfferFile]);
+
   if (importedOfferLoading) {
     return <ComponentCenteredSpinner />;
   }
@@ -60,11 +66,7 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
             <>
               <div className="flex space-x-2 pb-3">
                 <CommitImportedProjectTransferButton />
-                <Button
-                  onClick={async () => await triggerRejectOfferFile()}
-                  disabled={rejectOfferLoading}
-                  isProcessing={rejectOfferLoading}
-                >
+                <Button onClick={handleRejectOffer} disabled={rejectOfferLoading} isProcessing={rejectOfferLoading}>
                   <HiOutlineX className="h-5 w-5 mr-1" />
                   <FormattedMessage id="reject-transfer-offer" />
                 </Button>
