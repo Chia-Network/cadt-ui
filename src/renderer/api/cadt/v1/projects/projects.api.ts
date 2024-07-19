@@ -224,6 +224,7 @@ const projectsApi = cadtApi.injectEndpoints({
           body: omit(project, ['orgUid', 'timeStaged', 'createdBy', 'updatedBy']),
         };
       },
+      invalidatesTags: [stagedProjectsTag],
     }),
   }),
 });

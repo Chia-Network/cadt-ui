@@ -6,12 +6,13 @@ import {
   DiffViewer,
   ImportTransferFileButton,
   ProjectOfferFileDownloadButton,
-  StagingDiff,
 } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import React, { useCallback, useMemo } from 'react';
 import { useGetImportedOfferQuery, useRejectImportedOfferFileMutation } from '@/api';
 import { HiOutlineX } from 'react-icons/hi';
+
+const diffHeight: string = 'calc(100vh - 295px)';
 
 interface TransferManagerProps {
   stagedTransferData: any;
@@ -55,8 +56,10 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
             <CancelProjectOfferButton disabled={!stagedTransferData} />
           </div>
           <div className="overflow-y-auto outline outline-gray-300 rounded">
-            <div style={{ height: 'calc(100vh - 295px)' }}>
-              <StagingDiff stagingUuid={stagedTransferData.uuid} />
+            <div style={{ height: diffHeight }}>
+              <div className="h-screen">
+                <DiffViewer data={{ ...stagedTransferData, action: 'TRANSFER' }} />
+              </div>
             </div>
           </div>
         </>
@@ -72,7 +75,7 @@ const TransferManager: React.FC<TransferManagerProps> = ({ stagedTransferData })
                 </Button>
               </div>
               <div className="overflow-y-auto outline outline-gray-300 rounded">
-                <div style={{ height: 'calc(100vh - 295px)' }}>
+                <div style={{ height: diffHeight }}>
                   <div className="h-screen">
                     <DiffViewer data={processedImportedOfferData} />
                   </div>
