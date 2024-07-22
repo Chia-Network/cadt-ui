@@ -145,5 +145,10 @@
   "accepting-this-offer-will-write-the-associated-changes-transferring-ownership-of-the-project": "Accepting this offer will write the associated changes transferring ownership of the project",
   "the-transfer-cannot-be-revoked-once-committed": "The transfer cannot be revoked once committed",
   "accept-and-commit-transfer": "Accept and Commit Transfer",
-  "failed-to-accept-offer": "Failed to accept offer"
+  "failed-to-accept-offer": "Failed to accept offer",
+  "confirm-project-transfer": "Confirm Project Transfer",
+  "the-project-has-been-successfully-transferred-and-the-associated-changes-have-been-committed": "The project has been successfully transferred and the associated changes have been committed",
+  "project-transfer-error": "Project Transfer Error",
+  "failed-to-commit-project-transfer": "Failed to commit project transfer",
+  "no-changes-have-been-made": "No changes have been made"
 }

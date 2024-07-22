@@ -12,3 +12,5 @@ export * from './CommitStagedItemsModal';
 export * from './StagedUnitSuccessModal';
 export * from './SplitUnitModal';
 export * from './AuditModal';
+export * from './CommitTransferSuccessModal';
+export * from './CommitTransferErrorModal';
