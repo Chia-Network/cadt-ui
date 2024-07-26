@@ -1,19 +1,19 @@
 import React, { useCallback } from 'react';
 import {
-  Modal,
-  Field,
-  ProjectForm,
-  LabelsForm,
-  IssuancesForm,
-  ProjectLocationsForm,
-  UnitForm,
-  RatingsForm,
-  RelatedProjectsForm,
   CoBenefitsForm,
   EstimationsForm,
-  Spacer
+  Field,
+  IssuancesForm,
+  LabelsForm,
+  Modal,
+  ProjectForm,
+  ProjectLocationsForm,
+  RatingsForm,
+  RelatedProjectsForm,
+  Spacer,
+  UnitForm,
 } from '@/components';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Form, Formik } from 'formik';
 
 interface AuditModalProps {
@@ -22,6 +22,7 @@ interface AuditModalProps {
 }
 
 const AuditModal: React.FC<AuditModalProps> = ({ auditData, onClose }: AuditModalProps) => {
+  const intl = useIntl();
   const changeForm = useCallback(() => {
     const change = JSON.parse(auditData.change);
     switch (auditData.table) {
@@ -60,24 +61,48 @@ const AuditModal: React.FC<AuditModalProps> = ({ auditData, onClose }: AuditModa
           <Formik initialValues={{}} validationSchema={null} onSubmit={() => {}}>
             <Form>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-                <Field label="Table" name="table" type="text" initialValue={auditData.table} readonly={true} />
                 <Field
-                  label="Timestamp"
+                  label={intl.formatMessage({ id: 'table' })}
+                  name="table"
+                  type="text"
+                  initialValue={auditData.table}
+                  readonly={true}
+                />
+                <Field
+                  label={intl.formatMessage({ id: 'timestamp' })}
                   name="updatedAt"
                   type="date"
                   initialValue={auditData.updatedAt}
                   readonly={true}
                 />
-                <Field label="Type" name="type" type="text" initialValue={auditData.type} readonly={true} />
                 <Field
-                  label="Root Hash"
+                  label={intl.formatMessage({ id: 'type' })}
+                  name="type"
+                  type="text"
+                  initialValue={auditData.type}
+                  readonly={true}
+                />
+                <Field
+                  label={intl.formatMessage({ id: 'root-hash' })}
                   name="rootHash"
                   type="text"
                   initialValue={auditData.rootHash}
                   readonly={true}
                 />
-                <Field label="Author" name="author" type="text" initialValue={auditData.author} readonly={true} />
-                <Field label="Comment" name="comment" type="text" initialValue={auditData.comment} readonly={true} />
+                <Field
+                  label={intl.formatMessage({ id: 'author' })}
+                  name="author"
+                  type="text"
+                  initialValue={auditData.author}
+                  readonly={true}
+                />
+                <Field
+                  label={intl.formatMessage({ id: 'comment' })}
+                  name="comment"
+                  type="text"
+                  initialValue={auditData.comment}
+                  readonly={true}
+                />
               </div>
               <Spacer size={15} />
               {changeForm()}

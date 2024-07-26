@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetOrganizationsListQuery } from '@/api/cadt/v1/organizations';
-import { Dropdown, SyncIndicator, Spinner } from '@/components';
+import { Dropdown, Spinner, SyncIndicator } from '@/components';
 import { Organization } from '@/schemas/Organization.schema';
+import { useIntl } from 'react-intl';
 
 interface OrganizationSelectorProps {
   onSelect: (organization: any | undefined) => void;
@@ -9,18 +10,19 @@ interface OrganizationSelectorProps {
   noSelectionLabel?: string;
 }
 
-const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({
-  onSelect,
-  defaultOrgUid,
-  noSelectionLabel = 'Select Organization',
-}) => {
+const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, defaultOrgUid, noSelectionLabel }) => {
+  const intl = useIntl();
   const { data: organizations, error, isLoading } = useGetOrganizationsListQuery();
   const [selectedOrganization, setSelectedOrganization] = useState<Organization | undefined>(undefined);
+
+  if (!noSelectionLabel) {
+    noSelectionLabel = intl.formatMessage({ id: 'select-organization' });
+  }
 
   useEffect(() => {
     if (defaultOrgUid === null) {
       const allOrganizationsPlaceholder: Organization = {
-        name: 'All Organizations',
+        name: intl.formatMessage({ id: 'all-organizations' }),
         id: 0,
         orgUid: '',
         icon: '',
