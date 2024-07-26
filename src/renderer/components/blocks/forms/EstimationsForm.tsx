@@ -4,6 +4,7 @@ import { Field, Repeater } from '@/components';
 import { Estimation } from '@/schemas/Estimation.schema';
 import * as yup from 'yup';
 import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   estimations: yup.array().of(
@@ -28,6 +29,7 @@ export interface EstimationsFormRef {
 }
 
 const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(({ readonly = false, data }, ref) => {
+  const intl = useIntl();
   const formikRef = useRef<FormikProps<any>>(null);
 
   useImperativeHandle(ref, () => ({
@@ -65,7 +67,7 @@ const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(({ 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                 <Field
                   name={`${name}[${index}].creditingPeriodStart`}
-                  label="Crediting Period Start"
+                  label={intl.formatMessage({ id: 'crediting-period-start' })}
                   type="date"
                   readonly={readonly}
                   required={true}
@@ -73,7 +75,7 @@ const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(({ 
                 />
                 <Field
                   name={`${name}[${index}].creditingPeriodEnd`}
-                  label="Crediting Period End"
+                  label={intl.formatMessage({ id: 'crediting-period-end' })}
                   type="date"
                   readonly={readonly}
                   required={true}
@@ -81,7 +83,7 @@ const EstimationsForm = forwardRef<EstimationsFormRef, EstimationsFormProps>(({ 
                 />
                 <Field
                   name={`${name}[${index}].unitCount`}
-                  label="Unit Count"
+                  label={intl.formatMessage({ id: 'unit-count' })}
                   type="number"
                   readonly={readonly}
                   required={true}

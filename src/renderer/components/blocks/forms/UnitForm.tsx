@@ -6,6 +6,7 @@ import { Unit } from '@/schemas/Unit.schema';
 import { useGetHomeOrgQuery, useGetProjectQuery } from '@/api';
 import { PickList } from '@/schemas/PickList.schema';
 import { useGetProjectOptionsList } from '@/hooks';
+import { useIntl } from 'react-intl';
 
 function removeNullFields(obj) {
   // Check if the input is an object and not null
@@ -75,6 +76,7 @@ export interface UnitFormRef {
 }
 
 const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, data: unit, picklistOptions }, ref) => {
+  const intl = useIntl();
   const formikRef = useRef<FormikProps<any>>(null);
   const { data: homeOrg, isLoading: isHomeOrgLoading } = useGetHomeOrgQuery();
   const [error, setError] = useState<string | null>(null);
@@ -182,7 +184,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="projectLocationId"
-                  label="Project Location Id"
+                  label={intl.formatMessage({ id: 'project-location-id' })}
                   disabled={!selectedWarehouseProjectId}
                   type="picklist"
                   options={projectLocationOptions}
@@ -191,14 +193,14 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                 />
                 <Field
                   name="unitOwner"
-                  label="Unit Owner"
+                  label={intl.formatMessage({ id: 'unit-owner' })}
                   type="text"
                   readonly={readonly}
                   initialValue={unit?.unitOwner || ''}
                 />
                 <Field
                   name="unitBlockStart"
-                  label="Unit Block Start"
+                  label={intl.formatMessage({ id: 'unit-block-start' })}
                   type="text"
                   readonly={readonly}
                   required={true}
@@ -207,7 +209,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="unitBlockEnd"
-                  label="Unit Block End"
+                  label={intl.formatMessage({ id: 'unit-block-end' })}
                   type="text"
                   readonly={readonly}
                   required={true}
@@ -216,7 +218,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="unitCount"
-                  label="Unit Count"
+                  label={intl.formatMessage({ id: 'unit-count' })}
                   type="number"
                   readonly={readonly}
                   required={true}
@@ -225,7 +227,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="countryJurisdictionOfOwner"
-                  label="Country Jurisdiction Of Owner"
+                  label={intl.formatMessage({ id: 'country-jurisdiction-of-owner' })}
                   type="picklist"
                   options={picklistOptions?.countries}
                   readonly={readonly}
@@ -235,7 +237,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="inCountryJurisdictionOfOwner"
-                  label="In-Country Jurisdiction Of Owner"
+                  label={intl.formatMessage({ id: 'in-country-jurisdiction-of-owner' })}
                   type="text"
                   readonly={readonly}
                   required={true}
@@ -244,7 +246,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="unitType"
-                  label="Unit Type"
+                  label={intl.formatMessage({ id: 'unit-type' })}
                   type="picklist"
                   options={picklistOptions?.unitType}
                   readonly={readonly}
@@ -254,7 +256,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="unitStatus"
-                  label="Unit Status"
+                  label={intl.formatMessage({ id: 'unit-status' })}
                   type="picklist"
                   options={picklistOptions?.unitStatus}
                   readonly={readonly}
@@ -264,7 +266,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="unitStatusReason"
-                  label="Unit Status Reason"
+                  label={intl.formatMessage({ id: 'unit-status-reason' })}
                   type="text"
                   readonly={readonly}
                   initialValue={unit?.unitStatusReason || ''}
@@ -272,7 +274,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="vintageYear"
-                  label="Vintage Year"
+                  label={intl.formatMessage({ id: 'vintage-year' })}
                   type="number"
                   readonly={readonly}
                   required={true}
@@ -282,7 +284,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
               <div>
                 <Field
                   name="unitRegistryLink"
-                  label="Unit Registry Link"
+                  label={intl.formatMessage({ id: 'unit-registry-link' })}
                   type="link"
                   readonly={readonly}
                   initialValue={unit?.unitRegistryLink || ''}
@@ -294,7 +296,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                 <Field
                   name="marketplace"
-                  label="Marketplace"
+                  label={intl.formatMessage({ id: 'marketplace' })}
                   type="text"
                   readonly={readonly}
                   initialValue={unit?.marketplace || ''}
@@ -302,7 +304,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="marketplaceIdentifier"
-                  label="Marketplace Identifier"
+                  label={intl.formatMessage({ id: 'marketplace-identifier' })}
                   type="text"
                   readonly={readonly}
                   initialValue={unit?.marketplaceIdentifier || ''}
@@ -310,7 +312,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="marketplaceLink"
-                  label="Marketplace Link"
+                  label={intl.formatMessage({ id: 'marketplace-link' })}
                   type="text"
                   readonly={readonly}
                   initialValue={unit?.marketplaceLink || ''}
@@ -318,7 +320,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="correspondingAdjustmentStatus"
-                  label="Corresponding Adjustment Status"
+                  label={intl.formatMessage({ id: 'corresponding-adjustment-status' })}
                   type="picklist"
                   options={picklistOptions?.correspondingAdjustmentStatus}
                   readonly={readonly}
@@ -328,7 +330,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
 
                 <Field
                   name="correspondingAdjustmentDeclaration"
-                  label="Corresponding Adjustment Declaration"
+                  label={intl.formatMessage({ id: 'corresponding-adjustment-declaration' })}
                   type="picklist"
                   options={picklistOptions?.correspondingAdjustmentDeclaration}
                   readonly={readonly}
@@ -340,7 +342,7 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
             <Card>
               <Field
                 name="unitTags"
-                label="Unit Tags"
+                label={intl.formatMessage({ id: 'unit-tags' })}
                 type="tag"
                 readonly={readonly}
                 initialValue={unit?.unitTags || ''}

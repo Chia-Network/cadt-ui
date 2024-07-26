@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { UnitSplit } from '@/schemas/Unit.schema';
 import { PickList } from '@/schemas/PickList.schema';
 import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   units: yup.array().of(
@@ -28,6 +29,7 @@ export interface SplitUnitFormRef {
 }
 
 const SplitUnitForm = forwardRef<SplitUnitFormRef, SplitUnitFormProps>(({ picklistOptions }, ref) => {
+  const intl = useIntl();
   const formikRef = useRef<FormikProps<any>>(null);
 
   useImperativeHandle(ref, () => ({
@@ -89,19 +91,24 @@ const SplitUnitForm = forwardRef<SplitUnitFormRef, SplitUnitFormProps>(({ pickli
                   <Field
                     name={`${name}[${index}].unitBlockStart`}
                     required={true}
-                    label="Unit Block Start"
+                    label={intl.formatMessage({ id: 'unit-block-start' })}
                     type="text"
                   />
-                  <Field name={`${name}[${index}].unitBlockEnd`} required={true} label="Unit Block End" type="text" />
+                  <Field
+                    name={`${name}[${index}].unitBlockEnd`}
+                    required={true}
+                    label={intl.formatMessage({ id: 'unit-block-end' })}
+                    type="text"
+                  />
                   <Field
                     name={`${name}[${index}].countryJurisdictionOfOwner`}
-                    label="Country Jurisdiction Of Owner"
+                    label={intl.formatMessage({ id: 'country-jurisdiction-of-owner' })}
                     type="picklist"
                     options={picklistOptions?.countries}
                   />
                   <Field
                     name={`${name}[${index}].inCountryJurisdictionOfOwner`}
-                    label="In-Country Jurisdiction Of Owner"
+                    label={intl.formatMessage({ id: 'in-country-jurisdiction-of-owner' })}
                     type="picklist"
                     options={picklistOptions?.countries}
                   />

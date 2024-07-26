@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { ProjectLocation } from '@/schemas/ProjectLocation.schema';
 import { PickList } from '@/schemas/PickList.schema';
 import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   locations: yup.array().of(
@@ -29,6 +30,7 @@ export interface ProjectLocationsFormRef {
 
 const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocationsFormProps>(
   ({ readonly = false, data, picklistOptions }, ref) => {
+    const intl = useIntl();
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
@@ -66,7 +68,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
                     name={`${name}[${index}].country`}
-                    label="Host Country"
+                    label={intl.formatMessage({ id: 'country' })}
                     type="picklist"
                     options={picklistOptions?.countries}
                     readonly={readonly}
@@ -75,14 +77,14 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                   />
                   <Field
                     name={`${name}[${index}].inCountryRegion`}
-                    label="In-Country Region"
+                    label={intl.formatMessage({ id: 'in-country-region' })}
                     type="text"
                     readonly={readonly}
                     initialValue={location.inCountryRegion}
                   />
                   <Field
                     name={`${name}[${index}].geographicIdentifier`}
-                    label="Geographic Identifier"
+                    label={intl.formatMessage({ id: 'geographic-identifier' })}
                     type="text"
                     readonly={readonly}
                     required={true}
@@ -90,7 +92,7 @@ const ProjectLocationsForm = forwardRef<ProjectLocationsFormRef, ProjectLocation
                   />
                   <Field
                     name={`${name}[${index}].fileId`}
-                    label="File ID"
+                    label={intl.formatMessage({ id: 'file-id' })}
                     type="text"
                     readonly={readonly}
                     initialValue={location.fileId}

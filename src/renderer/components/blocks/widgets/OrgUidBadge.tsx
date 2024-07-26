@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Spinner, Toast } from '@/components';
 import { FiInfo } from 'react-icons/fi';
+import { FormattedMessage } from 'react-intl';
 
 interface OrgUidBadgeProps {
   orgUid: string;
@@ -62,7 +63,11 @@ const OrgUidBadge: React.FC<OrgUidBadgeProps> = ({ orgUid, registryId }) => {
             >
               {orgUid}
             </div>
-            <div className="text-gray-700 text-xs font-mono dark:text-gray-300">Registry ID:</div>
+            <div className="text-gray-700 text-xs font-mono dark:text-gray-300">
+              <p>
+                <FormattedMessage id="Registry" /> ID:
+              </p>
+            </div>
             {registryId ? (
               <div
                 className="cursor-pointer hover:bg-gray-100 p-2 rounded text-xs font-mono dark:hover:bg-gray-600 dark:text-gray-200"
