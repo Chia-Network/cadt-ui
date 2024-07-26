@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { RelatedProject } from '@/schemas/RelatedProject.schema';
 import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
 import { useGetProjectOptionsList, useQueryParamState } from '@/hooks';
+import { useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   relatedProjects: yup.array().of(
@@ -27,6 +28,7 @@ export interface RelatedProjectsFormRef {
 
 const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFormProps>(
   ({ readonly = false, data }, ref) => {
+    const intl = useIntl();
     const formikRef = useRef<FormikProps<any>>(null);
     const [orgUid] = useQueryParamState('orgUid');
 
@@ -70,21 +72,21 @@ const RelatedProjectsForm = forwardRef<RelatedProjectsFormRef, RelatedProjectsFo
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
                     name={`${name}[${index}].relationshipType`}
-                    label="Relationship Type"
+                    label={intl.formatMessage({ id: 'relationship-type' })}
                     type="text"
                     readonly={readonly}
                     initialValue={relatedProject.relationshipType}
                   />
                   <Field
                     name={`${name}[${index}].registry`}
-                    label="Registry"
+                    label={intl.formatMessage({ id: 'registry' })}
                     type="text"
                     readonly={readonly}
                     initialValue={relatedProject.registry}
                   />
                   <Field
                     name={`${name}[${index}].relatedProjectId`}
-                    label="Related Projects"
+                    label={intl.formatMessage({ id: 'related-projects' })}
                     type="picklist"
                     options={projectOptions}
                     readonly={readonly}
