@@ -55,10 +55,15 @@ const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
       (value) => {
         setError(null);
         const selectedIssuanceId = value;
-        const foundIssuance = projectData?.issuances?.find((issuance) => issuance.id === selectedIssuanceId);
+        let foundIssuance = projectData?.issuances?.find((issuance) => issuance.id === selectedIssuanceId);
+        if (foundIssuance) {
+          if (foundIssuance.timeStaged === null) {
+            foundIssuance = { ...foundIssuance, timeStaged: new Date(0) };
+          }
+        }
         setSelectedIssuance(foundIssuance);
       },
-      [projectData],
+      [projectData, selectedIssuance],
     );
 
     return (
