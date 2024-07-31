@@ -1,11 +1,12 @@
-import {forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
-import {Form, Formik, FormikProps} from 'formik';
-import {Field, Repeater, Select, SelectOption} from '@/components';
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { Form, Formik, FormikProps } from 'formik';
+import { Field, Repeater, Select, SelectOption } from '@/components';
 import * as yup from 'yup';
-import {Label} from '@/schemas/Label.schema';
-import {PickList} from '@/schemas/PickList.schema';
-import {deepOmit, validateAndSubmitFieldArrayForm} from '@/utils/formik-utils';
-import {useGetProjectQuery} from '@/api';
+import { Label } from '@/schemas/Label.schema';
+import { PickList } from '@/schemas/PickList.schema';
+import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { useGetProjectQuery } from '@/api';
+import { useIntl } from 'react-intl';
 
 /**
  * Validation schema for labels form
@@ -15,7 +16,7 @@ const validationSchema = yup.object({
     yup.object({
       label: yup.string().required('Label is required'),
       labelType: yup.string().required('Label type is required'),
-      labelLink: yup.string().url('Must be a valid URL').nullable(),
+      labelLink: yup.string().url('Must be a valid URL').required(),
       validityPeriodStartDate: yup.date().nullable(),
       validityPeriodEndDate: yup
         .date()
@@ -66,6 +67,7 @@ export interface UnitLabelsFormRef {
  */
 const UnitLabelsForm = forwardRef<UnitLabelsFormRef, LabelsFormProps>(
   ({ readonly = false, data: labels, picklistOptions, selectedWarehouseProjectId }, ref) => {
+    const intl = useIntl();
     const formikRef = useRef<FormikProps<any>>(null);
     const [selectedLabels, setSelectedLabels] = useState<Label[]>(labels || []);
 
@@ -113,6 +115,14 @@ const UnitLabelsForm = forwardRef<UnitLabelsFormRef, LabelsFormProps>(
         if (label.timeStaged === null) {
           label = { ...label, timeStaged: new Date(0) };
         }
+        formikRef.current?.setFieldValue(`labels[${index}].label`, label.label);
+        formikRef.current?.setFieldValue(`labels[${index}].labelType`, label.labelType);
+        formikRef.current?.setFieldValue(`labels[${index}].labelLink`, label.labelLink);
+        formikRef.current?.setFieldValue(`labels[${index}].validityPeriodStartDate`, label.validityPeriodStartDate);
+        formikRef.current?.setFieldValue(`labels[${index}].validityPeriodEndDate`, label.validityPeriodEndDate);
+        formikRef.current?.setFieldValue(`labels[${index}].creditingPeriodStartDate`, label.creditingPeriodStartDate);
+        formikRef.current?.setFieldValue(`labels[${index}].creditingPeriodEndDate`, label.creditingPeriodEndDate);
+        formikRef.current?.setFieldValue(`labels[${index}].unitQuantity`, label.unitQuantity);
       }
 
       const updatedLabels = [...selectedLabels];
@@ -128,8 +138,6 @@ const UnitLabelsForm = forwardRef<UnitLabelsFormRef, LabelsFormProps>(
       };
       setSelectedLabels(updatedLabels);
     };
-
-    console.log(selectedLabels);
 
     return (
       <Formik
@@ -170,62 +178,61 @@ const UnitLabelsForm = forwardRef<UnitLabelsFormRef, LabelsFormProps>(
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                     <Field
                       name={`${name}[${index}].label`}
-                      label="Label"
+                      label={intl.formatMessage({ id: 'label' })}
                       type="text"
-                      readonly={readonly}
+                      readonly={readonly || Boolean(selectedLabels[index]?.id)}
                       required={true}
                       initialValue={selectedLabels[index]?.label}
                     />
                     <Field
                       name={`${name}[${index}].labelType`}
-                      label="Label Type"
+                      label={intl.formatMessage({ id: 'label-type' })}
                       type="picklist"
                       options={picklistOptions?.labelType}
-                      readonly={readonly}
+                      readonly={readonly || Boolean(selectedLabels[index]?.id)}
                       required={true}
                       initialValue={selectedLabels[index]?.labelType}
                     />
                     <Field
                       name={`${name}[${index}].labelLink`}
-                      label="Label Link"
+                      label={intl.formatMessage({ id: 'label-link' })}
                       type="link"
-                      required={true}
-                      readonly={readonly}
+                      readonly={readonly || Boolean(selectedLabels[index]?.id)}
                       initialValue={selectedLabels[index]?.labelLink}
                     />
                     <Field
                       name={`${name}[${index}].validityPeriodStartDate`}
-                      label="Validity Period Start Date"
+                      label={intl.formatMessage({ id: 'validity-period-start-date' })}
                       type="date"
-                      readonly={readonly}
+                      readonly={readonly || Boolean(selectedLabels[index]?.id)}
                       initialValue={selectedLabels[index]?.validityPeriodStartDate}
                     />
                     <Field
                       name={`${name}[${index}].validityPeriodEndDate`}
-                      label="Validity Period End Date"
+                      label={intl.formatMessage({ id: 'validity-period-end-date' })}
                       type="date"
-                      readonly={readonly}
+                      readonly={readonly || Boolean(selectedLabels[index]?.id)}
                       initialValue={selectedLabels[index]?.validityPeriodEndDate}
                     />
                     <Field
                       name={`${name}[${index}].creditingPeriodStartDate`}
-                      label="Crediting Period Start Date"
+                      label={intl.formatMessage({ id: 'crediting-period-start-date' })}
                       type="date"
-                      readonly={readonly}
+                      readonly={readonly || Boolean(selectedLabels[index]?.id)}
                       initialValue={selectedLabels[index]?.creditingPeriodStartDate}
                     />
                     <Field
                       name={`${name}[${index}].creditingPeriodEndDate`}
-                      label="Crediting Period End Date"
+                      label={intl.formatMessage({ id: 'crediting-period-end-date' })}
                       type="date"
-                      readonly={readonly}
+                      readonly={readonly || Boolean(selectedLabels[index]?.id)}
                       initialValue={selectedLabels[index]?.creditingPeriodEndDate}
                     />
                     <Field
                       name={`${name}[${index}].unitQuantity`}
-                      label="Unit Quantity"
+                      label={intl.formatMessage({ id: 'unit-quantity' })}
                       type="number"
-                      readonly={readonly}
+                      readonly={readonly || Boolean(selectedLabels[index]?.id)}
                       required={true}
                       initialValue={selectedLabels[index]?.unitQuantity}
                     />

@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell } from 'electron';
 import path from 'path';
 import express from 'express';
 
+//electron
 const serverPort = 61310;
 const appServer = express();
 
@@ -29,9 +30,10 @@ function createWindow() {
   });
 
   // Load URL based on the environment
-  const loadUrl = process.env.NODE_ENV === 'development' 
-    ? 'http://localhost:5173/' // Development URL
-    : `http://localhost:${serverPort}/`; // Production URL served by Express
+  const loadUrl =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:5173/' // Development URL
+      : `http://localhost:${serverPort}/`; // Production URL served by Express
 
   win.loadURL(loadUrl);
 

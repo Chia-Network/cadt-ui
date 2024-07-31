@@ -5,6 +5,7 @@ import { Field, Repeater, UnitSummary } from '@/components';
 import { Issuance } from '@/schemas/Issuance.schema';
 import { PickList } from '@/schemas/PickList.schema';
 import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   issuances: yup.array().of(
@@ -36,6 +37,7 @@ const defaultIssuanceData: Issuance[] = [];
 
 const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
   ({ readonly = false, data = defaultIssuanceData, showUnits = false, picklistOptions }, ref) => {
+    const intl = useIntl();
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
@@ -75,7 +77,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                     <Field
                       name={`${name}[${index}].startDate`}
-                      label="Start Date"
+                      label={intl.formatMessage({ id: 'start-date' })}
                       type="date"
                       readonly={readonly}
                       required={true}
@@ -83,7 +85,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                     />
                     <Field
                       name={`${name}[${index}].endDate`}
-                      label="End Date"
+                      label={intl.formatMessage({ id: 'end-date' })}
                       type="date"
                       readonly={readonly}
                       required={true}
@@ -91,7 +93,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                     />
                     <Field
                       name={`${name}[${index}].verificationApproach`}
-                      label="Verification Approach"
+                      label={intl.formatMessage({ id: 'verification-approach' })}
                       type="text"
                       readonly={readonly}
                       required={true}
@@ -99,7 +101,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                     />
                     <Field
                       name={`${name}[${index}].verificationBody`}
-                      label="Verification Body"
+                      label={intl.formatMessage({ id: 'verification-body' })}
                       type="picklist"
                       freeform={true}
                       options={picklistOptions?.verificationBody}
@@ -109,7 +111,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                     />
                     <Field
                       name={`${name}[${index}].verificationReportDate`}
-                      label="Verification Report Date"
+                      label={intl.formatMessage({ id: 'verification-report-date' })}
                       type="date"
                       readonly={readonly}
                       required={true}

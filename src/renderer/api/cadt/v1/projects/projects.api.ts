@@ -187,6 +187,16 @@ const projectsApi = cadtApi.injectEndpoints({
       },
       invalidatesTags: [stagedProjectsTag],
     }),
+
+    transferProject: builder.mutation<any, Project>({
+      query: (project) => {
+        return {
+          url: `/v1/projects/transfer`,
+          method: 'PUT',
+          body: project,
+        };
+      },
+    }),
   }),
 });
 
@@ -200,4 +210,5 @@ export const {
   useStageCreateProjectMutation,
   useStageUpdateProjectMutation,
   useUploadProjectsXlsMutation,
+  useTransferProjectMutation,
 } = projectsApi;

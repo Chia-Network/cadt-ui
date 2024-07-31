@@ -13,7 +13,7 @@ import {
   UnitLabelsFormRef,
 } from '@/components';
 import { useUrlHash, useWildCardUrlHash } from '@/hooks';
-import { useGetPickListsQuery, useGetUnitQuery, useStageCreateUnitMutation } from '@/api';
+import { useGetPickListsQuery, useGetUnitQuery, useStageCreateUnitMutation, useStageUpdateUnitMutation } from '@/api';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Unit } from '@/schemas/Unit.schema';
 import { Alert } from 'flowbite-react';
@@ -53,6 +53,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
   const [unitFormData, setUnitFormData] = useState<Unit>();
   const [formSubmitError, setFormSubmitError] = useState<string | null>(null);
   const [triggerStageCreateUnit, { isLoading: isUnitStaging }] = useStageCreateUnitMutation();
+  const [triggerStageUpdateUnit, { isLoading: isUnitUpdating }] = useStageUpdateUnitMutation();
   const [activeStep, setActiveStep] = useState(UpsertUnitTabs.UNIT);
   const [, setUnitStagedSuccessModal] = useUrlHash('success-stage-unit');
 
@@ -105,7 +106,18 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
 
         if (activeStep === UpsertUnitTabs.LABELS) {
           if (unitFormData) {
-            const response: any = await triggerStageCreateUnit(unitFormData);
+            const finalUnitFormData = { ...unitFormData, ...values };
+            let response: any;
+
+            if (createUnitModalActive) {
+              response = await triggerStageCreateUnit(finalUnitFormData);
+            } else {
+              // @ts-ignore
+              delete finalUnitFormData?.issuanceId;
+              // @ts-ignore
+              delete finalUnitFormData?.serialNumberBlock;
+              response = await triggerStageUpdateUnit(finalUnitFormData);
+            }
 
             if (response.data) {
               setUnitStagedSuccessModal(true);
@@ -131,7 +143,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
       });
   };
 
-  if (unitLoading || isPickListLoading || isUnitStaging) {
+  if (unitLoading || isPickListLoading || isUnitStaging || isUnitUpdating) {
     return (
       <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
         <Modal.Header>
@@ -182,6 +194,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
               selectedWarehouseProjectId={unitFormData?.warehouseProjectId || unitData?.warehouseProjectId}
             />
           )}
+
           <Spacer size={15} />
           <div className="flex">
             <Button color="gray" disabled={activeStep === 0} onClick={handleBack}>
@@ -192,7 +205,7 @@ const UpsertUnitModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModalPro
                 {activeStep !== steps.length - 1 ? (
                   <FormattedMessage id="next" />
                 ) : (
-                  <FormattedMessage id={createUnitModalActive ? 'create-project' : 'edit-project'} />
+                  <FormattedMessage id={createUnitModalActive ? 'create-unit' : 'edit-unit'} />
                 )}
               </Button>
             </div>

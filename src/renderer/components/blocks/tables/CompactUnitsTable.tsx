@@ -50,7 +50,6 @@ const CompactUnitsTable: React.FC<TableProps> = ({
         onRowClick={onRowClick}
         primaryKey="warehouseUnitId"
         isLoading={false}
-        compact={true}
         footer={
           <div>
             {shouldRenderPagination ? (

@@ -104,7 +104,7 @@ const MyProjectsPage: React.FC = () => {
 
   return (
     <>
-      <div className="m-2">
+      <div className="mt-2 ml-2 mr-2">
         {contentsLoading && <IndeterminateProgressOverlay />}
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
           {activeTab === TabTypes.COMMITTED && (

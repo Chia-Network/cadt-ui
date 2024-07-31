@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { Rating } from '@/schemas/Rating.schema';
 import { PickList } from '@/schemas/PickList.schema';
 import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   ratings: yup.array().of(
@@ -29,6 +30,7 @@ export interface RatingsFormRef {
 }
 
 const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(({ readonly = false, data, picklistOptions }, ref) => {
+  const intl = useIntl();
   const formikRef = useRef<FormikProps<any>>(null);
 
   useImperativeHandle(ref, () => ({
@@ -68,7 +70,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(({ readonly = f
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
                     name={`${name}[${index}].ratingType`}
-                    label="Rating Type"
+                    label={intl.formatMessage({ id: 'rating-type' })}
                     type="picklist"
                     options={picklistOptions?.ratingType}
                     readonly={readonly}
@@ -77,7 +79,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(({ readonly = f
                   />
                   <Field
                     name={`${name}[${index}].ratingRangeLowest`}
-                    label="Rating Lowest"
+                    label={intl.formatMessage({ id: 'rating-range-lowest' })}
                     type="text"
                     readonly={readonly}
                     required={true}
@@ -85,7 +87,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(({ readonly = f
                   />
                   <Field
                     name={`${name}[${index}].ratingRangeHighest`}
-                    label="Rating Highest"
+                    label={intl.formatMessage({ id: 'rating-range-highest' })}
                     type="text"
                     readonly={readonly}
                     required={true}
@@ -93,7 +95,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(({ readonly = f
                   />
                   <Field
                     name={`${name}[${index}].rating`}
-                    label="Rating"
+                    label={intl.formatMessage({ id: 'rating' })}
                     type="text"
                     readonly={readonly}
                     required={true}
@@ -101,7 +103,7 @@ const RatingsForm = forwardRef<RatingsFormRef, RatingsFormProps>(({ readonly = f
                   />
                   <Field
                     name={`${name}[${index}].ratingLink`}
-                    label="Rating Link"
+                    label={intl.formatMessage({ id: 'rating-link' })}
                     type="link"
                     readonly={readonly}
                     required={true}

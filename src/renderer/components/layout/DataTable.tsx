@@ -27,7 +27,6 @@ interface DataTableProps {
   onChangeOrder?: (column: string) => void;
   order?: string;
   footer?: JSX.Element | null;
-  compact?: boolean;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -39,14 +38,13 @@ const DataTable: React.FC<DataTableProps> = ({
   onChangeOrder,
   order,
   footer = null,
-  compact = false,
 }) => {
   if (isLoading) {
     return null;
   }
 
   return (
-    <div className="dark:bg-gray-800">
+    <div className="dark:bg-gray-800 h-full w-full">
       {/* Mobile view */}
       <div className="block md:hidden mx-auto w-full">
         {data?.length > 0 &&
@@ -81,11 +79,12 @@ const DataTable: React.FC<DataTableProps> = ({
       </div>
 
       {/* Desktop view */}
-
-      <div
-        className="hidden md:flex md:flex-col custom-scrollbar"
-        style={compact ? {} : { height: data.length > 0 ? 'calc(100vh - 240px)' : 'unset', width: 'calc(100vw - 260px)' }}
-      >
+      {footer && data.length ? (
+        <div id="footer" className="bg-gray-100 dark:bg-gray-700 w-full p-4 text-left fixed bottom-0 z-50">
+          {footer}
+        </div>
+      ) : null}
+      <div className="flex-grow custom-scrollbar" style={{ height: data.length > 0 ? 'calc(100vh - 240px)' : 'auto' }}>
         <SimpleBar style={{ maxHeight: '100%' }} autoHide={false} forceVisible="x">
           <table
             className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 custom-scrollbar"
@@ -158,9 +157,6 @@ const DataTable: React.FC<DataTableProps> = ({
             </tbody>
           </table>
         </SimpleBar>
-        {footer && data.length ? (
-          <div className="mt-auto bg-gray-50 dark:bg-gray-700 w-full p-4 text-left">{footer}</div>
-        ) : null}
       </div>
 
       {data?.length === 0 && (

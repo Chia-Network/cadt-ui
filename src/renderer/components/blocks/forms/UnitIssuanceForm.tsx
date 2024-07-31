@@ -4,6 +4,7 @@ import { Issuance } from '@/schemas/Issuance.schema';
 import { useGetProjectQuery } from '@/api';
 import { IssuancesForm, Select, SelectOption, Spacer } from '@/components';
 import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
 
 interface UnitIssuanceFormProps {
   readonly?: boolean;
@@ -17,6 +18,7 @@ export interface UnitIssuanceFormRef {
 
 const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
   ({ data: issuance, selectedWarehouseProjectId }, ref) => {
+    const intl = useIntl();
     const [selectedIssuance, setSelectedIssuance] = useState<Issuance | undefined>(issuance || undefined);
     const [error, setError] = useState<string | null>(null);
     const { data: projectData, isLoading: isProjectLoading } = useGetProjectQuery(
@@ -60,7 +62,6 @@ const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
           }
         }
         setSelectedIssuance(foundIssuance);
-        console.log('issuance', selectedIssuance);
       },
       [projectData, selectedIssuance],
     );
@@ -68,7 +69,7 @@ const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
     return (
       <div>
         <Select
-          name="Select Issuance"
+          name={intl.formatMessage({ id: 'select-issuance' })}
           options={issuanceOptions}
           onChange={handleSetIssuance}
           initialValue={selectedIssuance ? selectedIssuance.id?.toString() : ''}

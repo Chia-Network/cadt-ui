@@ -1,7 +1,6 @@
-import { partial } from 'lodash';
+import { DebouncedFunc, partial } from 'lodash';
 import React, { useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { DebouncedFunc } from 'lodash';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
   Column,
   DataTable,
@@ -13,7 +12,7 @@ import {
 } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { Badge } from 'flowbite-react';
-import { useWildCardUrlHash, useUrlHash } from '@/hooks';
+import { useUrlHash, useWildCardUrlHash } from '@/hooks';
 
 interface TableProps {
   data: Project[];
@@ -40,6 +39,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
   totalPages,
   totalCount,
 }) => {
+  const intl = useIntl();
   const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
   const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
 
@@ -130,29 +130,29 @@ const ProjectsListTable: React.FC<TableProps> = ({
 
   return (
     <>
-      <div className="relative">
-        <DataTable
-          columns={columns}
-          onChangeOrder={setOrder}
-          onRowClick={onRowClick}
-          order={order}
-          data={data}
-          primaryKey="warehouseProjectId"
-          isLoading={isLoading}
-          footer={
-            <>
-              <PageCounter currentPage={currentPage} totalCount={totalCount} />
-              <Pagination
-                currentPage={currentPage}
-                layout="pagination"
-                onPageChange={onPageChange}
-                showIcons={true}
-                totalPages={totalPages || 1}
-              />
-            </>
-          }
-        />
-      </div>
+      <DataTable
+        columns={columns}
+        onChangeOrder={setOrder}
+        onRowClick={onRowClick}
+        order={order}
+        data={data}
+        primaryKey="warehouseProjectId"
+        isLoading={isLoading}
+        footer={
+          <>
+            <PageCounter currentPage={currentPage} totalCount={totalCount} />
+            <Pagination
+              nextLabel={intl.formatMessage({ id: 'next-page' })}
+              previousLabel={intl.formatMessage({ id: 'previous-page' })}
+              currentPage={currentPage}
+              layout="pagination"
+              onPageChange={onPageChange}
+              showIcons={true}
+              totalPages={totalPages || 1}
+            />
+          </>
+        }
+      />
       {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
     </>
   );

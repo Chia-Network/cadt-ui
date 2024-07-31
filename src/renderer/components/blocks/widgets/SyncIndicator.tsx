@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import {
-  useGetOrganizationsMapQuery,
-  useGetOrganizationsListQuery,
   invalidateProjectApiTag,
   invalidateUnitsApiTag,
+  useGetOrganizationsListQuery,
+  useGetOrganizationsMapQuery,
 } from '@/api';
 import { BiRefresh } from 'react-icons/bi';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 interface SyncIndicatorProps {
   detailed: boolean;
@@ -92,9 +93,20 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
         {detailed && (
           <div className="flex flex-col text-left">
             <span className={`text-sm ${isSynced ? 'text-green-700' : 'text-yellow-600'}`}>
-              {isSynced ? 'Synced' : 'Syncing...'}
+              {isSynced ? (
+                <FormattedMessage id="synced" />
+              ) : (
+                <p>
+                  <FormattedMessage id="syncing" />
+                  ...
+                </p>
+              )}
             </span>
-            {!isSynced && <span className="text-xs text-yellow-400">{syncRemaining + 1} remaining</span>}
+            {!isSynced && (
+              <span className="text-xs text-yellow-400">
+                {syncRemaining + 1} <FormattedMessage id="remaining" />
+              </span>
+            )}
           </div>
         )}
       </div>
