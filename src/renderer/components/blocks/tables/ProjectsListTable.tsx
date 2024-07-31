@@ -1,6 +1,6 @@
 import { DebouncedFunc, partial } from 'lodash';
 import React, { useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
   Column,
   DataTable,
@@ -40,6 +40,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
   totalPages,
   totalCount,
 }) => {
+  const intl = useIntl();
   const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
   const [, transferProjectModalActive, setTransferProjectModalActive] = useWildCardUrlHash('transfer-project');
   const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
@@ -156,6 +157,8 @@ const ProjectsListTable: React.FC<TableProps> = ({
           <>
             <PageCounter currentPage={currentPage} totalCount={totalCount} />
             <Pagination
+              nextLabel={intl.formatMessage({ id: 'next-page' })}
+              previousLabel={intl.formatMessage({ id: 'previous-page' })}
               currentPage={currentPage}
               layout="pagination"
               onPageChange={onPageChange}

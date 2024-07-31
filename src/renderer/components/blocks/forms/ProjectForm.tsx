@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { Card, Field } from '@/components';
 import { Project } from '@/schemas/Project.schema';
 import { PickList } from '@/schemas/PickList.schema';
+import { useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   projectName: yup.string().required('Project Name is required').min(1, 'Project Name cannot be empty'),
@@ -75,6 +76,7 @@ const getDefaultInitialValues = (data: Partial<Project>): Project => {
 
 const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, ProjectFormProps>(
   ({ readonly = false, data = {}, picklistOptions }, ref) => {
+    const intl = useIntl();
     const formikRef = React.useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
@@ -105,7 +107,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
                     name="projectName"
-                    label="Project Name"
+                    label={intl.formatMessage({ id: 'project-name' })}
                     type="text"
                     readonly={readonly}
                     required={true}
@@ -113,7 +115,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="projectId"
-                    label="External Project Id"
+                    label={intl.formatMessage({ id: 'external-project-id' })}
                     type="text"
                     readonly={readonly}
                     required={true}
@@ -121,7 +123,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="projectDeveloper"
-                    label="Project Developer"
+                    label={intl.formatMessage({ id: 'project-developer' })}
                     type="text"
                     readonly={readonly}
                     required={true}
@@ -129,7 +131,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="program"
-                    label="Program"
+                    label={intl.formatMessage({ id: 'program' })}
                     type="text"
                     readonly={readonly}
                     initialValue={data?.program || ''}
@@ -138,7 +140,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                 <div>
                   <Field
                     name="projectLink"
-                    label="Project Link"
+                    label={intl.formatMessage({ id: 'project-link' })}
                     type="link"
                     readonly={readonly}
                     required={true}
@@ -148,7 +150,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
                     name="sector"
-                    label="Sector"
+                    label={intl.formatMessage({ id: 'sector' })}
                     type="picklist"
                     freeform={true}
                     options={picklistOptions?.projectSector}
@@ -158,7 +160,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="projectType"
-                    label="Project Type"
+                    label={intl.formatMessage({ id: 'project-type' })}
                     freeform={true}
                     type="picklist"
                     options={picklistOptions?.projectType}
@@ -168,7 +170,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="projectStatus"
-                    label="Project Status"
+                    label={intl.formatMessage({ id: 'project-status' })}
                     type="picklist"
                     options={picklistOptions?.projectStatusValues}
                     readonly={readonly}
@@ -177,7 +179,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="projectStatusDate"
-                    label="Project Status Date"
+                    label={intl.formatMessage({ id: 'project-status-date' })}
                     type="date"
                     readonly={readonly}
                     required={true}
@@ -189,7 +191,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
                     name="coveredByNDC"
-                    label="Covered By NDC"
+                    label={intl.formatMessage({ id: 'covered-by-ndc' })}
                     type="picklist"
                     options={picklistOptions?.coveredByNDC}
                     readonly={readonly}
@@ -198,14 +200,14 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="ndcInformation"
-                    label="NDC Information"
+                    label={intl.formatMessage({ id: 'ndc-information' })}
                     type="text"
                     readonly={readonly}
                     initialValue={data?.ndcInformation || ''}
                   />
                   <Field
                     name="currentRegistry"
-                    label="Current Registry"
+                    label={intl.formatMessage({ id: 'current-registry' })}
                     type="picklist"
                     freeform={true}
                     options={picklistOptions?.registries}
@@ -215,7 +217,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="registryOfOrigin"
-                    label="Registry Of Origin"
+                    label={intl.formatMessage({ id: 'registry-of-origin' })}
                     type="picklist"
                     freeform={true}
                     options={picklistOptions?.registries}
@@ -225,7 +227,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="originProjectId"
-                    label="Origin Project ID"
+                    label={intl.formatMessage({ id: 'origin-project-id' })}
                     type="text"
                     readonly={readonly}
                     required={true}
@@ -237,7 +239,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
                     name="unitMetric"
-                    label="Unit Metric"
+                    label={intl.formatMessage({ id: 'unit-metric' })}
                     type="picklist"
                     options={picklistOptions?.unitMetric}
                     readonly={readonly}
@@ -246,7 +248,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="methodology"
-                    label="Methodology"
+                    label={intl.formatMessage({ id: 'methodology' })}
                     type="picklist"
                     freeform={true}
                     options={picklistOptions?.methodology}
@@ -256,7 +258,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="methodology2"
-                    label="Methodology 2"
+                    label={intl.formatMessage({ id: 'methodology' }) + ' 2'}
                     type="picklist"
                     freeform={true}
                     options={picklistOptions?.methodology}
@@ -265,7 +267,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="validationBody"
-                    label="Validation Body"
+                    label={intl.formatMessage({ id: 'validation-body' })}
                     type="picklist"
                     options={picklistOptions?.validationBody}
                     readonly={readonly}
@@ -273,7 +275,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
                   />
                   <Field
                     name="validationDate"
-                    label="Validation Date"
+                    label={intl.formatMessage({ id: 'validation-date' })}
                     type="date"
                     readonly={readonly}
                     initialValue={data?.validationDate || ''}
@@ -283,7 +285,7 @@ const ProjectForm: React.FC<ProjectFormProps> = forwardRef<ProjectFormRef, Proje
               <Card>
                 <Field
                   name="projectTags"
-                  label="Project Tags"
+                  label={intl.formatMessage({ id: 'project-tags' })}
                   type="tag"
                   readonly={readonly}
                   initialValue={data?.projectTags || ''}

@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { CoBenefit } from '@/schemas/CoBenefit.schema';
 import { PickList } from '@/schemas/PickList.schema';
 import { deepOmit, validateAndSubmitFieldArrayForm } from '@/utils/formik-utils';
+import { useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   cobenefits: yup.array().of(
@@ -26,6 +27,7 @@ export interface CoBenefitsFormRef {
 
 const CoBenefitsForm = forwardRef<CoBenefitsFormRef, CoBenefitsFormProps>(
   ({ readonly = false, data, picklistOptions }, ref) => {
+    const intl = useIntl();
     const formikRef = useRef<FormikProps<any>>(null);
 
     useImperativeHandle(ref, () => ({
@@ -58,7 +60,7 @@ const CoBenefitsForm = forwardRef<CoBenefitsFormRef, CoBenefitsFormProps>(
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                   <Field
                     name={`${name}[${index}].cobenefit`}
-                    label="Co-Benefit"
+                    label={intl.formatMessage({ id: 'co-benefit' })}
                     type="picklist"
                     freeform={true}
                     options={picklistOptions?.coBenefits}
