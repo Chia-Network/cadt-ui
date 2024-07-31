@@ -1,17 +1,17 @@
 import { omit } from 'lodash';
 import React, { useMemo } from 'react';
-import { diffLines, Change } from 'diff';
+import { Change, diffLines } from 'diff';
 
 interface ChangeRecord {
-  id: number;
-  uuid: string;
+  id?: number;
+  uuid?: string;
   table: string;
   action: string;
-  committed: boolean;
-  failedCommit: boolean;
-  isTransfer: boolean;
-  createdAt: string;
-  updatedAt: string;
+  committed?: boolean;
+  failedCommit?: boolean;
+  isTransfer?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
   diff: {
     original: any;
     change: any[];
@@ -130,10 +130,10 @@ const DiffViewer: React.FC<DiffViewerProps> = ({ data }) => {
 
   return (
     <div className="diff-container p-5 bg-gray-100 rounded-md shadow">
-      <h3 className="font-bold text-lg mb-3">
+      <h3 className="font-bold text-lg text-left mb-3">
         Change for {data.table} - Action: {data.action}
       </h3>
-      <div className="bg-white p-3 rounded border font-mono">
+      <div className="bg-white text-left p-3 rounded border font-mono">
         {diffs.length > 0 ? diffs : <div>No changes detected.</div>}
       </div>
     </div>

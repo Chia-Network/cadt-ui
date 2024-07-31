@@ -28,7 +28,6 @@ enum TabTypes {
   STAGING,
   PENDING,
   FAILED,
-  TRANSFERS,
 }
 
 interface ProcessedStagingData {
@@ -192,7 +191,6 @@ const MyUnitsPage: React.FC = () => {
               />
             )}
           </Tabs.Item>
-          <Tabs.Item title={<FormattedMessage id="transfers" />}>todo transfers</Tabs.Item>
         </Tabs>
       </div>
       {commitModalActive && processedStagingData.staged.length && (

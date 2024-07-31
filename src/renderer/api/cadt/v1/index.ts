@@ -8,6 +8,8 @@ const auditTag = 'audit';
 const issuancesTag = 'issuances';
 const stagedProjectsTag = 'stagedProjects';
 const stagedUnitsTag = 'stagedUnits';
+const offerTag = 'offer';
+const importedOfferTag = 'importedTransferTag';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: '/',
@@ -42,8 +44,28 @@ const baseQueryWithDynamicHost = async (args, api, extraOptions) => {
 export const cadtApi = createApi({
   baseQuery: baseQueryWithDynamicHost,
   reducerPath: 'cadtApi',
-  tagTypes: [projectsTag, organizationsTag, unitsTag, auditTag, stagedProjectsTag, stagedUnitsTag, issuancesTag],
+  tagTypes: [
+    projectsTag,
+    organizationsTag,
+    unitsTag,
+    auditTag,
+    stagedProjectsTag,
+    stagedUnitsTag,
+    issuancesTag,
+    offerTag,
+    importedOfferTag,
+  ],
   endpoints: () => ({}),
 });
 
-export { projectsTag, organizationsTag, unitsTag, auditTag, stagedProjectsTag, stagedUnitsTag, issuancesTag  };
+export {
+  projectsTag,
+  organizationsTag,
+  unitsTag,
+  auditTag,
+  stagedProjectsTag,
+  stagedUnitsTag,
+  issuancesTag,
+  offerTag,
+  importedOfferTag,
+};

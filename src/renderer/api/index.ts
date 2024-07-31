@@ -6,3 +6,4 @@ export * from './cadt/v1/issuances';
 export * from './cadt/v1/governance';
 export * from './cadt/v1/staging';
 export * from './cadt/v1/system';
+export * from './cadt/v1/offer';

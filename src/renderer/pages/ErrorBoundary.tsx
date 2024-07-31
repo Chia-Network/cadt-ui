@@ -31,7 +31,7 @@ class ErrorBoundary extends React.Component {
           flexDirection: 'column',
         }}
       >
-        <Modal show={true}>
+        <Modal show={true} onClose={() => (window.location.href = '/')}>
           <Modal.Header>
             <FormattedMessage id="application-error" />
           </Modal.Header>

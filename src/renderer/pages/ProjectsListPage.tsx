@@ -86,7 +86,7 @@ const ProjectsListPage: React.FC = () => {
       ) : (
         <ProjectsListTable
           data={projectsData?.data || []}
-          isEditable={false}
+          rowActions="transfer"
           isLoading={projectsLoading}
           currentPage={Number(currentPage)}
           onPageChange={handlePageChange}

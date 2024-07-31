@@ -28,12 +28,13 @@ import {
   useGetProjectQuery,
   useStageCreateProjectMutation,
   useStageUpdateProjectMutation,
+  useTransferProjectMutation,
 } from '@/api';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Project } from '@/schemas/Project.schema';
 import { Alert } from 'flowbite-react';
 
-// unfortunate  use of material UI here but dont have an altenative for stepper
+// unfortunate use of material UI here but dont have an alternative for stepper
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import { StepButton } from '@mui/material';
@@ -66,14 +67,19 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
 
   const [projectFormData, setProjectFormData] = useState<Project>();
   const [formSubmitError, setFormSubmitError] = useState<string | null>(null);
-  const [, createProjectModalActive] = useWildCardUrlHash('create-project');
-  const [projectUpsertFragment] = useWildCardUrlHash('edit-project');
-  const warehouseProjectId = projectUpsertFragment.replace('edit-project-', '');
+  const [activeStep, setActiveStep] = useState(UpsertProjectTabs.PROJECT);
+  const [createProjectModalActive] = useUrlHash('create-project');
+  const [projectUpsertFragment, editProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [projectTransferFragment, transferProjectModalActive] = useWildCardUrlHash('transfer-project');
+  const warehouseProjectId = editProjectModalActive
+    ? projectUpsertFragment.replace('edit-project-', '')
+    : projectTransferFragment.replace('transfer-project-', '');
   const { data: projectData, isLoading: projectLoading } = useGetProjectQuery({ warehouseProjectId });
   const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
   const [triggerStageCreateProject, { isLoading: isProjectStaging }] = useStageCreateProjectMutation();
   // @ts-ignore
   const [triggerStageUpdateProject, { isLoading: isProjectUpdateStaging }] = useStageUpdateProjectMutation();
+  const [triggerTransferProject, { isLoading: isTransferProjectLoading }] = useTransferProjectMutation();
   const [, setProjectStagedSuccessModal] = useUrlHash('success-stage-project');
 
   const steps: string[] = useMemo<string[]>(() => {
@@ -89,7 +95,17 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
     ];
   }, [intl]);
 
-  const [activeStep, setActiveStep] = useState(UpsertProjectTabs.PROJECT);
+  const nextButtonTitleId: string = useMemo(() => {
+    if (createProjectModalActive && activeStep === steps.length - 1) {
+      return 'create-project';
+    } else if (editProjectModalActive && activeStep === steps.length - 1) {
+      return 'edit-project';
+    } else if (transferProjectModalActive && activeStep === steps.length - 1) {
+      return 'create-project-transfer';
+    } else {
+      return 'next';
+    }
+  }, [activeStep, createProjectModalActive, editProjectModalActive, steps.length, transferProjectModalActive]);
 
   const isLastStep = () => {
     return activeStep === steps.length - 1;
@@ -142,19 +158,23 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
 
         if (activeStep === UpsertProjectTabs.RELATED_PROJECTS) {
           if (projectFormData) {
-            let response: any;
+            let response: any = {
+              error: { data: { message: 'application internal state error. reload the application' } },
+            };
 
             if (createProjectModalActive) {
               response = await triggerStageCreateProject(projectFormData);
-            } else {
+            } else if (editProjectModalActive) {
               response = await triggerStageUpdateProject(projectFormData);
+            } else if (transferProjectModalActive) {
+              response = await triggerTransferProject(projectFormData);
             }
 
             if (response.data) {
               setProjectStagedSuccessModal(true);
               onClose();
             } else {
-              let errorMessage = `Error processing Unit: ${response.error.data.message}`;
+              let errorMessage = `Error processing project: ${response.error.data.message}`;
               if (response.error.data.errors && Array.isArray(response.error.data.errors)) {
                 errorMessage = `${errorMessage} - ${response.error.data.errors.join(', ')}`;
               }
@@ -180,14 +200,26 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
   };
 
   const ModalHeader: React.FC = () => {
+    const title: string = useMemo(() => {
+      if (createProjectModalActive) {
+        return 'create-project';
+      } else if (editProjectModalActive) {
+        return 'edit-project';
+      } else if (transferProjectModalActive) {
+        return 'transfer-project';
+      } else {
+        return '';
+      }
+    }, []);
+
     return (
       <Modal.Header>
-        {createProjectModalActive ? <FormattedMessage id="create-project" /> : <FormattedMessage id="edit-project" />}
+        <FormattedMessage id={title} />
       </Modal.Header>
     );
   };
 
-  if (projectLoading || isPickListLoading || isProjectStaging || isProjectUpdateStaging) {
+  if (projectLoading || isPickListLoading || isProjectStaging || isProjectUpdateStaging || isTransferProjectLoading) {
     return (
       <Modal show={true} onClose={onClose}>
         <ModalHeader />
@@ -216,7 +248,6 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
           ))}
         </Stepper>
         <div className="h-screen">
-          {/* TODO this call to handlecomplete is just a placeholder and does nothing useful, will probably break */}
           {activeStep === UpsertProjectTabs.PROJECT && (
             // @ts-ignore
             <ProjectForm ref={projectFormRef} data={projectFormData || projectData} picklistOptions={pickListData} />
@@ -272,11 +303,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
             </Button>
             <div className="flex space-x-1 flex-grow justify-end">
               <Button onClick={handleNext}>
-                {activeStep !== steps.length - 1 ? (
-                  <FormattedMessage id="next" />
-                ) : (
-                  <FormattedMessage id={createProjectModalActive ? 'create-project' : 'edit-project'} />
-                )}
+                <FormattedMessage id={nextButtonTitleId} />
               </Button>
             </div>
           </div>

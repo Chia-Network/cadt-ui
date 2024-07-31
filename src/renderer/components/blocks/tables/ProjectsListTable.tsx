@@ -4,10 +4,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import {
   Column,
   DataTable,
+  OwnedProjectAndUnitActions,
   PageCounter,
   Pagination,
-  ProjectAndUnitActions,
   Tooltip,
+  TransferOption,
   UpsertProjectModal,
 } from '@/components';
 import { Project } from '@/schemas/Project.schema';
@@ -16,7 +17,7 @@ import { useUrlHash, useWildCardUrlHash } from '@/hooks';
 
 interface TableProps {
   data: Project[];
-  isEditable: boolean;
+  rowActions?: 'edit' | 'transfer';
   isLoading: boolean;
   currentPage: number;
   onPageChange: DebouncedFunc<(page: any) => void>;
@@ -29,7 +30,7 @@ interface TableProps {
 
 const ProjectsListTable: React.FC<TableProps> = ({
   data,
-  isEditable,
+  rowActions,
   isLoading,
   currentPage,
   onPageChange,
@@ -41,6 +42,7 @@ const ProjectsListTable: React.FC<TableProps> = ({
 }) => {
   const intl = useIntl();
   const [, editProjectModalActive, setEditProjectModalActive] = useWildCardUrlHash('edit-project');
+  const [, transferProjectModalActive, setTransferProjectModalActive] = useWildCardUrlHash('transfer-project');
   const [createProjectModalActive, setCreateProjectModalActive] = useUrlHash('create-project');
 
   const handleCloseUpsertModal = () => {
@@ -49,19 +51,32 @@ const ProjectsListTable: React.FC<TableProps> = ({
   };
 
   const columns = useMemo(() => {
-    const editColumn: Column[] = [
+    const actionColumn: Column[] = [
       {
         title: '',
         key: 'actionColumn',
         ignoreChildEvents: true,
         ignoreOrderChange: true,
-        render: (row: Project) => (
-          <ProjectAndUnitActions
-            type="project"
-            warehouseId={row?.warehouseProjectId || ''}
-            openEditModal={partial(setEditProjectModalActive, true)}
-          />
-        ),
+        render: (row: Project) => {
+          if (rowActions === 'edit') {
+            return (
+              <OwnedProjectAndUnitActions
+                type="project"
+                warehouseId={row?.warehouseProjectId || ''}
+                openEditModal={partial(setEditProjectModalActive, true)}
+              />
+            );
+          } else if (rowActions === 'transfer') {
+            return (
+              <TransferOption
+                warehouseId={row?.warehouseProjectId || ''}
+                openTransferModal={partial(setTransferProjectModalActive, true)}
+              />
+            );
+          } else {
+            return <></>;
+          }
+        },
       },
     ];
 
@@ -125,8 +140,8 @@ const ProjectsListTable: React.FC<TableProps> = ({
       },
     ];
 
-    return isEditable ? editColumn.concat(staticColumns) : staticColumns;
-  }, [isEditable, setEditProjectModalActive]);
+    return rowActions ? actionColumn.concat(staticColumns) : staticColumns;
+  }, [rowActions, setEditProjectModalActive, setTransferProjectModalActive]);
 
   return (
     <>
@@ -153,7 +168,9 @@ const ProjectsListTable: React.FC<TableProps> = ({
           </>
         }
       />
-      {(createProjectModalActive || editProjectModalActive) && <UpsertProjectModal onClose={handleCloseUpsertModal} />}
+      {(createProjectModalActive || editProjectModalActive || transferProjectModalActive) && (
+        <UpsertProjectModal onClose={handleCloseUpsertModal} />
+      )}
     </>
   );
 };

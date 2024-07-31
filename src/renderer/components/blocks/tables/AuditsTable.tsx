@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DebouncedFunc } from 'lodash';
-import { DataTable, PageCounter, Pagination, AuditModal, Badge } from '@/components';
+import { AuditModal, Badge, DataTable, PageCounter, Pagination } from '@/components';
 import { formatToDataTimeFromSeconds } from '@/utils/transforms';
 import { useWildCardUrlHash } from '@/hooks';
 
@@ -29,11 +29,8 @@ const AuditsTable: React.FC<TableProps> = ({
   const [auditFragment, auditModalActive, setAuditModalActive] = useWildCardUrlHash('view-audit');
 
   const handleRowClick = (row: any) => {
-    console.log(row);
     setAuditModalActive(true, row.id);
   };
-
-  console.log(auditFragment)
 
   const columns = useMemo(
     () => [
@@ -52,8 +49,15 @@ const AuditsTable: React.FC<TableProps> = ({
         title: <FormattedMessage id={'type'} />,
         key: 'type',
         render: (row: any) => {
-          return <Badge style={{display: 'flex', justifyContent: 'center'}} color={row.type === 'INSERT' ? 'success' : 'failure'}>{row.type}</Badge>;
-        }
+          return (
+            <Badge
+              style={{ display: 'flex', justifyContent: 'center' }}
+              color={row.type === 'INSERT' ? 'success' : 'failure'}
+            >
+              {row.type}
+            </Badge>
+          );
+        },
       },
       {
         title: <FormattedMessage id={'root-hash'} />,
