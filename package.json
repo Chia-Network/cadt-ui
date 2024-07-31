@@ -8,7 +8,7 @@
   "author": "Chia Network Inc. <hello@chia.net>",
   "description": "Climate Action Data Trust User Interface",
   "engines": {
-    "node": ">=20.0"
+    "node": ">=20.16"
   },
   "scripts": {
     "start": "vite",
@@ -18,7 +18,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "clean": "rm -rf dist && rm -rf build",
-    "prepare": "husky install",
+    "prepare": "husky",
     "electron:package:mac": "npm run clean && npm run build && electron-builder -m -c.extraMetadata.main=build/main.js",
     "electron:package:win": "npm run clean && npm run build && electron-builder -w -c.extraMetadata.main=build/main.js",
     "electron:package:linux": "npm run clean && npm run build && electron-builder -l -c.extraMetadata.main=build/main.js"
