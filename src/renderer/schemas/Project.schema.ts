@@ -1,0 +1,40 @@
+import { Label } from './Label.schema';
+import { Issuance } from './Issuance.schema';
+import { CoBenefit } from './CoBenefit.schema';
+import { RelatedProject } from './RelatedProject.schema';
+import { ProjectLocation } from './ProjectLocation.schema';
+import { Rating } from './Rating.schema';
+import { Estimation } from './Estimation.schema';
+
+export interface Project {
+  warehouseProjectId?: string | null;
+  orgUid?: string | null;
+  projectId: string | number | null;
+  originProjectId: string | number | null;
+  registryOfOrigin: string | null;
+  projectName: string | null;
+  projectLink: string | null;
+  projectDeveloper: string | null;
+  sector: string | null;
+  projectType: string | null;
+  coveredByNDC: string | null;
+  projectStatus: string | null;
+  projectStatusDate: Date | null;
+  unitMetric: string | null;
+  methodology: string | null;
+  currentRegistry?: string | null;
+  program?: string | null;
+  projectTags?: string | null;
+  ndcInformation?: string | null;
+  methodology2?: string | null;
+  validationBody?: string | null;
+  validationDate?: Date | null;
+  description?: string | null;
+  labels?: Label[];
+  issuances?: Issuance[];
+  coBenefits?: CoBenefit[];
+  relatedProjects?: RelatedProject[];
+  projectLocations?: ProjectLocation[];
+  projectRatings?: Rating[];
+  estimations?: Estimation[];
+}
