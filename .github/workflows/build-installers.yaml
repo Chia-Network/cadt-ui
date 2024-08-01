@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - '**'
+    branches:
+      - refactor/refactor-base #remove this once rebuild is merged
   pull_request:
     branches:
       - '**'
@@ -27,10 +29,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node 18.16
+      - name: Setup Node 20
         uses: actions/setup-node@v3
         with:
-          node-version: '18.16'
+          node-version: '20.10'
 
       - name: Install Husky
         run: npm install --save-dev husky
@@ -56,12 +58,12 @@ jobs:
       - name: Notarize
         run: |
           DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
-          npm install -g notarize-cli
-          notarize-cli \
-            --file="$DMG_FILE" \
-            --bundle-id net.chia.cadt-ui \
-            --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
-            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
+          xcrun notarytool submit \
+          --wait \
+          --apple-id "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
+          --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}" \
+          --team-id "${{ secrets.APPLE_TEAM_ID }}" \
+          "$DMG_FILE"
 
       - name: Upload Mac Installer
         uses: actions/upload-artifact@v3
@@ -76,10 +78,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node 18.16
+      - name: Setup Node 20.10
         uses: actions/setup-node@v3
         with:
-          node-version: '18.16'
+          node-version: '20.10'
 
       - name: Install Husky
         run: npm install --save-dev husky
@@ -125,10 +127,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node 18.16
+      - name: Setup Node 20.10
         uses: actions/setup-node@v3
         with:
-          node-version: '18.16'
+          node-version: '20.10'
 
       - name: Install Husky
         run: npm install --save-dev husky
@@ -160,10 +162,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node 18.16
+      - name: Setup Node 20.10
         uses: actions/setup-node@v3
         with:
-          node-version: '18.16'
+          node-version: '20.10'
 
       - name: Install Husky
         run: npm install --save-dev husky
