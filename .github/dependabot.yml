@@ -53,4 +53,15 @@ updates:
       - dependencies
       - javascript
       - "Changed"
-    reviewers: ["cmmarslender", "emlowe"]
+    reviewers: ["cmmarslender", "ChiaMineJP"]
+
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - rust
+      - "Changed"
