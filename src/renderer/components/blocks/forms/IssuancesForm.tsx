@@ -16,7 +16,7 @@ const validationSchema = yup.object({
         .required('End date is required')
         .min(yup.ref('startDate'), 'End date must be after the start date'),
       verificationApproach: yup.string().required('Verification approach is required'),
-      verificationBody: yup.string().required('Verification body is required'),
+      verificationBody: yup.string(),
       verificationReportDate: yup.date().required('Verification report date is required'),
     }),
   ),
@@ -106,7 +106,6 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                       freeform={true}
                       options={picklistOptions?.verificationBody}
                       readonly={readonly}
-                      required={true}
                       initialValue={issuance.verificationBody || ''}
                     />
                     <Field
