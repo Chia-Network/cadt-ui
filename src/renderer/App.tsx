@@ -18,8 +18,6 @@ function App() {
   const [appLoading, setAppLoading] = useState(true);
   const { data: configData, isLoading: configFileLoading } = useGetUiConfigQuery();
 
-  console.log('$$$$$$', appStore.apiKey);
-
   useEffect(() => {
     if (appStore.locale) {
       const processTranslationTokens = async () => {

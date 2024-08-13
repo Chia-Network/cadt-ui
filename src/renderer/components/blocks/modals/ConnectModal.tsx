@@ -20,7 +20,6 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ onClose }: ConnectModalProp
   const [, setActive] = useUrlHash('connect');
 
   const handleSubmit = async (apiHost: string, apiKey?: string) => {
-    console.log('*****', apiHost, apiKey);
     const response: BaseQueryResult | FetchBaseQueryError | SerializedError = await getHealth({ apiHost, apiKey });
 
     if (!response?.data) {
