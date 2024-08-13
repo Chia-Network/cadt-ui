@@ -4,8 +4,9 @@ import {IntlProvider} from 'react-intl';
 import {loadLocaleData} from '@/translations';
 import '@/App.css';
 import {AppNavigator} from '@/routes';
-import {setLocale} from '@/store/slices/app';
-import {IndeterminateProgressOverlay} from '@/components';
+import {resetApiHost, setConfigFileLoaded, setHost, setLocale} from '@/store/slices/app';
+import {ComponentCenteredSpinner} from '@/components';
+import {useGetUiConfigQuery} from '@/api';
 
 /**
  * @returns app react component to be rendered by electron as the UI
@@ -14,6 +15,9 @@ function App() {
   const dispatch = useDispatch();
   const appStore = useSelector((state: any) => state.app);
   const [translationTokens, setTranslationTokens] = useState<object>();
+  const { data: configData, isLoading: configFileLoading } = useGetUiConfigQuery();
+
+  console.log('$$$$$$', configData);
 
   useEffect(() => {
     if (appStore.locale) {
@@ -27,8 +31,26 @@ function App() {
     }
   }, [appStore.locale, dispatch]);
 
-  if (!translationTokens) {
-    return <IndeterminateProgressOverlay />;
+  useEffect(() => {
+    if (!configFileLoading) {
+      setTimeout(() => window.location.reload(), 50);
+    }
+  }, [appStore.configFileLoaded]); // do not add configFileLoading as dependency
+
+  useEffect(() => {
+    if (configData) {
+      if (configData?.apiHost) {
+        dispatch(setHost({ apiHost: configData.apiHost }));
+      }
+      dispatch(setConfigFileLoaded({ configFileLoaded: true }));
+    } else if (!configFileLoading && !configData && appStore.configFileLoaded) {
+      dispatch(resetApiHost());
+      dispatch(setConfigFileLoaded({ configFileLoaded: false }));
+    }
+  }, [appStore.apiHost, appStore.configFileLoaded, configData, configFileLoading, dispatch]);
+
+  if (!translationTokens || configFileLoading) {
+    return <ComponentCenteredSpinner />;
   }
 
   return (

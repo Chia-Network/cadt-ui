@@ -4,26 +4,27 @@ import { Button, ConnectModal } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useUrlHash } from '@/hooks';
 import { useGetHealthQuery } from '@/api/cadt/v1/system';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import initialAppState from '@/store/slices/app/app.initialstate';
 import { resetApiHost } from '@/store/slices/app';
-import { useDispatch } from 'react-redux';
 
 const ConnectButton: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [isActive, setActive] = useUrlHash('connect');
-  const { apiHost } = useSelector((state: RootState) => state.app);
+  const { apiHost, configFileLoaded } = useSelector((state: RootState) => state.app);
 
   const { data: serverHealth, isLoading, refetch } = useGetHealthQuery({});
 
-  // Activte the connect modal when the service is not found
+  // Activate the connect modal when the service is not found
   useEffect(() => {
-    if (!serverHealth?.isHealthy && !isLoading) {
+    if (!serverHealth?.isHealthy && !isLoading && !configFileLoaded) {
       setActive(true);
+    } else if (isActive) {
+      setActive(false);
     }
-  }, [serverHealth, setActive, isLoading]);
+  }, [serverHealth, setActive, isLoading, configFileLoaded, isActive]);
 
   // Recheck the health when the location changes
   useEffect(() => {

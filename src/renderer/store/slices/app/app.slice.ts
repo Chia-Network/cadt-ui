@@ -19,13 +19,18 @@ export const appSlice = createSlice({
       state.apiHost = initialState.apiHost;
       state.apiKey = initialState.apiKey;
     },
+
+    setConfigFileLoaded: (state, { payload }: { payload: { configFileLoaded: boolean } }) => {
+      state.configFileLoaded = payload.configFileLoaded;
+    },
+
     toggleTheme: (state) => {
       state.isDarkTheme = !state.isDarkTheme;
     },
   },
 });
 
-export const { setLocale, setHost, resetApiHost, toggleTheme } = appSlice.actions;
+export const { setLocale, setHost, resetApiHost, toggleTheme, setConfigFileLoaded } = appSlice.actions;
 
 export const selectCurrentHost = (state) => state.app.host;
 
