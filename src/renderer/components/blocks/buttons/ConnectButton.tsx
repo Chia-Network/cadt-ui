@@ -6,22 +6,21 @@ import { useUrlHash } from '@/hooks';
 import { useGetHealthQuery } from '@/api/cadt/v1/system';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import initialAppState from '@/store/slices/app/app.initialstate';
 import { resetApiHost } from '@/store/slices/app';
 
 const ConnectButton: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [isActive, setActive] = useUrlHash('connect');
-  const { apiHost, configFileLoaded } = useSelector((state: RootState) => state.app);
+  const { configFileLoaded } = useSelector((state: RootState) => state.app);
 
   const { data: serverHealth, isLoading, refetch } = useGetHealthQuery({});
 
   // Activate the connect modal when the service is not found
   useEffect(() => {
-    if (!serverHealth?.isHealthy && !isLoading && !configFileLoaded) {
+    if (!serverHealth?.isHealthy && !isLoading) {
       setActive(true);
-    } else if (isActive) {
+    } else if (serverHealth?.isHealthy && isActive) {
       setActive(false);
     }
   }, [serverHealth, setActive, isLoading, configFileLoaded, isActive]);
@@ -41,10 +40,10 @@ const ConnectButton: React.FC = () => {
       <Button
         color="none"
         onClick={() => {
-          apiHost === initialAppState.apiHost ? setActive(true) : handleDisconnect();
+          !serverHealth?.isHealthy ? setActive(true) : handleDisconnect();
         }}
       >
-        {apiHost == initialAppState.apiHost ? <FormattedMessage id="connect" /> : <FormattedMessage id="disconnect" />}
+        {!serverHealth?.isHealthy ? <FormattedMessage id="connect" /> : <FormattedMessage id="disconnect" />}
       </Button>
       {isActive && <ConnectModal onClose={() => setActive(false)} />}
     </>

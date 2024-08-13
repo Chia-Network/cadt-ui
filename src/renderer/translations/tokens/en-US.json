@@ -204,5 +204,6 @@
   "the-project-has-been-successfully-transferred-and-the-associated-changes-have-been-committed": "The project has been successfully transferred and the associated changes have been committed",
   "project-transfer-error": "Project Transfer Error",
   "failed-to-commit-project-transfer": "Failed to commit project transfer",
-  "no-changes-have-been-made": "No changes have been made"
+  "no-changes-have-been-made": "No changes have been made",
+  "api-host-loaded-from-configuration": "API host loaded from configuration"
 }

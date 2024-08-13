@@ -15,9 +15,10 @@ function App() {
   const dispatch = useDispatch();
   const appStore = useSelector((state: any) => state.app);
   const [translationTokens, setTranslationTokens] = useState<object>();
+  const [appLoading, setAppLoading] = useState(true);
   const { data: configData, isLoading: configFileLoading } = useGetUiConfigQuery();
 
-  console.log('$$$$$$', configData);
+  console.log('$$$$$$', appStore.apiKey);
 
   useEffect(() => {
     if (appStore.locale) {
@@ -32,12 +33,6 @@ function App() {
   }, [appStore.locale, dispatch]);
 
   useEffect(() => {
-    if (!configFileLoading) {
-      setTimeout(() => window.location.reload(), 50);
-    }
-  }, [appStore.configFileLoaded]); // do not add configFileLoading as dependency
-
-  useEffect(() => {
     if (configData) {
       if (configData?.apiHost) {
         dispatch(setHost({ apiHost: configData.apiHost }));
@@ -49,7 +44,9 @@ function App() {
     }
   }, [appStore.apiHost, appStore.configFileLoaded, configData, configFileLoading, dispatch]);
 
-  if (!translationTokens || configFileLoading) {
+  setTimeout(() => setAppLoading(false), 400);
+
+  if (!translationTokens || configFileLoading || appLoading) {
     return <ComponentCenteredSpinner />;
   }
 
