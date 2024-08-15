@@ -84,8 +84,6 @@ const TransferManager: React.FC<TransferManagerProps> = ({
 
   const handleRejectOffer = useCallback(async () => {
     await triggerRejectOfferFile();
-    // required until cadt /offer/accept is fixed to not return 400 when no offer present. forces store refresh
-    window.location.reload();
   }, [triggerRejectOfferFile]);
 
   if (isLoading) {
