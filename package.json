@@ -12,8 +12,10 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && cp src/preload.js build/preload.js && vite build",
-    "electron": "tsc && cp src/preload.js build/preload.js && cross-env NODE_ENV=development electron .",
+    "build": "npm run clean && tsc && cp src/preload.js build/preload.js && vite build",
+    "web-build": "npm run build && npm run prep-web-production",
+    "prep-web-production": "cp -r build/renderer/* build && rm -rf build/main.js build/preload.js build/renderer",
+    "electron": "npm run clean &&  tsc && cp src/preload.js build/preload.js && cross-env NODE_ENV=development electron .",
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
