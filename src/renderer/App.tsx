@@ -1,11 +1,15 @@
-import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {IntlProvider} from 'react-intl';
-import {loadLocaleData} from '@/translations';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { IntlProvider } from 'react-intl';
+import { loadLocaleData } from '@/translations';
 import '@/App.css';
-import {AppNavigator} from '@/routes';
-import {setLocale} from '@/store/slices/app';
-import {IndeterminateProgressOverlay} from '@/components';
+import { AppNavigator } from '@/routes';
+import { setLocale } from '@/store/slices/app';
+import { IndeterminateProgressOverlay } from '@/components';
+
+const fetchedTheme = {
+  leftNavBg: `#4e161d`,
+};
 
 /**
  * @returns app react component to be rendered by electron as the UI
@@ -14,6 +18,11 @@ function App() {
   const dispatch = useDispatch();
   const appStore = useSelector((state: any) => state.app);
   const [translationTokens, setTranslationTokens] = useState<object>();
+
+  // apply loaded theme colors via changing css property values
+  Object.entries(fetchedTheme).forEach(([key, value]) => {
+    document.documentElement.style.setProperty(`--color-${key}`, value);
+  });
 
   useEffect(() => {
     if (appStore.locale) {
