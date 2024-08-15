@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 import { loadLocaleData } from '@/translations';
 import '@/App.css';
-import { AppNavigator } from '@/routes';
-import { setLocale } from '@/store/slices/app';
-import { IndeterminateProgressOverlay } from '@/components';
+import {AppNavigator} from '@/routes';
+import {resetApiHost, setConfigFileLoaded, setHost, setLocale} from '@/store/slices/app';
+import {ComponentCenteredSpinner} from '@/components';
+import {useGetUiConfigQuery} from '@/api';
 
 const fetchedTheme = {
   leftNavBg: `#4e161d`,
@@ -18,6 +19,8 @@ function App() {
   const dispatch = useDispatch();
   const appStore = useSelector((state: any) => state.app);
   const [translationTokens, setTranslationTokens] = useState<object>();
+  const [appLoading, setAppLoading] = useState(true);
+  const { data: configData, isLoading: configFileLoading } = useGetUiConfigQuery();
 
   // apply loaded theme colors via changing css property values
   Object.entries(fetchedTheme).forEach(([key, value]) => {
@@ -36,8 +39,22 @@ function App() {
     }
   }, [appStore.locale, dispatch]);
 
-  if (!translationTokens) {
-    return <IndeterminateProgressOverlay />;
+  useEffect(() => {
+    if (configData) {
+      if (configData?.apiHost) {
+        dispatch(setHost({ apiHost: configData.apiHost }));
+      }
+      dispatch(setConfigFileLoaded({ configFileLoaded: true }));
+    } else if (!configFileLoading && !configData && appStore.configFileLoaded) {
+      dispatch(resetApiHost());
+      dispatch(setConfigFileLoaded({ configFileLoaded: false }));
+    }
+  }, [appStore.apiHost, appStore.configFileLoaded, configData, configFileLoading, dispatch]);
+
+  setTimeout(() => setAppLoading(false), 400);
+
+  if (!translationTokens || configFileLoading || appLoading) {
+    return <ComponentCenteredSpinner />;
   }
 
   return (

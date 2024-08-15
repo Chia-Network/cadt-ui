@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ConnectForm } from '@/components';
+import { ConnectForm, Modal } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { setHost } from '@/store/slices/app';
@@ -20,9 +20,9 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ onClose }: ConnectModalProp
   const [, setActive] = useUrlHash('connect');
 
   const handleSubmit = async (apiHost: string, apiKey?: string) => {
-    const response: BaseQueryResult | FetchBaseQueryError | SerializedError = await getHealth({ apiHost });
+    const response: BaseQueryResult | FetchBaseQueryError | SerializedError = await getHealth({ apiHost, apiKey });
 
-    if (!response.data) {
+    if (!response?.data) {
       setServerNotFound(true);
       return;
     }
