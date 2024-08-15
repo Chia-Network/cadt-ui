@@ -16,7 +16,10 @@ const Content = styled('span')`
   color: ${(props) => props.color || 'black'};
 `;
 
-const Caption2: React.FC<Caption2Props> = ({ children, style, color }) => 
-  <Content color={color} style={style}>{children}</Content>;
+const Caption2: React.FC<Caption2Props> = ({ children, style, color }) => (
+  <Content color={color} style={style}>
+    {children}
+  </Content>
+);
 
 export { Caption2 };

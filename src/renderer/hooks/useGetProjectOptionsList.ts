@@ -13,25 +13,28 @@ const useGetProjectOptionsList = (orgUid: string | null | undefined) => {
   const [allDataFetched, setAllDataFetched] = useState(false);
   const [page, setPage] = useState(1);
 
-  const { data, isFetching, isLoading, error } = useGetProjectsQuery({ orgUid, page }, {
-    skip: !orgUid || allDataFetched,
-    refetchOnMountOrArgChange: false,
-  });
+  const { data, isFetching, isLoading, error } = useGetProjectsQuery(
+    { orgUid, page },
+    {
+      skip: !orgUid || allDataFetched,
+      refetchOnMountOrArgChange: false,
+    },
+  );
 
   useEffect(() => {
     if (data && data.data.length > 0) {
       // @ts-ignore
       const newProjects: SelectOption[] = data.data.map((p: Project) => ({
         label: p.projectName,
-        value: p.warehouseProjectId
+        value: p.warehouseProjectId,
       }));
 
       // Merge and filter duplicates
-      setProjects(prev => {
+      setProjects((prev) => {
         // @ts-ignore
-        const existingValues = new Set(prev.map(p => p.value));
+        const existingValues = new Set(prev.map((p) => p.value));
         // @ts-ignore
-        const uniqueNewProjects = newProjects.filter(p => !existingValues.has(p.value));
+        const uniqueNewProjects = newProjects.filter((p) => !existingValues.has(p.value));
         return [...prev, ...uniqueNewProjects];
       });
 

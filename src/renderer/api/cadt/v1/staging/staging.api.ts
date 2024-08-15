@@ -83,5 +83,5 @@ export const {
   useCommitProjectsMutation,
   useCommitUnitsMutation,
   useCommitAllMutation,
-  useDeleteStagedItemMutation
+  useDeleteStagedItemMutation,
 } = stagingApi;

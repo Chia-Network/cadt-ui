@@ -7,13 +7,7 @@ interface WarehouseIconProps {
 
 const WarehouseIcon: React.FC<WarehouseIconProps> = ({ width, height }: WarehouseIconProps) => {
   return (
-    <svg
-      width={`${width}px`}
-      height={`${height}px`}
-      viewBox="0 0 22 18"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width={`${width}px`} height={`${height}px`} viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M15.5 7.45312H6.49998C6.39685 7.45312 6.31248 7.5375 6.31248 7.64062V17.0625C6.31248 17.1656 6.39685 17.25 6.49998 17.25H15.5C15.6031 17.25 15.6875 17.1656 15.6875 17.0625V7.64062C15.6875 7.5375 15.6031 7.45312 15.5 7.45312ZM7.81248 8.95312H14.1875V11.6953H7.81248V8.95312ZM14.1875 15.75H7.81248V13.0078H14.1875V15.75Z"
         fill="currentColor"

@@ -14,7 +14,7 @@ const useQueryParamState: QueryParamState<string> = (name, defaultValue = '') =>
 
   const setQueryStringParameter = useCallback(
     (value?: string) => {
-      const params = new URLSearchParams(window.location.search || window.location.hash.replace(/#.*\?/, ""));
+      const params = new URLSearchParams(window.location.search || window.location.hash.replace(/#.*\?/, ''));
 
       if (_.isNil(value) || value === '') {
         params.delete(name);
@@ -22,9 +22,7 @@ const useQueryParamState: QueryParamState<string> = (name, defaultValue = '') =>
         params.set(name, value);
       }
 
-      const newPath = params.toString()
-        ? `${window.location.pathname}?${params}`
-        : window.location.pathname;
+      const newPath = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
 
       window.history.pushState({}, '', decodeURIComponent(`${newPath}${window.location.hash}`));
       setParam(value);
@@ -33,9 +31,7 @@ const useQueryParamState: QueryParamState<string> = (name, defaultValue = '') =>
   );
 
   const value = useMemo(() => {
-    const params = new URLSearchParams(
-      window.location.search || window.location.hash.replace(/#.*\?/, ''),
-    );
+    const params = new URLSearchParams(window.location.search || window.location.hash.replace(/#.*\?/, ''));
     return params.get(name) || defaultValue;
   }, [name, location, param, defaultValue]);
 

@@ -12,9 +12,9 @@ const SkeletonBar: React.FC = () => {
   const foregroundColor = isDarkTheme ? '#3A3A3A' : '#e0e0e0';
 
   return (
-    <ContentLoader 
-      viewBox="0 0 400 32" 
-      width={400} 
+    <ContentLoader
+      viewBox="0 0 400 32"
+      width={400}
       height={32}
       backgroundColor={backgroundColor}
       foregroundColor={foregroundColor}
@@ -24,7 +24,6 @@ const SkeletonBar: React.FC = () => {
   );
 };
 
-
 interface Column {
   title: string;
   key: string;
@@ -32,28 +31,31 @@ interface Column {
 }
 
 const SkeletonTable: React.FC = () => {
-  const columns: Column[] = useMemo(() => [
-    { title: ' ', key: 'column1', render: () => <SkeletonBar /> },
-    { title: ' ', key: 'column2', render: () => <SkeletonBar /> },
-    { title: ' ', key: 'column3', render: () => <SkeletonBar /> },
-    { title: ' ', key: 'column4', render: () => <SkeletonBar /> },
-  ], []);
+  const columns: Column[] = useMemo(
+    () => [
+      { title: ' ', key: 'column1', render: () => <SkeletonBar /> },
+      { title: ' ', key: 'column2', render: () => <SkeletonBar /> },
+      { title: ' ', key: 'column3', render: () => <SkeletonBar /> },
+      { title: ' ', key: 'column4', render: () => <SkeletonBar /> },
+    ],
+    [],
+  );
 
-  const data = useMemo(() => Array.from({ length: 4 }, (_, index) => ({
-    id: index + 1,
-    column1: '',
-    column2: '',
-    column3: '',
-    column4: '',
-  })), []);
+  const data = useMemo(
+    () =>
+      Array.from({ length: 4 }, (_, index) => ({
+        id: index + 1,
+        column1: '',
+        column2: '',
+        column3: '',
+        column4: '',
+      })),
+    [],
+  );
 
   return (
     <div className="relative" style={{ height: 'calc(100% - 162px)' }}>
-      <DataTable
-        columns={columns}
-        data={data}
-        isLoading={false}
-      />
+      <DataTable columns={columns} data={data} isLoading={false} />
     </div>
   );
 };

@@ -1,9 +1,7 @@
-import {Pagination as FlowbitePagination, PaginationProps} from 'flowbite-react';
+import { Pagination as FlowbitePagination, PaginationProps } from 'flowbite-react';
 
 function Pagination(props: PaginationProps) {
-  return (
-    <FlowbitePagination {...props}/>
-  );
+  return <FlowbitePagination {...props} />;
 }
 
-export {Pagination};
+export { Pagination };

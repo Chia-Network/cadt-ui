@@ -17,18 +17,10 @@ const useWildCardUrlHash = (prefix: string): UseUrlHashReturnType => {
         window.history.pushState(
           {},
           '',
-          decodeURIComponent(
-            `${window.location.href.replace(window.location.hash, '')}#${prefix}-${value}`,
-          ),
+          decodeURIComponent(`${window.location.href.replace(window.location.hash, '')}#${prefix}-${value}`),
         );
       } else {
-        window.history.pushState(
-          {},
-          '',
-          decodeURIComponent(
-            window.location.href.replace(window.location.hash, ''),
-          ),
-        );
+        window.history.pushState({}, '', decodeURIComponent(window.location.href.replace(window.location.hash, '')));
       }
       // Use a random number to trigger a re-render
       setHash(Math.random());
@@ -41,7 +33,6 @@ const useWildCardUrlHash = (prefix: string): UseUrlHashReturnType => {
 
   // Check if the current hash fragment starts with the given prefix
   const isActive = currentHashFragment.startsWith(prefix);
-
 
   return [currentHashFragment, isActive, setActive];
 };

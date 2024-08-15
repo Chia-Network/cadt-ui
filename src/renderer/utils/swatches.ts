@@ -1,4 +1,4 @@
-import * as colors from "./colors";
+import * as colors from './colors';
 
 export const SURFACE_01 = {
   background: colors.GREY100,

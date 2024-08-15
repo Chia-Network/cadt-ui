@@ -1,9 +1,7 @@
-import {Card as FlowbiteCard, CardProps} from 'flowbite-react';
+import { Card as FlowbiteCard, CardProps } from 'flowbite-react';
 
 function Card({ children, ...props }: CardProps) {
-  return (
-    <FlowbiteCard {...props}>{children}</FlowbiteCard>
-  );
+  return <FlowbiteCard {...props}>{children}</FlowbiteCard>;
 }
 
-export {Card};
+export { Card };

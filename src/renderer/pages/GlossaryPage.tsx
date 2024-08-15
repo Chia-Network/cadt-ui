@@ -7,7 +7,7 @@ import { debounce } from 'lodash';
 
 const GlossaryPage: React.FC = () => {
   const { data: glossaryData, isLoading: glossaryLoading, error: glossaryError } = useGetGlossaryQuery();
-  const [search, setSearch] = useQueryParamState('search', '');  // Fixed the state name to 'search'
+  const [search, setSearch] = useQueryParamState('search', ''); // Fixed the state name to 'search'
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
 
@@ -26,14 +26,14 @@ const GlossaryPage: React.FC = () => {
   // Filter the ordered data based on the search term
   const filteredData = useMemo(() => {
     if (!search.trim()) return orderedData;
-    return orderedData?.filter(item => item.term.toLowerCase().includes(search.toLowerCase()));
+    return orderedData?.filter((item) => item.term.toLowerCase().includes(search.toLowerCase()));
   }, [orderedData, search]);
 
   const handleSearchChange = useCallback(
     debounce((event: React.ChangeEvent<HTMLInputElement>) => {
       setSearch(event.target.value);
     }, 800),
-    []  // Removed dependencies on `setSearch` and `debounce` as they are not expected to change
+    [], // Removed dependencies on `setSearch` and `debounce` as they are not expected to change
   );
 
   if (glossaryLoading) {

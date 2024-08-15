@@ -1,17 +1,17 @@
-import "flowbite";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { Provider } from "react-redux";
+import 'flowbite';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import { Provider } from 'react-redux';
 // @ts-ignore
-import { PersistGate } from "redux-persist/integration/react";
+import { PersistGate } from 'redux-persist/integration/react';
 // @ts-ignore
-import { store, persistor } from "@/store"
+import { persistor, store } from '@/store';
 
-const root = ReactDOM.createRoot(document.getElementById("root") || document.createElement("div"));
+const root = ReactDOM.createRoot(document.getElementById('root') || document.createElement('div'));
 
-localStorage.theme = "light";
+localStorage.theme = 'light';
 
 root.render(
   <React.StrictMode>
@@ -20,5 +20,5 @@ root.render(
         <App />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

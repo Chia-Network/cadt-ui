@@ -38,7 +38,14 @@ const GlossaryTable: React.FC<TableProps> = ({ data, isLoading, order, setOrder 
 
   return (
     <div className="relative">
-      <DataTable columns={columns} data={data} primaryKey="term" isLoading={isLoading} order={order} onChangeOrder={setOrder}/>
+      <DataTable
+        columns={columns}
+        data={data}
+        primaryKey="term"
+        isLoading={isLoading}
+        order={order}
+        onChangeOrder={setOrder}
+      />
     </div>
   );
 };

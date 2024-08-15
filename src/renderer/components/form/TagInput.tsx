@@ -1,5 +1,5 @@
 import React, { useState, KeyboardEvent, useEffect } from 'react';
-import { Kbd, TextInput, HelperText } from 'flowbite-react';  // Importing the necessary components from Flowbite
+import { Kbd, TextInput, HelperText } from 'flowbite-react'; // Importing the necessary components from Flowbite
 
 interface TagInputProps {
   defaultValue: string;
@@ -8,13 +8,18 @@ interface TagInputProps {
   readonly?: boolean;
 }
 
-const TagInput: React.FC<TagInputProps> = ({ defaultValue, onChange, placeholder = 'Enter tags', readonly = false }) => {
+const TagInput: React.FC<TagInputProps> = ({
+  defaultValue,
+  onChange,
+  placeholder = 'Enter tags',
+  readonly = false,
+}) => {
   const [input, setInput] = useState('');
   const [tags, setTags] = useState<string[]>([]);
 
   // Function to parse the incoming string with multiple delimiters
   const parseTags = (value: string) => {
-    return value.split(/,|\|\|/).filter(tag => tag.trim() !== ''); // Split by both ',' and '||'
+    return value.split(/,|\|\|/).filter((tag) => tag.trim() !== ''); // Split by both ',' and '||'
   };
 
   // Effect to set initial tags from defaultValue
@@ -45,7 +50,7 @@ const TagInput: React.FC<TagInputProps> = ({ defaultValue, onChange, placeholder
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!readonly) {
-      setInput(event.target.value.replace(/,|\|\|/g, ''));  // Prevent delimiters in input
+      setInput(event.target.value.replace(/,|\|\|/g, '')); // Prevent delimiters in input
     }
   };
 

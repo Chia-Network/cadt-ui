@@ -7,14 +7,12 @@ interface SpacerProps {
 }
 
 const _Spacer = styled.div<SpacerProps>`
-  height: ${props => props.size}px;
+  height: ${(props) => props.size}px;
   width: 100%;
 `;
 
 // devide by 2 since itll be be
 // doubled for top and bottom margins
-const Spacer: React.FC<SpacerProps> = ({ children, size }) => (
-  <_Spacer size={size}>{children}</_Spacer>
-);
+const Spacer: React.FC<SpacerProps> = ({ children, size }) => <_Spacer size={size}>{children}</_Spacer>;
 
 export { Spacer };

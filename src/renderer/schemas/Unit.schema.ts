@@ -1,5 +1,5 @@
-import {Label} from './Label.schema';
-import {Issuance} from "@/schemas/Issuance.schema";
+import { Label } from './Label.schema';
+import { Issuance } from '@/schemas/Issuance.schema';
 
 export interface Unit {
   orgUid?: string | null;
