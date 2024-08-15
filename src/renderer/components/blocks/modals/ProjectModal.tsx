@@ -34,11 +34,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             {/* There is no per-tab deeplinking so we only need to put a spinned on the first */}
             <Tabs.Item title={<FormattedMessage id="project" />}>
               {!isProjectLoading && !isPickListLoading && projectData ? (
-                <ProjectForm
-                  readonly={true}
-                  data={projectData}
-                  picklistOptions={pickListData}
-                />
+                <ProjectForm readonly={true} data={projectData} picklistOptions={pickListData} />
               ) : (
                 <Spinner size="xl" />
               )}
@@ -69,28 +65,17 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
             )}
             {projectData?.coBenefits?.length && (
               <Tabs.Item title={<FormattedMessage id="co-benefits" />}>
-                <CoBenefitsForm
-                  readonly={true}
-                  data={projectData?.coBenefits}
-                  picklistOptions={pickListData}
-                />
+                <CoBenefitsForm readonly={true} data={projectData?.coBenefits} picklistOptions={pickListData} />
               </Tabs.Item>
             )}
             {projectData?.relatedProjects?.length && (
               <Tabs.Item title={<FormattedMessage id="related-projects" />}>
-                <RelatedProjectsForm
-                  readonly={true}
-                  data={projectData?.relatedProjects}
-                />
+                <RelatedProjectsForm readonly={true} data={projectData?.relatedProjects} />
               </Tabs.Item>
             )}
             {(projectData?.projectRatings?.length || projectData?.labels?.length) && (
               <Tabs.Item title={<FormattedMessage id="ratings" />}>
-                <RatingsForm
-                  readonly={true}
-                  data={projectData?.projectRatings}
-                  picklistOptions={pickListData}
-                />
+                <RatingsForm readonly={true} data={projectData?.projectRatings} picklistOptions={pickListData} />
               </Tabs.Item>
             )}
           </Tabs>

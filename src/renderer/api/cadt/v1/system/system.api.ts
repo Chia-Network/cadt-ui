@@ -58,7 +58,20 @@ const systemApi = cadtApi.injectEndpoints({
         return baseQueryReturnValue;
       },
     }),
+    getThemeColors: builder.query<any, void>({
+      query: () => ({
+        url: `colors.json`,
+        method: 'GET',
+      }),
+      transformResponse(baseQueryReturnValue: BaseQueryResult<any>): any {
+        if (_.isEmpty(baseQueryReturnValue) || _.isNil(baseQueryReturnValue)) {
+          return undefined;
+        }
+        return baseQueryReturnValue;
+      },
+    }),
   }),
 });
 
-export const { useGetHealthQuery, useGetHealthImmediateMutation, useGetUiConfigQuery } = systemApi;
+export const { useGetHealthQuery, useGetHealthImmediateMutation, useGetUiConfigQuery, useGetThemeColorsQuery } =
+  systemApi;

@@ -1,5 +1,3 @@
-import appReducer from './app/app.slice'
+import appReducer from './app/app.slice';
 
-export {
-  appReducer,
-};
+export { appReducer };

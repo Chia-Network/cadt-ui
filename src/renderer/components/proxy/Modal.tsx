@@ -11,7 +11,11 @@ interface ModalProps extends _ModalProps {
 }
 
 function Modal({ children, show = true, ...props }: ModalProps) {
-  return <FlowbiteModal show={show} {...props}>{children}</FlowbiteModal>;
+  return (
+    <FlowbiteModal show={show} {...props}>
+      {children}
+    </FlowbiteModal>
+  );
 }
 
 function Body({ children, ...props }: ModalBodyProps) {

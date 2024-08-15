@@ -4,12 +4,14 @@ export default {
   theme: {
     extend: {
       colors: {
+        /**
+         * defines the tailwind css color classes used by the theme based on declared css properties
+         * to add additional theme colors, add to this list and update:
+         * App.css
+         */
         leftNavBg: 'var(--color-leftNavBg)',
         leftNavText: 'var(--color-leftNavText)',
-        headerBackground: 'var(--color-headerBackground)',
-        accent: 'var(--color-accent)',
-        highlight: 'var(--color-highlight)',
-        // Add more as needed
+        leftNavItemActive: 'var(--color-leftNavItemActive)',
       },
     },
   },

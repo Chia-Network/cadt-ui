@@ -134,7 +134,7 @@ const Field: React.FC<FieldProps> = ({
           showClearButton: false,
           onSelectedDateChanged: (date) => {
             const dateValue = date ? date.toISOString() : undefined;
-            setFieldValue(name, dateValue)
+            setFieldValue(name, dateValue);
           },
           placeholder: 'Select date',
         };

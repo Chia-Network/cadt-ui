@@ -18,18 +18,10 @@ const useUrlHash = (name: string): UseUrlHashReturnType => {
         window.history.pushState(
           {},
           '',
-          decodeURIComponent(
-            `${window.location.href.replace(window.location.hash, '')}#${name}`,
-          ),
+          decodeURIComponent(`${window.location.href.replace(window.location.hash, '')}#${name}`),
         );
       } else {
-        window.history.pushState(
-          {},
-          '',
-          decodeURIComponent(
-            window.location.href.replace(window.location.hash, ''),
-          ),
-        );
+        window.history.pushState({}, '', decodeURIComponent(window.location.href.replace(window.location.hash, '')));
       }
       // Use a random number to trigger a re-render
       setHash(Math.random());
@@ -37,9 +29,7 @@ const useUrlHash = (name: string): UseUrlHashReturnType => {
     [name, location.hash],
   );
 
-  const currentHash = new URLSearchParams(
-    window.location.hash.substring(1).replace(/\$.*$/, '').replace(/\?.*/, ''),
-  );
+  const currentHash = new URLSearchParams(window.location.hash.substring(1).replace(/\$.*$/, '').replace(/\?.*/, ''));
 
   // Expose currentHash globally for debugging (Consider removing this in production)
   (window as any).currentHash = currentHash;

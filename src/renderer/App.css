@@ -5,13 +5,15 @@
     text-align: center;
 }
 
-/* define theme color variables here */
+/**
+ * this list declares and defines the css properties used in theming
+ * to add additional theme colors, add to this list and update:
+ * tailwind.config.js
+ */
 :root {
-    --color-leftNavBg: #007bff;
-    --color-leftNavText: #6c657d;
-    --color-accent: #ff5722;
-    --color-highlight: #7af97f;
-    --color-headerBackground: #f8f9fa;
+    --color-leftNavBg: #585858;
+    --color-leftNavText: #ffffff;
+    --color-leftNavItemActive: #14D863;
 }
 
 .logo {

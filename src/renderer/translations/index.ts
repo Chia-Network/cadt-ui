@@ -2,7 +2,7 @@ import * as en from './tokens/en-US.json';
 
 const LANGUAGE_CODES = Object.freeze({
   ENGLISH_US: 'en-US',
-  ENGLISH: 'en'
+  ENGLISH: 'en',
 });
 
 const loadLocaleData = (locale: string) => {

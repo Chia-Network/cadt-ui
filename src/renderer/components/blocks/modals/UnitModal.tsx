@@ -23,31 +23,19 @@ const UnitModal: React.FC<UnitModalProps> = ({ warehouseUnitId, onClose }: UnitM
             {/* There is no per-tab deeplinking so we only need to put a spinned on the first */}
             <Tabs.Item title={<FormattedMessage id="unit" />}>
               {!unitLoading && !isPickListLoading && unitData ? (
-                <UnitForm
-                  readonly={true}
-                  data={unitData}
-                  picklistOptions={pickListData}
-                />
+                <UnitForm readonly={true} data={unitData} picklistOptions={pickListData} />
               ) : (
                 <Spinner size="xl" />
               )}
             </Tabs.Item>
             {unitData?.issuance && (
               <Tabs.Item title={<FormattedMessage id="issuance" />}>
-                <IssuancesForm
-                  readonly={true}
-                  data={[unitData?.issuance]}
-                  picklistOptions={pickListData}
-                />
+                <IssuancesForm readonly={true} data={[unitData?.issuance]} picklistOptions={pickListData} />
               </Tabs.Item>
             )}
             {unitData?.labels?.length && (
               <Tabs.Item title={<FormattedMessage id="labels" />}>
-                <LabelsForm
-                  readonly={true}
-                  data={unitData?.labels}
-                  picklistOptions={pickListData}
-                />
+                <LabelsForm readonly={true} data={unitData?.labels} picklistOptions={pickListData} />
               </Tabs.Item>
             )}
           </Tabs>

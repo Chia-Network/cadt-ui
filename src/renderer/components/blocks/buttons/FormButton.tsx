@@ -4,7 +4,7 @@ import { Button, Spinner } from '@/components';
 interface FormButtonProps {
   isSubmitting: boolean;
   formikErrors: any;
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
 const FormButton: React.FC<FormButtonProps> = ({ isSubmitting, formikErrors, children }) => {
