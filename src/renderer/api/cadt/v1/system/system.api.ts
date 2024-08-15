@@ -1,6 +1,7 @@
 import { cadtApi } from '../';
 // @ts-ignore
 import { BaseQueryResult } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import _ from 'lodash';
 
 export interface Health {
   message: string;
@@ -17,6 +18,10 @@ interface ServerHealth {
   readOnly: boolean;
 }
 
+export interface Config {
+  apiHost?: string;
+}
+
 const systemApi = cadtApi.injectEndpoints({
   endpoints: (builder) => ({
     getHealth: builder.query<ServerHealth, GetHealthParams>({
@@ -29,7 +34,7 @@ const systemApi = cadtApi.injectEndpoints({
         const isHealthy = response?.message === 'OK';
         const readOnly = meta?.response?.headers.get('cw-readonly') === 'true';
         return { isHealthy, readOnly };
-      }
+      },
     }),
     getHealthImmediate: builder.mutation<boolean, GetHealthParams>({
       query: ({ apiHost = '', apiKey }) => ({
@@ -41,7 +46,19 @@ const systemApi = cadtApi.injectEndpoints({
         return baseQueryReturnValue?.message === 'OK';
       },
     }),
+    getUiConfig: builder.query<Config | undefined, void>({
+      query: () => ({
+        url: `config.json`,
+        method: 'GET',
+      }),
+      transformResponse(baseQueryReturnValue: BaseQueryResult<Config>): Config | undefined {
+        if (_.isEmpty(baseQueryReturnValue) || _.isNil(baseQueryReturnValue)) {
+          return undefined;
+        }
+        return baseQueryReturnValue;
+      },
+    }),
   }),
 });
 
-export const { useGetHealthQuery, useGetHealthImmediateMutation } = systemApi;
+export const { useGetHealthQuery, useGetHealthImmediateMutation, useGetUiConfigQuery } = systemApi;
