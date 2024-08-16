@@ -68,8 +68,8 @@ const AuditPage: React.FC = () => {
   if (!orgUid) {
     return (
       <>
-        <div className="flex flex-col md:flex-row gap-6 px-1 py-2.5 ml-2.5 items-center justify-center min-h-screen bg-gray-800 bg-opacity-50">
-          <div className="p-6 bg-white rounded-lg shadow-xl z-40">
+        <div className="flex flex-col md:flex-row gap-6 px-1 py-2.5 items-center justify-center min-h-screen bg-gray-800 bg-opacity-50">
+          <div className="p-6 bg-white dark:bg-gray-700 rounded-lg shadow-xl z-40">
             <OrganizationSelector onSelect={handleOrganizationSelected} defaultOrgUid={orgUid} />
           </div>
         </div>

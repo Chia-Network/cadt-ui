@@ -19,6 +19,7 @@ const baseQueryWithDynamicHost = async (args, api, extraOptions) => {
   let modifiedArgs = args;
   const state = api.getState();
   const currentHost = state.app.apiHost;
+  const currentApiKey = state.app.apiKey;
 
   // Check if currentHost is equal to the initialState's apiHost
   const effectiveHost =
@@ -35,6 +36,10 @@ const baseQueryWithDynamicHost = async (args, api, extraOptions) => {
     modifiedArgs = {
       ...args,
       url: `${effectiveHost}${args.url}`,
+      headers: {
+        ...args.headers,
+        ...(currentApiKey ? { 'X-Api-Key': currentApiKey } : {}),
+      },
     };
   }
 

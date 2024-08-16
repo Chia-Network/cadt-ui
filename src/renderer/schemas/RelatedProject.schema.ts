@@ -1,6 +1,6 @@
 export interface RelatedProject {
   // Required properties
-  orgUid?: string | null; 
+  orgUid?: string | null;
   warehouseProjectId?: string | null;
   relatedProjectId: string | null;
 

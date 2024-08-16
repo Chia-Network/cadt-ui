@@ -4,7 +4,6 @@ import ROUTES from '@/routes/route-constants';
 import * as Pages from '@/pages';
 import { Template } from '@/components';
 
-
 const AppNavigator: React.FC = () => {
   return (
     <>

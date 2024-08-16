@@ -12,7 +12,7 @@ interface PageTabProps {
 const StagingTableTab: React.FC<PageTabProps> = ({ stagingData, showLoading, type }: PageTabProps) => {
   const [order, setOrder] = useQueryParamState('order', undefined);
   const handleSetOrder = useColumnOrderHandler(order, setOrder);
-  const [,, setStagingDiffModalActive] = useWildCardUrlHash('staging');
+  const [, , setStagingDiffModalActive] = useWildCardUrlHash('staging');
 
   if (showLoading) {
     return <SkeletonTable />;

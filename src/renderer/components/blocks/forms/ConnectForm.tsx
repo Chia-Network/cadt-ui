@@ -2,10 +2,12 @@ import React, { useCallback } from 'react';
 import { noop } from 'lodash';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { FloatingLabel, FormButton, HelperText, Spacer, Button } from '@/components';
+import { Button, FloatingLabel, FormButton, HelperText, Spacer } from '@/components';
 import { Alert } from 'flowbite-react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useUrlHash } from '@/hooks';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const validationSchema = yup.object({
   apiHost: yup
@@ -28,6 +30,10 @@ interface FormProps {
 const ConnectForm: React.FC<FormProps> = ({ onSubmit, hasServerError, onClearError = noop }) => {
   const intl: IntlShape = useIntl();
   const [, setIsActive] = useUrlHash('connect');
+  const appStore = useSelector((state: RootState) => state.app);
+  const configFileLoaded = appStore.configFileLoaded;
+  const apiHost = configFileLoaded ? appStore.apiHost : '';
+  const apiKey = appStore?.apiKey ? appStore.apiKey : '';
 
   const handleSubmit = useCallback(
     async (values: { apiHost: string; apiKey?: string }, { setSubmitting }) => {
@@ -51,7 +57,7 @@ const ConnectForm: React.FC<FormProps> = ({ onSubmit, hasServerError, onClearErr
   }, [setIsActive]);
 
   return (
-    <Formik initialValues={{ apiHost: '', apiKey: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
+    <Formik initialValues={{ apiHost, apiKey }} validationSchema={validationSchema} onSubmit={handleSubmit}>
       {({ errors, touched, isSubmitting }) => (
         <Form>
           {hasServerError && (
@@ -64,13 +70,16 @@ const ConnectForm: React.FC<FormProps> = ({ onSubmit, hasServerError, onClearErr
           )}
           <div className="mb-4">
             <HelperText className="text-gray-400">
-              <FormattedMessage id="server-address-helper" />
+              <FormattedMessage
+                id={configFileLoaded ? 'api-host-loaded-from-configuration' : 'server-address-helper'}
+              />
             </HelperText>
             <Spacer size={5} />
             <Field name="apiHost">
               {({ field }) => (
                 <FloatingLabel
                   id="apiHost"
+                  disabled={configFileLoaded}
                   label={intl.formatMessage({ id: 'server-address' })}
                   color={errors.apiHost && touched.apiHost && 'error'}
                   variant="outlined"

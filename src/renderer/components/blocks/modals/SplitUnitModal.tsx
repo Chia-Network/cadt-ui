@@ -1,18 +1,10 @@
 import { isEmpty } from 'lodash';
 import React, { useRef, useState } from 'react';
-import {
-  ComponentCenteredSpinner,
-  Modal,
-  Spacer,
-  SplitUnitForm,
-  SplitUnitFormRef,
-  Button
-} from '@/components';
+import { ComponentCenteredSpinner, Modal, Spacer, SplitUnitForm, SplitUnitFormRef, Button } from '@/components';
 import { useWildCardUrlHash, useUrlHash } from '@/hooks';
 import { useGetPickListsQuery, useStageSplitUnitMutation } from '@/api';
 import { FormattedMessage } from 'react-intl';
-import { Alert } from 'flowbite-react'
-
+import { Alert } from 'flowbite-react';
 
 interface SplitModalProps {
   onClose: () => void;
@@ -21,7 +13,7 @@ interface SplitModalProps {
 const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps) => {
   const splitUnitFormRef = useRef<SplitUnitFormRef>(null);
 
-  const [unitSplitUpsertFragment] = useWildCardUrlHash('split-unit')
+  const [unitSplitUpsertFragment] = useWildCardUrlHash('split-unit');
   const warehouseUnitId = unitSplitUpsertFragment.replace('split-unit-', '');
   const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
 
@@ -41,11 +33,11 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
         }
 
         if (values) {
-          console.log({warehouseUnitId, records: values})
-          const response: any = await triggerStageSplitUnit({warehouseUnitId, records:[...values.units]});
+          console.log({ warehouseUnitId, records: values });
+          const response: any = await triggerStageSplitUnit({ warehouseUnitId, records: [...values.units] });
 
           if (response.data) {
-             setUnitStagedSuccessModal(true);
+            setUnitStagedSuccessModal(true);
           } else {
             let errorMessage = `Error processing Unit: ${response.error.data.message}`;
             if (response.error.data.errors && Array.isArray(response.error.data.errors)) {
@@ -60,7 +52,6 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
         console.error('Form submission error:', error);
       });
   };
-
 
   if (isPickListLoading || isSplitStaging) {
     return (
@@ -81,7 +72,12 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
         <FormattedMessage id="split-unit" />
       </Modal.Header>
       <Modal.Body>
-        {formSubmitError && <><Alert color="failure">{formSubmitError}</Alert><Spacer size={15} /></>}
+        {formSubmitError && (
+          <>
+            <Alert color="failure">{formSubmitError}</Alert>
+            <Spacer size={15} />
+          </>
+        )}
         <SplitUnitForm ref={splitUnitFormRef} picklistOptions={pickListData} />
         <Spacer size={15} />
         <Button onClick={handleSubmit}>

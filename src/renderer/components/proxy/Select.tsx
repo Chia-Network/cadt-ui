@@ -41,7 +41,7 @@ const Select: React.FC<SelectProps> = ({
 
   useEffect(() => {
     setInputValue(initialValue);
-  }, [initialValue, options])
+  }, [initialValue, options]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | ChangeEventHandler<HTMLSelectElement>) => {
     // @ts-ignore

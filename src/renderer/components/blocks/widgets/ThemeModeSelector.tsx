@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { IoSunny, IoMoon } from "react-icons/io5";
-import { toggleTheme } from '@/store/slices/app'; // Adjust the import path as necessary
+import { useDispatch, useSelector } from 'react-redux';
+import { IoMoon, IoSunny } from 'react-icons/io5';
+import { toggleThemeMode } from '@/store/slices/app'; // Adjust the import path as necessary
 import { RootState } from '@/store'; // Adjust the import path as necessary
 
-const ThemeSelector: React.FC = () => {
+const ThemeModeSelector: React.FC = () => {
   const dispatch = useDispatch();
   const isDarkTheme = useSelector((state: RootState) => state.app.isDarkTheme);
 
@@ -14,7 +14,7 @@ const ThemeSelector: React.FC = () => {
   }, [isDarkTheme]); // This effect depends on isDarkTheme, so it runs whenever isDarkTheme changes
 
   const handleToggleTheme = () => {
-    dispatch(toggleTheme());
+    dispatch(toggleThemeMode());
   };
 
   return (
@@ -24,4 +24,4 @@ const ThemeSelector: React.FC = () => {
   );
 };
 
-export { ThemeSelector };
+export { ThemeModeSelector };

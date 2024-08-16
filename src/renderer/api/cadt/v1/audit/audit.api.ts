@@ -1,4 +1,4 @@
-import {cadtApi, auditTag} from "../";
+import { cadtApi, auditTag } from '../';
 
 interface GetAuditParams {
   page: number;
@@ -8,9 +8,9 @@ interface GetAuditParams {
 }
 
 interface GetAuditResponse {
-  page: number,
-  pageCount: number,
-  data: any[]
+  page: number;
+  pageCount: number;
+  data: any[];
 }
 
 const auditApi = cadtApi.injectEndpoints({
@@ -18,7 +18,7 @@ const auditApi = cadtApi.injectEndpoints({
     getAudit: builder.query<GetAuditResponse, GetAuditParams>({
       query: ({ page, orgUid, search, order }: GetAuditParams) => {
         // Initialize the params object with page and limit
-        const params: GetAuditParams & {limit: number} = { orgUid, page, limit: 10 };
+        const params: GetAuditParams & { limit: number } = { orgUid, page, limit: 10 };
 
         if (search) {
           params.search = search.replace(/[^a-zA-Z0-9 _.-]+/, '');
@@ -34,11 +34,9 @@ const auditApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
-      providesTags: (_response, _error, {orgUid}) => [{type: auditTag, id: orgUid}],
-    })
-  })
+      providesTags: (_response, _error, { orgUid }) => [{ type: auditTag, id: orgUid }],
+    }),
+  }),
 });
 
-export const {
-  useGetAuditQuery
-} = auditApi;
+export const { useGetAuditQuery } = auditApi;
