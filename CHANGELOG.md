@@ -1,3 +1,21 @@
+## [2.0.1](https://github.com/Chia-Network/cadt-ui/compare/2.0.0...2.0.1) (2024-08-16)
+
+
+### Features
+
+* code cleanup ([89c3a49](https://github.com/Chia-Network/cadt-ui/commit/89c3a49ad816c218c162e426383f3f3c30cdac3e))
+* colors apply globally via app.tsx ([3f84e4e](https://github.com/Chia-Network/cadt-ui/commit/3f84e4ef07e55939df72846bf323bd1fca58c37f))
+* connect modal auto populates config api host ([53a96c6](https://github.com/Chia-Network/cadt-ui/commit/53a96c680d55817f8b7bcde2217304182d8ae16b))
+* custom api host via config file ([ea9ed6b](https://github.com/Chia-Network/cadt-ui/commit/ea9ed6ba2541b7eda5c5a3855d4289a254dfa812))
+* dep updates ([91ecd45](https://github.com/Chia-Network/cadt-ui/commit/91ecd451b1ac42204740d83d9e84497c07b4742b))
+* example config file ([ddd7666](https://github.com/Chia-Network/cadt-ui/commit/ddd766696442d3b6a70a59869893b7f9df4ac42b))
+* global theme fetchable via colors.json ([e20b27c](https://github.com/Chia-Network/cadt-ui/commit/e20b27cda6a5beb14b38c80a7a80a29c9203b877))
+* removed hacked in refresh because backend fixed ([d6b4bb7](https://github.com/Chia-Network/cadt-ui/commit/d6b4bb787e7dec1ad30aa6dce9c9038db78f6416))
+* theme mode toggle invisible ([6fa4323](https://github.com/Chia-Network/cadt-ui/commit/6fa4323959db775071b8cd32a56a06892b186dce))
+* web-build command ([d6ea4c9](https://github.com/Chia-Network/cadt-ui/commit/d6ea4c9c8904d4274cfdf8acf5dfbafea89a5823))
+
+
+
 # [2.0.0](https://github.com/Chia-Network/cadt-ui/compare/1.2.14...2.0.0) (2024-08-01)
 
 
