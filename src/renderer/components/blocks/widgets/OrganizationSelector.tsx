@@ -66,7 +66,7 @@ const OrganizationSelector: React.FC<OrganizationSelectorProps> = ({ onSelect, d
           onClick={() => handleSelect(organization)}
           className="flex justify-between items-center"
         >
-          <span className="mr-2.5">{organization.name}</span>
+          {organization.name}
           <SyncIndicator orgUid={organization.orgUid} detailed={false} />
         </Dropdown.Item>
       ))}
