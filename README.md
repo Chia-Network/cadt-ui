@@ -52,6 +52,32 @@ To host the UI on the web, use the [web-build.tar.gz file from the releases page
 
 To make the CADT UI web application automatically connect to a CADT host by default, copy the `config.example.json` file to `config.json` and change the `apiHost` to be the CADT API hostname, including http:// and the path (everything before the `/v1` part of the API URL)
 
+#### Sample Nginx Config
+
+```
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    # Path on disk to CADT UI files
+    root /var/www/cadt-ui/build;
+
+    # Domain name where this site will be served from
+    server_name cadt-ui-example-config.com;
+
+    # SSL certificates with full path
+    ssl_certificate /path/to/ssl/certificate/fullchain.pem;
+    ssl_certificate_key /path/to/ssl/certificate/privkey.pem;
+
+    # Optional, but recommended
+    resolver                  1.1.1.1;
+
+    try_files $uri /index.html;
+}
+
+```
+
+
 ### From Source
 
 *It is recommended to use the pre-built application from the releases page or the apt repo and only build from source if contributing code to the application*
