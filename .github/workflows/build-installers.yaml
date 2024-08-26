@@ -174,7 +174,7 @@ jobs:
         run: |
           node --version
           npm install
-          npm run build
+          npm run web-build
 
       - name: Create .tar.gz of the web build
         run: tar -cvzf cadt-ui-web-build.tar.gz build
