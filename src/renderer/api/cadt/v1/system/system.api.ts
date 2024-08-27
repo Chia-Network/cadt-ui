@@ -32,7 +32,7 @@ const systemApi = cadtApi.injectEndpoints({
       }),
       transformResponse: (response: BaseQueryResult<Health>, meta): ServerHealth => {
         const isHealthy = response?.message === 'OK';
-        const readOnly = meta?.response?.headers.get('cw-readonly') === 'true';
+        const readOnly = meta?.response?.headers.get('cw-read-only') === 'true';
         return { isHealthy, readOnly };
       },
     }),
