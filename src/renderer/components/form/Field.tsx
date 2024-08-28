@@ -72,7 +72,7 @@ const Field: React.FC<FieldProps> = ({
             </a>
           );
         case 'date':
-          return dayjs(new Date(initialValue)).format('MMMM D, YYYY');
+          return `${dayjs(new Date(initialValue)).format('MMMM D, YYYY')}`;
         case 'tag':
           return (
             <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />
