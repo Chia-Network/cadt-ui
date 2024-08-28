@@ -3,7 +3,6 @@ import React from 'react';
 import { FormikValues, useFormikContext } from 'formik';
 import { Checkbox, Datepicker, Label, Textarea, TextInput } from 'flowbite-react';
 import { TagInput } from './TagInput';
-import dayjs from 'dayjs';
 import { Select, SelectOption } from '@/components';
 
 interface FieldProps {
@@ -64,7 +63,7 @@ const Field: React.FC<FieldProps> = ({
 
       switch (type) {
         case 'picklist':
-          return <div className="break-words">{renderOption(options, initialValue)}</div>;
+          return <p className="dark:text-white">{renderOption(options, initialValue)}</p>;
         case 'link':
           return (
             <a href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500 break-words">
@@ -78,13 +77,13 @@ const Field: React.FC<FieldProps> = ({
             <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />
           );
         default:
-          return <div className="break-words">{initialValue}</div>;
+          return <p className="dark:text-white">{initialValue}</p>;
       }
     };
     return (
       <div className="mb-4">
         {label && <Label htmlFor={name}>{label}</Label>}
-        <div id={name} className="py-2 text-gray-800 rounded">
+        <div id={name} className="py-2 rounded">
           {renderReadOnlyField()}
         </div>
         {isError && <p className="text-red-500 text-xs italic">{get(errors, name)}</p>}
