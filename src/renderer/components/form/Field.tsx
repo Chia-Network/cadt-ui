@@ -4,6 +4,7 @@ import { FormikValues, useFormikContext } from 'formik';
 import { Checkbox, Datepicker, Label, Textarea, TextInput } from 'flowbite-react';
 import { TagInput } from './TagInput';
 import { Select, SelectOption } from '@/components';
+import dayjs from 'dayjs';
 
 interface FieldProps {
   name: string;
@@ -71,7 +72,7 @@ const Field: React.FC<FieldProps> = ({
             </a>
           );
         case 'date':
-          return <p className="dark:text-white"> dayjs(new Date(initialValue)).format('MMMM D, YYYY'); </p>;
+          return `${dayjs(new Date(initialValue)).format('MMMM D, YYYY')}`;
         case 'tag':
           return (
             <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />

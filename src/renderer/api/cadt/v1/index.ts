@@ -1,15 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import initialState from '@/store/slices/app/app.initialstate';
 
-const projectsTag = 'projects';
-const organizationsTag = 'organizations';
-const unitsTag = 'units';
-const auditTag = 'audit';
-const issuancesTag = 'issuances';
-const stagedProjectsTag = 'stagedProjects';
-const stagedUnitsTag = 'stagedUnits';
-const offerTag = 'offer';
-const importedOfferTag = 'importedTransferTag';
+export const projectsTag = 'projects';
+export const organizationsTag = 'organizations';
+export const unitsTag = 'units';
+export const auditTag = 'audit';
+export const issuancesTag = 'issuances';
+export const stagedProjectsTag = 'stagedProjects';
+export const stagedUnitsTag = 'stagedUnits';
+export const offerTag = 'offer';
+export const importedOfferTag = 'importedTransferTag';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: '/',
@@ -62,15 +62,3 @@ export const cadtApi = createApi({
   ],
   endpoints: () => ({}),
 });
-
-export {
-  projectsTag,
-  organizationsTag,
-  unitsTag,
-  auditTag,
-  stagedProjectsTag,
-  stagedUnitsTag,
-  issuancesTag,
-  offerTag,
-  importedOfferTag,
-};
