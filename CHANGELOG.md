@@ -1,3 +1,14 @@
+## [2.0.3](https://github.com/Chia-Network/cadt-ui/compare/2.0.2...2.0.3) (2024-09-09)
+
+
+### Bug Fixes
+
+* compiled app date display ([81c427c](https://github.com/Chia-Network/cadt-ui/commit/81c427c33e454c188f0ef8299fbc3ebe518d02f0))
+* leftnav readonly layout ([442e365](https://github.com/Chia-Network/cadt-ui/commit/442e36530b74fb304ec6d7293c3d45a72087f62a))
+* merge ([3b84822](https://github.com/Chia-Network/cadt-ui/commit/3b848227777f8a7268e6e90899bdfcc731d0426d))
+
+
+
 ## [2.0.2](https://github.com/Chia-Network/cadt-ui/compare/2.0.1...2.0.2) (2024-08-26)
 
 
