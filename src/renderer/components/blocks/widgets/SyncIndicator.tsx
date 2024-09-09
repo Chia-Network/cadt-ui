@@ -10,6 +10,7 @@ import { BiRefresh } from 'react-icons/bi';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { projectsTag, stagedProjectsTag, stagedUnitsTag, unitsTag } from '@/api/cadt/v1';
 
 interface SyncIndicatorProps {
   detailed: boolean;
@@ -68,11 +69,11 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
       setShowRefreshBadge(true);
 
       if (location.pathname.includes('projects')) {
-        dispatch(invalidateProjectApiTag(['projects', 'stagedProjects']));
+        dispatch(invalidateProjectApiTag([projectsTag, stagedProjectsTag]));
       }
 
       if (location.pathname.includes('units')) {
-        dispatch(invalidateUnitsApiTag(['units', 'stagedUnits']));
+        dispatch(invalidateUnitsApiTag([unitsTag, stagedUnitsTag]));
       }
     }
 
