@@ -5,6 +5,7 @@ import { Checkbox, Datepicker, Label, Textarea, TextInput } from 'flowbite-react
 import { TagInput } from './TagInput';
 import { Select, SelectOption } from '@/components';
 import dayjs from 'dayjs';
+import { FormattedMessage } from 'react-intl';
 
 interface FieldProps {
   name: string;
@@ -58,8 +59,12 @@ const Field: React.FC<FieldProps> = ({
 
   if (readonly) {
     const renderReadOnlyField = () => {
-      if (initialValue === undefined || initialValue === null) {
-        return '--';
+      if (!initialValue) {
+        return (
+          <p className="capitalize">
+            <FormattedMessage id="not-specified" />
+          </p>
+        );
       }
 
       switch (type) {
@@ -67,7 +72,12 @@ const Field: React.FC<FieldProps> = ({
           return <p className="dark:text-white">{renderOption(options, initialValue)}</p>;
         case 'link':
           return (
-            <a href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500 break-words">
+            <a
+              href={initialValue}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-500 break-words hover:underline overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400"
+            >
               {initialValue}
             </a>
           );
@@ -78,13 +88,15 @@ const Field: React.FC<FieldProps> = ({
             <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />
           );
         default:
-          return <p className="dark:text-white">{initialValue}</p>;
+          return (
+            <p className="dark:text-white overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400">{initialValue}</p>
+          );
       }
     };
     return (
       <div className="mb-4">
         {label && <Label htmlFor={name}>{label}</Label>}
-        <div id={name} className="py-2 rounded">
+        <div id={name} className="p-2 rounded-lg bg-gray-100 max-w-fit">
           {renderReadOnlyField()}
         </div>
         {isError && <p className="text-red-500 text-xs italic">{get(errors, name)}</p>}
