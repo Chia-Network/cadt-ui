@@ -134,7 +134,7 @@ const MyProjectsPage: React.FC = () => {
 
           {myOrganization && <ProjectXlsUploadDownloadButtons orgUid={orgUid} order={order} search={search} />}
           <SyncIndicator detailed={true} orgUid={orgUid} />
-          {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid].registryId} />}
+          {orgUid && <OrgUidBadge orgUid={orgUid} registryId={organizationsMap?.[orgUid]?.registryId} />}
         </div>
         <div className="h-13">
           <Tabs onActiveTabChange={(tab: TabTypes) => setActiveTab(tab)}>
@@ -167,7 +167,7 @@ const MyProjectsPage: React.FC = () => {
               title={
                 <p>
                   <FormattedMessage id="transfer" />
-                  {(processedStagingData.transfer || importedTransferOfferData) && ' (!) '}
+                  {(processedStagingData.transfer || importedTransferOfferData?.changes) && ' (!) '}
                 </p>
               }
             />
