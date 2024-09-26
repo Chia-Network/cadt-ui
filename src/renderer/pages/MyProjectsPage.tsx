@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetImportedOfferQuery, useGetOrganizationsListQuery } from '@/api';
-import { useQueryParamState, useUrlHash } from '@/hooks';
+import { useQueryParamState, useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { debounce } from 'lodash';
 import {
   Button,
@@ -12,6 +12,7 @@ import {
   ProjectXlsUploadDownloadButtons,
   SearchBox,
   StagedProjectSuccessModal,
+  StagingDiffModal,
   StagingTableTab,
   SyncIndicator,
   Tabs,
@@ -40,6 +41,7 @@ interface ProcessedStagingData {
 
 const MyProjectsPage: React.FC = () => {
   const navigate = useNavigate();
+  const [stagingDiffFragment, stagingDiffModalActive, setStagingDiffModalActive] = useWildCardUrlHash('staging');
   const [orgUid, setOrgUid] = useQueryParamState('orgUid', undefined);
   const [search, setSearch] = useQueryParamState('search', undefined);
   const [order, setOrder] = useQueryParamState('order', undefined);
@@ -182,17 +184,28 @@ const MyProjectsPage: React.FC = () => {
             />
           )}
           {activeTab === TabTypes.STAGING && (
-            <StagingTableTab type="staged" stagingData={processedStagingData.staged} showLoading={stagingDataLoading} />
+            <StagingTableTab
+              type="staged"
+              stagingData={processedStagingData.staged}
+              showLoading={stagingDataLoading}
+              setStagingDiffModalActive={setStagingDiffModalActive}
+            />
           )}
           {activeTab === TabTypes.PENDING && (
             <StagingTableTab
               type="pending"
               stagingData={processedStagingData.pending}
               showLoading={stagingDataLoading}
+              setStagingDiffModalActive={setStagingDiffModalActive}
             />
           )}
           {activeTab === TabTypes.FAILED && (
-            <StagingTableTab type="failed" stagingData={processedStagingData.failed} showLoading={stagingDataLoading} />
+            <StagingTableTab
+              type="failed"
+              stagingData={processedStagingData.failed}
+              showLoading={stagingDataLoading}
+              setStagingDiffModalActive={setStagingDiffModalActive}
+            />
           )}
           {activeTab === TabTypes.TRANSFERS && (
             <TransferManager
@@ -208,6 +221,12 @@ const MyProjectsPage: React.FC = () => {
       )}
       {projectStagedSuccess && (
         <StagedProjectSuccessModal showModal={true} onClose={() => setProjectStagedSuccess(false)} />
+      )}
+      {stagingDiffModalActive && (
+        <StagingDiffModal
+          onClose={() => setStagingDiffModalActive(false)}
+          stagingUuid={stagingDiffFragment.replace('staging-', '')}
+        />
       )}
     </>
   );
