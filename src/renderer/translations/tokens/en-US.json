@@ -207,5 +207,6 @@
   "no-changes-have-been-made": "No changes have been made",
   "api-host-loaded-from-configuration": "API host loaded from configuration",
   "not-specified": "not specified",
-  "unable-to-load-staging-data": "Unable to load staging data"
+  "unable-to-load-staging-data": "Unable to load staging data",
+  "new-unit": "New Unit"
 }
