@@ -1,5 +1,5 @@
-import { isEmpty, omit } from 'lodash';
-import { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from 'react';
+import _, { isEmpty, omit } from 'lodash';
+import { forwardRef, useImperativeHandle, useMemo, useState } from 'react';
 import { Issuance } from '@/schemas/Issuance.schema';
 import { useGetProjectQuery } from '@/api';
 import { IssuancesForm, Select, SelectOption, Spacer } from '@/components';
@@ -51,20 +51,15 @@ const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
       );
     }, [projectData, isProjectLoading]);
 
-    const handleSetIssuance = useCallback(
-      (value) => {
-        setError(null);
-        const selectedIssuanceId = value;
-        let foundIssuance = projectData?.issuances?.find((issuance) => issuance.id === selectedIssuanceId);
-        if (foundIssuance) {
-          if (foundIssuance.timeStaged === null) {
-            foundIssuance = { ...foundIssuance, timeStaged: new Date(0) };
-          }
-        }
-        setSelectedIssuance(foundIssuance);
-      },
-      [projectData, selectedIssuance],
-    );
+    const handleSetIssuance = (value) => {
+      setError(null);
+      const selectedIssuanceId = value;
+      const foundIssuance = projectData?.issuances?.find((issuance) => issuance.id === selectedIssuanceId);
+      if (!_.isNil(foundIssuance?.timeStaged)) {
+        delete foundIssuance.timeStaged;
+      }
+      setSelectedIssuance(foundIssuance);
+    };
 
     return (
       <div>
