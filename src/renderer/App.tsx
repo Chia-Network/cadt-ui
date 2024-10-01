@@ -53,6 +53,7 @@ function App() {
   }, [appStore.apiHost, appStore.configFileLoaded, fetchedConfig, configFileLoading, dispatch]);
 
   useEffect(() => {
+    // give the setConfigFileLoaded action time to dispatch
     if (!configFileLoading) setTimeout(() => setAppLoading(false), 400);
   }, [configFileLoading]);
 

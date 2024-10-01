@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Spinner } from '@/components';
+import { Button } from '@/components';
 
 interface FormButtonProps {
   isSubmitting: boolean;
@@ -9,8 +9,12 @@ interface FormButtonProps {
 
 const FormButton: React.FC<FormButtonProps> = ({ isSubmitting, formikErrors, children }) => {
   return (
-    <Button type="submit" disabled={isSubmitting || Boolean(Object.keys(formikErrors).length)}>
-      {isSubmitting ? <Spinner size="sm" light={true} /> : children}
+    <Button
+      type="submit"
+      disabled={isSubmitting || Boolean(Object.keys(formikErrors).length)}
+      isProcessing={isSubmitting}
+    >
+      {children}
     </Button>
   );
 };
