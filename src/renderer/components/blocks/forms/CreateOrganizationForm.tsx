@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { Button, FloatingLabel, Spinner } from '@/components';
-import { IntlShape, useIntl } from 'react-intl';
+import { FloatingLabel, FormButton } from '@/components';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
@@ -42,9 +42,9 @@ const CreateOrganizationForm: React.FC<FormProps> = ({ onSubmit }) => {
             </Field>
             {touched.name && <ErrorMessage name="name" component="div" className="text-red-600" />}
           </div>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? <Spinner size="sm" light={true} /> : 'Submit'}
-          </Button>
+          <FormButton isSubmitting={isSubmitting} formikErrors={errors}>
+            <FormattedMessage id="submit" />
+          </FormButton>
         </Form>
       )}
     </Formik>

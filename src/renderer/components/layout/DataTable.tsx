@@ -85,11 +85,8 @@ const DataTable: React.FC<DataTableProps> = ({
         </div>
       ) : null}
       <div className="flex-grow custom-scrollbar" style={{ height: data.length > 0 ? 'calc(100vh - 240px)' : 'auto' }}>
-        <SimpleBar style={{ maxHeight: '100%' }} autoHide={false} forceVisible="x">
-          <table
-            className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 custom-scrollbar"
-            style={{ height: data.length > 5 ? 'calc(100vh - 265px)' : 'auto' }}
-          >
+        <SimpleBar style={{ height: '100%', width: '100%' }} autoHide={false} forceVisible="x">
+          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 custom-scrollbar">
             <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
               <tr>
                 {columns.map((column) => {

@@ -1,4 +1,5 @@
 import * as en from './tokens/en-US.json';
+import { createIntl, createIntlCache, IntlShape } from 'react-intl';
 
 const LANGUAGE_CODES = Object.freeze({
   ENGLISH_US: 'en-US',
@@ -14,4 +15,19 @@ const loadLocaleData = (locale: string) => {
   }
 };
 
-export { loadLocaleData, LANGUAGE_CODES };
+const imperativeIntl = (): IntlShape => {
+  // @ts-ignore
+  const locale = store?.getState()?.app?.local || LANGUAGE_CODES.ENGLISH;
+  // @ts-ignore
+  const messages = loadLocaleData(locale).default;
+  const intlCache = createIntlCache();
+  return createIntl(
+    {
+      locale,
+      messages,
+    },
+    intlCache,
+  );
+};
+
+export { loadLocaleData, LANGUAGE_CODES, imperativeIntl };

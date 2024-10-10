@@ -244,10 +244,10 @@ jobs:
         run: |
           echo "TAGNAME=$(echo $GITHUB_REF | cut -d / -f 3)" >>$GITHUB_OUTPUT
 
-      - name: Gets JWT Token from GitHub
-        uses: Chia-Network/actions/github/jwt@main
-
       - name: Trigger apt repo update
-        run: |
-          curl -s -XPOST -H "Authorization: Bearer ${{ env.JWT_TOKEN }}" --data '{"cadt_repo":"cadt-ui","release_version":"${{ steps.tag-name.outputs.TAGNAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/cadt/${{ github.sha }}/start
-          curl -s -XPOST -H "Authorization: Bearer ${{ env.JWT_TOKEN }}" --data '{"cadt_repo":"cadt-ui","release_version":"${{ steps.tag-name.outputs.TAGNAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/cadt/${{ github.sha }}/success/deploy
+        uses: Chia-Network/actions/github/glue@main
+        with:
+          json_data: '{"cadt_repo":"cadt-ui","release_version":"${{ steps.tag-name.outputs.TAGNAME }}"}'
+          glue_url: ${{ secrets.GLUE_API_URL }}
+          glue_project: "cadt"
+          glue_path: "trigger"

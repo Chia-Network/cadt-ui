@@ -293,6 +293,14 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
               </div>
             </Card>
             <Card>
+              <Field
+                name="marketplaceIdentifier"
+                label={intl.formatMessage({ id: 'marketplace-identifier' })}
+                type="text"
+                readonly={readonly}
+                initialValue={unit?.marketplaceIdentifier || ''}
+              />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
                 <Field
                   name="marketplace"
@@ -300,14 +308,6 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
                   type="text"
                   readonly={readonly}
                   initialValue={unit?.marketplace || ''}
-                />
-
-                <Field
-                  name="marketplaceIdentifier"
-                  label={intl.formatMessage({ id: 'marketplace-identifier' })}
-                  type="text"
-                  readonly={readonly}
-                  initialValue={unit?.marketplaceIdentifier || ''}
                 />
 
                 <Field

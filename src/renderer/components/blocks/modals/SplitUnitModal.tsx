@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 import React, { useRef, useState } from 'react';
-import { ComponentCenteredSpinner, Modal, Spacer, SplitUnitForm, SplitUnitFormRef, Button } from '@/components';
-import { useWildCardUrlHash, useUrlHash } from '@/hooks';
+import { Button, ComponentCenteredSpinner, Modal, Spacer, SplitUnitForm, SplitUnitFormRef } from '@/components';
+import { useUrlHash, useWildCardUrlHash } from '@/hooks';
 import { useGetPickListsQuery, useStageSplitUnitMutation } from '@/api';
 import { FormattedMessage } from 'react-intl';
 import { Alert } from 'flowbite-react';
@@ -17,8 +17,9 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
   const warehouseUnitId = unitSplitUpsertFragment.replace('split-unit-', '');
   const { data: pickListData, isLoading: isPickListLoading } = useGetPickListsQuery();
 
-  const [triggerStageSplitUnit, { isLoading: isSplitStaging }] = useStageSplitUnitMutation();
+  const [triggerStageSplitUnit, { isLoading: splitUnitLoading }] = useStageSplitUnitMutation();
   const [formSubmitError, setFormSubmitError] = useState<string | null>(null);
+  const [formValidationError, setFormValidationError] = useState<boolean>(true);
   const [, setUnitStagedSuccessModal] = useUrlHash('success-stage-unit');
 
   const handleSubmit = () => {
@@ -40,8 +41,10 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
             setUnitStagedSuccessModal(true);
           } else {
             let errorMessage = `Error processing Unit: ${response.error.data.message}`;
-            if (response.error.data.errors && Array.isArray(response.error.data.errors)) {
+            if (response?.error?.data?.errors && Array.isArray(response.error.data.errors)) {
               errorMessage = `${errorMessage} - ${response.error.data.errors.join(', ')}`;
+            } else if (response?.error?.data?.error) {
+              errorMessage = `${errorMessage} - ${response.error.data.error}`;
             }
 
             setFormSubmitError(errorMessage);
@@ -53,7 +56,7 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
       });
   };
 
-  if (isPickListLoading || isSplitStaging) {
+  if (isPickListLoading) {
     return (
       <Modal onClose={onClose} show={true} size={'8xl'} position="top-center">
         <Modal.Header>
@@ -78,9 +81,13 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
             <Spacer size={15} />
           </>
         )}
-        <SplitUnitForm ref={splitUnitFormRef} picklistOptions={pickListData} />
+        <SplitUnitForm
+          ref={splitUnitFormRef}
+          picklistOptions={pickListData}
+          setFormValidationError={setFormValidationError}
+        />
         <Spacer size={15} />
-        <Button onClick={handleSubmit}>
+        <Button onClick={handleSubmit} disabled={formValidationError} isProcessing={splitUnitLoading}>
           <FormattedMessage id="submit" />
         </Button>
       </Modal.Body>

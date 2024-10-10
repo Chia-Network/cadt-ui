@@ -1,4 +1,4 @@
-import { omit } from 'lodash';
+import _, { omit } from 'lodash';
 import React, { useMemo } from 'react';
 import { Change, diffLines } from 'diff';
 
@@ -59,8 +59,18 @@ const renderFieldDiffs = (original: any, updated: any): React.ReactNode[] => {
   const allKeys = new Set([...Object.keys(original || {}), ...Object.keys(updated || {})]);
 
   allKeys.forEach((key) => {
-    const origValue = original ? original[key] : undefined;
-    const updatedValue = updated ? updated[key] : undefined;
+    let origValue = original ? original[key] : undefined;
+    let updatedValue = updated ? updated[key] : undefined;
+
+    // wrap object values in arrays to handle as sub diff with renderArrayDiff()
+    if (_.isObject(origValue) && !Array.isArray(origValue) && origValue) {
+      origValue = [origValue];
+    }
+
+    // wrap object values in arrays to handle as sub diff with renderArrayDiff()
+    if (_.isObject(updatedValue) && !Array.isArray(updatedValue) && updatedValue) {
+      updatedValue = [updatedValue];
+    }
 
     const label = camelCaseToHumanReadable(key);
 

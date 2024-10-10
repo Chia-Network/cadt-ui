@@ -156,6 +156,7 @@ const MyUnitsPage: React.FC = () => {
                 type="staged"
                 stagingData={processedStagingData.staged}
                 showLoading={stagingDataLoading}
+                setStagingDiffModalActive={setStagingDiffModalActive}
               />
             )}
           </Tabs.Item>
@@ -172,6 +173,7 @@ const MyUnitsPage: React.FC = () => {
                 type="pending"
                 stagingData={processedStagingData.pending}
                 showLoading={stagingDataLoading}
+                setStagingDiffModalActive={setStagingDiffModalActive}
               />
             )}
           </Tabs.Item>
@@ -188,6 +190,7 @@ const MyUnitsPage: React.FC = () => {
                 type="failed"
                 stagingData={processedStagingData.failed}
                 showLoading={stagingDataLoading}
+                setStagingDiffModalActive={setStagingDiffModalActive}
               />
             )}
           </Tabs.Item>

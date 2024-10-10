@@ -35,6 +35,12 @@ const ConnectButton: React.FC = () => {
     setTimeout(() => window.location.reload(), 0);
   };
 
+  const onClose = () => {
+    refetch();
+    setTimeout(() => setActive(false));
+    setTimeout(() => window.location.reload(), 0);
+  };
+
   return (
     <>
       <Button
@@ -45,7 +51,7 @@ const ConnectButton: React.FC = () => {
       >
         {!serverHealth?.isHealthy ? <FormattedMessage id="connect" /> : <FormattedMessage id="disconnect" />}
       </Button>
-      {isActive && <ConnectModal onClose={() => setActive(false)} />}
+      {isActive && <ConnectModal onClose={onClose} />}
     </>
   );
 };
