@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // Define a TypeScript interface for the function's return type
@@ -34,6 +34,14 @@ const useQueryParamState: QueryParamState<string> = (name, defaultValue = '') =>
     const params = new URLSearchParams(window.location.search || window.location.hash.replace(/#.*\?/, ''));
     return params.get(name) || defaultValue;
   }, [name, location, param, defaultValue]);
+
+  // Ensure default value is set in URL on initial mount if it's missing
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search || window.location.hash.replace(/#.*\?/, ''));
+    if (!params.has(name) && defaultValue) {
+      setQueryStringParameter(defaultValue);
+    }
+  }, [name, defaultValue, setQueryStringParameter]);
 
   return [value, setQueryStringParameter];
 };
