@@ -4,6 +4,8 @@ import { Button } from '@/components';
 import { useUploadProjectsXlsMutation } from '@/api';
 import { Alert } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 interface XlsUploadDownloadButtonsProps {
   orgUid: string;
@@ -20,6 +22,7 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
 }: XlsUploadDownloadButtonsProps) => {
   // upload hooks and state
   const [triggerUploadProjectXls] = useUploadProjectsXlsMutation();
+  const appStore = useSelector((state: RootState) => state.app);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showUploadFailedAlert, setShowUploadFailedAlert] = useState<boolean>(false);
 
@@ -63,13 +66,25 @@ const ProjectXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> =
   const handleClickDownload = async () => {
     setDownloadLoading(true);
     try {
-      const url = new URL('http://localhost:31310/v1/projects');
+      const url = new URL(`${appStore.apiHost}/v1/projects`);
       url.searchParams.append('xls', 'true');
       orgUid && url.searchParams.append('orgUid', orgUid);
       search && url.searchParams.append('search', search);
       order && url.searchParams.append('order', order);
 
-      const downloadResponse: Response = await fetch(url);
+      const headers = {
+        Accept: '*/*',
+      };
+
+      if (appStore?.apiKey) {
+        headers['X-Api-Key'] = appStore.apiKey;
+      }
+
+      const downloadResponse: Response = await fetch(url, {
+        mode: 'cors',
+        headers,
+      });
+
       if (!downloadResponse?.ok) {
         setShowDownloadFailedAlert(true);
         return;
