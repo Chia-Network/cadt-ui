@@ -3,6 +3,8 @@ import { Button } from '@/components';
 import { AiOutlineDeliveredProcedure } from 'react-icons/ai';
 import { Alert } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 interface Props {
   disabled?: boolean;
@@ -11,6 +13,7 @@ interface Props {
 const ProjectOfferFileDownloadButton: React.FC<Props> = ({ disabled }) => {
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [showDownLoadFailedAlert, setShowDownloadFailedAlert] = useState<boolean>(false);
+  const appStore = useSelector((state: RootState) => state.app);
 
   useEffect(() => {
     if (showDownLoadFailedAlert) {
@@ -33,9 +36,20 @@ const ProjectOfferFileDownloadButton: React.FC<Props> = ({ disabled }) => {
   const handleClickDownload = async () => {
     setDownloadLoading(true);
     try {
-      const url = new URL('http://localhost:31310/v1/offer');
+      const url = new URL(`${appStore.apiHost}/v1/offer`);
+      const headers = {
+        Accept: '*/*',
+      };
 
-      const downloadResponse: Response = await fetch(url);
+      if (appStore?.apiKey) {
+        headers['X-Api-Key'] = appStore.apiKey;
+      }
+
+      const downloadResponse: Response = await fetch(url, {
+        mode: 'cors',
+        headers,
+      });
+
       if (!downloadResponse?.ok) {
         setShowDownloadFailedAlert(true);
         return;
