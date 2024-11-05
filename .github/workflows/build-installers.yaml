@@ -231,7 +231,7 @@ jobs:
           echo "WEB_FILE=$WEB_FILE" >>$GITHUB_ENV
 
       - name: Release
-        uses: softprops/action-gh-release@v0.1.15
+        uses: softprops/action-gh-release@v2.0.9
         with:
           files: |
             ${{ env.DMG_FILE }}
