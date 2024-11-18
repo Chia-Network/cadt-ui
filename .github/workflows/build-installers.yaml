@@ -77,7 +77,7 @@ jobs:
           "$DMG_FILE"
 
       - name: Upload Mac Installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cadt-ui-mac-installer
           path: ${{ github.workspace }}/dist/*.dmg
@@ -138,7 +138,7 @@ jobs:
           file: "${{ github.workspace }}/${{ env.INSTALLER_FILE }}"
 
       - name: Upload Windows Installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cadt-ui-windows-installer
           path: "${{ github.workspace }}/${{ env.INSTALLER_FILE }}"
@@ -173,7 +173,7 @@ jobs:
           mv $ORIGINAL $MODIFIED
 
       - name: Upload Linux Installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cadt-ui-linux-installer
           path: ${{ github.workspace }}/dist/*.deb
@@ -203,7 +203,7 @@ jobs:
         run: tar -cvzf cadt-ui-web-build.tar.gz build
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cadt-ui-web-build
           path: cadt-ui-web-build.tar.gz
