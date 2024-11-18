@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - '**'
-    branches:
-      - refactor/refactor-base #remove this once rebuild is merged
   pull_request:
     branches:
       - '**'
@@ -27,10 +25,10 @@ jobs:
       - uses: Chia-Network/actions/clean-workspace@main
 
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.16'
 
@@ -44,7 +42,19 @@ jobs:
         run: |
           npm install
 
+      - name: Test for secrets access
+        id: check_secrets
+        shell: bash
+        run: |
+          unset HAS_SIGNING_SECRET
+
+          if [ -n "$SIGNING_SECRET" ]; then HAS_SIGNING_SECRET='true' ; fi
+          echo "HAS_SIGNING_SECRET=${HAS_SIGNING_SECRET}" >> "$GITHUB_OUTPUT"
+        env:
+          SIGNING_SECRET: "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}"          
+          
       - name: Import Apple installer signing certificate
+        if: steps.check_secrets.outputs.HAS_SIGNING_SECRET
         uses: Apple-Actions/import-codesign-certs@v1
         with:
           p12-file-base64: ${{ secrets.APPLE_DEV_ID_APP }}
@@ -56,6 +66,7 @@ jobs:
         run: npm run electron:package:mac
 
       - name: Notarize
+        if: steps.check_secrets.outputs.HAS_SIGNING_SECRET
         run: |
           DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
           xcrun notarytool submit \
@@ -76,10 +87,10 @@ jobs:
     runs-on: windows-2019
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node 20.16
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.16'
 
@@ -97,6 +108,17 @@ jobs:
       - name: Build electron app
         run: npm run electron:package:win
 
+      - name: Test for secrets access
+        id: check_secrets
+        shell: bash
+        run: |
+          unset HAS_SIGNING_SECRET
+
+          if [ -n "$SIGNING_SECRET" ]; then HAS_SIGNING_SECRET='true' ; fi
+          echo "HAS_SIGNING_SECRET=${HAS_SIGNING_SECRET}" >> "$GITHUB_OUTPUT"
+        env:
+          SIGNING_SECRET: "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}" 
+        
       # Windows Code Signing
       - name: Get installer name for signing
         shell: bash
@@ -106,6 +128,7 @@ jobs:
           echo "INSTALLER_FILE=$FILE" >> "$GITHUB_ENV"
 
       - name: Sign windows artifacts
+        if: steps.check_secrets.outputs.HAS_SIGNING_SECRET
         uses: chia-network/actions/digicert/windows-sign@main
         with:
           sm_api_key: ${{ secrets.SM_API_KEY }}
@@ -125,10 +148,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.16'
 
@@ -160,10 +183,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node 20.16
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.16'
 
