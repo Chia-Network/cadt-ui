@@ -1,21 +1,10 @@
 import { app, BrowserWindow, shell } from 'electron';
 import path from 'path';
-import express from 'express';
+import { fileURLToPath } from 'url';
 
-//electron
-const serverPort = 61310;
-const appServer = express();
-
-const buildPath = path.join(app.getAppPath(), 'build/renderer'); // Path to your Vite build
-
-appServer.use(express.static(buildPath)); // Serve static files from the build directory
-
-// Catch-all handler to return index.html for any non-static file request
-appServer.get('*', (_, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
-});
-
-appServer.listen(serverPort);
+// Manually define __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -25,17 +14,29 @@ function createWindow() {
       contextIsolation: false,
       nodeIntegration: true,
       webviewTag: true,
-      // preload: path.join(__dirname, 'preload.js'),
     },
   });
 
   // Load URL based on the environment
-  const loadUrl =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:5173/' // Development URL
-      : `http://localhost:${serverPort}/`; // Production URL served by Express
+  if (process.env.NODE_ENV === 'development') {
+    console.log('loading app from dev node server');
+    win.loadURL('http://localhost:5173/'); // Development URL
+  } else {
+    // load app from packaged static html
+    const indexPath = path.join(__dirname, 'renderer', 'index.html');
+    console.log('Loading file:', indexPath); // Log to confirm the correct path
+    win.loadFile(indexPath).catch((err) => {
+      console.error('Failed to load index.html:', err);
+    });
 
-  win.loadURL(loadUrl);
+    // app is a SPA. reload index.html when the app tries to load a virtual route
+    win.webContents.on('did-fail-load', (_event, _errorCode, _errorDescription, validatedURL) => {
+      console.log(`Failed to load: ${validatedURL}, loading index.html instead`);
+      win.loadFile(indexPath).catch((err) => {
+        console.error('Failed to load index.html:', err);
+      });
+    });
+  }
 
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
