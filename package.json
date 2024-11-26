@@ -26,7 +26,7 @@
     "electron:package:linux": "npm run clean && npm run build && electron-builder -l -c.extraMetadata.main=build/main.js"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
+    "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
     "@reduxjs/toolkit": "^2.2.7",
