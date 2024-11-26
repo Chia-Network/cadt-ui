@@ -68,7 +68,7 @@
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "autoprefixer": "^10.4.20",
-    "commitlint": "^19.5.0",
+    "commitlint": "^19.6.0",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "electron": "^28.3.3",
