@@ -36,7 +36,7 @@
     "@xterm/xterm": "^5.5.0",
     "components": "^0.1.0",
     "dayjs": "^1.11.13",
-    "diff": "^5.2.0",
+    "diff": "^7.0.0",
     "flowbite": "^2.5.2",
     "flowbite-react": "^0.10.2",
     "flowbite-typography": "^1.0.5",
