@@ -139,24 +139,25 @@ const Field: React.FC<FieldProps> = ({
             options={options}
           />
         );
-      case 'date':
-        // eslint-disable-next-line
+      case 'date': {
         const props: any = {
           showTodayButton: true,
           showClearButton: false,
-          onSelectedDateChanged: (date) => {
+          onChange: (date) => {
             const dateValue = date ? date.toISOString() : undefined;
+            console.log(`setting ${name} to ${dateValue}`);
             setFieldValue(name, dateValue);
           },
           placeholder: 'Select date',
         };
 
-        if (initialValue) {
-          props.defaultDate = new Date(initialValue);
-        }
+        const formValue = get(values, name);
+        const formValueIsDate = !isNaN(Date.parse(formValue));
 
-        if (!initialValue && !get(values, name)) {
+        if (!initialValue && !formValue) {
           props.value = undefined;
+        } else if (formValue && formValueIsDate) {
+          props.value = new Date(formValue);
         }
 
         return (
@@ -164,6 +165,7 @@ const Field: React.FC<FieldProps> = ({
             <Datepicker {...props} />
           </div>
         );
+      }
       case 'checkbox':
         return <Checkbox id={name} name={name} onChange={(e) => setFieldValue(name, e.target.checked)} />;
       // Add cases for other field types as needed
