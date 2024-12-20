@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.13.5",
+    "@emotion/styled": "^11.14.0",
     "@mui/material": "^5.16.8",
     "@reduxjs/toolkit": "^2.4.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
