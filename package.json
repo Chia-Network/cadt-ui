@@ -68,7 +68,7 @@
     "@vitejs/plugin-react-swc": "^3.7.2",
     "autoprefixer": "^10.4.20",
     "commitlint": "^19.6.0",
-    "concurrently": "^8.2.2",
+    "concurrently": "^9.1.0",
     "cross-env": "^7.0.3",
     "electron": "^28.3.3",
     "electron-builder": "^24.13.3",
