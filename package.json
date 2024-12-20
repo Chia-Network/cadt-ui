@@ -84,7 +84,7 @@
     "tailwindcss": "^3.4.15",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
-    "wait-on": "^7.2.0"
+    "wait-on": "^8.0.1"
   },
   "standard-version": {
     "skip": {
