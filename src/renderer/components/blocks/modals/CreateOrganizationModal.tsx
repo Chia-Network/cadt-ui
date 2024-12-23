@@ -1,4 +1,4 @@
-import { Card, CreateOrganizationForm, Modal, Spinner, Tabs } from '@/components';
+import { Card, CreateOrganizationForm, ImportOrganizationProps, Modal, Spinner, Tabs } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useCreateOrganizationMutation, useImportOrganizationMutation } from '@/api';
 import { ImportOrganizationForm } from '@/components/blocks/forms/ImportOrganizationForm';
@@ -31,8 +31,9 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
     }
   };
 
-  const handleSubmitImportOrg = async (orgName: string) => {
-    const createOrgResult: any = await triggerImportOrganization(orgName);
+  const handleSubmitImportOrg = async (importOrgFormValues: ImportOrganizationProps) => {
+    const { orgUid, isHome } = importOrgFormValues;
+    const createOrgResult: any = await triggerImportOrganization({ orgUid, isHome });
     if (createOrgResult?.data.success) {
       onClose();
     } else {

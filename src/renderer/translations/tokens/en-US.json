@@ -208,5 +208,6 @@
   "api-host-loaded-from-configuration": "API host loaded from configuration",
   "not-specified": "not specified",
   "unable-to-load-staging-data": "Unable to load staging data",
-  "new-unit": "New Unit"
+  "new-unit": "New Unit",
+  "import-as-home-organization": "Import as home organization"
 }
