@@ -55,7 +55,7 @@
     "simplebar-react": "^3.2.6",
     "styled-components": "^6.1.13",
     "tailwind-scrollbar": "^3.1.0",
-    "uuid": "^9.0.1",
+    "uuid": "^11.0.4",
     "yup": "^1.4.0"
   },
   "devDependencies": {
