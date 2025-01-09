@@ -26,8 +26,8 @@
     "electron:package:linux": "npm run clean && npm run build && electron-builder -l -c.extraMetadata.main=build/main.js"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.5",
-    "@emotion/styled": "^11.13.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@mui/material": "^5.16.8",
     "@reduxjs/toolkit": "^2.4.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
@@ -36,7 +36,7 @@
     "@xterm/xterm": "^5.5.0",
     "components": "^0.1.0",
     "dayjs": "^1.11.13",
-    "diff": "^5.2.0",
+    "diff": "^7.0.0",
     "flowbite": "^2.5.2",
     "flowbite-react": "^0.10.2",
     "flowbite-typography": "^1.0.5",
@@ -68,7 +68,7 @@
     "@vitejs/plugin-react-swc": "^3.7.2",
     "autoprefixer": "^10.4.20",
     "commitlint": "^19.6.0",
-    "concurrently": "^8.2.2",
+    "concurrently": "^9.1.0",
     "cross-env": "^7.0.3",
     "electron": "^28.3.3",
     "electron-builder": "^24.13.3",
@@ -78,13 +78,13 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
     "postcss": "^8.4.49",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "prettier-eslint": "^16.3.0",
     "standard-version": "^9.5.0",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
-    "wait-on": "^7.2.0"
+    "wait-on": "^8.0.1"
   },
   "standard-version": {
     "skip": {
