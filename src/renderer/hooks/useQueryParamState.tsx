@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'; // Define a TypeScript interface for the function's return type
 
 // Define a TypeScript interface for the function's return type
 interface QueryParamState<T> {
@@ -19,7 +19,7 @@ const useQueryParamState: QueryParamState<string> = (name, defaultValue = '') =>
       if (_.isNil(value) || value === '') {
         params.delete(name);
       } else {
-        params.set(name, value);
+        params.set(name, value ?? '');
       }
 
       const newPath = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;

@@ -56,7 +56,7 @@ const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
       const selectedIssuanceId = value;
       const foundIssuance = projectData?.issuances?.find((issuance) => issuance.id === selectedIssuanceId);
       if (!_.isNil(foundIssuance?.timeStaged)) {
-        delete foundIssuance.timeStaged;
+        delete foundIssuance?.timeStaged;
       }
       setSelectedIssuance(foundIssuance);
     };

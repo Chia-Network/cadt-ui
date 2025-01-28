@@ -51,6 +51,7 @@ const SyncIndicator: React.FC<SyncIndicatorProps> = ({ detailed, orgUid }) => {
       if (!newIsSynced) {
         newSyncRemaining =
           organizationList?.reduce((acc, org) => {
+            // @ts-ignore
             return _.isNil(org.sync_remaining) ? acc : acc + org.sync_remaining;
           }, 0) ?? 0;
       }
