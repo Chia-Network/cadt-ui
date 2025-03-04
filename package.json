@@ -73,7 +73,7 @@
     "electron": "^28.3.3",
     "electron-builder": "^24.13.3",
     "eslint": "^8.57.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
