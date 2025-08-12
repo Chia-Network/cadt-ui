@@ -262,25 +262,25 @@ jobs:
       - build_web
     steps:
       - name: Download Windows artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: cadt-ui-windows-installer
           path: cadt-ui-windows-installer
 
       - name: Download MacOS artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: cadt-ui-mac-installer
           path: cadt-ui-mac-installer
 
       - name: Download Linux artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: cadt-ui-linux-installer
           path: cadt-ui-linux-installer
 
       - name: Download Web artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: cadt-ui-web-build
           path: cadt-ui-web-build
