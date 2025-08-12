@@ -119,7 +119,7 @@ const IssuancesForm = forwardRef<IssuancesFormRef, IssuancesFormProps>(
                   </div>
                   {showUnits && readonly && issuance.id && (
                     <div>
-                      <div className="text-xl font-semibold text-gray-800 p-4">Unit Belonging to this Issuance</div>
+                      <div className="text-xl font-semibold text-gray-800 p-4">Units</div>
                       <UnitSummary issuanceId={issuance.id} />
                     </div>
                   )}
