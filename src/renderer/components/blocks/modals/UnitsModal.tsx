@@ -11,12 +11,7 @@ interface UnitsModalProps {
 const UnitsModal: React.FC<UnitsModalProps> = ({ issuanceId, onClose }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    data: units,
-    isLoading: isUnitsLoading,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    isFetching: isUnitsFetching,
-  } = useGetUnitsQuery(
+  const { data: units, isLoading: isUnitsLoading } = useGetUnitsQuery(
     {
       filter: `issuanceId:${issuanceId}:eq`,
       page: currentPage,

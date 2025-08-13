@@ -101,7 +101,7 @@ const IssuancesTable: React.FC<IssuancesTableProps> = ({
             className="text-blue-600 hover:text-blue-800 underline"
             onClick={(e) => {
               e.preventDefault();
-              setSelectedIssuanceId(row.id);
+              setSelectedIssuanceId(row.id || null);
             }}
           >
             View Units
