@@ -1,4 +1,3 @@
-import { debounce } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { CompactUnitsTable, Spinner } from '@/components';
 import { useGetUnitsQuery } from '@/api';
@@ -19,9 +18,9 @@ const UnitSummary: React.FC<{ issuanceId: any }> = ({ issuanceId }) => {
   });
 
   const handlePageChange = useCallback(
-    debounce((page) => {
+    (page) => {
       setCurrentPage(page);
-    }, 800),
+    },
     [setCurrentPage],
   );
 

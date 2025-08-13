@@ -40,7 +40,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ warehouseProjectId, onClose
               )}
             </Tabs.Item>
             {projectData?.issuances?.length && (
-              <Tabs.Item title={<FormattedMessage id="issuance" />}>
+              <Tabs.Item title={<FormattedMessage id="issuances" />}>
                 <IssuancesForm
                   readonly={true}
                   data={projectData?.issuances}
