@@ -6,3 +6,4 @@ export * from './GlossaryTable';
 export * from './StagingTable';
 export * from './OrganizationSubscriptionsTable';
 export * from './CompactUnitsTable';
+export * from './IssuancesTable';
