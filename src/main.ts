@@ -41,7 +41,7 @@ function createWindow() {
     // load app from packaged static html
     const indexPath = path.join(__dirname, 'renderer', 'index.html');
     console.log('Loading file:', indexPath); // Log to confirm the correct path
-    
+
     // Add version header to all requests in production
     const appVersion = getAppVersion();
     win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
@@ -52,7 +52,7 @@ function createWindow() {
         },
       });
     });
-    
+
     win.loadFile(indexPath).catch((err) => {
       console.error('Failed to load index.html:', err);
     });

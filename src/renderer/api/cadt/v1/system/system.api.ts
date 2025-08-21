@@ -48,7 +48,7 @@ const systemApi = cadtApi.injectEndpoints({
     }),
     getUiConfig: builder.query<Config | undefined, void>({
       query: () => ({
-        url: `config.json`,
+        url: `/config.json`,
         method: 'GET',
       }),
       transformResponse(baseQueryReturnValue: BaseQueryResult<Config>): Config | undefined {
@@ -75,7 +75,7 @@ const systemApi = cadtApi.injectEndpoints({
     }),
     getThemeColors: builder.query<any, void>({
       query: () => ({
-        url: `colors.json`,
+        url: `/colors.json`,
         method: 'GET',
       }),
       transformResponse(baseQueryReturnValue: BaseQueryResult<any>): any {

@@ -14,11 +14,11 @@ export function getAppVersion() {
   try {
     // First, try to get the current git tag
     try {
-      const gitTag = execSync('git describe --exact-match --tags HEAD', { 
+      const gitTag = execSync('git describe --exact-match --tags HEAD', {
         encoding: 'utf8',
-        stdio: 'pipe'
+        stdio: 'pipe',
       }).trim();
-      
+
       if (gitTag) {
         return gitTag;
       }
@@ -32,15 +32,15 @@ export function getAppVersion() {
     const packageVersion = packageJson.version;
 
     // Get the current commit SHA (short version)
-    const commitSha = execSync('git rev-parse --short HEAD', { 
+    const commitSha = execSync('git rev-parse --short HEAD', {
       encoding: 'utf8',
-      stdio: 'pipe'
+      stdio: 'pipe',
     }).trim();
 
     return `${packageVersion}-${commitSha}`;
   } catch (error) {
     console.warn('Failed to determine app version:', error.message);
-    
+
     // Last resort: just return package.json version
     try {
       const packageJsonPath = join(__dirname, '../package.json');

@@ -16,8 +16,15 @@ function App() {
   const appStore = useSelector((state: any) => state.app);
   const [translationTokens, setTranslationTokens] = useState<object>();
   const [appLoading, setAppLoading] = useState(true);
-  const { data: fetchedConfig, isLoading: configFileLoading } = useGetUiConfigQuery();
-  const { data: fetchedThemeColors, isLoading: themeColorsFileLoading } = useGetThemeColorsQuery();
+  // In Electron (file:// protocol), don't fetch config.json as it should never be used
+  const isElectron = window.location.protocol === 'file:';
+  const { data: fetchedConfig, isLoading: configFileLoading } = useGetUiConfigQuery(undefined, {
+    skip: isElectron,
+  });
+  // In Electron, don't fetch colors.json at all
+  const { data: fetchedThemeColors, isLoading: themeColorsFileLoading } = useGetThemeColorsQuery(undefined, {
+    skip: isElectron,
+  });
 
   useEffect(() => {
     if (appStore.locale) {
