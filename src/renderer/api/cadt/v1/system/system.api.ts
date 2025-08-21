@@ -68,6 +68,10 @@ const systemApi = cadtApi.injectEndpoints({
 
         return undefined;
       },
+      transformErrorResponse(): Config | undefined {
+        // Return undefined for any errors (including file not found)
+        return undefined;
+      },
     }),
     getThemeColors: builder.query<any, void>({
       query: () => ({
@@ -87,6 +91,10 @@ const systemApi = cadtApi.injectEndpoints({
         if (typeof baseQueryReturnValue === 'object' && baseQueryReturnValue !== null) {
           return baseQueryReturnValue;
         }
+        return undefined;
+      },
+      transformErrorResponse(): any {
+        // Return undefined for any errors (including file not found)
         return undefined;
       },
     }),
