@@ -48,7 +48,7 @@ const systemApi = cadtApi.injectEndpoints({
     }),
     getUiConfig: builder.query<Config | undefined, void>({
       query: () => ({
-        url: `/config.json`,
+        url: `config.json`,
         method: 'GET',
       }),
       transformResponse(baseQueryReturnValue: BaseQueryResult<Config>): Config | undefined {
@@ -68,14 +68,10 @@ const systemApi = cadtApi.injectEndpoints({
 
         return undefined;
       },
-      transformErrorResponse(): Config | undefined {
-        // Return undefined for any errors (including file not found)
-        return undefined;
-      },
     }),
     getThemeColors: builder.query<any, void>({
       query: () => ({
-        url: `/colors.json`,
+        url: `colors.json`,
         method: 'GET',
       }),
       transformResponse(baseQueryReturnValue: BaseQueryResult<any>): any {
@@ -91,10 +87,6 @@ const systemApi = cadtApi.injectEndpoints({
         if (typeof baseQueryReturnValue === 'object' && baseQueryReturnValue !== null) {
           return baseQueryReturnValue;
         }
-        return undefined;
-      },
-      transformErrorResponse(): any {
-        // Return undefined for any errors (including file not found)
         return undefined;
       },
     }),
