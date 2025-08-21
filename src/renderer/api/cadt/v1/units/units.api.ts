@@ -53,7 +53,7 @@ const unitsApi = cadtApi.injectEndpoints({
           method: 'GET',
         };
       },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       providesTags: (_response, _error, { orgUid, filter, page }) => {
         const tags: Array<{ type: typeof unitsTag; id: string | undefined }> = [{ type: unitsTag, id: orgUid }];
 
