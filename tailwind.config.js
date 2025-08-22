@@ -1,6 +1,8 @@
+import * as flowbite from 'flowbite-react/tailwind';
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{js,jsx,ts,tsx}', 'node_modules/flowbite-react/lib/esm/**/*.js'],
+  content: ['./src/**/*.{js,jsx,ts,tsx}', flowbite.content()],
   theme: {
     extend: {
       colors: {
@@ -15,5 +17,5 @@ export default {
       },
     },
   },
-  plugins: [require('flowbite/plugin')],
+  plugins: [require('flowbite/plugin'), require('tailwind-scrollbar')],
 };

@@ -15,14 +15,11 @@ jobs:
     name: Check version increment
     runs-on: ubuntu-latest
     steps:
-      - name: Clean workspace
-        uses: Chia-Network/actions/clean-workspace@main
-
       - name: Checkout current branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
-          # Need PACKAGE_ADMIN_PAT token so when the tag is created, the tag automation runs
-          token: ${{ secrets.PACKAGE_ADMIN_PAT }}
+          # Need REPO_COMMIT token so when the tag is created, the tag automation runs
+          token: ${{ secrets.REPO_COMMIT }}
           fetch-depth: 0
 
       - name: Setup commit signing for ChiaAutomation

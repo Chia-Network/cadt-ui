@@ -4,16 +4,14 @@ on:
   push:
     tags:
       - '**'
-    branches:
-      - refactor/refactor-base #remove this once rebuild is merged
   pull_request:
     branches:
       - '**'
 
 concurrency:
-  # SHA is added to the end if on `main` to let all main workflows run
-  group: ${{ github.ref }}-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref == 'refs/heads/main' && github.sha || '' }}
+  group: ${{ github.ref }}-${{ github.workflow }}-${{ github.event_name }}
   cancel-in-progress: true
+
 
 permissions:
   id-token: write
@@ -24,13 +22,11 @@ jobs:
     name: Build Mac Installer
     runs-on: macos-latest
     steps:
-      - uses: Chia-Network/actions/clean-workspace@main
-
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup Node 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.16'
 
@@ -40,12 +36,35 @@ jobs:
       - name: install dmg-license
         run: npm i dmg-license
 
+      - name: Change the package.json version if an RC tag
+        shell: bash
+        if: startsWith(github.ref, 'refs/tags/') && contains( github.ref, '-rc')
+        run: |
+          echo "Github ref: $GITHUB_REF"
+          IFS='/' read -r base directory tag <<< "$GITHUB_REF"
+          echo "Extracted tag is $tag"
+
+          jq ".version = \"${tag}\"" package.json > package.tmp
+          mv package.tmp package.json
+
       - name: npm install
         run: |
           npm install
 
+      - name: Test for secrets access
+        id: check_secrets
+        shell: bash
+        run: |
+          unset HAS_SIGNING_SECRET
+
+          if [ -n "$SIGNING_SECRET" ]; then HAS_SIGNING_SECRET='true' ; fi
+          echo "HAS_SIGNING_SECRET=${HAS_SIGNING_SECRET}" >> "$GITHUB_OUTPUT"
+        env:
+          SIGNING_SECRET: "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}"
+
       - name: Import Apple installer signing certificate
-        uses: Apple-Actions/import-codesign-certs@v1
+        if: steps.check_secrets.outputs.HAS_SIGNING_SECRET && startsWith(github.ref, 'refs/tags/') && startsWith(github.ref, 'refs/tags/')
+        uses: Apple-Actions/import-codesign-certs@v5
         with:
           p12-file-base64: ${{ secrets.APPLE_DEV_ID_APP }}
           p12-password: ${{ secrets.APPLE_DEV_ID_APP_PASS }}
@@ -56,6 +75,7 @@ jobs:
         run: npm run electron:package:mac
 
       - name: Notarize
+        if: steps.check_secrets.outputs.HAS_SIGNING_SECRET && startsWith(github.ref, 'refs/tags/')
         run: |
           DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
           xcrun notarytool submit \
@@ -66,20 +86,20 @@ jobs:
           "$DMG_FILE"
 
       - name: Upload Mac Installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cadt-ui-mac-installer
           path: ${{ github.workspace }}/dist/*.dmg
 
   build_windows:
     name: Build Windows Installer
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup Node 20.16
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.16'
 
@@ -89,6 +109,17 @@ jobs:
       - name: Ignore Husky where not compatible
         run: npm pkg delete scripts.prepare
 
+      - name: Change the package.json version if an RC tag
+        shell: bash
+        if: startsWith(github.ref, 'refs/tags/') && contains( github.ref, '-rc')
+        run: |
+          echo "Github ref: $GITHUB_REF"
+          IFS='/' read -r base directory tag <<< "$GITHUB_REF"
+          echo "Extracted tag is $tag"
+
+          jq ".version = \"${tag}\"" package.json > package.tmp
+          mv package.tmp package.json
+
       - name: npm install
         run: |
           node --version
@@ -96,6 +127,17 @@ jobs:
 
       - name: Build electron app
         run: npm run electron:package:win
+
+      - name: Test for secrets access
+        id: check_secrets
+        shell: bash
+        run: |
+          unset HAS_SIGNING_SECRET
+
+          if [ -n "$SIGNING_SECRET" ]; then HAS_SIGNING_SECRET='true' ; fi
+          echo "HAS_SIGNING_SECRET=${HAS_SIGNING_SECRET}" >> "$GITHUB_OUTPUT"
+        env:
+          SIGNING_SECRET: "${{ secrets.SM_CLIENT_CERT_FILE_B64 }}"
 
       # Windows Code Signing
       - name: Get installer name for signing
@@ -106,8 +148,10 @@ jobs:
           echo "INSTALLER_FILE=$FILE" >> "$GITHUB_ENV"
 
       - name: Sign windows artifacts
+        if: steps.check_secrets.outputs.HAS_SIGNING_SECRET
         uses: chia-network/actions/digicert/windows-sign@main
         with:
+          sm_certkey_alias: ${{ secrets.SM_CERTKEY_ALIAS }}
           sm_api_key: ${{ secrets.SM_API_KEY }}
           sm_client_cert_file_b64: ${{ secrets.SM_CLIENT_CERT_FILE_B64 }}
           sm_client_cert_password: ${{ secrets.SM_CLIENT_CERT_PASSWORD }}
@@ -115,7 +159,7 @@ jobs:
           file: "${{ github.workspace }}/${{ env.INSTALLER_FILE }}"
 
       - name: Upload Windows Installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cadt-ui-windows-installer
           path: "${{ github.workspace }}/${{ env.INSTALLER_FILE }}"
@@ -125,15 +169,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup Node 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.16'
 
       - name: Install Husky
         run: npm install --save-dev husky
+
+      - name: Change the package.json version if an RC tag
+        shell: bash
+        if: startsWith(github.ref, 'refs/tags/') && contains( github.ref, '-rc')
+        run: |
+          echo "Github ref: $GITHUB_REF"
+          IFS='/' read -r base directory tag <<< "$GITHUB_REF"
+          echo "Extracted tag is $tag"
+
+          jq ".version = \"${tag}\"" package.json > package.tmp
+          mv package.tmp package.json
 
       - name: npm install
         run: |
@@ -144,13 +199,14 @@ jobs:
         run: npm run electron:package:linux
 
       - name: Rename Linux installer to be standard format for apt
+        shell: bash
         run: |
           ORIGINAL=$(ls dist/*.deb)
           MODIFIED=${ORIGINAL:0:-10}-1${ORIGINAL#${ORIGINAL:0:-10}}
           mv $ORIGINAL $MODIFIED
 
       - name: Upload Linux Installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cadt-ui-linux-installer
           path: ${{ github.workspace }}/dist/*.deb
@@ -160,15 +216,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Setup Node 20.16
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.16'
 
       - name: Install Husky
         run: npm install --save-dev husky
+
+      - name: Change the package.json version if an RC tag
+        shell: bash
+        if: startsWith(github.ref, 'refs/tags/') && contains( github.ref, '-rc')
+        run: |
+          echo "Github ref: $GITHUB_REF"
+          IFS='/' read -r base directory tag <<< "$GITHUB_REF"
+          echo "Extracted tag is $tag"
+
+          jq ".version = \"${tag}\"" package.json > package.tmp
+          mv package.tmp package.json
 
       - name: npm install and build
         run: |
@@ -180,7 +247,7 @@ jobs:
         run: tar -cvzf cadt-ui-web-build.tar.gz build
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cadt-ui-web-build
           path: cadt-ui-web-build.tar.gz
@@ -195,25 +262,25 @@ jobs:
       - build_web
     steps:
       - name: Download Windows artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: cadt-ui-windows-installer
           path: cadt-ui-windows-installer
 
       - name: Download MacOS artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: cadt-ui-mac-installer
           path: cadt-ui-mac-installer
 
       - name: Download Linux artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: cadt-ui-linux-installer
           path: cadt-ui-linux-installer
 
       - name: Download Web artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: cadt-ui-web-build
           path: cadt-ui-web-build
@@ -230,9 +297,33 @@ jobs:
           echo "EXE_FILE=$EXE_FILE" >>$GITHUB_ENV
           echo "WEB_FILE=$WEB_FILE" >>$GITHUB_ENV
 
+      # RC release should not be set as latest
+      - name: Decide if release should be set as latest
+        id: is_latest
+        shell: bash
+        run: |
+          unset IS_LATEST
+
+          echo "Github ref is $GITHUB_REF"
+
+          if [[ "$GITHUB_REF" =~ "-rc" ]]; then
+            echo "release candidate tag matched"
+            IS_LATEST='false'
+            IS_PRERELEASE='true'
+          else
+            echo "main branch release matched"
+            IS_LATEST='true'
+            IS_PRERELEASE='false'
+          fi
+
+          echo "IS_LATEST=${IS_LATEST}" >> "$GITHUB_OUTPUT"
+          echo "IS_PRERELEASE=${IS_PRERELEASE}" >> "$GITHUB_OUTPUT"
+
       - name: Release
-        uses: softprops/action-gh-release@v0.1.15
+        uses: softprops/action-gh-release@v2
         with:
+          prerelease: ${{steps.is_latest.outputs.IS_PRERELEASE}}
+          make_latest: "${{steps.is_latest.outputs.IS_LATEST}}"
           files: |
             ${{ env.DMG_FILE }}
             ${{ env.DEB_FILE }}
@@ -244,10 +335,11 @@ jobs:
         run: |
           echo "TAGNAME=$(echo $GITHUB_REF | cut -d / -f 3)" >>$GITHUB_OUTPUT
 
-      - name: Gets JWT Token from GitHub
-        uses: Chia-Network/actions/github/jwt@main
-
       - name: Trigger apt repo update
-        run: |
-          curl -s -XPOST -H "Authorization: Bearer ${{ env.JWT_TOKEN }}" --data '{"cadt_repo":"cadt-ui","release_version":"${{ steps.tag-name.outputs.TAGNAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/cadt/${{ github.sha }}/start
-          curl -s -XPOST -H "Authorization: Bearer ${{ env.JWT_TOKEN }}" --data '{"cadt_repo":"cadt-ui","release_version":"${{ steps.tag-name.outputs.TAGNAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/cadt/${{ github.sha }}/success/deploy
+        if: startsWith(github.ref, 'refs/tags/') && !contains( github.ref, '-rc')
+        uses: Chia-Network/actions/github/glue@main
+        with:
+          json_data: '{"cadt_repo":"cadt-ui","release_version":"${{ steps.tag-name.outputs.TAGNAME }}"}'
+          glue_url: ${{ secrets.GLUE_API_URL }}
+          glue_project: "cadt"
+          glue_path: "trigger"

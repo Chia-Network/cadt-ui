@@ -15,7 +15,7 @@ const validationSchema = yup.object({
     .required('Server Address is required')
     .matches(
       // eslint-disable-next-line no-useless-escape
-      /^(https?:\/\/(www\.)?)?([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}|localhost|[a-z0-9]+)(:[0-9]{1,5})?(\/.*)?$/,
+      /^(https?:\/\/(www\.)?)?([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}|localhost|[a-z0-9]+|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))(:[0-9]{1,5})?(\/.*)?$/,
       'Please enter a valid server address',
     ),
   apiKey: yup.string(),

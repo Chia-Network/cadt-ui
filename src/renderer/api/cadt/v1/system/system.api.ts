@@ -52,10 +52,21 @@ const systemApi = cadtApi.injectEndpoints({
         method: 'GET',
       }),
       transformResponse(baseQueryReturnValue: BaseQueryResult<Config>): Config | undefined {
+        // Check if response is empty, null, or HTML content (which would indicate a 404 served as index.html)
         if (_.isEmpty(baseQueryReturnValue) || _.isNil(baseQueryReturnValue)) {
           return undefined;
         }
-        return baseQueryReturnValue;
+
+        if (typeof baseQueryReturnValue === 'string' && baseQueryReturnValue.includes('<!doctype html>')) {
+          return undefined;
+        }
+
+        // Ensure it's a valid config object with expected structure
+        if (typeof baseQueryReturnValue === 'object' && baseQueryReturnValue !== null) {
+          return baseQueryReturnValue as Config;
+        }
+
+        return undefined;
       },
     }),
     getThemeColors: builder.query<any, void>({
@@ -64,10 +75,19 @@ const systemApi = cadtApi.injectEndpoints({
         method: 'GET',
       }),
       transformResponse(baseQueryReturnValue: BaseQueryResult<any>): any {
-        if (_.isEmpty(baseQueryReturnValue) || _.isNil(baseQueryReturnValue)) {
+        // Check if response is empty, null, or HTML content (which would indicate a 404 served as index.html)
+        if (
+          _.isEmpty(baseQueryReturnValue) ||
+          _.isNil(baseQueryReturnValue) ||
+          (typeof baseQueryReturnValue === 'string' && baseQueryReturnValue.includes('<!doctype html>'))
+        ) {
           return undefined;
         }
-        return baseQueryReturnValue;
+        // Ensure it's a valid object
+        if (typeof baseQueryReturnValue === 'object' && baseQueryReturnValue !== null) {
+          return baseQueryReturnValue;
+        }
+        return undefined;
       },
     }),
   }),

@@ -8,7 +8,7 @@ export interface AppState {
 
 const initialState: AppState = {
   locale: null,
-  apiHost: 'http://localhost:31310',
+  apiHost: '', // Empty string means no default API host
   apiKey: null,
   configFileLoaded: false,
   isDarkTheme: false,

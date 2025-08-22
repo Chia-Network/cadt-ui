@@ -14,3 +14,4 @@ export * from './SplitUnitModal';
 export * from './AuditModal';
 export * from './CommitTransferSuccessModal';
 export * from './CommitTransferErrorModal';
+export * from './UnitsModal';

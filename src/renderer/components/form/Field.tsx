@@ -5,6 +5,7 @@ import { Checkbox, Datepicker, Label, Textarea, TextInput } from 'flowbite-react
 import { TagInput } from './TagInput';
 import { Select, SelectOption } from '@/components';
 import dayjs from 'dayjs';
+import { FormattedMessage } from 'react-intl';
 
 interface FieldProps {
   name: string;
@@ -58,8 +59,12 @@ const Field: React.FC<FieldProps> = ({
 
   if (readonly) {
     const renderReadOnlyField = () => {
-      if (initialValue === undefined || initialValue === null) {
-        return '--';
+      if (!initialValue) {
+        return (
+          <p className="capitalize">
+            <FormattedMessage id="not-specified" />
+          </p>
+        );
       }
 
       switch (type) {
@@ -67,7 +72,12 @@ const Field: React.FC<FieldProps> = ({
           return <p className="dark:text-white">{renderOption(options, initialValue)}</p>;
         case 'link':
           return (
-            <a href={initialValue} target="_blank" rel="noreferrer" className="text-blue-500 break-words">
+            <a
+              href={initialValue}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-500 break-words hover:underline overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400"
+            >
               {initialValue}
             </a>
           );
@@ -78,13 +88,15 @@ const Field: React.FC<FieldProps> = ({
             <TagInput defaultValue={initialValue} onChange={(tags) => setFieldValue(name, tags)} readonly={readonly} />
           );
         default:
-          return <p className="dark:text-white">{initialValue}</p>;
+          return (
+            <p className="dark:text-white overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400">{initialValue}</p>
+          );
       }
     };
     return (
       <div className="mb-4">
         {label && <Label htmlFor={name}>{label}</Label>}
-        <div id={name} className="py-2 rounded">
+        <div id={name} className="p-2 rounded-lg bg-gray-100 max-w-fit">
           {renderReadOnlyField()}
         </div>
         {isError && <p className="text-red-500 text-xs italic">{get(errors, name)}</p>}
@@ -127,24 +139,25 @@ const Field: React.FC<FieldProps> = ({
             options={options}
           />
         );
-      case 'date':
-        // eslint-disable-next-line
+      case 'date': {
         const props: any = {
           showTodayButton: true,
           showClearButton: false,
-          onSelectedDateChanged: (date) => {
+          onChange: (date) => {
             const dateValue = date ? date.toISOString() : undefined;
+            console.log(`setting ${name} to ${dateValue}`);
             setFieldValue(name, dateValue);
           },
           placeholder: 'Select date',
         };
 
-        if (initialValue) {
-          props.defaultDate = new Date(initialValue);
-        }
+        const formValue = get(values, name);
+        const formValueIsDate = !isNaN(Date.parse(formValue));
 
-        if (!initialValue && !get(values, name)) {
+        if (!initialValue && !formValue) {
           props.value = undefined;
+        } else if (formValue && formValueIsDate) {
+          props.value = new Date(formValue);
         }
 
         return (
@@ -152,6 +165,7 @@ const Field: React.FC<FieldProps> = ({
             <Datepicker {...props} />
           </div>
         );
+      }
       case 'checkbox':
         return <Checkbox id={name} name={name} onChange={(e) => setFieldValue(name, e.target.checked)} />;
       // Add cases for other field types as needed

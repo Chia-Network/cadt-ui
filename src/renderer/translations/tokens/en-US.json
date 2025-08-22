@@ -47,6 +47,7 @@
   "detailed-project-view": "Detailed Project View",
   "project": "Project",
   "issuance": "Issuance",
+  "issuances": "Issuances",
   "project-locations": "Project Locations",
   "estimations": "Estimations",
   "warehouse": "Warehouse",
@@ -99,6 +100,9 @@
   "staging-diff": "Staging Diff",
   "retry": "Retry",
   "unit": "Unit",
+  "units": "Units",
+  "return-to-issuance": "Return to Issuance",
+  "units-belonging-to-issuance": "Units Belonging to Issuance {id}",
   "detailed-unit-view": "Detailed Unit View",
   "edit-project": "Edit Project",
   "next": "Next",
@@ -205,5 +209,9 @@
   "project-transfer-error": "Project Transfer Error",
   "failed-to-commit-project-transfer": "Failed to commit project transfer",
   "no-changes-have-been-made": "No changes have been made",
-  "api-host-loaded-from-configuration": "API host loaded from configuration"
+  "api-host-loaded-from-configuration": "API host loaded from configuration",
+  "not-specified": "not specified",
+  "unable-to-load-staging-data": "Unable to load staging data",
+  "new-unit": "New Unit",
+  "import-as-home-organization": "Import as home organization"
 }

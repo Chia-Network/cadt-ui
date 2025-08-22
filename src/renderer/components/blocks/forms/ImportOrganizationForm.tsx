@@ -1,23 +1,28 @@
 import React, { useCallback } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as yup from 'yup';
-import { Button, FloatingLabel, Spinner } from '@/components';
-import { IntlShape, useIntl } from 'react-intl';
+import { CheckBox, FloatingLabel, FormButton, Label } from '@/components';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 const validationSchema = yup.object({
   orgUid: yup.string().length(64).required('OrgUid is required'),
 });
 
+export interface ImportOrganizationProps {
+  orgUid: string;
+  isHome: boolean;
+}
+
 interface FormProps {
-  onSubmit: (orgUid: string) => Promise<any>;
+  onSubmit: (params: ImportOrganizationProps) => Promise<any>;
 }
 
 const ImportOrganizationForm: React.FC<FormProps> = ({ onSubmit }) => {
   const intl: IntlShape = useIntl();
 
   const handleSubmit = useCallback(
-    async (values: { orgUid: string }, { setSubmitting }) => {
-      await onSubmit(values.orgUid);
+    async (values: ImportOrganizationProps, { setSubmitting }) => {
+      await onSubmit(values);
       setSubmitting(false);
     },
     [onSubmit],
@@ -25,7 +30,7 @@ const ImportOrganizationForm: React.FC<FormProps> = ({ onSubmit }) => {
 
   return (
     <>
-      <Formik initialValues={{ orgUid: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
+      <Formik initialValues={{ orgUid: '', isHome: true }} validationSchema={validationSchema} onSubmit={handleSubmit}>
         {({ errors, touched, isSubmitting }) => (
           <Form>
             <div className="mb-4">
@@ -42,10 +47,18 @@ const ImportOrganizationForm: React.FC<FormProps> = ({ onSubmit }) => {
                 )}
               </Field>
               {touched.orgUid && <ErrorMessage name="orgUid" component="div" className="text-red-600" />}
+              <div className="flex space-x-2.5">
+                <Field name="isHome">{({ field }) => <CheckBox id="isHome" checked {...field} />}</Field>
+                <Label htmlFor="isHome">
+                  <p className="text-gray-600">
+                    <FormattedMessage id="import-as-home-organization" />
+                  </p>
+                </Label>
+              </div>
             </div>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? <Spinner size="sm" light={true} /> : 'Submit'}
-            </Button>
+            <FormButton isSubmitting={isSubmitting} formikErrors={errors}>
+              <FormattedMessage id="submit" />
+            </FormButton>
           </Form>
         )}
       </Formik>
