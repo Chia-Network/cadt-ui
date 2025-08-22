@@ -1,3 +1,66 @@
+## [2.0.4](https://github.com/Chia-Network/cadt-ui/compare/2.0.4-rc15...2.0.4) (2025-08-22)
+
+
+
+## [2.0.3](https://github.com/Chia-Network/cadt-ui/compare/2.0.2...2.0.3) (2024-09-09)
+
+
+
+## [2.0.2](https://github.com/Chia-Network/cadt-ui/compare/2.0.1...2.0.2) (2024-08-26)
+
+
+
+## [2.0.1](https://github.com/Chia-Network/cadt-ui/compare/2.0.0...2.0.1) (2024-08-16)
+
+
+
+# [2.0.0](https://github.com/Chia-Network/cadt-ui/compare/1.2.14...2.0.0) (2024-08-01)
+
+
+### Bug Fixes
+
+* address errors in build process ([8e51ceb](https://github.com/Chia-Network/cadt-ui/commit/8e51cebb233aad7b82cac140e0f4382cbd0b835b))
+* allow app to load when config.json and colors.json are absent ([3b93531](https://github.com/Chia-Network/cadt-ui/commit/3b93531f6a33feeed32d11711d4eeaf1e6be3d81))
+* connect form regex ([d43a4e0](https://github.com/Chia-Network/cadt-ui/commit/d43a4e05cb6808b37d0e1d53d1270d8dbe6a95df))
+* make connect modal work when running cadt on localhost ([d7bf203](https://github.com/Chia-Network/cadt-ui/commit/d7bf203d5be39fedcdab7223ad48157b85c6fea2))
+* make units plural to accurately reflect list ([a8e2018](https://github.com/Chia-Network/cadt-ui/commit/a8e2018aaec5d4b3bc80f6af3a53d1e4574b6982))
+* revert changes to config.json and colors.json loading ([9597c5c](https://github.com/Chia-Network/cadt-ui/commit/9597c5c1806995b39c7d1fc358be3bd011248127))
+* revert removal of express ([0120369](https://github.com/Chia-Network/cadt-ui/commit/01203692717a733f20165362820c06b571f05fcc))
+* stop loading config files from api when in electron ([16fc0d0](https://github.com/Chia-Network/cadt-ui/commit/16fc0d00581f2719bc784269dcbb193aa05796ac))
+* ts errors ([a3987c2](https://github.com/Chia-Network/cadt-ui/commit/a3987c27a7a4ce76d2b72cc2dd3fbdd31dc3ecf8))
+
+
+### Features
+
+* output app version as header ([0fa1377](https://github.com/Chia-Network/cadt-ui/commit/0fa1377b1e8b2a3a1954470c9c700da728b2c0c5))
+* rework units display for issuances ([78283a4](https://github.com/Chia-Network/cadt-ui/commit/78283a461021264844ed0676f19e2566164e69b6))
+* updated organization import form for api changes ([788b8a4](https://github.com/Chia-Network/cadt-ui/commit/788b8a4b7f70abf18d84af235d52923b5da95cf8))
+
+
+
+## [2.0.4-rc1](https://github.com/Chia-Network/cadt-ui/compare/2.0.3...2.0.4-rc1) (2024-12-20)
+
+
+### Bug Fixes
+
+* address breaking changes in flowbite datepicker ([5e52e89](https://github.com/Chia-Network/cadt-ui/commit/5e52e899ee9cc9f58f56d784b05ef580e00f110b))
+* connect modal close loop ([7595b7e](https://github.com/Chia-Network/cadt-ui/commit/7595b7e1431476e39f19d90754bf39dd5e68413e))
+* create and edit unit timestamp error ([d1bfe9d](https://github.com/Chia-Network/cadt-ui/commit/d1bfe9db80bc611e71b51a30a34774cb592634b9))
+* error if registry id does not exist in my projects page ([b36da10](https://github.com/Chia-Network/cadt-ui/commit/b36da10b14f5f39636a7ef7cfd73555c7437396d))
+* hardcoded api host in fila download fetch requests ([6a65b7e](https://github.com/Chia-Network/cadt-ui/commit/6a65b7e3c91edfe52c4b409b583831d5a4ce07a3))
+* locked in flowbite-react version ([37c257e](https://github.com/Chia-Network/cadt-ui/commit/37c257eb69711292ec1f5ebae55f80fe568348da))
+* page query param set when navigating to a paginated page ([8ba7cb8](https://github.com/Chia-Network/cadt-ui/commit/8ba7cb84a33a162662e5b73eab1c8ba1260fc818))
+* split unit form ([ca8b428](https://github.com/Chia-Network/cadt-ui/commit/ca8b4283847f16e596499916aa3ee6ddd7d543c6))
+
+
+### Features
+
+* dependency updates ([7252307](https://github.com/Chia-Network/cadt-ui/commit/7252307929cbaf4b90bf4b89f488c024a3867a26))
+* improved staging diff modal behavior ([cb3ca5d](https://github.com/Chia-Network/cadt-ui/commit/cb3ca5d102e1c0ce6eb68c93bcd9250008c5b4eb))
+* removed unnecessary production express server ([a9beb4c](https://github.com/Chia-Network/cadt-ui/commit/a9beb4cffa4004294adb2726339cb8c3bc3fbaa8))
+
+
+
 ## [2.0.3](https://github.com/Chia-Network/cadt-ui/compare/2.0.2...2.0.3) (2024-09-09)
 
 
