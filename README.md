@@ -1,21 +1,21 @@
 # Climate Action Data Trust User Interface
 
-This repository provides a graphical user interface (UI) for the [Climate Action Data Trust (CADT)](https://github.com/Chia-Network/cadt) application.  CADT interfaces with the Chia Blockchain software and provides and API for entering and retrieving carbon data.  This UI is a javascript application that connects to the CADT API for a convenient way to access the data. 
+This repository provides a graphical user interface (UI) for the [Climate Action Data Trust (CADT)](https://github.com/Chia-Network/cadt) application.  CADT interfaces with the Chia Blockchain software and provides and API for entering and retrieving carbon data.  This UI is a javascript application that connects to the CADT API for a convenient way to access the data.
 
 *Note that this application was previously called the Climate Warehouse UI and that name may be used interchangeably in documentation and throughout this application.*
 
 
 ## Installation
 
-The UI application can be hosted as a web application and accessed via the browser, or as a desktop application packaged with Electron.  Currently the application is only packaged for x86 platforms, though building from source is expected to work on ARM.  
+The UI application can be hosted as a web application and accessed via the browser, or as a desktop application packaged with Electron.  Currently the application is only packaged for x86 platforms, though building from source is expected to work on ARM.
 
 ### Desktop Applications
 
-The [releases](https://github.com/Chia-Network/cadt-ui/releases) page provides desktop applications packaged for Windows, Mac, and Debian-based Linux distributions.  
+The [releases](https://github.com/Chia-Network/cadt-ui/releases) page provides desktop applications packaged for Windows, Mac, and Debian-based Linux distributions.
 
 #### Ubuntu Desktop via Apt
 
-For Ubuntu-based Linux desktops the CADT UI is available for install with `apt`.  
+For Ubuntu-based Linux desktops the CADT UI is available for install with `apt`.
 
 1. Start by updating apt and allowing repository download over HTTPS:
 
@@ -46,9 +46,9 @@ sudo apt-get install cadt-ui
 
 ### Web Application
 
-The CADT UI can be hosted as a web application, either for internal use, or made available to the public.  When operating as a web application, the user's browser must be able to connect to the [CADT API](https://github.com/Chia-Network/cadt).  This means the API must be available on the public internet if the UI is public.  The `READ_ONLY` option on the API should be set when running a public observer node. 
+The CADT UI can be hosted as a web application, either for internal use, or made available to the public.  When operating as a web application, the user's browser must be able to connect to the [CADT API](https://github.com/Chia-Network/cadt).  This means the API must be available on the public internet if the UI is public.  The `READ_ONLY` option on the API should be set when running a public observer node.
 
-To host the UI on the web, use the [web-build.tar.gz file from the releases page](https://github.com/Chia-Network/cadt-ui/releases). One of the simplest solutions is to uncompress these files into a [public S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteAccessPermissionsReqd.html). These files could also be served by any webserver, such as Nginx or Apache.  
+To host the UI on the web, use the [web-build.tar.gz file from the releases page](https://github.com/Chia-Network/cadt-ui/releases). One of the simplest solutions is to uncompress these files into a [public S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteAccessPermissionsReqd.html). These files could also be served by any webserver, such as Nginx or Apache.
 
 To make the CADT UI web application automatically connect to a CADT host by default, copy the `config.example.json` file to `config.json` and change the `apiHost` to be the CADT API hostname, including http:// and the path (everything before the `/v1` part of the API URL)
 
