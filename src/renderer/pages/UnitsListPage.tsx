@@ -100,6 +100,9 @@ const UnitsListPage: React.FC = () => {
             <UnitModal
               onClose={() => setUnitModalActive(false)}
               warehouseUnitId={unitDetailsFragment.replace('unit-', '')}
+              defaultTab={
+                (new URLSearchParams(window.location.search).get('tab') as 'unit' | 'issuance' | 'labels') || 'unit'
+              }
             />
           )}
         </>
