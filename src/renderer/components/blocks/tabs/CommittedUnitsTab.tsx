@@ -66,9 +66,6 @@ const CommittedUnitsTab: React.FC<PageTabProps> = ({ orgUid, search, order, setO
         <UnitModal
           onClose={() => setUnitsModalActive(false)}
           warehouseUnitId={unitDetailsFragment.replace('unit-', '')}
-          defaultTab={
-            (new URLSearchParams(window.location.search).get('tab') as 'unit' | 'issuance' | 'labels') || 'unit'
-          }
         />
       )}
     </>
