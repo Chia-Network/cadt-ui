@@ -28,6 +28,16 @@ const UnitsModal: React.FC<UnitsModalProps> = ({ issuanceId, onClose }) => {
     [setCurrentPage],
   );
 
+  const handleUnitClick = useCallback(
+    (warehouseUnitId: string) => {
+      // Include page=1 query parameter as it's required for the units page to load correctly
+      // Add tab=issuance to force the issuance tab to be active since we're coming from an issuance context
+      window.location.href = `/units?page=1&tab=issuance#unit-${warehouseUnitId}`;
+      onClose(); // Close the modal after navigation
+    },
+    [onClose],
+  );
+
   return (
     <Modal onClose={onClose} show={true} size={'6xl'} position="top-center">
       <Modal.Header>
@@ -62,7 +72,11 @@ const UnitsModal: React.FC<UnitsModalProps> = ({ issuanceId, onClose }) => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {units?.data?.map((unit: any) => (
-                      <tr key={unit.warehouseUnitId} className="hover:bg-gray-50">
+                      <tr
+                        key={unit.warehouseUnitId}
+                        className="hover:bg-gray-50 cursor-pointer"
+                        onClick={() => handleUnitClick(unit.warehouseUnitId)}
+                      >
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           {unit.serialNumberBlock || '-'}
                         </td>
