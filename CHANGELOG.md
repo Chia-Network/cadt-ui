@@ -1,3 +1,34 @@
+## [2.0.5](https://github.com/Chia-Network/cadt-ui/compare/2.0.5-rc4...2.0.5) (2025-09-04)
+
+
+
+## [2.0.4](https://github.com/Chia-Network/cadt-ui/compare/2.0.4-rc15...2.0.4) (2025-08-22)
+
+
+
+## [2.0.3](https://github.com/Chia-Network/cadt-ui/compare/2.0.2...2.0.3) (2024-09-09)
+
+
+
+## [2.0.2](https://github.com/Chia-Network/cadt-ui/compare/2.0.1...2.0.2) (2024-08-26)
+
+
+
+## [2.0.1](https://github.com/Chia-Network/cadt-ui/compare/2.0.0...2.0.1) (2024-08-16)
+
+
+
+# [2.0.0](https://github.com/Chia-Network/cadt-ui/compare/1.2.14...2.0.0) (2024-08-01)
+
+
+### Features
+
+* display units details in new nested modal ([9b65fe8](https://github.com/Chia-Network/cadt-ui/commit/9b65fe8502b42e3a13bf857f4c69cbb918b613b4))
+* link issuance units to unit page ([7d77af9](https://github.com/Chia-Network/cadt-ui/commit/7d77af90692bce5b7b1a41e1b00a4774b1553be4))
+* remove logic for loading a specific tab ([b281e86](https://github.com/Chia-Network/cadt-ui/commit/b281e865cd8d3a12febefdaf8dd2beeeccfaaf55))
+
+
+
 ## [2.0.4](https://github.com/Chia-Network/cadt-ui/compare/2.0.4-rc15...2.0.4) (2025-08-22)
 
 
