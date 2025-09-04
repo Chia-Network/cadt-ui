@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Modal, Spinner, PageCounter, Pagination } from '@/components';
+import { Modal, Spinner, PageCounter, Pagination, NestedUnitModal } from '@/components';
 import { FormattedMessage } from 'react-intl';
 import { useGetUnitsQuery } from '@/api';
 
@@ -10,6 +10,7 @@ interface UnitsModalProps {
 
 const UnitsModal: React.FC<UnitsModalProps> = ({ issuanceId, onClose }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
 
   const { data: units, isLoading: isUnitsLoading } = useGetUnitsQuery(
     {
@@ -28,72 +29,92 @@ const UnitsModal: React.FC<UnitsModalProps> = ({ issuanceId, onClose }) => {
     [setCurrentPage],
   );
 
+  const handleUnitClick = useCallback(
+    (warehouseUnitId: string) => {
+      setSelectedUnitId(warehouseUnitId);
+    },
+    [setSelectedUnitId],
+  );
+
+  const handleUnitModalClose = useCallback(() => {
+    setSelectedUnitId(null);
+  }, [setSelectedUnitId]);
+
   return (
-    <Modal onClose={onClose} show={true} size={'6xl'} position="top-center">
-      <Modal.Header>
-        <FormattedMessage
-          id="units-belonging-to-issuance"
-          defaultMessage="Units Belonging to Issuance {id}"
-          values={{ id: issuanceId.substring(0, 8) }}
-        />
-      </Modal.Header>
-      <Modal.Body>
-        <div>
-          {isUnitsLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <Spinner size="xl" />
-            </div>
-          ) : (
-            <>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-300">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <FormattedMessage id={'serial-number-block'} />
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <FormattedMessage id={'unit-count'} />
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <FormattedMessage id={'unit-owner'} />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {units?.data?.map((unit: any) => (
-                      <tr key={unit.warehouseUnitId} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {unit.serialNumberBlock || '-'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{unit.unitCount || '-'}</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">
-                          <span className="font-bold break-words">{unit.unitOwner || '-'}</span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+    <>
+      <Modal onClose={onClose} show={true} size={'6xl'} position="top-center">
+        <Modal.Header>
+          <FormattedMessage
+            id="units-belonging-to-issuance"
+            defaultMessage="Units Belonging to Issuance {id}"
+            values={{ id: issuanceId.substring(0, 8) }}
+          />
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            {isUnitsLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Spinner size="xl" />
               </div>
-              {units && units.pageCount > 1 && (
-                <div className="mt-2 pt-2 border-t border-gray-200">
-                  <div className="flex justify-between items-center">
-                    <PageCounter currentPage={currentPage} totalCount={units.pageCount * 10} />
-                    <Pagination
-                      currentPage={currentPage}
-                      layout="pagination"
-                      onPageChange={handlePageChange}
-                      showIcons={true}
-                      totalPages={units.pageCount}
-                    />
-                  </div>
+            ) : (
+              <>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-300">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <FormattedMessage id={'serial-number-block'} />
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <FormattedMessage id={'unit-count'} />
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <FormattedMessage id={'unit-owner'} />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {units?.data?.map((unit: any) => (
+                        <tr
+                          key={unit.warehouseUnitId}
+                          className="hover:bg-gray-50 cursor-pointer"
+                          onClick={() => handleUnitClick(unit.warehouseUnitId)}
+                        >
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {unit.serialNumberBlock || '-'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{unit.unitCount || '-'}</td>
+                          <td className="px-6 py-4 text-sm text-gray-900">
+                            <span className="font-bold break-words">{unit.unitOwner || '-'}</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              )}
-            </>
-          )}
-        </div>
-      </Modal.Body>
-    </Modal>
+                {units && units.pageCount > 1 && (
+                  <div className="mt-2 pt-2 border-t border-gray-200">
+                    <div className="flex justify-between items-center">
+                      <PageCounter currentPage={currentPage} totalCount={units.pageCount * 10} />
+                      <Pagination
+                        currentPage={currentPage}
+                        layout="pagination"
+                        onPageChange={handlePageChange}
+                        showIcons={true}
+                        totalPages={units.pageCount}
+                      />
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Nested UnitModal for detailed unit view */}
+      {selectedUnitId && <NestedUnitModal warehouseUnitId={selectedUnitId} onClose={handleUnitModalClose} />}
+    </>
   );
 };
 
