@@ -1,3 +1,37 @@
+## [2.0.6](https://github.com/Chia-Network/cadt-ui/compare/2.0.6-rc1...2.0.6) (2025-09-05)
+
+
+
+## [2.0.5](https://github.com/Chia-Network/cadt-ui/compare/2.0.5-rc4...2.0.5) (2025-09-04)
+
+
+
+## [2.0.4](https://github.com/Chia-Network/cadt-ui/compare/2.0.4-rc15...2.0.4) (2025-08-22)
+
+
+
+## [2.0.3](https://github.com/Chia-Network/cadt-ui/compare/2.0.2...2.0.3) (2024-09-09)
+
+
+
+## [2.0.2](https://github.com/Chia-Network/cadt-ui/compare/2.0.1...2.0.2) (2024-08-26)
+
+
+
+## [2.0.1](https://github.com/Chia-Network/cadt-ui/compare/2.0.0...2.0.1) (2024-08-16)
+
+
+
+# [2.0.0](https://github.com/Chia-Network/cadt-ui/compare/1.2.14...2.0.0) (2024-08-01)
+
+
+### Bug Fixes
+
+* make styling match original with new flowbite version ([d139520](https://github.com/Chia-Network/cadt-ui/commit/d13952052ddb6885f4e7b09000383392a6608dde))
+* update many flowbite issues with new version ([b45dc50](https://github.com/Chia-Network/cadt-ui/commit/b45dc5044f8a776288e5494b0e2b105e796beebc))
+
+
+
 ## [2.0.5](https://github.com/Chia-Network/cadt-ui/compare/2.0.5-rc4...2.0.5) (2025-09-04)
 
 
