@@ -1,11 +1,16 @@
-import { Dropdown as FlowbiteDropDown, DropdownItemProps, DropdownProps } from 'flowbite-react';
+import {
+  Dropdown as FlowbiteDropDown,
+  DropdownItem as FlowbiteDropdownItem,
+  DropdownItemProps,
+  DropdownProps,
+} from 'flowbite-react';
 
 function Dropdown({ children, ...props }: DropdownProps) {
   return <FlowbiteDropDown {...props}>{children}</FlowbiteDropDown>;
 }
 
 function Item({ children, ...props }: DropdownItemProps) {
-  return <FlowbiteDropDown.Item {...props}>{children}</FlowbiteDropDown.Item>;
+  return <FlowbiteDropdownItem {...props}>{children}</FlowbiteDropdownItem>;
 }
 
 Dropdown.Item = Item;

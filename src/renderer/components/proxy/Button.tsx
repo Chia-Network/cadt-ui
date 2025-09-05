@@ -1,11 +1,26 @@
-import { Button as FlowbiteButton, ButtonGroupProps, ButtonProps } from 'flowbite-react';
+import {
+  Button as FlowbiteButton,
+  ButtonGroup as FlowbiteButtonGroup,
+  ButtonGroupProps,
+  ButtonProps,
+  Spinner,
+} from 'flowbite-react';
 
-function Button({ children, ...props }: ButtonProps) {
-  return <FlowbiteButton {...props}>{children}</FlowbiteButton>;
+interface CustomButtonProps extends ButtonProps {
+  isProcessing?: boolean;
+}
+
+function Button({ children, isProcessing, disabled, ...props }: CustomButtonProps) {
+  return (
+    <FlowbiteButton disabled={disabled || isProcessing} {...props}>
+      {isProcessing && <Spinner size="sm" className="mr-2" />}
+      {children}
+    </FlowbiteButton>
+  );
 }
 
 function Group({ children, ...props }: ButtonGroupProps) {
-  return <FlowbiteButton.Group {...props}>{children}</FlowbiteButton.Group>;
+  return <FlowbiteButtonGroup {...props}>{children}</FlowbiteButtonGroup>;
 }
 
 Button.Group = Group;

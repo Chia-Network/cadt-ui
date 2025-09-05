@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from 'flowbite-react';
+import { Modal } from '@/components';
 import { FormattedMessage } from 'react-intl';
 
 interface Props {
