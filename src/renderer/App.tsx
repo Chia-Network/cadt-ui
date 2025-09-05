@@ -57,6 +57,12 @@ function App() {
     if (!configFileLoading) setTimeout(() => setAppLoading(false), 400);
   }, [configFileLoading]);
 
+  // Initialize theme mode on app startup
+  useEffect(() => {
+    // Ensure the body class matches the initial theme state
+    document.body.classList.toggle('dark', appStore.isDarkTheme);
+  }, [appStore.isDarkTheme]);
+
   if (!translationTokens || configFileLoading || themeColorsFileLoading || appLoading) {
     return <ComponentCenteredSpinner />;
   }

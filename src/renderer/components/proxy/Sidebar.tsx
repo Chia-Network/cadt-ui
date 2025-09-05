@@ -1,5 +1,8 @@
 import {
   Sidebar as FlowbiteSidebar,
+  SidebarItem as FlowbiteSidebarItem,
+  SidebarItemGroup as FlowbiteSidebarItemGroup,
+  SidebarItems as FlowbiteSidebarItems,
   SidebarItemGroupProps,
   SidebarItemProps,
   SidebarItemsProps,
@@ -26,15 +29,15 @@ function Sidebar({ children, ...props }: SidebarProps) {
 }
 
 function Items({ children, ...props }: SidebarItemsProps) {
-  return <FlowbiteSidebar.Items {...props}>{children}</FlowbiteSidebar.Items>;
+  return <FlowbiteSidebarItems {...props}>{children}</FlowbiteSidebarItems>;
 }
 
 function ItemGroup({ children, ...props }: SidebarItemGroupProps) {
-  return <FlowbiteSidebar.ItemGroup {...props}>{children}</FlowbiteSidebar.ItemGroup>;
+  return <FlowbiteSidebarItemGroup {...props}>{children}</FlowbiteSidebarItemGroup>;
 }
 
 function Item({ children, ...props }: SidebarItemProps) {
-  return <FlowbiteSidebar.Item {...props}>{children}</FlowbiteSidebar.Item>;
+  return <FlowbiteSidebarItem {...props}>{children}</FlowbiteSidebarItem>;
 }
 
 Sidebar.Item = Item;
