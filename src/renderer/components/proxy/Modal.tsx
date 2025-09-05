@@ -1,5 +1,8 @@
 import {
   Modal as FlowbiteModal,
+  ModalBody as FlowbiteModalBody,
+  ModalFooter as FlowbiteModalFooter,
+  ModalHeader as FlowbiteModalHeader,
   ModalBodyProps,
   ModalFooterProps,
   ModalHeaderProps,
@@ -19,15 +22,15 @@ function Modal({ children, show = true, ...props }: ModalProps) {
 }
 
 function Body({ children, ...props }: ModalBodyProps) {
-  return <FlowbiteModal.Body {...props}>{children}</FlowbiteModal.Body>;
+  return <FlowbiteModalBody {...props}>{children}</FlowbiteModalBody>;
 }
 
 function Header({ children, ...props }: ModalHeaderProps) {
-  return <FlowbiteModal.Header {...props}>{children}</FlowbiteModal.Header>;
+  return <FlowbiteModalHeader {...props}>{children}</FlowbiteModalHeader>;
 }
 
 function Footer({ children, ...props }: ModalFooterProps) {
-  return <FlowbiteModal.Footer {...props}>{children}</FlowbiteModal.Footer>;
+  return <FlowbiteModalFooter {...props}>{children}</FlowbiteModalFooter>;
 }
 
 Modal.Body = Body;
