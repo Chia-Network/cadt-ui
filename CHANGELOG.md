@@ -1,3 +1,40 @@
+## [2.0.7](https://github.com/Chia-Network/cadt-ui/compare/2.0.7-rc1...2.0.7) (2025-09-09)
+
+
+
+## [2.0.6](https://github.com/Chia-Network/cadt-ui/compare/2.0.6-rc1...2.0.6) (2025-09-05)
+
+
+
+## [2.0.5](https://github.com/Chia-Network/cadt-ui/compare/2.0.5-rc4...2.0.5) (2025-09-04)
+
+
+
+## [2.0.4](https://github.com/Chia-Network/cadt-ui/compare/2.0.4-rc15...2.0.4) (2025-08-22)
+
+
+
+## [2.0.3](https://github.com/Chia-Network/cadt-ui/compare/2.0.2...2.0.3) (2024-09-09)
+
+
+
+## [2.0.2](https://github.com/Chia-Network/cadt-ui/compare/2.0.1...2.0.2) (2024-08-26)
+
+
+
+## [2.0.1](https://github.com/Chia-Network/cadt-ui/compare/2.0.0...2.0.1) (2024-08-16)
+
+
+
+# [2.0.0](https://github.com/Chia-Network/cadt-ui/compare/1.2.14...2.0.0) (2024-08-01)
+
+
+### Bug Fixes
+
+* submit button on connection modal visibility ([30e2bcd](https://github.com/Chia-Network/cadt-ui/commit/30e2bcdff43967db5030e365a363f0e00d5af197))
+
+
+
 ## [2.0.6](https://github.com/Chia-Network/cadt-ui/compare/2.0.6-rc1...2.0.6) (2025-09-05)
 
 
