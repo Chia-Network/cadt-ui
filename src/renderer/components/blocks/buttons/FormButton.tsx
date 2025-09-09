@@ -11,6 +11,7 @@ const FormButton: React.FC<FormButtonProps> = ({ isSubmitting, formikErrors, chi
   return (
     <Button
       type="submit"
+      color="blue"
       disabled={isSubmitting || Boolean(Object.keys(formikErrors).length)}
       isProcessing={isSubmitting}
     >
