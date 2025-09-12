@@ -67,9 +67,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     {column.render ? (
                       column.render(row)
                     ) : (
-                      <div className="truncate" style={{ maxWidth: '300px' }}>
-                        {row[column.key]}
-                      </div>
+                      <div className="whitespace-normal break-words">{row[column.key]}</div>
                     )}
                   </div>
                 </div>
@@ -94,7 +92,11 @@ const DataTable: React.FC<DataTableProps> = ({
                   return (
                     <th
                       key={column.key}
-                      style={{ cursor: onChangeOrder ? 'pointer' : 'default' }}
+                      style={{
+                        cursor: onChangeOrder ? 'pointer' : 'default',
+                        width: column.width,
+                        ...column.style,
+                      }}
                       className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${
                         isActive
                           ? 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white'
@@ -132,6 +134,7 @@ const DataTable: React.FC<DataTableProps> = ({
                       <td
                         key={`${column.key}-${row[primaryKey]}`}
                         className="px-6 py-4 whitespace-normal"
+                        style={{ width: column.width, ...column.style }}
                         onClick={(event: any) => {
                           if (!column.ignoreChildEvents || event.target === event.currentTarget) {
                             onRowClick(row);
@@ -139,13 +142,13 @@ const DataTable: React.FC<DataTableProps> = ({
                         }}
                       >
                         <div className="text-gray-600 dark:text-white">
-                          <div className="truncate" style={{ maxWidth: '300px' }}>
-                            {column.render ? (
-                              column.render(row)
-                            ) : (
+                          {column.render ? (
+                            column.render(row)
+                          ) : (
+                            <div className="whitespace-normal break-words">
                               <Tooltip content={row[column.key]}>{row[column.key]}</Tooltip>
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </div>
                       </td>
                     ))}
