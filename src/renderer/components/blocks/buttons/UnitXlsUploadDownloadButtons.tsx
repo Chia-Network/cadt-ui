@@ -125,14 +125,14 @@ const UnitXlsUploadDownloadButtons: React.FC<XlsUploadDownloadButtonsProps> = ({
 
       {showUploadFailedAlert && (
         <div className="fixed w-1/4">
-          <Alert color="failure" onDismiss={() => setShowUploadFailedAlert(false)}>
+          <Alert color="red" onDismiss={() => setShowUploadFailedAlert(false)}>
             <FormattedMessage id="upload-failed" />!
           </Alert>
         </div>
       )}
       {showDownLoadFailedAlert && (
         <div className="fixed w-1/4">
-          <Alert color="failure" onDismiss={() => setShowDownloadFailedAlert(false)}>
+          <Alert color="red" onDismiss={() => setShowDownloadFailedAlert(false)}>
             <FormattedMessage id="download-failed" />!
           </Alert>
         </div>

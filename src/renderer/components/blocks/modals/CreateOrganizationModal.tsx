@@ -74,7 +74,7 @@ const CreateOrganizationModal: React.FC<CreateOrganizationModalProps> = ({
       </Modal.Header>
       <Modal.Body>
         {showCreateOrgError && (
-          <Alert color="failure" icon={HiInformationCircle} className="mb-3">
+          <Alert color="red" icon={HiInformationCircle} className="mb-3">
             <span className="font-medium">
               <FormattedMessage id="error" />!
             </span>{' '}

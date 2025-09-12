@@ -115,7 +115,7 @@ const MyProjectsPage: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center h-auto">
           {activeTab === TabTypes.COMMITTED && (
             <>
-              <Button disabled={contentsLoading} onClick={() => setCreateProjectModalActive(true)}>
+              <Button color="blue" disabled={contentsLoading} onClick={() => setCreateProjectModalActive(true)}>
                 <FormattedMessage id="create-project" />
               </Button>
               <SearchBox defaultValue={search} onChange={handleSearchChange} />

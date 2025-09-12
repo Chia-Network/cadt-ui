@@ -39,15 +39,15 @@ const OwnedProjectAndUnitActions: React.FC<ProjectAndUnitActionsProps> = ({
         placement="right"
         content={
           <Button.Group>
-            <Button onClick={handleClickEdit} outline>
+            <Button onClick={handleClickEdit} outline menuItem>
               <FormattedMessage id="edit" />
             </Button>
             {type === 'unit' && (
-              <Button onClick={handleClickSplit} outline>
+              <Button onClick={handleClickSplit} outline menuItem>
                 <FormattedMessage id="split" />
               </Button>
             )}
-            <Button onClick={handleClickDelete} outline>
+            <Button onClick={handleClickDelete} outline menuItem>
               <FormattedMessage id="delete" />
             </Button>
           </Button.Group>

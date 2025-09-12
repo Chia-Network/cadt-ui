@@ -23,7 +23,7 @@ const TransferOption: React.FC<ProjectAndUnitActionsProps> = ({
         trigger="click"
         placement="right"
         content={
-          <Button onClick={handleClickTransfer} outline>
+          <Button onClick={handleClickTransfer} outline menuItem>
             <FormattedMessage id="transfer" />
           </Button>
         }

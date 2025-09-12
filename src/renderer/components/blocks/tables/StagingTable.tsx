@@ -37,7 +37,7 @@ const StagingTable: React.FC<TableProps> = ({ data, type, isLoading, onRowClick,
             return <Badge color="warning">{row.action}</Badge>;
           }
           if (row.action === 'DELETE') {
-            return <Badge color="failure">{row.action}</Badge>;
+            return <Badge color="red">{row.action}</Badge>;
           }
           return <Badge color="dark">{'--'}</Badge>;
         },
