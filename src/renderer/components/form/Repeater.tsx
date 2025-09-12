@@ -50,7 +50,7 @@ function Repeater<T extends { [key in keyof T]: any }>({
                   <div className="relative flex items-center">
                     <Button
                       className="ml-4"
-                      color="failure"
+                      color="red"
                       onClick={() => arrayHelpers.remove(index)}
                       disabled={groups.length <= minNumber}
                     >

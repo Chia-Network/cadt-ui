@@ -53,6 +53,7 @@ const ConfirmDeleteCommittedItemModal: React.FC<ConfirmDeleteModalProps> = ({
       <Modal.Footer>
         <Button
           onClick={handleConfirm}
+          color="red"
           isProcessing={projectDeletionLoading || unitDeletionLoading}
           disabled={projectDeletionLoading || unitDeletionLoading}
         >

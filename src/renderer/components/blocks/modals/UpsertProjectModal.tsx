@@ -238,7 +238,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
       <Modal.Body>
         {formSubmitError && (
           <>
-            <Alert color="failure">{formSubmitError}</Alert>
+            <Alert color="red">{formSubmitError}</Alert>
             <Spacer size={15} />
           </>
         )}
@@ -304,7 +304,7 @@ const UpsertProjectModal: React.FC<UpsertModalProps> = ({ onClose }: UpsertModal
               Back
             </Button>
             <div className="flex space-x-1 flex-grow justify-end">
-              <Button onClick={handleNext}>
+              <Button color="blue" onClick={handleNext}>
                 <FormattedMessage id={nextButtonTitleId} />
               </Button>
             </div>

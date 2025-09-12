@@ -13,7 +13,7 @@ const CancelProjectOfferButton: React.FC<Props> = ({ disabled }) => {
 
   return (
     <>
-      <Button onClick={() => setShowConfirmCancelModal(true)} disabled={disabled}>
+      <Button color="red" onClick={() => setShowConfirmCancelModal(true)} disabled={disabled}>
         <HiOutlineTrash className="h-5 w-5 mr-1" />
         <FormattedMessage id="cancel-offer" />
       </Button>

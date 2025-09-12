@@ -110,7 +110,7 @@ const MyUnitsPage: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-6 my-2.5 relative z-30 items-center">
           {activeTab === TabTypes.COMMITTED && (
             <>
-              <Button disabled={contentsLoading} onClick={() => setCreateUnitModalActive(true)}>
+              <Button color="blue" disabled={contentsLoading} onClick={() => setCreateUnitModalActive(true)}>
                 <FormattedMessage id="create-unit" />
               </Button>
               <SearchBox defaultValue={search} onChange={handleSearchChange} />

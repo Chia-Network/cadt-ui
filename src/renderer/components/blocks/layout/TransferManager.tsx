@@ -112,7 +112,12 @@ const TransferManager: React.FC<TransferManagerProps> = ({
             <>
               <div className="flex space-x-2 pb-3">
                 <CommitImportedProjectTransferButton />
-                <Button onClick={handleRejectOffer} disabled={rejectOfferLoading} isProcessing={rejectOfferLoading}>
+                <Button
+                  color="red"
+                  onClick={handleRejectOffer}
+                  disabled={rejectOfferLoading}
+                  isProcessing={rejectOfferLoading}
+                >
                   <HiOutlineX className="h-5 w-5 mr-1" />
                   <FormattedMessage id="reject-transfer-offer" />
                 </Button>
