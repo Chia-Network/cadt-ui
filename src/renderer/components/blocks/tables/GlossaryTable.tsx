@@ -54,6 +54,7 @@ const GlossaryTable: React.FC<TableProps> = ({ data, isLoading, order, setOrder 
         isLoading={isLoading}
         order={order}
         onChangeOrder={setOrder}
+        reserveFooterSpace={false}
       />
     </div>
   );

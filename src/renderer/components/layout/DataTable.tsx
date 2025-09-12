@@ -27,6 +27,7 @@ interface DataTableProps {
   onChangeOrder?: (column: string) => void;
   order?: string;
   footer?: JSX.Element | null;
+  reserveFooterSpace?: boolean;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -38,6 +39,7 @@ const DataTable: React.FC<DataTableProps> = ({
   onChangeOrder,
   order,
   footer = null,
+  reserveFooterSpace = true,
 }) => {
   if (isLoading) {
     return null;
@@ -82,7 +84,12 @@ const DataTable: React.FC<DataTableProps> = ({
           {footer}
         </div>
       ) : null}
-      <div className="flex-grow custom-scrollbar" style={{ height: data.length > 0 ? 'calc(100vh - 240px)' : 'auto' }}>
+      <div
+        className="flex-grow custom-scrollbar"
+        style={{
+          height: data.length > 0 ? (reserveFooterSpace ? 'calc(100vh - 240px)' : 'calc(100vh - 120px)') : 'auto',
+        }}
+      >
         <SimpleBar style={{ height: '100%', width: '100%' }} autoHide={false} forceVisible="x">
           <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 custom-scrollbar">
             <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
