@@ -15,17 +15,26 @@ const GlossaryTable: React.FC<TableProps> = ({ data, isLoading, order, setOrder 
       {
         title: <FormattedMessage id={'term'} />,
         key: 'term',
+        width: '25%',
+        style: { minWidth: '200px', maxWidth: '300px' },
+        render: (row: any) => {
+          return (
+            <div className="text-gray-600 dark:text-white whitespace-normal break-words font-medium">{row.term}</div>
+          );
+        },
       },
       {
         title: <FormattedMessage id={'description'} />,
         key: 'description',
+        width: '75%',
+        style: { minWidth: '400px' },
         render: (row: any) => {
           return (
             <div className="text-gray-600 dark:text-white">
               {row.description.map((item, index) => (
                 <div key={`${item.header}-${index}`} className="mb-4 last:mb-0 text-left">
                   <div className="font-bold items-start">{item.header}</div>
-                  <div className="items-start">{item.definition}</div>
+                  <div className="items-start whitespace-normal break-words">{item.definition}</div>
                 </div>
               ))}
             </div>
@@ -45,6 +54,7 @@ const GlossaryTable: React.FC<TableProps> = ({ data, isLoading, order, setOrder 
         isLoading={isLoading}
         order={order}
         onChangeOrder={setOrder}
+        reserveFooterSpace={false}
       />
     </div>
   );
