@@ -45,7 +45,7 @@ const ConfirmTransferProjectModal: React.FC<Props> = ({ onClose, onSuccess, onEr
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleConfirm} isProcessing={isLoading} disabled={isLoading}>
+        <Button color="blue" onClick={handleConfirm} isProcessing={isLoading} disabled={isLoading}>
           <FormattedMessage id="accept-and-commit-transfer" />
         </Button>
         <Button color="gray" onClick={handleClickClose} disabled={isLoading}>

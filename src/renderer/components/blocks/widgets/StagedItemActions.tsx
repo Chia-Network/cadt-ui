@@ -35,14 +35,14 @@ const StagedItemActions: React.FC<ActionsProps> = ({ type, stagedItem }: Actions
           placement="right"
           content={
             <>
-              <Button onClick={handleClickDelete} outline>
+              <Button onClick={handleClickDelete} outline color="red">
                 <FormattedMessage id="delete" />
               </Button>
               {/*todo: delete the above button and encasing fragment and make this div
                  visible when a solution to editing a staged item is complete */}
               <div className="hidden">
                 {stagedItem?.action === 'DELETE' || type === 'failed' ? (
-                  <Button onClick={handleClickDelete} outline>
+                  <Button onClick={handleClickDelete} outline color="red">
                     <FormattedMessage id="delete" />
                   </Button>
                 ) : (

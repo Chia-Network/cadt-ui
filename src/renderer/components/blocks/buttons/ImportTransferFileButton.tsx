@@ -36,7 +36,7 @@ const ImportTransferFileButton: React.FC<XlsUploadDownloadButtonsProps> = () => 
       </Button>
       {showUploadFailedAlert && (
         <div className="fixed w-1/4">
-          <Alert color="failure" onDismiss={() => setShowUploadFailedAlert(false)}>
+          <Alert color="red" onDismiss={() => setShowUploadFailedAlert(false)}>
             <FormattedMessage id="upload-failed" />!
           </Alert>
         </div>

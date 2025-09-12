@@ -76,7 +76,7 @@ const ProjectOfferFileDownloadButton: React.FC<Props> = ({ disabled }) => {
       </Button>
       {showDownLoadFailedAlert && (
         <div className="fixed w-1/4 right-5">
-          <Alert color="failure" onDismiss={() => setShowDownloadFailedAlert(false)}>
+          <Alert color="red" onDismiss={() => setShowDownloadFailedAlert(false)}>
             <FormattedMessage id="download-failed" />!
           </Alert>
         </div>

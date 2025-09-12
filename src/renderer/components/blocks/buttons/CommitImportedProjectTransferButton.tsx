@@ -22,7 +22,7 @@ const CommitImportedProjectTransferButton: React.FC<Props> = ({ disabled }) => {
 
   return (
     <>
-      <Button onClick={() => setShowConfirmTransferModal(true)} disabled={disabled}>
+      <Button color="blue" onClick={() => setShowConfirmTransferModal(true)} disabled={disabled}>
         <HiOutlineCheck className="h-5 w-5 mr-1" />
         <FormattedMessage id="accept-and-commit-transfer" />
       </Button>

@@ -36,7 +36,12 @@ const ConfirmDeleteStagedItemModal: React.FC<ConfirmDeleteModalProps> = ({
         <Button color="gray" onClick={handleClickClose} disabled={stagedItemDeletionLoading}>
           <FormattedMessage id="cancel" />
         </Button>
-        <Button onClick={handleConfirm} isProcessing={stagedItemDeletionLoading} disabled={stagedItemDeletionLoading}>
+        <Button
+          color="red"
+          onClick={handleConfirm}
+          isProcessing={stagedItemDeletionLoading}
+          disabled={stagedItemDeletionLoading}
+        >
           <FormattedMessage id="delete" />
         </Button>
       </Modal.Footer>

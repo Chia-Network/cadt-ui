@@ -76,7 +76,7 @@ const MyOrganizationPage: React.FC<MyOrganizationProps> = () => {
               <FiEdit className="text-lime-500" />
             </button>
           ) : (
-            <Button className="ml-2" size="xs" color="failure" onClick={handleDeleteOrganization}>
+            <Button className="ml-2" size="xs" color="red" onClick={handleDeleteOrganization}>
               <FormattedMessage id="delete-organization" />
             </Button>
           )}

@@ -77,7 +77,7 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
       <Modal.Body>
         {formSubmitError && (
           <>
-            <Alert color="failure">{formSubmitError}</Alert>
+            <Alert color="red">{formSubmitError}</Alert>
             <Spacer size={15} />
           </>
         )}
@@ -87,7 +87,7 @@ const SplitUnitModal: React.FC<SplitModalProps> = ({ onClose }: SplitModalProps)
           setFormValidationError={setFormValidationError}
         />
         <Spacer size={15} />
-        <Button onClick={handleSubmit} disabled={formValidationError} isProcessing={splitUnitLoading}>
+        <Button color="blue" onClick={handleSubmit} disabled={formValidationError} isProcessing={splitUnitLoading}>
           <FormattedMessage id="submit" />
         </Button>
       </Modal.Body>

@@ -44,7 +44,7 @@ const ConfirmCancelOfferModal: React.FC<Props> = ({ onClose }) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleConfirm} isProcessing={isLoading} disabled={isLoading}>
+        <Button color="red" onClick={handleConfirm} isProcessing={isLoading} disabled={isLoading}>
           <FormattedMessage id="confirm-cancel-offer" />
         </Button>
         <Button color="gray" onClick={handleClickClose} disabled={isLoading}>
