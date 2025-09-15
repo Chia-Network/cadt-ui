@@ -50,7 +50,7 @@ The CADT UI can be hosted as a web application, either for internal use, or made
 
 To host the UI on the web, use the [web-build.tar.gz file from the releases page](https://github.com/Chia-Network/cadt-ui/releases). One of the simplest solutions is to uncompress these files into a [public S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteAccessPermissionsReqd.html). These files could also be served by any webserver, such as Nginx or Apache.
 
-To make the CADT UI web application automatically connect to a CADT host by default, copy the `config.example.json` file to `config.json` and change the `apiHost` to be the CADT API hostname, including http:// and the path (everything before the `/v1` part of the API URL)
+To make the CADT UI web application automatically connect to a CADT host by default, copy the `public/config.example.json` file to `config.json` and change the `apiHost` to be the CADT API hostname, including http:// and the path (everything before the `/v1` part of the API URL)
 
 #### Sample Nginx Config
 
@@ -77,6 +77,75 @@ server {
 
 ```
 
+### Docker Container
+
+The CADT UI is available as a Docker container from the [packages section](https://github.com/Chia-Network/cadt-ui/pkgs/container/cadt-ui) of the GitHub repository. This provides an easy way to deploy the UI as a web application with configurable API endpoints and custom styling.
+
+#### Quick Start
+
+```bash
+docker run -p 8099:80 ghcr.io/chia-network/cadt-ui:latest
+```
+
+This will start the CADT UI on port 8099. You can access it at `http://localhost:8099`.
+
+#### Environment Variables
+
+The Docker container supports several environment variables for configuration:
+
+##### API Configuration
+
+- **`API_HOST`** - Sets the CADT API host URL that the UI will connect to automatically
+  - When set, creates a `config.json` file in the webroot with the specified API host
+
+##### UI Customization
+
+- **`LEFTNAVBG`** - Background color for the left navigation panel
+  - Example: `rgb(0, 242, 245)` or `#00f2f5`
+- **`LEFTNAVTEXT`** - Text color for the left navigation panel
+  - Example: `#ff0005` or `rgb(255, 0, 5)`
+- **`LEFTNAVITEMACTIVE`** - Color for active navigation items
+  - Example: `blue` or `#0066cc`
+
+When any of these color variables are set, a `colors.json` file is created in the webroot with the specified values.
+
+#### Usage Examples
+
+**Basic usage with custom API host:**
+```bash
+docker run -p 8099:80 \
+  -e API_HOST="https://cadt-api.example.com" \
+  ghcr.io/chia-network/cadt-ui:latest
+```
+
+**Full customization with API host and custom colors:**
+```bash
+docker run -p 8099:80 \
+  -e API_HOST="https://cadt-api.example.com" \
+  -e LEFTNAVBG="rgb(0, 242, 245)" \
+  -e LEFTNAVTEXT="#ff0005" \
+  -e LEFTNAVITEMACTIVE="blue" \
+  ghcr.io/chia-network/cadt-ui:latest
+```
+
+#### Docker Compose Example
+
+For easier management, you can use Docker Compose:
+
+```yaml
+version: '3.8'
+services:
+  cadt-ui:
+    image: ghcr.io/chia-network/cadt-ui:latest
+    ports:
+      - "8099:80"
+    environment:
+      - API_HOST=https://cadt-api.example.com
+      - LEFTNAVBG=rgb(0, 242, 245)
+      - LEFTNAVTEXT=#ff0005
+      - LEFTNAVITEMACTIVE=blue
+    restart: unless-stopped
+```
 
 ### From Source
 
