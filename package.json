@@ -37,7 +37,7 @@
     "components": "^0.1.0",
     "dayjs": "^1.11.13",
     "diff": "^7.0.0",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "flowbite": "^3.1.2",
     "flowbite-react": "^0.12.8",
     "flowbite-typography": "^1.0.5",
