@@ -55,7 +55,7 @@
     "redux-persist": "^6.0.0",
     "simplebar": "^6.3.2",
     "simplebar-react": "^3.3.2",
-    "styled-components": "^6.1.14",
+    "styled-components": "^6.4.1",
     "tailwind-scrollbar": "^3.1.0",
     "uuid": "^11.1.0",
     "yup": "^1.6.1"
@@ -79,7 +79,7 @@
     "eslint-plugin-react-refresh": "^0.4.18",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
-    "postcss": "^8.5.1",
+    "postcss": "^8.5.14",
     "prettier": "^3.4.2",
     "prettier-eslint": "^16.3.0",
     "standard-version": "^9.5.0",
