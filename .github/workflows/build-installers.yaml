@@ -25,10 +25,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      - name: Setup Node 20
+      - name: Setup Node 24
         uses: actions/setup-node@v6
         with:
-          node-version: '20.16'
+          node-version: '24'
 
       - name: Install Husky
         run: npm install --save-dev husky
@@ -98,10 +98,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      - name: Setup Node 20.16
+      - name: Setup Node 24
         uses: actions/setup-node@v6
         with:
-          node-version: '20.16'
+          node-version: '24'
 
       - name: Install Husky
         run: npm install --save-dev husky
@@ -171,10 +171,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      - name: Setup Node 20
+      - name: Setup Node 24
         uses: actions/setup-node@v6
         with:
-          node-version: '20.16'
+          node-version: '24'
 
       - name: Install Husky
         run: npm install --save-dev husky
@@ -218,10 +218,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      - name: Setup Node 20.16
+      - name: Setup Node 24
         uses: actions/setup-node@v6
         with:
-          node-version: '20.16'
+          node-version: '24'
 
       - name: Install Husky
         run: npm install --save-dev husky
