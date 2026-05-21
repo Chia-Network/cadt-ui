@@ -8,7 +8,7 @@
   "author": "Chia Network Inc. <hello@chia.net>",
   "description": "Climate Action Data Trust User Interface",
   "engines": {
-    "node": ">=20.16"
+    "node": ">=24.14.1"
   },
   "scripts": {
     "start": "vite",
