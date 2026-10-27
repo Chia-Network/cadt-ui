@@ -55,7 +55,7 @@
     "redux-persist": "^6.0.0",
     "simplebar": "^6.3.2",
     "simplebar-react": "^3.3.2",
-    "styled-components": "^6.5.3",
+    "styled-components": "^6.6.0",
     "tailwind-scrollbar": "^3.1.0",
     "uuid": "^14.0.2",
     "yup": "^1.6.1"
