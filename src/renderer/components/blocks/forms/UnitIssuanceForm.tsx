@@ -43,12 +43,10 @@ const UnitIssuanceForm = forwardRef<UnitIssuanceFormRef, UnitIssuanceFormProps>(
       if (isProjectLoading || !projectData?.issuances) {
         return [];
       }
-      return projectData.issuances.map(
-        (issuance): SelectOption => ({
-          label: `${dayjs(issuance.startDate).format('DD/MM/YYYY')} - ${dayjs(issuance.endDate).format('DD/MM/YYYY')}`,
-          value: issuance.id || '',
-        }),
-      );
+      return projectData.issuances.map((issuance): SelectOption => ({
+        label: `${dayjs(issuance.startDate).format('DD/MM/YYYY')} - ${dayjs(issuance.endDate).format('DD/MM/YYYY')}`,
+        value: issuance.id || '',
+      }));
     }, [projectData, isProjectLoading]);
 
     const handleSetIssuance = (value) => {
