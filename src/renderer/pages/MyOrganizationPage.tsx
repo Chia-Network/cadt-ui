@@ -3,13 +3,11 @@ import { Button, Card, ComponentCenteredSpinner, EditOrganizationForm } from '@/
 import { Organization } from '@/schemas/Organization.schema';
 import { useDeleteOrganizationMutation, useEditOrganizationMutation, useGetOrganizationsListQuery } from '@/api';
 import { FormattedMessage } from 'react-intl';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG as QRCode } from 'qrcode.react';
 import { FiEdit } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
-interface MyOrganizationProps {}
-
-const MyOrganizationPage: React.FC<MyOrganizationProps> = () => {
+const MyOrganizationPage: React.FC = () => {
   const navigate = useNavigate();
   const { data: organizationsListData, isLoading: organizationsListLoading } = useGetOrganizationsListQuery();
   const [triggerDeleteOrganization] = useDeleteOrganizationMutation();

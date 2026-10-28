@@ -8,11 +8,11 @@ import React from 'react';
 
 export interface Column {
   key: string;
-  title: string | JSX.Element;
+  title: string | React.JSX.Element;
   ignoreChildEvents?: boolean;
   ignoreOrderChange?: boolean;
-  render?: (row: any) => JSX.Element;
-  renderHeader?: (column: any) => JSX.Element;
+  render?: (row: any) => React.JSX.Element;
+  renderHeader?: (column: any) => React.JSX.Element;
   width?: string;
   padding?: string;
   style?: React.CSSProperties;
@@ -26,7 +26,7 @@ interface DataTableProps {
   onRowClick?: (row: any) => void;
   onChangeOrder?: (column: string) => void;
   order?: string;
-  footer?: JSX.Element | null;
+  footer?: React.JSX.Element | null;
   reserveFooterSpace?: boolean;
 }
 
