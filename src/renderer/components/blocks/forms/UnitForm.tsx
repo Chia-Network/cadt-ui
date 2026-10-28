@@ -102,12 +102,10 @@ const UnitForm = forwardRef<UnitFormRef, UnitFormProps>(({ readonly = false, dat
       return [];
     }
 
-    return projectData.projectLocations.map(
-      (location): SelectOption => ({
-        label: `${location.country} - ${location.inCountryRegion}`,
-        value: location.id || '',
-      }),
-    );
+    return projectData.projectLocations.map((location): SelectOption => ({
+      label: `${location.country} - ${location.inCountryRegion}`,
+      value: location.id || '',
+    }));
   }, [projectData, isProjectLoading]);
 
   useImperativeHandle(ref, () => ({

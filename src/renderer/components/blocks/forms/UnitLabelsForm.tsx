@@ -99,12 +99,10 @@ const UnitLabelsForm = forwardRef<UnitLabelsFormRef, LabelsFormProps>(
       }
       return [
         { label: 'New Label', value: 'new' },
-        ...projectData.labels.map(
-          (label): SelectOption => ({
-            label: label.label || `${label.labelType} - ${label.unitQuantity}`,
-            value: label.id || '',
-          }),
-        ),
+        ...projectData.labels.map((label): SelectOption => ({
+          label: label.label || `${label.labelType} - ${label.unitQuantity}`,
+          value: label.id || '',
+        })),
       ];
     }, [projectData, isProjectLoading]);
 

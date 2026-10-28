@@ -27,7 +27,7 @@ const SkeletonBar: React.FC = () => {
 interface Column {
   title: string;
   key: string;
-  render: () => JSX.Element;
+  render: () => React.JSX.Element;
 }
 
 const SkeletonTable: React.FC = () => {
